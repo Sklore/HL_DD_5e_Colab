@@ -42,6 +42,14 @@ nexteach]]></eval>
     <comment><![CDATA[Pre - Req
 #attrvalue[aDEX] >= 13]]></comment>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="PostAttr"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+
+doneif (tagis[Helper.Disable] <> 0)
+      
+doneif (field[abilActive].value = 0)
+
+hero.childfound[ArmorClass].field[Bonus].value += hero.child[ProfBonus].field[tProfBonus].value]]></eval>
     <exprreq message="Dexterity 13 required."><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ftDuelWiel" name="Duel Wielder" description="You master fighting with two weapons, gaining the following benefits:\n\n• You gain a +1 bonus to AC while you are wielding a separate melee weapon in each hand.\n• You can use two-weapon fighting even when the onehanded melee weapons you are wielding aren’t light.\n• You can draw or stow two one-handed weapons when you would normally be able to draw or stow only one." compset="Feat" summary="You master fighting with two weapons." uniqueness="useronce">
@@ -103,6 +111,7 @@ Prerequisite: Proficiency with medium armor</comment>
 
 perform hero.assign[ArmProfGrp.ArmorHeavy]
 ~ perform hero.assign[Hero.ProfHeavy]</eval>
+    <exprreq message="Proficiency with medium armor required."><![CDATA[tagis[ArmProfGrp.ArmorMed] <> 0]]></exprreq>
     </thing>
   <thing id="ftElemAdCo" name="Elemental Adept - Cold" description="Spells you cast ignore resistance to damage of the type Cold. In addition, when you roll damage for a spell you cast that deals damage of type Cold, you can treat any 1 on a damage die as a 2.\n\nPrerequisite: The ability to cast at least one spell" compset="Feat" summary="Spells you cast ignore resistance to damage of the type Cold. In addition, when you roll damage for a spell you cast that deals damage of type Cold, you can treat any 1 on a damage die as a 2." uniqueness="useronce">
     <tag group="Helper" tag="ShowSpec"/>
@@ -270,6 +279,10 @@ nexteach]]></eval>
     <arrayval field="usrArray" index="0" value="Strength"/>
     <arrayval field="usrArray" index="1" value="Constitution"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="wUnarmed">
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
     <eval phase="First">if (field[usrIndex].value = 0) then
 hero.child[aSTR].field[aStartMod].value += 1
 elseif (field[usrIndex].value = 1) then
@@ -288,6 +301,28 @@ herofield[tBonusHP].value += field[abValue].value]]></eval>
     </thing>
   <thing id="ftWarCaste" name="War Caster" description="You have practiced casting spells in the midst of combat, learning techniques that grant you the following benefits:\n\n• You have advantage on Constitution saving throws that you make to maintain your concentration on a spell when you take damage.\n• You can perform the somatic components of spells even when you have weapons or a shield in one or both hands.\n• When a hostile creature’s movement provokes an opportunity attack from you, you can use your reaction to cast a spell at the creature, rather than making an opportunity attack. The spell must have a casting time of 1 action and must target only that creature.\n\nPrerequisite: The ability to cast at least one spell" compset="Feat" summary="You have practiced casting spells in the midst of combat, learning techniques." uniqueness="useronce">
     <tag group="Helper" tag="ShowSpec"/>
+    <prereq message="You must be able to cast at least one spell. ">
+      <validate><![CDATA[var iTotal as number
+
+iTotal = iTotal + #levelcount[Bard]
+iTotal = iTotal + #levelcount[Cleric]
+iTotal = iTotal + #levelcount[Druid]
+iTotal = iTotal + #levelcount[Sorcerer]
+iTotal = iTotal + #levelcount[Warlock]
+iTotal = iTotal + #levelcount[Wizard]
+
+if (#levelcount[Paladin] >1) then
+iTotal = iTotal + #levelcount[Paladin]
+endif
+if (#levelcount[Ranger] >1) then
+iTotal = iTotal + #levelcount[Ranger]
+endif
+
+@valid = 0
+if (iTotal >0) then
+@valid = 1
+endif]]></validate>
+      </prereq>
     </thing>
   <thing id="ftWeapMas" name="Weapon Master" description="You have practiced extensively with a variety of weapons, gaining the following benefits:\n\n• Increase your Strength or Dexterity score by 1, to a maximum of 20.\n• You gain proficiency with four weapons of your choice." compset="Feat" summary="You have practiced extensively with a variety of weapons." uniqueness="useronce">
     <arrayval field="usrArray" index="0" value="Strength"/>
@@ -303,3 +338,4 @@ endif
     </thing>
   <thing id="dtTrap" name="Traps" compset="DamageType"></thing>
   </document>
+  
