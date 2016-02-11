@@ -123,56 +123,33 @@
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
     </thing>
-  <thing id="rHumanV" name="Human (Variant)" description="It&apos;s hard to make generalizations about humans, but your human character has these traits.\n\nIf your campaign uses the optional feat rules from chapter 5, your Dungeon Master might allow these variant traits, all of which replace the human’s Ability Score Increase trait.\n\nAbility Score Increase: Two different ability scores of your choice increase by 1. \nSkills: You gain proficiency in one skilll of your choice. \nFeat: You gain one feat of your choice." compset="Race">
-    <fieldval field="rLanguages" value="1"/>
-    <fieldval field="rHeightMin" value="56"/>
-    <fieldval field="rWeightMin" value="110"/>
-    <fieldval field="cSkillMax" value="1"/>
-    <fieldval field="cSkillMax" value="1"/>
-    <tag group="WeightSize" tag="4" name="d4" abbrev="d4"/>
-    <tag group="HeightDice" tag="2" name="2" abbrev="2"/>
-    <tag group="HeightSize" tag="10" name="d10" abbrev="d10"/>
-    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
-    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
-    <tag group="AllowSkl1" tag="skAcrobat"/>
-    <tag group="AllowSkl1" tag="skAnimHand"/>
-    <tag group="AllowSkl1" tag="Any"/>
-    <tag group="AllowSkl1" tag="skArcana"/>
-    <tag group="AllowSkl1" tag="skAthletic"/>
-    <tag group="AllowSkl1" tag="skDecept"/>
-    <tag group="AllowSkl1" tag="skHistory"/>
-    <tag group="AllowSkl1" tag="skInsight"/>
-    <tag group="AllowSkl1" tag="skIntim"/>
-    <tag group="AllowSkl1" tag="skInvestig"/>
-    <tag group="AllowSkl1" tag="skMedicine"/>
-    <tag group="AllowSkl1" tag="skNature"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skPerform"/>
-    <tag group="AllowSkl1" tag="skPersuas"/>
-    <tag group="AllowSkl1" tag="skReligion"/>
-    <tag group="AllowSkl1" tag="skSleight"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
-    <tag group="AllowSkl1" tag="skSurvival"/>
-    <tag group="ProductId" tag="Wizards"/>
-    <tag group="WeightDice" tag="2" name="2" abbrev="2"/>
-    <bootstrap thing="lCommon"></bootstrap>
-    <bootstrap thing="wUnarmed"></bootstrap>
-    <bootstrap thing="raHumVAbil"></bootstrap>
-    <eval phase="First">~ hero.child[resFeats].field[resMax].value += 1
+  <thing id="srERHumVar" name="Variant Human" description="It&apos;s hard to make generalizations about humans, but your human character has these traits.\n\nIf your campaign uses the optional feat rules from chapter 5, your Dungeon Master might allow these variant traits, all of which replace the human’s Ability Score Increase trait.\n\nAbility Score Increase: Two different ability scores of your choice increase by 1. \nSkills: You gain proficiency in one skilll of your choice. \nFeat: You gain one feat of your choice." compset="SubRace" uniqueness="unique">
+    <tag group="SubRace" tag="rHuman"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="raERHuV2A"></bootstrap>
+    <bootstrap thing="raERHuFeat"></bootstrap>
+    <eval phase="First" priority="500"><![CDATA[      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
 
-hero.childfound[cfgS2FeatB].field[cfgMaxF1].value += 1
+      hero.child[RaceHelper].field[cSkillMax].value += 1
+      hero.child[RaceHelper].field[cSkCandExp].text = "TRUE"
 
-~ hero.child[aSTR].field[aStartMod].value += 1</eval>
+      ~overwrite the human's default +1 to everything
+      hero.child[rHuman].field[rSTR].value = 0
+      hero.child[rHuman].field[rDEX].value = 0
+      hero.child[rHuman].field[rCON].value = 0
+      hero.child[rHuman].field[rINT].value = 0
+      hero.child[rHuman].field[rWIS].value = 0
+      hero.child[rHuman].field[rCHA].value = 0]]></eval>
     </thing>
-  <thing id="raHumVAbil" name="Ability Score Increase" description="Two other ability scores of your choice increase by 1." compset="RaceSpec">
-    <fieldval field="usrCandid1" value="component.BaseAttr &amp; !IsAttr.aCHA"/>
-    <fieldval field="usrCandid2" value="component.BaseAttr &amp; !IsAttr.aCHA"/>
-    <tag group="Custom" tag="AttrUp" name="AttrUp" abbrev="AttrUp"/>
-    <tag group="RaceSort" tag="Attribute" name="Attribute" abbrev="Attribute"/>
+  <thing id="raERHuV2A" name="select 2 attributes to increase by 1" description="Placeholder..." compset="RaceSpec">
     <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
-    <tag group="ChooseSrc2" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
-    <eval phase="PreAttr" priority="5000"><![CDATA[
-      ~ If we're disabled, do nothing
+    <tag group="fShowWhat" tag="Attributes"/>
+    <tag group="fShowWhat2" tag="Attributes"/>
+    <tag group="RaceSort" tag="Attribute" name="Attribute" abbrev="Attribute"/>
+    <tag group="ChooseSrc2" tag="Hero"/>
+    <eval phase="UserPreAt" priority="5000"><![CDATA[   ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
 
       if (field[usrChosen1].ischosen <> 0) then
@@ -184,9 +161,15 @@ hero.childfound[cfgS2FeatB].field[cfgMaxF1].value += 1
         field[usrChosen2].chosen.field[aStartMod].value += 1
         perform field[usrChosen1].chosen.assign[Custom.AttrUp]
         endif]]></eval>
-    <evalrule phase="Validation" priority="10000" message="You must choose two different ability scores!" summary="You must choose two different ability scores!"><![CDATA[
-      validif (field[usrChosen1].ischosen + field[usrChosen2].ischosen < 2)
-      validif (field[usrChosen1].chosen.tagcount[Custom.AttrUp] < 2)
-      validif (field[usrChosen2].chosen.tagcount[Custom.AttrUp] < 2)]]></evalrule>
+    <evalrule phase="Validation" priority="10000" message="You must choose two different ability scores!"><![CDATA[validif (field[usrChosen1].ischosen + field[usrChosen2].ischosen < 2)
+validif (field[usrChosen1].chosen.tagcount[Custom.AttrUp] < 2)
+validif (field[usrChosen2].chosen.tagcount[Custom.AttrUp] < 2)]]></evalrule>
+    </thing>
+  <thing id="raERHuFeat" name="Feat" compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      #resmax[resFeatRac] += 1]]></eval>
     </thing>
   </document>
