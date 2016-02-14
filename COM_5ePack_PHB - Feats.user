@@ -5,7 +5,7 @@
 
 ~ Add a +5 bonus to our Initiative
 #skillbonus[Initiative] = #skillbonus[Initiative] + 5</comment>
-    <usesource source="5ePHBCP" parent="UserParent" name="5e PHB Community Pack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <eval phase="First">~ Add a +5 bonus to our Initiative
 #skillbonus[Initiative] = #skillbonus[Initiative] + 5</eval>
@@ -69,6 +69,18 @@ eachpick.field[dmrBonus].value += 10
 nexteach]]></comment>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="PostAttr"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+
+doneif (tagis[Helper.Disable] <> 0)
+
+field[abValue].value = 0
+
+      foreach pick in hero from BaseWep where "(Hero.OffHand & !wProperty.TwoHanded)"
+           perform eachpick.assign[wProperty.Light]
+           field[abValue].value = 1
+      nexteach
+
+hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
     </thing>
   <thing id="ft5CDungeD" name="Dungeon Delver" description="Alert to the hidden traps and secret doors found in many dungeons, you gain the following benefits:\n\n• You have advantage on Wisdom (Perception) and Intelligence (Investigation) checks made to detect the presence of secret doors.\n• You have advantage on saving throws made to avoid or resist traps.\n• You have resistance to the damage dealt by traps. \n• You can search for traps while traveling at a normal pace, instead of only at a slow pace." compset="Feat" summary="You are alert to the hidden traps and secret doors found in many dungeons." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
@@ -523,7 +535,5 @@ endif
 
 ~ pHdSkiProf</eval>
     </thing>
-  <thing id="dt5CTrap" name="Traps" compset="DamageType">
-    <usesource source="5ePHBCP"/>
-    </thing>
+  <thing id="dt5CTrap" name="Traps" compset="DamageType"></thing>
   </document>
