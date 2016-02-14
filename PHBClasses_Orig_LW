@@ -1,0 +1,2876 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+   <thing id="cBbnTotWar" name="Path of the Totem Warrior" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpBbn"/>
+    <tag group="SpecType" tag="Attack"/>
+    <tag group="AbilType" tag="Extra"/>
+    <tag group="Custom" tag="cAnimFury" name="Animal Fury" abbrev="Animal Fury"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <tag group="abCategory" tag="BbnPriPath" name="Barbarian Primal Path"/>
+    <bootstrap thing="cBbnSpiSee">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cBbnSpiWal">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cfgTotWarr"></bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+       doneif (tagis[Helper.Disable] <> 0)
+
+     if (field[xTotalLev].value >= 14) then
+       hero.childfound[cfgTotWarr].field[cfgMax3].value += 1
+       endif
+     if (field[xTotalLev].value >= 6) then
+       hero.childfound[cfgTotWarr].field[cfgMax2].value += 1
+       endif
+     if (field[xTotalLev].value >= 3) then
+       hero.childfound[cfgTotWarr].field[cfgMax1].value += 1
+       endif]]></eval>
+    </thing>
+  <thing id="cBbnSpiSee" name="Spirit Seeker" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spSpeaAnim">
+      <assignval field="livename" value="Speak with Animals (Ritual only)"/>
+      </bootstrap>
+
+    <bootstrap thing="sp5CBeastS">
+      <assignval field="livename" value="Beast Sense (Ritual only)"/>
+      </bootstrap>
+
+    </thing>
+  <thing id="cBbnSpiWal" name="Spirit Walker" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spCommNatu">
+      <assignval field="livename" value="Commune with Nature (Ritual only)"/>
+      </bootstrap>
+    </thing>
+  <thing id="cfgTotWarr" name="Totem Warrior Abilities" compset="Configure" uniqueness="unique">
+    <fieldval field="cfgObject1" value="Totem Spirits"/>
+    <fieldval field="cfgObject2" value="Aspects of the Beast"/>
+    <fieldval field="cfgObject3" value="Totemic Attunements"/>
+    </thing>
+	 <thing id="cBbnTSBear" name="Bear" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecType" tag="Attack"/>
+    <tag group="AbilType" tag="Extra"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="AllowRCust" tag="cfgTotWarr"/>
+    <tag group="abCategory" tag="BbnTotSpi" name="Barbarian Totem Spirit"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+       doneif (hero.tagis[Hero.Raging] = 0)
+
+       doneif (tagis[Helper.Disable] <> 0)
+
+       ~ Foreach through all types of damage and pull the Resistance tags from them.
+       foreach thing in DamageType where "!thingid.dtPsychic"
+         perform eachthing.pulltags[DamageRes.?]
+         nexteach
+
+       perform forward[DamageRes.?]]]></eval>
+    </thing>
+  <thing id="cBbnTSEagl" name="Eagle" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="AllowRCust" tag="cfgTotWarr"/>
+    <tag group="SpecType" tag="Attack"/>
+    <tag group="AbilType" tag="Extra"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="abCategory" tag="BbnTotSpi" name="Barbarian Totem Spirit"/>
+    </thing>
+  <thing id="cBbnTSWolf" name="Wolf" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="AllowRCust" tag="cfgTotWarr"/>
+    <tag group="SpecType" tag="Attack"/>
+    <tag group="AbilType" tag="Extra"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="abCategory" tag="BbnTotSpi" name="Barbarian Totem Spirit"/>
+    </thing>
+  <thing id="cBbnABBear" name="Bear" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecType" tag="Attack"/>
+    <tag group="AbilType" tag="Extra"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="AllowRCust" tag="cfgTotWarr"/>
+    <tag group="abCategory" tag="BbnAspBeas" name="Barbarian Aspect of the Beast"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~ double our encumbrance
+      herofield[tEncum].value *= 2]]></eval>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      #situational[hero.child[aSTR], "Advantage on checks made to push, pull, lift, or break objects", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="cBbnABEagl" name="Eagle" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecType" tag="Attack"/>
+    <tag group="AbilType" tag="Extra"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="AllowRCust" tag="cfgTotWarr"/>
+    <tag group="abCategory" tag="BbnAspBeas" name="Barbarian Aspect of the Beast"/>
+    <eval phase="Render" priority="10000"><![CDATA[
+	doneif (tagis[Helper.Disable] <> 0)
+
+      #situational[hero.childfound[skPercep], "Dim light doesnâ€™t impose disadvantage", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="cBbnABWolf" name="Wolf" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecType" tag="Attack"/>
+    <tag group="AbilType" tag="Extra"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="AllowRCust" tag="cfgTotWarr"/>
+    <tag group="abCategory" tag="BbnAspBeas" name="Barbarian Aspect of the Beast"/>
+    </thing>
+  <thing id="cBbnTAWolf" name="Wolf" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecType" tag="Attack"/>
+    <tag group="AbilType" tag="Extra"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="AllowRCust" tag="cfgTotWarr"/>
+    <tag group="abCategory" tag="BbnTotAttn" name="Barbarian Totemic Attunement"/>
+    </thing>
+  <thing id="cBbnTABear" name="Bear" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecType" tag="Attack"/>
+    <tag group="AbilType" tag="Extra"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="AllowRCust" tag="cfgTotWarr"/>
+    <tag group="abCategory" tag="BbnTotAttn" name="Barbarian Totemic Attunement"/>
+    </thing>
+  <thing id="cBbnTAEagl" name="Eagle" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecType" tag="Attack"/>
+    <tag group="AbilType" tag="Extra"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="AllowRCust" tag="cfgTotWarr"/>
+    <tag group="abCategory" tag="BbnTotAttn" name="Barbarian Totemic Attunement"/>
+    </thing>
+ <thing id="cBrdColVal" name="College of Valor" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="abCategory" tag="BrdCollege" name="Bardic College"/>
+    <tag group="Helper" tag="Primary"/>
+    <bootstrap thing="cBrdBoPrVa">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cBrdComIns">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cExtraAtt">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cBrdBatMag">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    </thing>
+  <thing id="cBrdBoPrVa" name="Bonus Proficiencies" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform root.linkage[table].assign[ArmProfGrp.ArmorMed]
+      perform root.linkage[table].assign[ArmProfGrp.Shields]
+      perform root.linkage[table].assign[ArmProfGrp.WepMartial]]]></eval>
+    </thing>
+  <thing id="cBrdComIns" name="Combat Inspiration" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="cBrdBatMag" name="Battle Magic" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Attack"/>
+    <tag group="abDuration" tag="Instant"/>
+    </thing>
+	<thing id="cClrKnowle" name="Knowledge" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpClr"/>
+    <tag group="abCategory" tag="ClrDomain" name="Cleric Domain"/>
+    <bootstrap thing="cClrBleKno">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cClrKnoAge">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cClrReaTho">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cClrPotSpe">
+      <autotag group="ClSpecWhen" tag="8"/>
+      </bootstrap>
+    <bootstrap thing="cClrVisPas">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="spCommand">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spIdentify">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spAugury">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spSuggesti">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spNondetec">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spSpeaDead">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spArcaEye">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spConfusio">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spLegeLore">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spScrying">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    </thing>
+  <thing id="cClrBleKno" name="Blessings of Knowledge" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abValue" value="2"/>
+<!--     <fieldval field="usrCandid1" value="component.BaseSkill & (Reference.skArcana | Reference.skHistory | Reference.skNature | Reference.skReligion)"/>
+    <fieldval field="usrCandid2" value="component.BaseSkill & (Reference.skArcana | Reference.skHistory | Reference.skNature | Reference.skReligion)"/> -->
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="ChooseSrc2" tag="Hero"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
+        perform field[usrChosen1].chosen.assign[Helper.ProfDouble]
+        endif
+
+      if (field[usrChosen2].ischosen <> 0) then
+        perform field[usrChosen2].chosen.pulltags[ProfSkill.?]
+        perform field[usrChosen2].chosen.assign[Helper.ProfDouble]
+        endif
+
+      perform forward[ProfSkill.?]
+
+      doneif (isroot = 0)
+
+      doneif (root.islinkage[table] = 0)
+
+      perform root.linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif
+      ]]>
+      <before name="Calc skProfBon"/>
+      </eval>
+    </thing>
+  <thing id="cClrKnoAge" name="Channel Divinity: Knowledge of the Ages" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <!-- <fieldval field="usrCandid1" value="component.BaseSkill | component.Tool & !(Helper.Helper | Helper.Obsolete)"/> -->
+    <fieldval field="abDuration" value="10"/>
+    <tag group="abCategory" tag="ClrChanDiv" name="Cleric Channel Divinity Ability"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="abAction" tag="Action"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (field[abilActive].value = 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
+        perform field[usrChosen1].chosen.pulltags[ProfTool.?]
+        endif
+
+      perform forward[ProfSkill.?]
+      perform forward[ProfTool.?]
+      ]]></eval>
+    </thing>
+  <thing id="cClrReaTho" name="Channel Divinity: Read Thoughts" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abCategory" tag="ClrChanDiv" name="Cleric Channel Divinity Ability"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="SpInfo" tag="spSuggesti"/>
+    </thing>
+  <thing id="cClrPotSpe" name="Potent Spellcasting" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="cClrVisPas" name="Visions of the Past" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Touch"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abAction" tag="Minute"/>
+    </thing>
+	<thing id="cClrLight" name="Light" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpClr"/>
+    <tag group="abCategory" tag="ClrDomain"/>
+    <bootstrap thing="cClrBonCan">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cClrWarFla">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cClrRadDaw">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cClrImpFla">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cClrPotSpe">
+      <autotag group="ClSpecWhen" tag="8"/>
+      </bootstrap>
+    <bootstrap thing="cClrCorLig">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="spBurnHand">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spFaerFire">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spFlamSphe">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spScorRay">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spDaylight">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spFireball">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+	  
+    <bootstrap thing="sp5CGuardF">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+
+    <bootstrap thing="spWallFire">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spFlamStri">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spScrying">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    </thing>
+  <thing id="cClrBonCan" name="Bonus Cantrip" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spLight">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="SpellType" tag="cHelpClr"/>
+      </bootstrap>
+    </thing>
+  <thing id="cClrWarFla" name="Warding Flare" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="Minimum1"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="ChargeAttr" tag="aWIS"/>
+    </thing>
+  <thing id="cClrRadDaw" name="Channel Divinity: Radiance of the Dawn" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abValue" value="2"/>
+    <fieldval field="abValue2" value="10"/>
+    <fieldval field="abText" value="radiant damage"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abCategory" tag="ClrChanDiv" name="Cleric Channel Divinity Ability"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="SbNamePar" tag="DieCntVal"/>
+    <tag group="SbNamePar" tag="AppText"/>
+    <tag group="SbNamePar" tag="AppValue3"/>
+    <tag group="SbNamePar" tag="SignAppVal"/>
+    <tag group="SbNamePar" tag="DieSizVal2"/>
+    <eval phase="PostLevel" priority="10000">field[abValue3].value += field[xAllLev].value</eval>
+    </thing>
+  <thing id="cClrImpFla" name="Improved Flare" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="Minimum1"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="ChargeAttr" tag="aWIS"/>
+    </thing>
+  <thing id="cClrCorLig" name="Corona of Light" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="Minimum1"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="ChargeAttr" tag="aWIS"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abDuration" tag="Minute"/>
+    </thing>
+	 <thing id="cClrNature" name="Nature" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpClr"/>
+    <tag group="abCategory" tag="ClrDomain"/>
+    <bootstrap thing="cClrAcoNat">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cClrLiBoPr">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cClrChAnPl">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cClrDamEle">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cClrDivStr">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cClrDivStr">
+      <autotag group="ClSpecWhen" tag="8"/>
+      <assignval field="abText" value="cold, fire, or lightning damage"/>
+      </bootstrap>
+    <bootstrap thing="cClrMasNat">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="sp5CAnimFr">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spSpeaAnim">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spBarkskin">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spSpikGrow">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spPlanGrow">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spWindWall">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spDomiBeas">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="sp5CGraspV">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spInsePlag">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spTreeStri">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    </thing>
+  <thing id="cClrAcoNat" name="Acolyte of Nature" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <!-- <fieldval field="usrCandid1" value="component.BaseSkill & (Target.skAnimHand | Target.skNature | Target.skSurvival)"/> -->
+    <!-- <fieldval field="usrCandid2" value="component.BaseSpell & sClass.cHelpDrd & sLevel.0"/> -->
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+    doneif (tagis[Helper.ShowSpec] = 0)
+
+    doneif (tagis[Helper.Disable] <> 0)
+
+     if (field[usrChosen1].ischosen <> 0) then
+       perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
+       endif
+
+     if (field[usrChosen2].ischosen <> 0) then
+       perform field[usrChosen2].chosen.pulltags[ClsAllowSp.?]
+       endif
+
+     perform root.linkage[table].pushtags[ClsAllowSp.?]
+     perform forward[ProfSkill.?]]]>
+      <before name="Assign Helper.Proficient based on ProfSkill tags on Hero"/>
+      </eval>
+    <evalrule phase="PostLevel" priority="10000" message="Must add chosen cantrip to cantrips known"><![CDATA[
+     validif (tagis[Helper.ShowSpec] = 0)
+
+     validif (tagis[Helper.Disable] <> 0)
+
+     var spellname2 as string
+     var searchexpr as string
+     var messnames as string
+     var foundone as number
+
+     @valid = 1
+
+     if (field[usrChosen2].ischosen <> 0) then
+       foundone = 0
+       searchexpr = "KnowSpell." & field[usrChosen2].chosen.idstring & " & SpellType.cHelpClr & Helper.Cantrip"
+
+       foreach pick in hero from BaseSpell where searchexpr
+         foundone = 1
+
+         perform eachpick.assign[Helper.Free]
+         nexteach
+
+       if (foundone = 0) then
+         spellname2 = field[usrChosen2].chosen.field[name].text
+         @valid = 0
+         endif
+       endif
+
+     if (@valid = 0) then
+       messnames = splice(messnames, spellname2, ", ")
+       @message = "You have selected the following cantrips for Acolyte of Nature but not added them to your Cleric cantrips known: " & messnames
+       endif]]></evalrule>
+    </thing>
+  <thing id="cClrChAnPl" name="Channel Divinity: Charm Animals and Plant" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abCategory" tag="ClrChanDiv" name="Cleric Channel Divinity Ability"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    </thing>
+  <thing id="cClrDamEle" name="Dampen Elements" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abDuration" tag="Attack"/>
+    </thing>
+  <thing id="cClrMasNat" name="Master of Nature" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Attack"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+	<thing id="cClrTempes" name="Tempest" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="abCategory" tag="ClrDomain"/>
+    <tag group="SpecSource" tag="cHelpClr"/>
+    <bootstrap thing="cClrTeBoPr">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cClrDesWra">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cClrThuStr">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cClrDivStr">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cClrDivStr">
+      <autotag group="ClSpecWhen" tag="8"/>
+      <assignval field="abText" value="thunder damage"/>
+      </bootstrap>
+    <bootstrap thing="cClrStormb">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="spFogClou">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spThunderw">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spGustWind">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spShatter">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spCallLigh">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spSleeStor">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spContWate">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spIceStor">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="sp5CDestrS">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spInsePlag">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="cClrWraSto">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="cClrTeBoPr" name="Bonus Proficiency" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform root.linkage[table].assign[ArmProfGrp.ArmorHeavy]
+      perform root.linkage[table].assign[ArmProfGrp.WepMartial]]]></eval>
+    </thing>
+  <thing id="cClrWraSto" name="Wrath of the Storm" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="5"/>
+    <fieldval field="abText" value="lightning or thunder damage"/>
+    <fieldval field="abValue" value="2"/>
+    <fieldval field="abValue2" value="8"/>
+    <tag group="ChargeCalc" tag="Minimum1"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="ChargeAttr" tag="aWIS"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="LvNamePar" tag="DieCntVal"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="AppValue3"/>
+    <tag group="LvNamePar" tag="SignAppVal"/>
+    <tag group="LvNamePar" tag="DieSizVal2"/>
+    </thing>
+  <thing id="cClrDesWra" name="Channel Divinity: Destructive Wrath" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abCategory" tag="ClrChanDiv" name="Cleric Channel Divinity Ability"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cClrThuStr" name="Thunderbolt Strike" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="cClrStormb" name="Stormborn" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+	<thing id="cClrTricke" name="Trickery" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpClr"/>
+    <tag group="abCategory" tag="ClrDomain"/>
+    <bootstrap thing="cClrBleTri">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cClrInvDup">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cClrCloSha">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cClrDivStr">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cClrDivStr">
+      <autotag group="ClSpecWhen" tag="8"/>
+      <assignval field="abText" value="poison damage"/>
+      </bootstrap>
+    <bootstrap thing="cClrImpDup">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="spCharPers">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spMirrImag">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spPassTrac">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spBlink">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spDispMagi">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spDimeDoor">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spPolymorp">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spDomiPers">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spModiMemo">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    </thing>
+  <thing id="cClrBleTri" name="Blessing of the Trickster" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abDuration" tag="Hour"/>
+    </thing>
+  <thing id="cClrInvDup" name="Channel Divinity: Invoke Duplicity" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abCategory" tag="ClrChanDiv" name="Cleric Channel Divinity Ability"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="cClrCloSha" name="Channel Divinity: Cloak of Shadows" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abCategory" tag="ClrChanDiv" name="Cleric Channel Divinity Ability"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="cClrImpDup" name="Improved Duplicity" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="120"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+	<thing id="cClrWar" name="War" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpClr"/>
+    <tag group="abCategory" tag="ClrDomain"/>
+    <bootstrap thing="cClrTeBoPr">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cClrWarPri">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cClrGuiStr">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cClrWaGoBl">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cClrDivStr">
+      <autotag group="ClSpecWhen" tag="8"/>
+      <assignval field="abText" value="same damage as weapon"/>
+      </bootstrap>
+    <bootstrap thing="cClrDivStr">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cClrAvaBat">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="spDiviFavo">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spShieFait">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spMagiWeap">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spSpirWeap">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="sp5CCrusMa">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spSpirGuar">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spFreeMove">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spStoneski">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spFlamStri">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spHoldMons">
+      <autotag group="SpellType" tag="cHelpClr"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    </thing>
+  <thing id="cClrWarPri" name="War Priest" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="Minimum1"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="ChargeAttr" tag="aWIS"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="cClrWaGoBl" name="Channel Divinity: War God's Blessing" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abValue" value="10"/>
+    <tag group="abCategory" tag="ClrChanDiv" name="Cleric Channel Divinity Ability"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="cClrAvaBat" name="Avatar of Battle" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="DamageRes" tag="NoMagBludg" name="nonmagical bludgeoning"/>
+    <tag group="DamageRes" tag="NoMagSlash" name="nonmagical slashing"/>
+    <tag group="DamageRes" tag="NoMagPierc" name="nonmagical piercing"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform forward[DamageRes.?]]]></eval>
+    </thing>
+  <thing id="cClrGuiStr" name="Channel Divinity: Guided Strike" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abValue" value="10"/>
+    <tag group="abCategory" tag="ClrChanDiv" name="Cleric Channel Divinity Ability"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+	<thing id="cDrdCirMoo" name="Circle of the Moon" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpDrd"/>
+    <tag group="Helper" tag="Primary"/>
+    <bootstrap thing="cDrdCirFor">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cDrdPriStr">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cDrdElWiSh">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cDrdThoFor">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cDrdCoWiSh">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="cDrdCoWiSh" name="Combat Wild Shape" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Instant"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.childfound[cDrdWilSha].tagreplace[abAction.?,abAction.Bonus]]]></eval>
+    </thing>
+  <thing id="cDrdCirFor" name="Circle Forms" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="cDrdPriStr" name="Primal Strike" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="cDrdElWiSh" name="Elemental Wild Shape" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="cDrdThoFor" name="Thousand Forms" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="spAlteSelf">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    </thing>
+	<thing id="cFtrBatMas" name="Battle Master" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+   <!--  <fieldval field="usrCandid1" value="component.BaseAttr & (IsAttr.aSTR | IsAttr.aDEX)"/> -->
+    <tag group="abCategory" tag="FtrMarArch" name="Fighter Martial Archetype"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="Secondary"/>
+    <bootstrap thing="cFtrStuWar">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cFtrKnYoEn">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="cFtrRelent">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="cFtrImCoSu">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cFtrImCoSu">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="cFtrSupDie">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="9000"><![CDATA[
+       if (field[usrChosen1].ischosen <> 0) then
+         perform field[usrChosen1].chosen.pulltags[StandardDC.?]
+         endif
+
+       doneif (tagis[Helper.Disable] <> 0)
+
+       linkage[table].field[cSpec3rdNm].text = "Maneuvers"
+       linkage[table].field[cSpec3rdSi].text = "Maneuver"
+
+       linkage[table].field[cCustTeTot].arrayvalue[2] += 3
+       linkage[table].field[cCustTeTot].arrayvalue[6] += 5
+       linkage[table].field[cCustTeTot].arrayvalue[9] += 7
+       linkage[table].field[cCustTeTot].arrayvalue[14] += 9]]>
+      <before name="Calc cGiveSp3rd"/>
+      </eval>
+    </thing>
+  <thing id="cFtrSupDie" name="Superiority Dice" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="4"/>
+    <fieldval field="abValue" value="1"/>
+    <fieldval field="abValue2" value="8"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Battle"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="LvNamePar" tag="DieCntVal"/>
+    <tag group="LvNamePar" tag="AppValue3"/>
+    <tag group="LvNamePar" tag="SignAppVal"/>
+    <tag group="LvNamePar" tag="DieSizVal2"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+
+         if (field[xAllLev].value >= 15) then
+           field[trkMax].value += 2
+         elseif (field[xAllLev].value >= 7) then
+           field[trkMax].value += 1
+           endif]]></eval>
+    </thing>
+  <thing id="cFtrStuWar" name="Student of War" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <!-- <fieldval field="usrCandid1" value="component.Tool & ToolCat.Artisan"/> -->
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+
+       doneif (tagis[Helper.ShowSpec] = 0)
+
+       doneif (tagis[Helper.Disable] <> 0)
+
+       doneif (field[usrChosen1].ischosen = 0)
+
+       perform field[usrChosen1].chosen.pulltags[ProfTool.?]
+       perform forward[ProfTool.?]]]></eval>
+    </thing>
+  <thing id="cFtrKnYoEn" name="Know Your Enemy" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Sight"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Minute"/>
+    </thing>
+  <thing id="cFtrImCoSu" name="Improved Combat Superiority" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+
+         if (field[xAllLev].value >= 18) then
+           field[abValue].value += 4
+         elseif (field[xAllLev].value >= 10) then
+           field[abValue].value += 2
+           endif]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[
+        doneif (tagis[Helper.ShowSpec] = 0)
+
+        doneif (tagis[Helper.Disable] <> 0)
+
+        hero.childfound[cFtrSupDie].field[abValue2].value += field[abValue].value]]></eval>
+    </thing>
+  <thing id="cFtrRelent" name="Relentless" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+<thing id="cFtrComStr" name="Commander's Strike" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Hearing"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="cFtrDisAtt" name="Disarming Attack" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Attack"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="abAction" tag="Free"/>
+    <eval phase="PreAttr" priority="10000">perform hero.childfound[cFtrBatMas].pulltags[StandardDC.?]</eval>
+    </thing>
+  <thing id="cFtrDisStr" name="Distracting Strike" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Attack"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="Helper" tag="Tertiary"/>
+    </thing>
+  <thing id="cFtrEvaFoo" name="Evasive Footwork" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="Helper" tag="Tertiary"/>
+    </thing>
+  <thing id="cFtrFeiAtt" name="Feinting Attack" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="5"/>
+    <tag group="abDuration" tag="Attack"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="cFtrLunAtt" name="Lunging Attack" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Attack"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abAction" tag="Free"/>
+    </thing>
+  <thing id="cFtrGoaAtt" name="Goading Attack" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Attack"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <eval phase="PreAttr" priority="10000">perform hero.childfound[cFtrBatMas].pulltags[StandardDC.?]</eval>
+    </thing>
+  <thing id="cFtrManAtt" name="Maneuvering Attack" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Hearing"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Free"/>
+    </thing>
+  <thing id="cFtrMenAtt" name="Menacing Attack" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Attack"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <eval phase="PreAttr" priority="10000">perform hero.childfound[cFtrBatMas].pulltags[StandardDC.?]</eval>
+    </thing>
+  <thing id="cFtrParry" name="Parry" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="cFtrPreAtt" name="Precision Attack" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Attack"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="Helper" tag="Tertiary"/>
+    </thing>
+  <thing id="cPusAtt" name="Pushing Attack" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Attack"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="abSave" tag="aSTR"/>
+    <eval phase="PreAttr" priority="10000">perform hero.childfound[cFtrBatMas].pulltags[StandardDC.?]</eval>
+    </thing>
+  <thing id="cFtrRally" name="Rally" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Hearing"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="cFtrRipost" name="Riposte" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="cFtrSweAtt" name="Sweeping Attack" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Free"/>
+    </thing>
+  <thing id="cFtrTriAtt" name="Trip Attack" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="abRange" tag="Attack"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <eval phase="PreAttr" priority="10000">perform hero.childfound[cFtrBatMas].pulltags[StandardDC.?]</eval>
+    </thing>
+	<thing id="cFtrEldKni" name="Eldritch Knight" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="abCategory" tag="FtrMarArch" name="Fighter Martial Archetype"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="Helper" tag="Secondary"/>
+    <bootstrap thing="cFtrWarMag">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="cFtrEldStr">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cFtrArcCha">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="cFtrImWaMa">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="cFtrWeaBon">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+        perform linkage[table].setfocus
+
+        doneif (state.isfocus = 0)
+
+        ~ Spellcasting attribute
+        perform focus.setlinkage[castattr,BaseAttr,"IsAttr.aINT"]
+
+        ~ Spellcasting type
+        perform focus.assign[CasterType.SpontKnow]
+        perform focus.assign[CasterSrc.Arcane]
+        perform focus.assign[Helper.3rdCaster]
+        perform focus.assign[sClass.cHelpWiz]
+
+        ~ Cantrip Array
+        focus.field[cArrKnCan].arrayvalue[2] += 2
+        focus.field[cArrKnCan].arrayvalue[9] += 3
+
+        ~ Spells Known Array
+        focus.field[cArrKnSpl].arrayvalue[2] += 3
+        focus.field[cArrKnSpl].arrayvalue[3] += 4
+        focus.field[cArrKnSpl].arrayvalue[6] += 5
+        focus.field[cArrKnSpl].arrayvalue[7] += 6
+        focus.field[cArrKnSpl].arrayvalue[9] += 7
+        focus.field[cArrKnSpl].arrayvalue[10] += 8
+        focus.field[cArrKnSpl].arrayvalue[12] += 9
+        focus.field[cArrKnSpl].arrayvalue[13] += 10
+        focus.field[cArrKnSpl].arrayvalue[15] += 11
+        focus.field[cArrKnSpl].arrayvalue[18] += 12
+        focus.field[cArrKnSpl].arrayvalue[19] += 13
+
+        ~ Max Spell Levels Array
+        focus.field[cArrKnLev].arrayvalue[2] += 1
+        focus.field[cArrKnLev].arrayvalue[6] += 2
+        focus.field[cArrKnLev].arrayvalue[12] += 3
+        focus.field[cArrKnLev].arrayvalue[18] += 4]]></eval>
+    </thing>
+  <thing id="cFtrWeaBon" name="Weapon Bond" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Plane"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="cFtrWarMag" name="War Magic" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="cFtrEldStr" name="Eldritch Strike" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="abRange" tag="Attack"/>
+    </thing>
+  <thing id="cFtrImWaMa" name="Improved War Magic" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="cFtrArcCha" name="Arcane Charge" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+	<thing id="cMnkWaySha" name="Way of Shadow" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition"/>
+    <tag group="Helper" tag="Primary"/>
+    <bootstrap thing="cMnkShaSte">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cMnkCloSha">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="cMnkOpport">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="cMnkShaArt">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="cMnkShaArt" name="Shadow Arts" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="spMinoIllu">
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Darkness (2 ki)"/>
+      </bootstrap>
+    <bootstrap thing="spDarkvisi">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Darkvision (2 ki)"/>
+      </bootstrap>
+    <bootstrap thing="spPassTrac">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Pass without Trace (2 ki)"/>
+      </bootstrap>
+    <bootstrap thing="spSilence">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Silence (2 ki)"/>
+      </bootstrap>
+    </thing>
+  <thing id="cMnkShaSte" name="Shadow Step" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="60"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="cMnkCloSha" name="Cloak of Shadows" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Permanent"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="cMnkOpport" name="Opportunist" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="5"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+	 <thing id="cMnkWaFoEl" name="Way of the Four Elements" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition"/>
+    <tag group="Helper" tag="Primary"/>
+    <bootstrap thing="cMnkEleAtt">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="9000"><![CDATA[
+       doneif (tagis[Helper.Disable] <> 0)
+
+       linkage[table].field[cSpec2ndNm].text = "Elemental Disciplines"
+       linkage[table].field[cSpec2ndSi].text = "Elemental Discipline"
+
+       linkage[table].field[cCustScTot].arrayvalue[2] += 1
+       linkage[table].field[cCustScTot].arrayvalue[5] += 2
+       linkage[table].field[cCustScTot].arrayvalue[10] += 3
+       linkage[table].field[cCustScTot].arrayvalue[16] += 4]]></eval>
+    </thing>
+  <thing id="cMnkEleAtt" name="Elemental Attunement" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Sight"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc" name="Monk Elemental Discipline"/>
+    </thing>
+	 <thing id="cMnkBreWin" name="Breath of Winter" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spConeCold">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Cone of Cold (6 ki)"/>
+      </bootstrap>
+    <exprreq message="17th Level required."><![CDATA[#levelcount[Monk] >= 17]]></exprreq>
+    </thing>
+  <thing id="cMnkClNoWi" name="Clench of the North Wind" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spHoldPers">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Hold Person (3 ki)"/>
+      </bootstrap>
+    <exprreq message="6th Level required."><![CDATA[#levelcount[Monk] >= 6]]></exprreq>
+    </thing>
+  <thing id="cMnkEtMoDe" name="Eternal Mountain Defense" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spStoneski">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Stoneskin (5 ki)"/>
+      </bootstrap>
+    <exprreq message="11th Level required."><![CDATA[#levelcount[Monk] >= 11]]></exprreq>
+    </thing>
+  <thing id="cMnkFaFiSn" name="Fangs of the Fire Snake" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <fieldval field="abRange" value="10"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    </thing>
+  <thing id="cMnkFiFoTh" name="Fist of Four Thunders" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spThunderw">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Thunderwave (2 ki)"/>
+      </bootstrap>
+    </thing>
+  <thing id="cMnkFiUnAi" name="Fist of Unbroken Air" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <fieldval field="abRange" value="30"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abSave" tag="HalfEffect"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    </thing>
+  <thing id="cMnkFlaPhe" name="Flames of the Phoenix" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spFireball">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Fireball (4 ki)"/>
+      </bootstrap>
+    <exprreq message="11th Level required."><![CDATA[#levelcount[Monk] >= 11]]></exprreq>
+    </thing>
+  <thing id="cMnkGonSum" name="Gong of the Summit" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spShatter">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Shatter (3 ki)"/>
+      </bootstrap>
+    <exprreq message="6th Level required."><![CDATA[#levelcount[Monk] >= 6]]></exprreq>
+    </thing>
+  <thing id="cMnkMisSta" name="Mist Stance" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spGaseForm">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Gaseous Form (4 ki, self only)"/>
+      </bootstrap>
+    <exprreq message="11th Level required."><![CDATA[#levelcount[Monk] >= 11]]></exprreq>
+    </thing>
+  <thing id="cMnkRidWhi" name="Ride the Wind" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spFly">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Fly (4 ki, self only)"/>
+      </bootstrap>
+    <exprreq message="11th Level required."><![CDATA[#levelcount[Monk] >= 11]]></exprreq>
+    </thing>
+  <thing id="cMnkRiHuFl" name="River of Hungry Flame" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spWallFire">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Wall of Fire (5 ki)"/>
+      </bootstrap>
+    <exprreq message="17th Level required."><![CDATA[#levelcount[Monk] >= 17]]></exprreq>
+    </thing>
+  <thing id="cMnkRuGaSp" name="Rush of the Gale Spirits" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spGustWind">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Gust of Wind (2 ki)"/>
+      </bootstrap>
+    </thing>
+  <thing id="cMnkSwCiSt" name="Sweeping Cinder Strike" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spBurnHand">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Burning Hands (2 ki)"/>
+      </bootstrap>
+    </thing>
+  <thing id="cMnkWatWhi" name="Water Whip" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <fieldval field="abRange" value="30"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abSave" tag="HalfEffect"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abSave" tag="aDEX"/>
+    </thing>
+  <thing id="cMnkWaRoEa" name="Wave of Rolling Earth" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spWallSton">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="livename" value="Wall of Stone (6 ki)"/>
+      </bootstrap>
+    <exprreq message="17th Level required."><![CDATA[#levelcount[Monk] >= 17]]></exprreq>
+    </thing>
+  <thing id="cMnkShFlRi" name="Shape the Flowing River" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <fieldval field="abRange" value="120"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+	 <thing id="cPalOatAnc" name="Oath of the Ancients" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="PalSacOath" name="Paladin Sacred Oath"/>
+    <tag group="SpecSource" tag="cHelpPal"/>
+    <bootstrap thing="cPalNatWra">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cPalTurFai">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cPalAurWar">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="cPalUndSen">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="cPalEldCha">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="sp5CEnsnaS">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="spSpeaAnim">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="spMoonbeam">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      </bootstrap>
+    <bootstrap thing="spMistStep">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      </bootstrap>
+    <bootstrap thing="spPlanGrow">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="spProtEner">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="spIceStor">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="spStoneski">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="spCommNatu">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="spTreeStri">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="17"/>
+      </bootstrap>
+    </thing>
+  <thing id="cPalNatWra" name="Channel Divinity: Nature's Wrath" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="10"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    </thing>
+  <thing id="cPalTurFai" name="Channel Divinity: Turn the Faithless" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    </thing>
+  <thing id="cPalAurWar" name="Aura of Warding" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="10"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="DamageRes" tag="dtSpells" name="damage from spells"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      if (field[xAllLev].value >= 18) then
+        field[abRange].value += 20
+        endif]]></eval>
+    </thing>
+  <thing id="cPalUndSen" name="Undying Sentinel" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="abRange" tag="Personal"/>
+    </thing>
+  <thing id="cPalEldCha" name="Elder Champion" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="10"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="abDuration" tag="Minute"/>
+    </thing>
+	<thing id="cPalOatVen" name="Oath of Vengeance" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="PalSacOath" name="Paladin Sacred Oath"/>
+    <tag group="SpecSource" tag="cHelpPal"/>
+    <bootstrap thing="cPalAbjEne">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cPalVowEnm">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cPalRelAve">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="cPalSouVen">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="cPalAveAng">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="spBane">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="sp5CHunteM">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="spHoldPers">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      </bootstrap>
+    <bootstrap thing="spMistStep">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="5"/>
+      </bootstrap>
+    <bootstrap thing="spHaste">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="spProtEner">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="spBanishme">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="spDimeDoor">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="spHoldMons">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="spScrying">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      <autotag group="BonusSplAt" tag="17"/>
+      </bootstrap>
+    </thing>
+  <thing id="cPalAbjEne" name="Channel Divinity: Abjure Enemy" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abSave" tag="HalfEffect"/>
+    </thing>
+  <thing id="cPalVowEnm" name="Channel Divinity: Vow of Enmity" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="10"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="cPalRelAve" name="Relentless Avenger" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="ChargeCalc" tag="AttrUses1"/>
+    <tag group="ChargeAttr" tag="aCHA"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cPalSouVen" name="Soul of Vengeance" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="ChargeCalc" tag="AttrUses1"/>
+    <tag group="ChargeAttr" tag="aCHA"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cPalAveAng" name="Avenging Angel" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abDuration" tag="Hour"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    </thing>
+	<thing id="cRgrBeaMas" name="Beast Master" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="RgrArchety" name="Ranger Archetype"/>
+    <bootstrap thing="cRgrRanCom">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cRgrExcTra">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="cRgrBesFur">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="cRgrShaSpe">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+     if (field[xTotalLev].value >= 15) then
+       hero.childfound[cfgRgrHunt].field[cfgMax4].value += 1
+       endif
+     if (field[xTotalLev].value >= 11) then
+       hero.childfound[cfgRgrHunt].field[cfgMax3].value += 1
+       endif
+     if (field[xTotalLev].value >= 7) then
+       hero.childfound[cfgRgrHunt].field[cfgMax2].value += 1
+       endif
+     if (field[xTotalLev].value >= 3) then
+       hero.childfound[cfgRgrHunt].field[cfgMax1].value += 1
+       endif]]></eval>
+    </thing>
+  <thing id="cRgrRanCom" name="Ranger's Companion" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="cRgrExcTra" name="Exceptional Training" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Hearing"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="cRgrBesFur" name="Bestial Fury" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cRgrShaSpe" name="Share Spells" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="cRgrUnderd" name="Underdark" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abCategory" tag="RgrNatExpl" name="Ranger Natural Explorer Terrain"/>
+    </thing>
+	<thing id="cRogAssass" name="Assassin" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpRog"/>
+    <tag group="abCategory" tag="RogArchety" name="Rogue Archetype"/>
+    <tag group="Helper" tag="Primary"/>
+    <bootstrap thing="cRogAssas2">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cRogInfExp">
+      <autotag group="ClSpecWhen" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="cRogImpost">
+      <autotag group="ClSpecWhen" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="cRogDeaStr">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="cRogBonPro">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="cRogBonPro" name="Bonus Proficiencies" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+
+       doneif (tagis[Helper.ShowSpec] = 0)
+
+       doneif (tagis[Helper.Disable] <> 0)
+
+       perform hero.assign[ProfTool.gKitDisgui]
+       perform hero.assign[ProfTool.gKitPoison]]]></eval>
+    </thing>
+  <thing id="cRogAssas2" name="Assassinate" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cRogInfExp" name="Infiltration Expertise" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Permanent"/>
+    <tag group="abAction" tag="Day"/>
+    </thing>
+  <thing id="cRogImpost" name="Imposter" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Permanent"/>
+    <tag group="abAction" tag="Hour"/>
+    </thing>
+  <thing id="cRogDeaStr" name="Death Strike" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Attack"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="StandardDC" tag="aDEX"/>
+    </thing>
+	<thing id="cRogArcTri" name="Arcane Trickster" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <tag group="Helper" tag="Primary"/>
+    <tag group="SpecSource" tag="cHelpRog"/>
+    <tag group="abCategory" tag="RogArchety"/>
+    <bootstrap thing="cRogMagAmb">
+      <autotag group="ClSpecWhen" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="cRogVerTri">
+      <autotag group="ClSpecWhen" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="cRogSpeThi">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="cRogMaHaLe">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand"></bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+        perform linkage[table].setfocus
+
+        doneif (state.isfocus = 0)
+
+        ~ Spellcasting attribute
+        perform focus.setlinkage[castattr,BaseAttr,"IsAttr.aINT"]
+
+        ~ Spellcasting type
+        perform focus.assign[CasterType.SpontKnow]
+        perform focus.assign[CasterSrc.Arcane]
+        perform focus.assign[Helper.3rdCaster]
+        perform focus.assign[sClass.cHelpWiz]
+
+        ~ Cantrip Array
+        focus.field[cArrKnCan].arrayvalue[2] += 3
+        focus.field[cArrKnCan].arrayvalue[9] += 4
+
+        ~ Spells Known Array
+        focus.field[cArrKnSpl].arrayvalue[2] += 3
+        focus.field[cArrKnSpl].arrayvalue[3] += 4
+        focus.field[cArrKnSpl].arrayvalue[6] += 5
+        focus.field[cArrKnSpl].arrayvalue[7] += 6
+        focus.field[cArrKnSpl].arrayvalue[9] += 7
+        focus.field[cArrKnSpl].arrayvalue[10] += 8
+        focus.field[cArrKnSpl].arrayvalue[12] += 9
+        focus.field[cArrKnSpl].arrayvalue[13] += 10
+        focus.field[cArrKnSpl].arrayvalue[15] += 11
+        focus.field[cArrKnSpl].arrayvalue[18] += 12
+        focus.field[cArrKnSpl].arrayvalue[19] += 13
+
+        ~ Max Spell Levels Array
+        focus.field[cArrKnLev].arrayvalue[2] += 1
+        focus.field[cArrKnLev].arrayvalue[6] += 2
+        focus.field[cArrKnLev].arrayvalue[12] += 3
+        focus.field[cArrKnLev].arrayvalue[18] += 4]]></eval>
+    </thing>
+  <thing id="cRogMaHaLe" name="Mage Hand Legerdemain" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="SpInfo" tag="spMageHand"/>
+    </thing>
+  <thing id="cRogMagAmb" name="Magical Ambush" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cRogVerTri" name="Versatile Trickster" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="5"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Round"/>
+    </thing>
+  <thing id="cRogSpeThi" name="Spell Thief" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abDuration" value="8"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="HearSight"/>
+    <tag group="abSave" tag="Varies"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abDuration" tag="Hour"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+	<thing id="cSorWilMag" name="Wild Magic" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpSor" name="Sorcerer" abbrev="Sorcerer"/>
+    <tag group="Helper" tag="Primary"/>
+    <bootstrap thing="cSorTidCha">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cSorBenLuc">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cSorConCha">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cSorSpeBom">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="cSorWiMaSu">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="cSorWiMaSu" name="Wild Magic Surge" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="cSorTidCha" name="Tides of Chaos" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="cSorBenLuc" name="Bend Luck" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Sight"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="cSorConCha" name="Controlled Chaos" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="cSorSpeBom" name="Spell Bombardment" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+	<thing id="cWlkArchfe" name="The Archfey" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="spFaerFire"/>
+    <tag group="ClsAllowSp" tag="spSleep"/>
+    <tag group="ClsAllowSp" tag="spCalmEmot"/>
+    <tag group="ClsAllowSp" tag="sp5CPhantF"/>
+    <tag group="ClsAllowSp" tag="spBlink"/>
+    <tag group="ClsAllowSp" tag="spPlanGrow"/>
+    <tag group="ClsAllowSp" tag="spDomiBeas"/>
+    <tag group="ClsAllowSp" tag="spGreaInvi"/>
+    <tag group="ClsAllowSp" tag="spDomiPers"/>
+    <tag group="ClsAllowSp" tag="spSeeming"/>
+    <bootstrap thing="cWlkFeyPre">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cWlkMisEsc">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cWlkBegDef">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cWlkDarDel">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    </thing>
+  <thing id="cWlkFeyPre" name="Fey Presence" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="10"/>
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="cWlkMisEsc" name="Misty Escape" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="cWlkBegDef" name="Beguiling Defenses" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abRange" tag="Sight"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.assign[CondImm.pcnCharmed]]]></eval>
+    </thing>
+  <thing id="cWlkDarDel" name="Dark Delirium" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="60"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+	 <thing id="cWlkGrOlOn" name="The Great Old One" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="sp5CDissW"/>
+    <tag group="ClsAllowSp" tag="spHideLaug"/>
+    <tag group="ClsAllowSp" tag="spDeteThou"/>
+    <tag group="ClsAllowSp" tag="sp5CPhantF"/>
+    <tag group="ClsAllowSp" tag="spClairvoy"/>
+    <tag group="ClsAllowSp" tag="spSending"/>
+    <tag group="ClsAllowSp" tag="spDomiBeas"/>
+    <tag group="ClsAllowSp" tag="spBlacTent"/>
+    <tag group="ClsAllowSp" tag="spDomiPers"/>
+    <tag group="ClsAllowSp" tag="spTelekine"/>
+    <bootstrap thing="cWlkAwaMin">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cWlkEntWar">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cWlkThoShi">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cWlkCreThr">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    </thing>
+  <thing id="cWlkAwaMin" name="Awakened Mind" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cWlkEntWar" name="Entropic Ward" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Sight"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abDuration" tag="Round"/>
+    </thing>
+  <thing id="cWlkThoShi" name="Thought Shield" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.assign[DamageRes.dtPsychic]]]></eval>
+    </thing>
+  <thing id="cWlkCreThr" name="Create Thrall" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abDuration" tag="Permanent"/>
+    <tag group="Usage" tag="Active"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="cWlkExSpLi" name="Expanded Spell List" description="Placeholder..." compset="ClSpecial" summary="Your patron adds additional spell choices to your list.">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (isroot = 0)
+
+      doneif (root.islinkage[table] = 0)
+
+      perform root.linkage[table].pushtags[ClsAllowSp.?]]]></eval>
+    </thing>
+	<thing id="cWizAbjura" name="School of Abjuration" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpWiz"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="abCategory" tag="WizArcTrad" name="Wizard Arcane Tradition"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="cWizArcWar">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cWizProWar">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cWizImpAbj">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cWizSpeRes">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cWizAbjSav">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="cWizAbjSav" name="Abjuration Savant" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cWizArcWar" name="Arcane Ward" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abDuration" tag="Permanent"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="cWizProWar" name="Projected Ward" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abDuration" tag="Instant"/>
+    </thing>
+  <thing id="cWizImpAbj" name="Improved Abjuration" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cWizSpeRes" name="Spell Resistance" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.assign[DamageRes.dtSpells]]]></eval>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      #situational[hero.child[svAll], "Advantage vs. spells", field[thingname].text]]]></eval>
+    </thing>
+	<thing id="cWizConjur" name="School of Conjuration" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpWiz"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="abCategory" tag="WizArcTrad" name="Wizard Arcane Tradition"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="cWizMinCon">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cWizBenTra">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cWizFocCon">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cWizDurSum">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cWizConSav">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="cWizMinCon" name="Minor Conjuration" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="10"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Hour"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="cWizBenTra" name="Benign Transposition" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abDuration" tag="Hour"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="cWizFocCon" name="Focused Conjuration" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cWizDurSum" name="Durable Summons" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cWizConSav" name="Conjuration Savant" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+	 <thing id="cWizDivina" name="School of Divination" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpWiz"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="abCategory" tag="WizArcTrad" name="Wizard Arcane Tradition"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="cWizPorten">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cWizExpDiv">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cWizThiEye">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cWizGrePor">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cWizDivSav">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="cWizPorten" name="Portent" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="2"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Sight"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="cWizExpDiv" name="Expert Divination" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cWizThiEye" name="The Third Eye" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="1"/>
+    <arrayval field="usrArray" index="0" value="Darkvision"/>
+    <arrayval field="usrArray" index="1" value="Ethereal Sight"/>
+    <arrayval field="usrArray" index="2" value="Greater Comprehension"/>
+    <arrayval field="usrArray" index="3" value="See Invisibility"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abDuration" tag="Permanent"/>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 0</containerreq>
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    </thing>
+  <thing id="cWizGrePor" name="Greater Portent" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cWizDivSav" name="Divination Savant" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+	<thing id="cWizEnchan" name="School of Enchantment" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpWiz"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="abCategory" tag="WizArcTrad" name="Wizard Arcane Tradition"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="cWizHypGaz">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cWizInsCha">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cWizSplEnc">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cWizAltMem">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cWizEncSav">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="cWizHypGaz" name="Hypnotic Gaze" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="5"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aINT"/>
+    </thing>
+  <thing id="cWizInsCha" name="Instinctive Charm" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    </thing>
+  <thing id="cWizSplEnc" name="Split Enchantment" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cWizAltMem" name="Alter Memories" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Sight"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="abSave" tag="aINT"/>
+    <tag group="StandardDC" tag="aINT"/>
+    </thing>
+  <thing id="cWizEncSav" name="Enchantment Savant" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+	 <thing id="cWizIllusi" name="School of Illusion" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpWiz"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="abCategory" tag="WizArcTrad" name="Wizard Arcane Tradition"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="cWizImMiIl">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cWizMalIll">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cWizIllSel">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cWizIllRel">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cWizIllSav">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="cWizImMiIl" name="Improved Minor Illusion" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <bootstrap thing="spMinoIllu">
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    </thing>
+  <thing id="cWizMalIll" name="Malleable Illusions" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Sight"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="cWizIllSel" name="Illusory Self" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Battle"/>
+    <tag group="abRange" tag="Personal"/>
+    </thing>
+  <thing id="cWizIllRel" name="Illusory Reality" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Sight"/>
+    </thing>
+  <thing id="cWizIllSav" name="Illusion Savant" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+<thing id="cWizNecrom" name="School of Necromancy" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpWiz"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="abCategory" tag="WizArcTrad" name="Wizard Arcane Tradition"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="cWizGriHar">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cWizUndThr">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cWizInuUnd">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cWizComUnd">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cWizNecSav">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="cWizGriHar" name="Grim Harvest" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="Usage" tag="Round"/>
+    </thing>
+  <thing id="cWizUndThr" name="Undead Thralls" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <bootstrap thing="spAnimDead">
+      <autotag group="BonusSplAt" tag="6"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      <autotag group="sClass" tag="cHelpWiz"/>
+      </bootstrap>
+    </thing>
+  <thing id="cWizInuUnd" name="Inured to Undeath" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+    doneif (tagis[Helper.ShowSpec] = 0)
+
+    doneif (tagis[Helper.Disable] <> 0)
+
+    doneif (field[abilActive].value = 0)
+
+     perform hero.assign[DamageRes.dtNecrotic]]]></eval>
+    </thing>
+  <thing id="cWizComUnd" name="Command Undead" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abRange" value="60"/>
+    <tag group="abDuration" tag="Permanent"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abSave" tag="aCHA"/>
+    <tag group="StandardDC" tag="aINT"/>
+    </thing>
+  <thing id="cWizNecSav" name="Necromancy Savant" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+	<thing id="cWizTransm" name="School of Transmutation" description="Placeholder..." compset="CustomSpec" summary="Placeholder..." uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpWiz"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="abCategory" tag="WizArcTrad" name="Wizard Arcane Tradition"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="cWizMinAlc">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cWizTraSto">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cWizShapec">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cWizMasTra">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cWizTraSav">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="cWizMinAlc" name="Minor Alchemy" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abDuration" tag="Hour"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="abAction" tag="Minute"/>
+    </thing>
+  <thing id="cWizTraSto" name="Transmuterâ€™s Stone" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="actName" value="In Own Possession"/>
+    <arrayval field="usrArray" index="0" value="Darkvision"/>
+    <arrayval field="usrArray" index="1" value="Increase speed"/>
+    <arrayval field="usrArray" index="2" value="Proficiency with Con saves"/>
+    <arrayval field="usrArray" index="3" value="Resist acid"/>
+    <arrayval field="usrArray" index="4" value="Resist cold"/>
+    <arrayval field="usrArray" index="5" value="Resist fire"/>
+    <arrayval field="usrArray" index="6" value="Resist lightning"/>
+    <arrayval field="usrArray" index="7" value="Resist thunder"/>
+    <tag group="abDuration" tag="Permanent"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abAction" tag="Hour"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:usrIndex = 0 & fieldval:abilActive <> 0]]></containerreq>
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[field[abValue].value += #attrmod[aCHA]
+
+    doneif (tagis[Helper.ShowSpec] = 0)
+
+    doneif (tagis[Helper.Disable] <> 0)
+
+    doneif (field[abilActive].value = 0)
+
+    ~ Darkvision
+    if (field[usrIndex].value = 0) then
+      ~handled by a bootstrap condition
+
+    ~ Speed
+    elseif (field[usrIndex].value = 1) then
+      hero.child[Speed].field[tSpeed].value += 10
+
+    ~ Con proficiency
+    elseif (field[usrIndex].value = 2) then
+      perform hero.assign[ProfSave.svCON]
+
+    ~ Resisitance (acid)
+    elseif (field[usrIndex].value = 3) then
+      perform hero.assign[DamageRes.dtAcid]
+
+    ~ Resisitance (cold)
+    elseif (field[usrIndex].value = 4) then
+      perform hero.assign[DamageRes.dtCold]
+
+    ~ Resisitance (fire)
+    elseif (field[usrIndex].value = 5) then
+      perform hero.assign[DamageRes.dtFire]
+
+    ~ Resisitance (lightning)
+    elseif (field[usrIndex].value = 6) then
+      perform hero.assign[DamageRes.dtLightnin]
+
+    ~ Resisitance (thunder)
+    elseif (field[usrIndex].value = 7) then
+      perform hero.assign[DamageRes.dtThunder]
+      endif]]></eval>
+    </thing>
+  <thing id="cWizShapec" name="Shapechanger" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="SpInfo" tag="spPolymorp"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="Usage" tag="Battle"/>
+    <bootstrap thing="spPolymorp">
+      <autotag group="BonusSplAt" tag="10"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      <autotag group="sClass" tag="cHelpWiz"/>
+      </bootstrap>
+    </thing>
+  <thing id="cWizMasTra" name="Master Transmuter" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="cWizTraSav" name="Transmutation Savant" description="Placeholder..." compset="ClSpecial" summary="Placeholder...">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  </document>
