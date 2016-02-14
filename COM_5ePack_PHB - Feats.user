@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
   <thing id="ft5CAlert" name="Alert" description="Always on the lookout for danger, you gain the following benefits:\n• You gain a +5 bonus to initiative.\n• You can’t be surprised while you are conscious.\n• Other creatures don’t gain advantage on attack rolls against you as a result of being hidden from you." compset="Feat" summary="Always on the lookout for danger." uniqueness="useronce">
-    <comment>Complete
-
-~ Add a +5 bonus to our Initiative
-#skillbonus[Initiative] = #skillbonus[Initiative] + 5</comment>
+    <comment>Complete</comment>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">~ Add a +5 bonus to our Initiative
-#skillbonus[Initiative] = #skillbonus[Initiative] + 5</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ Add a +5 bonus to our Initiative
+      #skillbonus[Initiative] = #skillbonus[Initiative] + 5]]></eval>
     </thing>
   <thing id="ft5CAthlet" name="Athlete" description="You have undergone extensive physical training to gain the following benefits:\n• Increase your Strength or Dexterity score by 1, to a maximum of 20.\n• When you are prone, standing up uses only 5 feet of your movement.\n• Climbing doesn’t halve your speed.\n• You can make a running long jump or a running high jump after moving only 5 feet on foot, rather than 10 feet." compset="Feat" uniqueness="useronce">
     <comment>! NOT COMPLETE !</comment>
@@ -17,45 +18,56 @@
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="Usage" tag="Constant"/>
-    <eval phase="First">if (field[usrIndex].value = 0) then
-hero.child[aSTR].field[aStartMod].value += 1
-elseif (field[usrIndex].value = 1) then
-hero.child[aDEX].field[aStartMod].value += 1
-endif</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      endif]]></eval>
     </thing>
   <thing id="ft5CActor" name="Actor" description="Skilled at mimicry and dramatics, you gain the following benefits:\n• Increase your Charisma score by 1, to a maximum of 20.\n• You have advantage on Charisma (Deception) and Charisma (Performance) checks when trying to pass yourself off as a different person.\n• You can mimic the speech of another person or the sounds made by other creatures. You must have heard the person speaking, or heard the creature make the sound, for at least 1 minute. A successful Wisdom (Insight) check contested by your Charisma (Deception) check allows a listener to determine that the effect is faked." compset="Feat" summary="Skilled at mimicry and dramatics." uniqueness="useronce">
     <comment>Complete</comment>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">hero.child[aCHA].field[aStartMod].value += 1</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCHA].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5Charger" name="Charger" description="When you use your action to Dash, you can use a bonus action to make one melee weapon attack or to shove a creature.\n• If you move at least 10 feet in a straight line immediately before taking this bonus action, you either gain a +5 bonus to the attack’s damage roll (if you chose to make a melee attack and hit) or push the target up to 10 feet away from you (if you chose to shove and you succeed)." compset="Feat" summary="When you use your action to Dash, you can use a bonus action to make one melee weapon attack or to shove a creature." uniqueness="useronce">
     <fieldval field="actName" value="Activate Charge (+5 bonus attack / ignore if pushing)"/>
+    <fieldval field="abValue" value="5"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="User" tag="Activation"/>
-    <eval phase="First"><![CDATA[doneif (field[abilActive].value = 0)
-foreach pick in hero from BaseWep where "(wCategory.Melee)"
-eachpick.field[atmBonus].value += 5
-nexteach]]></eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If not active get out now!
+      doneif (field[abilActive].value = 0)
+      
+      ~ Give a untyped bonus to melee attacks
+      hero.childfound[Attack].field[atmBonus].value += field[abValue].value]]></eval>
     </thing>
   <thing id="ft5CCrossE" name="Crossbow Expert" description="Thanks to extensive practice with the crossbow, you gain the following benefits:\n• You ignore the loading quality of crossbows with which you are proficient.\n• Being within 5 feet of a hostile creature doesn’t impose disadvantage on your ranged attack rolls.\n• When you use the Attack action and attack with a onehanded weapon, you can use a bonus action to attack with a loaded hand crossbow you are holding." compset="Feat" summary="Thanks to extensive practice with the crossbow." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CDefDue" name="Defensive Duelist" description="When you are wielding a finesse weapon with which you are proficient and another creature hits you with a melee attack, you can use your reaction to add your proficiency bonus to your AC for that attack, potentially causing the attack to miss you.\n\nPrerequisite: Dexterity 13 or higher" compset="Feat" summary="Use your reaction to add your proficiency bonus to your AC for that attack." uniqueness="useronce">
-    <comment><![CDATA[Pre - Req
-#attrvalue[aDEX] >= 13]]></comment>
     <usesource source="5ePHBCP"/>
     <tag group="User" tag="Activation"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="PostAttr"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+    <eval phase="PostAttr"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If not active get out now!
+      doneif (field[abilActive].value = 0)
 
-doneif (tagis[Helper.Disable] <> 0)
-      
-doneif (field[abilActive].value = 0)
-
-hero.childfound[ArmorClass].field[Bonus].value += hero.child[ProfBonus].field[tProfBonus].value]]></eval>
+      hero.childfound[ArmorClass].field[Bonus].value += hero.child[ProfBonus].field[tProfBonus].value]]></eval>
     <exprreq message="Dexterity 13 required."><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CDuelWi" name="Duel Wielder" description="You master fighting with two weapons, gaining the following benefits:\n\n• You gain a +1 bonus to AC while you are wielding a separate melee weapon in each hand.\n• You can use two-weapon fighting even when the onehanded melee weapons you are wielding aren’t light.\n• You can draw or stow two one-handed weapons when you would normally be able to draw or stow only one." compset="Feat" summary="You master fighting with two weapons." uniqueness="useronce">
@@ -69,62 +81,46 @@ eachpick.field[dmrBonus].value += 10
 nexteach]]></comment>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="PostAttr"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
-
-doneif (tagis[Helper.Disable] <> 0)
-
-field[abValue].value = 0
+    <eval phase="PostAttr"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
 
       foreach pick in hero from BaseWep where "(Hero.OffHand & !wProperty.TwoHanded)"
            perform eachpick.assign[wProperty.Light]
            field[abValue].value = 1
       nexteach
 
-hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
+      hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
     </thing>
   <thing id="ft5CDungeD" name="Dungeon Delver" description="Alert to the hidden traps and secret doors found in many dungeons, you gain the following benefits:\n\n• You have advantage on Wisdom (Perception) and Intelligence (Investigation) checks made to detect the presence of secret doors.\n• You have advantage on saving throws made to avoid or resist traps.\n• You have resistance to the damage dealt by traps. \n• You can search for traps while traveling at a normal pace, instead of only at a slow pace." compset="Feat" summary="You are alert to the hidden traps and secret doors found in many dungeons." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">perform hero.assign[DamageRes.dt5CTrap]</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      perform hero.assign[DamageRes.dt5CTrap]]]></eval>
     </thing>
   <thing id="ft5CDurab" name="Durable" description="Hardy and resilient, you gain the following benefits:\n\n• Increase your Constitution score by 1, to a maximum of 20.\n• When you roll a Hit Die to regain hit points, the minimum number of hit points you regain from the roll equals twice your Constitution modifier (minimum of 2)." compset="Feat" summary="You are hardy and resilient." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">hero.child[aCON].field[aStartMod].value += 1</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      hero.child[aCON].field[aStartMod].value += 1]]></eval>
     </thing>
-  <thing id="ft5CElemAA" name="Elemental Adept - Acid" description="Spells you cast ignore resistance to damage of the type Acid. In addition, when you roll damage for a spell you cast that deals damage of type Acid, you can treat any 1 on a damage die as a 2.\n\nPrerequisite: The ability to cast at least one spell" compset="Feat" summary="Spells you cast ignore resistance to damage of the type Acid. In addition, when you roll damage for a spell you cast that deals damage of type Acid, you can treat any 1 on a damage die as a 2." uniqueness="useronce">
-    <comment><![CDATA[Pre-Req not working. 
-#attrvalue[aDEX] >= 13]]></comment>
-    <arrayval field="usrArray" index="0" value="Acid"/>
-    <arrayval field="usrArray" index="1" value="Cold"/>
-    <arrayval field="usrArray" index="2" value="Lightning"/>
-    <arrayval field="usrArray" index="3" value="Thunder"/>
+  <thing id="ft5CElemAd" name="Elemental Adept" description="Spells you cast ignore resistance to damage of the selected elemental type. In addition, when you roll damage for a spell you cast that deals damage of the selected elemental type, you can treat any 1 on a damage die as a 2." compset="Feat" summary="Ignore resistance to dmg &amp; treat dmg dice of 1 as 2." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="fShowWhat" tag="EnergyBase"/>
     <prereq message="You must be able to cast at least one spell. ">
-      <validate><![CDATA[var iTotal as number
-
-iTotal = iTotal + #levelcount[Bard]
-iTotal = iTotal + #levelcount[Cleric]
-iTotal = iTotal + #levelcount[Druid]
-iTotal = iTotal + #levelcount[Sorcerer]
-iTotal = iTotal + #levelcount[Warlock]
-iTotal = iTotal + #levelcount[Wizard]
-
-if (#levelcount[Paladin] >1) then
-iTotal = iTotal + #levelcount[Paladin]
-endif
-if (#levelcount[Ranger] >1) then
-iTotal = iTotal + #levelcount[Ranger]
-endif
-if (hero.child[RaceHelper].field[rSpAtk].value >0) then
-iTotal = iTotal + 1
-endif
-
-@valid = 0
-if (iTotal >0) then
-@valid = 1
-endif]]></validate>
+      <validate><![CDATA[
+        ~ Test that the character has at least one spell
+        ~ or spell-like ability. &
+        var HasSpells as number
+        Call 5CHasSpell
+        @valid = HasSpells]]></validate>
       </prereq>
     </thing>
   <thing id="ft5CGWeaMa" name="Great Weapon Master" description="You’ve learned to put the weight of a weapon to your advantage, letting its momentum empower your strikes. You gain the following benefits:\n\n• On your turn, when you score a critical hit with a melee weapon or reduce a creature to 0 hit points with one, you can make one melee weapon attack as a bonus action.\n• Before you make a melee attack with a heavy weapon that you are proficient with, you can choose to take a - 5 penalty to the attack roll. If the attack hits, you add +10 to the attack’s damage." compset="Feat" summary="You’ve learned to put the weight of a weapon to your advantage." uniqueness="useronce">
@@ -137,11 +133,15 @@ nexteach]]></comment>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="User" tag="Activation"/>
-    <eval phase="First"><![CDATA[doneif (field[abilActive].value = 0)
-foreach pick in hero from BaseWep where "(wProperty.Heavy)"
-eachpick.field[atmBonus].value -= 5
-eachpick.field[dmmBonus].value += 10
-nexteach]]></eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If not active get out now!
+      doneif (field[abilActive].value = 0)
+      foreach pick in hero from BaseWep where "(wProperty.Heavy)"
+        eachpick.field[atmBonus].value -= 5
+        eachpick.field[dmmBonus].value += 10
+      nexteach]]></eval>
     </thing>
   <thing id="ft5CHealer" name="Healer" description="You are an able physician, allowing you to mend wounds quickly and get your allies back in the fight. You gain the following benefits:\n\n• When you use a healer’s kit to stabilize a dying creature, that creature also regains 1 hit point.\n• As an action, you can spend one use of a healer’s kit to tend to a creature and restore 1d6 + 4 hit points to it, plus additional hit points equal to the creature’s maximum number o f Hit Dice. The creature can’t regain hit points from this feat again until it finishes a short or long rest." compset="Feat" summary="You are an able physician, allowing you to mend wounds quickly and get your allies back in the fight." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
@@ -156,132 +156,23 @@ TO DO
 Prerequisite: Proficiency with medium armor</comment>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">hero.child[aSTR].field[Bonus].value += 1
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      hero.child[aSTR].field[Bonus].value += 1
 
-perform hero.assign[ArmProfGrp.ArmorHeavy]
-~ perform hero.assign[Hero.ProfHeavy]</eval>
+      perform hero.assign[ArmProfGrp.ArmorHeavy]]]></eval>
     <exprreq message="Proficiency with medium armor required."><![CDATA[tagis[ArmProfGrp.ArmorMed] <> 0]]></exprreq>
-    </thing>
-  <thing id="ft5CElemAC" name="Elemental Adept - Cold" description="Spells you cast ignore resistance to damage of the type Cold. In addition, when you roll damage for a spell you cast that deals damage of type Cold, you can treat any 1 on a damage die as a 2.\n\nPrerequisite: The ability to cast at least one spell" compset="Feat" summary="Spells you cast ignore resistance to damage of the type Cold. In addition, when you roll damage for a spell you cast that deals damage of type Cold, you can treat any 1 on a damage die as a 2." uniqueness="useronce">
-    <usesource source="5ePHBCP"/>
-    <tag group="Helper" tag="ShowSpec"/>
-    <prereq message="You must be able to cast at least one spell. ">
-      <validate><![CDATA[var iTotal as number
-
-iTotal = iTotal + #levelcount[Bard]
-iTotal = iTotal + #levelcount[Cleric]
-iTotal = iTotal + #levelcount[Druid]
-iTotal = iTotal + #levelcount[Sorcerer]
-iTotal = iTotal + #levelcount[Warlock]
-iTotal = iTotal + #levelcount[Wizard]
-
-if (#levelcount[Paladin] >1) then
-iTotal = iTotal + #levelcount[Paladin]
-endif
-if (#levelcount[Ranger] >1) then
-iTotal = iTotal + #levelcount[Ranger]
-endif
-if (hero.child[RaceHelper].field[rSpAtk].value >0) then
-iTotal = iTotal + 1
-endif
-
-@valid = 0
-if (iTotal >0) then
-@valid = 1
-endif]]></validate>
-      </prereq>
-    </thing>
-  <thing id="ft5CElemAL" name="Elemental Adept - Lightning" description="Spells you cast ignore resistance to damage of the type Lightning. In addition, when you roll damage for a spell you cast that deals damage of type Lightning, you can treat any 1 on a damage die as a 2.\n\nPrerequisite: The ability to cast at least one spell" compset="Feat" summary="Spells you cast ignore resistance to damage of the type Lightning. In addition, when you roll damage for a spell you cast that deals damage of type Lightning, you can treat any 1 on a damage die as a 2." uniqueness="useronce">
-    <usesource source="5ePHBCP"/>
-    <tag group="Helper" tag="ShowSpec"/>
-    <prereq message="You must be able to cast at least one spell. ">
-      <validate><![CDATA[var iTotal as number
-
-iTotal = iTotal + #levelcount[Bard]
-iTotal = iTotal + #levelcount[Cleric]
-iTotal = iTotal + #levelcount[Druid]
-iTotal = iTotal + #levelcount[Sorcerer]
-iTotal = iTotal + #levelcount[Warlock]
-iTotal = iTotal + #levelcount[Wizard]
-
-if (#levelcount[Paladin] >1) then
-iTotal = iTotal + #levelcount[Paladin]
-endif
-if (#levelcount[Ranger] >1) then
-iTotal = iTotal + #levelcount[Ranger]
-endif
-if (hero.child[RaceHelper].field[rSpAtk].value >0) then
-iTotal = iTotal + 1
-endif
-
-@valid = 0
-if (iTotal >0) then
-@valid = 1
-endif]]></validate>
-      </prereq>
-    </thing>
-  <thing id="ft5CElemAF" name="Elemental Adept - Fire" description="Spells you cast ignore resistance to damage of the type Fire. In addition, when you roll damage for a spell you cast that deals damage of type Fire, you can treat any 1 on a damage die as a 2.\n\nPrerequisite: The ability to cast at least one spell" compset="Feat" summary="Spells you cast ignore resistance to damage of the type Fire. In addition, when you roll damage for a spell you cast that deals damage of type Fire, you can treat any 1 on a damage die as a 2." uniqueness="useronce">
-    <usesource source="5ePHBCP"/>
-    <tag group="Helper" tag="ShowSpec"/>
-    <prereq message="You must be able to cast at least one spell. ">
-      <validate><![CDATA[var iTotal as number
-
-iTotal = iTotal + #levelcount[Bard]
-iTotal = iTotal + #levelcount[Cleric]
-iTotal = iTotal + #levelcount[Druid]
-iTotal = iTotal + #levelcount[Sorcerer]
-iTotal = iTotal + #levelcount[Warlock]
-iTotal = iTotal + #levelcount[Wizard]
-
-if (#levelcount[Paladin] >1) then
-iTotal = iTotal + #levelcount[Paladin]
-endif
-if (#levelcount[Ranger] >1) then
-iTotal = iTotal + #levelcount[Ranger]
-endif
-if (hero.child[RaceHelper].field[rSpAtk].value >0) then
-iTotal = iTotal + 1
-endif
-
-@valid = 0
-if (iTotal >0) then
-@valid = 1
-endif]]></validate>
-      </prereq>
-    </thing>
-  <thing id="ft5CElemAT" name="Elemental Adept - Thunder" description="Spells you cast ignore resistance to damage of the Thunder type. In addition, when you roll damage for a spell you cast that deals damage of type Thunder, you can treat any 1 on a damage die as a 2.\n\nPrerequisite: The ability to cast at least one spell" compset="Feat" summary="Spells you cast ignore resistance to damage of the Thunder type. In addition, when you roll damage for a spell you cast that deals damage of type Thunder, you can treat any 1 on a damage die as a 2." uniqueness="useronce">
-    <usesource source="5ePHBCP"/>
-    <tag group="Helper" tag="ShowSpec"/>
-    <prereq message="You must be able to cast at least one spell. ">
-      <validate><![CDATA[var iTotal as number
-
-iTotal = iTotal + #levelcount[Bard]
-iTotal = iTotal + #levelcount[Cleric]
-iTotal = iTotal + #levelcount[Druid]
-iTotal = iTotal + #levelcount[Sorcerer]
-iTotal = iTotal + #levelcount[Warlock]
-iTotal = iTotal + #levelcount[Wizard]
-
-if (#levelcount[Paladin] >1) then
-iTotal = iTotal + #levelcount[Paladin]
-endif
-if (#levelcount[Ranger] >1) then
-iTotal = iTotal + #levelcount[Ranger]
-endif
-if (hero.child[RaceHelper].field[rSpAtk].value >0) then
-iTotal = iTotal + 1
-endif
-
-@valid = 0
-if (iTotal >0) then
-@valid = 1
-endif]]></validate>
-      </prereq>
     </thing>
   <thing id="ft5CHvyArM" name="Heavy Armor Master" description="You can use your armor to deflect strikes that would kill others. You gain the following benefits:\n\n• Increase your Strength score by 1, to a maximum of 20.\n• While you are wearing heavy armor, bludgeoning, piercing, and slashing damage that you take from non magical weapons is reduced by 3.\n\nPrerequisite: Proficiency with heavy armor" compset="Feat" summary="You can use your armor to deflect strikes that would kill others." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">#skillbonus[aSTR] = #skillbonus[aSTR] + 1</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      #skillbonus[aSTR] += 1]]></eval>
     <exprreq message="Proficiency with heavy armor required. "><![CDATA[tagis[ArmProfGrp.ArmorHeavy] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CInspiL" name="Inspiring Leader" description="You can spend 10 minutes inspiring your companions, shoring up their resolve to fight. \n\nWhen you do so, choose up to six friendly creatures (which can include yourself) within 30 feet of you who can see or hear you and who can understand  you. Each creature can gain temporary hit points equal to your level + your Charisma modifier. A creature can’t gain temporary hit points from this feat again until it has finished a short or long rest.\n\nPrerequisite: Charisma 13 or higher" compset="Feat" summary="You can spend 10 minutes inspiring your companions, shoring up their resolve to fight." uniqueness="useronce">
@@ -292,27 +183,39 @@ endif]]></validate>
   <thing id="ft5CKeenMi" name="Keen Mind" description="You have a mind that can track time, direction, and detail with uncanny precision. You gain the following benefits.\n\n• Increase your Intelligence score by 1, to a maximum of 20.\n• You always know which way is north.\n• You always know the number of hours left before the next sunrise or sunset.\n• You can accurately recall anything you have seen or heard within the past month." compset="Feat" summary="You have a mind that can track time, direction, and detail with uncanny precision." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">#skillbonus[aINT] = #skillbonus[aINT] + 1</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      #skillbonus[aINT] += 1]]></eval>
     </thing>
   <thing id="ft5CLightA" name="Lightly Armored" description="You have trained to master the use of light armor, gaining the following benefits:\n• Increase your Strength or Dexterity score by 1, to a maximum of 20.\n• You gain proficiency with light armor." compset="Feat" summary="You have trained to master the use of light armor." uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="Strength"/>
-    <arrayval field="usrArray" index="1" value="Dexterity"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aDEX)"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">if (field[usrIndex].value = 0) then
-hero.child[aSTR].field[aStartMod].value += 1
-elseif (field[usrIndex].value = 1) then
-hero.child[aDEX].field[aStartMod].value += 1
-endif
-
-perform hero.assign[ArmProfGrp.ArmorLight]</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1
+      
+      ~ Give proficiency with light armor
+      perform hero.assign[ArmProfGrp.ArmorLight]
+      ]]></eval>
     </thing>
   <thing id="ft5CLingui" name="Linguist" description="You have studied languages and codes, gaining the following benefits:\n\n• Increase your Intelligence score by 1, to a maximum of 20.\n• You learn three languages of your choice.\n• You can ably create written ciphers. Others can’t decipher a code you create unless you teach them, they succeed on an Intelligence check (DC equal to your Intelligence score + your proficiency bonus), or they use magic to decipher it." compset="Feat" summary="You have studied languages and codes." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">#skillbonus[aINT] = #skillbonus[aINT] + 1
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      #skillbonus[aINT] += 1
 
-hero.child[resLangBck].field[resMax].value += 3</eval>
+      hero.child[resLangBck].field[resMax].value += 3]]></eval>
     </thing>
   <thing id="ft5CLucky" name="Lucky" description="You have inexplicable luck that seems to kick in at just the right moment.\n\nYou have 3 luck points. Whenever you make an attack roll, an ability check, or a saving throw, you can spend one luck point to roll an additional d20. \n\n• You can choose to spend one of your luck points after you roll the die, but before the outcome is determined. You choose which of the d20s is used for the attack roll, ability check, or saving throw.\n• You can also spend one luck point when an attack roll is made against you. Roll a d20, and then choose whether the attack uses the attacker’s roll or yours.\n\nIf more than one creature spends a luck point to influence the outcome of a roll, the points cancel each other out; no additional dice are rolled.\nYou regain your expended luck points when you finish a long rest." compset="Feat" summary="You have inexplicable luck that seems to kick in at just the right moment." uniqueness="useronce">
     <fieldval field="trkMax" value="3"/>
@@ -336,7 +239,11 @@ hero.child[resLangBck].field[resMax].value += 3</eval>
   <thing id="ft5CMedArM" name="Medium Armor Master" description="You have practiced moving in medium armor to gain the following benefits:\n\n• Wearing medium armor doesn’t impose disadvantage on your Dexterity (Stealth) checks.\n• When you wear medium armor, you can add 3, rather than 2, to your AC if you have a Dexterity of 16 or higher.\n\nPrerequisite: Proficiency with medium armor" compset="Feat" summary="You have practiced moving in medium armor." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="Final" priority="1000"><![CDATA[field[abValue].value = 0
+    <eval phase="Final" priority="1000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+     field[abValue].value = 0
      foreach pick in hero from BaseArmor where "ArmorClass.Medium & Helper.CurrArmor"
           field[abValue].value = 1
           perform eachpick.delete[Helper.StealthDis]
@@ -347,21 +254,28 @@ hero.child[resLangBck].field[resMax].value += 3</eval>
   <thing id="ft5CMobile" name="Mobile" description="You are exceptionally speedy and agile. You gain the following benefits:\n\n• Your speed increases by 10 feet.\n• When you use the Dash action, difficult terrain doesn’t cost you extra movement on that turn.\n• When you make a melee attack against a creature, you don’t provoke opportunity attacks from that creature for the rest of the turn, whether you hit or not." compset="Feat" summary="You are exceptionally speedy and agile." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">hero.child[Speed].field[tSpeed].value += 10</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      hero.child[Speed].field[tSpeed].value += 10]]></eval>
     </thing>
   <thing id="ft5CModArm" name="Moderately Armored" description="You have trained to master the use of medium armor and shields, gaining the following benefits:\n\n• Increase your Strength or Dexterity score by 1, to a maximum of 20.\n• You gain proficiency with medium armor and shields.\n\nPrerequisite: Proficiency with light armor" compset="Feat" summary="You have trained to master the use of medium armor and shields." uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="Strength"/>
-    <arrayval field="usrArray" index="1" value="Dexterity"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aDEX)"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">if (field[usrIndex].value = 0) then
-hero.child[aSTR].field[aStartMod].value += 1
-elseif (field[usrIndex].value = 1) then
-hero.child[aDEX].field[aStartMod].value += 1
-endif
-
-perform hero.assign[ArmProfGrp.ArmorMed]
-perform hero.assign[ArmProfGrp.Shields]</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1
+      
+      ~ Give proficiency with Medium armor and Shields
+      perform hero.assign[ArmProfGrp.ArmorMed]
+      perform hero.assign[ArmProfGrp.Shields]]]></eval>
     <exprreq message="Proficiency with light armor required. "><![CDATA[tagis[ArmProfGrp.ArmorLight] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CMountC" name="Mounted Combatant" description="You are a dangerous foe to face while mounted. While you are mounted and aren’t incapacitated, you gain the following benefits:\n\n• You have advantage on melee attack rolls against any unmounted creature that is smaller than your mount.\n• You can force an attack targeted at your mount to target you instead.\n• If your mount is subjected to an effect that allows it to make a Dexterity saving throw to take only half damage, it instead takes no damage if it succeeds on the saving throw, and only half damage if it fails." compset="Feat" summary="You are a dangerous foe to face while mounted." uniqueness="useronce">
@@ -379,55 +293,39 @@ If the character has advantage on the check, add 5. For disadvantage, subtract 5
 For example, if a 1st-level character has a Wisdom of 15 and proficiency in Perception, he or she has a passive Wisdom (Perception) score of 14.
 The rules on hiding in the “Dexterity” section below rely on passive checks, as do the exploration rules.</comment>
     <fieldval field="actName" value="Passive Perception"/>
-    <arrayval field="usrArray" index="1" value="Wisdom"/>
-    <arrayval field="usrArray" index="0" value="Intelligence"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aWIS|thingid.aINT)"/>
     <usesource source="5ePHBCP"/>
     <tag group="User" tag="Activation"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">if (field[usrIndex].value = 0) then
-hero.child[aINT].field[aStartMod].value += 1
-elseif (field[usrIndex].value = 1) then
-hero.child[aWIS].field[aStartMod].value += 1
-endif</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CPoleaM" name="Polearm Master" description="You can keep your enemies at bay with reach weapons.\n\nYou gain the following benefits:\n• When you take the Attack action and attack with only a glaive, halberd, or quarterstaff, you can use a bonus action to make a melee attack with the opposite end of the weapon. The weapon’s damage die for this attack is a d4, and the attack deals bludgeoning damage.\n• While you are wielding a glaive, halberd, pike, or quarterstaff, other creatures provoke an opportunity attack from you when they enter your reach." compset="Feat" summary="You can keep your enemies at bay with reach weapons." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CResili" name="Resilient" description="Choose one ability score. You gain the following benefits:\n\n• Increase the chosen ability score by 1, to a maximum of 20.\n• You gain proficiency in saving throws using the chosen ability." compset="Feat" summary="Increase one ability and gain proficiency in that saving throw." uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="Strength"/>
-    <arrayval field="usrArray" index="1" value="Dexterity"/>
-    <arrayval field="usrArray" index="2" value="Constitution"/>
-    <arrayval field="usrArray" index="3" value="Intelligence"/>
-    <arrayval field="usrArray" index="4" value="Wisdom"/>
-    <arrayval field="usrArray" index="5" value="Charisma"/>
+    <fieldval field="usrCandid1" value="component.BaseSave &amp; !Hide.Save"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">if (field[usrIndex].value = 0) then
-hero.child[aSTR].field[aStartMod].value += 1
-perform hero.assign[ProfSave.svSTR]
-
-elseif (field[usrIndex].value = 1) then
-hero.child[aDEX].field[aStartMod].value += 1
-perform hero.assign[ProfSave.svDEX]
-
-elseif (field[usrIndex].value = 2) then
-hero.child[aCON].field[aStartMod].value += 1
-perform hero.assign[ProfSave.svCON]
-
-elseif (field[usrIndex].value = 3) then
-hero.child[aINT].field[aStartMod].value += 1
-perform hero.assign[ProfSave.svINT]
-
-elseif (field[usrIndex].value = 4) then
-hero.child[aWIS].field[aStartMod].value += 1
-perform hero.assign[ProfSave.svWIS]
-
-elseif (field[usrIndex].value = 5) then
-hero.child[aCHA].field[aStartMod].value += 1
-perform hero.assign[ProfSave.svCHA]
-
-endif</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull the save proficiency tag and push to hero
+      perform field[usrChosen1].chosen.pulltags[ProfSave.?]
+      perform hero.pushtags[ProfSave.?]
+      
+      ~ Find the associated ability score and increase it by 1
+      hero.findchild[BaseAttr,field[usrChosen1].chosen.tagids[SaveAbil.?]].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CRituaC" name="Ritual Caster" description="Prerequisite: Intelligence or Wisdom 13 or higher\n\nYou have learned a number of spells that you can cast as rituals. These spells are written in a ritual book, which you must have in hand while casting one of them.\n\nWhen you choose this feat, you acquire a ritual book holding two 1st-level spells of your choice. Choose one of the following classes: bard, cleric, druid, sorcerer, warlock, or wizard. You must choose your spells from that class’s spell list, and the spells you choose must have the ritual tag. The class you choose also determines your spellcasting ability for these spells: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard. \n\nIf you come across a spell in written form, such as a magical spell scroll or a w izard’s spellbook, you might be able to add it to your ritual book. The spell must be on the spell list for the class you chose, the spell’s level can be no higher than half your level (rounded up), and it must have the ritual tag. The process of copying the spell into your ritual book takes 2 hours per level of the spell, and costs 50 gp per level. The cost represents material components you expend as you experiment with the spell to master it, as well as the fine inks you need to record it." compset="Feat" summary="You have learned a number of spells that you can cast as rituals." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
@@ -446,11 +344,16 @@ endif</eval>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="User" tag="Activation"/>
-    <eval phase="First"><![CDATA[doneif (field[abilActive].value = 0)
-foreach pick in hero from BaseWep where "(wCategory.RangeProj | wCategory.RangeThrow | wCategory.Firearm)"
-eachpick.field[atrBonus].value -= 5
-eachpick.field[dmrBonus].value += 10
-nexteach]]></eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If not active get out now!
+      doneif (field[abilActive].value = 0)
+
+      foreach pick in hero from BaseWep where "(wCategory.RangeProj | wCategory.RangeThrow | wCategory.Firearm)"
+        eachpick.field[atrBonus].value -= 5
+        eachpick.field[dmrBonus].value += 10
+      nexteach]]></eval>
     </thing>
   <thing id="ft5CShielM" name="Shield Master" description="You use shields not just for protection but also for offense. You gain the following benefits while you are wielding a shield:\n\n• If you take the Attack action on your turn, you can use a bonus action to try to shove a creature within 5 feet of you with your shield.\n• If you aren’t incapacitated, you can add your shield’s AC bonus to any Dexterity saving throw you make against a spell or other harmful effect that targets only you.\n• If you are subjected to an effect that allows you to make a Dexterity saving throw to take only half damage, you can use your reaction to take no damage if you succeed on the saving throw, interposing your shield between yourself and the source of the effect." compset="Feat" summary="You use shields not just for protection but also for offense." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
@@ -470,29 +373,30 @@ nexteach]]></eval>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CTaverB" name="Tavern Brawler" description="Accustomed to rough-and-tumble fighting using whatever weapons happen to be at hand, you gain the following benefits:\n\n• Increase your Strength or Constitution score by 1, to a maximum of 20.\n• You are proficient with improvised weapons and unarmed strikes.\n• Your unarmed strike uses a d4 for damage.\n• When you hit a creature with an unarmed strike or an improvised weapon on your turn, you can use a bonus action to attempt to grapple the target." compset="Feat" summary="Accustomed to rough-and-tumble fighting using whatever weapons happen to be at hand." uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="Strength"/>
-    <arrayval field="usrArray" index="1" value="Constitution"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aCon)"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <bootstrap thing="wUnarmed">
       <assignval field="wDieCount" value="1"/>
       <assignval field="wDieSize" value="4"/>
       </bootstrap>
-    <eval phase="First">if (field[usrIndex].value = 0) then
-hero.child[aSTR].field[aStartMod].value += 1
-elseif (field[usrIndex].value = 1) then
-hero.child[aCON].field[aStartMod].value += 1
-endif
-
-~ perform hero.assign[ArmProfGrp.dtPoison]</eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CTough" name="Tough" description="Your hit point maximum increases by an amount equal to twice your level when you gain this feat. Whenever you gain a level thereafter, your hit point maximum increases by an additional 2 hit points." compset="Feat" summary="Your hit point maximum increases by an amount equal to twice your level when you gain this feat. Whenever you gain a level thereafter, your hit point maximum increases by an additional 2 hit points." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="PostLevel" priority="15000" index="2"><![CDATA[~if we've been disabled, get out now
-doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="15000" index="2"><![CDATA[
+      ~ if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] = 1)
 
-herofield[tBonusHP].value += field[abValue].value]]></eval>
+      herofield[tBonusHP].value += field[abValue].value]]></eval>
     <eval phase="PostLevel" priority="5000">field[abValue].value += maximum(herofield[tHitDice].value, 1)*2</eval>
     </thing>
   <thing id="ft5CWaCast" name="War Caster" description="You have practiced casting spells in the midst of combat, learning techniques that grant you the following benefits:\n\n• You have advantage on Constitution saving throws that you make to maintain your concentration on a spell when you take damage.\n• You can perform the somatic components of spells even when you have weapons or a shield in one or both hands.\n• When a hostile creature’s movement provokes an opportunity attack from you, you can use your reaction to cast a spell at the creature, rather than making an opportunity attack. The spell must have a casting time of 1 action and must target only that creature.\n\nPrerequisite: The ability to cast at least one spell" compset="Feat" summary="You have practiced casting spells in the midst of combat, learning techniques." uniqueness="useronce">
@@ -500,46 +404,97 @@ herofield[tBonusHP].value += field[abValue].value]]></eval>
     <tag group="Helper" tag="ShowSpec"/>
     <prereq message="You must be able to cast at least one spell. ">
       <validate><![CDATA[
-var iTotal as number
-
-iTotal = iTotal + #levelcount[Bard]
-iTotal = iTotal + #levelcount[Cleric]
-iTotal = iTotal + #levelcount[Druid]
-iTotal = iTotal + #levelcount[Sorcerer]
-iTotal = iTotal + #levelcount[Warlock]
-iTotal = iTotal + #levelcount[Wizard]
-
-if (#levelcount[Paladin] >1) then
-iTotal = iTotal + #levelcount[Paladin]
-endif
-if (#levelcount[Ranger] >1) then
-iTotal = iTotal + #levelcount[Ranger]
-endif
-if (hero.child[RaceHelper].field[rSpAtk].value >0) then
-iTotal = iTotal + 1
-endif
-
-@valid = 0
-if (iTotal >0) then
-@valid = 1
-endif]]></validate>
+        ~ Test that the character has at least one spell
+        ~ or spell-like ability. &
+        var HasSpells as number
+        Call 5CHasSpell
+        @valid = HasSpells]]></validate>
       </prereq>
     </thing>
-  <thing id="ft5CWeaMa" name="Weapon Master" description="You have practiced extensively with a variety of weapons, gaining the following benefits:\n\n• Increase your Strength or Dexterity score by 1, to a maximum of 20.\n• You gain proficiency with four weapons of your choice." compset="Feat" summary="You have practiced extensively with a variety of weapons." uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="Strength"/>
-    <arrayval field="usrArray" index="1" value="Dexterity"/>
+  <thing id="ft5CWeaMa" name="Weapon Master" description="You have practiced extensively with a variety of weapons, gaining the following benefits:\n\n• Increase your Strength or Dexterity score by 1, to a maximum of 20.\n• You gain proficiency with four weapons of your choice." compset="Feat" summary="Your Dex or Str score increased by 1." uniqueness="useronce">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aDEX)"/>
     <usesource source="5ePHBCP"/>
-    <tag group="fShowWhat" tag="WeaponsMel"/>
-    <tag group="Helper" tag="ActivMenu"/>
-    <tag group="ChooseSrc1" tag="Thing"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="First">if (field[usrIndex].value = 0) then
-hero.child[aSTR].field[aStartMod].value += 1
-elseif (field[usrIndex].value = 1) then
-hero.child[aDEX].field[aStartMod].value += 1
-endif
-
-~ pHdSkiProf</eval>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <bootstrap thing="ft5CWeMa1"></bootstrap>
+    <bootstrap thing="ft5CWeMa2"></bootstrap>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     </thing>
-  <thing id="dt5CTrap" name="Traps" compset="DamageType"></thing>
+  <thing id="ft5CWeMa1" name="Weapon Master" description="You have practiced extensively with a variety of weapons, gaining the following benefits:\n• You gain proficiency with four weapons of your choice." compset="Feat" summary="You gain proficiency with four weapons of your choice." uniqueness="useronce">
+    <comment><![CDATA[Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable. This is not currently the case on the "Class" tab. I have reported this bug to LW and hopefully its fixed in a future update.]]></comment>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="fShowWhat" tag="WeaponsMel"/>
+    <tag group="fShowWhat2" tag="WeaponsMel"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="portal" tag="ClsAttrFt"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="First"><![CDATA[
+      ~ If we are not bootstrapped to something get out now! &
+      doneif (this.isroot = 0)
+      
+      ~ Pull the portal tag from the Thing we are bootstrapped too
+      ~ so that we correctly display in the Portal.
+      ~ NOTE: Normally this logic should not be needed. I have 
+      ~       reported the bug officially to LW so hopefully its
+      ~       officially fixed in a future update.
+      perform root.pulltags[portal.?]]]></eval>
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      doneif (field[usrChosen2].ischosen = 0)
+      
+      ~ Pull all the selected weapon proficiency tags to ourself 
+      perform field[usrChosen1].chosen.pulltags[WepProf.?]
+      perform field[usrChosen2].chosen.pulltags[WepProf.?]
+    
+      ~ Now push both tags to the hero
+      perform hero.pushtags[WepProf.?]]]></eval>
+    <exprreq message="This is not a valid feat to choose!"><![CDATA[@ispick <> 0]]></exprreq>
+    </thing>
+  <thing id="ft5CWeMa2" name="Weapon Master" description="You have practiced extensively with a variety of weapons, gaining the following benefits:\n• You gain proficiency with four weapons of your choice." compset="Feat" summary="You gain proficiency with four weapons of your choice." uniqueness="useronce">
+    <comment><![CDATA[Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable. This is not currently the case on the "Class" tab. I have reported this bug to LW and hopefully its fixed in a future update.]]></comment>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="fShowWhat" tag="WeaponsMel"/>
+    <tag group="fShowWhat2" tag="WeaponsMel"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="portal" tag="ClsAttrFt"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="First"><![CDATA[
+      ~ If we are not bootstrapped to something get out now! &
+      doneif (this.isroot = 0)
+      
+      ~ Pull the portal tag from the Thing we are bootstrapped too
+      ~ so that we correctly display in the Portal.
+      ~ NOTE: Normally this logic should not be needed. I have 
+      ~       reported the bug officially to LW so hopefully its
+      ~       officially fixed in a future update.
+      perform root.pulltags[portal.?]]]></eval>
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      doneif (field[usrChosen2].ischosen = 0)
+      
+      ~ Pull all the selected weapon proficiency tags to ourself 
+      perform field[usrChosen1].chosen.pulltags[WepProf.?]
+      perform field[usrChosen2].chosen.pulltags[WepProf.?]
+    
+      ~ Now push both tags to the hero
+      perform hero.pushtags[WepProf.?]]]></eval>
+    <exprreq message="This is not a valid feat to choose!"><![CDATA[@ispick <> 0]]></exprreq>
+    </thing>
   </document>
