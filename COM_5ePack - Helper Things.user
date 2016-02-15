@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <loadonce key="COM_5ePack - Helper Things"/>
+
+  <thing id="meh5C" name="5e Community Mechanic" description="This mechanic holds special bootstraps called Configurable&apos;s that allow for adding &quot;new&quot; tabs into Hero Lab.  Note that a Mechanic once made is ALWAYS live on the Hero allow one to bootsrap other Things or run a script always on every character." compset="Mechanics">
+    <bootstrap thing="cfg5CFeatB"></bootstrap>
+    </thing>
+
+  <thing id="cfg5CFeatB" name="Feats, Bonus" description="This allows for the new tab &quot;Feats, Bonus&quot; to appear in HL once the field cfgMaxF1 is greater than zero.  In addition this only works because I have bootstrapped this &quot;Thing&quot; to a new &quot;Mechanics&quot; that I created." compset="Configure" uniqueness="unique">
+    <tag group="fExclude" tag="fChaInc1"/>
+    <tag group="fExclude" tag="fChaInc2"/>
+    <tag group="fExclude" tag="fConInc1"/>
+    <tag group="fExclude" tag="fConInc2"/>
+    <tag group="fExclude" tag="fDexInc1"/>
+    <tag group="fExclude" tag="fDexInc2"/>
+    <tag group="fExclude" tag="fIntInc1"/>
+    <tag group="fExclude" tag="fIntInc2"/>
+    <tag group="fExclude" tag="fStrInc1"/>
+    <tag group="fExclude" tag="fStrInc2"/>
+    <tag group="fExclude" tag="fWisInc1"/>
+    <tag group="fExclude" tag="fWisInc2"/>
+    <tag group="fExclude" tag="fHdAbilImp"/>
+    <tag group="fExclude" tag="fHdFeat"/>
+    </thing>
+
+
+  <thing id="p5CBonusFt" name="Feats, Bonus" description="This adjustment allows you to give bonus feats to your character.  Once you have increased the amount above 1 the &quot;Feats, Bonus&quot; tab will appear allowing you to select your bonus feat." compset="InPlay">
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now & leave
+      doneif (field[pIsOn].value = 0)
+
+      ~ Increase or decrease the Max Feat One field on the new
+      ~ Configurable "cfg5CFeatB".
+      hero.childfound[cfg5CFeatB].field[cfgMaxF1].value += field[pAdjust].value]]></eval>
+    </thing>
+    
+  <thing id="p5CRaceFt" name="Feats, Race" description="This adjustment allows you to give bonus feats to your character that will appear on the Race tab." compset="InPlay">
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now & leave
+      doneif (field[pIsOn].value = 0)
+     
+      ~ Increase or decrease the Max Race Feat value
+      #resmax[resFeatRac] += field[pAdjust].value]]></eval>
+    </thing>
+
+    
+  <!-- Damage Types -->
+  <thing id="dt5CTrap" name="Traps" compset="DamageType"></thing>
+
+  <!-- Base 4 Elemental Type Selction Helpers -->
+  <thing id="sel5CEleAc" name="Acid" description="Base Elemental Type" compset="SelectHelp">
+    <tag group="Selection" tag="EnergyBase" name="Energy Type (Base 4)"/>
+    <tag group="5CElemType" tag="Acid"/>
+    </thing>
+  <thing id="sel5CEleCo" name="Cold" description="Base Elemental Type" compset="SelectHelp">
+    <tag group="Selection" tag="EnergyBase" name="Energy Type (Base 4)"/>
+    <tag group="5CElemType" tag="Cold"/>
+    </thing>
+  <thing id="sel5CEleLi" name="Lightning" description="Base Elemental Type" compset="SelectHelp">
+    <tag group="Selection" tag="EnergyBase" name="Energy Type (Base 4)"/>
+    <tag group="5CElemType" tag="Lightning"/>
+    </thing>
+  <thing id="sel5CEleTh" name="Thunder" description="Base Elemental Type" compset="SelectHelp">
+    <tag group="Selection" tag="EnergyBase" name="Energy Type (Base 4)"/>
+    <tag group="5CElemType" tag="Thunder"/>
+    </thing>
+
+
+  </document>

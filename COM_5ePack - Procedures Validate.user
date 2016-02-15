@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document signature="Hero Lab Data">
+  <loadonce key="COM_5ePack - Procedures Validate"/>
+  <fileinfo>
+    <info_author><![CDATA[
+      Tim Shadow
+      Email: ShadowChemosh@yahoo.com
+    ]]>
+    </info_author>
+    <info_history><![CDATA[
+      Janary 14, 2016
+      -Added new procedure "5CHasSpell" to check to see if the character can cast any spells including Spell-Like abilites.
+      ]]>
+    </info_history>
+  </fileinfo>
+
+  <procedure id="5CHasSpell" scripttype="validate"><![CDATA[
+    ~ This procedure tests if a character has a specific spell and sets the valid field
+    ~ ===How to use this Procedure===
+    ~ var HasSpells as number
+    ~ Call 5CHasSpell
+    ~ @valid = HasSpells
+
+    var HasSpells as number
+    var S2Spells as number
+
+    ~ Init fields here
+    HasSpells = 0
+    S2Spells = 0
+    
+    ~ Changed logic her to be more universal. Instead of hardcoding
+    ~ to specific classes instead see if a class can "cast spells".
+    S2Spells += hero.childfound[SpellSlots].field[FinalSpLev].value
+
+    ~ Check to see if the character has any Spell-like abilites active
+    S2Spells += hero.tagcount[Hero.HasSpLike]
+
+
+    ~ If we have any spells or Spell-like abilities then we are valid
+    if (S2Spells > 0) then
+      HasSpells = 1
+    endif
+    ]]>
+  </procedure>
+
+</document>
