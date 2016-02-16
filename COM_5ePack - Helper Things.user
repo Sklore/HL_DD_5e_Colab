@@ -23,6 +23,83 @@
     <tag group="fExclude" tag="fHdFeat"/>
     </thing>
 
+  <thing id="cfg5CMagIn" name="Magic Initiate" description="Helper Thing for the feat Magic Initiate." compset="Configure" uniqueness="unique">
+    <tag group="Helper" tag="SpCountLev"/>
+    <tag group="Helper" tag="ClsCastLev"/>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ If no spell class tags, do nothing & 
+      doneif (tagcount[sClass.?] = 0)
+
+      ~ NOTE: I am thinking I found more bugs in 5e game system as 
+      ~       I shouldn't have to do this to get spells to appear
+      ~       on the "Spells" tab.
+
+      ~ Generate SpellSort and SpellType tags
+      perform pulltags[sClass.?,SpellSort]
+      perform pulltags[sClass.?,SpellType]
+
+      ~ Loop through all the spell picks added on the "Magic Initiate"
+      ~ Configurable tab.
+      foreach pick in hero from BaseSpell where "CfgSpell.cfg5CMagIn"
+        
+        ~ Set the SpellSort and SpellType tags which are needed
+        ~ to get spells to display correctly on the Spells tab
+        perform eachpick.pushtags[SpellSort.?]
+        perform eachpick.pushtags[SpellType.?]
+        
+        ~ Pull the spell level selected and the deny tags so that 
+        ~ we can set the message and selection list corretly.
+        perform eachpick.pulltags[sLevel.?]
+        perform eachpick.pulltags[ClsDenySp.?]        
+        
+        ~ If we are a cantrip add the helper cantrip tag
+        if (eachpick.tagis[sLevel.0] = 1) then
+          perform eachpick.assign[Helper.Cantrip]  
+
+        ~.. otherwise we are level 1+ spell so make us a 
+        ~   racial spell so we can limit its use to 1/longrest
+        else
+          perform eachpick.assign[Helper.SpellLike]
+          perform eachpick.assign[Usage.LongRest]
+          eachpick.field[trkMax].value += 1
+        endif
+      nexteach
+      
+      ~ Set the spell selection expression to only be the selected class
+      field[cfgAllwSp1].text &= " & (sLevel.0|sLevel.1) & (" & tagids[sClass.?,"|"] & ")" 
+      
+      ~ If we have Class Deny Spells then remove those from the list. This 
+      ~ prevents the same spell from being added twice. This way we act
+      ~ like the normal spell portal does.
+      if (tagcount[ClsDenySp.?] <> 0) then
+        field[cfgAllwSp1].text &= " & !(" & tagids[ClsDenySp.?,"|"] & ")"
+      endif
+      ]]></eval>
+    <eval phase="Render" priority="99999999999" index="2"><![CDATA[     
+      var nLevel0 as number
+      var nLevel1 as number
+      
+      ~ Calculate the number of spells selected
+      nLevel0 = 2 - tagcount[sLevel.0]
+      nLevel1 = 1 - tagcount[sLevel.1]
+      
+      ~ Set the correct message
+      If (nLevel0 + nLevel1 > 0) then
+        field[cfgAdTxSp1].text = "Add " & nLevel0 & " Cantrips and " & nLevel1 & " 1st-level spell"
+      
+      ElseIf (nLevel0 + nLevel1 = 0) then
+        field[cfgAdTxSp1].text = "No more spells to add."
+      
+      ElseIf (nLevel0 < 0) then
+        field[cfgAdTxSp1].text = "You have " & tagcount[sLevel.0] & " of 2 cantrips allowed."
+        
+      ElseIf (nLevel1 < 0) then
+        field[cfgAdTxSp1].text = "You have " & tagcount[sLevel.1] & " of one 1st-level spell allowed."
+      Endif
+      ]]></eval>
+    </thing>
+
+
 
   <thing id="p5CBonusFt" name="Feats, Bonus" description="This adjustment allows you to give bonus feats to your character.  Once you have increased the amount above 1 the &quot;Feats, Bonus&quot; tab will appear allowing you to select your bonus feat." compset="InPlay">
     <eval phase="PreLevel" priority="10000"><![CDATA[
