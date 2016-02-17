@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="p5CBonusFt" name="Feats, Bonus" description="This adjustment allows you to give bonus feats to your character.  Once you have increased the amount above 1 the &quot;Feats, Bonus&quot; tab will appear allowing you to select your bonus feat." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now & leave
+      doneif (field[pIsOn].value = 0)
+
+      ~ Increase or decrease the Max Feat One field on the new
+      ~ Configurable "cfg5CFeatB".
+      hero.childfound[cfg5CFeatB].field[cfgMaxF1].value += field[pAdjust].value]]></eval>
+    </thing>
+  <thing id="p5CRaceFt" name="Feats, Race" description="This adjustment allows you to give bonus feats to your character that will appear on the Race tab." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now & leave
+      doneif (field[pIsOn].value = 0)
+     
+      ~ Increase or decrease the Max Race Feat value
+      #resmax[resFeatRac] += field[pAdjust].value]]></eval>
+    </thing>
+  <thing id="p5CWepDT" name="Weapon, Damage Type" description="Select this adjustment to be able to change the type of damage a weapon does. In example change a greatsword slashing damage to cold or bludgeoning damage type." compset="InPlay">
+    <fieldval field="pUsePicks2" value="1"/>
+    <fieldval field="pCandExpr2" value="component.DamageType"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <tag group="Adjustment" tag="YourWep"/>
+    <eval phase="PreLevel" priority="11000" index="2"><![CDATA[
+        ~ Set custom expression to "Picks"
+        field[pUsePicks].value = 1
+        ~ Set custom expression to "All Things on Hero"
+        field[pUsePicks2].value = 0]]></eval>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now & leave
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing chosen get out now!
+      doneif (field[pChosen].ischosen = 0)
+      doneif (field[pChosen2].ischosen = 0)
+     
+      perform field[pChosen2].chosen.pulltags[DamTypeOvr.?]
+      perform field[pChosen].chosen.pushtags[DamTypeOvr.?]]]></eval>
+    </thing>
+  </document>
