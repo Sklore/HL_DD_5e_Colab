@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="w5CImMeWe" name="Improvised Melee Weapon" description="An improvised weapon deals 1d4 damage (damage type is determined by the object itself).\n\n{b}Note:{/b} You can adjust the damage die of this weapon by going to the &quot;Adjust&quot; tab and using the &quot;Weapon Dmaage Die Size&quot; adjustment.  In addition you can use the &quot;Weapon, Damage Type&quot; adjustment to change the damage type." compset="Weapon">
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="4"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="DamageType" tag="dtBludgeon"/>
+    <tag group="wProfReq" tag="ImprovMel"/>
+    <tag group="wCategory" tag="Melee"/>
+    <tag group="EquipType" tag="Metal"/>
+    <tag group="EquipType" tag="Wood"/>
+    </thing>
+  <thing id="w5CImRaWe" name="Improvised Range Weapon" description="An improvised weapon deals 1d4 damage (damage type is determined by the object itself).\n\n{b}Note:{/b} You can adjust the damage die of this weapon by going to the &quot;Adjust&quot; tab and using the &quot;Weapon Dmaage Die Size&quot; adjustment.  In addition you can use the &quot;Weapon, Damage Type&quot; adjustment to change the damage type." compset="Weapon">
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="4"/>
+    <fieldval field="wRangeNorm" value="20"/>
+    <fieldval field="wRangeLong" value="60"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="EquipType" tag="Metal"/>
+    <tag group="wCategory" tag="RangeThrow"/>
+    <tag group="wProfReq" tag="ImprovRng"/>
+    <tag group="DamageType" tag="dtBludgeon"/>
+    <tag group="EquipType" tag="Wood"/>
+    </thing>
+  <thing id="i5CImpWep" name="Improvised Weapon" description="Many times an improvised weapon is similar enough to a normal weapon that a GM may allow a character to be proficient in its use. In example a bar stool could be treated as a greatclub.\n\n{b}Note:{/b} This special weapon allows you to turn any normal weapon into a improvised weapon.  You can for example select Greatclub and then set the custom name to &quot;Bar Stool&quot;." compset="MagicWep">
+    <fieldval field="miTypeDet" value="any"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Improvised Weapon ("
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text) & ")"
+      else
+        field[livename].text &= ")"
+        endif
+      field[shortname].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <eval phase="First" priority="1000" index="2">perform gizmo.findchild[BaseWep].setfocus
+      doneif (state.isfocus = 0)
+ 
+      ~ If we are a melee weapon set the Improvised Melee tag
+      if (tagis[wCategory.Melee] = 1) then
+        perform assign[wProfReq.ImprovMel]
+
+      ~.. If ranged weapon set the improvised Range tag
+      elseif (tagis[wCategory.Melee] = 1) then
+        perform assign[wProfReq.ImprovRng]
+      endif</eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  </document>
