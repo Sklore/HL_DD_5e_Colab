@@ -108,20 +108,20 @@
       perform pulltags[sClass.?,SpellSort]
       perform pulltags[sClass.?,SpellType]
 
-      ~ Loop through all the spell picks added on the "Magic Initiate"
+      ~ Loop through all the spell picks added on the "Ritual Caster"
       ~ Configurable tab.
       foreach pick in hero from BaseSpell where "CfgSpell.cfg5CRitCa"
-        
+
         ~ Set the SpellSort and SpellType tags which are needed
         ~ to get spells to display correctly on the Spells tab
         perform eachpick.pushtags[SpellSort.?]
         perform eachpick.pushtags[SpellType.?]
-        
+
         ~ Pull the spell level selected and the deny tags so that 
         ~ we can set the message and selection list corretly.
         perform eachpick.pulltags[sLevel.?]
         perform eachpick.pulltags[ClsDenySp.?]        
-        
+
         ~ If we are a cantrip add the helper cantrip tag
         if (eachpick.tagis[sLevel.?] = 1) then
           perform eachpick.assign[Helper.Cantrip]  
@@ -134,10 +134,11 @@
           eachpick.field[trkMax].value += 1
         endif
       nexteach
-      
-      ~ Set the spell selection expression to only be the selected class
-      field[cfgAllwSp1].text &= " & (sLevel.1) &  (" & tagids[sClass.?,"|"] & ")"
-      
+
+~ Set the spell selection expression to the selected class, Level 1 Ritual Spells
+~ and not Helper.Helper spells.
+field[cfgAllwSp1].text &= " & sLevel.1 & Helper.RitualSpel & !Helper.Helper & (" & tagids[sClass.?,"|"] & ")"
+
       ~ If we have Class Deny Spells then remove those from the list. This 
       ~ prevents the same spell from being added twice. This way we act
       ~ like the normal spell portal does.
@@ -146,17 +147,17 @@
       endif]]></eval>
     <eval phase="Render" priority="99999999999" index="2"><![CDATA[     
       var nLevel1 as number
-      
+
       ~ Calculate the number of spells selected
       nLevel1 = 2 - tagcount[sLevel.1]
-      
+
       ~ Set the correct message
       If (nLevel1 > 0) then
         field[cfgAdTxSp1].text = "Add " & nLevel1 & " 1st-level spell"
-      
+
       ElseIf (nLevel1 = 0) then
         field[cfgAdTxSp1].text = "No more spells to add."
-            
+
       ElseIf (nLevel1 < 0) then
         field[cfgAdTxSp1].text = "You have " & tagcount[sLevel.1] & " of 2 1st-level spell allowed."
       Endif]]></eval>
