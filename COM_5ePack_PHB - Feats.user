@@ -362,9 +362,37 @@ Prerequisite: Proficiency with medium armor</comment>
       ~ Find the associated ability score and increase it by 1
       hero.findchild[BaseAttr,field[usrChosen1].chosen.tagids[SaveAbil.?]].field[aStartMod].value += 1]]></eval>
     </thing>
-  <thing id="ft5CRituaC" name="Ritual Caster" description="Prerequisite: Intelligence or Wisdom 13 or higher\n\nYou have learned a number of spells that you can cast as rituals. These spells are written in a ritual book, which you must have in hand while casting one of them.\n\nWhen you choose this feat, you acquire a ritual book holding two 1st-level spells of your choice. Choose one of the following classes: bard, cleric, druid, sorcerer, warlock, or wizard. You must choose your spells from that class’s spell list, and the spells you choose must have the ritual tag. The class you choose also determines your spellcasting ability for these spells: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard. \n\nIf you come across a spell in written form, such as a magical spell scroll or a w izard’s spellbook, you might be able to add it to your ritual book. The spell must be on the spell list for the class you chose, the spell’s level can be no higher than half your level (rounded up), and it must have the ritual tag. The process of copying the spell into your ritual book takes 2 hours per level of the spell, and costs 50 gp per level. The cost represents material components you expend as you experiment with the spell to master it, as well as the fine inks you need to record it." compset="Feat" summary="You have learned a number of spells that you can cast as rituals." uniqueness="useronce">
+  <thing id="ft5CRituaC" name="Ritual Caster" description="Prerequisite: Intelligence or Wisdom 13 or higher\n\nYou have learned a number of spells that you can cast as rituals. These spells are written in a ritual book, which you must have in hand while casting one of them.\n\nWhen you choose this feat, you acquire a ritual book holding two 1st-level spells of your choice. Choose one of the following classes: bard, cleric, druid, sorcerer, warlock, or wizard. You must choose your spells from that class’s spell list, and the spells you choose must have the ritual tag. The class you choose also determines your spellcasting ability for these spells: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard. \n\nIf you come across a spell in written form, such as a magical spell scroll or a wizard’s spellbook, you might be able to add it to your ritual book. The spell must be on the spell list for the class you chose, the spell’s level can be no higher than half your level (rounded up), and it must have the ritual tag. The process of copying the spell into your ritual book takes 2 hours per level of the spell, and costs 50 gp per level. The cost represents material components you expend as you experiment with the spell to master it, as well as the fine inks you need to record it." compset="Feat" summary="You have learned a number of spells that you can cast as rituals." uniqueness="useronce">
+    <comment><![CDATA[<tag group="Helper" tag="RitualSpel"/>]]></comment>
+    <fieldval field="abValue5" value="4"/>
+    <fieldval field="usrCandid1" value="component.Class &amp; CasterSrc.? &amp; Helper.FullCaster"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <bootstrap thing="cfg5CRitCa"></bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]
+      
+      ~ Get the ability score and the Spell Class tags
+      perform field[usrChosen1].chosen.pulltags[PrimeAbil.?,StandardDC]
+      perform field[usrChosen1].chosen.pulltags[sClass.?]
+
+      ~ Set the ability score and spell tags onto the configurable
+      perform hero.childfound[cfg5CRitCa].pushtags[StandardDC.?]
+      perform hero.childfound[cfg5CRitCa].pushtags[sClass.?]
+
+      ~ Set the total number of spells allowed (ie 2 which is .5 for each
+      ~ cantrip and 1 for 1st level spell).
+      hero.childfound[cfg5CRitCa].field[cfgMaxSp1].value += field[abValue5].value
+      
+      ~ Remove the Staandard DC tag from this feat
+      perform delete[StandardDC.?]]]></eval>
     </thing>
   <thing id="ft5CSavagA" name="Savage Attacker" description="Once per turn when you roll damage for a melee weapon attack, you can reroll the weapon’s damage dice and use either total." compset="Feat" summary="Once per turn when you roll damage for a melee weapon attack, you can reroll the weapon’s damage dice and use either total." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
