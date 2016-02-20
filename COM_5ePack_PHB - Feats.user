@@ -258,9 +258,34 @@ Prerequisite: Proficiency with medium armor</comment>
       ~ Remove the Staandard DC tag from this feat
       perform delete[StandardDC.?]]]></eval>
     </thing>
-  <thing id="ft5CMartiA" name="Martial Adept" description="You learn two maneuvers of your choice from among those available to the Battle Master archetype in the fighter class. If a maneuver you use requires your target to make a saving throw to resist the maneuver’s effects, the saving throw DC equals 8 + your proficiency bonus + your Strength or Dexterity modifier (your choice).\n• If you already have superiority dice, you gain one more; otherwise, you have one superiority die, which is a d6. This die is used to fuel your maneuvers. A superiority die is expended when you use it. You regain your expended superiority d ice when you finish a short or long rest." compset="Feat" uniqueness="useronce">
+  <thing id="ft5CMartiA" name="Martial Adept" description="You learn two maneuvers of your choice from among those available to the Battle Master archetype in the fighter class. If a maneuver you use requires your target to make a saving throw to resist the maneuver’s effects, the saving throw DC equals 8 + your proficiency bonus + your Strength or Dexterity modifier (your choice).\n• If you already have superiority dice, you gain one more; otherwise, you have one superiority die, which is a d6. This die is used to fuel your maneuvers. A superiority die is expended when you use it. You regain your expended superiority d ice when you finish a short or long rest." compset="Feat" summary="Gain 2 maneuvers from the Battle Master archetype." uniqueness="useronce">
+    <fieldval field="abValue" value="1"/>
+    <fieldval field="abValue2" value="6"/>
+    <fieldval field="trkMax" value="1"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="Battle"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="LvNamePar" tag="DieCntVal"/>
+    <tag group="LvNamePar" tag="AppValue3"/>
+    <tag group="LvNamePar" tag="SignAppVal"/>
+    <tag group="LvNamePar" tag="DieSizVal2"/>
+    <bootstrap thing="cfg5CMarAd"></bootstrap>
+    <eval phase="PostLevel" priority="15000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ If we already have the Superiority class ability increase
+      ~ the number of dice by 1.
+      if (hero.childlives[c5CFtrSupD] + hero.childfound[c5CFtrSupD].tagis[Helper.ShowSpec] = 2) then
+         #trkmax[c5CFtrSupD] += 1
+
+      ~..Show ourself on the In-Play tab
+      else
+         perform assign[User.Tracker]
+      endif]]></eval>
     </thing>
   <thing id="ft5CMedArM" name="Medium Armor Master" description="Wearing medium armor doesn’t impose disadvantage on your Dexterity (Stealth) checks.\n• When you wear medium armor, you can add 3, rather than 2, to your AC if you have a Dexterity of 16 or higher.\n\nPrerequisite: Proficiency with medium armor" compset="Feat" uniqueness="useronce">
     <usesource source="5ePHBCP"/>
@@ -443,8 +468,7 @@ Prerequisite: Proficiency with medium armor</comment>
       ~ Push all tool proficiency tags to the hero
       perform hero.pushtags[ProfTool.?]
       ~ Push all skill proficiency tags to the hero
-      perform hero.pushtags[ProfSkill.?]
-      ]]></eval>
+      perform hero.pushtags[ProfSkill.?]]]></eval>
     </thing>
   <thing id="f5CSkille1" name="Skilled" description="You gain proficiency in any combination of three skills or tools of your choice." compset="Feat" summary="You gain proficiency in any combination of three skills or tools of your choice." uniqueness="useronce">
     <comment><![CDATA[Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable. This is not currently the case on the "Class" tab. I have reported this bug to LW and hopefully its fixed in a future update.]]></comment>
@@ -476,8 +500,7 @@ Prerequisite: Proficiency with medium armor</comment>
       ~ Push all tool proficiency tags to the hero
       perform hero.pushtags[ProfTool.?]
       ~ Push all skill proficiency tags to the hero
-      perform hero.pushtags[ProfSkill.?]
-      ]]></eval>
+      perform hero.pushtags[ProfSkill.?]]]></eval>
     </thing>
   <thing id="ft5CSkulk" name="Skulker" description="You can try to hide when you are lightly obscured from the creature from which you are hiding.\n• When you are hidden from a creature and miss it with a ranged weapon attack, making the attack doesn&apos;t reveal your position.\n• Dim light doesn’t impose disadvantage on your Wisdom (Perception) checks relying on sight.\n\nPrerequisite: Dexterity 13 or higher" compset="Feat" uniqueness="useronce">
     <usesource source="5ePHBCP"/>
