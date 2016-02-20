@@ -230,8 +230,9 @@ Prerequisite: Proficiency with medium armor</comment>
   <thing id="ft5CMagIni" name="Magic Initiate" description="You gain two cantrips and one 1st-level spell from the selected full caster class. Your spellcasting ability is the same as the class you selected.\n\n{b}Note:{/b} Once you select the class a new tab {b}Magic Initiate{/b} will appear allowing you to select your two cantrips and one 1st-level spell." compset="Feat" uniqueness="useronce">
     <fieldval field="usrCandid1" value="component.Class &amp; CasterSrc.? &amp; Helper.FullCaster"/>
     <fieldval field="abValue5" value="2"/>
-    <tag group="Helper" tag="ShowSpec"/>
+    <usesource source="5ePHBCP"/>
     <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="ShowSpec"/>
     <bootstrap thing="cfg5CMagIn"></bootstrap>
     <eval phase="First" priority="10000"><![CDATA[
       ~ If we're disabled, do nothing & 
@@ -422,7 +423,7 @@ Prerequisite: Proficiency with medium armor</comment>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
-  <thing id="ft5CSkille" name="Skilled" description="You gain proficiency in any combination of three skills or tools of your choice." compset="Feat" summary="You gain proficiency in any combination of three skills or tools of your choice." uniqueness="useronce">
+  <thing id="ft5CSkille" name="Skilled" description="You gain proficiency in any combination of three skills or tools of your choice.\n\nAdd Tool proficiencys using the Skills tab. \nAdd skill proficiency using the Adjustments &gt; Proficient Skill feature. \n\nNote: This will be automated in the next SRD release." compset="Feat" summary="You gain proficiency in any combination of three skills or tools of your choice." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
@@ -431,14 +432,12 @@ Prerequisite: Proficiency with medium armor</comment>
     <tag group="Helper" tag="ShowSpec"/>
     <exprreq message="Dexterity 13 required. "><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
-  <thing id="ft5CSpellS" name="Spell Sniper" description="When you cast a spell that requires you to make an attack roll, the spell’s range is doubled.\n• Your ranged spell attacks ignore half cover and three-quarters cover.\n• You learn one cantrip that requires an attack roll. Choose the cantrip from the bard, cleric, druid, sorcerer, warlock, or wizard spell list. Your spellcasting ability for this cantrip depends on the spell list you chose from: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard.\n\nPrerequisite: The ability to cast at least one spell" compset="Feat" uniqueness="useronce">
-    <usesource source="5ePHBCP"/>
-    <tag group="Helper" tag="ShowSpec"/>
-    </thing>
   <thing id="ft5CTaverB" name="Tavern Brawler" description="Increase your Strength or Constitution score by 1, to a maximum of 20.\n• You are proficient with improvised weapons.\n• Your unarmed strike uses a d4 for damage.\n• When you hit a creature with an unarmed strike or an improvised weapon on your turn, you can use a bonus action to attempt to grapple the target." compset="Feat" uniqueness="useronce">
-    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aCon)"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aCON)"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="WepProf" tag="w5CImMeWe" name="w5CImMeWe" abbrev="w5CImMeWe"/>
+    <tag group="WepProf" tag="w5CImRaWe" name="w5CImRaWe" abbrev="w5CImRaWe"/>
     <bootstrap thing="wUnarmed">
       <assignval field="wDieCount" value="1"/>
       <assignval field="wDieSize" value="4"/>
@@ -450,7 +449,10 @@ Prerequisite: Proficiency with medium armor</comment>
       doneif (field[usrChosen1].ischosen = 0)
       
       ~ Increase the selected ability score by 1
-      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
+      field[usrChosen1].chosen.field[aStartMod].value += 1
+
+perform hero.pushtags[WepProf.w5CImMeWe]
+perform hero.pushtags[WepProf.w5CImRaWe]]]></eval>
     </thing>
   <thing id="ft5CTough" name="Tough" description="Your hit point maximum increases by an amount equal to twice your level when you gain this feat. Whenever you gain a level thereafter, your hit point maximum increases by an additional 2 hit points." compset="Feat" summary="Your hit point maximum increases by an amount equal to twice your level when you gain this feat. Whenever you gain a level thereafter, your hit point maximum increases by an additional 2 hit points." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
@@ -559,5 +561,44 @@ Prerequisite: Proficiency with medium armor</comment>
       ~ Now push both tags to the hero
       perform hero.pushtags[WepProf.?]]]></eval>
     <exprreq message="This is not a valid feat to choose!"><![CDATA[@ispick <> 0]]></exprreq>
+    </thing>
+  <thing id="f5CSpeSnip" name="Spell Sniper" description="When you cast a spell that requires you to make an attack roll, the spell’s range is doubled.\n• Your ranged spell attacks ignore half cover and three-quarters cover.\n• You learn one cantrip that requires an attack roll. Choose the cantrip from the bard, cleric, druid, sorcerer, warlock, or wizard spell list. Your spellcasting ability for this cantrip depends on the spell list you chose from: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard.\n\nPrerequisite: The ability to cast at least one spell" compset="Feat" uniqueness="useronce">
+    <fieldval field="usrCandid1" value="component.Class &amp; CasterSrc.? &amp; Helper.FullCaster"/>
+    <fieldval field="abValue5" value="2"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="cfg5CSpeSn"></bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]
+      
+      ~ Get the ability score and the Spell Class tags
+      perform field[usrChosen1].chosen.pulltags[PrimeAbil.?,StandardDC]
+      perform field[usrChosen1].chosen.pulltags[sClass.?]
+
+      ~ Set the ability score and spell tags onto the configurable
+      perform hero.childfound[cfg5CSpeSn].pushtags[StandardDC.?]
+      perform hero.childfound[cfg5CSpeSn].pushtags[sClass.?]
+
+      ~ Set the total number of spells allowed (ie 2 which is .5 for each
+      ~ cantrip and 1 for 1st level spell).
+      hero.childfound[cfg5CSpeSn].field[cfgMaxSp1].value += field[abValue5].value
+      
+      ~ Remove the Staandard DC tag from this feat
+      perform delete[StandardDC.?]]]></eval>
+    <prereq message="You must be able to cast at least one spell. ">
+      <validate><![CDATA[
+        ~ Test that the character has at least one spell
+        ~ or spell-like ability. &
+        var HasSpells as number
+        Call 5CHasSpell
+        @valid = HasSpells]]></validate>
+      </prereq>
     </thing>
   </document>
