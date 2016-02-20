@@ -63,7 +63,7 @@
       nexteach
       
       ~ Set the spell selection expression to only be the selected class
-      field[cfgAllwSp1].text &= " & (sLevel.0|sLevel.1) & (" & tagids[sClass.?,"|"] & ")" 
+      field[cfgAllwSp1].text &= " & (sLevel.0|sLevel.1) & (" & tagids[sClass.?,"|"] & ") & !Helper.Helper" 
       
       ~ If we have Class Deny Spells then remove those from the list. This 
       ~ prevents the same spell from being added twice. This way we act
@@ -94,7 +94,7 @@
       Endif]]></eval>
     </thing>
   <thing id="cfg5CRitCa" name="Ritual Caster" description="Helper Thing for the feat Ritual Caster." compset="Configure" uniqueness="unique">
-    <tag group="Helper" tag="SpCountLev"/>
+    <fieldval field="cfgSpell1" value="Rituals"/>
     <tag group="Helper" tag="ClsCastLev"/>
     <eval phase="Final" priority="50000"><![CDATA[
       ~ If no spell class tags, do nothing & 
@@ -122,45 +122,29 @@
         perform eachpick.pulltags[sLevel.?]
         perform eachpick.pulltags[ClsDenySp.?]        
 
-        ~ If we are a cantrip add the helper cantrip tag
-        if (eachpick.tagis[sLevel.?] = 1) then
-          perform eachpick.assign[Helper.Cantrip]  
-
-        ~.. otherwise we are level 1+ spell so make us a 
-        ~   racial spell so we can limit its use to 1/longrest
-        else
-          perform eachpick.assign[Helper.SpellLike]
-          perform eachpick.assign[Usage.LongRest]
-          eachpick.field[trkMax].value += 1
-        endif
+        ~ Set these as Ritual Spell-like spells so we display
+        ~ on the Spells tab.
+        perform eachpick.assign[Helper.SpellLike]       
+        eachpick.field[livename].text = eachpick.field[thingname].text & " (Ritual)"
+        
       nexteach
 
-~ Set the spell selection expression to the selected class, Level 1 Ritual Spells
-~ and not Helper.Helper spells.
-field[cfgAllwSp1].text &= " & sLevel.1 & Helper.RitualSpel & !Helper.Helper & (" & tagids[sClass.?,"|"] & ")"
+      ~ Set the spell selection expression to the selected class, Level 1 Ritual Spells
+      ~ and not Helper.Helper spells.
+      field[cfgAllwSp1].text &= " & Helper.RitualSpel & !Helper.Helper & (" & tagids[sClass.?,"|"] & ")"
 
       ~ If we have Class Deny Spells then remove those from the list. This 
       ~ prevents the same spell from being added twice. This way we act
       ~ like the normal spell portal does.
       if (tagcount[ClsDenySp.?] <> 0) then
         field[cfgAllwSp1].text &= " & !(" & tagids[ClsDenySp.?,"|"] & ")"
-      endif]]></eval>
-    <eval phase="Render" priority="99999999999" index="2"><![CDATA[     
-      var nLevel1 as number
-
-      ~ Calculate the number of spells selected
-      nLevel1 = 2 - tagcount[sLevel.1]
-
-      ~ Set the correct message
-      If (nLevel1 > 0) then
-        field[cfgAdTxSp1].text = "Add " & nLevel1 & " 1st-level spell"
-
-      ElseIf (nLevel1 = 0) then
-        field[cfgAdTxSp1].text = "No more spells to add."
-
-      ElseIf (nLevel1 < 0) then
-        field[cfgAdTxSp1].text = "You have " & tagcount[sLevel.1] & " of 2 1st-level spell allowed."
-      Endif]]></eval>
+      endif
+      
+      ~ We have no "limit" of spells that can be added.
+      ~ So each time we select a spell increase the max to 
+      ~ to match.
+      field[cfgMaxSp1].value += tagcount[sLevel.?] 
+      field[cfgLeftSp1].value = 0]]></eval>
     </thing>
   <thing id="dt5CTrap" name="Traps" compset="DamageType"></thing>
   <thing id="sel5CEleAc" name="Acid" description="Base Elemental Type" compset="SelectHelp">
