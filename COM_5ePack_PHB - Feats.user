@@ -417,9 +417,67 @@ Prerequisite: Proficiency with medium armor</comment>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
-  <thing id="ft5CSkille" name="Skilled" description="You gain proficiency in any combination of three skills or tools of your choice.\n\nAdd Tool proficiencys using the Skills tab. \nAdd skill proficiency using the Adjustments &gt; Proficient Skill feature. \n\nNote: This will be automated in the next SRD release." compset="Feat" summary="You gain proficiency in any combination of three skills or tools of your choice." uniqueness="useronce">
+  <thing id="ft5CSkille" name="Skilled" description="You gain proficiency in any combination of three skills or tools of your choice." compset="Feat" summary="You gain proficiency in any combination of three skills or tools of your choice." uniqueness="useronce">
+    <fieldval field="usrCandid1" value="(component.BaseSkill | (component.Tool &amp; ProfTool.?)) &amp; !Helper.Helper"/>
+    <fieldval field="usrCandid2" value="(component.BaseSkill | (component.Tool &amp; ProfTool.?)) &amp; !Helper.Helper"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <bootstrap thing="f5CSkille1"></bootstrap>
+    <eval phase="First" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      doneif (field[usrChosen2].ischosen = 0)
+      
+      ~ Pull chosen 1 Proficiency tags to ourself
+      perform field[usrChosen1].chosen.pulltags[ProfTool.?]
+      perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
+      
+      ~ Pull chosen 2 Proficiency tags to ourself
+      perform field[usrChosen2].chosen.pulltags[ProfTool.?]
+      perform field[usrChosen2].chosen.pulltags[ProfSkill.?]
+     
+      ~ Push all tool proficiency tags to the hero
+      perform hero.pushtags[ProfTool.?]
+      ~ Push all skill proficiency tags to the hero
+      perform hero.pushtags[ProfSkill.?]
+      ]]></eval>
+    </thing>
+  <thing id="f5CSkille1" name="Skilled" description="You gain proficiency in any combination of three skills or tools of your choice." compset="Feat" summary="You gain proficiency in any combination of three skills or tools of your choice." uniqueness="useronce">
+    <comment><![CDATA[Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable. This is not currently the case on the "Class" tab. I have reported this bug to LW and hopefully its fixed in a future update.]]></comment>
+    <fieldval field="usrCandid1" value="(component.BaseSkill | (component.Tool &amp; ProfTool.?)) &amp; !Helper.Helper"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="First"><![CDATA[
+      ~ If we are not bootstrapped to something get out now! &
+      doneif (this.isroot = 0)
+      
+      ~ Pull the portal tag from the Thing we are bootstrapped too
+      ~ so that we correctly display in the Portal.
+      ~ NOTE: Normally this logic should not be needed. I have 
+      ~       reported the bug officially to LW so hopefully its
+      ~       officially fixed in a future update.
+      perform root.pulltags[portal.?]]]></eval>
+    <eval phase="First" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull chosen 1 Proficiency tags to ourself
+      perform field[usrChosen1].chosen.pulltags[ProfTool.?]
+      perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
+          
+      ~ Push all tool proficiency tags to the hero
+      perform hero.pushtags[ProfTool.?]
+      ~ Push all skill proficiency tags to the hero
+      perform hero.pushtags[ProfSkill.?]
+      ]]></eval>
     </thing>
   <thing id="ft5CSkulk" name="Skulker" description="You can try to hide when you are lightly obscured from the creature from which you are hiding.\n• When you are hidden from a creature and miss it with a ranged weapon attack, making the attack doesn&apos;t reveal your position.\n• Dim light doesn’t impose disadvantage on your Wisdom (Perception) checks relying on sight.\n\nPrerequisite: Dexterity 13 or higher" compset="Feat" uniqueness="useronce">
     <usesource source="5ePHBCP"/>
