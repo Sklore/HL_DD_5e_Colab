@@ -187,4 +187,27 @@ validif (field[usrChosen2].chosen.tagcount[Custom.AttrUp] < 2)]]></evalrule>
 
       #resmax[resFeatRac] += 1]]></eval>
     </thing>
+  <thing id="ra5CHumVa2" name="Variant Humans" description="Some humans have more limited ability score bonuses, exchanging them for a bonus skill proficiency and a bonus feat. Check with your DM before taking this variant." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rHuman" name="Human" abbrev="Human"/>
+    <bootstrap thing="raHumAbAlt"></bootstrap>
+    <bootstrap thing="raHumFeat"></bootstrap>
+    <eval phase="First" priority="500"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.child[RaceHelper].field[cSkillMax].value += 1
+      hero.child[RaceHelper].field[cSkCandExp].text = "TRUE"
+
+      ~overwrite the human's default +1 to everything
+      hero.child[rHuman].field[rSTR].value = 0
+      hero.child[rHuman].field[rDEX].value = 0
+      hero.child[rHuman].field[rCON].value = 0
+      hero.child[rHuman].field[rINT].value = 0
+      hero.child[rHuman].field[rWIS].value = 0
+      hero.child[rHuman].field[rCHA].value = 0]]>
+      <before name="Base Race Racial Stats"/>
+      </eval>
+    </thing>
+  <hidden id="ra5CHumVar"/>
+  <hidden id="raHumVar"/>
   </document>
