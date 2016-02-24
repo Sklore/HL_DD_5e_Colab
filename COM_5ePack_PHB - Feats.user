@@ -120,13 +120,19 @@
       hero.child[aCON].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CElemAd" name="Elemental Adept" description="Spells you cast ignore resistance to damage of the selected elemental type. In addition, when you roll damage for a spell you cast that deals damage of the selected elemental type, you can treat any 1 on a damage die as a 2." compset="Feat" summary="Ignore resistance to dmg &amp; treat dmg dice of 1 as 2." uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="acid"/>
-    <arrayval field="usrArray" index="1" value="cold"/>
-    <arrayval field="usrArray" index="2" value="fire"/>
-    <arrayval field="usrArray" index="3" value="lightning"/>
-    <arrayval field="usrArray" index="4" value="thunder"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="fShowWhat" tag="Energy"/>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Get the energy tag and place it on ourself. This
+      ~ allows other Picks to easily to test which energy
+      ~ type we selected.
+      perform field[usrChosen1].chosen.pulltags[5CElemType.?]]]></eval>
     <prereq message="You must be able to cast at least one spell. ">
       <validate><![CDATA[
         ~ Test that the character has at least one spell
