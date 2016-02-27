@@ -16,4 +16,50 @@
       <assignval field="trkMax" value="1"/>
       </bootstrap>
     </thing>
+  <thing id="r5CAasimar" name="Aasimar" compset="Race">
+    <fieldval field="rCHA" value="2"/>
+    <fieldval field="rWIS" value="1"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="SplAttr" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <bootstrap thing="lCelestial"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="ra5CAaCeLe"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CAaResi"></bootstrap>
+    </thing>
+  <thing id="ra5CAaResi" name="Celestial Resistance" description="You have resistance to necrotic damage and radiant damage." compset="RaceSpec">
+    <usesource source="5eDMGCP"/>
+    <tag group="DamageRes" tag="dtRadiant" name="Radiant" abbrev="Radiant"/>
+    <tag group="DamageRes" tag="dtNecrotic" name="Necrotic" abbrev="Necrotic"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.pushtags[DamageRes.?]]]></eval>
+    </thing>
+  <thing id="ra5CAaCeLe" name="Celestial Legacy" description="You know the {i}light{/i} cantrip. Once you reach 3rd level , you can cast the {i}lesser restoration{/i} spell once with this trait, and you regain the ability to do so when you finish a long rest. Once you reach 5th level, you can cast the {i}daylight{/i} spell once with this trait as a 3rd-level spell, and you regain the ability to do so when you finish a long rest. Charisma is your spellcasting ability for these spells." compset="RaceSpec">
+    <usesource source="5eDMGCP"/>
+    <bootstrap thing="spDaylight">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:AbReplace.ra5CAaCeLe = 0) & (count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLessRest">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:AbReplace.ra5CAaCeLe = 0) & (count:Classes.? >= 3)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLight">
+      <containerreq phase="First" priority="2500">count:AbReplace.ra5CAaCeLe = 0</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    </thing>
   </document>
