@@ -89,6 +89,28 @@
     <tag group="sDuration" tag="Instant"/>
     </thing>
 
+  <thing id="f5CSkille1" name="Deprecated - Skilled" description="You gain proficiency in any combination of three skills or tools of your choice." compset="Feat" summary="You gain proficiency in any combination of three skills or tools of your choice." uniqueness="useronce">
+    <comment><![CDATA[Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable. This is not currently the case on the "Class" tab. I have reported this bug to LW and hopefully its fixed in a future update.]]></comment>
+    <fieldval field="usrCandid1" value="(component.BaseSkill | (component.Tool &amp; ProfTool.?)) &amp; !Helper.Helper"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="First" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull chosen 1 Proficiency tags to ourself
+      perform field[usrChosen1].chosen.pulltags[ProfTool.?]
+      perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
+          
+      ~ Push all tool proficiency tags to the hero
+      perform hero.pushtags[ProfTool.?]
+      ~ Push all skill proficiency tags to the hero
+      perform hero.pushtags[ProfSkill.?]]]></eval>
+    </thing>
 
 
 
@@ -98,4 +120,5 @@
   <hidden id="sp5CLevit"/>
   <hidden id="sp5CEldBla"/>
   <hidden id="sp5CDruidc"/>
+  <hidden id="f5CSkille1"/>
   </document>
