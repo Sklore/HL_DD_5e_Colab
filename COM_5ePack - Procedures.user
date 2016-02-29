@@ -63,6 +63,27 @@
     ]]></procedure>
 
 
+  <procedure id="5Cfoctocls" context="pick"><![CDATA[
+    doneif (isroot = 0)
+
+    if (root.tagis[component.Class] <> 0) then
+      perform root.setfocus
+    elseif (root.tagis[component.Configure] <> 0) then
+      perform root.setfocus
+    else
+      if (root.islinkage[table] <> 0) then
+        perform root.linkage[table].setfocus
+      elseif (root.islinkage[varies] <> 0) then
+        perform root.linkage[varies].setfocus
+      endif
+    endif
+
+    doneif (state.isfocus = 0)
+
+    ~ We could also be in a table on a configureable, so stop if that is where
+    ~ we are.
+    doneif (focus.tagis[component.Configure] <> 0)
+    ]]></procedure>
 
 
 </document>
