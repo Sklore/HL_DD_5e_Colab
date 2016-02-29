@@ -2524,20 +2524,44 @@
     </thing>
   <thing id="r5CMMPierc" name="Piercer" compset="Race">
     <fieldval field="rHitDice" value="3"/>
-    <fieldval field="rHDSides" value=""/>
+    <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="22"/>
-    <fieldval field="rSpeed" value="5 ft ., climb 5 "/>
-    <fieldval field="rSTR" value=""/>
-    <fieldval field="rDEX" value=""/>
-    <fieldval field="rCON" value="0"/>
+    <fieldval field="rDEX" value="3"/>
     <fieldval field="rINT" value="-9"/>
     <fieldval field="rWIS" value="-3"/>
     <fieldval field="rCHA" value="-7"/>
     <fieldval field="rCR" value="0.5"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rSpeed" value="5"/>
+    <fieldval field="rAC" value="4"/>
     <usesource source="5eMMCP"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="Alignment" tag="BeyondMora"/>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="5"/>
+      </bootstrap>
+    <bootstrap thing="tpMonstros"></bootstrap>
+    <bootstrap thing="ra5CPieFAp"></bootstrap>
+    <bootstrap thing="ra5CPieSpC"></bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <assignval field="wAttack" value="1"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDamExtra" value=" damage per 10 feet fallen, up to 21 (6d6)"/>
+      <assignval field="livename" value="Drop"/>
+      <assignval field="wAttackEff" value="Miss: The piercer takes half the normal falling damage for the distance fallen."/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <eval phase="First">perform hero.child[skStealth].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMPixie" name="Pixie" compset="Race">
     <fieldval field="rHitDice" value="1"/>
@@ -2570,25 +2594,38 @@
     <fieldval field="rHitDice" value="6"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="45"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="7"/>
     <fieldval field="rDEX" value="2"/>
     <fieldval field="rCON" value="6"/>
     <fieldval field="rINT" value="-4"/>
     <fieldval field="rWIS" value="2"/>
-    <fieldval field="rCHA" value="-6"/>
-    <fieldval field="rCR" value="15"/>
+    <fieldval field="rCHA" value="-3"/>
+    <fieldval field="rCR" value="2"/>
+    <fieldval field="rMultiatt" value="The quaggoth makes two claw attacks."/>
+    <fieldval field="rAC" value="2"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skAthletic"/>
-    <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <tag group="RaceType" tag="NPC"/>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CQuagWF"></bootstrap>
     <bootstrap thing="lUndercomm"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMYngRe" name="Young Remorahaz" compset="Race">
     <fieldval field="rHitDice" value="11"/>
@@ -3167,6 +3204,18 @@
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     </thing>
   <thing id="ra5CKenMim" name="Mimicry" description="The kenku can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful DC 14 Wisdom (Insight) check." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="ra5CQuagWF" name="Wounded Fury" description="While it has 10 hit points or fewer, the quaggoth has advantage on attack rolls. In addition, it deals an extra 7 (2d6) damage to any target it hits with a melee attack." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="ra5CPieFAp" name="False Appearance" description="While the piercer remains motionless on the ceiling, it is indistinguishable from a normal stalactite." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="ra5CPieSpC" name="Spider Climb" description="The piercer can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     </thing>
