@@ -14,8 +14,76 @@
       ]]>
     </info_history>
   </fileinfo>
+  <procedure id="5CAddProf" context="pick"><![CDATA[
+    ~ This procedure allows for giving a central Tab to add
+    ~ proficiencies for skills, tools, or Skill/Tool combo.
+    ~ This is useful for allowing the Tools to display correctly
+    ~ on the "Skills" tab.
+    
+    ~ Timing: Post-Level/10000
+    ~ Parms In:
+    ~     NumOfProf - Use this for adding additional Skills & Tools
+    ~     NumOfTool - Use this for adding ONLY Tool choices.
+    ~     NumOfSkill - Use this for adding ONLY Skill choices.
+    
+    ~ Example Use for allowing both a Skill/Tool choice
+    ~ var NumOfProf as number
+    ~ NumOfProf = 1
+    ~ call 5CAddProf
+
+    ~ Example Use for allowing only Skill choices
+    ~ var NumOfProf as number
+    ~ NumOfSkill = 1
+    ~ call 5CAddProf
+
+    ~ Example Use for allowing only Tool choices
+    ~ var NumOfProf as number
+    ~ NumOfTool = 1
+    ~ call 5CAddProf
+
+    var NumOfProf as number
+    var NumOfSkill as number
+    var NumOfTool as number
+
+    ~ If a combination of Tools/Skills is allowed add here
+    if (NumOfProf <> 0) then
+      hero.childfound[cfg5CProf].field[cToolMax].value += NumOfProf
+      hero.childfound[cfg5CProf].field[cSkillMax].value += NumOfProf
+    endif
+
+    ~ If only skills are allowed add here
+    if (NumOfSkill <> 0) then
+      hero.childfound[cfg5CProf].field[cSkillMax2].value += NumOfSkill
+    endif
+
+    ~ If only tools are allowed add here
+    if (NumOfTool <> 0) then
+      hero.childfound[cfg5CProf].field[cToolMax2].value += NumOfTool
+    endif
+    ]]></procedure>
 
 
+  <procedure id="5Cfoctocls" context="pick"><![CDATA[
+    doneif (isroot = 0)
+
+    if (root.tagis[component.Class] <> 0) then
+      perform root.setfocus
+    elseif (root.tagis[component.Configure] <> 0) then
+      perform root.setfocus
+    else
+      if (root.islinkage[table] <> 0) then
+        perform root.linkage[table].setfocus
+      elseif (root.islinkage[varies] <> 0) then
+        perform root.linkage[varies].setfocus
+      endif
+    endif
+
+    doneif (state.isfocus = 0)
+
+    ~ We could also be in a table on a configureable, so stop if that is where
+    ~ we are.
+    doneif (focus.tagis[component.Configure] <> 0)
+    ]]></procedure>
 
 
 </document>

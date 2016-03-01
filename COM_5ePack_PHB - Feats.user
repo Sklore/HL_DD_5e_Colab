@@ -167,21 +167,17 @@ nexteach]]></comment>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CHeavyA" name="Heavily Armored" description="Increase your Strength score by 1, to a maximum of 20.\n• You gain proficiency with heavy armor." compset="Feat" uniqueness="useronce">
-    <comment>DONE
-• Increase your Strength score by 1, to a maximum of 20.
-
-TO DO
-• You gain proficiency with heavy armor.
-Prerequisite: Proficiency with medium armor</comment>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ArmProfGrp" tag="ArmorHeavy"/>
     <eval phase="First"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
       
       hero.child[aSTR].field[Bonus].value += 1
-
-      perform hero.assign[ArmProfGrp.ArmorHeavy]]]></eval>
+  
+      ~ Give proficiency with heavy armor
+      perform hero.pushtags[ArmProfGrp.?]]]></eval>
     <exprreq message="Proficiency with medium armor required."><![CDATA[tagis[ArmProfGrp.ArmorMed] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CHvyArM" name="Heavy Armor Master" description="Increase your Strength score by 1, to a maximum of 20.\n• While you are wearing heavy armor, bludgeoning, piercing, and slashing damage that you take from non magical weapons is reduced by 3.\n\nPrerequisite: Proficiency with heavy armor" compset="Feat" uniqueness="useronce">
@@ -334,6 +330,8 @@ Prerequisite: Proficiency with medium armor</comment>
     <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aDEX)"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ArmProfGrp" tag="Shields"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
     <eval phase="First"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
@@ -344,8 +342,7 @@ Prerequisite: Proficiency with medium armor</comment>
       field[usrChosen1].chosen.field[aStartMod].value += 1
       
       ~ Give proficiency with Medium armor and Shields
-      perform hero.assign[ArmProfGrp.ArmorMed]
-      perform hero.assign[ArmProfGrp.Shields]]]></eval>
+      perform hero.pushtags[ArmProfGrp.?]]]></eval>
     <exprreq message="Proficiency with light armor required. "><![CDATA[tagis[ArmProfGrp.ArmorLight] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CMountC" name="Mounted Combatant" description="You have advantage on melee attack rolls against any unmounted creature that is smaller than your mount.\n• You can force an attack targeted at your mount to target you instead.\n• If your mount is subjected to an effect that allows it to make a Dexterity saving throw to take only half damage, it instead takes no damage if it succeeds on the saving throw, and only half damage if it fails." compset="Feat" uniqueness="useronce">
@@ -462,64 +459,20 @@ Prerequisite: Proficiency with medium armor</comment>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CSkille" name="Skilled" description="You gain proficiency in any combination of three skills or tools of your choice." compset="Feat" summary="You gain proficiency in any combination of three skills or tools of your choice." uniqueness="useronce">
-    <fieldval field="usrCandid1" value="(component.BaseSkill | (component.Tool &amp; ProfTool.?)) &amp; !Helper.Helper"/>
-    <fieldval field="usrCandid2" value="(component.BaseSkill | (component.Tool &amp; ProfTool.?)) &amp; !Helper.Helper"/>
+    <fieldval field="abValue" value="3"/>
     <usesource source="5ePHBCP"/>
     <tag group="ChooseSrc1" tag="Thing"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="ChooseSrc2" tag="Thing"/>
-    <bootstrap thing="f5CSkille1"></bootstrap>
-    <eval phase="First" priority="10000" index="2"><![CDATA[
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
-      ~ If nothing chosen then get out now!
-      doneif (field[usrChosen1].ischosen = 0)
-      doneif (field[usrChosen2].ischosen = 0)
-      
-      ~ Pull chosen 1 Proficiency tags to ourself
-      perform field[usrChosen1].chosen.pulltags[ProfTool.?]
-      perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
-      
-      ~ Pull chosen 2 Proficiency tags to ourself
-      perform field[usrChosen2].chosen.pulltags[ProfTool.?]
-      perform field[usrChosen2].chosen.pulltags[ProfSkill.?]
-     
-      ~ Push all tool proficiency tags to the hero
-      perform hero.pushtags[ProfTool.?]
-      ~ Push all skill proficiency tags to the hero
-      perform hero.pushtags[ProfSkill.?]]]></eval>
-    </thing>
-  <thing id="f5CSkille1" name="Skilled" description="You gain proficiency in any combination of three skills or tools of your choice." compset="Feat" summary="You gain proficiency in any combination of three skills or tools of your choice." uniqueness="useronce">
-    <comment><![CDATA[Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable. This is not currently the case on the "Class" tab. I have reported this bug to LW and hopefully its fixed in a future update.]]></comment>
-    <fieldval field="usrCandid1" value="(component.BaseSkill | (component.Tool &amp; ProfTool.?)) &amp; !Helper.Helper"/>
-    <usesource source="5ePHBCP"/>
-    <tag group="Helper" tag="ShowSpec"/>
-    <tag group="Helper" tag="Helper"/>
-    <tag group="ChooseSrc1" tag="Thing"/>
-    <eval phase="First"><![CDATA[
-      ~ If we are not bootstrapped to something get out now! &
-      doneif (this.isroot = 0)
-      
-      ~ Pull the portal tag from the Thing we are bootstrapped too
-      ~ so that we correctly display in the Portal.
-      ~ NOTE: Normally this logic should not be needed. I have 
-      ~       reported the bug officially to LW so hopefully its
-      ~       officially fixed in a future update.
-      perform root.pulltags[portal.?]]]></eval>
-    <eval phase="First" priority="10000" index="2"><![CDATA[
-      ~ If we're disabled, do nothing & 
-      doneif (tagis[Helper.Disable] = 1)
-      ~ If nothing chosen then get out now!
-      doneif (field[usrChosen1].ischosen = 0)
-      
-      ~ Pull chosen 1 Proficiency tags to ourself
-      perform field[usrChosen1].chosen.pulltags[ProfTool.?]
-      perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
-          
-      ~ Push all tool proficiency tags to the hero
-      perform hero.pushtags[ProfTool.?]
-      ~ Push all skill proficiency tags to the hero
-      perform hero.pushtags[ProfSkill.?]]]></eval>
+
+      var NumOfProf as number
+      ~ Increase or decrease the number of proficiencies 
+      NumOfProf = field[abValue].value
+      call 5CAddProf
+      ]]></eval>
     </thing>
   <thing id="ft5CSkulk" name="Skulker" description="You can try to hide when you are lightly obscured from the creature from which you are hiding.\n• When you are hidden from a creature and miss it with a ranged weapon attack, making the attack doesn&apos;t reveal your position.\n• Dim light doesn’t impose disadvantage on your Wisdom (Perception) checks relying on sight.\n\nPrerequisite: Dexterity 13 or higher" compset="Feat" uniqueness="useronce">
     <usesource source="5ePHBCP"/>
@@ -530,8 +483,8 @@ Prerequisite: Proficiency with medium armor</comment>
     <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aCON)"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <tag group="WepProf" tag="w5CImMeWe" name="w5CImMeWe" abbrev="w5CImMeWe"/>
-    <tag group="WepProf" tag="w5CImRaWe" name="w5CImRaWe" abbrev="w5CImRaWe"/>
+    <tag group="WepProf" tag="w5CImMeWe"/>
+    <tag group="WepProf" tag="w5CImRaWe"/>
     <bootstrap thing="wUnarmed">
       <assignval field="wDieCount" value="1"/>
       <assignval field="wDieSize" value="4"/>
@@ -545,8 +498,8 @@ Prerequisite: Proficiency with medium armor</comment>
       ~ Increase the selected ability score by 1
       field[usrChosen1].chosen.field[aStartMod].value += 1
 
-perform hero.pushtags[WepProf.w5CImMeWe]
-perform hero.pushtags[WepProf.w5CImRaWe]]]></eval>
+      ~ Push all weapon proficiencies to the hero
+      perform hero.pushtags[WepProf.?]]]></eval>
     </thing>
   <thing id="ft5CTough" name="Tough" description="Your hit point maximum increases by an amount equal to twice your level when you gain this feat. Whenever you gain a level thereafter, your hit point maximum increases by an additional 2 hit points." compset="Feat" summary="Your hit point maximum increases by an amount equal to twice your level when you gain this feat. Whenever you gain a level thereafter, your hit point maximum increases by an additional 2 hit points." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
@@ -587,7 +540,7 @@ perform hero.pushtags[WepProf.w5CImRaWe]]]></eval>
       field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CWeMa1" name="Weapon Master" description="You gain proficiency with four simple or martial weapons of your choice." compset="Feat" summary="You gain proficiency with four simple or martial weapons of your choice." uniqueness="useronce">
-    <comment><![CDATA[Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable. This is not currently the case on the "Class" tab. I have reported this bug to LW and hopefully its fixed in a future update.]]></comment>
+    <comment><![CDATA[Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable.]]></comment>
     <fieldval field="usrCandid1" value="component.BaseWep &amp; wCategory.Melee &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper"/>
     <fieldval field="usrCandid2" value="component.BaseWep &amp; wCategory.Melee &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper"/>
     <usesource source="5ePHBCP"/>
@@ -596,16 +549,6 @@ perform hero.pushtags[WepProf.w5CImRaWe]]]></eval>
     <tag group="ChooseSrc1" tag="Thing"/>
     <tag group="ChooseSrc2" tag="Thing"/>
     <tag group="Helper" tag="Helper"/>
-    <eval phase="First"><![CDATA[
-      ~ If we are not bootstrapped to something get out now! &
-      doneif (this.isroot = 0)
-      
-      ~ Pull the portal tag from the Thing we are bootstrapped too
-      ~ so that we correctly display in the Portal.
-      ~ NOTE: Normally this logic should not be needed. I have 
-      ~       reported the bug officially to LW so hopefully its
-      ~       officially fixed in a future update.
-      perform root.pulltags[portal.?]]]></eval>
     <eval phase="PreLevel" priority="10000" index="2"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
@@ -622,7 +565,7 @@ perform hero.pushtags[WepProf.w5CImRaWe]]]></eval>
     <exprreq message="This is not a valid feat to choose!"><![CDATA[@ispick <> 0]]></exprreq>
     </thing>
   <thing id="ft5CWeMa2" name="Weapon Master" description="You gain proficiency with four simple or martial weapons of your choice." compset="Feat" summary="You gain proficiency with four simple or martial weapons of your choice." uniqueness="useronce">
-    <comment><![CDATA[Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable. This is not currently the case on the "Class" tab. I have reported this bug to LW and hopefully its fixed in a future update.]]></comment>
+    <comment><![CDATA[Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable.]]></comment>
     <fieldval field="usrCandid1" value="component.BaseWep &amp; wCategory.Melee &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper"/>
     <fieldval field="usrCandid2" value="component.BaseWep &amp; wCategory.Melee &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper"/>
     <usesource source="5ePHBCP"/>
@@ -631,16 +574,6 @@ perform hero.pushtags[WepProf.w5CImRaWe]]]></eval>
     <tag group="ChooseSrc1" tag="Thing"/>
     <tag group="ChooseSrc2" tag="Thing"/>
     <tag group="Helper" tag="Helper"/>
-    <eval phase="First"><![CDATA[
-      ~ If we are not bootstrapped to something get out now! &
-      doneif (this.isroot = 0)
-      
-      ~ Pull the portal tag from the Thing we are bootstrapped too
-      ~ so that we correctly display in the Portal.
-      ~ NOTE: Normally this logic should not be needed. I have 
-      ~       reported the bug officially to LW so hopefully its
-      ~       officially fixed in a future update.
-      perform root.pulltags[portal.?]]]></eval>
     <eval phase="PreLevel" priority="10000" index="2"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)

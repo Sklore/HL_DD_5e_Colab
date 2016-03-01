@@ -6,7 +6,13 @@
     <tag group="DeityCat" tag="5CForRealm" name="Forgotten Realms Pantheon" abbrev="For Realms"/>
     <tag group="DeityCat" tag="5CGreyhawk" name="Greyhawk Pantheon" abbrev="Greyhawk"/>
     <tag group="DeityCat" tag="5CDragonla" name="Dragonlance Pantheon" abbrev="Dragonlance"/>
+    <tag group="DeityCat" tag="5CDwarven" name="Dwarven Pantheon" abbrev="Dwarven"/>
+    <tag group="DeityCat" tag="5CElven" name="Elven Pantheon" abbrev="Elven"/>
+    <tag group="DeityCat" tag="5CHalfling" name="Halfling Pantheon" abbrev="Halfling"/>
+    <tag group="DeityCat" tag="5CGnomish" name="Gnomish Pantheon" abbrev="Gnomish"/>
+    <tag group="DeityCat" tag="5COrc" name="Orc Pantheon" abbrev="Orc"/>
     <bootstrap thing="cfg5CFeatB"></bootstrap>
+    <bootstrap thing="cfg5CProf"></bootstrap>
     </thing>
   <thing id="cfg5CFeatB" name="Feats, Bonus" description="This allows for the new tab &quot;Feats, Bonus&quot; to appear in HL once the field cfgMaxF1 is greater than zero.  In addition this only works because I have bootstrapped this &quot;Thing&quot; to a new &quot;Mechanics&quot; that I created." compset="Configure" uniqueness="unique">
     <tag group="fExclude" tag="fChaInc1"/>
@@ -23,6 +29,24 @@
     <tag group="fExclude" tag="fWisInc2"/>
     <tag group="fExclude" tag="fHdAbilImp"/>
     <tag group="fExclude" tag="fHdFeat"/>
+    </thing>
+  <thing id="cfg5CProf" name="Proficiencies" description="This allows for having a single central place to add additional proficiencies to a character." compset="Configure" uniqueness="unique">
+    <fieldval field="cSkCandExp" value="component.BaseSkill &amp; !Helper.Obsolete"/>
+    <fieldval field="cTlCandExp" value="component.Tool &amp; !Helper.Obsolete"/>
+    <fieldval field="cSkCandEx2" value="component.BaseSkill &amp; !Helper.Obsolete"/>
+    <fieldval field="cTlCandEx2" value="component.Tool &amp; !Helper.Obsolete"/>
+    <eval phase="Attr" priority="10000"><![CDATA[
+      ~ The below logic is needed because we have two seperate lists
+      ~ for tools & skills. But we need to allow for a combination
+      ~ of tools/skills to be chosen.
+    
+      ~ Total up all the skills and tools that have been chosen
+      field[cPhaStart].value += field[cSkillCur].value + field[cToolCur].value
+
+      ~ Set the Used values for both Tools/Skills to be the same
+      field[cToolCur].value = field[cPhaStart].value
+      field[cSkillCur].value = field[cPhaStart].value
+      ]]></eval>
     </thing>
   <thing id="cfg5CMagIn" name="Magic Initiate" description="Helper Thing for the feat Magic Initiate." compset="Configure" uniqueness="unique">
     <tag group="Helper" tag="SpCountLev"/>
@@ -181,7 +205,6 @@
     <tag group="5CElemType" tag="Thunder"/>
     </thing>
   <thing id="cfg5CSpeSn" name="Spell Sniper" description="Helper Thing for the feat Spell Sniper." compset="Configure" uniqueness="unique">
-    <tag group="Helper" tag="SpCountLev"/>
     <tag group="Helper" tag="ClsCastLev"/>
     <eval phase="Final" priority="50000"><![CDATA[
       ~ If no spell class tags, do nothing & 
