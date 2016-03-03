@@ -166,4 +166,67 @@ validif (field[usrChosen2].chosen.tagcount[Custom.AttrUp] < 2)]]></evalrule>
 
       #resmax[resFeatRac] += 1]]></eval>
     </thing>
+  <thing id="r5CTieflin" name="Tiefling" description="Tieflings share certain racial traits as a result of their infernal descent." compset="Race">
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rCHA" value="2"/>
+    <fieldval field="rHeightMin" value="57"/>
+    <fieldval field="rWeightMin" value="110"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="WeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="WeightSize" tag="4" name="d4" abbrev="d4"/>
+    <tag group="HeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="HeightSize" tag="8" name="d8" abbrev="d8"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="SplAttr" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <bootstrap thing="raTiResist"></bootstrap>
+    <bootstrap thing="lInfernal"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="ra5CInfLeg"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <eval phase="First" priority="10"><![CDATA[
+      ~ We need to make this Tiefling race look just like the official
+      ~ Tiefling race from LW. So push the Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.rTiefling]
+      perform hero.assign[IsRace.rTiefling]
+      perform hero.assign[RaceEquip.rTiefling]]]></eval>
+    </thing>
+  <thing id="ra5CInfLeg" name="Infernal Legacy" description="You know the {i}thaumaturgy{/i} cantrip. When you reach 3rd level, you can cast the {i}hellish rebuke{/i} spell as a 2nd-level spell once with this trait and regain the ability to do so when you finish a long rest. When you reach 5th level, you can cast the {i}darkness{/i} spell once with this trait and regain the ability to do so when you finish a long rest. Charisma is your spellcasting ability for these spells." compset="RaceSpec">
+    <bootstrap thing="spThaumatu">
+      <containerreq phase="First" priority="2500">count:AbReplace.raTiLegacy = 0</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:AbReplace.raTiLegacy = 0) & (count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="sp5CHelliR">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:AbReplace.raTiLegacy = 0) & (count:Classes.? >= 3)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="10"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ We need to push the same tag to the hero as the
+      ~ CORE/LW version of "Infernal Legacy".
+      perform hero.assign[Ability.raTiLegacy]]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ We need to push the same tag to the hero as the
+      ~ CORE/LW version of "Infernal Legacy".
+      perform hero.assign[HasAbility.raTiLegacy]]]></eval>
+    </thing>
+  <preclude id="rTiefling" source="5ePHBCP"/>
   </document>

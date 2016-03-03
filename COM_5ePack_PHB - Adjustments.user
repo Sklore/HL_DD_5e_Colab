@@ -52,4 +52,20 @@
       NumOfProf = field[pAdjust].value
       call 5CAddProf]]></eval>
     </thing>
+  <thing id="pS2EqText" name="Equipment, Notes" description="Select this adjustment to allow for adding text notes (up to 100 characters) to equipment that will display as part of the items description text." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.MyGear &amp; !(Helper.Static|thingid.mNatural)"/>
+    <fieldval field="pSource" value="Notes"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+
+      ~ Append the entered text to the gear item
+      field[pChosen].chosen.field[DescAppend].text &= field[pSource].text]]></eval>
+    </thing>
   </document>
