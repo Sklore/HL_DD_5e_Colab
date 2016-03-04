@@ -714,7 +714,7 @@
       </bootstrap>
     <bootstrap thing="lInfernal"></bootstrap>
     </thing>
-	<thing id="r5CMMCarr" name="Carrion Crawler" compset="Race">
+  <thing id="r5CMMCarr" name="Carrion Crawler" compset="Race">
     <fieldval field="rHitDice" value="6"/>
     <fieldval field="rHDSides" value="10"/>
     <fieldval field="rHPStart" value="51"/>
@@ -2389,6 +2389,7 @@
       <autotag group="Usage" tag="Day"/>
       <autotag group="User" tag="Tracker"/>
       <assignval field="trkMax" value="3"/>
+      <assignval field="abValue" value="10"/>
       </bootstrap>
     </thing>
   <thing id="r5CMMQuaSS" name="Quaggoth Spore Servant" compset="Race">
@@ -2447,12 +2448,13 @@
       <autotag group="User" tag="Tracker"/>
       <assignval field="trkMax" value="3"/>
       </bootstrap>
-    <bootstrap thing="ra5CMycRS2">
-      <autotag group="FeatureTyp" tag="Action"/>
-      </bootstrap>
     <bootstrap thing="tpPlant"></bootstrap>
     <bootstrap thing="ra5CMycDis"></bootstrap>
     <bootstrap thing="ra5CMycSSi"></bootstrap>
+    <bootstrap thing="ra5CMycRSp">
+      <autotag group="FeatureTyp" tag="Action"/>
+      <assignval field="abValue" value="20"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMMycon" name="Myconid Sovereign" compset="Race">
     <fieldval field="rHitDice" value="8"/>
@@ -2489,14 +2491,13 @@
     <bootstrap thing="ra5CMycHaS">
       <autotag group="FeatureTyp" tag="Action"/>
       </bootstrap>
-    <bootstrap thing="ra5CMycPa2">
-      <autotag group="FeatureTyp" tag="Action"/>
-      </bootstrap>
-    <bootstrap thing="ra5CMycRS3">
-      <autotag group="FeatureTyp" tag="Action"/>
-      </bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMycPaS"></bootstrap>
+    <bootstrap thing="ra5CMycRSp">
+      <autotag group="FeatureTyp" tag="Action"/>
+      <assignval field="abValue" value="30"/>
       </bootstrap>
     </thing>
   <thing id="r5CMMBoneN" name="Bone Naga" compset="Race">
@@ -3419,20 +3420,16 @@
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
     </thing>
-  <thing id="ra5CMycRSp" name="Rapport Spores" description="A 10-foot radius of spores extends from the myconid. These spores can go around corners and affect only creatures with an Intelligence of 2 or higher that aren&apos;t undead, constructs, or elementals. Affected creatures can communicate telepathically with one another while they are within 30 feet of each other. The effect lasts for 1 hour." compset="RaceSpec">
+  <thing id="ra5CMycRSp" name="Rapport Spores" description="A {abValue}-foot radius of spores extends from the myconid. These spores can go around corners and affect only creatures with an Intelligence of 2 or higher that aren&apos;t undead, constructs, or elementals. Affected creatures can communicate telepathically with one another while they are within 30 feet of each other. The effect lasts for 1 hour." compset="RaceSpec">
+    <fieldval field="abValue" value="10"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[field[CustDesc].text = "A " & field[abValue].value & "-foot radius of spores extends from the myconid. These spores can go around corners and affect only creatures with an Intelligence of 2 or higher that aren't undead, constructs, or elementals. Affected creatures can communicate telepathically with one another while they are within 30 feet of each other. The effect lasts for 1 hour."]]></eval>
     </thing>
-  <thing id="ra5CMycRS2" name="Rapport Spores" description="A 20-foot radius of spores extends from the myconid. These spores can go around corners and affect only creatures with an Intelligence of 2 or higher that aren&apos;t undead, constructs, or elementals. Affected creatures can communicate telepathically with one another while they are within 30 feet of each other. The effect lasts for 1 hour." compset="RaceSpec">
+  <thing id="ra5CMycPaS" name="Pacifying Spores" description="The myconid ejects spores at one creature it can see within 5 feet of it. The target must succeed on a DC {abDC} Constitution saving throw or be stunned for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
-    </thing>
-  <thing id="ra5CMycRS3" name="Rapport Spores" description="A 30-foot radius of spores extends from the myconid. These spores can go around corners and affect only creatures with an Intelligence of 2 or higher that aren&apos;t undead, constructs, or elementals. Affected creatures can communicate telepathically with one another while they are within 30 feet of each other. The effect lasts for 1 hour." compset="RaceSpec">
-    <tag group="Helper" tag="ShowSpec"/>
-    </thing>
-  <thing id="ra5CMycPaS" name="Pacifying Spores" description="The myconid ejects spores at one creature it can see within 5 feet of it. The target must succeed on a DC 11 Constitution saving throw or be stunned for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success." compset="RaceSpec">
-    <tag group="Helper" tag="ShowSpec"/>
-    </thing>
-  <thing id="ra5CMycPa2" name="Pacifying Spores" description="The myconid ejects spores at one creature it can see within 5 feet of it. The target must succeed on a DC 12 Constitution saving throw or be stunned for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success." compset="RaceSpec">
-    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <eval phase="Final" priority="20000"><![CDATA[field[CustDesc].text = "The myconid ejects spores at one creature it can see within 5 feet of it. The target must succeed on a DC " & field[abDC].value & " Constitution saving throw or be stunned for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."]]></eval>
     </thing>
   <thing id="ra5CMycHaS" name="Hallucination Spores" description="The myconid ejects spores at one creature it can see within 5 feet of it. The target must succeed on a DC 12 Constitution saving throw or be poisoned for 1 minute. The poisoned target is incapacitated while it hallucinates. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
@@ -3475,7 +3472,7 @@
     <tag group="StandardDC" tag="aCON" name="Constitution" abbrev="Constitution"/>
     <tag group="abSave" tag="aCON"/>
     </thing>
-	  <thing id="l5CAarakoc" name="Aarakocra" compset="Language" uniqueness="useronce">
+  <thing id="l5CAarakoc" name="Aarakocra" compset="Language" uniqueness="useronce">
     <tag group="LangCat" tag="Monster"/>
     <tag group="ProductId" tag="Wizards"/>
     <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
