@@ -585,7 +585,11 @@
     <tag group="ProfSkill" tag="skStealth"/>
     <tag group="Alignment" tag="NeutralLC"/>
     <tag group="WepProf" tag="wSpear"/>
-    <bootstrap thing="ra5CMMStan"></bootstrap>
+    <bootstrap thing="ra5CMMStan">
+      <assignval field="abText" value="bullywug"/>
+      <assignval field="abValue" value="20"/>
+      <assignval field="abValue2" value="10"/>
+      </bootstrap>
     <bootstrap thing="ra5CMMSwam"></bootstrap>
     <bootstrap thing="xSwim">
       <autotag group="Value" tag="40"/>
@@ -621,11 +625,12 @@
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="abAction" tag="None"/>
     </thing>
-  <thing id="ra5CMMStan" name="Standing Leap" description="The bullywug&apos;s long jump is up to 20 feet and its high jump is up to 10 feet, with or without a running start." compset="RaceSpec">
+  <thing id="ra5CMMStan" name="Standing Leap" description="The {abValue}&apos;s long jump is up to {abValue} feet and its high jump is up to {abValue} feet, with or without a running start." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="ProductId" tag="Wizards"/>
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text = "The " & field[abText].text & "'s long jump is up to " & field[abValue].value & " feet and its high jump is up to " & field[abValue2].value & " feet, with or without a running start."]]></eval>
     </thing>
   <thing id="ra5CMMDiAt" name="Divine Attack" description="If the aarakocra is flying and dives at least 30 feet straight toward a target and then hits it with a melee weapon attack, the attack dea ls an extra 3 (1d6) damage to the target." compset="RaceSpec">
     <tag group="ProductId" tag="Wizards"/>
@@ -3093,15 +3098,40 @@
     <fieldval field="rWIS" value="2"/>
     <fieldval field="rCHA" value="-3"/>
     <fieldval field="rCR" value="1"/>
+    <fieldval field="rAC" value="3"/>
+    <fieldval field="rMultiatt" value="The thri-kreen makes two attacks: one with its bite and one with its claws."/>
     <usesource source="5eMMCP"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="NeutralGE"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
-    <tag group="AllowSkl1" tag="skSurvival"/>
+    <bootstrap thing="l5CThrikre"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="StandardDC" tag="aCON"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wAttackEff" value=", and the target must succeed on a DC 11 Constitution saving throw or be poisoned for 1 minute. lf the saving throw fails by 5 or more, the target is also paralyzed while poisoned in this way. The poisoned target can repeat the saving throw on each of its turns, ending the effect on itself on a success."/>
+      </bootstrap>
+    <bootstrap thing="ra5CMMStan">
+      <assignval field="abValue" value="30"/>
+      <assignval field="abValue2" value="15"/>
+      <assignval field="abText" value="thri-kreen"/>
+      </bootstrap>
+    <bootstrap thing="ra5CThriCC"></bootstrap>
     </thing>
   <thing id="r5CMMTrogl" name="Troglodyte" compset="Race">
     <fieldval field="rHitDice" value="2"/>
@@ -3378,7 +3408,6 @@
     <tag group="ProductId" tag="Wizards"/>
     </thing>
   <thing id="l5CHookHor" name="Hook Horror" compset="Language" uniqueness="useronce">
-    <usesource source="5eMMCP"/>
     <tag group="LangCat" tag="Monster"/>
     <tag group="ProductId" tag="Wizards"/>
     <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
@@ -3522,5 +3551,15 @@
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Action"/>
     <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="l5CThrikre" name="Thri-kreen" compset="Language" uniqueness="useronce">
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <tag group="LangCat" tag="Monster" name="Monster Languages" abbrev="Monster"/>
+    </thing>
+  <thing id="ra5CThriCC" name="Chameleon Carapace" description="The thri-kreen can change the color of its carapace to match the color and texture of its surroundings. As a r&quot;esult, it has advantage on Dexterity (Stealth) checks made to hide." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     </thing>
   </document>
