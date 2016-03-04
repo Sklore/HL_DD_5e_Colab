@@ -3137,21 +3137,42 @@
     <fieldval field="rHitDice" value="2"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="13"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="4"/>
-    <fieldval field="rDEX" value="0"/>
     <fieldval field="rCON" value="4"/>
     <fieldval field="rINT" value="-4"/>
-    <fieldval field="rWIS" value="0"/>
     <fieldval field="rCHA" value="-4"/>
     <fieldval field="rCR" value="0.25"/>
+    <fieldval field="rAC" value="1"/>
+    <fieldval field="rMultiatt" value="The troglodyte makes three attacks: one with its bite and two with its claws."/>
     <usesource source="5eMMCP"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Evil"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="l5CTroglod"></bootstrap>
+    <bootstrap thing="ra5CChamSk">
+      <assignval field="abText" value="troglodyte"/>
+      </bootstrap>
+    <bootstrap thing="ra5CTroSte"></bootstrap>
+    <bootstrap thing="ra5CSunSen">
+      <assignval field="abText" value="troglodyte"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMUmber" name="Umber Hulk" compset="Race">
     <fieldval field="rHitDice" value="11"/>
@@ -3541,6 +3562,7 @@
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="abAction" tag="None"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="1000">hero.child[ArmorClass].field[tACMisc].value += hero.child[aCHA].Field[aBonus].value</eval>
     </thing>
   <thing id="ra5CMMInSp" name="Innate Spellcasting" description="The cambion&apos;s spellcasting ability is Charisma (spell save DC 14). The cambion can innately cast the following spells, requiring no material components:\n\n3/day each: {i}alter self{/i}, {i}command{/i}, {i}detect magic{/i}\n1/day each: {i}plane shift{/i} (self only)" compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
@@ -3553,7 +3575,6 @@
     <tag group="abAction" tag="Action"/>
     </thing>
   <thing id="l5CThrikre" name="Thri-kreen" compset="Language" uniqueness="useronce">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
     <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
     <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
     <tag group="LangCat" tag="Monster" name="Monster Languages" abbrev="Monster"/>
@@ -3561,5 +3582,25 @@
   <thing id="ra5CThriCC" name="Chameleon Carapace" description="The thri-kreen can change the color of its carapace to match the color and texture of its surroundings. As a r&quot;esult, it has advantage on Dexterity (Stealth) checks made to hide." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="l5CTroglod" name="Troglodyte" compset="Language" uniqueness="useronce">
+    <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <tag group="LangCat" tag="Monster" name="Monster Languages" abbrev="Monster"/>
+    </thing>
+  <thing id="ra5CChamSk" name="Chameleon Skin" description="The {abText} has advantage on Dexterity (Stealth) checks made to hide." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000"><![CDATA[field[CustDesc].text = "The " & field[abText].text & " has advantage on Dexterity (Stealth) checks made to hide."]]></eval>
+    </thing>
+  <thing id="ra5CTroSte" name="Stench" description="Any creature other than a troglodyte that starts its turn within 5 feet of the troglodyte must succeed on a DC 12 Constitution saving throw or be poisoned until the start of the creature&apos;s next turn. On a successfu l saving throw, the creature is immune to the stench of all troglodytes for 1 hour." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="StandardDC" tag="aCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="abSave" tag="aCON" name="Constitution" abbrev="Constitution"/>
+    </thing>
+  <thing id="ra5CSunSen" name="Sunlight Sensitivity" description="While in sunlight, the {abText} has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000"><![CDATA[field[CustDesc].text = "While in sunlight, the " & field[abText].text & " has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight."]]></eval>
     </thing>
   </document>
