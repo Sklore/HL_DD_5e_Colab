@@ -1161,30 +1161,31 @@
     <bootstrap thing="tpFiend"></bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
-  <thing id="r5CMMSpin" name="Spinder Devil" compset="Race">
+  <thing id="r5CMMSpin" name="Spined Devil" compset="Race">
     <fieldval field="rHitDice" value="5"/>
     <fieldval field="rHDSides" value="6"/>
     <fieldval field="rHPStart" value="22"/>
     <fieldval field="rSpeed" value="20"/>
-    <fieldval field="rSTR" value="0"/>
     <fieldval field="rDEX" value="5"/>
     <fieldval field="rCON" value="2"/>
     <fieldval field="rINT" value="1"/>
     <fieldval field="rWIS" value="4"/>
     <fieldval field="rCHA" value="-2"/>
     <fieldval field="rCR" value="2"/>
+    <fieldval field="rMultiatt" value="The devil makes two attacks: one with its bite and one with it s fork or two with its tail spines."/>
+    <fieldval field="rAC" value="1"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Lawful"/>
-    <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Small11"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="DamageRes" tag="dtBludgeon"/>
     <tag group="DamageRes" tag="dtCold"/>
-    <tag group="DamageRes" tag="dtPiercing"/>
-    <tag group="DamageRes" tag="dtSlashing"/>
     <tag group="DamageImm" tag="dtFire"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="DamageRes" tag="dt5CBPSNoS"/>
+    <bootstrap thing="tpFiend"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
@@ -1192,11 +1193,31 @@
       <autotag group="Value" tag="40"/>
       </bootstrap>
     <bootstrap thing="lInfernal"></bootstrap>
-    <bootstrap thing="xTelepathy">
-      <autotag group="Value" tag="12"/>
+    <bootstrap thing="ra5CFlyBy"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wDieCount" value="2"/>
       </bootstrap>
-    <bootstrap thing="tpFiend"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="wOtherRng">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wDamExtra" value=" damage plus 3 (1d6) fire"/>
+      <assignval field="livename" value="Tail Spine"/>
+      <assignval field="sbName" value="Tail Spine"/>
+      <assignval field="wRangeLong" value="80"/>
+      <assignval field="wRangeNorm" value="20"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLimSpi"></bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="devil"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDevSig"></bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMAllo" name="Allosaurus" compset="Race">
     <fieldval field="rHitDice" value="6"/>
@@ -3850,5 +3871,17 @@
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <eval phase="Final" priority="20000">Field[CustDesc].text = &quot;The &quot; &amp; Field[abText].text &amp; &quot; doesn’t provoke opportunity attacks when it flies out of an enemy’s reach.&quot;</eval>
+    </thing>
+  <thing id="dt5CBPSNoS" name="bludgeoning, piercing, and slashing from nonmagical weapons that aren&apos;t silvered" description="bludgeoning, piercing, and slashing from nonmagical weapons that aren&apos;t silvered" compset="DamageType"></thing>
+  <thing id="ra5CDevSig" name="Devil’s Sight" description="Magical darkness doesn’t impede the devil’s darkvision." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="ra5CLimSpi" name="Limited Spines" description="The devil has twelve tail spines. Used spines regrow by the time the devil finishes a long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="12"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     </thing>
   </document>
