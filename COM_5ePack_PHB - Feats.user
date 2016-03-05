@@ -119,7 +119,7 @@
       
       hero.child[aCON].field[aStartMod].value += 1]]></eval>
     </thing>
-  <thing id="ft5CElemAd" name="Elemental Adept" description="Spells you cast ignore resistance to damage of the selected elemental type. In addition, when you roll damage for a spell you cast that deals damage of the selected elemental type, you can treat any 1 on a damage die as a 2." compset="Feat" summary="Ignore resistance to dmg &amp; treat dmg dice of 1 as 2." uniqueness="useronce">
+  <thing id="ft5CElemAd" name="Elemental Adept" description="Spells you cast ignore resistance to damage of the selected elemental type. In addition, when you roll damage for a spell you cast that deals damage of the selected elemental type, you can treat any 1 on a damage die as a 2." compset="Feat" summary="Ignore resistance to dmg &amp; treat dmg dice of 1 as 2.">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="fShowWhat" tag="Energy"/>
@@ -132,7 +132,14 @@
       ~ Get the energy tag and place it on ourself. This
       ~ allows other Picks to easily to test which energy
       ~ type we selected.
-      perform field[usrChosen1].chosen.pulltags[5CElemType.?]]]></eval>
+      perform field[usrChosen1].chosen.pulltags[5CElemType.?]
+
+      ~ Mark this elemental type as already selected by this feat
+      perform field[usrChosen1].chosen.pushtags[HasFeat.?]]]></eval>
+    <evalrule phase="Final" priority="50000" message="You can not pick the same element more than once." summary="You can not pick the same element more than once."><![CDATA[
+      ~ Check to see if this feat has selected this element
+      ~ more than once &
+      validif (field[usrChosen1].chosen.tagcount[HasFeat.ft5CElemAd] <= 1)]]></evalrule>
     <prereq message="You must be able to cast at least one spell. ">
       <validate><![CDATA[
         ~ Test that the character has at least one spell
