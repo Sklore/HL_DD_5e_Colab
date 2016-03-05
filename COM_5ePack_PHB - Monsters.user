@@ -3964,6 +3964,15 @@ hero.child[svWIS].Field[svMisc].value += 3</eval>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="abSave" tag="aCHA"/>
     <tag group="StandardDC" tag="aCHA"/>
+    <bootstrap thing="spLevitate">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
     <bootstrap thing="spDarkness">
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="Day"/>
@@ -3974,17 +3983,9 @@ hero.child[svWIS].Field[svMisc].value += 3</eval>
       <autotag group="Usage" tag="Day"/>
       <assignval field="trkMax" value="1"/>
       </bootstrap>
-    <bootstrap thing="spLevitate">
-      <autotag group="Helper" tag="RaceSpell"/>
-      <autotag group="Usage" tag="Day"/>
-      <assignval field="trkMax" value="1"/>
-      </bootstrap>
-    <bootstrap thing="spDancLigh">
-      <autotag group="Helper" tag="RaceSpell"/>
-      <autotag group="Usage" tag="AtWill"/>
-      </bootstrap>
-    <eval phase="Final" priority="20000">Field[abValue].value = Field[abDC].value + 1
-Field[CustDesc].text = &quot;The drow’s spellcasting ability is Charisma (spell save DC &quot; &amp; Field[abValue].value &amp; &quot;). It can innately cast the following spells, requiring no material components:{br}At will: {i}dancing lights{/i}{br}1/day each: {i}darkness{/i}, {i}faerie fire{/i}, {i}levitate{/i} (self only)&quot;</eval>
+    <eval phase="Final" priority="20000">var newDC as number
+newDC = Field[abDC].value + 1
+Field[CustDesc].text = &quot;The drow’s spellcasting ability is Charisma (spell save DC &quot; &amp; newDC &amp; &quot;). It can innately cast the following spells, requiring no material components:{br}At will: {i}dancing lights{/i}{br}1/day each: {i}darkness{/i}, {i}faerie fire{/i}, {i}levitate{/i} (self only)&quot;</eval>
     </thing>
   <thing id="ra5CDetSen" name="Detect Sentience" description="The {abText} can sense the presence and location of any creature within 300 feet of it that has an Intelligence of 3 or higher, regardless of interposing barriers, unless the creature is protected by a {i}mind blank{/i} spell." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
@@ -3996,8 +3997,9 @@ Field[CustDesc].text = &quot;The drow’s spellcasting ability is Charisma (spel
     <tag group="FeatureTyp" tag="Action"/>
     <tag group="abSave" tag="aINT"/>
     <tag group="StandardDC" tag="aINT"/>
-    <eval phase="Final" priority="20000"><![CDATA[Field[abValue].value = Field[abDC].value + 1
-Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it can see within 10 feet of it that has a brain. The target must succeed on a DC " & Field[abValue].value & " Intelligence saving throw aga inst this magic or take 11 (2d10) psychic damage. Also on a failure, roll3d6: If the total equals or exceeds the target's Intelligence score, that score is reduced to 0. The target is stunned until it regains at least one point of Intelligence."]]></eval>
+    <eval phase="Final" priority="20000"><![CDATA[var newDC as number
+newDC = Field[abDC].value + 1
+Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it can see within 10 feet of it that has a brain. The target must succeed on a DC " & newDC & " Intelligence saving throw aga inst this magic or take 11 (2d10) psychic damage. Also on a failure, roll3d6: If the total equals or exceeds the target's Intelligence score, that score is reduced to 0. The target is stunned until it regains at least one point of Intelligence."]]></eval>
     </thing>
   <thing id="ra5CBodThi" name="Body Thief" description="The intellect devourer initiates an Intelligence contest with an incapacitated humanoid within 5 feet of it. If it wins the contest, the intellect devourer magically consumes the target&apos;s brain, teleports into the target&apos;s skull, and takes control of the target&apos;s body. While inside a creature, the intellect devourer has total cover against attacks and other effects originating outside its host. The intellect devourer retains its Intelligence, Wisdom, and Charisma scores, as well as its understanding of Deep Speech, its telepathy, and its traits. It otherwise adopts the target&apos;s statistics. It nows everything the creature knew, including spells and languages. If the host body drops to 0 hit points, the intellect devourer must leave it. A protection from evil and good spell cast on the body drives the intellect devourer out. The intellect devourer is also forced out if the target regains its devoured brain by means of a wish. By spending 5 feet of its movement, the intellect devourer can voluntarily leave the body, teleporting to the nearest unoccupied space within 5 feet of it. The body then dies, unless its brain is restored within 1 round ." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
