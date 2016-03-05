@@ -2132,7 +2132,7 @@ hero.child[svWIS].Field[svMisc].value += 3</eval>
     </thing>
   <thing id="r5CMMIntel" name="Intellect Devourer" compset="Race">
     <fieldval field="rHitDice" value="6"/>
-    <fieldval field="rHDSides" value=""/>
+    <fieldval field="rHDSides" value="4"/>
     <fieldval field="rHPStart" value="21"/>
     <fieldval field="rSpeed" value="40"/>
     <fieldval field="rSTR" value="-4"/>
@@ -2140,26 +2140,41 @@ hero.child[svWIS].Field[svMisc].value += 3</eval>
     <fieldval field="rCON" value="3"/>
     <fieldval field="rINT" value="2"/>
     <fieldval field="rWIS" value="1"/>
-    <fieldval field="rCHA" value="0"/>
     <fieldval field="rCR" value="2"/>
+    <fieldval field="rMultiatt" value="The intellect devourer makes one attack with its claws and uses Devour Intellect."/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Lawful"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Tiny12"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
-    <tag group="DamageRes" tag="dtBludgeon"/>
-    <tag group="DamageRes" tag="dtPiercing"/>
     <tag group="CondImm" tag="pcnBlind"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="DamComRes" tag="dcWepNonMa"/>
+    <tag group="Alignment" tag="Lawful"/>
     <bootstrap thing="raBlindSi">
       <autotag group="Value" tag="60"/>
       </bootstrap>
-    <bootstrap thing="lDeepSpeec"></bootstrap>
+    <bootstrap thing="lDeepSpeec">
+      <autotag group="Helper" tag="CantSpeak"/>
+      </bootstrap>
     <bootstrap thing="xTelepathy">
       <autotag group="Value" tag="6"/>
       </bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="ra5CDetSen">
+      <assignval field="abText" value="intellect devourer"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpAberr"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wAttack" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDevInt">
+      <assignval field="abText" value="intellect devourer"/>
+      </bootstrap>
+    <bootstrap thing="ra5CBodThi"></bootstrap>
     </thing>
   <thing id="r5CMMJacka" name="Jackalwere" compset="Race">
     <fieldval field="rHitDice" value="4"/>
@@ -3969,6 +3984,23 @@ hero.child[svWIS].Field[svMisc].value += 3</eval>
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
     <eval phase="Final" priority="20000">Field[abValue].value = Field[abDC].value + 1
-Field[CustDesc].text = &quot;The drow’s spellcasting ability is Charisma (spell save DC &quot; &amp; Field[abValue].value &amp; &quot;). It can innately cast the following spells, requiring no material components: At will: /n {i}dancing lights{/i} 1/day each: {i}darkness{/i}, {i}faerie fire{/i}, {i}levitate{/i} (self only)&quot;</eval>
+Field[CustDesc].text = &quot;The drow’s spellcasting ability is Charisma (spell save DC &quot; &amp; Field[abValue].value &amp; &quot;). It can innately cast the following spells, requiring no material components:{br}At will: {i}dancing lights{/i}{br}1/day each: {i}darkness{/i}, {i}faerie fire{/i}, {i}levitate{/i} (self only)&quot;</eval>
+    </thing>
+  <thing id="ra5CDetSen" name="Detect Sentience" description="The {abText} can sense the presence and location of any creature within 300 feet of it that has an Intelligence of 3 or higher, regardless of interposing barriers, unless the creature is protected by a {i}mind blank{/i} spell." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " can sense the presence and location of any creature within 300 feet of it that has an Intelligence of 3 or higher, regardless of interposing barriers, unless the creature is protected by a {i}mind blank{/i} spell."]]></eval>
+    </thing>
+  <thing id="ra5CDevInt" name="Devour Intellect" description="The {abText} targets one creature it can see within 10 feet of it that has a brain. The target must succeed on a DC {abDC} Intelligence saving throw aga inst this magic or take 11 (2d10) psychic damage. Also on a failure, roll3d6: If the total equals or exceeds the target&apos;s Intelligence score, that score is reduced to 0. The target is stunned until it regains at least one point of Intelligence ." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abSave" tag="aINT"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[abValue].value = Field[abDC].value + 1
+Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it can see within 10 feet of it that has a brain. The target must succeed on a DC " & Field[abValue].value & " Intelligence saving throw aga inst this magic or take 11 (2d10) psychic damage. Also on a failure, roll3d6: If the total equals or exceeds the target's Intelligence score, that score is reduced to 0. The target is stunned until it regains at least one point of Intelligence."]]></eval>
+    </thing>
+  <thing id="ra5CBodThi" name="Body Thief" description="The intellect devourer initiates an Intelligence contest with an incapacitated humanoid within 5 feet of it. If it wins the contest, the intellect devourer magically consumes the target&apos;s brain, teleports into the target&apos;s skull, and takes control of the target&apos;s body. While inside a creature, the intellect devourer has total cover against attacks and other effects originating outside its host. The intellect devourer retains its Intelligence, Wisdom, and Charisma scores, as well as its understanding of Deep Speech, its telepathy, and its traits. It otherwise adopts the target&apos;s statistics. It nows everything the creature knew, including spells and languages. If the host body drops to 0 hit points, the intellect devourer must leave it. A protection from evil and good spell cast on the body drives the intellect devourer out. The intellect devourer is also forced out if the target regains its devoured brain by means of a wish. By spending 5 feet of its movement, the intellect devourer can voluntarily leave the body, teleporting to the nearest unoccupied space within 5 feet of it. The body then dies, unless its brain is restored within 1 round ." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
     </thing>
   </document>
