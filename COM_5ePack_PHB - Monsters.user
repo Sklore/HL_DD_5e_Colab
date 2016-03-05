@@ -719,40 +719,61 @@
       </bootstrap>
     <bootstrap thing="lInfernal"></bootstrap>
     </thing>
-  <thing id="r5CMMCarr" name="Carrion Crawler" compset="Race">
+  <thing id="r5CMMCarr" name="Carrion Crawler" description="A carrion crawler was a burrowing aberration that scavenged the dead and occasionally preyed on living creatures. Similar to a giant, toothed centipede in appearance, carrion crawlers were often accompanied by a foul odor of death, which warned others of their approach.\n\nAlthough their nature ultimately rested in the Far Realm, it was thought by many, and indeed was possible, that carrion crawlers were created through a mad wizard&apos;s experiments." compset="Race">
     <fieldval field="rHitDice" value="6"/>
     <fieldval field="rHDSides" value="10"/>
     <fieldval field="rHPStart" value="51"/>
-    <fieldval field="rSpeed" value="30"/>
-    <fieldval field="rSTR" value=""/>
-    <fieldval field="rDEX" value=""/>
-    <fieldval field="rCON" value="4"/>
-    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rSTR" value="4"/>
+    <fieldval field="rDEX" value="3"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="-5"/>
     <fieldval field="rWIS" value="2"/>
     <fieldval field="rCHA" value="-5"/>
     <fieldval field="rCR" value="2"/>
+    <fieldval field="rMultiatt" value="The carrion crawler makes two attacks: one with its tentacles and one with its bite."/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceSize" tag="Large1"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceSize" tag="Large1"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="tpMonstros"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="wTentacle">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPoison"/>
+      <autotag group="StandardDC" tag="aCON"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wAttackEff" value="and the target must succeed on a DC 13 Constitution saving throw or be poisoned for 1 minute. Until this poison ends, the target is paralyzed. The target can repeat the saving throw at the end of each of its turns, ending the poison on itself on a success."/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wAttack" value="4"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wReach" value="5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPieSpC"></bootstrap>
+    <bootstrap thing="ra5CYetKeS"></bootstrap>
+    <eval phase="First">~ perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
-  <thing id="r5CMMCraw" name="Crawling Claw" compset="Race">
-    <fieldval field="rHitDice" value="l"/>
+  <thing id="r5CMMCraw" name="Crawling Claw" description="Using their fingers as legs, the hands crawled toward whatever they sensed as a target and swarmed over it. They could also leap six feet vertically. The swarm had no discernible front, back, or central body." compset="Race">
+    <fieldval field="rHitDice" value="1"/>
     <fieldval field="rHDSides" value="4"/>
     <fieldval field="rHPStart" value="2"/>
-    <fieldval field="rSpeed" value="20 ft ., climb 20"/>
+    <fieldval field="rSpeed" value="20"/>
     <fieldval field="rSTR" value="3"/>
     <fieldval field="rDEX" value="4"/>
     <fieldval field="rCON" value="1"/>
     <fieldval field="rINT" value="-5"/>
-    <fieldval field="rWIS" value="0"/>
     <fieldval field="rCHA" value="-6"/>
-    <fieldval field="rCR" value="0"/>
     <usesource source="5eMMCP"/>
     <tag group="Alignment" tag="NeutralLC"/>
     <tag group="Alignment" tag="Evil"/>
@@ -761,8 +782,20 @@
     <tag group="CondImm" tag="pcnCharmed"/>
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnPoison"/>
-    <bootstrap thing="lCommon"></bootstrap>
+    <tag group="Helper" tag="UndLifLaCS"/>
     <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CTurImm"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dt5CBluSla"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="1"/>
+      </bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMCycl" name="Cyclops" compset="Race">
@@ -794,20 +827,19 @@
     <bootstrap thing="tpGiant"></bootstrap>
     <bootstrap thing="ra5CCycPDP"></bootstrap>
     </thing>
-  <thing id="r5CMMDeat" name="Death Knight" compset="Race">
+  <thing id="r5CMMDeat" name="Death Knight" description="A death knight was a mighty undead warrior created by gods of death or other malevolent forces. They were most commonly created from evil humanoids who in life had been blackguards, fighters, rangers, barbarians, and even paladins fallen from grace." compset="Race">
     <fieldval field="rHitDice" value="19"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="180"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="10"/>
     <fieldval field="rDEX" value="1"/>
     <fieldval field="rCON" value="10"/>
     <fieldval field="rINT" value="2"/>
     <fieldval field="rWIS" value="6"/>
     <fieldval field="rCHA" value="8"/>
-    <fieldval field="rCR" value="17 ("/>
+    <fieldval field="rCR" value="17"/>
+    <fieldval field="rMultiatt" value="The death knight makes three longsword attacks."/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Chaotic"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
@@ -816,10 +848,30 @@
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnFright"/>
     <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="ProfSave" tag="svDEX" name="Dexterity"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom"/>
+    <tag group="ProfSave" tag="svCHA" name="Charisma"/>
+    <tag group="WepProf" tag="wLongsword"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="ArmProfGrp" tag="ArmorHeavy"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <tag group="ArmProfGrp" tag="Shields"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CDNParr"></bootstrap>
     <bootstrap thing="lAbyssal"></bootstrap>
     <bootstrap thing="tpUndead"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPixMRe"></bootstrap>
+    <bootstrap thing="ra5CHelOrb"></bootstrap>
+    <bootstrap thing="ra5CMarUnd"></bootstrap>
+    <bootstrap thing="ra5CUndKni"></bootstrap>
+    <bootstrap thing="ra5CDKSpCa"></bootstrap>
     </thing>
   <thing id="r5CMMDemi" name="Demilich" compset="Race">
     <fieldval field="rHitDice" value="20"/>
@@ -828,7 +880,6 @@
     <fieldval field="rSpeed" value="0"/>
     <fieldval field="rSTR" value="-9"/>
     <fieldval field="rDEX" value="10"/>
-    <fieldval field="rCON" value="0"/>
     <fieldval field="rINT" value="10"/>
     <fieldval field="rWIS" value="7"/>
     <fieldval field="rCHA" value="10"/>
@@ -838,15 +889,9 @@
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Tiny12"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="DamageRes" tag="dtBludgeon"/>
-    <tag group="DamageRes" tag="dtPiercing"/>
-    <tag group="DamageRes" tag="dtSlashing"/>
-    <tag group="DamageImm" tag="dtBludgeon"/>
     <tag group="DamageImm" tag="dtNecrotic"/>
-    <tag group="DamageImm" tag="dtPiercing"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="DamageImm" tag="dtPsychic"/>
-    <tag group="DamageImm" tag="dtSlashing"/>
     <tag group="CondImm" tag="pcnCharmed"/>
     <tag group="CondImm" tag="pcnDeaf"/>
     <tag group="CondImm" tag="pcnExhaust"/>
@@ -856,17 +901,32 @@
     <tag group="CondImm" tag="pcnPoison"/>
     <tag group="CondImm" tag="pcnProne"/>
     <tag group="CondImm" tag="pcnStunned"/>
+    <tag group="ProfSave" tag="svCON" name="Constitution"/>
+    <tag group="ProfSave" tag="svINT" name="Intelligence"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom"/>
+    <tag group="ProfSave" tag="svCHA" name="Charisma"/>
+    <tag group="DamageRes" tag="dt5CBPSMaW"/>
+    <tag group="DamComImm" tag="dcWepNonMa"/>
+    <bootstrap thing="ra5CTurImm"></bootstrap>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="30"/>
+      <autotag group="Helper" tag="Hover"/>
       </bootstrap>
     <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CAvoida"></bootstrap>
+    <bootstrap thing="ra5CLegRes"></bootstrap>
+    <bootstrap thing="ra5CHowl"></bootstrap>
+    <bootstrap thing="ra5CLifDra"></bootstrap>
+    <bootstrap thing="ra5CLaDemi"></bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
-  <thing id="r5CMMBarl" name="Barlgura" compset="Race">
+  <thing id="r5CMMBarl" name="Barlgura" description="Barlguras also known as leaping demons, were ape-like tanar&apos;ri demons.\n\nBarlguras were covered in reddish-brown hair and stood between 5 and 6 feet tall. They appeared similar to orangutans. They usually walked on all four limbs, but were able to stand on two legs." compset="Race">
     <fieldval field="rHitDice" value="8"/>
     <fieldval field="rHDSides" value="l0"/>
     <fieldval field="rHPStart" value="68"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="8"/>
     <fieldval field="rDEX" value="5"/>
     <fieldval field="rCON" value="6"/>
@@ -874,18 +934,22 @@
     <fieldval field="rWIS" value="4"/>
     <fieldval field="rCHA" value="-1"/>
     <fieldval field="rCR" value="5 "/>
+    <fieldval field="rAC" value="3"/>
+    <fieldval field="rMultiatt" value="The barlgura makes three attacks: one with its bite and two with its fists."/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Chaotic"/>
-    <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Large1"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
     <tag group="DamageRes" tag="dtCold"/>
     <tag group="DamageRes" tag="dtFire"/>
     <tag group="DamageRes" tag="dtLightnin"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="ProfSave" tag="svDEX" name="Dexterity" abbrev="Dexterity"/>
+    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="Alignment" tag="Chaotic"/>
     <bootstrap thing="raBlindSi">
       <autotag group="Value" tag="30"/>
       </bootstrap>
@@ -893,11 +957,29 @@
       <autotag group="Value" tag="120"/>
       </bootstrap>
     <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
     <bootstrap thing="xTelepathy">
       <autotag group="Value" tag="120"/>
       </bootstrap>
     <bootstrap thing="tpFiend"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDieCount" value="2"/>
+      </bootstrap>
+    <bootstrap thing="wFist">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wDieCount" value="1"/>
+      </bootstrap>
+    <bootstrap thing="ra5CBaInSp"></bootstrap>
+    <bootstrap thing="ra5CReckle"></bootstrap>
+    <bootstrap thing="ra5CRunLea"></bootstrap>
     </thing>
   <thing id="r5CMMChas" name="Chasme" compset="Race">
     <fieldval field="rHitDice" value="13"/>
@@ -3360,7 +3442,7 @@
     <bootstrap thing="lAbyssal"></bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
-  <thing id="ra5CPixMRe" name="Magic Resistance" description="The pixie has advantage on saving throws against spells and other magical effects." compset="RaceSpec">
+  <thing id="ra5CPixMRe" name="Magic Resistance" description="The creature has advantage on saving throws against spells and other magical effects." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="ProductId" tag="Wizards"/>
@@ -3458,7 +3540,7 @@
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     </thing>
-  <thing id="ra5CPieSpC" name="Spider Climb" description="The piercer can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check." compset="RaceSpec">
+  <thing id="ra5CPieSpC" name="Spider Climb" description="The creture can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     </thing>
@@ -3495,7 +3577,7 @@
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     </thing>
-  <thing id="ra5CYetKeS" name="Keen Smell" description="The yeti has advantage on Wisdom (Perception) checks that rely on smell." compset="RaceSpec">
+  <thing id="ra5CYetKeS" name="Keen Smell" description="The creature has advantage on Wisdom (Perception) checks that rely on smell." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     </thing>
@@ -3602,5 +3684,109 @@
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <eval phase="Final" priority="20000"><![CDATA[field[CustDesc].text = "While in sunlight, the " & field[abText].text & " has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight."]]></eval>
+    </thing>
+  <thing id="ra5CTurImm" name="Turn Immunity" description="The claw is immune to effects that turn undead." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="dt5CBluSla" name="bludgeoning or slashing damage (creature&apos;s choice)" compset="DamageType"></thing>
+  <thing id="ra5CMarUnd" name="Marshal Undead" description="Unless the death knight is incapacitated, it and undead creatures of its choice within 60 feet of it have advantage on saving throws aga inst features that turn undead." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="ProductId" tag="Wizards"/>
+    </thing>
+  <thing id="ra5CHelOrb" name="Hellfire Orb" description="The death knight hurls a magical ball of fire that ex plodes at a point it can see within 120 feet of it. Each creature in a 20-foot·radius sphere centered on that point must make a DC 18 Dexterity saving throw. The sphere spreads around corners. A creature takes 35 (10d6) fire damage and 35 (10d6) necrotic damage on a failed save, or half as much damage on a successful one." compset="RaceSpec">
+    <fieldval field="abRange" value="120"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Helper" tag="WeaponSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CDNParr" name="Parry" description="The death knight adds 6 to its AC against one melee attack that would hit it. To do so, the death knight must see the attacker and be wielding a melee weapon." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Reaction" name="Reaction" abbrev="Reaction"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CUndKni" name="Undead Knight" description="A death knight doesn’t require air, food, drink, or sleep." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CDKSpCa" name="Spellcasting" description="The death knight is a 19th-level spell caster. Its spellcas ting abil ity is Char isma (spell save DC 18, +10 to hit with spell attacks). It has the followin g paladin spells prepared:\n\n1st level (4 slots): command, compelled duel, searing smite\n2nd level (3 slots): hold person , magic weapon\n3rd level (3 slots) : dispel magic, elemental weapon\n4th level (3 slots): banishment, staggering smite\n5th level (2 slots): destructive wave (necrotic)" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="dt5CBPSMaW" name="bludgeoning, piercing, and slashing from magic weapons" description="bludgeoning, piercing, and slashing from magic weapons" compset="DamageType"></thing>
+  <thing id="ra5CAvoida" name="Avoidance" description="If the demilich is subjected to an effect that allows it to make a saving throw to take only ha lf damage, it instead takes no damage if it succeeds on the saving throw, and only half damage if it fails." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="ra5CLegRes" name="Legendary Resistance" description="If the demilich fails a saving throw, it can choose to succeed instead." compset="RaceSpec">
+    <fieldval field="trkMax" value="3"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CHowl" name="Howl" description="The demilich emits a bloodcurdling howl. Each creature within 30 feet of the demilich that can hear the howl must succeed on a DC 15 Constitution saving throw or drop to 0 hit points. On a successful save, the creature is  frightened until the end of its next turn." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" abbrev="ShowSpec"/>
+    <tag group="Recharge" tag="5" name="5-6" abbrev="5-6"/>
+    <tag group="Helper" tag="WeaponSpec"/>
+    </thing>
+  <thing id="ra5CLifDra" name="Life Drain" description="The demilich targets up to three creatures that it can see within 10 feet of it. Each target must succeed on a DC 19 Constitution saving throw or take 21 (6d6) necrotic damage, and the demil ich regains hit points equal to the total damage dealt to all targets." compset="RaceSpec">
+    <fieldval field="abRange" value="10"/>
+    <tag group="Helper" tag="ShowSpec" abbrev="ShowSpec"/>
+    <tag group="Helper" tag="WeaponSpec"/>
+    <tag group="FeatureTyp" tag="Action" abbrev="Action"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abSave" tag="aCON"/>
+    </thing>
+  <thing id="ra5CLaDemi" name="Legendary Action" description="The demilich can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature&apos;s turn. The demilich regains spent legendary actions at the start of its turn.\n\n{b}Flight.{/b} The demilich flies up to half its flying speed.\n\n{b}Cloud of Dust.{/b} The demilich magically swirls its dusty remains. Each creature within 10 feet of the demilich, including around  a corner, must succeed on a DC 15 Constitution saving throw or be blinded until the end of the demilich&apos;s next turn. A creature that succeeds on the saving throw is immune to this effect until the end of the demil ich&apos;s next turn.\n\n{b}Energy Drain (Costs 2 Actions).{/b} Each creature within 30 feet of the demilich must make a DC 15 Constitution saving throw. On a fa iled save, the creature&apos;s hit point maximum is magically reduced by 10 (3d6). If a creature&apos;s hit point maximum is reduced to 0 by this effect, the creature dies. A creature&apos;s hit point maximum can be restored with the greater restoration spell or similar magic.\n\n{b}Vile Curse (Costs 3 Actions).{/b} The demilich targets one creature it can see within 30 feet of it. The target must succeed on a DC 15 Wisdom saving throw or be magically cursed. Until the curse ends, the target has disadvantage on attack rolls and saving throws. The target can repeat the saving throw at the end of each of its turns, ending the curse on a success." compset="RaceSpec">
+    <fieldval field="trkMax" value="3"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="Usage" tag="UsPe5CTurn" name="/turn" abbrev="/turn"/>
+    </thing>
+  <thing id="ra5CRunLea" name="Running Leap" description="The barlgura&apos;s long jump is up to 40 feet and its high jump is up to 20 feet when it has a running start." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="ra5CReckle" name="Reckless" description="At the start of its turn, the barlgura can gain advantage on all melee weapon attack rolls it makes during  that turn , but attack rolls against it have advantage until the start of its next turn." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="ra5CBaInSp" name="Innate Spellcasting" description="The barlgura&apos;s spellcasting abi lity is Wisdom (spell save DC 13). The barlgura can innately cast the following spells, requiring no material components:\n\n1/day each: {i}entangle{/i}, {i}phantasmal force{/i}\n2/day each: {i}disguise self{/i}, {i}invisibility{/i} (self only)" compset="RaceSpec">
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spEntangle">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="sp5CPhantF">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
     </thing>
   </document>
