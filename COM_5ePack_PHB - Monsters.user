@@ -924,7 +924,9 @@
     <bootstrap thing="raTruesigh">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <bootstrap thing="ra5CAvoida"></bootstrap>
+    <bootstrap thing="ra5CAvoida">
+      <assignval field="abText" value="demilich"/>
+      </bootstrap>
     <bootstrap thing="ra5CLegRes"></bootstrap>
     <bootstrap thing="ra5CHowl"></bootstrap>
     <bootstrap thing="ra5CLifDra"></bootstrap>
@@ -1317,20 +1319,38 @@
     <fieldval field="rHDSides" value="10"/>
     <fieldval field="rHPStart" value="85"/>
     <fieldval field="rSpeed" value="40"/>
-    <fieldval field="rSTR" value=""/>
-    <fieldval field="rDEX" value=""/>
-    <fieldval field="rCON" value="8"/>
+    <fieldval field="rCON" value="6"/>
     <fieldval field="rINT" value="-4"/>
     <fieldval field="rWIS" value="2"/>
     <fieldval field="rCHA" value="-2"/>
     <fieldval field="rCR" value="3"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="5"/>
+    <fieldval field="rMultiatt" value="The displacer beast makes two attacks with its tentacles."/>
+    <fieldval field="rAC" value="1"/>
     <usesource source="5eMMCP"/>
+    <tag group="RaceType" tag="NPC"/>
     <tag group="Alignment" tag="Lawful"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Large1"/>
-    <tag group="RaceType" tag="NPC"/>
+    <bootstrap thing="ra5CAvoida">
+      <assignval field="abText" value="displacer beast"/>
+      </bootstrap>
+    <bootstrap thing="wTentacle">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDamExtra" value=" damage plus 3 (1d6)"/>
+      <assignval field="wReach" value="10"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="ra5CDispla">
+      <assignval field="abText" value="displacer beast"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
     <bootstrap thing="tpMonstros"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMAdul" name="Adult Blue Dracolich" compset="Race">
     <fieldval field="rHitDice" value="18"/>
@@ -3790,9 +3810,10 @@
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     </thing>
   <thing id="dt5CBPSMaW" name="bludgeoning, piercing, and slashing from magic weapons" description="bludgeoning, piercing, and slashing from magic weapons" compset="DamageType"></thing>
-  <thing id="ra5CAvoida" name="Avoidance" description="If the demilich is subjected to an effect that allows it to make a saving throw to take only ha lf damage, it instead takes no damage if it succeeds on the saving throw, and only half damage if it fails." compset="RaceSpec">
+  <thing id="ra5CAvoida" name="Avoidance" description="If the {abText} is subjected to an effect that allows it to make a saving throw to take only half damage, it instead takes no damage if it succeeds on the saving throw, and only half damage if it fails." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "If the " & Field[abText].text & " is subjected to an effect that allows it to make a saving throw to take only half damage, it instead takes no damage if it succeeds on the saving throw, and only half damage if it fails."]]></eval>
     </thing>
   <thing id="ra5CLegRes" name="Legendary Resistance" description="If the demilich fails a saving throw, it can choose to succeed instead." compset="RaceSpec">
     <fieldval field="trkMax" value="3"/>
@@ -3883,5 +3904,10 @@
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec"/>
     <eval phase="Final" priority="20000">Field[CustDesc].text = &quot;A &quot; &amp; Field[abText].text &amp; &quot; doesn’t require air, food, drink, or sleep.&quot;</eval>
+    </thing>
+  <thing id="ra5CDispla" name="Displacement" description="The {abText} projects a magical illusion that makes it appear to be standing near its actual location, causing attack rolls against it to have disadvantage. If it is hit by an attack, this trait is disrupted until the end of its next turn. This trait is also disrupted while the {abText} is incapacitated or has a speed of 0." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " projects a magical illusion that makes it appear to be standing near its actual location, causing attack rolls against it to have disadvantage. If it is hit by an attack, this trait is disrupted until the end of its next turn. This trait is also disrupted while the " & Field[abText].text & "  is incapacitated or has a speed of 0."]]></eval>
     </thing>
   </document>
