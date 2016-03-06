@@ -2133,7 +2133,9 @@ hero.child[svWIS].Field[svMisc].value += 3</eval>
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="ra5CHookEc"></bootstrap>
-    <bootstrap thing="ra5CHookKH"></bootstrap>
+    <bootstrap thing="ra5CHookKH">
+      <assignval field="abText" value="hook horror"/>
+      </bootstrap>
     <bootstrap thing="l5CHookHor"></bootstrap>
     </thing>
   <thing id="r5CMMIntel" name="Intellect Devourer" compset="Race">
@@ -2192,18 +2194,43 @@ hero.child[svWIS].Field[svMisc].value += 3</eval>
     <fieldval field="rCON" value="1"/>
     <fieldval field="rINT" value="3"/>
     <fieldval field="rWIS" value="1"/>
-    <fieldval field="rCHA" value="0"/>
-    <fieldval field="rCR" value="1"/>
+    <fieldval field="rCR" value="0.5"/>
     <usesource source="5eMMCP"/>
     <tag group="Alignment" tag="Chaotic"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skDecept"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="WepProf" tag="wScimitar"/>
+    <tag group="DamComImm" tag="dcWepNonSi"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttShapecha"></bootstrap>
     <bootstrap thing="lCommon"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="livename" value="Bite (Jackal or Hybrid Form Only)"/>
+      <assignval field="sbName" value="Bite (Jackal or Hybrid Form Only)"/>
+      <assignval field="wDamBonus" value="2"/>
+      <assignval field="wAttack" value="2"/>
+      </bootstrap>
+    <bootstrap thing="ra5CJaShaC"></bootstrap>
+    <bootstrap thing="ra5CKeHeSm">
+      <assignval field="abText" value="jackalwere"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPackTa">
+      <assignval field="abText" value="jackalwere"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSleGaz"></bootstrap>
+    <eval phase="First">perform hero.child[skDecept].assign[Helper.ProfDouble]</eval>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[
+      foreach pick in hero from BaseWep where "!(wGroup.Natural)"
+        eachpick.Field[sbName].text = eachpick.Field[name].text & " (Human or Hybrid Form Only)"
+eachpick.Field[livename].text = eachpick.Field[sbName].text
+        nexteach]]></eval>
     </thing>
   <thing id="r5CMMKenku" name="Kenku" compset="Race">
     <fieldval field="rHitDice" value="3"/>
@@ -3733,10 +3760,11 @@ hero.child[svWIS].Field[svMisc].value += 3</eval>
     <tag group="ProductId" tag="Wizards"/>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     </thing>
-  <thing id="ra5CHookKH" name="Keen Hearing" description="The hook horror has advantage on Wisdom (Perception) checks that rely on hearing." compset="RaceSpec">
+  <thing id="ra5CHookKH" name="Keen Hearing" description="The {abText} has advantage on Wisdom (Perception) checks that rely on hearing." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="ProductId" tag="Wizards"/>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " has advantage on Wisdom (Perception) checks that rely on hearing."]]></eval>
     </thing>
   <thing id="ra5CKenAmb" name="Ambusher" description="The {abText} has advantage on attack rolls against any creature it has surprised." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
@@ -4107,5 +4135,25 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <tag group="StandardDC" tag="aCON"/>
     <tag group="abSave" tag="aCON"/>
     <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " exhales a 30-foot cone of gas. Each creature in that area must succeed on a DC " & Field[abDC].value & " Constitution saving throw or be paralyzed for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."]]></eval>
+    </thing>
+  <thing id="ra5CJaShaC" name="Shapechanger" description="The jackalwere can use its action to polymorph into a specific Medium human or a jackal-humanoid hybrid, or back into its true form (that of a Small jackal). Other than its size, its statistics are the same in each form . Any equipment it is wearing or carrying isn &apos;t transformed . It reverts to its true form if it dies ." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="SbSort" tag="SpecPrim" name="Primary Special Ability" abbrev="Primary Special Ability"/>
+    </thing>
+  <thing id="ra5CKeHeSm" name="Keen Hearing and Smell" description="The {abText} has advantage on Wisdom (Perception) checks that rely on hearing or smell." compset="RaceSpec">
+    <fieldval field="sbName" value="Keen Hearing and Smell"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " has advantage on Wisdom (Perception) checks that rely on hearing or smell."]]></eval>
+    </thing>
+  <thing id="ra5CPackTa" name="Pack Tactics" description="The {abText} has advantage on an attack roll against a creature if at least one of the {abText}’s allies is within 5 feet of he the creature and the ally isn’t incapacitated." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000">Field[CustDesc].text = &quot;The &quot; &amp; Field[abText].text &amp; &quot; has advantage on an attack roll against a creature if at least one of the &quot; &amp; Field[abText].text &amp; &quot;’s allies is within 5 feet of he the creature and the ally isn’t incapacitated.&quot;</eval>
+    </thing>
+  <thing id="ra5CSleGaz" name="Sleep Gaze" description="The jackalwere gazes at one creature it can see within 30 feet of it. The target must make a DC 10 Wisdom saving throw. On a failed save, the target succumbs to a magical slumber, falling unconscious for 10 minutes or until someone uses an action to shake the target awake. A creature that successfully saves against the effect is immune to this jackalwere&apos;s gaze for the next 24 hours. Undead and creatures immune to being charmed aren&apos;t affected by it ." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
     </thing>
   </document>
