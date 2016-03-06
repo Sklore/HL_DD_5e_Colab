@@ -2467,7 +2467,6 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <fieldval field="rHitDice" value="13"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="71"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="1"/>
     <fieldval field="rDEX" value="2"/>
     <fieldval field="rCON" value="2"/>
@@ -2480,20 +2479,55 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skArcana"/>
-    <tag group="AllowSkl1" tag="skDecept"/>
-    <tag group="AllowSkl1" tag="skInsight"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skPersuas"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="tpAberr"></bootstrap>
+    <bootstrap thing="wTentacle">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtPsychic"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wAttackEff" value="If the target is Medium or smaller, it is grappled (escape DC 15) and must succeed on a DC 15 intelligence saving throw or be stunned until this grapple ends."/>
+      <assignval field="livename" value="Tentacles"/>
+      <assignval field="sbName" value="Tentacles"/>
+      <assignval field="wAttack" value="4"/>
+      <assignval field="wDamBonus" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="mind flayer"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMFInSp"></bootstrap>
+    <bootstrap thing="ra5CMindBl">
+      <assignval field="abText" value="mind flayer"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="livename" value="Extract Brain"/>
+      <assignval field="wDieCount" value="10"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="sbName" value="Extract Brain"/>
+      <assignval field="wAttackEff" value="If this damage reduces the target to 0 hit points, the mind flayer kills the target by extracting and devouring its brain ."/>
+      <assignval field="wAttack" value="4"/>
+      </bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="lDeepSpeec"></bootstrap>
-    <bootstrap thing="lUndercomm"></bootstrap>
-    <bootstrap thing="xTelepathy">
-      <autotag group="Value" tag="12"/>
-      </bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <eval phase="PostAttr" priority="10000" index="2">hero.child[svINT].Field[svMisc].value += 3
+hero.child[svWIS].Field[svMisc].value += 3
+hero.child[svCHA].Field[svMisc].value += 3</eval>
     </thing>
   <thing id="r5CMMMonod" name="Monodrone" compset="Race">
     <fieldval field="rHitDice" value="1"/>
@@ -3899,6 +3933,26 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
   <thing id="ra5CMMInSp" name="Innate Spellcasting" description="The cambion&apos;s spellcasting ability is Charisma (spell save DC 14). The cambion can innately cast the following spells, requiring no material components:\n\n3/day each: {i}alter self{/i}, {i}command{/i}, {i}detect magic{/i}\n1/day each: {i}plane shift{/i} (self only)" compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="SpInfo" tag="spCommand"/>
+    <bootstrap thing="spAlteSelf">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spCommand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
     </thing>
   <thing id="ra5CMMFieC" name="Fiendish Charm" description="One humanoid the cambion can see within 30 feet of it must succeed on a DC 14 Wisdom saving throw or be magically charmed for 1 day. The charmed target obeys the cambion&apos;s spoken commands. If the target suffers any harm from the cambion or another creature or receives a suicidal command from the cambion, the target can repeat the saving throw, ending the effect on itself on a success. If a target&apos;s saving throw is successful, or if the effect ends for it, the creature is immune to the cambion&apos;s Fiendish Charm for the next 24 hours." compset="RaceSpec">
     <tag group="ProductId" tag="Wizards"/>
@@ -4156,5 +4210,36 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
   <thing id="ra5CSleGaz" name="Sleep Gaze" description="The jackalwere gazes at one creature it can see within 30 feet of it. The target must make a DC 10 Wisdom saving throw. On a failed save, the target succumbs to a magical slumber, falling unconscious for 10 minutes or until someone uses an action to shake the target awake. A creature that successfully saves against the effect is immune to this jackalwere&apos;s gaze for the next 24 hours. Undead and creatures immune to being charmed aren&apos;t affected by it ." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Action"/>
+    </thing>
+  <thing id="ra5CMFInSp" name="Innate Spellcasting (Psionics)" description="The mind flayer&apos;s innate spellcasting ability is Intelligence (spell save DC 15). It can innately cast the following spells, requiring no components:\n\nAt will: {i}detect thoughts{/i}, {i}levitate{/i}\n1/day each: {i}dominate monster{/i}, {i}plane shift{/i} (self only)" compset="RaceSpec">
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spDeteThou">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDomiMons">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CMindBl" name="Mind Blast" description="The {abText} magically emits psychic energy in a 60-foot cone. Each creature in that area must succeed on a DC {abDC} Intelligence saving throw or take 22 (4d8 + 4) psychic damage and be stunned for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Recharge" tag="5" name="5-6" abbrev="5-6"/>
+    <tag group="abSave" tag="aINT"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abRange" tag="Feet"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " magically emits psychic energy in a 60-foot cone. Each creature in that area must succeed on a DC " & Field[abDC].value & " Intelligence saving throw or take 22 (4d8 + 4) psychic damage and be stunned for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."]]></eval>
     </thing>
   </document>
