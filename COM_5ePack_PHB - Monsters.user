@@ -362,7 +362,7 @@
       <assignval field="wDamBonus" value="3"/>
       </bootstrap>
     </thing>
-  <thing id="ra5CMMFaAp" name="False Appearance" description="While the blight remains motionl ess, it is indistingui shable from a dead shrub." compset="RaceSpec">
+  <thing id="ra5CMMFaAp" name="False Appearance" description="While the blight remains motionless, it is indistinguishable from a dead shrub." compset="RaceSpec">
     <tag group="abAction" tag="None"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="ProductId" tag="Wizards"/>
@@ -405,7 +405,7 @@
     <bootstrap thing="tpPlant"></bootstrap>
     <bootstrap thing="ra5CMMEntP"></bootstrap>
     </thing>
-  <thing id="ra5CMMFalA" name="False Appearance" description="While the blight remains motionless , it is indistinguishable from a tangle of vines." compset="RaceSpec">
+  <thing id="ra5CMMFalA" name="False Appearance" description="While the blight remains motionless, it is indistinguishable from a tangle of vines." compset="RaceSpec">
     <tag group="abAction" tag="None"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="ProductId" tag="Wizards"/>
@@ -3284,19 +3284,13 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <fieldval field="rHitDice" value="8"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="36"/>
-    <fieldval field="rSpeed" value="30"/>
-    <fieldval field="rSTR" value=""/>
-    <fieldval field="rDEX" value=""/>
+    <fieldval field="rSTR" value="1"/>
+    <fieldval field="rDEX" value="3"/>
     <fieldval field="rCON" value="1"/>
-    <fieldval field="rINT" value="0"/>
-    <fieldval field="rWIS" value="0"/>
     <fieldval field="rCHA" value="3"/>
     <fieldval field="rCR" value="1"/>
+    <fieldval field="rMultiatt" value="The scarecrow makes two claw attacks."/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceType" tag="NPC"/>
-    <tag group="DamageRes" tag="dtBludgeon"/>
-    <tag group="DamageRes" tag="dtPiercing"/>
-    <tag group="DamageRes" tag="dtSlashing"/>
     <tag group="DamageVuln" tag="dtFire"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnCharmed"/>
@@ -3304,10 +3298,31 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <tag group="CondImm" tag="pcnFright"/>
     <tag group="CondImm" tag="pcnParaly"/>
     <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="DamComRes" tag="dcWepNonMa"/>
+    <tag group="CondImm" tag="pcnUnconc"/>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="lOther">
+      <autotag group="Helper" tag="CantSpeak"/>
+      <assignval field="lCustName" value="the languages of its creator"/>
+      <assignval field="sbName" value="the languages of its creator"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="wProperty" tag="Finesse"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must succeed on a DC 11 Wisdom saving throw or be frightened until the end of the scarecrow&apos;s next turn."/>
+      <assignval field="wDieCount" value="2"/>
+      </bootstrap>
+    <bootstrap thing="ra5CScCFAp"></bootstrap>
+    <bootstrap thing="ra5CTerrGl">
+      <assignval field="abText" value="scarecrow"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMSlaad" name="Slaad Tadpole" compset="Race">
     <fieldval field="rHitDice" value="4"/>
@@ -4303,5 +4318,16 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <tag group="wProfReq" tag="Simple" name="Simple" abbrev="Simple"/>
     <tag group="wProperty" tag="Versatile" name="Versatile" abbrev="Versatile"/>
     <tag group="DamageType" tag="dtBludgeon" name="Bludgeoning" abbrev="Bludgeoning"/>
+    </thing>
+  <thing id="ra5CScCFAp" name="False Appearance" description="While the scarecrow remains motionless, it is indistinguishable from an ordinary, inanimate scarecrow." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="ra5CTerrGl" name="Terrifying Glare" description="The {abText} targets one creature it can see within 30 feet of it. If the target can see the {abText}, the target must succeed on a DC {abDC} Wisdom saving throw or be magically frightened until the end of the {abText}&apos;s next turn . The frightened target is paralyzed." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it can see within 30 feet of it. If the target can see the " & Field[abText].text & ", the target must succeed on a DC " & Field[abDC].value & " Wisdom saving throw or be magically frightened until the end of the " & Field[abText].text & "'s next turn . The frightened target is paralyzed."]]></eval>
     </thing>
   </document>
