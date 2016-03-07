@@ -1475,9 +1475,7 @@
     <tag group="ProfSkill" tag="skDecept"/>
     <tag group="ProfSkill" tag="skPercep"/>
     <tag group="ProfSkill" tag="skStealth"/>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="120"/>
-      </bootstrap>
+    <tag group="WepProf" tag="w5CStaff"/>
     <bootstrap thing="lElvish"></bootstrap>
     <bootstrap thing="lUndercomm"></bootstrap>
     <bootstrap thing="tpHumanoid"></bootstrap>
@@ -1495,12 +1493,19 @@
       <autotag group="AttackTarg" tag="1Target"/>
       <autotag group="DamTypeOvr" tag="dtBludgeon"/>
       <assignval field="wReach" value="5"/>
-      <assignval field="wDamExtra" value=" damage, or 3 (1d8 - 1) bludgeoning damage if used with two hands, plus 3 (1d6) poison"/>
+      <assignval field="wDamExtra" value=" damage, or 3 (1d8 - 1) bludgeoning damage if used with two hands, "/>
       <assignval field="wDieCount" value="1"/>
       <assignval field="wDieSize" value="6"/>
       <assignval field="livename" value="Staff"/>
       <assignval field="sbName" value="Staff"/>
       </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      foreach pick in hero from BaseWep where "wCategory.Melee"
+        #extradamage[eachpick, " damage plus 3 (1d6) poison", field[thingname].text]
+        nexteach]]></eval>
     </thing>
   <thing id="r5CMMDPOL" name="Elf, Drow Priestess Of Lolth" compset="Race">
     <fieldval field="rHitDice" value="13"/>
@@ -1525,7 +1530,7 @@
     <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
     <tag group="ProfSave" tag="svCHA" name="Charism" abbrev="Charism"/>
     <tag group="Alignment" tag="NeutralLC"/>
-    <bootstrap thing="xMultiatt"></bootstrap>
+    <tag group="WepProf" tag="w5CScourge"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
@@ -1542,18 +1547,11 @@
       <autotag group="User" tag="Tracker"/>
       <assignval field="trkMax" value="1"/>
       </bootstrap>
-    <bootstrap thing="wOtherMel">
-      <autotag group="AttackTarg" tag="1Target"/>
-      <autotag group="DamTypeOvr" tag="dtPiercing"/>
-      <assignval field="wDieCount" value="1"/>
-      <assignval field="wDieSize" value="6"/>
-      <assignval field="wDamExtra" value=" damage plus 17 (5d6) poison"/>
-      <assignval field="wReach" value="5"/>
-      <assignval field="livename" value="Scourge"/>
-      <assignval field="sbName" value="Scourge"/>
-      <assignval field="wDamBonus" value="2"/>
-      <assignval field="wAttack" value="2"/>
-      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      foreach pick in hero from BaseWep where "wCategory.Melee"
+        #extradamage[eachpick, " damage plus 17 (5d6) poison", field[thingname].text]
+        nexteach]]></eval>
     </thing>
   <thing id="r5CMMEmpyr" name="Empyrean" compset="Race">
     <fieldval field="rHitDice" value="19"/>
@@ -4290,5 +4288,30 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
   <thing id="ra5CDPSuDe" name="Summon Demon" description="The drow attempts to magically summon a yochlol with a 30 percent chance of success. If the attempt fails, the drow takes 5 (1d10) psychic damage. Otherwise, the summoned demon appears in an unoccupied space within 60 feet of its summoner, acts as an ally of its summoner, and can&apos;t summon other demons. It remains for 10 minutes, until it or its summoner dies, or until its summoner dismisses it as an action." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Action"/>
+    </thing>
+  <thing id="w5CScourge" name="Scourge" compset="Weapon">
+    <fieldval field="gWeight" value="3"/>
+    <fieldval field="gSizeCost" value="2"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="wProperty" tag="Reach" name="Reach" abbrev="Reach"/>
+    <tag group="EquipType" tag="Metal" name="Metal" abbrev="Metal"/>
+    <tag group="wCategory" tag="Melee" name="Melee Weapon" abbrev="Melee"/>
+    <tag group="wProfReq" tag="Martial" name="Martial" abbrev="Martial"/>
+    <tag group="wProperty" tag="Finesse" name="Finesse" abbrev="Finesse"/>
+    <tag group="DamageType" tag="dtPiercing"/>
+    </thing>
+  <thing id="w5CStaff" name="Staff" compset="Weapon">
+    <fieldval field="gWeight" value="4"/>
+    <fieldval field="gSizeCost" value=".2"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="6"/>
+    <fieldval field="wDCntVers" value="1"/>
+    <fieldval field="wDSizVers" value="8"/>
+    <tag group="EquipType" tag="Wood" name="Wood" abbrev="Wood"/>
+    <tag group="wCategory" tag="Melee" name="Melee Weapon" abbrev="Melee"/>
+    <tag group="wProfReq" tag="Simple" name="Simple" abbrev="Simple"/>
+    <tag group="wProperty" tag="Versatile" name="Versatile" abbrev="Versatile"/>
+    <tag group="DamageType" tag="dtBludgeon" name="Bludgeoning" abbrev="Bludgeoning"/>
     </thing>
   </document>
