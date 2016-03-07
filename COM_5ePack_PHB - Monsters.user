@@ -1471,18 +1471,36 @@
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skArcana"/>
-    <tag group="AllowSkl1" tag="skDecept"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="lElvish"></bootstrap>
     <bootstrap thing="lUndercomm"></bootstrap>
     <bootstrap thing="tpHumanoid"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="raElDFeAnc"></bootstrap>
+    <bootstrap thing="ra5CHDrISp"></bootstrap>
+    <bootstrap thing="ra5CSunSen">
+      <assignval field="abText" value="drow"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDMSuDe">
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="User" tag="Tracker"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDamExtra" value=" damage, or 3 (1d8 - 1) bludgeoning damage if used with two hands, plus 3 (1d6) poison"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="livename" value="Staff"/>
+      <assignval field="sbName" value="Staff"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMDPOL" name="Elf, Drow Priestess Of Lolth" compset="Race">
     <fieldval field="rHitDice" value="13"/>
@@ -1494,23 +1512,48 @@
     <fieldval field="rWIS" value="7"/>
     <fieldval field="rCHA" value="8"/>
     <fieldval field="rCR" value="8"/>
+    <fieldval field="rMultiatt" value="The drow makes two scourge attacks."/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="NeutralLC"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skInsight"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skReligion"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skReligion"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSave" tag="svCHA" name="Charism" abbrev="Charism"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="lElvish"></bootstrap>
     <bootstrap thing="lUndercomm"></bootstrap>
     <bootstrap thing="tpHumanoid"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="raElDFeAnc"></bootstrap>
+    <bootstrap thing="ra5CHDrISp"></bootstrap>
+    <bootstrap thing="ra5CSunSen">
+      <assignval field="abText" value="drow"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDPSuDe">
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="User" tag="Tracker"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDamExtra" value=" damage plus 17 (5d6) poison"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="livename" value="Scourge"/>
+      <assignval field="sbName" value="Scourge"/>
+      <assignval field="wDamBonus" value="2"/>
+      <assignval field="wAttack" value="2"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMEmpyr" name="Empyrean" compset="Race">
     <fieldval field="rHitDice" value="19"/>
@@ -4146,9 +4189,7 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
       <autotag group="Usage" tag="Day"/>
       <assignval field="trkMax" value="1"/>
       </bootstrap>
-    <eval phase="Final" priority="20000">var newDC as number
-newDC = Field[abDC].value + 1
-Field[CustDesc].text = &quot;The drow’s spellcasting ability is Charisma (spell save DC &quot; &amp; newDC &amp; &quot;). It can innately cast the following spells, requiring no material components:{br}At will: {i}dancing lights{/i}{br}1/day each: {i}darkness{/i}, {i}faerie fire{/i}, {i}levitate{/i} (self only)&quot;</eval>
+    <eval phase="Final" priority="20000">Field[CustDesc].text = &quot;The drow’s spellcasting ability is Charisma (spell save DC &quot; &amp; Field[abDC].value &amp; &quot;). It can innately cast the following spells, requiring no material components:{br}At will: {i}dancing lights{/i}{br}1/day each: {i}darkness{/i}, {i}faerie fire{/i}, {i}levitate{/i} (self only)&quot;</eval>
     </thing>
   <thing id="ra5CDetSen" name="Detect Sentience" description="The {abText} can sense the presence and location of any creature within 300 feet of it that has an Intelligence of 3 or higher, regardless of interposing barriers, unless the creature is protected by a {i}mind blank{/i} spell." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
@@ -4241,5 +4282,13 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <tag group="FeatureTyp" tag="Action"/>
     <tag group="abRange" tag="Feet"/>
     <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " magically emits psychic energy in a 60-foot cone. Each creature in that area must succeed on a DC " & Field[abDC].value & " Intelligence saving throw or take 22 (4d8 + 4) psychic damage and be stunned for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."]]></eval>
+    </thing>
+  <thing id="ra5CDMSuDe" name="Summon Demon" description="The drow magically summons a quasit, or attempts to summon a shadow demon with a 50 percent chance of success. The summoned demon appears in an unoccupied space within 60 feet of its su mmoner, acts as\nan ally of its summoner, and can&apos;t summon other demons. It remains for 10 minutes, until it or its summoner dies, or until its summoner dismisses it as an action" compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    </thing>
+  <thing id="ra5CDPSuDe" name="Summon Demon" description="The drow attempts to magically summon a yochlol with a 30 percent chance of success. If the attempt fails, the drow takes 5 (1d10) psychic damage. Otherwise, the summoned demon appears in an unoccupied space within 60 feet of its summoner, acts as an ally of its summoner, and can&apos;t summon other demons. It remains for 10 minutes, until it or its summoner dies, or until its summoner dismisses it as an action." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
     </thing>
   </document>
