@@ -52,4 +52,271 @@
       NumOfProf = field[pAdjust].value
       call 5CAddProf]]></eval>
     </thing>
+  <thing id="p5CEqText" name="Equipment, Notes" description="Select this adjustment to allow for adding text notes (up to 100 characters) to equipment that will display as part of the items description text." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.MyGear &amp; !(Helper.Static|thingid.mNatural)"/>
+    <fieldval field="pSource" value="Notes"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+
+      ~ Append the entered text to the gear item
+      field[pChosen].chosen.field[DescAppend].text &= field[pSource].text]]></eval>
+    </thing>
+  <thing id="p5CwElemen" name="Weapon Elemental Dmg, Custom" description="Select this adjustment to add custom text damage next to your weapon name. &quot;(Duration)&quot; is the type of damage (ie +1d6 Fire) and &quot;(Source)&quot; is the name of the ability giving this to you (ie Flaming).\n\n{B}Note:{/b} This adjustment will NOT work correctly from the &quot;{b}Personal{/b}&quot; tab as you have to be able to type into the duration field to set the custom text." compset="InPlay">
+    <fieldval field="pDuration" value="+1d6 Elemental"/>
+    <tag group="Adjustment" tag="YourWep"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <eval phase="Final" priority="20500"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+
+      ~ Here we are pulling the text the user entered from the 
+      ~ Durattion field to set the text.
+      #extradamage[field[pChosen].chosen,field[pDuration].text,field[name].text]]]></eval>
+    </thing>
+  <thing id="p5CwCustom" name="Custom Text: Weapon" description="Append text to the name of your weapon using the (Source) or (Duration) field. Use this to add any other related info you would like to see with when you print a character or use on the iPad. Use this to add info about Rapid Shot, Vital Strike or any other combat related info you would like to see with your weapon." compset="InPlay">
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="Adjustment" tag="YourWep"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="AdjShadow" tag="Text"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <eval phase="Render" priority="99999999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      ~ Based on the AdjShadow.? tag on this adjustment we will 
+      ~ either append or overwrite. We now use either Source or 
+      ~ Duration. This allows the adjustment to be used on the
+      ~ Personal tab also.
+      call S2SetName]]></eval>
+    </thing>
+  <thing id="p5CArCusto" name="Custom Text: Armor" description="Append text to the name of your armor using the (Source) or (Duration) field. Use this to add any other related info you would like to see with when you print a character or use on the iPad." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Adjustment" tag="YourArmor"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="AdjShadow" tag="Text"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <eval phase="Render" priority="99999999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      ~ Based on the AdjShadow.? tag on this adjustment we will 
+      ~ either append or overwrite. We now use either Source or 
+      ~ Duration. This allows the adjustment to be used on the
+      ~ Personal tab also.
+      call S2SetName]]></eval>
+    </thing>
+  <thing id="p5CEqCusto" name="Custom Text: Equipment" description="Append text to the name of your equipment using the (Source) or (Duration) field. Use this to add any other related info you would like to see with when you print a character or use on the iPad." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Adjustment" tag="YourGear"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="AdjShadow" tag="Text"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <eval phase="Render" priority="99999999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      ~ Based on the AdjShadow.? tag on this adjustment we will 
+      ~ either append or overwrite. We now use either Source or 
+      ~ Duration. This allows the adjustment to be used on the
+      ~ Personal tab also.
+      call S2SetName]]></eval>
+    </thing>
+  <thing id="p5CSpCusto" name="Custom Text: Spell" description="Append text to the name of your spell using the (Source) or (Duration) field. Use this to add any other related info you would like to see with when you print a character or use on the iPad." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseSpell"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="AdjShadow" tag="Text"/>
+    <tag group="OthAdjCat" tag="Spell"/>
+    <eval phase="Render" priority="99999999" index="2"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      ~ Based on the AdjShadow.? tag on this adjustment we will 
+      ~ either append or overwrite. We now use either Source or 
+      ~ Duration. This allows the adjustment to be used on the
+      ~ Personal tab also.
+      call S2SetName]]></eval>
+    </thing>
+  <thing id="p5CRaCusto" name="Custom Text: Race" description="Append text to the name of your race using the (Source) or (Duration) field. Use this to add any other related info you would like to see with when you print a character or use on the iPad." compset="InPlay">
+    <comment>This must run at Render/999 to work.</comment>
+    <fieldval field="pCandExpr" value="component.BaseRace"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="AdjShadow" tag="Text"/>
+    <tag group="OthAdjCat" tag="Race"/>
+    <eval phase="Render" priority="999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      ~ Based on the AdjShadow.? tag on this adjustment we will 
+      ~ either append or overwrite. We now use either Source or 
+      ~ Duration. This allows the adjustment to be used on the
+      ~ Personal tab also.
+      call S2SetName]]></eval>
+    </thing>
+  <thing id="p5CAbCusto" name="Custom Text: Ability" description="Append text to the name of your ability (Race or Class) using the (Source) or (Duration) field. Use this to add any other related info you would like to see with when you print a character or use on the iPad." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.Ability &amp; !component.BaseFeat"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="AdjShadow" tag="Text"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="SpecAbil"/>
+    <eval phase="Render" priority="99999999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      ~ Based on the AdjShadow.? tag on this adjustment we will 
+      ~ either append or overwrite. We now use either Source or 
+      ~ Duration. This allows the adjustment to be used on the
+      ~ Personal tab also.
+      call S2SetName]]></eval>
+    </thing>
+  <thing id="p5CEqChang" name="Custom Name: Equipment" description="Overwrite the name of your equipment using the (Source) or (Duration) field. Use this to force an item to have a new name or custom name that will display on a printed character sheet or iPad." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Adjustment" tag="YourGear"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="AdjShadow" tag="Name"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <eval phase="Render" priority="99999999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      ~ Based on the AdjShadow.? tag on this adjustment we will 
+      ~ either append or overwrite. We now use either Source or 
+      ~ Duration. This allows the adjustment to be used on the
+      ~ Personal tab also.
+      call S2SetName]]></eval>
+    </thing>
+  <thing id="p5CArChang" name="Custom Name: Armor" description="Overwrite the name of your armor using the (Source) or (Duration) field. Use this to force an item to have a new name or custom name that will display on a printed character sheet or iPad." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Adjustment" tag="YourArmor"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="AdjShadow" tag="Name"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <eval phase="Render" priority="99999999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      ~ Based on the AdjShadow.? tag on this adjustment we will 
+      ~ either append or overwrite. We now use either Source or 
+      ~ Duration. This allows the adjustment to be used on the
+      ~ Personal tab also.
+      call S2SetName]]></eval>
+    </thing>
+  <thing id="p5CSpChang" name="Custom Name: Spell" description="Overwrite the name of your spell using the (Source) or (Duration) field. Use this to force a spell to have a new name or custom name that will display on a printed character sheet or iPad." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseSpell"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="AdjShadow" tag="Name"/>
+    <tag group="OthAdjCat" tag="Spell"/>
+    <eval phase="Render" priority="99999999" index="2"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      ~ Based on the AdjShadow.? tag on this adjustment we will 
+      ~ either append or overwrite. We now use either Source or 
+      ~ Duration. This allows the adjustment to be used on the
+      ~ Personal tab also.
+      call S2SetName]]></eval>
+    </thing>
+  <thing id="p5CwChange" name="Custom Name: Weapon" description="Overwrite the name of your weapon using the (Source) or (Duration) field. Use this to force a weapon to have a new name or custom name that will display on a printed character sheet or iPad." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="Adjustment" tag="YourWep"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="AdjShadow" tag="Name"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <eval phase="Render" priority="99999999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      ~ Based on the AdjShadow.? tag on this adjustment we will 
+      ~ either append or overwrite. We now use either Source or 
+      ~ Duration. This allows the adjustment to be used on the
+      ~ Personal tab also.
+      call S2SetName]]></eval>
+    </thing>
+  <thing id="p5CRaChang" name="Custom Name: Race" description="Overwrite the name of your race using the (Source) or (Duration) field. Use this to force your race to have a new name or custom name that will display on a printed character sheet or iPad." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseRace"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="AdjShadow" tag="Name"/>
+    <tag group="OthAdjCat" tag="Race"/>
+    <eval phase="First" priority="600"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      ~ Based on the AdjShadow.? tag on this adjustment we will 
+      ~ either append or overwrite. We now use either Source or 
+      ~ Duration. This allows the adjustment to be used on the
+      ~ Personal tab also.
+      call S2SetName]]></eval>
+    </thing>
+  <thing id="p5CAbChang" name="Custom Name: Ability" description="Overwrite the name of an ability (Race or Class) using the (Source) or (Duration) field. Use this to force an ability to have a new name or custom name that will display on a printed character sheet or iPad." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.Ability &amp; !component.BaseFeat"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="AdjShadow" tag="Name"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="OthAdjCat" tag="SpecAbil"/>
+    <eval phase="Render" priority="99999999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      ~ Based on the AdjShadow.? tag on this adjustment we will 
+      ~ either append or overwrite. We now use either Source or 
+      ~ Duration. This allows the adjustment to be used on the
+      ~ Personal tab also.
+      call S2SetName]]></eval>
+    </thing>
   </document>

@@ -85,5 +85,57 @@
     doneif (focus.tagis[component.Configure] <> 0)
     ]]></procedure>
 
+  <procedure id="S2SetName" context="pick"><![CDATA[
+    ~Set the Custom Name and Custom Text adjustments logic into this single
+    ~procedure. We need to allow for using the Duration field or the Source
+    ~field for setting the name so that we are backwards compatable.
+    ~Timing: Render/99999999
+
+    ~ 1 = Source
+    ~ 2 = Duration
+    var S2Type as number
+
+    ~ If the default "(duration)" text is changed then attempt to use it.
+    If (compare(field[pDuration].text,"(duration)") <> 0) Then
+      ~ Make sure that we are not blank either.
+      If (compare(field[pDuration].text,"") <> 0) Then
+        S2Type = 2
+      Endif
+    Endif
+
+    ~ If the default "(source)" text is changed then attempt to use it.
+    If (compare(field[pSource].text,"(source)") <> 0) Then
+      ~ Make sure that we are not blank either.
+      If (compare(field[pSource].text,"") <> 0) Then
+        S2Type = 1
+      Endif
+    Endif
+
+    ~ The tag AdjShadow.Name means we are totally overwriting the live name value
+    If (tagis[AdjShadow.Name] <> 0) Then
+
+      ~ Source field has text to use so use it
+      If (S2Type = 1) Then
+        field[pChosen].chosen.field[livename].text = field[pSource].text
+
+      ~ Duration field has text and Source does not so use it
+      ElseIf (S2Type = 2) Then
+        field[pChosen].chosen.field[livename].text = field[pDuration].text      
+      Endif
+
+    ~ The tag AdjShadow.Text means we are appending to the live name value
+    ElseIf (tagis[AdjShadow.Text] <> 0) Then
+
+      ~ Source field has text to use so use it
+      If (S2Type = 1) Then
+        field[pChosen].chosen.field[livename].text &= field[pSource].text
+
+      ~ Duration field has text and Source does not so use it
+      ElseIf (S2Type = 2) Then
+        field[pChosen].chosen.field[livename].text &= field[pDuration].text      
+      Endif
+    Endif]]>
+  </procedure>
+
 
 </document>

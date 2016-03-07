@@ -119,7 +119,7 @@
       
       hero.child[aCON].field[aStartMod].value += 1]]></eval>
     </thing>
-  <thing id="ft5CElemAd" name="Elemental Adept" description="Spells you cast ignore resistance to damage of the selected elemental type. In addition, when you roll damage for a spell you cast that deals damage of the selected elemental type, you can treat any 1 on a damage die as a 2." compset="Feat" summary="Ignore resistance to dmg &amp; treat dmg dice of 1 as 2." uniqueness="useronce">
+  <thing id="ft5CElemAd" name="Elemental Adept" description="Spells you cast ignore resistance to damage of the selected elemental type. In addition, when you roll damage for a spell you cast that deals damage of the selected elemental type, you can treat any 1 on a damage die as a 2." compset="Feat" summary="Ignore resistance to dmg &amp; treat dmg dice of 1 as 2.">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="fShowWhat" tag="Energy"/>
@@ -132,7 +132,14 @@
       ~ Get the energy tag and place it on ourself. This
       ~ allows other Picks to easily to test which energy
       ~ type we selected.
-      perform field[usrChosen1].chosen.pulltags[5CElemType.?]]]></eval>
+      perform field[usrChosen1].chosen.pulltags[5CElemType.?]
+
+      ~ Mark this elemental type as already selected by this feat
+      perform field[usrChosen1].chosen.pushtags[HasFeat.?]]]></eval>
+    <evalrule phase="Final" priority="50000" message="You can not pick the same element more than once." summary="You can not pick the same element more than once."><![CDATA[
+      ~ Check to see if this feat has selected this element
+      ~ more than once &
+      validif (field[usrChosen1].chosen.tagcount[HasFeat.ft5CElemAd] <= 1)]]></evalrule>
     <prereq message="You must be able to cast at least one spell. ">
       <validate><![CDATA[
         ~ Test that the character has at least one spell
@@ -315,7 +322,7 @@ nexteach]]></comment>
           perform eachpick.delete[Helper.StealthDis]
      nexteach
      hero.childfound[ArmorClass].field[tACDexMod].value = minimum(hero.childfound[ArmorClass].field[tACDexMod].value + field[abValue].value, hero.childfound[aDEX].field[aModBonus].value)]]></eval>
-    <exprreq message="Proficiency with medium armor required. "><![CDATA[tagis[Hero.ProfMedium] <> 0]]></exprreq>
+    <exprreq message="Proficiency with medium armor required. "><![CDATA[tagis[ArmProfGrp.ArmorMed] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CMobile" name="Mobile" description="Your speed increases by 10 feet.\n• When you use the Dash action, difficult terrain doesn’t cost you extra movement on that turn.\n• When you make a melee attack against a creature, you don’t provoke opportunity attacks from that creature for the rest of the turn, whether you hit or not." compset="Feat" uniqueness="useronce">
     <usesource source="5ePHBCP"/>
@@ -367,21 +374,8 @@ nexteach]]></comment>
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
     
-      var sPPercept as string
-      var sPInvest as string
-      var iPPercept as number
-      var iPInvest as number
-
-      iPPercept = hero.child[skPercep].field[skAttrBon].value+10+5
-      iPInvest = hero.child[skInvestig].field[skAttrBon].value+10+5
-      sPPercept = "passive Perception (" & iPPercept & ") [+5 bonus to your passive Wisdom (Perception)]"
-      sPInvest = "passive Investigation ("& iPInvest &") [+5 bonus to your passive Intelligence (Investigation)]"
-
-      #situational[hero.child[skPercep], sPPercept,field[thingname].text]
-      #situational[hero.child[skInvestig], sPInvest,field[thingname].text]
-
-      ~#situational[hero.child[skPercep], "+5 bonus to your passive Wisdom (Perception)",field[thingname].text]
-      ~#situational[hero.child[skInvestig], "+5 bonus to your passive Intelligence (Investigate)",field[thingname].text]]]></eval>
+      hero.child[skPercep].field[skPassive].value += 5
+      hero.child[skInvestig].field[skPassive].value += 5]]></eval>
     </thing>
   <thing id="ft5CPoleaM" name="Polearm Master" description="You gain the following benefits:\n• When you take the Attack action and attack with only a glaive, halberd, or quarterstaff, you can use a bonus action to make a melee attack with the opposite end of the weapon. The weapon’s damage die for this attack is a d4, and the attack deals bludgeoning damage. This attack uses the same ability modifier as the main attack. \n• While you are wielding a glaive, halberd, pike, or quarterstaff, other creatures provoke an opportunity attack from you when they enter your reach." compset="Feat" uniqueness="useronce">
     <usesource source="5ePHBCP"/>
@@ -471,8 +465,7 @@ nexteach]]></comment>
       var NumOfProf as number
       ~ Increase or decrease the number of proficiencies 
       NumOfProf = field[abValue].value
-      call 5CAddProf
-      ]]></eval>
+      call 5CAddProf]]></eval>
     </thing>
   <thing id="ft5CSkulk" name="Skulker" description="You can try to hide when you are lightly obscured from the creature from which you are hiding.\n• When you are hidden from a creature and miss it with a ranged weapon attack, making the attack doesn&apos;t reveal your position.\n• Dim light doesn’t impose disadvantage on your Wisdom (Perception) checks relying on sight.\n\nPrerequisite: Dexterity 13 or higher" compset="Feat" uniqueness="useronce">
     <usesource source="5ePHBCP"/>
@@ -540,9 +533,9 @@ nexteach]]></comment>
       field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CWeMa1" name="Weapon Master" description="You gain proficiency with four simple or martial weapons of your choice." compset="Feat" summary="You gain proficiency with four simple or martial weapons of your choice." uniqueness="useronce">
-    <comment><![CDATA[Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable.]]></comment>
-    <fieldval field="usrCandid1" value="component.BaseWep &amp; wCategory.Melee &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper"/>
-    <fieldval field="usrCandid2" value="component.BaseWep &amp; wCategory.Melee &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper"/>
+    <comment>Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable.</comment>
+    <fieldval field="usrCandid1" value="component.BaseWep &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper"/>
+    <fieldval field="usrCandid2" value="component.BaseWep &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="portal" tag="ClsAttrFt"/>
@@ -565,9 +558,9 @@ nexteach]]></comment>
     <exprreq message="This is not a valid feat to choose!"><![CDATA[@ispick <> 0]]></exprreq>
     </thing>
   <thing id="ft5CWeMa2" name="Weapon Master" description="You gain proficiency with four simple or martial weapons of your choice." compset="Feat" summary="You gain proficiency with four simple or martial weapons of your choice." uniqueness="useronce">
-    <comment><![CDATA[Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable.]]></comment>
-    <fieldval field="usrCandid1" value="component.BaseWep &amp; wCategory.Melee &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper"/>
-    <fieldval field="usrCandid2" value="component.BaseWep &amp; wCategory.Melee &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper"/>
+    <comment>Note: This feat is setup with the Helper.Helper tag that should prevent it from being selectable.</comment>
+    <fieldval field="usrCandid1" value="component.BaseWep &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper"/>
+    <fieldval field="usrCandid2" value="component.BaseWep &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="portal" tag="ClsAttrFt"/>
