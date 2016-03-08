@@ -97,7 +97,7 @@
 
       perform root.linkage[table].assign[ArmProfGrp.WepMartial]]]></eval>
     </thing>
-  <thing id="c5CClrReap" name="Reaper" description="At 1st level, the cleric learns one necromancy cantrip of his or her choice from any spell list. When the cleric casts a necromancy cantrip that normally targets only one creature, the spell can instead target two creatures within range and within 5 feet of each other." compset="ClSpecial">
+  <thing id="c5CClrReap" name="Reaper" description="At 1st level, the cleric learns one necromancy cantrip of his or her choice from any spell list. When the cleric casts a necromancy cantrip that normally targets only one creature, the spell can instead target two creatures within range and within 5 feet of each other.\n\n{i}{b}Note:{/b} Once you have selected your necromancy cantrip, you must add it manually to your list of prepared cantrips.{/i}" compset="ClSpecial">
     <comment><![CDATA[call foctoclass
 
 doneif (state.isfocus = 0)
@@ -115,35 +115,51 @@ if (field[usrChosen1].chosen.tagis[thingid.sp5CSpareD] <> 0) then
   endif]]></comment>
     <fieldval field="usrCandid1" value="component.BaseSpell &amp; sLevel.0 &amp; sSchool.Necromancy"/>
     <tag group="ChooseSrc1" tag="Thing"/>
-    <bootstrap thing="spChilTouc">
-      <containerreq phase="First" priority="500">fieldval:abValue5 = 1</containerreq>
-      <autotag group="Helper" tag="Memorized"/>
-      <autotag group="SpellType" tag="cHelpClr"/>
-      <autotag group="BonusSplAt" tag="1"/>
-      <autotag group="Helper" tag="Free"/>
-      </bootstrap>
-    <bootstrap thing="sp5CSpareD">
-      <containerreq phase="First" priority="500">fieldval:abValue5 = 2</containerreq>
-      <autotag group="Helper" tag="Free"/>
-      <autotag group="Helper" tag="Memorized"/>
-      <autotag group="SpellType" tag="cHelpClr"/>
-      <autotag group="BonusSplAt" tag="1"/>
-      </bootstrap>
-    <eval phase="First" priority="400"><![CDATA[call 5Cfoctocls
+    <eval phase="PostLevel" priority="10000"><![CDATA[   doneif (tagis[Helper.ShowSpec] = 0)
 
-doneif (state.isfocus = 0)
+    doneif (tagis[Helper.Disable] <> 0)
 
-doneif (focus.field[cTotalLev].value < tagvalue[ClSpecWhen.?])
+    if (field[usrChosen1].ischosen <> 0) then
+      perform field[usrChosen1].chosen.pulltags[ClsAllowSp.?]
+    endif
 
-doneif (tagis[Helper.Disable] <> 0)
+    perform root.linkage[table].pushtags[ClsAllowSp.?]]]></eval>
+    <evalrule phase="PostLevel" priority="10000" message="Must add chosen spells to spells known!" summary="Must add chosen spells to spells known!"><![CDATA[
+      validif (tagis[Helper.ShowSpec] = 0)
 
-if (field[usrChosen1].chosen.tagis[thingid.spChilTouc] <> 0) then
-  field[abValue5].value = 1
-  endif
+      validif (tagis[Helper.Disable] <> 0)
 
-if (field[usrChosen1].chosen.tagis[thingid.sp5CSpareD] <> 0) then
-  field[abValue5].value = 2
-  endif]]></eval>
+      var spellname1 as string
+      var spellname2 as string
+      var searchexpr as string
+      var messnames as string
+      var foundone as number
+
+      @valid = 1
+
+      if (field[usrChosen1].ischosen <> 0) then
+        foundone = 0
+        searchexpr = "KnowSpell." & field[usrChosen1].chosen.idstring & " & SpellType.cHelpClr"
+
+        foreach pick in hero from BaseSpell where searchexpr
+          foundone = 1
+
+          ~ If this copy of the ability is bootstrapped by the Arcane domain, the chosen spells should be marked as Free, because they don't count against our spells known limit.
+          if (root.tagis[Ability.c5CClrDeat] <> 0) then
+            perform eachpick.assign[Helper.Free]
+            endif
+          nexteach
+
+        if (foundone = 0) then
+          spellname1 = field[usrChosen1].chosen.field[name].text
+          @valid = 0
+          endif
+        endif
+
+      if (@valid = 0) then
+        messnames = splice(messnames, spellname1, ", ")
+        @message = "You have selected the following spells for Death domain but not added them to your Cleric spells known: " & messnames
+        endif]]></evalrule>
     </thing>
   <thing id="c5CClrTouD" name="Channel Divinity: Touch of Death" description="Starting at 2nd level, the cleric can use Channel Divinity to destroy another creature&apos;s life force by touch.\nWhen the cleric hits a creature with a melee attack, the cleric can use Channel Divinity to deal extra necrotic damage to the target. The damage equals 5 + twice his or her cleric level." compset="ClSpecial">
     <tag group="abRange" tag="AttackMel"/>
