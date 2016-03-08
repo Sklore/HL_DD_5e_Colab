@@ -2943,25 +2943,28 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     </thing>
   <thing id="r5CMMHalOg" name="Half-Ogre" compset="Race">
     <fieldval field="rHitDice" value="4"/>
-    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rHDSides" value="10"/>
     <fieldval field="rHPStart" value="30"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="7"/>
-    <fieldval field="rDEX" value="0"/>
     <fieldval field="rCON" value="4"/>
     <fieldval field="rINT" value="-3"/>
     <fieldval field="rWIS" value="-1"/>
-    <fieldval field="rCHA" value="0"/>
     <fieldval field="rCR" value="1"/>
     <usesource source="5eMMCP"/>
     <tag group="RaceSize" tag="Large1"/>
     <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="WepProf" tag="wBattleaxe"/>
+    <tag group="WepProf" tag="wJavelin"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <bootstrap thing="lGiant"></bootstrap>
+    <bootstrap thing="tpGiant"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="lCommon"></bootstrap>
-    <bootstrap thing="lGiant"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMOrcWC" name="Orc War Chief" compset="Race">
     <fieldval field="rHitDice" value="11"/>
@@ -3594,22 +3597,17 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     </thing>
   <thing id="r5CMMWater" name="Water Weird" compset="Race">
     <fieldval field="rHitDice" value="9"/>
-    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rHDSides" value="10"/>
     <fieldval field="rHPStart" value="58"/>
-    <fieldval field="rSpeed" value="0 "/>
+    <fieldval field="rSpeed" value="0"/>
     <fieldval field="rSTR" value="7"/>
     <fieldval field="rDEX" value="6"/>
     <fieldval field="rCON" value="3"/>
     <fieldval field="rINT" value="1"/>
-    <fieldval field="rWIS" value="0"/>
-    <fieldval field="rCHA" value="0"/>
     <fieldval field="rCR" value="3"/>
     <usesource source="5eMMCP"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="DamageRes" tag="dtBludgeon"/>
     <tag group="DamageRes" tag="dtFire"/>
-    <tag group="DamageRes" tag="dtPiercing"/>
-    <tag group="DamageRes" tag="dtSlashing"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnGrapple"/>
@@ -3617,11 +3615,34 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <tag group="CondImm" tag="pcnPoison"/>
     <tag group="CondImm" tag="pcnProne"/>
     <tag group="CondImm" tag="pcnRestr"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="DamComRes" tag="dcWepNonMa"/>
+    <tag group="CondImm" tag="pcnUnconc"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <bootstrap thing="wConstrict">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wAttackEff" value="If the target is Medium or smaller, it is grappled (escape DC 13) and pulled 5 feet toward the water weird. Until this grapple ends, the target is restrained, the water weird tries to drown it, and the water weird can&apos;t constrict another target."/>
+      </bootstrap>
+    <bootstrap thing="lAquan">
+      <autotag group="Helper" tag="CantSpeak"/>
+      </bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="tpElementa"></bootstrap>
     <bootstrap thing="raBlindSi">
       <autotag group="Value" tag="30"/>
       </bootstrap>
-    <bootstrap thing="lAquan"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="ra5CInvWat">
+      <assignval field="abText" value="water weird"/>
+      </bootstrap>
+    <bootstrap thing="ra5CWatBou">
+      <assignval field="abText" value="water weird"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMYeti" name="Yeti" compset="Race">
     <fieldval field="rHitDice" value="6"/>
@@ -4329,5 +4350,15 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <tag group="abSave" tag="aWIS"/>
     <tag group="StandardDC" tag="aWIS"/>
     <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it can see within 30 feet of it. If the target can see the " & Field[abText].text & ", the target must succeed on a DC " & Field[abDC].value & " Wisdom saving throw or be magically frightened until the end of the " & Field[abText].text & "'s next turn . The frightened target is paralyzed."]]></eval>
+    </thing>
+  <thing id="ra5CInvWat" name="Invisible in Water" description="The {abText} is invisible while fully immersed in water." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " is invisible while fully immersed in water."]]></eval>
+    </thing>
+  <thing id="ra5CWatBou" name="Water Bound" description="The {abText} dies if it leaves the water to which it is bound or if that water is destroyed." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " dies if it leaves the water to which it is bound or if that water is destroyed."]]></eval>
     </thing>
   </document>
