@@ -319,4 +319,16 @@
       ~ Personal tab also.
       call S2SetName]]></eval>
     </thing>
+  <thing id="p5CPalAuHa" name="Paladin: Aura of Hate" description="Starting at 7th level, the paladin, as well any fiends and undead within 10 feet of the paladin, gains a bonus to melee weapon damage rolls equal to the paladin&apos;s Charisma modifier (minimum of +1). A creature can benefit from this feature from only one paladin at a time. \n\n18th level, the range of this aura increases to 30 feet." compset="InPlay">
+    <fieldval field="pMinimum" value="1"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now & leave
+      doneif (field[pIsOn].value = 0)
+
+      ~ Increase melee damage bonus
+      hero.childfound[Damage].field[dmmBonus].value += field[pAdjust].value]]></eval>
+    <exprreq message="Undead or Fiend creature type required."><![CDATA[#hastype[tpUndead] + #hastype[tpFiend] <> 0]]></exprreq>
+    </thing>
   </document>
