@@ -352,4 +352,28 @@
       ~ to the selected weapon.
       perform field[pChosen].chosen.pushtags[wProperty.?]]]></eval>
     </thing>
+  <thing id="p5CClsSpAt" name="Casting Attribute" description="This adjustment allows you to change the spellcasting attribute that the selected class uses (ie make a cleric use Charisma instead of Wisdom)." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <tag group="Adjustment" tag="Class"/>
+    <tag group="Adjust2nd" tag="Attribute"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <eval phase="First" priority="10000"><![CDATA[      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+      doneif (field[pChosen2].ischosen = 0)
+
+      var searchexpr as string
+
+      ~ Get the spell attribute tag
+      perform field[pChosen2].chosen.pulltags[SplAttr.?]
+
+      ~ Create the search expression
+      searchexpr = tagids[SplAttr.?]
+
+      ~ Reset the linkages to the chosen attribute
+      perform field[pChosen].chosen.setlinkage[castattr,BaseAttr,searchexpr]
+      perform field[pChosen].chosen.setlinkage[spellattr,BaseAttr,searchexpr]]]></eval>
+    </thing>
   </document>
