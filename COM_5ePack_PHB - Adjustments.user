@@ -2,6 +2,7 @@
 <document signature="Hero Lab Data">
   <thing id="p5CBonusFt" name="Feats, Bonus" description="This adjustment allows you to give bonus feats to your character.  Once you have increased the amount above 1 the &quot;Feats, Bonus&quot; tab will appear allowing you to select your bonus feat." compset="InPlay">
     <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Feats"/>
     <eval phase="PreLevel" priority="10000"><![CDATA[
       ~ If we're not enabled, get out now & leave
       doneif (field[pIsOn].value = 0)
@@ -12,6 +13,7 @@
     </thing>
   <thing id="p5CRaceFt" name="Feats, Race" description="This adjustment allows you to give bonus feats to your character that will appear on the Race tab." compset="InPlay">
     <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Race"/>
     <eval phase="PreLevel" priority="10000"><![CDATA[
       ~ If we're not enabled, get out now & leave
       doneif (field[pIsOn].value = 0)
@@ -43,6 +45,7 @@
     </thing>
   <thing id="p5CProfAdd" name="Proficiencies" description="This adjustment allows you to increase or decrease the number of tool/skill proficiencies your character can take." compset="InPlay">
     <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="SkillProf"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[
       ~ If we're not enabled, get out now & leave
       doneif (field[pIsOn].value = 0)
@@ -70,10 +73,11 @@
     </thing>
   <thing id="p5CwElemen" name="Weapon Elemental Dmg, Custom" description="Select this adjustment to add custom text damage next to your weapon name. &quot;(Duration)&quot; is the type of damage (ie +1d6 Fire) and &quot;(Source)&quot; is the name of the ability giving this to you (ie Flaming).\n\n{B}Note:{/b} This adjustment will NOT work correctly from the &quot;{b}Personal{/b}&quot; tab as you have to be able to type into the duration field to set the custom text." compset="InPlay">
     <fieldval field="pDuration" value="+1d6 Elemental"/>
-    <tag group="Adjustment" tag="YourWep"/>
+    <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="NoIncr"/>
     <tag group="Helper" tag="AdjInfo"/>
     <tag group="OthAdjCat" tag="Equipment"/>
+    <tag group="Adjustment" tag="YourWep"/>
     <eval phase="Final" priority="20500"><![CDATA[
       ~ If we're not enabled, get out now
       doneif (field[pIsOn].value = 0)
@@ -330,5 +334,22 @@
       ~ Increase melee damage bonus
       hero.childfound[Damage].field[dmmBonus].value += field[pAdjust].value]]></eval>
     <exprreq message="Undead or Fiend creature type required."><![CDATA[#hastype[tpUndead] + #hastype[tpFiend] <> 0]]></exprreq>
+    </thing>
+  <thing id="p5CwFiness" name="Weapon Finesse" description="Select this adjustment to make the selected weapon be treated as if it had the finesse weapon property." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <tag group="Adjustment" tag="YourWep"/>
+    <tag group="wProperty" tag="Finesse"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+
+      ~ Push all the property tags setup on this adjustment
+      ~ to the selected weapon.
+      perform field[pChosen].chosen.pushtags[wProperty.?]]]></eval>
     </thing>
   </document>
