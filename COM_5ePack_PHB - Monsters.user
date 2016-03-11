@@ -430,30 +430,32 @@
     <fieldval field="rINT" value="1"/>
     <fieldval field="rWIS" value="2"/>
     <fieldval field="rCHA" value="1"/>
+    <fieldval field="rCR" value="0.25"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="NeutralLC"/>
     <tag group="Alignment" tag="Good"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
     <tag group="WepProf" tag="wJavelin"/>
-    <bootstrap thing="tpHumanoid"></bootstrap>
-    <bootstrap thing="lAuran"></bootstrap>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="ProfSkill" tag="skPercep"/>
     <bootstrap thing="wTalon">
       <autotag group="AttackTarg" tag="1Target"/>
       <autotag group="DamTypeOvr" tag="dtSlashing"/>
-      <assignval field="wDieSize" value="4"/>
-      <assignval field="wAttack" value="4"/>
-      <assignval field="wDamBonus" value="2"/>
+      <autotag group="wProperty" tag="Finesse"/>
       <assignval field="wDieCount" value="1"/>
       <assignval field="wReach" value="5"/>
+      <assignval field="wDieSize" value="4"/>
       </bootstrap>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="50"/>
       </bootstrap>
-    <bootstrap thing="ra5CMMDiAt"></bootstrap>
-    <bootstrap thing="l5CAarakoc"></bootstrap>
+    <bootstrap thing="ra5CMMDiAt">
+      <assignval field="abText" value="aarakocra"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lAuran"></bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <eval phase="PreLevel" priority="10000" index="2">perform hero.child[wJavelin].assign[wProperty.Finesse]</eval>
     </thing>
   <thing id="r5CMMBans" name="Banshee" description="A Banshee is a female phantom, embodying the essence of hideousness. Banshees are the spirits of strongwilled, selfish humanoids. They are undead creatures who delight in bringing death to any living creature. It still speaks the language it has known in life." compset="Race">
     <fieldval field="rHitDice" value="13"/>
@@ -635,11 +637,11 @@
     <tag group="abAction" tag="None"/>
     <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text = "The " & field[abText].text & "'s long jump is up to " & field[abValue].value & " feet and its high jump is up to " & field[abValue2].value & " feet, with or without a running start."]]></eval>
     </thing>
-  <thing id="ra5CMMDiAt" name="Divine Attack" description="If the aarakocra is flying and dives at least 30 feet straight toward a target and then hits it with a melee weapon attack, the attack dea ls an extra 3 (1d6) damage to the target." compset="RaceSpec">
+  <thing id="ra5CMMDiAt" name="Dive Attack" description="If the {abText} is flying and dives at least 30 feet straight toward a target and then hits it with a melee weapon attack, the attack dea ls an extra 3 (1d6) damage to the target." compset="RaceSpec">
     <tag group="ProductId" tag="Wizards"/>
     <tag group="FeatureTyp" tag="Special"/>
-    <tag group="abAction" tag="None"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "If the " & Field[abText].text & " is flying and dives at least 30 feet straight toward a target and then hits it with a melee weapon attack, the attack dea ls an extra 3 (1d6) damage to the target."]]></eval>
     </thing>
   <thing id="r5CMMCamb" name="Cambion" description="In medieval legend, a cambion is the half-human offspring of the union between a human male and a succubus, or of an incubus and a human female. The non-human wellspring from whom they believe inherits it&apos;s supernatural powers and abilities." compset="Race">
     <fieldval field="rHDSides" value="8"/>
