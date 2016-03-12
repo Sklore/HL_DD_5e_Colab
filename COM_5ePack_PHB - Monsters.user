@@ -2190,23 +2190,14 @@ nexteach]]></eval>
     <fieldval field="rHitDice" value="8"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="60"/>
-    <fieldval field="rSpeed" value="30"/>
-    <fieldval field="rSTR" value=""/>
-    <fieldval field="rDEX" value=""/>
-    <fieldval field="rCON" value="8"/>
-    <fieldval field="rINT" value="0"/>
-    <fieldval field="rWIS" value="0"/>
-    <fieldval field="rCHA" value="0"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="3"/>
+    <fieldval field="rCON" value="6"/>
     <fieldval field="rCR" value="4 "/>
+    <fieldval field="rMultiatt" value="The helmed horror makes two longsword attacks"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="NeutralLC"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="DamageRes" tag="dtBludgeon"/>
-    <tag group="DamageRes" tag="dtPiercing"/>
-    <tag group="DamageRes" tag="dtSlashing"/>
-    <tag group="DamageRes" tag="NoMagSlash"/>
     <tag group="DamageImm" tag="dtForce"/>
     <tag group="DamageImm" tag="dtNecrotic"/>
     <tag group="DamageImm" tag="dtPoison"/>
@@ -2218,11 +2209,33 @@ nexteach]]></eval>
     <tag group="CondImm" tag="pcnPetri"/>
     <tag group="CondImm" tag="pcnPoison"/>
     <tag group="CondImm" tag="pcnStunned"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="WepProf" tag="wLongsword"/>
+    <tag group="ArmProfGrp" tag="ArmorHeavy"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <tag group="ArmProfGrp" tag="Shields"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <tag group="DamageRes" tag="dt5CBPSAda"/>
+    <tag group="Alignment" tag="NeutralLC"/>
     <bootstrap thing="raBlindSi">
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lOther">
+      <autotag group="Helper" tag="CantSpeak"/>
+      <assignval field="lCustName" value="the languages of its creator"/>
+      <assignval field="sbName" value="the languages of its creator"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="helmed horror"/>
+      </bootstrap>
+    <bootstrap thing="ra5CspeImm">
+      <assignval field="abText" value="helmed horror"/>
       </bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
@@ -4936,5 +4949,11 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Action"/>
     <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="dt5CBPSAda" name="bludgeoning, piercing, and slashing from non magical weapons that aren&apos;t adamantine" description="bludgeoning, piercing, and slashing from non magical weapons that aren&apos;t adamantine" compset="DamageType"></thing>
+  <thing id="ra5CspeImm" name="Spell Immunity" description="The {abText} is immune to three spells chosen by its creator. Typical immunities include fireball, heat metal, and lightning bolt." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " is immune to three spells chosen by its creator. Typical immunities include {i}fireball{/i}, {i}heat metal{/i}, and {i}lightning bolt{/i}."]]></eval>
     </thing>
   </document>
