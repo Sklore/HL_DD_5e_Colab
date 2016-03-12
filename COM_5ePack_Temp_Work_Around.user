@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CMarArt" name="Martial Arts" description="At 1st level, your practice of martial arts gives you mastery of combat styles that use unarmed strikes and monk weapons, which are shortswords and any simple melee weapons that don&apos;t have the two-handed or heavy property.\n\nYou gain the following benefits while you are unarmed or wielding only monk weapons and you aren&apos;t wearing armor or wielding a shield:\n\n• You can use Dexterity instead of Strength for the attack and damage rolls of your unarmed strikes and monk weapons.\n\n• You can roll a d4 in place of the normal damage of your unarmed strike or monk weapon. This die changes as you gain monk levels, as shown in the Martial Arts column of the Monk table.\n\n• When you use the Attack action with an unarmed strike or a monk weapon on your turn, you can make one unarmed strike as a bonus action. For example, if you take the Attack action and attack with a quarterstaff, you can also make an unarmed strike as a bonus action, assuming you haven&apos;t already taken a bonus action this turn.\n\nCertain monasteries use specialized forms of the monk weapons. For example, you might use a club that is two lengths of wood connected by a short chain (called a nunchaku) or a sickle with a shorter, straighter blade (called a kama). Whatever name you use for a monk weapon, you can use the game statistics provided for the weapon." compset="ClSpecial" summary="Unarmed attacks deal extra damage, and can use Dex instead of Str for atk/dam." replaces="cMnkMarArt">
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <eval phase="PostLevel" priority="5000" name="Unarmed Strike Damage Tags"><![CDATA[~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~first we have to establish our benchmark, based on our level
+      ~all comparisons are made assuming that the wielder is medium, because
+      ~that is what wMain tags assume. Damage dice are then adjusted up or down
+      ~appropriately based on size.
+      if (field[xAllLev].value >= 17) then
+        ~ Medium folks get 1d10 at this level. Avg = 5.5
+        field[wDieCount].value = 1
+        field[wDieSize].value = 10
+        field[abValue].value += 5.5
+      elseif (field[xAllLev].value >= 11) then
+        ~ Medium folks get 1d8 at this level. Avg = 4.5
+        field[wDieCount].value = 1
+        field[wDieSize].value = 8
+        field[abValue].value += 4.5
+      elseif (field[xAllLev].value >= 5) then
+        ~ Medium folks get 1d6 at this level. Avg = 3.5
+        field[wDieCount].value = 1
+        field[wDieSize].value = 6
+        field[abValue].value += 3.5
+      else
+        ~ Medium folks get 1d4 at this level. Avg = 2.5
+        field[wDieCount].value = 1
+        field[wDieSize].value = 4
+        field[abValue].value += 2.5
+        endif
+
+      var v_text as string
+
+      call wMainText
+
+      field[abText].text = v_text]]></eval>
+    <eval phase="PostLevel" priority="9500" index="3"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~ Now foreach through and carry out calculations to replace the wMain tag if the average
+      ~ damage of our current tag is higher than the current one.
+      var curdicenum as number
+      var curdicesiz as number
+      var curwepavg as number
+      var dotpos as number
+      var tagstring as string
+
+      var searchexpr as string
+      searchexpr = "IsWeapon.wUnarmed | IsWeapon.wShortswd | (wCategory.Melee & wProfReq.Simple & !wProperty.TwoHanded & !wProperty.Heavy)"
+
+      foreach pick in hero from BaseWep where searchexpr
+        
+        ~We have the option of using Dex instead of Str for attack and damage
+        perform eachpick.assign[MelAttOpt.aDEX]
+        perform eachpick.assign[DamageOpt.aDEX]
+      
+        ~See if our replacement damage would offer a better average damage than what the weapon can currently deal
+
+~debug "We're active. This is " & eachpick.idstring
+
+        curdicenum = eachpick.field[wDieCount].value
+        curdicesiz = eachpick.field[wDieSize].value
+
+~debug "curdicenum is " & curdicenum
+~debug "curdicesiz is " & curdicesiz
+
+        curwepavg = (curdicesiz + 1)/2
+        curwepavg *= curdicenum
+
+~debug "After calculations, curwepavg is " & curwepavg & " and our threshold is " & field[abValue].value
+
+        if (field[abValue].value > curwepavg) then
+~debug "Ability is pushing the higher tag."
+          eachpick.field[wDieCount].value = field[wDieCount].value
+          eachpick.field[wDieSize].value = field[wDieSize].value
+          endif
+        nexteach]]>
+      <before name="Default Unarmed Attack damage"/>
+      </eval>
+    </thing>
+  </document>
