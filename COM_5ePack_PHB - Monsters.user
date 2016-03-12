@@ -1071,7 +1071,7 @@ nexteach]]></eval>
       <autotag group="Value" tag="12"/>
       </bootstrap>
     </thing>
-  <thing id="r5CMMGori" name="Gorisrto" compset="Race">
+  <thing id="r5CMMGori" name="Goristro" compset="Race">
     <fieldval field="rHitDice" value="23"/>
     <fieldval field="rHDSides" value="12"/>
     <fieldval field="rHPStart" value="310"/>
@@ -1082,22 +1082,63 @@ nexteach]]></eval>
     <fieldval field="rINT" value="-4"/>
     <fieldval field="rWIS" value="3"/>
     <fieldval field="rCHA" value="4"/>
-    <fieldval field="rCR" value="17 ("/>
+    <fieldval field="rCR" value="17"/>
+    <fieldval field="rMultiatt" value="The goristro makes three attacks: two with its fists and one with its hoof."/>
+    <fieldval field="rAC" value="9"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Chaotic"/>
-    <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Huge2"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="DamageRes" tag="dtBludgeon"/>
     <tag group="DamageRes" tag="dtLightnin"/>
-    <tag group="DamageRes" tag="dtPiercing"/>
-    <tag group="DamageRes" tag="dtSlashing"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="ProfSave" tag="svSTR" name="Stength" abbrev="Stength"/>
+    <tag group="ProfSave" tag="svDEX" name="Dexterity" abbrev="Dexterity"/>
+    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="DamageRes" tag="dtFire"/>
+    <tag group="DamComRes" tag="dcWepNonMa"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="CompIs" tag="Familiar"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="tpFiend"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <bootstrap thing="lAbyssal"></bootstrap>
-    <bootstrap thing="tpFiend"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="ra5CGorCha"></bootstrap>
+    <bootstrap thing="ra5CLabyRe">
+      <assignval field="abText" value="goristro"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="goristro"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSiegMo">
+      <assignval field="abText" value="goristro"/>
+      </bootstrap>
+    <bootstrap thing="wFist">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="wGore">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wDieCount" value="7"/>
+      <assignval field="wDieSize" value="10"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must succeed on a DC 21 Strength saving throw or be knocked prone"/>
+      <assignval field="livename" value="Hoof"/>
+      <assignval field="sbName" value="Hoof"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
     </thing>
   <thing id="r5CMMMane" name="Manes" compset="Race">
     <fieldval field="rHitDice" value="2"/>
@@ -4742,5 +4783,22 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
   <thing id="ra5CCDrone" name="Drone" description="The chasme produces a horrid droning sound to which demons are immune. Any other creature that starts its turn with in 30 feet of the chasme must succeed on a DC 12 Constitution saving throw or fall unconscious for 10 minutes. A creature that can&apos;t hear the drone automaticall y succeeds on the save. The effect on the creature ends if it takes damage or if another creature takes an action to splash it with holy water. If a creature&apos;s saving throw is successfu l or the effect ends for it, it is immune to the drone for the next 24 hours ." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CGorCha" name="Charge" description="If the goristro moves at least 15 feet straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 38 (7d10) piercing damage. If the target is a creature, it must succeed on a DC 21 Strength saving throw or be pushed up to 20 feet away and knocked prone." compset="RaceSpec">
+    <fieldval field="wDieCount" value="3"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="NoAttrDam" name="NoAttrDam" abbrev="NoAttrDam"/>
+    <tag group="DamageType" tag="dtPiercing" name="Piercing" abbrev="Piercing"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="ra5CLabyRe" name="Labyrinthine Recall" description="The {abText} can perfectly recall any path it has traveled." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " can perfectly recall any path it has traveled."]]></eval>
+    </thing>
+  <thing id="ra5CSiegMo" name="Siege Monster" description="The {abText} deals double damage to objects and structures." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " deals double damage to objects and structures."]]></eval>
     </thing>
   </document>
