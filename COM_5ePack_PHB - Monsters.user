@@ -548,9 +548,6 @@ nexteach]]></eval>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skIntim"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
-    <tag group="AllowSkl1" tag="skSurvival"/>
     <tag group="ProfSkill" tag="skIntim"/>
     <tag group="ProfSkill" tag="skStealth"/>
     <tag group="ProfSkill" tag="skSurvival"/>
@@ -591,7 +588,6 @@ nexteach]]></eval>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
     <tag group="ArmProfGrp" tag="ArmorLight"/>
     <tag group="ArmProfGrp" tag="ArmorMed"/>
     <tag group="ArmProfGrp" tag="Shields"/>
@@ -604,7 +600,9 @@ nexteach]]></eval>
       <assignval field="abValue" value="20"/>
       <assignval field="abValue2" value="10"/>
       </bootstrap>
-    <bootstrap thing="ra5CMMSwam"></bootstrap>
+    <bootstrap thing="ra5CMMSwam">
+      <assignval field="abText" value="bullywug"/>
+      </bootstrap>
     <bootstrap thing="xSwim">
       <autotag group="Value" tag="40"/>
       </bootstrap>
@@ -622,6 +620,7 @@ nexteach]]></eval>
       <assignval field="wReach" value="5"/>
       <assignval field="wDieCount" value="1"/>
       </bootstrap>
+    <bootstrap thing="tt5CBullyw"></bootstrap>
     </thing>
   <thing id="ra5CMMAmph" name="Amphibious" description="The {abText} can breathe air and water." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
@@ -636,11 +635,12 @@ nexteach]]></eval>
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="abAction" tag="None"/>
     </thing>
-  <thing id="ra5CMMSwam" name="Swamp Camouflage" description="The bullywug has advantage on Dexterity (Stealth) checks made to hide in swampy terrain." compset="RaceSpec">
+  <thing id="ra5CMMSwam" name="Swamp Camouflage" description="The {abText} has advantage on Dexterity (Stealth) checks made to hide in swampy terrain." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="ProductId" tag="Wizards"/>
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " has advantage on Dexterity (Stealth) checks made to hide in swampy terrain."]]></eval>
     </thing>
   <thing id="ra5CMMStan" name="Standing Leap" description="The {abValue}&apos;s long jump is up to {abValue} feet and its high jump is up to {abValue} feet, with or without a running start." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
@@ -670,13 +670,10 @@ nexteach]]></eval>
     <usesource source="5eMMCP"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="DamageRes" tag="dtBludgeon"/>
     <tag group="DamageRes" tag="dtCold"/>
     <tag group="DamageRes" tag="dtFire"/>
     <tag group="DamageRes" tag="dtLightnin"/>
-    <tag group="DamageRes" tag="dtPiercing"/>
     <tag group="DamageRes" tag="dtPoison"/>
-    <tag group="DamageRes" tag="dtSlashing"/>
     <tag group="ProfSave" tag="svSTR" name="Strength"/>
     <tag group="ProfSave" tag="svCON" name="Constitution"/>
     <tag group="ProfSave" tag="svINT" name="Intelligence"/>
@@ -688,12 +685,12 @@ nexteach]]></eval>
     <tag group="Alignment" tag="NeutralLC"/>
     <tag group="WepProf" tag="wSpear"/>
     <tag group="Alignment" tag="Evil"/>
-    <bootstrap thing="lAbyssal"></bootstrap>
-    <bootstrap thing="tpFiend"></bootstrap>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="60"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <tag group="DamComRes" tag="dcWepNonMa"/>
+    <bootstrap thing="ra5CMMFieB">
+      <assignval field="abText" value="cambion"/>
       </bootstrap>
-    <bootstrap thing="ra5CMMFieB"></bootstrap>
     <bootstrap thing="ra5CMMInSp"></bootstrap>
     <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="xFly">
@@ -735,6 +732,11 @@ nexteach]]></eval>
       <assignval field="trkMax" value="1"/>
       </bootstrap>
     <bootstrap thing="lInfernal"></bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="tpFiend"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMCarr" name="Carrion Crawler" description="A carrion crawler was a burrowing aberration that scavenged the dead and occasionally preyed on living creatures. Similar to a giant, toothed centipede in appearance, carrion crawlers were often accompanied by a foul odor of death, which warned others of their approach.\n\nAlthough their nature ultimately rested in the Far Realm, it was thought by many, and indeed was possible, that carrion crawlers were created through a mad wizard&apos;s experiments." compset="Race">
     <fieldval field="rHitDice" value="6"/>
@@ -743,18 +745,16 @@ nexteach]]></eval>
     <fieldval field="rSTR" value="4"/>
     <fieldval field="rDEX" value="3"/>
     <fieldval field="rCON" value="6"/>
-    <fieldval field="rINT" value="-5"/>
+    <fieldval field="rINT" value="-9"/>
     <fieldval field="rWIS" value="2"/>
     <fieldval field="rCHA" value="-5"/>
     <fieldval field="rCR" value="2"/>
     <fieldval field="rMultiatt" value="The carrion crawler makes two attacks: one with its tentacles and one with its bite."/>
+    <fieldval field="rAC" value="2"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceType" tag="NPC"/>
     <tag group="ProfSkill" tag="skPercep"/>
     <tag group="RaceSize" tag="Large1"/>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="60"/>
-      </bootstrap>
+    <tag group="RaceType" tag="NPC"/>
     <bootstrap thing="xClimb">
       <autotag group="Value" tag="30"/>
       </bootstrap>
@@ -769,6 +769,8 @@ nexteach]]></eval>
       <assignval field="wReach" value="10"/>
       <assignval field="wAttack" value="4"/>
       <assignval field="wDieSize" value="4"/>
+      <assignval field="livename" value="Tentacles"/>
+      <assignval field="sbName" value="Tentacles"/>
       </bootstrap>
     <bootstrap thing="wBite">
       <autotag group="AttackTarg" tag="1Target"/>
@@ -782,6 +784,9 @@ nexteach]]></eval>
       </bootstrap>
     <bootstrap thing="ra5CYetKeS">
       <assignval field="abText" value="carrion crawler"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
       </bootstrap>
     <eval phase="First">~ perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
@@ -804,7 +809,7 @@ nexteach]]></eval>
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnPoison"/>
     <tag group="Helper" tag="UndLifLaCS"/>
-    <bootstrap thing="tpUndead"></bootstrap>
+    <tag group="DamageImm" tag="dtPoison"/>
     <bootstrap thing="xClimb">
       <autotag group="Value" tag="20"/>
       </bootstrap>
@@ -819,7 +824,11 @@ nexteach]]></eval>
       <assignval field="wReach" value="5"/>
       <assignval field="wDieCount" value="1"/>
       </bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="30"/>
+      <autotag group="Helper" tag="BlindBeyo"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMCycl" name="Cyclops" compset="Race">
     <fieldval field="rHitDice" value="12"/>
@@ -838,7 +847,7 @@ nexteach]]></eval>
     <tag group="RaceType" tag="NPC"/>
     <tag group="Alignment" tag="Chaotic"/>
     <tag group="Alignment" tag="NeutralGE"/>
-    <bootstrap thing="lGiant"></bootstrap>
+    <tag group="WepProf" tag="wGreatclub"/>
     <bootstrap thing="wRock">
       <autotag group="AttackTarg" tag="1Target"/>
       <assignval field="wDieCount" value="4"/>
@@ -851,6 +860,13 @@ nexteach]]></eval>
     <bootstrap thing="ra5CCycPDP">
       <assignval field="abText" value="cyclops"/>
       </bootstrap>
+    <bootstrap thing="lGiant"></bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseWep where "IsWeapon.wGreatclub"
+  eachpick.Field[wReach].value = 10
+nexteach]]></eval>
     </thing>
   <thing id="r5CMMDeat" name="Death Knight" description="A death knight was a mighty undead warrior created by gods of death or other malevolent forces. They were most commonly created from evil humanoids who in life had been blackguards, fighters, rangers, barbarians, and even paladins fallen from grace." compset="Race">
     <fieldval field="rHitDice" value="19"/>
@@ -4409,7 +4425,7 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <tag group="ProductId" tag="Wizards"/>
     <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
     </thing>
-  <thing id="ra5CMMFieB" name="Fiendish Blessing" description="The AC of the cambion includes its Charisma bonus." compset="RaceSpec">
+  <thing id="ra5CMMFieB" name="Fiendish Blessing" description="The AC of the {abText} includes its Charisma bonus." compset="RaceSpec">
     <tag group="ProductId" tag="Wizards"/>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="abAction" tag="None"/>
@@ -4418,6 +4434,7 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
  doneif (tagis[Helper.Disable] = 1)
    
  hero.child[ArmorClass].field[Bonus].value += #attrmod[aCHA]]]></eval>
+    <eval phase="Final" priority="20000" index="2"><![CDATA[Field[CustDesc].text = "The AC of the " & Field[abText].text & " includes its Charisma bonus."]]></eval>
     </thing>
   <thing id="ra5CMMInSp" name="Innate Spellcasting" description="The cambion&apos;s spellcasting ability is Charisma (spell save DC 14). The cambion can innately cast the following spells, requiring no material components:\n\n3/day each: {i}alter self{/i}, {i}command{/i}, {i}detect magic{/i}\n1/day each: {i}plane shift{/i} (self only)" compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
@@ -4478,7 +4495,7 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <eval phase="Final" priority="20000"><![CDATA[field[CustDesc].text = "While in sunlight, the " & field[abText].text & " has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight."]]></eval>
     </thing>
-  <thing id="ra5CTurImm" name="Turn Immunity" description="The claw is immune to effects that turn undead." compset="RaceSpec">
+  <thing id="ra5CTurImm" name="Turn Immunity" description="The {abText} is immune to effects that turn undead." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="abAction" tag="None"/>
@@ -5020,4 +5037,5 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
   <thing id="tt5CAarako" name="Aarakocra" compset="TypeTag" uniqueness="unique">
     <tag group="NeedType" tag="tpHumanoid" name="Humanoid" abbrev="Humanoid"/>
     </thing>
+  <thing id="tt5CBullyw" name="Bullywug" compset="TypeTag" uniqueness="unique"></thing>
   </document>
