@@ -2082,9 +2082,8 @@ nexteach]]></eval>
     </thing>
   <thing id="r5CMMGnoll" name="Gnoll Pack Lord" compset="Race">
     <fieldval field="rHitDice" value="9"/>
-    <fieldval field="rHDSides" value=""/>
+    <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="49"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="6"/>
     <fieldval field="rDEX" value="4"/>
     <fieldval field="rCON" value="3"/>
@@ -2092,40 +2091,78 @@ nexteach]]></eval>
     <fieldval field="rWIS" value="1"/>
     <fieldval field="rCHA" value="-1"/>
     <fieldval field="rCR" value="2"/>
+    <fieldval field="rMultiatt" value="The gnoll makes two attacks, either with its glaive or its longbow, and uses its Incite Rampage if it can."/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Chaotic"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="WepProf" tag="wGlaive"/>
+    <tag group="WepProf" tag="wLongbow"/>
+    <bootstrap thing="lGnoll"></bootstrap>
+    <bootstrap thing="raGnoRampa"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CIncRam"></bootstrap>
+    <bootstrap thing="ttGnoll"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
-    <bootstrap thing="lGnoll"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <eval phase="PostLevel" priority="10000"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseWep where "IsWeapon.wGlaive"
+  eachpick.Field[wReach].value = 10
+nexteach]]></eval>
     </thing>
   <thing id="r5CMMGnFoY" name="Gnoll Fang Of Yeenoghu" compset="Race">
     <fieldval field="rHitDice" value="10"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="65"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="7"/>
     <fieldval field="rDEX" value="5"/>
     <fieldval field="rCON" value="5"/>
-    <fieldval field="rINT" value="0"/>
     <fieldval field="rWIS" value="1"/>
     <fieldval field="rCHA" value="3"/>
     <fieldval field="rCR" value="4"/>
+    <fieldval field="rMultiatt" value="The gnoll makes three attacks: one with its bite and two with its claws."/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Chaotic"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="Charisma"/>
+    <bootstrap thing="ttGnoll"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="raGnoRampa"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="lGnoll"></bootstrap>
-    <bootstrap thing="lAbyssal"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="tpFiend"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDamExtra" value=" damage, and the target must succeed on a DC 12 Constitution saving throw or take 7 (2d6) poison"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMGobli" name="Goblin Boss" compset="Race">
     <fieldval field="rHitDice" value="6"/>
@@ -3036,19 +3073,32 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <fieldval field="rWIS" value="-4"/>
     <fieldval field="rCHA" value="-9"/>
     <fieldval field="rCR" value="1"/>
+    <fieldval field="rAC" value="2"/>
+    <fieldval field="rMultiatt" value="The spore servant makes two claw attacks"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceSize" tag="Medium0"/>
-    <tag group="RaceType" tag="NPC"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnBlind"/>
     <tag group="CondImm" tag="pcnCharmed"/>
     <tag group="CondImm" tag="pcnFright"/>
     <tag group="CondImm" tag="pcnParaly"/>
     <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="BeyondMora"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="tpPlant"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="raBlindSi">
       <autotag group="Value" tag="30"/>
+      <autotag group="Helper" tag="BlindBeyo"/>
       </bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMMycoA" name="Myconid Adult" compset="Race">
     <fieldval field="rHitDice" value="4"/>
@@ -5038,4 +5088,10 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <tag group="NeedType" tag="tpHumanoid" name="Humanoid" abbrev="Humanoid"/>
     </thing>
   <thing id="tt5CBullyw" name="Bullywug" compset="TypeTag" uniqueness="unique"></thing>
+  <thing id="ra5CIncRam" name="Incite Rampage" description="One creature the gnoll can see within 30 feet of it can use it s reaction to make a melee attack if it can hear the gnoll and has the Rampage trait ." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Recharge" tag="5" name="5-6" abbrev="5-6"/>
+    </thing>
   </document>
