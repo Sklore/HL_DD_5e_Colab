@@ -2360,31 +2360,51 @@ perform hero.child[skStealth].assign[Helper.ProfDouble]</eval>
     <fieldval field="rHitDice" value="6"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="39"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="5"/>
     <fieldval field="rDEX" value="4"/>
     <fieldval field="rCON" value="4"/>
     <fieldval field="rINT" value="2"/>
-    <fieldval field="rWIS" value="0"/>
     <fieldval field="rCHA" value="3"/>
     <fieldval field="rCR" value="3"/>
+    <fieldval field="rMultiatt" value="The hobgoblin makes two greatsword attacks"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Lawful"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <tag group="WepProf" tag="wGreatswrd"/>
+    <tag group="WepProf" tag="wJavelin"/>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="lGoblin"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttGoblinoi"></bootstrap>
+    <bootstrap thing="ra5CMarAdv">
+      <assignval field="abText" value="hobgoblin"/>
+      <assignval field="abText2" value="10 (3d6)"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLeader">
+      <autotag group="Usage" tag="ShortRest"/>
+      <autotag group="User" tag="Tracker"/>
+      <assignval field="abText" value="hobgoblin"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseWep where "IsWeapon.wJavelin"
+  perform eachpick.assign[wProperty.Finesse]
+nexteach]]></eval>
     </thing>
   <thing id="r5CMMHobgW" name="Hobgoblin Warlord" compset="Race">
     <fieldval field="rHitDice" value="13"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="97"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="6"/>
     <fieldval field="rDEX" value="4"/>
     <fieldval field="rCON" value="6"/>
@@ -2392,17 +2412,58 @@ perform hero.child[skStealth].assign[Helper.ProfDouble]</eval>
     <fieldval field="rWIS" value="1"/>
     <fieldval field="rCHA" value="5"/>
     <fieldval field="rCR" value="6"/>
+    <fieldval field="rMultiatt" value="The hobgoblin makes three melee attacks.{br}Alternatively, it can make two ranged attacks with its javelins"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Lawful"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
+    <tag group="ArmProfGrp" tag="ArmorHeavy"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <tag group="ArmProfGrp" tag="Shields"/>
+    <tag group="WepProf" tag="wJavelin"/>
+    <tag group="WepProf" tag="wLongsword"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lGoblin"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttGoblinoi"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
-    <bootstrap thing="lCommon"></bootstrap>
-    <bootstrap thing="lGoblin"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="sbName" value="Shield Bash"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wAttackEff" value="If the target is Large or smaller, it must succeed on a DC 14 Strength saving throw or be knocked prone."/>
+      <assignval field="livename" value="Shield Bash"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMarAdv">
+      <assignval field="abText" value="hobgoblin"/>
+      <assignval field="abText2" value="14 (4d6)"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLeader">
+      <autotag group="Usage" tag="ShortRest"/>
+      <autotag group="User" tag="Tracker"/>
+      <assignval field="abText" value="hobgoblin"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDNParr">
+      <assignval field="abText" value="hobgoblin"/>
+      <assignval field="abValue" value="3"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseWep where "IsWeapon.wJavelin"
+  perform eachpick.assign[wProperty.Finesse]
+nexteach]]></eval>
     </thing>
   <thing id="r5CMMHookH" name="Hook Horror" compset="Race">
     <fieldval field="rHitDice" value="10"/>
@@ -4584,6 +4645,7 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
   <thing id="ra5CDNParr" name="Parry" description="The {abText} adds {abValue} to its AC against one melee attack that would hit it. To do so, the {abText} must see the attacker and be wielding a melee weapon." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Reaction" name="Reaction" abbrev="Reaction"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="Reaction"/>
     <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " adds " & Field[abValue].value & " to its AC against one melee attack that would hit it. To do so, the " & Field[abText].text & " must see the attacker and be wielding a melee weapon."]]></eval>
     </thing>
   <thing id="ra5CDKSpCa" name="Spellcasting" description="The death knight is a 19th-level spell caster. Its spellcas ting abil ity is Char isma (spell save DC 18, +10 to hit with spell attacks). It has the followin g paladin spells prepared:\n\n1st level (4 slots): command, compelled duel, searing smite\n2nd level (3 slots): hold person , magic weapon\n3rd level (3 slots) : dispel magic, elemental weapon\n4th level (3 slots): banishment, staggering smite\n5th level (2 slots): destructive wave (necrotic)" compset="RaceSpec">
@@ -5110,5 +5172,19 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Reaction"/>
     <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="ra5CMarAdv" name="Martial Advantage" description="Once per turn, the {abText} can deal an extra {abText2} damage to a creature it hits with a weapon attack if that creature is within 5 feet of an ally of the {abText} that isn’t incapacitated." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="Round" name="/round" abbrev="/round"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000">Field[CustDesc].text = &quot;Once per turn, the &quot; &amp; Field[abText].text &amp; &quot; can deal an extra &quot; &amp; Field[abText2].text &amp; &quot; damage to a creature it hits with a weapon attack if that creature is within 5 feet of an ally of the &quot; &amp; Field[abText].text &amp; &quot; that isn’t incapacitated.&quot;</eval>
+    </thing>
+  <thing id="ra5CLeader" name="Leadership" description="For 1 minute, the {abText} can utter a special command or warning whenever a nonhostile creature that it can see within 30 feet of it makes an attack roll or a saving throw. The creature can add a d4 to its roll provided it can hear and understand the {abText}. A creature can benefit from only one Leadership die at a time. This effect ends if the {abText} is incapacitated." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "For 1 minute, the " & Field[abText].text & " can utter a special command or warning whenever a nonhostile creature that it can see within 30 feet of it makes an attack roll or a saving throw. The creature can add a d4 to its roll provided it can hear and understand the " & Field[abText].text & ". A creature can benefit from only one Leadership die at a time. This effect ends if the " & Field[abText].text & " is incapacitated."]]></eval>
     </thing>
   </document>
