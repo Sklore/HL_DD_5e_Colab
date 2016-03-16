@@ -3546,19 +3546,37 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <fieldval field="rSpeed" value="30 "/>
     <fieldval field="rSTR" value="8"/>
     <fieldval field="rDEX" value="3"/>
-    <fieldval field="rCON" value="8"/>
+    <fieldval field="rCON" value="7"/>
     <fieldval field="rINT" value="-7"/>
-    <fieldval field="rWIS" value="0"/>
     <fieldval field="rCHA" value="-6"/>
     <fieldval field="rCR" value="5"/>
+    <fieldval field="rAC" value="3"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceType" tag="NPC"/>
     <tag group="DamageImm" tag="dtCold"/>
     <tag group="DamageImm" tag="dtFire"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="Alignment" tag="BeyondMora"/>
+    <bootstrap thing="tpMonstros"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="xBurrow">
+      <autotag group="Value" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="ra5CHeaBod">
+      <assignval field="abText" value="remorhaz"/>
+      <assignval field="abText2" value="7 (2d6)"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wDamExtra" value=" damage plus 7 (2d6) fire"/>
+      </bootstrap>
+    <bootstrap thing="xTremorsen">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMReven" name="Revenant" compset="Race">
     <fieldval field="rHitDice" value="16"/>
@@ -5186,5 +5204,9 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <tag group="abAction" tag="Action"/>
     <tag group="FeatureTyp" tag="Action"/>
     <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "For 1 minute, the " & Field[abText].text & " can utter a special command or warning whenever a nonhostile creature that it can see within 30 feet of it makes an attack roll or a saving throw. The creature can add a d4 to its roll provided it can hear and understand the " & Field[abText].text & ". A creature can benefit from only one Leadership die at a time. This effect ends if the " & Field[abText].text & " is incapacitated."]]></eval>
+    </thing>
+  <thing id="ra5CHeaBod" name="Heated Body" description="A creature that touches the {abText} or hits it with a melee attack while within 5 feet of it takes {abText2} fire damage." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "A creature that touches the " & Field[abText].text & " or hits it with a melee attack while within 5 feet of it takes " & Field[abText2].text & " fire damage."]]></eval>
     </thing>
   </document>
