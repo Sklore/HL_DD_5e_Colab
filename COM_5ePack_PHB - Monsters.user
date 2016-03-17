@@ -5296,17 +5296,15 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <fieldval field="rCHA" value="6"/>
     <fieldval field="rCR" value="1"/>
     <fieldval field="rHDSides" value="4"/>
+    <fieldval field="rGiveSpec" value="1"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Good"/>
     <tag group="RaceSize" tag="Tiny12"/>
     <tag group="RaceType" tag="NPC"/>
     <tag group="Alignment" tag="Chaotic"/>
     <tag group="ProfSkill" tag="skArcana"/>
     <tag group="ProfSkill" tag="skPercep"/>
     <tag group="ProfSkill" tag="skStealth"/>
-    <bootstrap thing="xFly">
-      <autotag group="Value" tag="60"/>
-      </bootstrap>
+    <tag group="Alignment" tag="Good"/>
     <bootstrap thing="lDraconic"></bootstrap>
     <bootstrap thing="lSylvan"></bootstrap>
     <bootstrap thing="tpDragon"></bootstrap>
@@ -5332,6 +5330,9 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
       </bootstrap>
     <bootstrap thing="ra5CFaInSp"></bootstrap>
     <bootstrap thing="ra5CEuphBr"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
     </thing>
   <thing id="ra5CLimTel" name="Limited Telepathy" description="Using telepathy, the {abText} can magically communicate with any other {abText} within 60 feet of it." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special"/>
@@ -5341,6 +5342,237 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
   <thing id="ra5CFaInSp" name="Innate Spellcasting" description="The dragon&apos;s innate spellcasting ability is Charisma (spell save DC 13). It can innately cast a number of spells, requiring no material components. As the dragon ages and changes color, it gains additional spells as shown below.\nRed, 1/day each: {i}dancing lights{/i}, {i}mage hand{/i}, {i}minor illusion{/i}\nOrange, 1/day: {i}color spray{/i}\nYellow,1/day: {i}mirror image{/i}\nGreen,1/day: {i}suggestion{/i}\nBlue, 1/day: {i}major image{/i}\nIndigo, 1/day: {i}hallucinatory terrain{/i}\nViolet, 1/day: {i}polymorph{/i}" compset="RaceSpec">
     <tag group="ProductId" tag="Wizards"/>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="ra5CEuphBr" name="Euphoria Breath" description="The dragon exhales a puff of euphoria gas at one creature within 5 feet of it. The target must succeed on a DC 11 Wisdom saving throw, or for 1 minute, the target can&apos;t take reactions and must roll a d6 at the start of each of its turns to determine its behavior during the turn:\n{b}1-4.{/b} The target takes no action or bonus action and uses all of its movement to move in a random direction.\n{b}5- 6.{/b} The target doesn&apos;t move, and the only thing it can do on its turn is make a DC 11 Wisdom saving throw, ending the effect on itself on a success." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Recharge" tag="5" name="5-6" abbrev="5-6"/>
+    </thing>
+  <thing id="rc5CFaDraR" name="Red" description="Age: 5 years or less" compset="RaceCustom">
+    <tag group="AllowRCust" tag="r5CMMFeaDr"/>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMinoIllu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="600"><![CDATA[      ~ Set our focus to the hero's race &
+      perform hero.findchild[BaseRace].setfocus
+      doneif (state.isfocus = 0)
+
+      ~ Set our race's name to include the color of this ability
+      focus.field[livename].text = focus.field[name].text & " (" & field[name].text & ")"]]></eval>
+    </thing>
+  <thing id="rc5CFaDraO" name="Orange" description="Age: 6- 10 years" compset="RaceCustom">
+    <tag group="AllowRCust" tag="r5CMMFeaDr"/>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMinoIllu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spColoSpra">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="600"><![CDATA[      ~ Set our focus to the hero's race &
+      perform hero.findchild[BaseRace].setfocus
+      doneif (state.isfocus = 0)
+
+      ~ Set our race's name to include the color of this ability
+      focus.field[livename].text = focus.field[name].text & " (" & field[name].text & ")"]]></eval>
+    </thing>
+  <thing id="rc5CFaDraY" name="Yellow" description="Age: 11-20 years" compset="RaceCustom">
+    <tag group="AllowRCust" tag="r5CMMFeaDr"/>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMinoIllu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spColoSpra">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMirrImag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="600"><![CDATA[      ~ Set our focus to the hero's race &
+      perform hero.findchild[BaseRace].setfocus
+      doneif (state.isfocus = 0)
+
+      ~ Set our race's name to include the color of this ability
+      focus.field[livename].text = focus.field[name].text & " (" & field[name].text & ")"]]></eval>
+    </thing>
+  <thing id="rc5CFaDraG" name="Green" description="Age: 21-30 years" compset="RaceCustom">
+    <tag group="AllowRCust" tag="r5CMMFeaDr"/>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMinoIllu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spColoSpra">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMirrImag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSuggesti">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="600"><![CDATA[      ~ Set our focus to the hero's race &
+      perform hero.findchild[BaseRace].setfocus
+      doneif (state.isfocus = 0)
+      ~ Set new CR
+      focus.field[rCR].value += 1
+      ~ Set our race's name to include the color of this ability
+      focus.field[livename].text = focus.field[name].text & " (" & field[name].text & ")"]]></eval>
+    </thing>
+  <thing id="rc5CFaDraB" name="Blue" description="Age: 31-40 years" compset="RaceCustom">
+    <tag group="AllowRCust" tag="r5CMMFeaDr"/>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMinoIllu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spColoSpra">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMirrImag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSuggesti">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMajoImag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="600"><![CDATA[      ~ Set our focus to the hero's race &
+      perform hero.findchild[BaseRace].setfocus
+      doneif (state.isfocus = 0)
+      ~ Set new CR
+      focus.field[rCR].value += 1
+      ~ Set our race's name to include the color of this ability
+      focus.field[livename].text = focus.field[name].text & " (" & field[name].text & ")"]]></eval>
+    </thing>
+  <thing id="rc5CFaDraI" name="Indigo" description="Age: 41-50 years" compset="RaceCustom">
+    <tag group="AllowRCust" tag="r5CMMFeaDr"/>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMinoIllu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spColoSpra">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMirrImag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSuggesti">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMajoImag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spHallTerr">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="600"><![CDATA[      ~ Set our focus to the hero's race &
+      perform hero.findchild[BaseRace].setfocus
+      doneif (state.isfocus = 0)
+      ~ Set new CR
+      focus.field[rCR].value += 1
+      ~ Set our race's name to include the color of this ability
+      focus.field[livename].text = focus.field[name].text & " (" & field[name].text & ")"]]></eval>
+    </thing>
+  <thing id="rc5CFaDraV" name="Violet" description="Age: 51 years or more" compset="RaceCustom">
+    <tag group="AllowRCust" tag="r5CMMFeaDr"/>
     <bootstrap thing="spDancLigh">
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="Day"/>
@@ -5386,11 +5618,12 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
       <autotag group="Usage" tag="Day"/>
       <assignval field="trkMax" value="1"/>
       </bootstrap>
-    </thing>
-  <thing id="ra5CEuphBr" name="Euphoria Breath" description="The dragon exhales a puff of euphoria gas at one creature within 5 feet of it. The target must succeed on a DC 11 Wisdom saving throw, or for 1 minute, the target can&apos;t take reactions and must roll a d6 at the start of each of its turns to determine its behavior during the turn:\n{b}1-4.{/b} The target takes no action or bonus action and uses all of its movement to move in a random direction.\n{b}5- 6.{/b} The target doesn&apos;t move, and the only thing it can do on its turn is make a DC 11 Wisdom saving throw, ending the effect on itself on a success." compset="RaceSpec">
-    <tag group="Helper" tag="ShowSpec"/>
-    <tag group="FeatureTyp" tag="Action"/>
-    <tag group="abAction" tag="Action"/>
-    <tag group="Recharge" tag="5" name="5-6" abbrev="5-6"/>
+    <eval phase="First" priority="600"><![CDATA[      ~ Set our focus to the hero's race &
+      perform hero.findchild[BaseRace].setfocus
+      doneif (state.isfocus = 0)
+      ~ Set new CR
+      focus.field[rCR].value += 1
+      ~ Set our race's name to include the color of this ability
+      focus.field[livename].text = focus.field[name].text & " (" & field[name].text & ")"]]></eval>
     </thing>
   </document>
