@@ -69,41 +69,37 @@
     <tag group="GearType" tag="gtWondrous"/>
     <child entity="mSpecMagic"></child>
     </thing>
-  <thing id="i5CHDQHazi" name="Hazirawn" description="Weapon(greatsword),legendary,requiresattunement\n\nA sentient (neutral evil) greatsword, Hazirawn is capable of speech in Common and Netherese. Even if you aren’t attuned to the sword, you gain a +1 bonus on attack rolls and damage rolls made with this weapon. If you aren&apos;t attuned to Hazirawn, you deal an extra 1d6 necrotic damage when you hit with the weapon.\n\n{b}{i}Increased Potency.{/i}{/b} While you are attuned to this weapon, its bonus on attack rolls and damage rolls increases to +2, and a hit deals an extra 2d6 necrotic damage (instead of 1d6). \n\n{b}{i}Spells.{/i}{/b} Hazirawn has 4 charges to cast spells. As long as the sword is attuned to you and you are holding it in your hand, you can cast detect magic (1 charge), detect evil and good (1 charge), or detect thoughts (2 charges). Each night at midnight, Hazirawn regains 1d4 expended charges.\n\n{b}{i}Wounding.{/i}{/b} While you are attuned to the weapon, any creature that you hit with Hazirawn can’t regain hit points for 1minute. The target can make a DC15 Constitution saving throw at the end of each of its turns, ending this effect early on a success." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
-    <fieldval field="miTypeDet" value="any sword"/>
-    <fieldval field="actName2" value="Hazirawn (Spells)"/>
-    <fieldval field="actUserMax" value="4"/>
-    <fieldval field="actUserMin" value="0"/>
-    <usesource source="5eHOTDQCP"/>
-    <tag group="User" tag="Tracker"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Legendary"/>
-    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
-    <tag group="wCategory" tag="Melee"/>
-    <tag group="IsWeapon" tag="wGreatswrd"/>
-    <eval phase="Final" priority="20000"><![CDATA[
-      ~restrict the list of weapons to valid ones only
-      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & (wGroup.Sword)"
-
-      ~set our name based on the type of weapon chosen
-      field[livename].text = "Dancing "
-      perform gizmo.findchild[BaseWep].setfocus
-      if (state.isfocus <> 0) then
-        field[livename].text &= titlecase(focus.field[name].text)
-      else
-        field[livename].text &= "Weapon"
-        endif
-      field[shortname].text = field[livename].text]]>
-      <after name="gItemExpr Set"/>
-      </eval>
-    <child entity="gMagWeapon"></child>
-    </thing>
-  <thing id="iw5CHDQWaW" name="Wand of Winter" description="This wand looks and feels like an icicle. You must be attuned to the wand to use it.\n\nThe wand has 7 charges, which are used to fuel the spells within it. With the wand in hand, you can use your action to cast one of the following spells from the wand, even if you are incapable of casting spells:\n\nray of frost (no charges, or 1 charge to cast at 5th level; +5 to hit with ranged spell attack),\nsleetstorm (3 charges; spell save DC15), \nicestorm (4 charges; spell save DC15). No components are required.\n\nThe wand regains 1d6+1 expended charges each day at dawn. If you expend the wand’s last charge, roll a d20. On a 20, the wand melts away, forever destroyed." compset="Wand">
+  <thing id="iw5CHDQWaW" name="Wand of Winter" description="This wand looks and feels like an icicle. You must be attuned to the wand to use it.\n\nThe wand has 7 charges, which are used to fuel the spells within it. With the wand in hand, you can use your action to cast one of the following spells from the wand, even if you are incapable of casting spells:\n\n*{i}Ray of Frost{/I} (no charges, or 1 charge to cast at 5th level; +5 to hit with ranged spell attack),\n*{i}Sleet Storm{/i} (3 charges; spell save DC15), \n*{i}Ice Storm{/i} (4 charges; spell save DC15). No components are required.\n\nThe wand regains 1d6+1 expended charges each day at dawn. If you expend the wand&apos;s last charge, roll a d20. On a 20, the wand melts away, forever destroyed." compset="Wand">
     <fieldval field="trkMax" value="7"/>
     <usesource source="5eHOTDQCP"/>
     <tag group="ItemRarity" tag="Rare"/>
-    <tag group="Usage" tag="Charges"/>
-    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <bootstrap thing="spRayFros">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <autotag group="ChargeUse" tag="0"/>
+      </bootstrap>
+    <bootstrap thing="spRayFros">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <assignval field="livename" value="Ray of Frost (CL5)"/>
+      <assignval field="sCL" value="5"/>
+      </bootstrap>
+    <bootstrap thing="spSleeStor">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <autotag group="ChargeUse" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="spIceStor">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <autotag group="ChargeUse" tag="4"/>
+      </bootstrap>
     </thing>
   <thing id="io5CHDQInC" name="Insignia of Claws" description="The jewels in this insignia of the Cult of the Dragon flare with purple light when you enter combat, empowering your natural fists or natural weapons.\n\nWhile wearing the insignia, you gain a +1 bonus to the attack rolls and the damage rolls you make with unarmed strikes and natural weapons. Such attacks are considered to be magical." compset="Wondrous" summary="The jewels in this insignia of the Cult of the Dragon flare with purple light when you enter combat, empowering your natural fists or natural weapons.">
     <tag group="Helper" tag="EquipMag"/>
@@ -112,7 +108,7 @@
     <tag group="Helper" tag="EquipAvail"/>
     <tag group="ItemRarity" tag="Uncommon"/>
     </thing>
-  <thing id="sp5CHDQEvB" name="Evard’s Black Tentacles" description="Squirming, ebony tentacles fill a 20-foot square on ground that you can see within range. For the duration, these tentacles turn the ground in the area into difficult terrain.\n\nWhen a creature enters the afected area for the first time on a turn or starts its turn there, the creature must succeed on a Dexterity saving throw or take 3d6 bludgeoning damage and be restrained by the tentacles until the spell ends. A creature that starts its turn in the area and is already restrained by the tentacles takes 3d6 bludgeoning damage.\n\nA creature restrained by the tentacles can use its action to make a Strength or Dexterity check (its choice) against your spell save DC. On a success, it frees itself." compset="Spell">
+  <thing id="sp5CHDQEvB" name="Evard&apos;s Black Tentacles" description="Squirming, ebony tentacles fill a 20-foot square on ground that you can see within range. For the duration, these tentacles turn the ground in the area into difficult terrain.\n\nWhen a creature enters the afected area for the first time on a turn or starts its turn there, the creature must succeed on a Dexterity saving throw or take 3d6 bludgeoning damage and be restrained by the tentacles until the spell ends. A creature that starts its turn in the area and is already restrained by the tentacles takes 3d6 bludgeoning damage.\n\nA creature restrained by the tentacles can use its action to make a Strength or Dexterity check (its choice) against your spell save DC. On a success, it frees itself." compset="Spell">
     <fieldval field="sRange" value="90 feet"/>
     <fieldval field="sCompDesc" value="a piece of tentacle from a giant octopus or a giant squid"/>
     <fieldval field="sDuration" value="up to 1 minute"/>
@@ -125,5 +121,49 @@
     <tag group="sComp" tag="M"/>
     <tag group="sDuration" tag="Concent"/>
     <tag group="sCastTime" tag="Action1"/>
+    </thing>
+  <thing id="i5CHDQHazi" name="Hazirawn" description="A sentient (neutral evil) greatsword, Hazirawn is capable of speech in Common and Netherese. Even if you aren&apos;t attuned to the sword, you gain a +1 bonus on attack rolls and damage rolls made with this weapon. If you aren&apos;t attuned to Hazirawn, you deal an extra 1d6 necrotic damage when you hit with the weapon.\n\n{b}{i}Increased Potency.{/i}{/b} While you are attuned to this weapon, its bonus on attack rolls and damage rolls increases to +2, and a hit deals an extra 2d6 necrotic damage (instead of 1d6). \n\n{b}{i}Spells.{/i}{/b} Hazirawn has 4 charges to cast spells. As long as the sword is attuned to you and you are holding it in your hand, you can cast {i}detect magic{/i} (1 charge), {i}detect evil and good{/i} (1 charge), or {i}detect thoughts{/i} (2 charges). Each night at midnight, Hazirawn regains 1d4 expended charges.\n\n{b}{i}Wounding.{/i}{/b} While you are attuned to the weapon, any creature that you hit with Hazirawn can&apos;t regain hit points for 1 minute. The target can make a DC15 Constitution saving throw at the end of each of its turns, ending this effect early on a success." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="trkMax" value="4"/>
+    <fieldval field="miTypeDet" value="Greatsword"/>
+    <usesource source="5eHOTDQCP"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <bootstrap thing="spDeteEvil">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="spDeteThou">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <autotag group="ChargeUse" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      var Dice as number
+      Dice = 1
+
+      ~ If attuned increase bonus and dice &
+      if (field[gIsAttuned].value = 1) then
+         ~ Increase to +2 weapon
+         field[Bonus].value += 1
+         ~ Increase to 2d6
+         Dice += 1
+      endif
+
+      ~ Give extra damage
+      #extradamage[this," +" & Dice & "d6 necrotic",field[name].text]]]></eval>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wGreatswrd"></bootstrap>
+      </child>
     </thing>
   </document>
