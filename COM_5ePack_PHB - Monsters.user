@@ -1892,18 +1892,17 @@ nexteach]]></eval>
     </thing>
   <thing id="r5CMMGasSp" name="Gas Spore" compset="Race">
     <fieldval field="rHitDice" value="1"/>
-    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rHDSides" value="10"/>
     <fieldval field="rHPStart" value="1"/>
-    <fieldval field="rSpeed" value="0 "/>
+    <fieldval field="rSpeed" value="0"/>
     <fieldval field="rSTR" value="-5"/>
     <fieldval field="rDEX" value="-9"/>
     <fieldval field="rCON" value="-7"/>
     <fieldval field="rINT" value="-9"/>
     <fieldval field="rWIS" value="-9"/>
     <fieldval field="rCHA" value="-9"/>
-    <fieldval field="rCR" value="1"/>
+    <fieldval field="rCR" value="0.5"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceSize" tag="Large1"/>
     <tag group="RaceType" tag="NPC"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnDeaf"/>
@@ -1911,14 +1910,30 @@ nexteach]]></eval>
     <tag group="CondImm" tag="pcnParaly"/>
     <tag group="CondImm" tag="pcnPoison"/>
     <tag group="CondImm" tag="pcnProne"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="Alignment" tag="BeyondMora"/>
+    <tag group="CondImm" tag="pcnBlind"/>
     <bootstrap thing="raBlindSi">
       <autotag group="Value" tag="30"/>
+      <autotag group="Helper" tag="BlindBeyo"/>
       </bootstrap>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="10"/>
+      <autotag group="Helper" tag="Hover"/>
       </bootstrap>
     <bootstrap thing="tpPlant"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="ra5CDeaBur"></bootstrap>
+    <bootstrap thing="ra5CEerRes"></bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtPoison"/>
+      <assignval field="sbName" value="Touch"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="1"/>
+      <assignval field="livename" value="Touch"/>
+      <assignval field="wAttackEff" value="And the creature must succeed on a DC 10 Constitution saving throw or become infected with the disease described in the Death Burst trait."/>
+      <assignval field="wAttack" value="1"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMGaleb" name="Galeb Duhr" compset="Race">
     <fieldval field="rHitDice" value="9"/>
@@ -5646,5 +5661,13 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <tag group="User" tag="Tracker"/>
     <tag group="FeatureTyp" tag="Action"/>
     <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CDeaBur" name="Death Burst" description="The gas spore explodes when it drops to 0 hit points. Each creature within 20 feet of it must succeed on a DC 15 Constitution saving throw or take 10 (3d6) poison damage and become infected with a disease on a failed save. Creatures immune to the poisoned condition are immune to this disease.\nSpores invade an infected creature&apos;s system, killing the creature in a number of hours equal to 1d12 + the creature&apos;s Constitution score, unless the disease is removed. In half that time, the creature becomes poisoned for the rest of the duration . After the creature dies, it sprouts 2d4 Tiny gas spores that grow to full size in 7 days." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CEerRes" name="Eerie Resemblance" description="The gas spore resembles a beholder. A creature that can see the gas spore can discern its true nature with a successful DC 15 Intelligence (Nature) check." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
     </thing>
   </document>
