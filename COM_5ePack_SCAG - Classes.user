@@ -82,6 +82,7 @@ doneif (#levelcount[Wizard] < 14)
     </thing>
   <thing id="c5CWizSoD" name="Song of Defense" description="Beginning at 10th level, you can direct your magic to absorb damage while your Bladesong is active. When you take damage, you can use your reaction to expend one spell slot and reduce that damage to you by an amount equal to five times the spell slot&apos;s level." compset="ClSpecial" summary="Spell Slots can be used for defense.">
     <usesource source="5eSCAGCP"/>
+    <tag group="abAction" tag="Reaction"/>
     </thing>
   <thing id="c5CWizSoV" name="Song of Victory" description="Starting at 14th level, you add your Intelligence modifier (minimum of +1) to the damage of your melee weapon attacks while your Bladesong is active." compset="ClSpecial" summary="Intelligence adds Damage">
     <usesource source="5eSCAGCP"/>
@@ -185,7 +186,12 @@ doneif (#levelcount[Wizard] < 14)
     </thing>
   <thing id="c5CWlkAmtD" name="Among the Dead" description="Starting at 1st level, you learn the spare the dying cantrip, which counts as a warlock cantrip for you. You also have advantage on saving throws against any disease.\n\nAdditionally, undead have difficulty harming you. If an undead targets you directly with an attack or a harmful spell, that creature must make a Wisdom saving throw against your spell save DC (an undead needn&apos;t make the save when it includes you in an area effect, such as the explosion of fireball). On a failed save, the creature must choose a new target or forfeit targeting someone instead of you, potentially wasting the attack or spell. On a successful save, the creature is immune to this effect for 24 hours. An undead is also immune to this effect for 24 hours if you target it with an attack or a harmful spell." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
-    <tag group="SpInfo" tag="sp5CSpareD"/>
+    <bootstrap thing="sp5CSpareD">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="SpellType" tag="cHelpWlk"/>
+      </bootstrap>
     </thing>
   <thing id="c5CWlkDeDe" name="Defy Death" description="Starting at 6th level, you can give yourself vitality when you cheat death or when you help someone else cheat it.  You can regain hit points equal to 1d8 + your Constitution modifier (minimum of 1 hit point) when you succeed on a death saving throw or when you stabilize a creature with spare the dying. \n\nOnce you use this feature, you can&apos;t use it again until you finish a long rest." compset="ClSpecial" summary="You can give yourself vitality when you cheat death or when you help someone else cheat it.">
     <fieldval field="trkMax" value="1"/>
@@ -795,6 +801,11 @@ doneif (#levelcount[Wizard] < 14)
     <tag group="DamageRes" tag="NoMagPierc" name="nonmagical piercing" abbrev="nonmagical piercing"/>
     <tag group="DamageRes" tag="NoMagSlash" name="nonmagical slashing" abbrev="nonmagical slashing"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+perform hero.assign[ProfSkill.skArcana]]]></eval>
     </thing>
   <thing id="c5CClrArAb" name="Channel Divinity: Arcane Abjuration" description="Starting at 2nd level, you can use your Channel Divinity to abjure otherworldly creatures.\n\nAs an action, you present your holy symbol, and one celestial, elemental, fey, or fiend of your choice that is within 30 feet of you must make a Wisdom saving throw, provided that the creature can see or hear you. If the creature fails its saving throw, it is turned for 1 minute or until it takes any damage.\n\nA turned creature must spend its turns trying to move as far away from you as it can, and it can&apos;t willingly end its move in a space within 30 feet of you. It also can&apos;t take reactions. For its action, it can only use the Dash action or try to escape from an effect that prevents it from moving. If there&apos;s nowhere to move, the creature can use the Dodge action. \n\nAfter you reach 5th level, when a creature fails its saving throw against your Arcane Abjuration feature, the creature is banished for 1 minute (as in the banishment spell, no concentration required) if it isn&apos;t on its plane of origin and its challenge rating is at or below a certain threshold, as shown on the Arcane Banishment table.\n\nARCANE BANISHMENT\nCleric Level Banishes Creatures of CR ...\n5th 1/2 or lower\n8th 1 or lower\n1 lth 2 or lower\n14th 3 or lower\n17th 4 or lower" compset="ClSpecial" summary="You can use your Channel Divinity to abjure otherworldly creatures.">
     <fieldval field="abDuration" value="1"/>
@@ -1050,6 +1061,12 @@ doneif (#levelcount[Wizard] < 14)
     </thing>
   <thing id="c5CSearArS" name="Searing Arc Strike" description="At 6th level, you gain the ability to channel your ki into searing waves of energy. Immediately after you take the Attack action on your turn, you can spend 2 ki points to cast the 1st-level spell burning hands as a bonus action. \n\nYou can spend additional ki points to cast burning hands as a higher level spell. Each additional ki point you spend increases the spell&apos;s level by 1. The maximum number of ki points (2 plus any additional points) that you can spend on the spell equals half your monk level (round down)." compset="ClSpecial">
     <tag group="abAction" tag="Bonus"/>
+    <bootstrap thing="spBurnHand">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpMnk"/>
+      </bootstrap>
     </thing>
   <thing id="c5CSearSun" name="Searing Sunburst" description="At 11th level, you gain the ability to create an orb of light that erupts into a devastating explosion. As an action, you create an orb and hurl it at a point you choose within 150 feet, where it erupts into a sphere of radiant light for a brief but deadly instant.\n\nEach creature in that 20-foot-radius sphere must succeed on a Constitution saving throw or take 2d6 radiant damage. A creature doesn&apos;t need to make the save if the creature is behind total cover that is opaque.\n\nYou can increase the sphere&apos;s damage by spending ki points. Each point you spend, up to a maximum of 3, increases the damage by 2d6." compset="ClSpecial">
     <fieldval field="abRange" value="150"/>
@@ -1088,7 +1105,7 @@ doneif (#levelcount[Wizard] < 14)
   <thing id="c5CMastInt" name="Master of Intrigue" description="When you choose this archetype at 3rd level, you gain proficiency with the disguise kit, the forgery kit, and one gaming set of your choice. You also learn two languages of your choice. \n\nAdditionally, you can unerringly mimic the speech patterns and accent of a creature that you hear speak for at least 1 minute, allowing you to pass yourself off as a native speaker of a particular land, provided that you know the language." compset="ClSpecial">
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     </thing>
-  <thing id="c5CMastTac" name="Master of Tactics" description="S tarting at 3rd level, you can use the Help action as a bonus action. Additionally, when you use the Help action to aid an ally in attacking a creature, the target of that  attack can be within 30 feet of you, rather than 5 feet of you, if the target can see or hear you." compset="ClSpecial">
+  <thing id="c5CMastTac" name="Master of Tactics" description="Starting at 3rd level, you can use the Help action as a bonus action. Additionally, when you use the Help action to aid an ally in attacking a creature, the target of that  attack can be within 30 feet of you, rather than 5 feet of you, if the target can see or hear you." compset="ClSpecial">
     <tag group="abAction" tag="Bonus"/>
     </thing>
   <thing id="c5CInsiMan" name="Insightful Manipulator" description="S ta rting at 9th level, if you spend at least 1 minute observing or interacting with another creature outside combat, you can learn certain information about its capabilities compared to your own. The DM tells you if the creature is your equal, superior, or inferior in regard to two of the following characteris tics of your choice: \n\n• Intelligence score\n• Wisdom score\n• Charisma score\n• Class levels (if any)\n\nAt the DM&apos;s option, you might also realize you know a piece of the creature&apos;s history or one of its personality traits, if it has any." compset="ClSpecial">
