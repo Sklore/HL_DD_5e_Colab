@@ -2789,30 +2789,54 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
         nexteach]]></eval>
     </thing>
   <thing id="r5CMMKuoTW" name="Kuo-Toa Whip" compset="Race">
-    <fieldval field="rHitDice" value="l0"/>
+    <fieldval field="rHitDice" value="10"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="65"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="4"/>
-    <fieldval field="rDEX" value="0"/>
     <fieldval field="rCON" value="4"/>
     <fieldval field="rINT" value="2"/>
     <fieldval field="rWIS" value="4"/>
     <fieldval field="rCHA" value="1"/>
     <fieldval field="rCR" value="1"/>
+    <fieldval field="rAC" value="1"/>
+    <fieldval field="rMultiatt" value="The kuo-toa makes two attacks: one with its bite and one with its pincer staff."/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="NeutralLC"/>
-    <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skReligion"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skReligion"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="WepProf" tag="w5CPincSta"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="tt5CKuotoa"></bootstrap>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <bootstrap thing="lCommon"></bootstrap>
-    <bootstrap thing="lUndercomm"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="ra5CMMAmph">
+      <assignval field="abText" value="kuo-toa"/>
+      </bootstrap>
+    <bootstrap thing="ra5COthPer">
+      <assignval field="abText" value="kuo-toa"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSlippe">
+      <assignval field="abText" value="kuo-toa"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSunSen">
+      <assignval field="abText" value="kuo-toa"/>
+      </bootstrap>
+    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]
+#skillbonus[skReligion] += 1</eval>
     </thing>
   <thing id="r5CMMLizaS" name="Lizardfolk Shaman" compset="Race">
     <fieldval field="rHitDice" value="5"/>
@@ -5752,5 +5776,19 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <tag group="wProfReq" tag="Simple" name="Simple" abbrev="Simple"/>
     <tag group="DamageType" tag="dtBludgeon" name="Bludgeoning" abbrev="Bludgeoning"/>
     <tag group="EquipType" tag="Wood"/>
+    </thing>
+  <thing id="w5CPincSta" name="Pincer Staff" compset="Weapon">
+    <fieldval field="gWeight" value="4"/>
+    <fieldval field="gSizeCost" value=".2"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="6"/>
+    <fieldval field="wDCntVers" value="1"/>
+    <fieldval field="wDSizVers" value="8"/>
+    <fieldval field="wAttackEff" value="If the target is a Medium or smaller creature, it is grappled (escape DC 14). Until this grapple ends, the kuo-toa can&apos;t use its pincer staff on  another target."/>
+    <fieldval field="wReach" value="10"/>
+    <tag group="wCategory" tag="Melee" name="Melee Weapon" abbrev="Melee"/>
+    <tag group="DamageType" tag="dtPiercing"/>
+    <tag group="RaceEquip" tag="r5CMMKuoTW"/>
+    <tag group="wProfReq" tag="Simple" name="Simple" abbrev="Simple"/>
     </thing>
   </document>
