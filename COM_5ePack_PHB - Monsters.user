@@ -2688,25 +2688,48 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <fieldval field="rHitDice" value="4"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="18"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="3"/>
-    <fieldval field="rDEX" value="0"/>
     <fieldval field="rCON" value="1"/>
     <fieldval field="rINT" value="1"/>
-    <fieldval field="rWIS" value="0"/>
     <fieldval field="rCHA" value="-2"/>
-    <fieldval field="rCR" value=""/>
+    <fieldval field="rCR" value="0.25"/>
+    <fieldval field="rAC" value="1"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="NeutralLC"/>
-    <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="ArmProfGrp" tag="Shields"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <tag group="WepProf" tag="wNet"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMMAmph">
+      <assignval field="abText" value="kuo-toa"/>
+      </bootstrap>
+    <bootstrap thing="ra5COthPer">
+      <assignval field="abText" value="kuo-toa"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSlippe">
+      <assignval field="abText" value="kuo-toa"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSunSen">
+      <assignval field="abText" value="kuo-toa"/>
+      </bootstrap>
+    <bootstrap thing="ra5CStiShi"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="tt5CKuotoa"></bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMKuoTA" name="Kuo-Toa Archpriest" compset="Race">
@@ -5241,7 +5264,9 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
   <thing id="tt5CAarako" name="Aarakocra" compset="TypeTag" uniqueness="unique">
     <tag group="NeedType" tag="tpHumanoid" name="Humanoid" abbrev="Humanoid"/>
     </thing>
-  <thing id="tt5CBullyw" name="Bullywug" compset="TypeTag" uniqueness="unique"></thing>
+  <thing id="tt5CBullyw" name="Bullywug" compset="TypeTag" uniqueness="unique">
+    <tag group="NeedType" tag="tpHumanoid" name="Humanoid" abbrev="Humanoid"/>
+    </thing>
   <thing id="ra5CIncRam" name="Incite Rampage" description="One creature the gnoll can see within 30 feet of it can use it s reaction to make a melee attack if it can hear the gnoll and has the Rampage trait ." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Action"/>
@@ -5669,5 +5694,23 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
   <thing id="ra5CEerRes" name="Eerie Resemblance" description="The gas spore resembles a beholder. A creature that can see the gas spore can discern its true nature with a successful DC 15 Intelligence (Nature) check." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="tt5CKuotoa" name="Kuo-toa" compset="TypeTag" uniqueness="unique">
+    <tag group="NeedType" tag="tpHumanoid" name="Humanoid" abbrev="Humanoid"/>
+    </thing>
+  <thing id="ra5COthPer" name="Otherworldly Perception" description="The {abText} can sense the presence of any creature within 30 feet of it that is invisible or on the Ethereal Plane. It can pinpoint such a creature that is moving." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " can sense the presence of any creature within 30 feet of it that is invisible or on the Ethereal Plane. It can pinpoint such a creature that is moving."]]></eval>
+    </thing>
+  <thing id="ra5CSlippe" name="Slippery" description="The {abText} has advantage on ability checks and saving throws made to escape a grapple." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " has advantage on ability checks and saving throws made to escape a grapple."]]></eval>
+    </thing>
+  <thing id="ra5CStiShi" name="Sticky Shield" description="When a creature misses the kuo-toa with a melee weapon attack, the kuo-toa uses its sticky shield to catch the weapon. The attacker must succeed on a DC 11 Strength saving throw, or the weapon becomes stuck to the kuo-toa&apos;s shield. If the weapon&apos;s wielder can&apos;t or won&apos;t let go of the weapon, the wielder is grappled while the weapon is stuck. While stuck, the weapon can&apos;t be used. A creature can pull the weapon free by taking an action to make a DC 11 Strength check and succeeding." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
     </thing>
   </document>
