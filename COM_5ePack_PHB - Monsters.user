@@ -926,6 +926,9 @@ nexteach]]></eval>
       <assignval field="abText" value="death knight"/>
       </bootstrap>
     <bootstrap thing="ra5CDKSpCa"></bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[   foreach pick in hero from BaseWep where "wCategory.Melee"
+        #extradamage[eachpick, " damage, plus 18 (4d8) necrotic", field[thingname].text]
+        nexteach]]></eval>
     </thing>
   <thing id="r5CMMDemi" name="Demilich" compset="Race">
     <fieldval field="rHitDice" value="20"/>
@@ -938,8 +941,8 @@ nexteach]]></eval>
     <fieldval field="rWIS" value="7"/>
     <fieldval field="rCHA" value="10"/>
     <fieldval field="rCR" value="18 "/>
+    <fieldval field="rAC" value="5"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="NeutralLC"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Tiny12"/>
     <tag group="RaceType" tag="NPC"/>
@@ -961,7 +964,7 @@ nexteach]]></eval>
     <tag group="ProfSave" tag="svCHA" name="Charisma"/>
     <tag group="DamageRes" tag="dt5CBPSMaW"/>
     <tag group="DamComImm" tag="dcWepNonMa"/>
-    <bootstrap thing="ra5CTurImm"></bootstrap>
+    <tag group="Alignment" tag="NeutralLC"/>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="30"/>
       <autotag group="Helper" tag="Hover"/>
@@ -973,15 +976,19 @@ nexteach]]></eval>
     <bootstrap thing="ra5CAvoida">
       <assignval field="abText" value="demilich"/>
       </bootstrap>
-    <bootstrap thing="ra5CLegRes"></bootstrap>
+    <bootstrap thing="ra5CLegRes">
+      <assignval field="abText" value="demilich"/>
+      </bootstrap>
     <bootstrap thing="ra5CHowl"></bootstrap>
     <bootstrap thing="ra5CLifDra"></bootstrap>
     <bootstrap thing="ra5CLaDemi"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="ra5CTurImm">
+      <assignval field="abText" value="demilich"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMBarl" name="Barlgura" description="Barlguras also known as leaping demons, were ape-like tanar&apos;ri demons.\n\nBarlguras were covered in reddish-brown hair and stood between 5 and 6 feet tall. They appeared similar to orangutans. They usually walked on all four limbs, but were able to stand on two legs." compset="Race">
     <fieldval field="rHitDice" value="8"/>
-    <fieldval field="rHDSides" value="l0"/>
+    <fieldval field="rHDSides" value="10"/>
     <fieldval field="rHPStart" value="68"/>
     <fieldval field="rSTR" value="8"/>
     <fieldval field="rDEX" value="5"/>
@@ -4796,8 +4803,8 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <tag group="abSave" tag="aDEX"/>
     <tag group="Helper" tag="WeaponSpec"/>
     <tag group="User" tag="Tracker"/>
-    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Usage" tag="Day"/>
+    <tag group="FeatureTyp" tag="Action"/>
     </thing>
   <thing id="ra5CDNParr" name="Parry" description="The {abText} adds {abValue} to its AC against one melee attack that would hit it. To do so, the {abText} must see the attacker and be wielding a melee weapon." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Reaction" name="Reaction" abbrev="Reaction"/>
@@ -4815,12 +4822,13 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <tag group="FeatureTyp" tag="Special"/>
     <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "If the " & Field[abText].text & " is subjected to an effect that allows it to make a saving throw to take only half damage, it instead takes no damage if it succeeds on the saving throw, and only half damage if it fails."]]></eval>
     </thing>
-  <thing id="ra5CLegRes" name="Legendary Resistance" description="If the demilich fails a saving throw, it can choose to succeed instead." compset="RaceSpec">
+  <thing id="ra5CLegRes" name="Legendary Resistance" description="If the {abText} fails a saving throw, it can choose to succeed instead." compset="RaceSpec">
     <fieldval field="trkMax" value="3"/>
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="User" tag="Tracker"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="Usage" tag="Day"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "If the " & Field[abText].text & " fails a saving throw, it can choose to succeed instead."]]></eval>
     </thing>
   <thing id="ra5CHowl" name="Howl" description="The demilich emits a bloodcurdling howl. Each creature within 30 feet of the demilich that can hear the howl must succeed on a DC 15 Constitution saving throw or drop to 0 hit points. On a successful save, the creature is  frightened until the end of its next turn." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Action" abbrev="Action"/>
