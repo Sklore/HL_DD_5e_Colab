@@ -82,6 +82,7 @@ doneif (#levelcount[Wizard] < 14)
     </thing>
   <thing id="c5CWizSoD" name="Song of Defense" description="Beginning at 10th level, you can direct your magic to absorb damage while your Bladesong is active. When you take damage, you can use your reaction to expend one spell slot and reduce that damage to you by an amount equal to five times the spell slot&apos;s level." compset="ClSpecial" summary="Spell Slots can be used for defense.">
     <usesource source="5eSCAGCP"/>
+    <tag group="abAction" tag="Reaction"/>
     </thing>
   <thing id="c5CWizSoV" name="Song of Victory" description="Starting at 14th level, you add your Intelligence modifier (minimum of +1) to the damage of your melee weapon attacks while your Bladesong is active." compset="ClSpecial" summary="Intelligence adds Damage">
     <usesource source="5eSCAGCP"/>
@@ -185,7 +186,12 @@ doneif (#levelcount[Wizard] < 14)
     </thing>
   <thing id="c5CWlkAmtD" name="Among the Dead" description="Starting at 1st level, you learn the spare the dying cantrip, which counts as a warlock cantrip for you. You also have advantage on saving throws against any disease.\n\nAdditionally, undead have difficulty harming you. If an undead targets you directly with an attack or a harmful spell, that creature must make a Wisdom saving throw against your spell save DC (an undead needn&apos;t make the save when it includes you in an area effect, such as the explosion of fireball). On a failed save, the creature must choose a new target or forfeit targeting someone instead of you, potentially wasting the attack or spell. On a successful save, the creature is immune to this effect for 24 hours. An undead is also immune to this effect for 24 hours if you target it with an attack or a harmful spell." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
-    <tag group="SpInfo" tag="sp5CSpareD"/>
+    <bootstrap thing="sp5CSpareD">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="SpellType" tag="cHelpWlk"/>
+      </bootstrap>
     </thing>
   <thing id="c5CWlkDeDe" name="Defy Death" description="Starting at 6th level, you can give yourself vitality when you cheat death or when you help someone else cheat it.  You can regain hit points equal to 1d8 + your Constitution modifier (minimum of 1 hit point) when you succeed on a death saving throw or when you stabilize a creature with spare the dying. \n\nOnce you use this feature, you can&apos;t use it again until you finish a long rest." compset="ClSpecial" summary="You can give yourself vitality when you cheat death or when you help someone else cheat it.">
     <fieldval field="trkMax" value="1"/>
@@ -795,6 +801,11 @@ doneif (#levelcount[Wizard] < 14)
     <tag group="DamageRes" tag="NoMagPierc" name="nonmagical piercing" abbrev="nonmagical piercing"/>
     <tag group="DamageRes" tag="NoMagSlash" name="nonmagical slashing" abbrev="nonmagical slashing"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+perform hero.assign[ProfSkill.skArcana]]]></eval>
     </thing>
   <thing id="c5CClrArAb" name="Channel Divinity: Arcane Abjuration" description="Starting at 2nd level, you can use your Channel Divinity to abjure otherworldly creatures.\n\nAs an action, you present your holy symbol, and one celestial, elemental, fey, or fiend of your choice that is within 30 feet of you must make a Wisdom saving throw, provided that the creature can see or hear you. If the creature fails its saving throw, it is turned for 1 minute or until it takes any damage.\n\nA turned creature must spend its turns trying to move as far away from you as it can, and it can&apos;t willingly end its move in a space within 30 feet of you. It also can&apos;t take reactions. For its action, it can only use the Dash action or try to escape from an effect that prevents it from moving. If there&apos;s nowhere to move, the creature can use the Dodge action. \n\nAfter you reach 5th level, when a creature fails its saving throw against your Arcane Abjuration feature, the creature is banished for 1 minute (as in the banishment spell, no concentration required) if it isn&apos;t on its plane of origin and its challenge rating is at or below a certain threshold, as shown on the Arcane Banishment table.\n\nARCANE BANISHMENT\nCleric Level Banishes Creatures of CR ...\n5th 1/2 or lower\n8th 1 or lower\n1 lth 2 or lower\n14th 3 or lower\n17th 4 or lower" compset="ClSpecial" summary="You can use your Channel Divinity to abjure otherworldly creatures.">
     <fieldval field="abDuration" value="1"/>
@@ -967,7 +978,7 @@ doneif (#levelcount[Wizard] < 14)
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
     </thing>
-  <thing id="c5CMnkOrYR" name="Order of the Yellow Moon" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CMnkOrYR" name="Order of the Yellow Rose" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
     <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
     <tag group="SpecSource" tag="cHelpMnk" name="Monk" abbrev="Monk"/>
@@ -984,5 +995,242 @@ doneif (#levelcount[Wizard] < 14)
     <bootstrap thing="cMnkOpHaTe">
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
+    </thing>
+  <thing id="c5CWotLDth" name="Way of the Long Death" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpMnk" name="Monk" abbrev="Monk"/>
+    <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition" abbrev="Monk Monastic Tradition"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CHourRea">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CMastDth">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CTouchLD">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="c5CToOfDth">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CToOfDth" name="Touch of Death" description="Starting when you choose this tradition at 3rd level, your study of death allows you to extract vitality from another creature as it nears its demise. When you reduce a creature within 5 feet of you to 0 hit points, you gain temporary hit points equal to your Wisdom modifier + your monk level (minimum of 1 temporary hit point)." compset="ClSpecial">
+    <fieldval field="abRange" value="5"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abDuration" tag="Instant"/>
+    </thing>
+  <thing id="c5CHourRea" name="Hour of Reaping" description="At 6th level, you gain the ability to unsettle or terrify those around you as an action, for your soul has been touched by the shadow of death. When you take this action, each creature within 30 feet of you that can see you must succeed on a Wisdom saving throw or be frightened of you until the end of your next turn." compset="ClSpecial">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abDuration" value="end of your next turn"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="c5CMastDth" name="Mastery of Death" description="Beginning at 11th level, you use your fami liarity with death to escape its grasp. When you are reduced to 0 hit points, you can expend 1 ki point (no action required) to have 1 hit point instead." compset="ClSpecial">
+    <tag group="abDuration" tag="Permanent" name="Permanent" abbrev="perm"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CTouchLD" name="Touch of the Long Death" description="Starting at 17th level, your touch can channel the energy of death into a creature. As an action, you touch one creature within 5 feet of you, and you expend 1 to 10 ki points. The target must make a Constitution saving throw, and it takes 2d10 necrotic damage per ki point spent on a fai led save, or half as much damage on a successful one." compset="ClSpecial">
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="c5CWaySSou" name="Way of the Sun Soul" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpMnk" name="Monk" abbrev="Monk"/>
+    <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition" abbrev="Monk Monastic Tradition"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CRadSunB">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CSearSun">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CSearArS">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CWSunShi">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRadSunB" name="Radiant Sun Bolt" description="Starting when you choose this tradition at 3rd level, you can hurl searing bolts of magical radiance. \n\nYou gain a ranged spell attack that you can use with the Attack action. The attack has a range of 30 feet. You are proficient with it, and you add your Dexterity modifier to its attack and damage rolls. Its damage is radiant, and its damage die is a d4. This die changes as you gain monk levels, as shown in the Martial Arts column of the Monk table.\n \nWhen you use the Attack action on your turn to use this special attack, you can spend 1 ki point to make two additional attacks with it as a bonus action." compset="ClSpecial">
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CSearArS" name="Searing Arc Strike" description="At 6th level, you gain the ability to channel your ki into searing waves of energy. Immediately after you take the Attack action on your turn, you can spend 2 ki points to cast the 1st-level spell burning hands as a bonus action. \n\nYou can spend additional ki points to cast burning hands as a higher level spell. Each additional ki point you spend increases the spell&apos;s level by 1. The maximum number of ki points (2 plus any additional points) that you can spend on the spell equals half your monk level (round down)." compset="ClSpecial">
+    <tag group="abAction" tag="Bonus"/>
+    <bootstrap thing="spBurnHand">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpMnk"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CSearSun" name="Searing Sunburst" description="At 11th level, you gain the ability to create an orb of light that erupts into a devastating explosion. As an action, you create an orb and hurl it at a point you choose within 150 feet, where it erupts into a sphere of radiant light for a brief but deadly instant.\n\nEach creature in that 20-foot-radius sphere must succeed on a Constitution saving throw or take 2d6 radiant damage. A creature doesn&apos;t need to make the save if the creature is behind total cover that is opaque.\n\nYou can increase the sphere&apos;s damage by spending ki points. Each point you spend, up to a maximum of 3, increases the damage by 2d6." compset="ClSpecial">
+    <fieldval field="abRange" value="150"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abSave" tag="aCON"/>
+    </thing>
+  <thing id="c5CWSunShi" name="Sun Shield" description="At 17th level, you become wreathed in a luminous aura. You shed bright light in a 30-foot radius and dim light for an additional 30 feet. You can extinguish or restore the light as a bonus action.\n\nIf a creature hits you with a melee attack while this light shines, you can use your reaction to deal radiant damage to the creature. The radiant damage equals 5 + your Wisdom modifier." compset="ClSpecial">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="c5CMastMin" name="Mastermind" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpRog" name="Rogue" abbrev="Rogue"/>
+    <tag group="abCategory" tag="RogArchety" name="Rogue Archetype" abbrev="Rogue Archetype"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="ProductId" tag="Wizards"/>
+    <bootstrap thing="c5CMastInt">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CMastTac">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CInsiMan">
+      <autotag group="ClSpecWhen" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="c5CMisdire">
+      <autotag group="ClSpecWhen" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="c5CSoulDec">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CMastInt" name="Master of Intrigue" description="When you choose this archetype at 3rd level, you gain proficiency with the disguise kit, the forgery kit, and one gaming set of your choice. You also learn two languages of your choice. \n\nAdditionally, you can unerringly mimic the speech patterns and accent of a creature that you hear speak for at least 1 minute, allowing you to pass yourself off as a native speaker of a particular land, provided that you know the language." compset="ClSpecial">
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    </thing>
+  <thing id="c5CMastTac" name="Master of Tactics" description="Starting at 3rd level, you can use the Help action as a bonus action. Additionally, when you use the Help action to aid an ally in attacking a creature, the target of that  attack can be within 30 feet of you, rather than 5 feet of you, if the target can see or hear you." compset="ClSpecial">
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="c5CInsiMan" name="Insightful Manipulator" description="S ta rting at 9th level, if you spend at least 1 minute observing or interacting with another creature outside combat, you can learn certain information about its capabilities compared to your own. The DM tells you if the creature is your equal, superior, or inferior in regard to two of the following characteris tics of your choice: \n\n• Intelligence score\n• Wisdom score\n• Charisma score\n• Class levels (if any)\n\nAt the DM&apos;s option, you might also realize you know a piece of the creature&apos;s history or one of its personality traits, if it has any." compset="ClSpecial">
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="c5CMisdire" name="Misdirection" description="Beginning at 13th level, you can sometimes cause another creature to suffer an attack meant for you. When you a re targeted by an attack while a creature within 5 feet of you is granting you cover against that attack, you can use your reaction to have the attack target that creature instead of you." compset="ClSpecial">
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="c5CSoulDec" name="Sould of Deceit" description="Starting at 17th level, your thoughts can&apos;t be read by telepathy or other means, unless you allow it. You can present false thoughts by making a Charisma (Deception) check contested by the mind reader&apos;s Wisdom (Insight) check. \n\nAdditionally, no matter what you say, magic that would determine if you are telling the truth indicates you are being truthful, if you so choose, and you can&apos;t be compelled to tell the truth by magic." compset="ClSpecial">
+    <tag group="abAction" tag="Free"/>
+    </thing>
+  <thing id="c5CPalOaCr" name="Oath of the Crown" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpPal" name="Paladin" abbrev="Paladin"/>
+    <tag group="abCategory" tag="PalSacOath" name="Paladin Sacred Oath" abbrev="Paladin Sacred Oath"/>
+    <bootstrap thing="c5CPalTeCr">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalCDCC">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalDiAl">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalUnSp">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalExCh">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="spCommand">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="sp5CCompDu">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spWardBond">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spZoneTrut">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="sp5CAurVit">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spSpirGuar">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spBanishme">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="sp5CGuardF">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="sp5CCircPo">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spGeas">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalCDTT">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CPalTeCr" name="Tenets of the Crown" description="The tenets of the Oath of the Crown are often set by the sovereign to which their oath is sworn, but generally emphasize the following tenets.\n\nLaw. The law is paramount. It is the mortar that holds the stones of civilization together, and it must be respected.\nLoyalty. Your word is your bond. Without loyalty, oaths and laws are meaningless. \nCourage. You must be willing to do what needs to be done for the sake of order, even in the face of overwhelming odds. If you don&apos;t act, then who will?\nResponsibility. You must deal with the consequences of your actions, and you are responsible for fulfilling your duties and obligations." compset="ClSpecial">
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal"/>
+    </thing>
+  <thing id="c5CPalCDCC" name="Channel Divinity: Champion Challenge" description="You issue a challenge that compels other creatures to do battle with you. Each creature of your choice that you can see within 30 feet of you must make a Wisdom saving throw. On a failed save, a creature can&apos;t willingly move more than 30 feet away from you. This effect ends on the creature if you are incapacitated or die or if the creature is moved more than 30 feet away from you." compset="ClSpecial" summary="You issue a challenge that compels other creatures to do battle with you">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="StandardDC" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    </thing>
+  <thing id="c5CPalCDTT" name="Channel Divinity: Turn the Tide" description="As a bonus action, you can bolster injured creatures with your Channel Divinity. Each creature of your choice that can hear you within 30 feet of you regains hit points equal to ld6 + your Charisma modifier (minimum of 1) if it has no more than half of its hit points." compset="ClSpecial" summary="As a bonus action, you can bolster injured creatures with your Channel Divinity.">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="c5CPalDiAl" name="Divine Allegiance" description="Starting at 7th level, when a creature within 5 feet of you takes damage, you can use your reaction to magically substitute your own health for that of the target creature, causing that creature not to take the damage. Instead, you take the  damage. This damage to you can&apos;t be reduced or prevented in any way." compset="ClSpecial" summary="You can use your reaction to magically substitute your own health for that of the target creature">
+    <fieldval field="abRange" value="5"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="c5CPalUnSp" name="Unyielding Spirit" description="Starting at 15th level, you have advantage on saving throws to avoid becoming paralyzed or stunned." compset="ClSpecial" summary="You have advantage on saving throws to avoid becoming paralyzed or stunned.">
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CPalExCh" name="Exalted Champion" description="At 20th level, your presence on the field of battle is an inspiration  to those dedicated to your cause. You can use your action to gain the following benefits for 1 hour:\n\n• You have resistance to bludgeoning, piercing, and slashing damage from nonmagical weapons.\n• Your allies have advantage on death saving throws while within 30 feet of you. \n• You have advantage on Wisdom saving throws, as do your allies within 30 feet of you. \n\nThis effect ends early if you are incapacitated or die. Once you use this feature, you can&apos;t use it again until you finish a long rest." compset="ClSpecial" summary="Your presence on the field of battle is an inspiration  to those dedicated to your cause.">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abRange" tag="Feet"/>
     </thing>
   </document>
