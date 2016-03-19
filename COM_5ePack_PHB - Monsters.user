@@ -2905,18 +2905,33 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Small11"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnPoison"/>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="60"/>
-      </bootstrap>
+    <tag group="ProfSkill" tag="skStealth"/>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="20"/>
       </bootstrap>
     <bootstrap thing="lAquan"></bootstrap>
     <bootstrap thing="lTerran"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="tpElementa"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wFist">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <assignval field="sbName" value="Fists"/>
+      <assignval field="livename" value="Fists"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMudDeB"></bootstrap>
+    <bootstrap thing="ra5CMudFAp"></bootstrap>
+    <bootstrap thing="ra5CMudBre">
+      <autotag group="Recharge" tag="6"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMSmoke" name="Smoke Mephit" compset="Race">
     <fieldval field="rHitDice" value="5"/>
@@ -2924,10 +2939,8 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rHPStart" value="22"/>
     <fieldval field="rSpeed" value="30 "/>
     <fieldval field="rSTR" value="-4"/>
-    <fieldval field="rDEX" value="2"/>
-    <fieldval field="rCON" value="0"/>
-    <fieldval field="rINT" value="0"/>
-    <fieldval field="rWIS" value="0"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="2"/>
     <fieldval field="rCHA" value="1"/>
     <fieldval field="rCR" value="0.25"/>
     <usesource source="5eMMCP"/>
@@ -2935,14 +2948,33 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Small11"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
     <tag group="DamageImm" tag="dtFire"/>
     <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="lIgnan"></bootstrap>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="30"/>
       </bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="tpElementa"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="wProperty" tag="Finesse"/>
+      <assignval field="livename" value="Claws"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="sbName" value="Claws"/>
+      </bootstrap>
+    <bootstrap thing="lAuran"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSmoDeB"></bootstrap>
+    <bootstrap thing="ra5CSmInSp"></bootstrap>
+    <bootstrap thing="ra5CSmoBre">
+      <autotag group="Recharge" tag="6"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMMindF" name="Mind Flayer" compset="Race">
     <fieldval field="rHitDice" value="13"/>
@@ -5871,5 +5903,42 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " has advantage on Wisdom (Perception) checks that rely on sight."]]></eval>
+    </thing>
+  <thing id="ra5CMudDeB" name="Death Burst" description="When the mephit dies, it explodes in a burst of sticky mud. Each Medium or smaller creature within 5 feet of it must succeed on a DC 11 Dexterity saving throw or be restrained until the end of the creature&apos;s next turn." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CMudFAp" name="False Appearance" description="While the mephit remains motionless, it is indistinguishable from an ordinary mound of mud." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="ra5CMudBre" name="Mud Breath" description="The mephit belches viscid mud onto one creature within 5 feet of it. If the target is Medium or smaller, it must succeed on a DC 11 Dexterity saving throw or be restrained for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Recharge" tag="6" name="6" abbrev="6"/>
+    <tag group="StandardDC" tag="aDEX"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CSmoDeB" name="Death Burst" description="When the mephit dies, it leaves behind a cloud of smoke that fills a 5-foot-radius sphere centered on its space. The sphere is heavily obscured. Wind disperses the cloud, which otherwise lasts for 1 minute." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CSmInSp" name="Innate Spellcasting" description="The mephit can innately cast {i}dancing lights{/i}, requiring no material components. Its innate spellcasting ability is Charisma." compset="RaceSpec">
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CSmoBre" name="Cinder Breath" description="The mephit exhales a 15-foot cone of smoldering ash . Each creature in that area must succeed on a DC 10 Dexterity saving throw or be blinded until the end of the me ph it&apos;s next turn ." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Recharge" tag="6" name="6" abbrev="6"/>
+    <tag group="StandardDC" tag="aDEX"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="abAction" tag="Action"/>
     </thing>
   </document>
