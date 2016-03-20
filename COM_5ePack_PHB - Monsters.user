@@ -4475,20 +4475,47 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rHitDice" value="11"/>
     <fieldval field="rHDSides" value="10"/>
     <fieldval field="rHPStart" value="93"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="10"/>
     <fieldval field="rDEX" value="3"/>
-    <fieldval field="rCON" value="10"/>
+    <fieldval field="rCON" value="6"/>
     <fieldval field="rINT" value="-1"/>
-    <fieldval field="rWIS" value="0"/>
-    <fieldval field="rCHA" value="0"/>
     <fieldval field="rCR" value="5"/>
+    <fieldval field="rAC" value="7"/>
+    <fieldval field="rMultiatt" value="The umber hulk makes three attacks: two with its claws and one with its mandibles."/>
     <usesource source="5eMMCP"/>
+    <tag group="RaceSize" tag="Large1"/>
     <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Evil"/>
+    <bootstrap thing="l5CUmberHu"></bootstrap>
+    <bootstrap thing="xTremorsen">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="livename" value="Mandibles"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="sbName" value="Mandibles"/>
+      </bootstrap>
+    <bootstrap thing="tpMonstros"></bootstrap>
+    <bootstrap thing="xBurrow">
+      <autotag group="Value" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="ra5CConfGa"></bootstrap>
+    <bootstrap thing="ra5CTunnel">
+      <assignval field="abText" value="umber hulk"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMWater" name="Water Weird" compset="Race">
     <fieldval field="rHitDice" value="9"/>
@@ -6183,5 +6210,19 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
  doneif (tagis[Helper.Disable] = 1)
    
  hero.child[ArmorClass].field[Bonus].value += #attrmod[aWIS]]]></eval>
+    </thing>
+  <thing id="l5CUmberHu" name="Umber Hulk" compset="Language" uniqueness="useronce">
+    <tag group="LangCat" tag="Monster"/>
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
+    </thing>
+  <thing id="ra5CConfGa" name="Confusing Gaze" description="When a creature starts its turn within 30 feet of the umber hul k and is able to see the umber hulk&apos;s eyes, the umber hulk can magically force it to make a DC 15 Charisma saving throw, unless the umber hulk is incapacitated.\nOn a failed saving throw, the creature can&apos;t take reactions until the start of its next turn and rolls a d8 to determine what it does during that turn. On a 1 to 4, the creature does nothing. On a 5 or 6, the creature takes no action but uses all its movement to move in a random direction . On a 7 or 8, the creature makes one melee attack against a random creature, or it does nothing if no creature is within reach.\nUnless surprised, a creature can avert its eyes to avoid the saving throw at the start of its turn. If the creature does so, it can&apos;t see the umber hulk until the start of its next turn, when it can avert its eyes again. If the creature looks at the umber hulk in the meantime, it must immediately make the save." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CTunnel" name="Tunneler" description="The {abText} can burrow thro ugh solid rock at half its burrowing speed and leaves a 5 foot-wide, 8-foot-high tunnel in its wake." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " can burrow thro ugh solid rock at half its burrowing speed and leaves a 5 foot-wide, 8-foot-high tunnel in its wake."]]></eval>
     </thing>
   </document>
