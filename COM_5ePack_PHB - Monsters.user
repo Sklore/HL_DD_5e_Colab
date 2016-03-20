@@ -6265,8 +6265,11 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "While the " & Field[abText].text & " is wearing no armor and wielding no shield, its AC includes its Wisdom modifier."]]></eval>
     <eval phase="PostAttr" priority="10000" index="2"><![CDATA[ ~ If we're disabled, do nothing & 
  doneif (tagis[Helper.Disable] = 1)
-   
- hero.child[ArmorClass].field[Bonus].value += #attrmod[aWIS]]]></eval>
+  if (hero.tagis[Hero.EquipShld] = 0) then
+    if (hero.tagis[Hero.EquipArmor] = 0) then
+      hero.child[ArmorClass].field[Bonus].value += #attrmod[aWIS]
+    endif
+  endif]]></eval>
     </thing>
   <thing id="l5CUmberHu" name="Umber Hulk" compset="Language" uniqueness="useronce">
     <tag group="LangCat" tag="Monster"/>
