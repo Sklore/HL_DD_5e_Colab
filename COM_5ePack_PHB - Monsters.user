@@ -2090,26 +2090,48 @@ doneif (tagis[Helper.Disable] <> 0)
         #extradamage[eachpick, " damage plus 10 (3d6) psychic", field[thingname].text]
         nexteach]]></eval>
     </thing>
-  <thing id="r5CMMGithM" name="Githyanki Monk" compset="Race">
+  <thing id="r5CMMGithM" name="Githzerai Monk" compset="Race">
     <fieldval field="rHitDice" value="7"/>
-    <fieldval field="rHDSides" value=""/>
     <fieldval field="rHPStart" value="38"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="2"/>
     <fieldval field="rDEX" value="5"/>
     <fieldval field="rCON" value="2"/>
     <fieldval field="rINT" value="3"/>
     <fieldval field="rWIS" value="4"/>
-    <fieldval field="rCHA" value="0"/>
     <fieldval field="rCR" value="2"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rMultiatt" value="The githzerai makes two unarmed strikes."/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Lawful"/>
-    <tag group="Alignment" tag="NeutralGE"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skInsight"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <bootstrap thing="tt5CGith"></bootstrap>
+    <bootstrap thing="l5CGith"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="wProperty" tag="Finesse"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wAttackEff" value="This is a magic weapon attack"/>
+      <assignval field="wDieCount" value="1"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGMInSp"></bootstrap>
+    <bootstrap thing="ra5CPsyDef">
+      <assignval field="abText" value="githzerai"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+      foreach pick in hero from BaseWep where "wCategory.Melee"
+        #extradamage[eachpick, " damage plus 9 (2d8) psychic", field[thingname].text]
+        nexteach]]></eval>
     </thing>
   <thing id="r5CMMGithz" name="Githzerai Zerth" compset="Race">
     <fieldval field="rHitDice" value="13"/>
@@ -2123,12 +2145,38 @@ doneif (tagis[Helper.Disable] <> 0)
     <fieldval field="rWIS" value="7"/>
     <fieldval field="rCHA" value="2"/>
     <fieldval field="rCR" value="6"/>
+    <fieldval field="rMultiatt" value="The githzerai makes two unarmed strikes."/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Lawful"/>
     <tag group="Alignment" tag="NeutralGE"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <bootstrap thing="l5CGith"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="wProperty" tag="Finesse"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wAttackEff" value="This is a magic weapon attack"/>
+      <assignval field="wDieCount" value="2"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGZInSp"></bootstrap>
+    <bootstrap thing="ra5CPsyDef"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tt5CGith"></bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+      foreach pick in hero from BaseWep where "wCategory.Melee"
+        #extradamage[eachpick, " damage plus 13 (3d8) psychic", field[thingname].text]
+        nexteach]]></eval>
     </thing>
   <thing id="r5CMMGnoll" name="Gnoll Pack Lord" compset="Race">
     <fieldval field="rHitDice" value="9"/>
@@ -6060,5 +6108,80 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <tag group="RaceEquip" tag="r5CMMGithK"/>
     <tag group="wProfReq" tag="Martial" name="Martial" abbrev="Martial"/>
     <tag group="wProperty" tag="Heavy" name="Heavy" abbrev="Heavy"/>
+    </thing>
+  <thing id="ra5CGZInSp" name="Innate Spellcasting (Psionics)" description="The githzerai&apos;s spellcasting ability is Wisdom (spell save DC 14, +6 to hit with spell attacks). It can innately cast the following spells , requiring no\ncomponents:\n\nAt will: {i}mage hand{/i} (the hand is invisible)\n3/day each: {i}feather fall{/i}, {i}jump{/i}, {i}see invisibility{/i}, {i}shield{/i}\n1/day each: {i}phantasmal killer{/i}, {i}plane shift{/i}" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spFeatFall">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spJump">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spSeeInvi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spShield">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spPhanKill">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CGMInSp" name="Innate Spellcasting (Psionics)" description="The githzerai&apos;s innate spellcasting ability is Wisdom. It can innately cast the following spells, requiring no components:\n\nAt will: {i}mage hand{/i} (the hand is invisible)\n3/day each: {i}feather fall{/i}, {i}jump{/i}, {i}see invisibility{/i}, {i}shield{/i}" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spFeatFall">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spJump">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spSeeInvi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spShield">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CPsyDef" name="Psychic Defense" description="While the {abText} is wearing no armor and wielding no shield , its AC includes its Wisdom modifier." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "While the " & Field[abText].text & " is wearing no armor and wielding no shield, its AC includes its Wisdom modifier."]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[ ~ If we're disabled, do nothing & 
+ doneif (tagis[Helper.Disable] = 1)
+   
+ hero.child[ArmorClass].field[Bonus].value += #attrmod[aWIS]]]></eval>
     </thing>
   </document>
