@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CShaWar" name="Shadow Warrior" description="Where some rogues use arcane power to feed their mischievous and curious nature, you possess a natural connection to the realms of shadow. Whether you were born with this connection, gained it through forbidden study, or were the victim of cruel experimentation, you are never alone in the darkness.  Who or what the whispers are is subject for debate, but the ethereal creatures you’ve befriended have taught you secrets from long ago and far away. You carry exotic weapons and have learned unique fighting styles not seen in generations, or from cultures you’ve yet to meet." compset="CustomSpec" summary="Shadow Warrior Rogue Archetype" uniqueness="unique">
+    <usesource source="5eShaWar"/>
+    <tag group="SpecSource" tag="cHelpRog" name="Rogue" abbrev="Rogue"/>
+    <tag group="abCategory" tag="RogArchety" name="Rogue Archetype" abbrev="Rogue Archetype"/>
+    <tag group="WepProf" tag="wWhip" name="Whip" abbrev="Whip"/>
+    <tag group="WepProf" tag="wNet" name="Net" abbrev="Net"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CSWSS">
+      <autotag group="ClSpecWhen" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWToD">
+      <autotag group="ClSpecWhen" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWBW">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWEWP">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+        perform linkage[table].setfocus
+
+        doneif (state.isfocus = 0)
+
+        ~ Spellcasting attribute
+        perform focus.setlinkage[castattr,BaseAttr,"IsAttr.aCHA"]
+
+        ~ Spellcasting type
+        perform focus.assign[CasterType.SpontKnow]
+        perform focus.assign[CasterSrc.Arcane]
+        perform focus.assign[Helper.3rdCaster]
+        perform focus.assign[sClass.cHelpWlk]
+
+        ~ Cantrip Array
+        focus.field[cArrKnCan].arrayvalue[2] += 3
+        focus.field[cArrKnCan].arrayvalue[10] += 1
+
+        ~ Spells Known Array
+        focus.field[cArrKnSpl].arrayvalue[2] += 3
+        focus.field[cArrKnSpl].arrayvalue[3] += 4
+        focus.field[cArrKnSpl].arrayvalue[6] += 5
+        focus.field[cArrKnSpl].arrayvalue[7] += 6
+        focus.field[cArrKnSpl].arrayvalue[9] += 7
+        focus.field[cArrKnSpl].arrayvalue[10] += 8
+        focus.field[cArrKnSpl].arrayvalue[12] += 9
+        focus.field[cArrKnSpl].arrayvalue[13] += 10
+        focus.field[cArrKnSpl].arrayvalue[15] += 11
+        focus.field[cArrKnSpl].arrayvalue[18] += 12
+        focus.field[cArrKnSpl].arrayvalue[19] += 13
+
+        ~ Max Spell Levels Array
+        focus.field[cArrKnLev].arrayvalue[2] += 1
+        focus.field[cArrKnLev].arrayvalue[6] += 2
+        focus.field[cArrKnLev].arrayvalue[12] += 3
+        focus.field[cArrKnLev].arrayvalue[18] += 4
+
+      ~assign our weapon proficiencies to the hero
+      perform hero.pushtags[WepProf.?]]]></eval>
+    </thing>
+  <thing id="c5CSWEWP" name="Exotic Weapon Training" description="When you select this archetype at 3rd level you gain proficiency with nets and whips.\nChoose a melee weapon with which you are proficient. The weapon you choose may not have the heavy property. You may replace the weapon’s normal damage type with bludgeoning, piercing, or slashing damage.\nIn addition, you may add one of the following properties to that weapon if it does not already possess it: finesse, reach, thrown (20/60), versatile (increase damage die by 1 when used two handed). This weapon property is the result of your training as well as the unique design of the weapon. The weapon loses this additional property while being used by a character that isn’t trained in its use (subject to DM’s approval).\nYou possess one weapon of this type at 3rd level. If the weapon is broken or lost, you may repair or replace the weapon during downtime activities in a city of appropriate size or nature (such as a trade port), or by using the appropriate tool kit, or by instructing a skilled smith in the weapon’s design.\nYou continue to train in exotic weapons as you advance in level. You may use this class feature again at 8th, 13th, and 18th level, gaining up to four exotic weapons.\nExamples: Many shadow warriors train in the use of spiked or weighted chains as weapons. Adding the versatile property to a whip and changing the damage type to either piercing or bludgeoning creates a two-handed chain weapon that benefits from a dexterous user. Untrained individuals use the statistics for a normal whip (though it will deal the new damage type). Other examples include a bladed throwing ring (shortsword with the thrown property), a three-section staff (quarterstaff with the reach property), or a flexible and strong spear (spear with the finesse property).\nNOTE! I&apos;ve included Spiked Chain as a sample, further weapons need to be added by you." compset="ClSpecial" summary="Proficient with Shadow Warrior weapon">
+    <usesource source="5eShaWar"/>
+    </thing>
+  <thing id="c5CSWSS" name="Shadow Step" description="At 9th level, you gain the ability to slip through cracks in the material plane to the plane of shadow and back again. You may use a bonus action to teleport up to 30 feet from one area of dim light or darkness to an unoccupied space that is also in an area of dim light or darkness. You may attempt a Hide action at the end of the teleport as part of the bonus action." compset="ClSpecial" summary="Use a bonus action to teleport from dim or dark area to another dim or dark area within 30 feet, you can use your action to Hide once you&apos;ve teleported.">
+    <fieldval field="abRange" value="30"/>
+    <usesource source="5eShaWar"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
+    </thing>
+  <thing id="w5CSWSCh" name="Shadow Warrior&apos;s Spiked Chain" description="For a non-Shadow Warrior this is an unwieldy and basically useless chain-whip that easily tangles on the improbable spikes embedded in it&apos;s chain. For a Shadow Warrior it&apos;s a versatile and powerful weapon." compset="Weapon" summary="Shadow Warrior&apos;s Spiked Chain">
+    <fieldval field="gWeight" value="3"/>
+    <fieldval field="gSizeCost" value="152"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="4"/>
+    <fieldval field="shortname" value="Spiked Chain"/>
+    <usesource source="5eShaWar"/>
+    <tag group="wCategory" tag="Melee" name="Melee Weapon" abbrev="Melee"/>
+    <tag group="wProfReq" tag="Special"/>
+    <tag group="wProperty" tag="Finesse" name="Finesse" abbrev="Finesse"/>
+    <tag group="DamageType" tag="dtPiercing"/>
+    <tag group="wProperty" tag="Versatile"/>
+    <tag group="IsWeapon" tag="wWhip"/>
+    <tag group="wProperty" tag="Reach" name="Reach" abbrev="Reach"/>
+    <tag group="EquipType" tag="Metal" name="Metal" abbrev="Metal"/>
+    </thing>
+  <thing id="c5CSWToD" name="Touch of Darkness" description="At 13th level, you can empower your weapons or unarmed strikes with arcane energy from the Shadowfell. When you hit a creature with a successful attack, you may spend a spell slot to force the target to make a Constitution save against your spell save DC. On a successful save, the target suffers disadvantage on Strength ability checks and saving throws for 1 round per level of spell slot you expend. On a failed save, the target also deals half damage on weapon attacks and\nnatural attacks for the same duration." compset="ClSpecial" summary="On hit with weapon or unarmed strike, spend slot to force target to make Con save at your spell DC. Success=disad on Strength checks and saves for 1rnd/total slot level. Failure=Also, target deals half damage with weapon and natural attacks.">
+    <usesource source="5eShaWar"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    </thing>
+  <thing id="c5CSWBW" name="Between Worlds" description="At 17th level, you may take 1 minute to attune yourself to the shadows between realms. After the minute is complete, you are considered under the effects of an etherealness spell for up to 1 hour. You may dismiss the effects as a bonus action, returning to the Material Plane in the location you currently occupy. As an action, you may name a destination within the Shadowfell or the Feywild, such as a city, lake, or forest, and appear there in a specific location determined by your DM. If you use this ability in the Shadowfell or the Feywild, you return to the location from which you left the Material Plane. Once you use this ability, you may not use it again until you take a full rest." compset="ClSpecial" summary="Align with the shadows for one minute to gain the effects of Etherealness for one hour, dismiss as a bonus action. As an action, say a general area in the Shadowfell or Feywild you want to appear (ends the effect.)">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eShaWar"/>
+    <tag group="SpInfo" tag="spEthereal"/>
+    <tag group="abDuration" tag="Hour"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abAction" tag="Minute"/>
+    </thing>
+  <thing id="sp5CSWCSW" name="Shadow Whip" description="Make a melee spell attack against a target in range. If the attack hits, the creature takes 1d6 colddamage, and if the creature is Large or smaller, it becomes Grappled till the start of your next turn.\n\nThis spell’s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6)." compset="Spell">
+    <fieldval field="sRange" value="30 feet"/>
+    <fieldval field="sCompDesc" value="area of dim light or darkness"/>
+    <usesource source="5eShaWar"/>
+    <tag group="sComp" tag="V" name="Verbal" abbrev="{ref s_V}V{ref}"/>
+    <tag group="sDuration" tag="Instant" name="Instantaneous" abbrev="Instantaneous"/>
+    <tag group="sLevel" tag="0" name="0" abbrev="0"/>
+    <tag group="sCastTime" tag="Action1" name="1 action" abbrev="1 action"/>
+    <tag group="sSchool" tag="Illusion"/>
+    <tag group="sClass" tag="cHelpRog"/>
+    <tag group="sComp" tag="M" name="Material" abbrev="{ref s_M}M{ref}"/>
+    <tag group="sComp" tag="S" name="Somatic" abbrev="{ref s_S}S{ref}"/>
+    </thing>
+  </document>

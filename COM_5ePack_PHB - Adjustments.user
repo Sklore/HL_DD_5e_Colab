@@ -2,6 +2,7 @@
 <document signature="Hero Lab Data">
   <thing id="p5CBonusFt" name="Feats, Bonus" description="This adjustment allows you to give bonus feats to your character.  Once you have increased the amount above 1 the &quot;Feats, Bonus&quot; tab will appear allowing you to select your bonus feat." compset="InPlay">
     <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Feats"/>
     <eval phase="PreLevel" priority="10000"><![CDATA[
       ~ If we're not enabled, get out now & leave
       doneif (field[pIsOn].value = 0)
@@ -12,6 +13,7 @@
     </thing>
   <thing id="p5CRaceFt" name="Feats, Race" description="This adjustment allows you to give bonus feats to your character that will appear on the Race tab." compset="InPlay">
     <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Race"/>
     <eval phase="PreLevel" priority="10000"><![CDATA[
       ~ If we're not enabled, get out now & leave
       doneif (field[pIsOn].value = 0)
@@ -43,6 +45,7 @@
     </thing>
   <thing id="p5CProfAdd" name="Proficiencies" description="This adjustment allows you to increase or decrease the number of tool/skill proficiencies your character can take." compset="InPlay">
     <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="SkillProf"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[
       ~ If we're not enabled, get out now & leave
       doneif (field[pIsOn].value = 0)
@@ -70,10 +73,11 @@
     </thing>
   <thing id="p5CwElemen" name="Weapon Elemental Dmg, Custom" description="Select this adjustment to add custom text damage next to your weapon name. &quot;(Duration)&quot; is the type of damage (ie +1d6 Fire) and &quot;(Source)&quot; is the name of the ability giving this to you (ie Flaming).\n\n{B}Note:{/b} This adjustment will NOT work correctly from the &quot;{b}Personal{/b}&quot; tab as you have to be able to type into the duration field to set the custom text." compset="InPlay">
     <fieldval field="pDuration" value="+1d6 Elemental"/>
-    <tag group="Adjustment" tag="YourWep"/>
+    <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="NoIncr"/>
     <tag group="Helper" tag="AdjInfo"/>
     <tag group="OthAdjCat" tag="Equipment"/>
+    <tag group="Adjustment" tag="YourWep"/>
     <eval phase="Final" priority="20500"><![CDATA[
       ~ If we're not enabled, get out now
       doneif (field[pIsOn].value = 0)
@@ -318,5 +322,58 @@
       ~ Duration. This allows the adjustment to be used on the
       ~ Personal tab also.
       call S2SetName]]></eval>
+    </thing>
+  <thing id="p5CPalAuHa" name="Paladin: Aura of Hate" description="Starting at 7th level, the paladin, as well any fiends and undead within 10 feet of the paladin, gains a bonus to melee weapon damage rolls equal to the paladin&apos;s Charisma modifier (minimum of +1). A creature can benefit from this feature from only one paladin at a time. \n\n18th level, the range of this aura increases to 30 feet." compset="InPlay">
+    <fieldval field="pMinimum" value="1"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now & leave
+      doneif (field[pIsOn].value = 0)
+
+      ~ Increase melee damage bonus
+      hero.childfound[Damage].field[dmmBonus].value += field[pAdjust].value]]></eval>
+    <exprreq message="Undead or Fiend creature type required."><![CDATA[#hastype[tpUndead] + #hastype[tpFiend] <> 0]]></exprreq>
+    </thing>
+  <thing id="p5CwFiness" name="Weapon Finesse" description="Select this adjustment to make the selected weapon be treated as if it had the finesse weapon property." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <tag group="Adjustment" tag="YourWep"/>
+    <tag group="wProperty" tag="Finesse"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+
+      ~ Push all the property tags setup on this adjustment
+      ~ to the selected weapon.
+      perform field[pChosen].chosen.pushtags[wProperty.?]]]></eval>
+    </thing>
+  <thing id="p5CClsSpAt" name="Casting Attribute" description="This adjustment allows you to change the spellcasting attribute that the selected class uses (ie make a cleric use Charisma instead of Wisdom)." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <tag group="Adjustment" tag="Class"/>
+    <tag group="Adjust2nd" tag="Attribute"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <eval phase="First" priority="10000"><![CDATA[      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+      doneif (field[pChosen2].ischosen = 0)
+
+      var searchexpr as string
+
+      ~ Get the spell attribute tag
+      perform field[pChosen2].chosen.pulltags[SplAttr.?]
+
+      ~ Create the search expression
+      searchexpr = tagids[SplAttr.?]
+
+      ~ Reset the linkages to the chosen attribute
+      perform field[pChosen].chosen.setlinkage[castattr,BaseAttr,searchexpr]
+      perform field[pChosen].chosen.setlinkage[spellattr,BaseAttr,searchexpr]]]></eval>
     </thing>
   </document>

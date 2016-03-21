@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5COgremoc" name="Ogremoch" description="{u}Regional Effects{/u}\nThe region containing an elemental node in which Ogremoch is present is seriously affected, becoming geologically unstable. This creates the following effects:\n• Earth tremors strike the region within 10 miles of Ogremoch’s location every 2d12 hours, each lasting 1d10 rounds. At first, damage is minor—broken windows, cracked plaster, items toppled off shelves. The longer Ogremoch remains, the stronger the tremors become. After 5 days, the tremors are strong enough to destroy flimsy structures. After 10 days, they are strong enough to destroy ordinary wooden buildings. After 20 days, they can seriously damage or destroy reinforced or fortified structures.\n• Magnetic disturbances within 10 miles of Ogremoch prevent compasses from functioning there.\n• Hidden sinkholes and fissures form within 1 mile of Ogremoch’s location. A hidden sinkhole can be spotted from a safe distance by any creature with a passive Wisdom (Perception) score of 15 or higher or spotted with a successful DC 15 Wisdom (Survival) check. Otherwise, the first creature to step on the thin crust covering the sinkhole must succeed on a DC 15 Dexterity saving throw or fall 1d6 x 10 feet into the sinkhole or fissure.\n• Natural caves and tunnels within 1 mile of Ogremoch’s lair form intermittent portals to the Elemental Plane of Earth, allowing elemental creatures into the mortal world to dwell near those points. \n\nIf Ogremoch is destroyed or banished back to his home plane, the regional effects fade over the next 1d10 days." compset="Race" uniqueness="unique">
+    <fieldval field="rCR" value="10"/>
+    <fieldval field="rSTR" value="16"/>
+    <fieldval field="rCON" value="18"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rCHA" value="12"/>
+    <fieldval field="rSpeed" value="50"/>
+    <fieldval field="rHitDice" value="27"/>
+    <fieldval field="rHDSides" value="20"/>
+    <fieldval field="rHPStart" value="283"/>
+    <fieldval field="rAC" value="20"/>
+    <fieldval field="rMultiatt" value="Ogremoch makes two slam attacks."/>
+    <fieldval field="rDEX" value="1"/>
+    <fieldval field="rINT" value="1"/>
+    <usesource source="5ePotACP"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <tag group="ArmProfGrp" tag="Shields"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="CondImm" tag="pcnProne"/>
+    <tag group="DamageRes" tag="dtNonMagic"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <bootstrap thing="ra5CLegRes">
+      <assignval field="CustDesc" value="If Ogremoch fails a saving throw, it can choose to succeed instead."/>
+      </bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="CustDesc" value="Ogremoch has advantage on saving throws against spells and other magical effects."/>
+      </bootstrap>
+    <bootstrap thing="ra5CSiegMo">
+      <assignval field="CustDesc" value="Ogremoch deals double damage to objects and structures with his melee and ranged weapon attacks."/>
+      </bootstrap>
+    <bootstrap thing="ra5COgreLA"></bootstrap>
+    <bootstrap thing="ra5COgreML"></bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="xTremorsen">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="tpElementa"></bootstrap>
+    <bootstrap thing="xBurrow">
+      <autotag group="Value" tag="50"/>
+      </bootstrap>
+    <bootstrap thing="lTerran"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wSlam">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wAttack" value="2"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="wReach" value="15"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="ra5CSumEEl"></bootstrap>
+    <bootstrap thing="ra5CEmpAtt"></bootstrap>
+    <bootstrap thing="ra5COMIS"></bootstrap>
+    </thing>
+  <thing id="w5CBoulder" name="Boulder" description="Ranged Weapon Attack: +6 to hit, range 500 ft., one target. Hit: 46 (7d10 + 8) bludgeoning damage. If the target is a creature, it must succeed on a DC 23 Strength saving throw or be knocked prone." compset="Weapon">
+    <fieldval field="wRangeNorm" value="500"/>
+    <fieldval field="wDieCount" value="7"/>
+    <fieldval field="wDieSize" value="10"/>
+    <fieldval field="gWeight" value="50"/>
+    <fieldval field="wFixRanDam" value="7d10"/>
+    <tag group="wProperty" tag="Thrown"/>
+    <tag group="wCategory" tag="RangeThrow"/>
+    <tag group="wProfReq" tag="Simple"/>
+    <tag group="Helper" tag="Easy2H"/>
+    <tag group="IsWeapon" tag="wSlam"/>
+    <tag group="Helper" tag="FixSizeDmg"/>
+    <tag group="StrReq" tag="19"/>
+    <tag group="DamageType" tag="dtBludgeon"/>
+    <eval phase="Render" priority="10000"><![CDATA[    var iSTR as number
+    var sText as string
+    iSTR = hero.child[aSTR].field[aModBonus].value
+    sText = field[wDieCount].value & "d" & field[wDieSize].value
+    field[wFixRanDam].text = sText & "+" & iSTR]]></eval>
+    </thing>
+  <thing id="ra5CSumEEl" name="Summon Elementals" description="Ogremoch summons up to three earth elementals and loses 30 hit points for each elemental he summons. Summoned elementals have maximum hit points, appear within 100 feet of Ogremoch, and disappear if Ogremoch is reduced to 0 hit points." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="SpInfo" tag="spConjElem"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="ra5CEmpAtt" name="Empowered Attacks" description="Ogremoch’s slam attacks are treated as magical and adamantine for the purpose of bypassing resistance and immunity to nonmagical weapons." compset="RaceSpec">
+    <fieldval field="abRange" value="Slam attacks"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="Render" priority="10000"><![CDATA[    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    hero.child[wSlam].field[livename].text = hero.child[wSlam].field[thingname].text & " (Magical, Adamantine)"]]></eval>
+    </thing>
+  <thing id="ra5COMIS" name="Innate Spellcasting" description="Ogremoch’s innate spellcasting ability is Charisma (spell save DC 20, +12 to hit with spell attacks). He can innately cast the following spells, requiring no material components:\n\nAt will: meld into stone, move earth, wall of stone" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilType" tag="SpellLike"/>
+    <tag group="CasterSrc" tag="Arcane" name="Arcane" abbrev="Arcane"/>
+    <tag group="IsAttr" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <bootstrap thing="spMeldSton">
+      <autotag group="SpellType" tag="Racial"/>
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sCL" value="27"/>
+      </bootstrap>
+    <bootstrap thing="spMoveEart"></bootstrap>
+    <bootstrap thing="spWallSton"></bootstrap>
+    </thing>
+  <thing id="ra5COgreML" name="Ogremoch&apos;s Lair" description="{u}{b}Lair Actions{/b}{/u}\n  Ogremoch can assert his dominion over the rock and stone around him to take lair actions on the Elemental Plane of Earth, or in any elemental earth node (including the Black Geode, described in chapter 5). On initiative count 20 (losing initiative ties), Ogremoch uses his lair action to cause one of the following effects:\n\n• A 10-foot-radius area of rocky or earthy ground within 60 feet of Ogremoch turns to sticky mud. Any creature on the ground in the area must succeed on a DC 15 Dexterity saving throw or sink 5 feet into the mud and be restrained. A creature can take an action to make a DC 15 Strength check, ending the effect on itself or another creature within its reach on a success.\n\n• Crystalline spikes grow from the ground in a 20-foot-radius area within 60 feet of Ogremoch. The area becomes difficult terrain. A creature that moves through the affected area takes 1d8 piercing damage for every 5 feet it moves there. Creatures that are knocked prone in the area also take this damage.\n\n• A violent tremor shakes the lair in a 120-foot-radius around Ogremoch. Each creature other than Ogremoch on the ground in the area must succeed on a DC 15 Strength or Dexterity saving throw (target’s\nchoice) or be knocked prone." compset="RaceSpec">
+    <fieldval field="actName" value="In Lair"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Usage" tag="Round"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Lair"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5COgreLA" name="Legendary Actions" description="Ogremoch can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature’s turn. Ogremoch regains spent legendary actions at the start of his turn.\n\n{b}Illuminating Crystals.{/b} Ogremoch’s crystalline protrusions flare. Each creature within 30 feet of Ogremoch becomes outlined in orange light, shedding dim light in a 10-foot radius. Any attack roll against an affected creature has advantage if the attacker can see it, and the affected creature can’t benefit from being invisible. \n\n{b}Stomp (Costs 2 Actions).{/b} Ogremoch stomps the ground, creating an earth tremor that extends in a 30-foot radius. Other creatures standing on the ground in that radius must succeed on a DC 23 Dexterity saving throw or fall prone.\n\n{b}Create Gargoyle (Costs 3 Actions).{/b} Ogremoch’s hit points are reduced by 50 as he breaks off a chunk of his body and places it on the ground in an unoccupied space within 15 feet of him. The chunk of rock instantly transforms into a gargoyle and acts on the same initiative count as Ogremoch. Ogremoch can’t use this action if he has 50 hit points or fewer. The gargoyle obeys Ogremoch’s commands and fights until destroyed." compset="RaceSpec" summary="Ogremoch can take 3 legendary actions, choosing from the options below.">
+    <fieldval field="trkMax" value="3"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="LegAction" name="/Legendary Actions" abbrev="/Legendaries"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="AbilType" tag="Super"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <bootstrap thing="ra5COgLASG"></bootstrap>
+    <bootstrap thing="ra5COgLAIC"></bootstrap>
+    <bootstrap thing="ra5COgLASt"></bootstrap>
+    </thing>
+  <thing id="ra5COgLAIC" name="Illuminating Crystals (Costs 1 Actions)" description="Ogremoch’s crystalline protrusions flare. Each creature within 30 feet of Ogremoch becomes outlined in orange light, shedding dim light in a 10-foot radius. Any attack roll against an affected creature has advantage if the attacker can see it, and the affected creature can’t benefit from being invisible." compset="RaceSpec">
+    <fieldval field="actName" value="Action Cost"/>
+    <fieldval field="actUserMin" value="1"/>
+    <fieldval field="actUserMax" value="1"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="SpInfo" tag="spFaerFire"/>
+    <tag group="AbilType" tag="Super"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <eval phase="First"><![CDATA[
+    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    doneif (field[abilActive].value = 0)
+
+    hero.child[ra5COgreLA].field[trkMax].value -= field[actUserMax].value]]></eval>
+    </thing>
+  <thing id="ra5COgLASt" name="Stomp (Costs 2 Actions)" description="Ogremoch stomps the ground, creating an earth tremor that extends in a 30-foot radius. Other creatures standing on the ground in that radius must succeed on a DC 23 Dexterity saving throw or fall prone." compset="RaceSpec">
+    <fieldval field="actUserMin" value="2"/>
+    <fieldval field="actUserMax" value="2"/>
+    <fieldval field="actName" value="Action Cost"/>
+    <fieldval field="abRange" value="30-ft radius"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Helper" tag="UserAdjust" name="UserAdjust" abbrev="UserAdjust"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="StandardDC" tag="aSTR"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="AbilType" tag="Super"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <eval phase="First"><![CDATA[
+    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    doneif (field[abilActive].value = 0)
+
+    hero.child[ra5COgreLA].field[trkMax].value -= field[actUserMax].value]]></eval>
+    </thing>
+  <thing id="ra5COgLASG" name="Create Gargoyle (Costs 3 Actions)" description="Ogremoch’s hit points are reduced by 50 as he breaks off a chunk of his body and places it on the ground in an unoccupied space within 15 feet of him. The chunk of rock instantly transforms into a gargoyle and acts on the same initiative count as Ogremoch. Ogremoch can’t use this action if he has 50 hit points or fewer. The gargoyle obeys Ogremoch’s commands and fights until destroyed." compset="RaceSpec">
+    <fieldval field="actName" value="Action Cost"/>
+    <fieldval field="actUserMin" value="3"/>
+    <fieldval field="actUserMax" value="3"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <eval phase="First"><![CDATA[
+    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    doneif (field[abilActive].value = 0)
+
+    hero.child[ra5COgreLA].field[trkMax].value -= field[actUserMax].value]]></eval>
+    </thing>
+  </document>
