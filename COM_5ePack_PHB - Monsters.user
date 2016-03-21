@@ -2934,27 +2934,51 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rHPStart" value="27"/>
     <fieldval field="rSpeed" value="30 "/>
     <fieldval field="rSTR" value="5"/>
-    <fieldval field="rDEX" value="0"/>
     <fieldval field="rCON" value="3"/>
-    <fieldval field="rINT" value="0"/>
     <fieldval field="rWIS" value="5"/>
     <fieldval field="rCHA" value="-2"/>
     <fieldval field="rCR" value="2"/>
+    <fieldval field="rAC" value="3"/>
+    <fieldval field="rMultiatt" value="(Lizardfolk Form Only). The lizardfolk makes two attacks: one with its bite and one with its claws."/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="NeutralLC"/>
-    <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
-    <tag group="AllowSkl1" tag="skSurvival"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="NeutralGE"/>
     <bootstrap thing="lDraconic"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wAttackEff" value=" or 7 (1d10 + 2) piercing damage in crocodile form. If the lizardfolk is in crocodile form and the target is a Large or smaller creature, the target is grappled (escape DC 12). Until this grapple ends, the target is restrained, and the lizardfolk can&apos;t bite another target. If the lizardfolk reverts to its true form, the grapple ends."/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="livename" value="Claws (Lizardfolk Form Only)"/>
+      <assignval field="sbName" value="Claws (Lizardfolk Form Only)"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ttLizardfo"></bootstrap>
+    <bootstrap thing="ra5CHoldBr">
+      <assignval field="abText" value="lizardfolk"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLiChaS"></bootstrap>
+    <eval phase="First">perform hero.child[skStealth].assign[Helper.ProfDouble]
+perform hero.child[skSurvival].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMLizKQ" name="Lizardfolk King/Queen" compset="Race">
-    <fieldval field="rHitDice" value="l2"/>
+    <fieldval field="rHitDice" value="12"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="78"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="7"/>
     <fieldval field="rDEX" value="2"/>
     <fieldval field="rCON" value="5"/>
@@ -2962,14 +2986,46 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rWIS" value="1"/>
     <fieldval field="rCHA" value="5"/>
     <fieldval field="rCR" value="4"/>
+    <fieldval field="rAC" value="4"/>
+    <fieldval field="rMultiatt" value="The lizardfolk makes two attacks: one with its bite and one with its claws or trident or two melee attacks with its trident."/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="NeutralLC"/>
-    <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="WepProf" tag="wTrident"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
     <bootstrap thing="lDraconic"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="sbName" value="Claws"/>
+      <assignval field="livename" value="Claws"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="ttLizardfo"></bootstrap>
+    <bootstrap thing="ra5CHoldBr">
+      <assignval field="abText" value="lizardfolk"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSkewer"></bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <eval phase="First">perform hero.child[skStealth].assign[Helper.ProfDouble]
+perform hero.child[skSurvival].assign[Helper.ProfDouble]
+perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMMudMe" name="Mud Mephit" compset="Race">
     <fieldval field="rHitDice" value="6"/>
@@ -6546,6 +6602,22 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " can breathe air and water, but she needs to be submerged at least once every 4 hours to avoid suffocating."]]></eval>
     </thing>
   <thing id="ra5CSharTe" name="Shark Telepathy" description="The sahuagin can magically command any shark within 120 feet of her, using a limited telepathy." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CHoldBr" name="Hold Breath" description="The {abText} can hold its breath for 15 minutes." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " can hold its breath for 15 minutes."]]></eval>
+    </thing>
+  <thing id="ra5CLiChaS" name="Change Shape" description="The lizardfolk magically polymorphs into a crocodile, remaining in that form for up to 1 hour. It can revert to its true form as a bonus action. Its statistics, other than its size, are the same in each form. Any equipment it is wearing or carrying isn&apos;t transformed. It reverts to its true form if it dies." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    </thing>
+  <thing id="ra5CSkewer" name="Skewer" description="Once per turn , when the lizardfolk makes a melee attack with its trident and hits , the target takes an extra 10 (3d6) damage, and the lizardfolk gains temporary hit points equal to the extra damage dealt." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
