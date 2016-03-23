@@ -3,7 +3,7 @@
   <thing id="r5CMMBehol" name="Beholder" description="A Beholder is an aberration comprising a floating spheroid body with a large fanged mouth and single eye on the front and many flexible eyestalks on the top.\n\nA beholder&apos;s eyes each possess a different magical ability; the main eye projects an anti-magical cone, and the other eyes use different spell-like abilities (disintegrate objects, transmute flesh to stone, cause sleep, slow the motion of objects or beings, charm animals, charm humans, cause death, induce fear, levitate objects, and inflict serious wounds). Many variant beholder species exist, such as &quot;observers&quot;, &quot;spectators&quot;, &quot;eyes of the deep&quot;, &quot;elder orbs&quot;, &quot;hive mothers&quot;, and &quot;death tyrants&quot;. In addition, some rare beholders can use their eyes for non-standard spell-like abilities; these mutant beholders are often killed or exiled by their peers. Beholders wishing to cast spells like ordinary wizards relinquish the traditional use of their eyestalks, and put out their central anti-magic eye, making these beholder mages immediate outcasts.\n\n10,000 XP\nA beholder encountered in its lair has a challenge rating of 14 (11,500 XP)." compset="Race">
     <fieldval field="rHitDice" value="19"/>
     <fieldval field="rHDSides" value="10"/>
-    <fieldval field="rCR" value="13.0"/>
+    <fieldval field="rCR" value="13"/>
     <fieldval field="rSpeed" value="0"/>
     <fieldval field="rWIS" value="5"/>
     <fieldval field="rCHA" value="7"/>
@@ -27,7 +27,6 @@
       <autotag group="AttackTarg" tag="1Target"/>
       <assignval field="wDieCount" value="4"/>
       <assignval field="wDieSize" value="6"/>
-      <assignval field="wAttack" value="5"/>
       </bootstrap>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="20"/>
@@ -142,7 +141,6 @@
       <autotag group="AttackTarg" tag="1Target"/>
       <assignval field="wDieCount" value="4"/>
       <assignval field="wDieSize" value="6"/>
-      <assignval field="wAttack" value="5"/>
       <assignval field="wReach" value="5"/>
       </bootstrap>
     <bootstrap thing="xFly">
@@ -233,11 +231,6 @@
     <tag group="Alignment" tag="Lawful"/>
     <tag group="CondImm" tag="pcnProne"/>
     <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
-    <tag group="ProfSave" tag="svINT" name="Intelligence" abbrev="Intelligence"/>
-    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
-    <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="Charisma"/>
-    <tag group="ProfSave" tag="svSTR" name="Strength" abbrev="Strength"/>
-    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
     <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
     <tag group="Alignment" tag="NeutralGE"/>
     <bootstrap thing="lDeepSpeec"></bootstrap>
@@ -246,7 +239,6 @@
       <autotag group="AttackTarg" tag="1Target"/>
       <autotag group="DamTypeOvr" tag="dtPiercing"/>
       <assignval field="wDieSize" value="6"/>
-      <assignval field="wAttack" value="5"/>
       <assignval field="wDieCount" value="1"/>
       </bootstrap>
     <bootstrap thing="tpAberr"></bootstrap>
@@ -258,7 +250,9 @@
     <bootstrap thing="xTelepathy">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <bootstrap thing="ra5CMMCFaW"></bootstrap>
+    <bootstrap thing="ra5CMMCFaW">
+      <assignval field="abText" value="spectator"/>
+      </bootstrap>
     <bootstrap thing="ra5CMMSpRe"></bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
@@ -270,11 +264,12 @@
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="abRange" tag="Feet"/>
     </thing>
-  <thing id="ra5CMMCFaW" name="Create Food and Water" description="The spectator magically creates enough food and water to sustain itself for 24 hours." compset="RaceSpec">
+  <thing id="ra5CMMCFaW" name="Create Food and Water" description="The {abText} magically creates enough food and water to sustain itself for 24 hours." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
     <tag group="ProductId" tag="Wizards"/>
     <tag group="abAction" tag="Action"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " magically creates enough food and water to sustain itself for 24 hours."]]></eval>
     </thing>
   <thing id="ra5CMMSpRe" name="Spell Reflections" description="If the spectator makes a successful saving throw against a spell, or a spell attack misses it, the spectator can choose another creature (including the spellcaster) it can see within 30 feet of it. The spell targets the chosen creature instead of the spectator. If the spell forced a saving throw, the chosen creature makes its own save. If the spell was an attack, the attack roll is rerolled against the chosen creature." compset="RaceSpec">
     <tag group="ProductId" tag="Wizards"/>
@@ -6620,5 +6615,154 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
   <thing id="ra5CSkewer" name="Skewer" description="Once per turn , when the lizardfolk makes a melee attack with its trident and hits , the target takes an extra 10 (3d6) damage, and the lizardfolk gains temporary hit points equal to the extra damage dealt." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="r5CBeholZo" name="Beholder Zombie" compset="Race">
+    <fieldval field="rHitDice" value="11"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="93"/>
+    <fieldval field="rDEX" value="-2"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="-7"/>
+    <fieldval field="rWIS" value="-2"/>
+    <fieldval field="rCHA" value="-5"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rAC" value="6"/>
+    <fieldval field="rCR" value="5"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Evil"/>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CUndFor"></bootstrap>
+    <bootstrap thing="ra5CZoEyRa"></bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="20"/>
+      <autotag group="Helper" tag="Hover"/>
+      </bootstrap>
+    <bootstrap thing="lDeepSpeec">
+      <autotag group="Helper" tag="CantSpeak"/>
+      </bootstrap>
+    <bootstrap thing="lUndercomm">
+      <autotag group="Helper" tag="CantSpeak"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CUndFor" name="Undead Fortitude" description="If damage reduces the zombie to 0 hit points , it must make a Constitution saving throw with a DC of 5 + the damage taken , unless the damage is radiant or from a critical hit. On a success, the zombie drops to 1 hit point instead." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CZoEyRa" name="Eye Ray" description="The zombie uses a random magical eye ray, choosing a target that it can see within 60 feet of it.\n\n1. Paralyzing Ray. The targeted creature must succeed on a DC 14 Constitution saving throw or be paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.\n2. Fear Ray. The targeted creature must succeed on a DC 14 Wisdom saving throw or be frightened for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success .\n3. Enervation Ray. The targeted creature must make a DC 14 Constitution saving throw, taking 36 (8d8) necrotic damage on a failed save, or half as much damage on a successful one.\n4. Disintegration Ray. If the target is a creature, it must succeed on a DC 14 Dexterity savin g throw or take 45 (10d8) force damage. If this damage reduces the creature to 0 hit points , its body becomes a pile of fine gray dust. \nIf the target is a Large or smal ler non magical object or creation of magical force, it is disintegrated without a saving throw. If the target is a Huge or larger non magical object or creation of magical force , this ray disintegrates a 10-foot cube of it." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="r5CMMArcan" name="Arcanaloth" compset="Race">
+    <fieldval field="rHitDice" value="16"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="104"/>
+    <fieldval field="rSTR" value="7"/>
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="10"/>
+    <fieldval field="rWIS" value="6"/>
+    <fieldval field="rCHA" value="7"/>
+    <fieldval field="rAC" value="6"/>
+    <fieldval field="rCR" value="12"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="DamageRes" tag="dtFire"/>
+    <tag group="DamageRes" tag="dtLightnin"/>
+    <tag group="DamComRes" tag="dcWepNonMa"/>
+    <tag group="DamageImm" tag="dtAcid"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Evil"/>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="tpFiend"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="tt5CYugolo"></bootstrap>
+    <bootstrap thing="lAll"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="sbName" value="Claws"/>
+      <assignval field="livename" value="Claws"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wAttackEff" value="The target must make a DC 14 Constitution saving throw, taking 10 (3d6) poison damage on a failed save, or half as much damage on a successful one"/>
+      </bootstrap>
+    <bootstrap thing="ra5CTelepo">
+      <assignval field="abText" value="arcanaloth"/>
+      </bootstrap>
+    <bootstrap thing="ra5CArInSp"></bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="arcanaloth"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMagWea">
+      <assignval field="abText" value="arcanaloth"/>
+      </bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <eval phase="First">perform hero.child[skArcana].assign[Helper.ProfDouble]
+#skillbonus[skDecept] += 2
+#skillbonus[skInsight] += 2</eval>
+    </thing>
+  <thing id="tt5CYugolo" name="Yugoloth" compset="TypeTag" uniqueness="unique">
+    <tag group="NeedType" tag="tpFiend"/>
+    </thing>
+  <thing id="ra5CTelepo" name="Teleport" description="The {abText} magically teleports, along with any equipment it is wearing or carrying, up to 60 feet to an unoccupied space it can see." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " magically teleports, along with any equipment it is wearing or carrying, up to 60 feet to an unoccupied space it can see."]]></eval>
+    </thing>
+  <thing id="ra5CArInSp" name="Innate Spellcasting" description="The arcanaloth&apos;s innate spellcasting ability is Charisma (spell save DC 15). The arcanaloth can innately cast the following spells, requiring no material components:\n\nAt will: {i}alter self{/i}, {i}darkness{/i}, {i}heat metal{/i}, {i}invisibility{/i} (self only), {i}magic missile{/i}" compset="RaceSpec">
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spAlteSelf">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spHeatMeta">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMagiMiss">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
     </thing>
   </document>
