@@ -2005,7 +2005,6 @@ nexteach]]></eval>
     <fieldval field="rHitDice" value="15"/>
     <fieldval field="rHDSides" value="10 "/>
     <fieldval field="rHPStart" value="187"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="13"/>
     <fieldval field="rDEX" value="2"/>
     <fieldval field="rCON" value="14"/>
@@ -2013,17 +2012,51 @@ nexteach]]></eval>
     <fieldval field="rWIS" value="3"/>
     <fieldval field="rCHA" value="4"/>
     <fieldval field="rCR" value="11"/>
+    <fieldval field="rMultiatt" value="The dao makes two fist attacks or two maul attacks."/>
+    <fieldval field="rAC" value="7"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
     <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="RaceType" tag="NPC"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="30"/>
       </bootstrap>
+    <bootstrap thing="xBurrow">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="wFist">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="sbName" value="Maul"/>
+      <assignval field="livename" value="Maul"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wAttackEff" value="If the target is a Huge or smaller creature, it must succeed on a DC 18 Strength check or be knocked prone."/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpElementa"></bootstrap>
+    <bootstrap thing="ra5CEarGli">
+      <assignval field="abText" value="dao"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDaeElD"></bootstrap>
+    <bootstrap thing="ra5CDaInSp"></bootstrap>
+    <bootstrap thing="ra5CSurFoo">
+      <assignval field="abText" value="dao"/>
+      </bootstrap>
     <bootstrap thing="lTerran"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMMarid" name="Marid" compset="Race">
     <fieldval field="rHitDice" value="17"/>
@@ -7147,5 +7180,79 @@ double = field[abValue].value*2
       ~ Use our value field as the speed at which we can roll
       field[livename].text = field[name].text & " (" & field[abValue].value & " feet when rolling)" & double & " feet when rolling downhill"
       field[sbName].text = field[abValue].value & " ft. when rolling, " & double & " ft. rolling downhill"]]></eval>
+    </thing>
+  <thing id="ra5CEarGli" name="Earth Glide" description="The {abText} can burrow through nonmagical, unworked earth and stone. While doing so, the {abText} doesn’t disturb the material it moves through." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000">Field[CustDesc].text = &quot;The &quot; &amp; Field[abText].text &amp; &quot; can burrow through nonmagical, unworked earth and stone. While doing so, the &quot; &amp; Field[abText].text &amp; &quot; doesn’t disturb the material it moves through.&quot;</eval>
+    </thing>
+  <thing id="ra5CDaeElD" name="Elemental Demise" description="If the dao dies, its body disintegrates into crystalline powder, leaving behind only equipment the dao was wearing or carrying." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="ra5CSurFoo" name="Sure-Footed" description="The {abText} has advantage on Strength and Dexterity saving throws made against effects that would knock it prone." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostAttr" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " has advantage on Strength and Dexterity saving throws made against effects that would knock it prone."]]></eval>
+    </thing>
+  <thing id="ra5CDaInSp" name="Innate Spellcasting" description="The dao&apos;s innate speilcasting ability is Charisma (spell save DC 14, +6 to hit with spell attacks) . It can innately cast the following spells, requiring no material components:\n\nAt will: {i}detect evil and good{/i}, {i}detect magic{/i}, {i}stone shape{/i}\n3/day each: {i}passwall{/i}, {i}move earth{/i}, {i}tongues{/i}\n1/day each: {i}conjure elemental{/i} (earth elemental only) , {i}gaseous\nform{/i}, {i}invisibility{/i}, {i}phantasmal killer{/i}, {i}plane shift{/i}, {i}wall of stone{/i}" compset="RaceSpec">
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spDeteEvil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spStonShap">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spPasswall">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spMoveEart">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spTongues">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spConjElem">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spGaseForm">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPhanKill">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spWallSton">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
     </thing>
   </document>
