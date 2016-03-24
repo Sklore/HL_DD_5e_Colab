@@ -3,7 +3,7 @@
   <thing id="r5CMMBehol" name="Beholder" description="A Beholder is an aberration comprising a floating spheroid body with a large fanged mouth and single eye on the front and many flexible eyestalks on the top.\n\nA beholder&apos;s eyes each possess a different magical ability; the main eye projects an anti-magical cone, and the other eyes use different spell-like abilities (disintegrate objects, transmute flesh to stone, cause sleep, slow the motion of objects or beings, charm animals, charm humans, cause death, induce fear, levitate objects, and inflict serious wounds). Many variant beholder species exist, such as &quot;observers&quot;, &quot;spectators&quot;, &quot;eyes of the deep&quot;, &quot;elder orbs&quot;, &quot;hive mothers&quot;, and &quot;death tyrants&quot;. In addition, some rare beholders can use their eyes for non-standard spell-like abilities; these mutant beholders are often killed or exiled by their peers. Beholders wishing to cast spells like ordinary wizards relinquish the traditional use of their eyestalks, and put out their central anti-magic eye, making these beholder mages immediate outcasts.\n\n10,000 XP\nA beholder encountered in its lair has a challenge rating of 14 (11,500 XP)." compset="Race">
     <fieldval field="rHitDice" value="19"/>
     <fieldval field="rHDSides" value="10"/>
-    <fieldval field="rCR" value="13.0"/>
+    <fieldval field="rCR" value="13"/>
     <fieldval field="rSpeed" value="0"/>
     <fieldval field="rWIS" value="5"/>
     <fieldval field="rCHA" value="7"/>
@@ -27,7 +27,6 @@
       <autotag group="AttackTarg" tag="1Target"/>
       <assignval field="wDieCount" value="4"/>
       <assignval field="wDieSize" value="6"/>
-      <assignval field="wAttack" value="5"/>
       </bootstrap>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="20"/>
@@ -142,7 +141,6 @@
       <autotag group="AttackTarg" tag="1Target"/>
       <assignval field="wDieCount" value="4"/>
       <assignval field="wDieSize" value="6"/>
-      <assignval field="wAttack" value="5"/>
       <assignval field="wReach" value="5"/>
       </bootstrap>
     <bootstrap thing="xFly">
@@ -233,11 +231,6 @@
     <tag group="Alignment" tag="Lawful"/>
     <tag group="CondImm" tag="pcnProne"/>
     <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
-    <tag group="ProfSave" tag="svINT" name="Intelligence" abbrev="Intelligence"/>
-    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
-    <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="Charisma"/>
-    <tag group="ProfSave" tag="svSTR" name="Strength" abbrev="Strength"/>
-    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
     <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
     <tag group="Alignment" tag="NeutralGE"/>
     <bootstrap thing="lDeepSpeec"></bootstrap>
@@ -246,7 +239,6 @@
       <autotag group="AttackTarg" tag="1Target"/>
       <autotag group="DamTypeOvr" tag="dtPiercing"/>
       <assignval field="wDieSize" value="6"/>
-      <assignval field="wAttack" value="5"/>
       <assignval field="wDieCount" value="1"/>
       </bootstrap>
     <bootstrap thing="tpAberr"></bootstrap>
@@ -258,7 +250,9 @@
     <bootstrap thing="xTelepathy">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <bootstrap thing="ra5CMMCFaW"></bootstrap>
+    <bootstrap thing="ra5CMMCFaW">
+      <assignval field="abText" value="spectator"/>
+      </bootstrap>
     <bootstrap thing="ra5CMMSpRe"></bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
@@ -270,11 +264,12 @@
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="abRange" tag="Feet"/>
     </thing>
-  <thing id="ra5CMMCFaW" name="Create Food and Water" description="The spectator magically creates enough food and water to sustain itself for 24 hours." compset="RaceSpec">
+  <thing id="ra5CMMCFaW" name="Create Food and Water" description="The {abText} magically creates enough food and water to sustain itself for 24 hours." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
     <tag group="ProductId" tag="Wizards"/>
     <tag group="abAction" tag="Action"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " magically creates enough food and water to sustain itself for 24 hours."]]></eval>
     </thing>
   <thing id="ra5CMMSpRe" name="Spell Reflections" description="If the spectator makes a successful saving throw against a spell, or a spell attack misses it, the spectator can choose another creature (including the spellcaster) it can see within 30 feet of it. The spell targets the chosen creature instead of the spectator. If the spell forced a saving throw, the chosen creature makes its own save. If the spell was an attack, the attack roll is rerolled against the chosen creature." compset="RaceSpec">
     <tag group="ProductId" tag="Wizards"/>
@@ -886,8 +881,8 @@ nexteach]]></eval>
     <fieldval field="rCHA" value="8"/>
     <fieldval field="rCR" value="17"/>
     <fieldval field="rMultiatt" value="The death knight makes three longsword attacks."/>
+    <fieldval field="rSpCastLev" value="19"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
     <tag group="DamageImm" tag="dtNecrotic"/>
@@ -906,8 +901,8 @@ nexteach]]></eval>
     <tag group="ArmProfGrp" tag="ArmorMed"/>
     <tag group="ArmProfGrp" tag="Shields"/>
     <tag group="ArmProfGrp" tag="WepSimple"/>
-    <bootstrap thing="xMultiatt"></bootstrap>
-    <bootstrap thing="lCommon"></bootstrap>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="sClass" tag="cHelpPal"/>
     <bootstrap thing="ra5CDNParr">
       <assignval field="abText" value="death knight"/>
       <assignval field="abValue" value="6"/>
@@ -926,6 +921,12 @@ nexteach]]></eval>
       <assignval field="abText" value="death knight"/>
       </bootstrap>
     <bootstrap thing="ra5CDKSpCa"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="spHoldPers">
+      <autotag group="Helper" tag="RaceSpell"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[   foreach pick in hero from BaseWep where "wCategory.Melee"
         #extradamage[eachpick, " damage, plus 18 (4d8) necrotic", field[thingname].text]
         nexteach]]></eval>
@@ -1648,8 +1649,8 @@ nexteach]]></eval>
     <fieldval field="rWIS" value="3"/>
     <fieldval field="rCHA" value="2"/>
     <fieldval field="rCR" value="7"/>
+    <fieldval field="rSpCastLev" value="10"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="NeutralLC"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
@@ -1658,8 +1659,8 @@ nexteach]]></eval>
     <tag group="ProfSkill" tag="skPercep"/>
     <tag group="ProfSkill" tag="skStealth"/>
     <tag group="WepProf" tag="w5CStaff"/>
-    <bootstrap thing="lElvish"></bootstrap>
-    <bootstrap thing="lUndercomm"></bootstrap>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="sClass" tag="cHelpWiz"/>
     <bootstrap thing="tpHumanoid"></bootstrap>
     <bootstrap thing="raElDFeAnc"></bootstrap>
     <bootstrap thing="ra5CHDrISp"></bootstrap>
@@ -1674,6 +1675,10 @@ nexteach]]></eval>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="ra5CDMSpCa"></bootstrap>
+    <link linkage="castattr" thing="aINT"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[
       foreach pick in hero from BaseWep where "wCategory.Melee"
         #extradamage[eachpick, " damage plus 3 (1d6) poison", field[thingname].text]
@@ -1690,8 +1695,8 @@ nexteach]]></eval>
     <fieldval field="rCHA" value="8"/>
     <fieldval field="rCR" value="8"/>
     <fieldval field="rMultiatt" value="The drow makes two scourge attacks."/>
+    <fieldval field="rSpCastLev" value="10"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
     <tag group="ProfSkill" tag="skInsight"/>
@@ -1703,10 +1708,8 @@ nexteach]]></eval>
     <tag group="ProfSave" tag="svCHA" name="Charism" abbrev="Charism"/>
     <tag group="Alignment" tag="NeutralLC"/>
     <tag group="WepProf" tag="w5CScourge"/>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="120"/>
-      </bootstrap>
-    <bootstrap thing="lElvish"></bootstrap>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="sClass" tag="cHelpClr"/>
     <bootstrap thing="lUndercomm"></bootstrap>
     <bootstrap thing="tpHumanoid"></bootstrap>
     <bootstrap thing="raElDFeAnc"></bootstrap>
@@ -1720,6 +1723,12 @@ nexteach]]></eval>
       <assignval field="trkMax" value="1"/>
       </bootstrap>
     <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="ra5CDPSpCa"></bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[
       foreach pick in hero from BaseWep where "wCategory.Melee"
         #extradamage[eachpick, " damage plus 17 (5d6) poison", field[thingname].text]
@@ -1737,25 +1746,66 @@ nexteach]]></eval>
     <fieldval field="rWIS" value="12"/>
     <fieldval field="rCHA" value="17"/>
     <fieldval field="rCR" value="23 "/>
+    <fieldval field="rAC" value="7"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Chaotic"/>
     <tag group="RaceSize" tag="Huge2"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skInsight"/>
-    <tag group="AllowSkl1" tag="skPersuas"/>
-    <tag group="DamageImm" tag="dtBludgeon"/>
-    <tag group="DamageImm" tag="dtPiercing"/>
-    <tag group="DamageImm" tag="dtSlashing"/>
+    <tag group="Alignment" tag="Good"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skPersuas"/>
+    <tag group="DamComImm" tag="dcWepNonMa"/>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="50"/>
       </bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="50"/>
+      </bootstrap>
     <bootstrap thing="tpCelestia"></bootstrap>
+    <bootstrap thing="ttTitan"></bootstrap>
+    <bootstrap thing="lAll"></bootstrap>
     <bootstrap thing="raTruesigh">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="ra5CEmInSp"></bootstrap>
+    <bootstrap thing="ra5CLegRes">
+      <assignval field="abText" value="empyrean"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="empyrean"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMagWea">
+      <assignval field="abText" value="empyrean"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="sbName" value="Maul"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wDieCount" value="6"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="livename" value="Maul"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must succeed on a DC 15 Constitution saving throw or be stunned until the end of the empyrean&apos;s next turn."/>
+      </bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="wProperty" tag="Spell"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wAttackEff" value=" of one of the following types (empyrean&apos;s choice): acid, cold, fire, force, lightning, radiant, or thunder."/>
+      <assignval field="sbName" value="Bolt"/>
+      <assignval field="livename" value="Bolt"/>
+      <assignval field="wDieCount" value="7"/>
+      <assignval field="wRangeNorm" value="600"/>
+      <assignval field="wAttack" value="3"/>
+      <assignval field="wDamBonus" value="-5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CEmLeAc"></bootstrap>
     </thing>
-  <thing id="r5CMMFlame" name="Flame Skull" compset="Race">
+  <thing id="r5CMMFlame" name="Flameskull" compset="Race">
     <fieldval field="rHitDice" value="9"/>
     <fieldval field="rHDSides" value="4"/>
     <fieldval field="rHPStart" value="40"/>
@@ -1767,8 +1817,8 @@ nexteach]]></eval>
     <fieldval field="rCHA" value="1"/>
     <fieldval field="rCR" value="4 "/>
     <fieldval field="rMultiatt" value="The flameskull uses Fire Ray twice"/>
+    <fieldval field="rSpCastLev" value="5"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Tiny12"/>
     <tag group="RaceType" tag="NPC"/>
     <tag group="DamageRes" tag="dtLightnin"/>
@@ -1785,13 +1835,8 @@ nexteach]]></eval>
     <tag group="ProfSkill" tag="skPercep"/>
     <tag group="Alignment" tag="NeutralLC"/>
     <tag group="CondImm" tag="pcnProne"/>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="60"/>
-      </bootstrap>
-    <bootstrap thing="xFly">
-      <autotag group="Value" tag="40"/>
-      <autotag group="Helper" tag="Hover"/>
-      </bootstrap>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="sClass" tag="cHelpWiz"/>
     <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="ra5CIllumi">
@@ -1814,6 +1859,15 @@ nexteach]]></eval>
       <assignval field="livename" value="Fire Ray"/>
       </bootstrap>
     <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="40"/>
+      <autotag group="Helper" tag="Hover"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFSSpCa"></bootstrap>
+    <link linkage="castattr" thing="aINT"/>
     </thing>
   <thing id="r5CMMFlum" name="Flumph" compset="Race">
     <fieldval field="rSpeed" value="5 "/>
@@ -1872,29 +1926,34 @@ nexteach]]></eval>
       </bootstrap>
     </thing>
   <thing id="r5CMMFom01" name="Fomorian" compset="Race">
-    <fieldval field="rHitDice" value="l3"/>
+    <fieldval field="rHitDice" value="13"/>
     <fieldval field="rHDSides" value="12"/>
     <fieldval field="rHPStart" value="149"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="13"/>
-    <fieldval field="rDEX" value="0"/>
     <fieldval field="rCON" value="10"/>
     <fieldval field="rINT" value="-1"/>
     <fieldval field="rWIS" value="4"/>
     <fieldval field="rCHA" value="-4"/>
     <fieldval field="rCR" value="8"/>
+    <fieldval field="rAC" value="4"/>
+    <fieldval field="rMultiatt" value="The fomorian attacks twice with its greatclub or makes one greatclub attack and uses Evil Eye once."/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceSize" tag="Huge2"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="WepProf" tag="wGreatclub"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
+    <tag group="RaceSize" tag="Huge2"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Evil"/>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="tpGiant"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="lGiant"></bootstrap>
-    <bootstrap thing="lUndercomm"></bootstrap>
-    <bootstrap thing="tpGiant"></bootstrap>
+    <bootstrap thing="ra5CEviEye"></bootstrap>
+    <bootstrap thing="ra5CCuEvEy"></bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMGasSp" name="Gas Spore" compset="Race">
@@ -1954,24 +2013,42 @@ nexteach]]></eval>
     <fieldval field="rWIS" value="2"/>
     <fieldval field="rCHA" value="1"/>
     <fieldval field="rCR" value="6"/>
+    <fieldval field="rAC" value="4"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceType" tag="NPC"/>
-    <tag group="DamageRes" tag="dtPiercing"/>
-    <tag group="DamageRes" tag="dtSlashing"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamComRes" tag="dcWepNonMa"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="NeutralGE"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
+    <bootstrap thing="tpElementa"></bootstrap>
     <bootstrap thing="lTerran"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="wSlam">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="xTremorsen">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGaDuFa"></bootstrap>
+    <bootstrap thing="ra5CRolCha"></bootstrap>
+    <bootstrap thing="ra5CAniBou"></bootstrap>
+    <bootstrap thing="x5CRolling">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMGeDao" name="Dao" compset="Race">
     <fieldval field="rHitDice" value="15"/>
     <fieldval field="rHDSides" value="10 "/>
     <fieldval field="rHPStart" value="187"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="13"/>
     <fieldval field="rDEX" value="2"/>
     <fieldval field="rCON" value="14"/>
@@ -1979,23 +2056,56 @@ nexteach]]></eval>
     <fieldval field="rWIS" value="3"/>
     <fieldval field="rCHA" value="4"/>
     <fieldval field="rCR" value="11"/>
+    <fieldval field="rMultiatt" value="The dao makes two fist attacks or two maul attacks."/>
+    <fieldval field="rAC" value="7"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
     <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="RaceType" tag="NPC"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="30"/>
       </bootstrap>
+    <bootstrap thing="xBurrow">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="wFist">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="sbName" value="Maul"/>
+      <assignval field="livename" value="Maul"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wAttackEff" value="If the target is a Huge or smaller creature, it must succeed on a DC 18 Strength check or be knocked prone."/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpElementa"></bootstrap>
+    <bootstrap thing="ra5CEarGli">
+      <assignval field="abText" value="dao"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDaeElD"></bootstrap>
+    <bootstrap thing="ra5CDaInSp"></bootstrap>
+    <bootstrap thing="ra5CSurFoo">
+      <assignval field="abText" value="dao"/>
+      </bootstrap>
     <bootstrap thing="lTerran"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMMarid" name="Marid" compset="Race">
     <fieldval field="rHitDice" value="17"/>
     <fieldval field="rHDSides" value="10 "/>
     <fieldval field="rHPStart" value="229"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="12"/>
     <fieldval field="rDEX" value="2"/>
     <fieldval field="rCON" value="16"/>
@@ -2003,22 +2113,48 @@ nexteach]]></eval>
     <fieldval field="rWIS" value="7"/>
     <fieldval field="rCHA" value="8"/>
     <fieldval field="rCR" value="11"/>
+    <fieldval field="rAC" value="7"/>
+    <fieldval field="rMultiatt" value="The marid makes two trident attacks."/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceType" tag="NPC"/>
-    <tag group="DamageRes" tag="dtAcid"/>
     <tag group="DamageRes" tag="dtCold"/>
     <tag group="DamageRes" tag="dtLightnin"/>
-    <bootstrap thing="raBlindSi">
-      <autotag group="Value" tag="30"/>
+    <tag group="DamageRes" tag="dtAcid"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="RaceType" tag="NPC"/>
+    <bootstrap thing="ra5CMMAmph">
+      <assignval field="abText" value="marid"/>
       </bootstrap>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="120"/>
-      </bootstrap>
+    <bootstrap thing="ra5CMaElDe"></bootstrap>
+    <bootstrap thing="ra5CMaInSp"></bootstrap>
+    <bootstrap thing="ra5CWatJet"></bootstrap>
     <bootstrap thing="xFly">
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="lAquan"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="90"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="tpElementa"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[~if we've been replaced, get out now
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseWep where "IsWeapon.wTrident"
+  eachpick.field[wDieCount].value = 2
+  eachpick.field[wDCntVers].value = 2
+  eachpick.field[wAttack].value = 4
+nexteach]]></eval>
     </thing>
   <thing id="r5CMMGithW" name="Githyanki Warrior" compset="Race">
     <fieldval field="rHitDice" value="9"/>
@@ -2772,6 +2908,7 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
       <assignval field="wDieSize" value="6"/>
       <assignval field="livename" value="Dropped Rock"/>
       <assignval field="sbName" value="Dropped Rock"/>
+      <assignval field="wTarget" value="one target directly below the kobold"/>
       </bootstrap>
     </thing>
   <thing id="r5CMMKuoTo" name="Kuo-Toa" compset="Race">
@@ -2835,17 +2972,15 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <fieldval field="rCR" value="6"/>
     <fieldval field="rAC" value="1"/>
     <fieldval field="rMultiatt" value="The kuo-toa makes two melee attacks."/>
+    <fieldval field="rSpCastLev" value="10"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="ProfSkill" tag="skPercep"/>
     <tag group="ProfSkill" tag="skReligion"/>
     <tag group="Alignment" tag="NeutralLC"/>
-    <bootstrap thing="xSwim">
-      <autotag group="Value" tag="30"/>
-      </bootstrap>
-    <bootstrap thing="tpHumanoid"></bootstrap>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="sClass" tag="cHelpClr"/>
     <bootstrap thing="tt5CKuotoa"></bootstrap>
     <bootstrap thing="lUndercomm"></bootstrap>
     <bootstrap thing="wUnarmed">
@@ -2869,6 +3004,12 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <bootstrap thing="ra5CSlippe">
       <assignval field="abText" value="kuo-toa"/>
       </bootstrap>
+    <bootstrap thing="ra5CKASpCa"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]
 #skillbonus[skReligion] += 2</eval>
     <eval phase="PostLevel" priority="10000" index="2"><![CDATA[~ If we're disabled, do nothing
@@ -2890,16 +3031,16 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rCR" value="1"/>
     <fieldval field="rAC" value="1"/>
     <fieldval field="rMultiatt" value="The kuo-toa makes two attacks: one with its bite and one with its pincer staff."/>
+    <fieldval field="rSpCastLev" value="2"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="ProfSkill" tag="skPercep"/>
     <tag group="ProfSkill" tag="skReligion"/>
     <tag group="Alignment" tag="NeutralLC"/>
     <tag group="WepProf" tag="w5CPincSta"/>
-    <bootstrap thing="tpHumanoid"></bootstrap>
-    <bootstrap thing="tt5CKuotoa"></bootstrap>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="sClass" tag="cHelpClr"/>
     <bootstrap thing="lUndercomm"></bootstrap>
     <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="xSwim">
@@ -2925,6 +3066,10 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <bootstrap thing="ra5CSunSen">
       <assignval field="abText" value="kuo-toa"/>
       </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="tt5CKuotoa"></bootstrap>
+    <bootstrap thing="ra5CKWSpCa"></bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]
 #skillbonus[skReligion] += 1</eval>
     </thing>
@@ -2934,27 +3079,55 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rHPStart" value="27"/>
     <fieldval field="rSpeed" value="30 "/>
     <fieldval field="rSTR" value="5"/>
-    <fieldval field="rDEX" value="0"/>
     <fieldval field="rCON" value="3"/>
-    <fieldval field="rINT" value="0"/>
     <fieldval field="rWIS" value="5"/>
     <fieldval field="rCHA" value="-2"/>
     <fieldval field="rCR" value="2"/>
+    <fieldval field="rAC" value="3"/>
+    <fieldval field="rMultiatt" value="(Lizardfolk Form Only). The lizardfolk makes two attacks: one with its bite and one with its claws."/>
+    <fieldval field="rSpCastLev" value="5"/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="NeutralLC"/>
     <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="NeutralGE"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
-    <tag group="AllowSkl1" tag="skSurvival"/>
+    <tag group="sClass" tag="cHelpDrd"/>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wAttackEff" value=" or 7 (1d10 + 2) piercing damage in crocodile form. If the lizardfolk is in crocodile form and the target is a Large or smaller creature, the target is grappled (escape DC 12). Until this grapple ends, the target is restrained, and the lizardfolk can&apos;t bite another target. If the lizardfolk reverts to its true form, the grapple ends."/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="livename" value="Claws (Lizardfolk Form Only)"/>
+      <assignval field="sbName" value="Claws (Lizardfolk Form Only)"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ttLizardfo"></bootstrap>
+    <bootstrap thing="ra5CHoldBr">
+      <assignval field="abText" value="lizardfolk"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLiChaS"></bootstrap>
+    <bootstrap thing="ra5CLSSpCa"></bootstrap>
     <bootstrap thing="lDraconic"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
+    <eval phase="First">perform hero.child[skStealth].assign[Helper.ProfDouble]
+perform hero.child[skSurvival].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMLizKQ" name="Lizardfolk King/Queen" compset="Race">
-    <fieldval field="rHitDice" value="l2"/>
+    <fieldval field="rHitDice" value="12"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="78"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="7"/>
     <fieldval field="rDEX" value="2"/>
     <fieldval field="rCON" value="5"/>
@@ -2962,14 +3135,46 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rWIS" value="1"/>
     <fieldval field="rCHA" value="5"/>
     <fieldval field="rCR" value="4"/>
+    <fieldval field="rAC" value="4"/>
+    <fieldval field="rMultiatt" value="The lizardfolk makes two attacks: one with its bite and one with its claws or trident or two melee attacks with its trident."/>
     <usesource source="5eMMCP"/>
-    <tag group="Alignment" tag="NeutralLC"/>
-    <tag group="RaceSize" tag="Medium0"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skStealth"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="WepProf" tag="wTrident"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
     <bootstrap thing="lDraconic"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="sbName" value="Claws"/>
+      <assignval field="livename" value="Claws"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="ttLizardfo"></bootstrap>
+    <bootstrap thing="ra5CHoldBr">
+      <assignval field="abText" value="lizardfolk"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSkewer"></bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <eval phase="First">perform hero.child[skStealth].assign[Helper.ProfDouble]
+perform hero.child[skSurvival].assign[Helper.ProfDouble]
+perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMMudMe" name="Mud Mephit" compset="Race">
     <fieldval field="rHitDice" value="6"/>
@@ -3114,6 +3319,7 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
       <assignval field="sbName" value="Extract Brain"/>
       <assignval field="wAttackEff" value="If this damage reduces the target to 0 hit points, the mind flayer kills the target by extracting and devouring its brain ."/>
       <assignval field="wAttack" value="4"/>
+      <assignval field="wTarget" value="one incapacitated humanoid grappled by the mind flayer"/>
       </bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
@@ -3476,9 +3682,9 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rCR" value="4 "/>
     <fieldval field="rAC" value="2"/>
     <fieldval field="rLanguages" value="1"/>
+    <fieldval field="rSpCastLev" value="5"/>
+    <fieldval field="rGiveSpec" value="1"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceSize" tag="Large1"/>
-    <tag group="RaceType" tag="NPC"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnCharmed"/>
     <tag group="CondImm" tag="pcnExhaust"/>
@@ -3486,10 +3692,8 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <tag group="CondImm" tag="pcnPoison"/>
     <tag group="Alignment" tag="Lawful"/>
     <tag group="Alignment" tag="Evil"/>
-    <bootstrap thing="tpUndead"></bootstrap>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="60"/>
-      </bootstrap>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="RaceType" tag="NPC"/>
     <bootstrap thing="lCommon">
       <autotag group="Promote" tag="Top"/>
       </bootstrap>
@@ -3501,6 +3705,11 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
       <assignval field="wReach" value="10"/>
       <assignval field="wDamExtra" value=" damage plus 10 (3d6) poison"/>
       </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aINT"/>
     </thing>
   <thing id="r5CMMNothi" name="Nothic" compset="Race">
     <fieldval field="rHitDice" value="6"/>
@@ -3625,8 +3834,8 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rWIS" value="3"/>
     <fieldval field="rCHA" value="2"/>
     <fieldval field="rCR" value="2"/>
+    <fieldval field="rSpCastLev" value="3"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceType" tag="NPC"/>
     <tag group="Alignment" tag="Chaotic"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceSize" tag="Medium0"/>
@@ -3637,10 +3846,8 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <tag group="ArmProfGrp" tag="Shields"/>
     <tag group="ProfSkill" tag="skIntim"/>
     <tag group="ProfSkill" tag="skReligion"/>
-    <bootstrap thing="ttOrc"></bootstrap>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="60"/>
-      </bootstrap>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="sClass" tag="cHelpClr"/>
     <bootstrap thing="lOrc"></bootstrap>
     <bootstrap thing="ra5CAgress">
       <assignval field="abText" value="orc"/>
@@ -3650,6 +3857,11 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
       </bootstrap>
     <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttOrc"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
     </thing>
   <thing id="r5CMMOrog" name="Orog" compset="Race">
     <fieldval field="rHitDice" value="5"/>
@@ -3777,6 +3989,7 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
       <assignval field="wAttackEff" value="Miss: The piercer takes half the normal falling damage for the distance fallen."/>
       <assignval field="wDieSize" value="6"/>
       <assignval field="sbName" value="Drop"/>
+      <assignval field="wTarget" value="one creature directly underneath the piercer"/>
       </bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
@@ -3897,7 +4110,6 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rHitDice" value="16"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="136"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="8"/>
     <fieldval field="rDEX" value="4"/>
     <fieldval field="rCON" value="8"/>
@@ -3905,9 +4117,9 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rWIS" value="6"/>
     <fieldval field="rCHA" value="8"/>
     <fieldval field="rCR" value="5"/>
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="rMultiatt" value="The revenant makes two fist attacks."/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceType" tag="NPC"/>
-    <tag group="DamageRes" tag="dtNecrotic"/>
     <tag group="DamageRes" tag="dtPsychic"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnCharmed"/>
@@ -3916,16 +4128,38 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <tag group="CondImm" tag="pcnParaly"/>
     <tag group="CondImm" tag="pcnPoison"/>
     <tag group="CondImm" tag="pcnStunned"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <tag group="RaceType" tag="NPC"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="ra5CReRege"></bootstrap>
+    <bootstrap thing="ra5CReReju"></bootstrap>
+    <bootstrap thing="ra5CTurImm">
+      <assignval field="abText" value="revenant"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVenGla"></bootstrap>
+    <bootstrap thing="ra5CVenTra"></bootstrap>
+    <bootstrap thing="wFist">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wAttackEff" value="If the target is a creature against which the revenant has sworn vengeance, the target takes an extra 14 (4d6) bludgeoning damage. Instead of dealing damage, the revenant can grapple the target (escape DC 14) provided the target is Large or smaller."/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
     </thing>
   <thing id="r5CMMSahuP" name="Sahuagin Priestess" compset="Race">
     <fieldval field="rHitDice" value="6"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="33"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="3"/>
     <fieldval field="rDEX" value="1"/>
     <fieldval field="rCON" value="2"/>
@@ -3933,20 +4167,54 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rWIS" value="4"/>
     <fieldval field="rCHA" value="3"/>
     <fieldval field="rCR" value="2"/>
+    <fieldval field="rAC" value="2"/>
+    <fieldval field="rMultiatt" value="The sahuagin makes two attacks: one with her bite and one with her claws"/>
+    <fieldval field="rSpCastLev" value="6"/>
     <usesource source="5eMMCP"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skReligion"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
-    <tag group="AllowSkl1" tag="skReligion"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="sClass" tag="cHelpClr"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ra5CBloFre">
+      <assignval field="abText" value="sahuagin"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLimAmp">
+      <assignval field="abText" value="sahuagin"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSharTe"></bootstrap>
+    <bootstrap thing="ttSahuagin"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="livename" value="Claws"/>
+      <assignval field="sbName" value="Claws"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="l5CSahuagi"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSPSpCa"></bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
   <thing id="r5CMMSahuB" name="Sahuagin Baron" compset="Race">
     <fieldval field="rHitDice" value="9"/>
-    <fieldval field="rHDSides" value="l0"/>
+    <fieldval field="rHDSides" value="10"/>
     <fieldval field="rHPStart" value="76"/>
-    <fieldval field="rSpeed" value="30"/>
     <fieldval field="rSTR" value="9"/>
     <fieldval field="rDEX" value="5"/>
     <fieldval field="rCON" value="6"/>
@@ -3954,13 +4222,57 @@ foreach pick in hero from BaseWep where "IsWeapon.w5CScepter"
     <fieldval field="rWIS" value="3"/>
     <fieldval field="rCHA" value="7"/>
     <fieldval field="rCR" value="5"/>
+    <fieldval field="rMultiatt" value="The sahuagin makes three attacks: one with his bite and two with his claws or trident"/>
     <usesource source="5eMMCP"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="WepProf" tag="wTrident"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Evil"/>
     <tag group="RaceType" tag="NPC"/>
-    <tag group="AllowSkl1" tag="skPercep"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <bootstrap thing="l5CSahuagi"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="50"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ra5CBloFre">
+      <assignval field="abText" value="sahuagin"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLimAmp">
+      <assignval field="abText" value="sahuagin"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSharTe"></bootstrap>
+    <bootstrap thing="ttSahuagin"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="livename" value="Claws"/>
+      <assignval field="sbName" value="Claws"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    foreach pick in hero from BaseWep where "IsWeapon.wTrident"
+      eachpick.field[wDieCount].value = 2
+      eachpick.field[wDCntVers].value = 2
+    nexteach]]></eval>
     </thing>
   <thing id="r5CMMScare" name="Scarecrow" compset="Race">
     <fieldval field="rHitDice" value="8"/>
@@ -4932,7 +5244,7 @@ foreach pick in hero from BaseWep where "IsWeapon.wLongbow"
     <tag group="abAction" tag="Action"/>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
-  <thing id="ra5CMMHoHr" name="Heart of Hruggek" description="The bugbear has advantage on saving th rows against being charmed, frightened , para lyzed, poisoned, stunned, or put to sleep." compset="RaceSpec">
+  <thing id="ra5CMMHoHr" name="Heart of Hruggek" description="The bugbear has advantage on saving throws against being charmed, frightened , paralyzed, poisoned, stunned, or put to sleep." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="abAction" tag="None"/>
@@ -6010,10 +6322,10 @@ Field[CustDesc].text = "The " & Field[abText].text & " targets one creature it c
     <fieldval field="gSizeCost" value="5"/>
     <fieldval field="wDieCount" value="1"/>
     <fieldval field="wDieSize" value="6"/>
-    <tag group="wCategory" tag="Melee" name="Melee Weapon" abbrev="Melee"/>
-    <tag group="wProfReq" tag="Simple" name="Simple" abbrev="Simple"/>
     <tag group="DamageType" tag="dtBludgeon" name="Bludgeoning" abbrev="Bludgeoning"/>
     <tag group="EquipType" tag="Wood"/>
+    <tag group="wCategory" tag="Melee" name="Melee Weapon" abbrev="Melee"/>
+    <tag group="wProfReq" tag="Simple" name="Simple" abbrev="Simple"/>
     </thing>
   <thing id="w5CPincSta" name="Pincer Staff" compset="Weapon">
     <fieldval field="gWeight" value="4"/>
@@ -6454,5 +6766,804 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
       <autotag group="Usage" tag="Day"/>
       <assignval field="trkMax" value="3"/>
       </bootstrap>
+    </thing>
+  <thing id="l5CSahuagi" name="Sahuagin" compset="Language" uniqueness="useronce">
+    <tag group="LangCat" tag="Monster"/>
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
+    </thing>
+  <thing id="ra5CBloFre" name="Blood Frenzy" description="The {abText} has advantage on melee attack rolls against any creature that doesn&apos;t have all its hit points." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " has advantage on melee attack rolls against any creature that doesn't have all its hit points."]]></eval>
+    </thing>
+  <thing id="ra5CLimAmp" name="Limited Amphibiousness" description="The {abText} can breathe air and water, but she needs to be submerged at least once every 4 hours to avoid suffocating." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " can breathe air and water, but she needs to be submerged at least once every 4 hours to avoid suffocating."]]></eval>
+    </thing>
+  <thing id="ra5CSharTe" name="Shark Telepathy" description="The sahuagin can magically command any shark within 120 feet of her, using a limited telepathy." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CHoldBr" name="Hold Breath" description="The {abText} can hold its breath for 15 minutes." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " can hold its breath for 15 minutes."]]></eval>
+    </thing>
+  <thing id="ra5CLiChaS" name="Change Shape" description="The lizardfolk magically polymorphs into a crocodile, remaining in that form for up to 1 hour. It can revert to its true form as a bonus action. Its statistics, other than its size, are the same in each form. Any equipment it is wearing or carrying isn&apos;t transformed. It reverts to its true form if it dies." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    </thing>
+  <thing id="ra5CSkewer" name="Skewer" description="Once per turn , when the lizardfolk makes a melee attack with its trident and hits , the target takes an extra 10 (3d6) damage, and the lizardfolk gains temporary hit points equal to the extra damage dealt." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="r5CBeholZo" name="Beholder Zombie" compset="Race">
+    <fieldval field="rHitDice" value="11"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="93"/>
+    <fieldval field="rDEX" value="-2"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="-7"/>
+    <fieldval field="rWIS" value="-2"/>
+    <fieldval field="rCHA" value="-5"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rAC" value="6"/>
+    <fieldval field="rCR" value="5"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Evil"/>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CUndFor"></bootstrap>
+    <bootstrap thing="ra5CZoEyRa"></bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="20"/>
+      <autotag group="Helper" tag="Hover"/>
+      </bootstrap>
+    <bootstrap thing="lDeepSpeec">
+      <autotag group="Helper" tag="CantSpeak"/>
+      </bootstrap>
+    <bootstrap thing="lUndercomm">
+      <autotag group="Helper" tag="CantSpeak"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CUndFor" name="Undead Fortitude" description="If damage reduces the zombie to 0 hit points , it must make a Constitution saving throw with a DC of 5 + the damage taken , unless the damage is radiant or from a critical hit. On a success, the zombie drops to 1 hit point instead." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CZoEyRa" name="Eye Ray" description="The zombie uses a random magical eye ray, choosing a target that it can see within 60 feet of it.\n\n1. Paralyzing Ray. The targeted creature must succeed on a DC 14 Constitution saving throw or be paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.\n2. Fear Ray. The targeted creature must succeed on a DC 14 Wisdom saving throw or be frightened for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success .\n3. Enervation Ray. The targeted creature must make a DC 14 Constitution saving throw, taking 36 (8d8) necrotic damage on a failed save, or half as much damage on a successful one.\n4. Disintegration Ray. If the target is a creature, it must succeed on a DC 14 Dexterity savin g throw or take 45 (10d8) force damage. If this damage reduces the creature to 0 hit points , its body becomes a pile of fine gray dust. \nIf the target is a Large or smal ler non magical object or creation of magical force, it is disintegrated without a saving throw. If the target is a Huge or larger non magical object or creation of magical force , this ray disintegrates a 10-foot cube of it." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="r5CMMArcan" name="Arcanaloth" compset="Race">
+    <fieldval field="rHitDice" value="16"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="104"/>
+    <fieldval field="rSTR" value="7"/>
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="10"/>
+    <fieldval field="rWIS" value="6"/>
+    <fieldval field="rCHA" value="7"/>
+    <fieldval field="rAC" value="6"/>
+    <fieldval field="rCR" value="12"/>
+    <fieldval field="rSpCastLev" value="16"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="DamageRes" tag="dtFire"/>
+    <tag group="DamageRes" tag="dtLightnin"/>
+    <tag group="DamComRes" tag="dcWepNonMa"/>
+    <tag group="DamageImm" tag="dtAcid"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="tt5CYugolo"></bootstrap>
+    <bootstrap thing="lAll"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="sbName" value="Claws"/>
+      <assignval field="livename" value="Claws"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wAttackEff" value="The target must make a DC 14 Constitution saving throw, taking 10 (3d6) poison damage on a failed save, or half as much damage on a successful one"/>
+      </bootstrap>
+    <bootstrap thing="ra5CTelepo">
+      <assignval field="abText" value="arcanaloth"/>
+      </bootstrap>
+    <bootstrap thing="ra5CArInSp"></bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="arcanaloth"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMagWea">
+      <assignval field="abText" value="arcanaloth"/>
+      </bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="tpFiend"></bootstrap>
+    <bootstrap thing="ra5CArSpCa"></bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    <eval phase="First">perform hero.child[skArcana].assign[Helper.ProfDouble]
+#skillbonus[skDecept] += 2
+#skillbonus[skInsight] += 2</eval>
+    </thing>
+  <thing id="tt5CYugolo" name="Yugoloth" compset="TypeTag" uniqueness="unique">
+    <tag group="NeedType" tag="tpFiend"/>
+    </thing>
+  <thing id="ra5CTelepo" name="Teleport" description="The {abText} magically teleports, along with any equipment it is wearing or carrying, up to 60 feet to an unoccupied space it can see." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " magically teleports, along with any equipment it is wearing or carrying, up to 60 feet to an unoccupied space it can see."]]></eval>
+    </thing>
+  <thing id="ra5CArInSp" name="Innate Spellcasting" description="The arcanaloth&apos;s innate spellcasting ability is Charisma (spell save DC 15). The arcanaloth can innately cast the following spells, requiring no material components:\n\nAt will: {i}alter self{/i}, {i}darkness{/i}, {i}heat metal{/i}, {i}invisibility{/i} (self only), {i}magic missile{/i}" compset="RaceSpec">
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spAlteSelf">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spHeatMeta">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMagiMiss">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CMMMezzo" name="Mezzoloth" compset="Race">
+    <fieldval field="rHitDice" value="10"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="75"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="1"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="-3"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rAC" value="8"/>
+    <fieldval field="rCR" value="5"/>
+    <fieldval field="rMultiatt" value="The mezzoloth makes two attacks: one with its claws and one with its trident."/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="DamageRes" tag="dtFire"/>
+    <tag group="DamageRes" tag="dtLightnin"/>
+    <tag group="DamComRes" tag="dcWepNonMa"/>
+    <tag group="DamageImm" tag="dtAcid"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="WepProf" tag="wTrident"/>
+    <bootstrap thing="tpFiend"></bootstrap>
+    <bootstrap thing="tt5CYugolo"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="livename" value="Claws"/>
+      <assignval field="sbName" value="Claws"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="mezzoloth"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMagWea">
+      <assignval field="abText" value="mezzoloth"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMLInSp"></bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="lInfernal"></bootstrap>
+    <bootstrap thing="ra5CTelepo">
+      <assignval field="abText" value="mezzoloth"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CMLInSp" name="Innate Spellcasting" description="The mezzoloth&apos;s innate spellcasting ability is Charisma (spell save DC 11). The mezzoloth can innately cast the following spells, requiring no material components:\n2/day each: {i}darkness{/i}, {i}dispel magic{/i}\n1/day : {i}cloudkill{/i}" compset="RaceSpec">
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spDarkness">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spDispMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spCloudkil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CMMNycal" name="Nycaloth" compset="Race">
+    <fieldval field="rHitDice" value="13"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="123"/>
+    <fieldval field="rSTR" value="10"/>
+    <fieldval field="rDEX" value="1"/>
+    <fieldval field="rCON" value="9"/>
+    <fieldval field="rINT" value="2"/>
+    <fieldval field="rCHA" value="5"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rAC" value="8"/>
+    <fieldval field="rCR" value="9"/>
+    <fieldval field="rMultiatt" value="The nycaloth makes two melee attacks, or it makes one melee attack and teleports before or after the attack."/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSkill" tag="skIntim"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="WepProf" tag="wGreataxe"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="DamageRes" tag="dtFire"/>
+    <tag group="DamageRes" tag="dtLightnin"/>
+    <tag group="DamComRes" tag="dcWepNonMa"/>
+    <tag group="DamageImm" tag="dtAcid"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="nycaloth"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMagWea">
+      <assignval field="abText" value="nycaloth"/>
+      </bootstrap>
+    <bootstrap thing="ra5CTelepo">
+      <assignval field="abText" value="nycaloth"/>
+      </bootstrap>
+    <bootstrap thing="tt5CYugolo"></bootstrap>
+    <bootstrap thing="tpFiend"></bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="lInfernal"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must succeed on a DC 16 Constitution saving throw or take 5 (2d4) slashing damage at the start of each of its turns due to a fiendish wound. Each time the nycaloth hits the wounded target with this attack, the damage dealt by the wound increases by 5 (2d4). Any creature can take an action to stanch the wound with a successful DC 13 Wisdom (Medicine) check. The wound also closes if the target receives magical healing."/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CNyInSp"></bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    foreach pick in hero from BaseWep where "IsWeapon.wGreataxe"
+      eachpick.field[wDieCount].value = 2
+    nexteach]]></eval>
+    </thing>
+  <thing id="ra5CNyInSp" name="Innate Spellcasting" description="The nycaloth &apos;s innate spellcasting ability is Charisma. The nycaloth can innately cast the following spells, requiring no material components:\nAt will: {i}darkness{/i}, {i}detect magic{/i}, {i}dispel magic{/i}, {i}invisibility{/i} (self only), {i}mirror image{/i}" compset="RaceSpec">
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spDarkness">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDispMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMirrImag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CMMUltro" name="Ultroloth" compset="Race">
+    <fieldval field="rHitDice" value="18"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="153"/>
+    <fieldval field="rSTR" value="6"/>
+    <fieldval field="rDEX" value="6"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="8"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rCHA" value="9"/>
+    <fieldval field="rAC" value="6"/>
+    <fieldval field="rCR" value="13"/>
+    <fieldval field="rMultiatt" value="The ultroloth can use its Hypnotic Gaze and makes three melee attacks."/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSkill" tag="skIntim"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="WepProf" tag="wLongsword"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="DamageRes" tag="dtFire"/>
+    <tag group="DamageRes" tag="dtLightnin"/>
+    <tag group="DamComRes" tag="dcWepNonMa"/>
+    <tag group="DamageImm" tag="dtAcid"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <bootstrap thing="ra5CMagWea">
+      <assignval field="abText" value="ultroloth"/>
+      </bootstrap>
+    <bootstrap thing="ra5CTelepo">
+      <assignval field="abText" value="ultroloth"/>
+      </bootstrap>
+    <bootstrap thing="ra5CHypnGa"></bootstrap>
+    <bootstrap thing="ra5CUlInSp"></bootstrap>
+    <bootstrap thing="tt5CYugolo"></bootstrap>
+    <bootstrap thing="tpFiend"></bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="lInfernal"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="ultroloth"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CUlInSp" name="Innate Spellcasting" description="The ultroloth &apos;s innate spellcasting ability is Charisma (spell save DC 17). The ultroloth can innately cast the following spells, requiring no material components:\n\nAt will: {i}alter self{/i}, {i}clairvoyance{/i}, {i}darkness{/i}, {i}detect magic{/i}, {i}detect thoughts{/i}, {i}dispel magic{/i}, {i}invisibility{/i} (self only), {i}suggestion{/i}\n3/day each: {i}dimension door{/i}, {i}fear{/i}, {i}wall of fire{/i}\n1/day each: {i}fire storm{/i}, {i}mass suggestion{/i}" compset="RaceSpec">
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spAlteSelf">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spClairvoy">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      </bootstrap>
+    <bootstrap thing="spDeteThou">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDispMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spSuggesti">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDimeDoor">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spFear">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spWallFire">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spFireStor">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMassSugg">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CHypnGa" name="Hypnotic Gaze" description="The ultroloth&apos;s eyes sparkle with opalescent light as it targets one creature it can see within 30 feet of it. If the target can see the ultroloth, the target must succeed on a DC 17 Wisdom saving throw against this magic or be charmed until the end of the ultroloth&apos;s next turn . The charmed target is stunned. If the target&apos;s saving throw is successful, the target is immune to the ultroloth&apos;s gaze for the next 24 hours." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CEviEye" name="Evil Eye" description="The fomorian magically forces a creature it can see within 60 feet of it to make a DC 14 Charisma saving throw. The creature takes 27 (6d8) psychic damage on a failed save, or half as much damage on a successful one." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CCuEvEy" name="Curse of the Evil Eye" description="With a stare, the fomorian uses Evil Eye, but on a failed save, the creature is also cursed with magical deformities. \nWhile deformed, the creature has its speed halved and has disadvantage on ability checks, saving throws, and attacks based on Strength or Dexterity.\nThe transformed creature can repeat the saving throw whenever it finishes a long rest, ending the effect on a success." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="ra5CAniBou" name="Animate Boulders" description="The galeb duhr magically animates up to two boulders it can see within 60 feet of it. A boulder has statistics like those of a galeb duhr, except it has Intelligence 1 and Charisma 1, it can&apos;t be charmed or frightened, and it lacks this action option. A boulder remains animated as long as the galeb duhr maintain s concentration, up to l minute (as if concentrating on a spell) ." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CRolCha" name="Rolling Charge" description="If the galeb duhr rolls at least 20 feet straight toward a target and then hits it with a slam attack on the same turn, the target takes an ext ra 7 (2d6) bludgeoning damage. If the target is a creature, it must succeed on a DC 16 Strength saving throw or be knocked prone." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CGaDuFa" name="False Appearance" description="While the galeb duhr remains motionless, it is indistinguishable from a normal boulder" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="x5CRolling" name="Rolling" compset="Ability" summary="You have a Climb speed." uniqueness="unique">
+    <tag group="Helper" tag="BaseAbil" name="Base Ability" abbrev="Base Ability"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="SpecType" tag="Movement" name="Movement" abbrev="Movement"/>
+    <eval phase="PostAttr" priority="9000">~ We do this because it allows detection and manipulation of a tag value
+      ~ before the livename is set at Final 15000
+      field[abValue].value = maximum(field[abValue].value, tagmax[Value.?])</eval>
+    <eval phase="Final" priority="15000" index="2"><![CDATA[
+      ~ If we use CalcValue it will reset our value to the tagmax if it was
+      ~ decreased, so only determine if our value is not 0 and we should be
+      ~ shown.
+      call ValueShow
+
+      ~if our value is greater than zero, we factor in bonus movement
+      if (field[abValue].value > 0) then
+        field[abValue].value += field[abImprove].value
+        endif
+var double as number
+double = field[abValue].value*2
+
+      ~ Use our value field as the speed at which we can roll
+      field[livename].text = field[name].text & " (" & field[abValue].value & " feet when rolling)" & double & " feet when rolling downhill"
+      field[sbName].text = field[abValue].value & " ft. when rolling, " & double & " ft. rolling downhill"]]></eval>
+    </thing>
+  <thing id="ra5CEarGli" name="Earth Glide" description="The {abText} can burrow through nonmagical, unworked earth and stone. While doing so, the {abText} doesn’t disturb the material it moves through." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000">Field[CustDesc].text = &quot;The &quot; &amp; Field[abText].text &amp; &quot; can burrow through nonmagical, unworked earth and stone. While doing so, the &quot; &amp; Field[abText].text &amp; &quot; doesn’t disturb the material it moves through.&quot;</eval>
+    </thing>
+  <thing id="ra5CDaeElD" name="Elemental Demise" description="If the dao dies, its body disintegrates into crystalline powder, leaving behind only equipment the dao was wearing or carrying." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="ra5CSurFoo" name="Sure-Footed" description="The {abText} has advantage on Strength and Dexterity saving throws made against effects that would knock it prone." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostAttr" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " has advantage on Strength and Dexterity saving throws made against effects that would knock it prone."]]></eval>
+    </thing>
+  <thing id="ra5CDaInSp" name="Innate Spellcasting" description="The dao&apos;s innate speilcasting ability is Charisma (spell save DC 14, +6 to hit with spell attacks) . It can innately cast the following spells, requiring no material components:\n\nAt will: {i}detect evil and good{/i}, {i}detect magic{/i}, {i}stone shape{/i}\n3/day each: {i}passwall{/i}, {i}move earth{/i}, {i}tongues{/i}\n1/day each: {i}conjure elemental{/i} (earth elemental only) , {i}gaseous\nform{/i}, {i}invisibility{/i}, {i}phantasmal killer{/i}, {i}plane shift{/i}, {i}wall of stone{/i}" compset="RaceSpec">
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spDeteEvil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spStonShap">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spPasswall">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spMoveEart">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spTongues">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spConjElem">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spGaseForm">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPhanKill">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spWallSton">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CMaInSp" name="Innate Spellcasting" description="The marid&apos;s innate spellcasting ability is Charisma (spell save DC 16, +8 to hit witn spell attacks) . It can innately cast the following spells, requiring no material components:\n\nAt will: {i}create or destroy water{/i}, {i}detect evil and good{/i}, {i}detect magic{/i}, {i}fog cloud{/i}, {i}purify food and drink{/i}\n3/day each: {i}tongues{/i}, {i}water breathing{/i}, {i}water walk{/i}\n1/day each: {i}conjure elemental{/i} (water elemental only), {i}control water{/i}, {i}gaseous form{/i}, {i}invisibility{/i}, {i}plane shift{/i}" compset="RaceSpec">
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spCreaFood">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDeteEvil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spFogClou">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spPuriFood">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spTongues">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spWateBrea">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spWateWalk">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spConjElem">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spContWate">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spGaseForm">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CWatJet" name="Water jet" description="The marid magically shoots water in a 60-foot line that is 5 feet wide. Each creature in that lin e must make a DC 16 Dexterity saving throw. On a failure, a target takes 21 (6d6) bludgeoning damage and, if it is Huge or smaller, is pushed up to 20 feet away from the marid and knocked prone. On a success, a target takes half the bludgeoning damage, but is neither pushed nor knocked prone." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CMaElDe" name="Elemental Demise" description="If the marid die s, its body disintegrates into a burst of water and foam , leaving behind only equipment the marid was wearing or carrying." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CReRege" name="Regeneration" description="The revenant regains 10 hit points at the start of its turn. If the revenant takes fire or radiant damage, this trait doesn&apos;t function at the start of the revenant&apos;s next turn. The revenant&apos;s body is destroyed only if it starts its turn with 0 hit points and doesn&apos;t regenerate." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CReReju" name="Rejuvenation" description="When the revenant&apos;s body is destroyed, its soul lingers. After 24 hours, the soul inhabits and animates another corpse on the same plane of existence and regains all its hit points. While the soul is bodiless, a wish spell can be used to force the soul to go to the afterlife and not return." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CVenTra" name="Vengeful Tracker" description="The revenant knows the distance to and direction of any creature against which it seeks revenge, even if the creature and the revenant are on different planes of existence. If the creature being tracked by the revenant dies, the revenant knows." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="ra5CVenGla" name="Vengeful Glare" description="The revenant targets one creature it can see within 30 feet of it and against which it has sworn vengeance. The target must make a DC 15 Wisdom saving throw. On a failure , the target is paralyzed until the revenant deals damage to it, or until the end of the revenant&apos;s next turn. When the paralysis ends, the target is frightened of the revenant for 1 minute. The frightened target can repeat the saving throw at the end of each of its turns, with disadvantage if it can see the revenant, ending the frightened condition on itself on a success." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CEmInSp" name="Innate Spellcasting" description="The empyrean&apos;s innate spellcasting ability is Chari sma (spell save DC 23, +15 to hit with spell attacks). It can innately cast the following spells, requiring no material components:\n\nAt will: {i}greater restoration{/i}, {i}pass without trace{/i}, {i}water breathing{/i}, {i}water walk{/i}\n1jday each: {i}commune{/i}, {i}dispel evil and good{/i}, {i}earthquake{/i},{i} fire storm{/i}, {i}plane shift{/i} (self only)" compset="RaceSpec">
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spGreaRest">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spPassTrac">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spWateBrea">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spWateWalk">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spCommune">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDispEvil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spEarthqua">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spFireStor">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CEmLeAc" name="Legendary Action" description="The empyrean can take 3 legendary actions, choosing from th e options below. Only one legendary action option can be used at a time and only at the end of another creature&apos;s turn. The empyrean regains spent legendary actions at the start of its turn.\n\n{b}Attack.{/b} The empyrean makes one attack.\n{b}Bolster.{/b} The empyrean bolsters all non hostile creatures within 120 feet of it until th e end of its next turn. Bolstered creatures can&apos;t be charmed or frightened, and they gain advantage on ability checks and saving throws until the end of the empyrean&apos;s next turn.\n{b}Trembling Strike (Costs 2 Actions).{/b} The empyrean strikes the ground with its maul, triggering an earth tremor. All other creatures on the ground within 60 feet of the empyrean must succeed on a DC 25 Strength saving throw or be knocked prone." compset="RaceSpec">
+    <fieldval field="trkMax" value="3"/>
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="Round"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    </thing>
+  <thing id="ra5CDMSpCa" name="Spellcasting" description="The drow is a 10th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 14, +6 to hit with s pell attacks) . The drow has the following wizard spells prepared:\n\nCantrips (at will): mage hand, minor illusion, poison spray, ray of frost\n1st level (4 slots): mage armor, magic missile, shield, witch bolt\n2nd level (3 slots): alter self, misty step, web\n3rd level (3 slots): fly, lightning bolt\n4th level (3 slots): Evard&apos;s black tentacles, greater invisibility\n5th level (2 slots): cloudkill" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CDPSpCa" name="Spellcasting" description="The drow is a 10th-level spellcaster. Her spellcasting ability is Wisdom (save DC 14, +6 to hit with spell attacks) . The drow has the following cleric spells prepared: \n\nCantrips (at will) : guidance, poison spray, resistance, spare the dying, thaumaturgy\n1st level (4 slots): animal friendship, cure wounds, detect poison and disease, ray of sickness\n2nd level (3 slots) : lesserrestoratlon, protection from poison, web\n3rd level (3 slots): conjure animals (2 giant spiders), dispel magic\n4th level (3 slots): divination, freedom of movement\n5th level (2 slots): insect plague, mass cure wounds" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CFSSpCa" name="Spellcasting" description="The flameskull is a 5th-level spell caster. Its spellcasting ability is Intelligence (spell save DC 13, +5 to hit with spell attacks). It requires no somatic or material components to cast its spells. The flameskull has the following wizard spells prepared:\n\nCantrip (at will): mage hand\n1st level (3 slots): magic missile, shield\n2nd level (2 slots): blur, flaming sphere\n3rd level (1 slot): fireball" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CKASpCa" name="Spellcasting" description="The kuo-toa is a 10th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 14, +6 to hit with spell attacks). The kuo-toa has the following cleric spells prepared:\n\nCantrips (at will): guidance, sacred flame, thaumaturgy\n1st level (4 slots): detect magic, sanctuary, shield of faith\n2nd level (3 slots): hold person, spiritual weapon\n3rd level (3 slots): spirit guardians, tongues\n4th level (3 slots): control water, divination\n5th level (2 slots): mass cure wounds, scrying" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CKWSpCa" name="Spellcasting" description="The kuo-toa is a 2nd-level spellcaster. Its spellcasting abil ity is Wisdom (spell save DC 12, +4 to hit with spell attacks). The kuo-toa has the following cleric spells prepared:\n\nCantrips (at will): sacred flame, thaumaturgy\n1st level (3 slots): bane, shield of fa ith" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CLSSpCa" name="Spellcasting (Lizardfolk Form Only)" description="The lizardfolk is a 5th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 12, +4 to hit with s pell attacks). The lizardfolk has the following druid spells prepared:\n\nCan trips (at will) : druidcraft, produce flame, thorn whip\n1st Level (4 slots): entangle ,fog cloud\n2nd Level (3 slots): heat metal, spike growth\n3rd Leve l (2 slots): co njure animals (reptiles only) , plant gro wth" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CSPSpCa" name="Spellcasting" description="The sahuagin is a 6th-level spellcaster. Her spellcasting ability is Wisdom (spell save DC 12, +4 to hit with spell attacks). She has the following cleric spells prepared:\n\nCantrips (at will): guidance, thaumaturgy\n1st level (4 slots): bless, detect magic, guiding bolt\n2nd level (3 slots): hold person, spiritual weapon (trident)\n3rd level (3 slots): mass healing word, tongues" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CArSpCa" name="Spellcasting" description="The arcanaloth is a 16th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 17, +9 to hit with spell attacks). The arcanaloth has the following wizard spells prepared:\n\nCantrips (at will): .fire bolt, mage hand, minor illusion, prestidigitation\n1st level (4 slots) : detect magic, identify, shield, Tenser&apos;s floating disk\n2nd level (3 slots): detect thoughts, mirror image, phantasmal force, suggestion\n3rd level (3 slots): counter spell ,fear, fireball\n4th level (3 slots) : banishment, dimension door\n5th level (2 slots) : contact other plane, hold monster\n6th level (1 slot): chain lightning\n7th level (1 slot): finger of death" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CBNGNSC" name="Spellcasting" description="Spellcasting. The naga is a 5th·level spellcaster (spell save DC 12, +4 to hit with spell attacks) that needs only verbal components to cast its spells.\n\nIf the naga was a guardian naga in life, its spellcasting ability is Wisdom, and it has the following cleric spells prepared:\n\nCantrips (at will) : mending, sacred flame, thaumaturgy\n1st level (4 slots): command, shield of faith\n2nd level (3 slots) : calm emotions, hold person\n3rd level (2 slots) : bestow curse" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CBNSNSC" name="Spellcasting" description="Spellcasting. The naga is a 5th·level spellcaster (spell save DC 12, +4 to hit with spell attacks) that needs only verbal components to cast its spells.\n\nIf the naga was a spirit naga in life, its spellcasting ability is Intelligence, and it has the following wizard spells prepared:\n\nCantrips (at will) : mage hand, minor illusion , ray of frost\n1st level (4 slots): charm person, sleep\n2nd level (3 slots): detect thoughts, hold person\n3rd level (2 slots) : lightning bolt" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="rc5CSpiNag" name="Spirit Naga" description="Was a Spirit Naga in Life" compset="RaceCustom">
+    <tag group="AllowRCust" tag="r5CMMBoneN"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <bootstrap thing="ra5CBNSNSC"></bootstrap>
+    </thing>
+  <thing id="rc5CGuaNag" name="Guardian Naga" description="Was a Guardian Naga in Life" compset="RaceCustom">
+    <tag group="AllowRCust" tag="r5CMMBoneN"/>
+    <tag group="sClass" tag="cHelpClr"/>
+    <bootstrap thing="ra5CBNGNSC"></bootstrap>
+    </thing>
+  <thing id="ra5COGSpCa" name="Spellcasting" description="The ore is a 3rd-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 11, +3 to hit with spell attacks). The orc has the following cleric spells prepared:\n\nCantrips (at-will): guidance, resistance, thaumaturgy\n1st level (4 slots): bless, command\n2nd level (2 slots): augury, spiritual weapon (spear)" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
     </thing>
   </document>
