@@ -1969,18 +1969,37 @@ nexteach]]></eval>
     <fieldval field="rWIS" value="2"/>
     <fieldval field="rCHA" value="1"/>
     <fieldval field="rCR" value="6"/>
+    <fieldval field="rAC" value="4"/>
     <usesource source="5eMMCP"/>
-    <tag group="RaceType" tag="NPC"/>
-    <tag group="DamageRes" tag="dtPiercing"/>
-    <tag group="DamageRes" tag="dtSlashing"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamComRes" tag="dcWepNonMa"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="NeutralGE"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
+    <bootstrap thing="tpElementa"></bootstrap>
     <bootstrap thing="lTerran"></bootstrap>
-    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    <bootstrap thing="wSlam">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="xTremorsen">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGaDuFa"></bootstrap>
+    <bootstrap thing="ra5CRolCha"></bootstrap>
+    <bootstrap thing="ra5CAniBou"></bootstrap>
+    <bootstrap thing="x5CRolling">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
     </thing>
   <thing id="r5CMMGeDao" name="Dao" compset="Race">
     <fieldval field="rHitDice" value="15"/>
@@ -7087,5 +7106,46 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="Usage" tag="ShortRest"/>
     <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="ra5CAniBou" name="Animate Boulders" description="The galeb duhr magically animates up to two boulders it can see within 60 feet of it. A boulder has statistics like those of a galeb duhr, except it has Intelligence 1 and Charisma 1, it can&apos;t be charmed or frightened, and it lacks this action option. A boulder remains animated as long as the galeb duhr maintain s concentration, up to l minute (as if concentrating on a spell) ." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CRolCha" name="Rolling Charge" description="If the galeb duhr rolls at least 20 feet straight toward a target and then hits it with a slam attack on the same turn, the target takes an ext ra 7 (2d6) bludgeoning damage. If the target is a creature, it must succeed on a DC 16 Strength saving throw or be knocked prone." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CGaDuFa" name="False Appearance" description="While the galeb duhr remains motionless, it is indistinguishable from a normal boulder" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="x5CRolling" name="Rolling" compset="Ability" summary="You have a Climb speed." uniqueness="unique">
+    <tag group="Helper" tag="BaseAbil" name="Base Ability" abbrev="Base Ability"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="SpecType" tag="Movement" name="Movement" abbrev="Movement"/>
+    <eval phase="PostAttr" priority="9000">
+      ~ We do this because it allows detection and manipulation of a tag value
+      ~ before the livename is set at Final 15000
+      field[abValue].value = maximum(field[abValue].value, tagmax[Value.?])</eval>
+    <eval phase="Final" priority="15000" index="2"><![CDATA[
+      ~ If we use CalcValue it will reset our value to the tagmax if it was
+      ~ decreased, so only determine if our value is not 0 and we should be
+      ~ shown.
+      call ValueShow
+
+      ~if our value is greater than zero, we factor in bonus movement
+      if (field[abValue].value > 0) then
+        field[abValue].value += field[abImprove].value
+        endif
+var double as number
+double = field[abValue].value*2
+
+      ~ Use our value field as the speed at which we can roll
+      field[livename].text = field[name].text & " (" & field[abValue].value & " feet when rolling)" & double & " feet when rolling downhill"
+      field[sbName].text = field[abValue].value & " ft. when rolling, " & double & " ft. rolling downhill"]]></eval>
     </thing>
   </document>
