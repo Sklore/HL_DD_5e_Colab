@@ -61,4 +61,72 @@
     <tag group="ProductId" tag="Wizards"/>
     <tag group="ItemRarity" tag="Rare"/>
     </thing>
+  <thing id="io5CGloThi" name="Gloves of Thievery" description="Gives +5 do Dexterity (Sleight of Hand) checks to pick locks. Invisible while worn." compset="Wondrous">
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="Helper" tag="EquipMag" name="EquipMag" abbrev="EquipMag"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      #situational[hero.child[skSleight],"+5 to checks made to pick locks",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="i5cMariArm" name="Mariner&apos;s Armor" description="You gain a swimming speed equal to your walking speed while wearing this armor. If at the start of your turn you have 0 hit points the armor makes you rise 60 feet." compset="MagicArmor" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="light, medium, or heavy"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="User" tag="HideActChk" name="HideActChk" abbrev="HideActChk"/>
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="ProductId" tag="Wizards"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~restrict the list of armor to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & (ArmorClass.Light | ArmorClass.Medium | ArmorClass.Heavy)"
+
+      ~set our name based on the type of armor chosen
+      perform gizmo.findchild[BaseArmor].setfocus
+      field[livename].text = "Mariner's "
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Armor"
+        endif
+      field[shortname].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagArmor"></child>
+    </thing>
+  <thing id="ipPotFireB" name="Potion of Fire Breathing" description="Over the next hour you can exhale fire as a bonus action three times, each time causing a target within 30 feet to make a DC 13 Dexterity saving throw or take 4d6 damage (half on success)." compset="Potion" stacking="merge">
+    <tag group="DescInfo" tag="spClairvoy" name="Clairvoyance" abbrev="Clairvoyance"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    </thing>
+  <thing id="ipPotInvul" name="Potion of Invulnerability" description="You gain resistance toall damage for one minute." compset="Potion" stacking="merge">
+    <tag group="ItemRarity" tag="Rare"/>
+    </thing>
+  <thing id="ipPotVital" name="Potion of Vitality" description="Any exhastion, disease or poison is cured/removed. Over the next 24 hours you regain max hitpoints on all Hit Dies spent." compset="Potion" stacking="merge">
+    <tag group="ItemRarity" tag="Common" name="Common" abbrev="Common"/>
+    </thing>
+  <thing id="ioSendSton" name="Sending Stones" description="Always come in  pairs. Touch one and spend an action to establish a Sending to the other stone (if no one holds the other stone you know it and the spell is not spent.) Recharges next dawn. If one stone is destroyed the other is dispelled permanently." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eDMGCP" parent="p5ePack" name="5e Dungeon Master&apos;s Guide"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    </thing>
+  <thing id="iJSentiShi" name="Sentinel Shield" description="You have advantage on Wisdom (Perception) rolls and initiative while it is equipped.\nTODO: Unscripted" compset="MagicArmor">
+    <fieldval field="miTypeDet" value="shield"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="Helper" tag="EquipAvail" name="EquipAvail" abbrev="EquipAvail"/>
+    <child entity="mSpecMagic">
+      <bootstrap thing="mShield"></bootstrap>
+      </child>
+    </thing>
   </document>
