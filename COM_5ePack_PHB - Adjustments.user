@@ -376,4 +376,26 @@
       perform field[pChosen].chosen.setlinkage[castattr,BaseAttr,searchexpr]
       perform field[pChosen].chosen.setlinkage[spellattr,BaseAttr,searchexpr]]]></eval>
     </thing>
+  <thing id="p5CAdd1Sp" name="Add Single Spell to Class/Race" description="Use this adjustment to add a single spell from any class to any class/race on your character.  In example you could add the Hold Person spell to the Paladin spell list or to the Death Knight." compset="InPlay">
+    <fieldval field="pCandExpr2" value="component.BaseSpell"/>
+    <fieldval field="pCandExpr" value="component.BaseClass|component.BaseRace"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="OthAdjCat" tag="Spell"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Adjust2nd" tag="S2Custom"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+      doneif (field[pChosen2].ischosen = 0)
+
+      ~ Pull from the spell and push to the Class
+      perform field[pChosen2].chosen.pulltags[ClsAllowSp.?]
+      perform field[pChosen].chosen.pushtags[ClsAllowSp.?]]]></eval>
+    </thing>
   </document>
