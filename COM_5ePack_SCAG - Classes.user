@@ -795,32 +795,195 @@ doneif (#levelcount[Wizard] < 14)
       <autotag group="Helper" tag="Memorized"/>
       <autotag group="SpellType" tag="cHelpClr"/>
       </bootstrap>
+    <bootstrap thing="c5CClrArM2">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrArBa">
+      <autotag group="ClSpecWhen" tag="5"/>
+      </bootstrap>
     </thing>
-  <thing id="c5CClrArIn" name="Arcane Initiate" description="When you choose this domain at 1st level, you gain proficiency in the Arcana skill, and you gain two cantrips of your choice from the wizard spell list. For you, these cantrips count as cleric cantrips." compset="ClSpecial">
-    <tag group="DamageRes" tag="NoMagBludg" name="nonmagical bludgeoning" abbrev="nonmagical bludgeoning"/>
-    <tag group="DamageRes" tag="NoMagPierc" name="nonmagical piercing" abbrev="nonmagical piercing"/>
-    <tag group="DamageRes" tag="NoMagSlash" name="nonmagical slashing" abbrev="nonmagical slashing"/>
+  <thing id="c5CClrArIn" name="Arcane Initiate" description="When you choose this domain at 1st level, you gain proficiency in the Arcana skill, and you gain two cantrips of your choice from the wizard spell list. For you, these cantrips count as cleric cantrips.\n\n{i}{b}Note:{/b} Once you have selected your 2 wizard cantrips, you must add them manually to your list of prepared spell.{/i}" compset="ClSpecial">
+    <comment>Note: Once selected, your chosen cantrips must be manually added to you list of prepared spells.</comment>
+    <fieldval field="usrCandid1" value="component.BaseSpell &amp; sLevel.0 &amp; sClass.cHelpWiz"/>
+    <fieldval field="usrCandid2" value="component.BaseSpell &amp; sLevel.0 &amp; sClass.cHelpWiz"/>
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="ChooseSrc2" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[    doneif (tagis[Helper.ShowSpec] = 0)
+
+    doneif (tagis[Helper.Disable] <> 0)
+
+    if (field[usrChosen1].ischosen <> 0) then
+      perform field[usrChosen1].chosen.pulltags[ClsAllowSp.?]
+    endif
+
+    if (field[usrChosen2].ischosen <> 0) then
+      perform field[usrChosen2].chosen.pulltags[ClsAllowSp.?]
+    endif
+
+    perform root.linkage[table].pushtags[ClsAllowSp.?]]]></eval>
     <eval phase="First"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
 
 perform hero.assign[ProfSkill.skArcana]]]></eval>
+    <evalrule phase="PostLevel" priority="10000" message="Must add chosen spells to spells known!" summary="Must add chosen spells to spells known!"><![CDATA[
+      validif (tagis[Helper.ShowSpec] = 0)
+
+      validif (tagis[Helper.Disable] <> 0)
+
+      var spellname1 as string
+      var spellname2 as string
+      var searchexpr as string
+      var messnames as string
+      var foundone as number
+
+      @valid = 1
+
+      if (field[usrChosen1].ischosen <> 0) then
+        foundone = 0
+        searchexpr = "KnowSpell." & field[usrChosen1].chosen.idstring & " & SpellType.cHelpClr"
+
+
+        foreach pick in hero from BaseSpell where searchexpr
+          foundone = 1
+
+          ~ If this copy of the ability is bootstrapped by the Arcane domain, the chosen spells should be marked as Free, because they don't count against our spells known limit.
+          if (root.tagis[Ability.cClrArcana] <> 0) then
+            perform eachpick.assign[Helper.Free]
+            endif
+          nexteach
+
+        if (foundone = 0) then
+          spellname1 = field[usrChosen1].chosen.field[name].text
+          @valid = 0
+          endif
+        endif
+
+      if (field[usrChosen2].ischosen <> 0) then
+        foundone = 0
+        searchexpr = "KnowSpell." & field[usrChosen2].chosen.idstring & " & SpellType.cHelpClr"
+
+        foreach pick in hero from BaseSpell where searchexpr
+          foundone = 1
+
+          ~ If this copy of the ability is bootstrapped by the Arcane domain, the chosen spells should be marked as Free, because they don't count against our spells known limit.
+          if (root.tagis[Ability.cClrArcana] <> 0) then
+            perform eachpick.assign[Helper.Free]
+            endif
+          nexteach
+
+        if (foundone = 0) then
+          spellname2 = field[usrChosen2].chosen.field[name].text
+          @valid = 0
+          endif
+        endif
+
+      if (@valid = 0) then
+        messnames = splice(messnames, spellname1, ", ")
+        messnames = splice(messnames, spellname2, ", ")
+        @message = "You have selected the following spells for Arcane Initiate but not added them to your Cleric spells known: " & messnames
+        endif]]></evalrule>
     </thing>
-  <thing id="c5CClrArAb" name="Channel Divinity: Arcane Abjuration" description="Starting at 2nd level, you can use your Channel Divinity to abjure otherworldly creatures.\n\nAs an action, you present your holy symbol, and one celestial, elemental, fey, or fiend of your choice that is within 30 feet of you must make a Wisdom saving throw, provided that the creature can see or hear you. If the creature fails its saving throw, it is turned for 1 minute or until it takes any damage.\n\nA turned creature must spend its turns trying to move as far away from you as it can, and it can&apos;t willingly end its move in a space within 30 feet of you. It also can&apos;t take reactions. For its action, it can only use the Dash action or try to escape from an effect that prevents it from moving. If there&apos;s nowhere to move, the creature can use the Dodge action. \n\nAfter you reach 5th level, when a creature fails its saving throw against your Arcane Abjuration feature, the creature is banished for 1 minute (as in the banishment spell, no concentration required) if it isn&apos;t on its plane of origin and its challenge rating is at or below a certain threshold, as shown on the Arcane Banishment table.\n\nARCANE BANISHMENT\nCleric Level Banishes Creatures of CR ...\n5th 1/2 or lower\n8th 1 or lower\n1 lth 2 or lower\n14th 3 or lower\n17th 4 or lower" compset="ClSpecial" summary="You can use your Channel Divinity to abjure otherworldly creatures.">
+  <thing id="c5CClrArAb" name="Channel Divinity: Arcane Abjuration" description="Starting at 2nd level, you can use your Channel Divinity to abjure otherworldly creatures.\n\nAs an action, you present your holy symbol, and one celestial, elemental, fey, or fiend of your choice that is within 30 feet of you must make a Wisdom saving throw, provided that the creature can see or hear you. If the creature fails its saving throw, it is turned for 1 minute or until it takes any damage.\n\nA turned creature must spend its turns trying to move as far away from you as it can, and it can&apos;t willingly end its move in a space within 30 feet of you. It also can&apos;t take reactions. For its action, it can only use the Dash action or try to escape from an effect that prevents it from moving. If there&apos;s nowhere to move, the creature can use the Dodge action." compset="ClSpecial" summary="You can use your Channel Divinity to abjure otherworldly creatures.">
     <fieldval field="abDuration" value="1"/>
     <fieldval field="abRange" value="30"/>
-    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
     <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
     <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
     <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
-    <tag group="StandardDC" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="StandardDC" tag="aWIS"/>
     <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abCategory" tag="ClrChanDiv"/>
     </thing>
   <thing id="c5CClrSpBr" name="Spell Breaker" description="Starting at 6th level, when you restore hit points to an ally with a spell of 1st level or higher, you can also end one spell of your choice on that creature. The level of the spell you end must be equal to or lower than the level of the spell slot you use to cast the healing spell." compset="ClSpecial" summary="When you restore hit points to an ally with a spell of 1st level or higher, you can also end one spell of your choice on that creature.">
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
     </thing>
-  <thing id="c5CClrArMa" name="Arcane Mastery" description="At 17th level, you choose four spells from the wizard spell list, one from each of the following levels: 6th, 7th, 8th, and 9th. You add them to your list of domain spells. Like your other domain spells, they are always prepared and count as cleric spells for you." compset="ClSpecial"></thing>
+  <thing id="c5CClrArMa" name="Arcane Mastery" description="At 17th level, you choose four spells from the wizard spell list, one from each of the following levels: 6th, 7th, 8th, and 9th. You add them to your list of domain spells. Like your other domain spells, they are always prepared and count as cleric spells for you.\n\n{i}{b}Note:{/b} Once you have chosen your 4 wizard spells they will be listed with your list of cleric spells. You must then add them to your list of memorized spells manually.{/i}" compset="ClSpecial">
+    <comment><![CDATA["KnowSpell." & field[usrChosen1].chosen.idstring & " & SpellType.cHelpClr"
+
+KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
+    <fieldval field="usrCandid1" value="component.BaseSpell &amp; sLevel.6 &amp; sClass.cHelpWiz"/>
+    <fieldval field="usrCandid2" value="component.BaseSpell &amp; sLevel.7 &amp; sClass.cHelpWiz"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[  doneif (tagis[Helper.ShowSpec] = 0)
+
+    doneif (tagis[Helper.Disable] <> 0)
+
+    if (field[usrChosen1].ischosen <> 0) then
+      perform field[usrChosen1].chosen.pulltags[ClsAllowSp.?]
+    endif
+
+    if (field[usrChosen2].ischosen <> 0) then
+      perform field[usrChosen2].chosen.pulltags[ClsAllowSp.?]
+    endif
+
+    perform root.linkage[table].pushtags[ClsAllowSp.?]
+    ~perform root.linkage[table].assign[sClass.cHelpClr]
+    hero.child[cHelpClr].field[cMaxSpMem].value += 2]]></eval>
+    <evalrule phase="PostLevel" priority="10000" message="Must add chosen spells to spells known!" summary="Must add chosen spells to spells known!"><![CDATA[
+      validif (tagis[Helper.ShowSpec] = 0)
+
+      validif (tagis[Helper.Disable] <> 0)
+
+      var spellname1 as string
+      var spellname2 as string
+      var searchexpr as string
+      var messnames as string
+      var foundone as number
+
+      @valid = 1
+
+      if (field[usrChosen1].ischosen <> 0) then
+        foundone = 0
+        searchexpr = "KnowSpell." & field[usrChosen1].chosen.idstring & " & SpellType.cHelpClr"
+
+
+        foreach pick in hero from BaseSpell where searchexpr
+          foundone = 1
+
+          ~ If this copy of the ability is bootstrapped by the Arcane domain, the chosen spells should be marked as Free, because they don't count against our spells known limit.
+          if (root.tagis[Ability.cClrArcana] <> 0) then
+            perform eachpick.assign[Helper.Free]
+            perform eachpick.assign[Helper.Memorized]
+            endif
+          nexteach
+
+        if (foundone = 0) then
+          spellname1 = field[usrChosen1].chosen.field[name].text
+          @valid = 0
+          endif
+        endif
+
+      if (field[usrChosen2].ischosen <> 0) then
+        foundone = 0
+        searchexpr = "KnowSpell." & field[usrChosen2].chosen.idstring & " & SpellType.cHelpClr"
+
+        foreach pick in hero from BaseSpell where searchexpr
+          foundone = 1
+
+          ~ If this copy of the ability is bootstrapped by the Arcane domain, the chosen spells should be marked as Free, because they don't count against our spells known limit.
+          if (root.tagis[Ability.cClrArcana] <> 0) then
+            perform eachpick.assign[Helper.Free]
+            endif
+          nexteach
+
+        if (foundone = 0) then
+          spellname2 = field[usrChosen2].chosen.field[name].text
+          @valid = 0
+          endif
+        endif
+
+      if (@valid = 0) then
+        messnames = splice(messnames, spellname1, ", ")
+        messnames = splice(messnames, spellname2, ", ")
+        @message = "You have selected the following spells for Arcane Mastery but not added them to your Cleric spells known: " & messnames
+        endif]]></evalrule>
+    </thing>
   <thing id="c5CDrdCiSw" name="Circle of Swords" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
     <tag group="SpecSource" tag="cHelpDrd" name="Druid" abbrev="Druid"/>
@@ -1232,5 +1395,129 @@ perform hero.assign[ProfSkill.skArcana]]]></eval>
     <fieldval field="abRange" value="30"/>
     <tag group="abAction" tag="Action"/>
     <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="c5CClrArM2" name="Arcane Mastery" description="At 17th level, you choose four spells from the wizard spell list, one from each of the following levels: 6th, 7th, 8th, and 9th. You add them to your list of domain spells. Like your other domain spells, they are always prepared and count as cleric spells for you.\n\n{i}{b}Note:{/b} Once you have chosen your 4 wizard spells they will be listed with your list of cleric spells. You must then add them to your list of memorized spells manually.{/i}" compset="ClSpecial">
+    <comment>Helper.Helper</comment>
+    <fieldval field="usrCandid1" value="component.BaseSpell &amp; sLevel.8 &amp; sClass.cHelpWiz"/>
+    <fieldval field="usrCandid2" value="component.BaseSpell &amp; sLevel.9 &amp; sClass.cHelpWiz"/>
+    <usesource source="5eSCAGCP" parent="p5eBooks" name="Sword Coast Adventures Guide"/>
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="ChooseSrc2" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="Helper" tag="Helper" name="Helper" abbrev="Helper"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[   doneif (tagis[Helper.ShowSpec] = 0)
+
+    doneif (tagis[Helper.Disable] <> 0)
+
+    if (field[usrChosen1].ischosen <> 0) then
+      perform field[usrChosen1].chosen.pulltags[ClsAllowSp.?]
+    endif
+
+    if (field[usrChosen2].ischosen <> 0) then
+      perform field[usrChosen2].chosen.pulltags[ClsAllowSp.?]
+    endif
+
+    perform root.linkage[table].pushtags[ClsAllowSp.?]
+    ~perform root.linkage[table].assign[sClass.cHelpClr]
+    hero.child[cHelpClr].field[cMaxSpMem].value += 2]]></eval>
+    <evalrule phase="PostLevel" priority="10000" message="Must add chosen spells to spells known!" summary="Must add chosen spells to spells known!"><![CDATA[
+      validif (tagis[Helper.ShowSpec] = 0)
+
+      validif (tagis[Helper.Disable] <> 0)
+
+      var spellname1 as string
+      var spellname2 as string
+      var searchexpr as string
+      var messnames as string
+      var foundone as number
+
+      @valid = 1
+
+      if (field[usrChosen1].ischosen <> 0) then
+        foundone = 0
+        searchexpr = "KnowSpell." & field[usrChosen1].chosen.idstring & " & SpellType.cHelpClr"
+
+
+        foreach pick in hero from BaseSpell where searchexpr
+          foundone = 1
+
+          ~ If this copy of the ability is bootstrapped by the Arcane domain, the chosen spells should be marked as Free, because they don't count against our spells known limit.
+          if (root.tagis[Ability.cClrArcana] <> 0) then
+            perform eachpick.assign[Helper.Free]
+            endif
+          nexteach
+
+        if (foundone = 0) then
+          spellname1 = field[usrChosen1].chosen.field[name].text
+          @valid = 0
+          endif
+        endif
+
+      if (field[usrChosen2].ischosen <> 0) then
+        foundone = 0
+        searchexpr = "KnowSpell." & field[usrChosen2].chosen.idstring & " & SpellType.cHelpClr"
+
+        foreach pick in hero from BaseSpell where searchexpr
+          foundone = 1
+
+          ~ If this copy of the ability is bootstrapped by the Arcane domain, the chosen spells should be marked as Free, because they don't count against our spells known limit.
+          if (root.tagis[Ability.cClrArcana] <> 0) then
+            perform eachpick.assign[Helper.Free]
+            endif
+          nexteach
+
+        if (foundone = 0) then
+          spellname2 = field[usrChosen2].chosen.field[name].text
+          @valid = 0
+          endif
+        endif
+
+      if (@valid = 0) then
+        messnames = splice(messnames, spellname1, ", ")
+        messnames = splice(messnames, spellname2, ", ")
+        @message = "You have selected the following spells for Arcane Mastery but not added them to your Cleric spells known: " & messnames
+        endif]]></evalrule>
+    </thing>
+  <thing id="c5CClrArBa" name="Arcane Banishment" description="  After you reach 5th level, when a creature fails its saving throw against your Arcane Abjuration feature, the creature is banished for 1 minute (as in the banishment spell, no concentration required) if it isn&apos;t on its plane of origin and its challenge rating is at or below a certain threshold, as shown on the Arcane Banishment table.\n\nCleric Level           Banishes Creatures of CR ...\n  5th                         1/2 or lower\n  8th                         1 or lower\n 11th                        2 or lower\n 14th                        3 or lower\n 17th                        4 or lower" compset="ClSpecial">
+    <usesource source="5eSCAGCP" parent="p5eBooks" name="Sword Coast Adventures Guide"/>
+    <tag group="StandardDC" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+     var cr as number
+     var level as number
+     level = #levelcount[Cleric]
+if (level >= 17) then 
+cr = 4
+elseif (level >= 14) then 
+cr = 3
+elseif (level >= 11) then 
+cr = 2
+elseif (level >= 8) then 
+cr = 1
+elseif (level >= 5) then 
+cr = .5
+endif
+
+     field[abText].text = "CR " & cr]]></eval>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[
+     var cr as number
+     var level as number
+     level = #levelcount[Cleric]
+if (level >= 17) then 
+cr = 4
+elseif (level >= 14) then 
+cr = 3
+elseif (level >= 11) then 
+cr = 2
+elseif (level >= 8) then 
+cr = 1
+elseif (level >= 5) then 
+cr = .5
+endif
+     
+     field[listname].text = field[thingname].text & " (CR " & cr & ")"]]></eval>
     </thing>
   </document>
