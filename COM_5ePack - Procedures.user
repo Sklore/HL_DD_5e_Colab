@@ -85,11 +85,10 @@
     doneif (focus.tagis[component.Configure] <> 0)
     ]]></procedure>
 
-  <procedure id="S2SetName" context="pick"><![CDATA[
-    ~Set the Custom Name and Custom Text adjustments logic into this single
-    ~procedure. We need to allow for using the Duration field or the Source
-    ~field for setting the name so that we are backwards compatable.
-    ~Timing: Render/99999999
+
+  <procedure id="S2SeleText" context="pick"><![CDATA[
+    ~ For adjustment use only. Select where the text is coming from.
+    ~ Either the Duration field or the Source field.
 
     ~ 1 = Source
     ~ 2 = Duration
@@ -110,6 +109,22 @@
         S2Type = 1
       Endif
     Endif
+    ]]>
+  </procedure>
+
+
+  <procedure id="S2SetName" context="pick"><![CDATA[
+    ~Set the Custom Name and Custom Text adjustments logic into this single
+    ~procedure. We need to allow for using the Duration field or the Source
+    ~field for setting the name so that we are backwards compatable.
+    ~Timing: Render/99999999
+
+    ~ 1 = Source
+    ~ 2 = Duration
+    var S2Type as number
+
+    ~ Figure out if we are to use Duration or Source text
+    Call S2SeleText
 
     ~ The tag AdjShadow.Name means we are totally overwriting the live name value
     If (tagis[AdjShadow.Name] <> 0) Then

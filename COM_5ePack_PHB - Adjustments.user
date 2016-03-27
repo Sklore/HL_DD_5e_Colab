@@ -398,4 +398,182 @@
       perform field[pChosen2].chosen.pulltags[ClsAllowSp.?]
       perform field[pChosen].chosen.pushtags[ClsAllowSp.?]]]></eval>
     </thing>
+  <thing id="p5CDamExtr" name="Natural Weapon, Extra Damage" description="Use this adjustment to add extra damage text to any creatures natural attack. After adding select the natural attack, the text action of Append or Override and then type your text into the (Source) or (Duration) fields." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseNatWep"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="OthAdjCat" tag="Race"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <eval phase="Final" priority="999999999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+      doneif (field[pChosen2].ischosen = 0)
+
+      ~ 1 = Source
+      ~ 2 = Duration
+      var S2Type as number
+
+      ~ Figure out if we are to use Duration or Source text
+      Call S2SeleText
+      
+      ~ Use "Source" text
+      if (S2Type = 1) then
+
+        ~ Do we overwrite the text or append the text?
+        if (field[pChosen2].chosen.tagis[5CTextAct.OverWrite] = 1) then
+          field[pChosen].chosen.field[wDamExtra].text = field[pSource].text
+        else
+          field[pChosen].chosen.field[wDamExtra].text &= field[pSource].text
+        endif
+      
+      ~..Use "Duration" text
+      elseif (S2Type = 2) then
+      
+        ~ Do we overwrite the text or append the text?
+        if (field[pChosen2].chosen.tagis[5CTextAct.OverWrite] = 1) then
+          field[pChosen].chosen.field[wDamExtra].text = field[pDuration].text
+        else
+          field[pChosen].chosen.field[wDamExtra].text = field[pDuration].text
+        endif
+      endif]]></eval>
+    </thing>
+  <thing id="p5CAttEff" name="Natural Weapon, Attack Effect" description="Use this adjustment to append/override the attack text effect on a creatures creatures natural attack. After adding select the natural attack, the text action of Append or Overwrite and then type your text into the using the (Source) or (Duration) fields." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseNatWep"/>
+    <fieldval field="pCandExpr2" value="component.SelectHelp &amp; Selection.5CTextAct"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Race"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Adjust2nd" tag="S2Custom"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <eval phase="Final" priority="999999999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+      doneif (field[pChosen2].ischosen = 0)
+
+      ~ 1 = Source
+      ~ 2 = Duration
+      var S2Type as number
+
+      ~ Figure out if we are to use Duration or Source text
+      Call S2SeleText
+      
+      ~ Use "Source" text
+      if (S2Type = 1) then
+
+        ~ Do we overwrite the text or append the text?
+        if (field[pChosen2].chosen.tagis[5CTextAct.OverWrite] = 1) then
+          field[pChosen].chosen.field[wAttackEff].text = field[pSource].text
+        else
+          field[pChosen].chosen.field[wAttackEff].text &= field[pSource].text
+        endif
+      
+      ~..Use "Duration" text
+      elseif (S2Type = 2) then
+      
+        ~ Do we overwrite the text or append the text?
+        if (field[pChosen2].chosen.tagis[5CTextAct.OverWrite] = 1) then
+          field[pChosen].chosen.field[wAttackEff].text = field[pDuration].text
+        else
+          field[pChosen].chosen.field[wAttackEff].text = field[pDuration].text
+        endif
+      endif]]></eval>
+    </thing>
+  <thing id="p5CTargTxt" name="Natural Weapon, Target" description="Use this adjustment to override or append target text on a creatures natural attack. After adding select the natural attack, the text action of Append or Override and then type your text into the (Source) or (Duration) fields." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseNatWep"/>
+    <fieldval field="pCandExpr2" value="component.SelectHelp &amp; Selection.5CTextAct"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Race"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Adjust2nd" tag="S2Custom"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <eval phase="Final" priority="999999999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+      doneif (field[pChosen2].ischosen = 0)
+
+      ~ 1 = Source
+      ~ 2 = Duration
+      var S2Type as number
+
+      ~ Figure out if we are to use Duration or Source text
+      Call S2SeleText
+      
+      ~ Use "Source" text
+      if (S2Type = 1) then
+
+        ~ Do we overwrite the text or append the text?
+        if (field[pChosen2].chosen.tagis[5CTextAct.OverWrite] = 1) then
+          field[pChosen].chosen.field[wTarget].text = field[pSource].text
+        else
+          field[pChosen].chosen.field[wTarget].text &= field[pSource].text
+        endif
+      
+      ~..Use "Duration" text
+      elseif (S2Type = 2) then
+      
+        ~ Do we overwrite the text or append the text?
+        if (field[pChosen2].chosen.tagis[5CTextAct.OverWrite] = 1) then
+          field[pChosen].chosen.field[wTarget].text = field[pDuration].text
+        else
+          field[pChosen].chosen.field[wTarget].text = field[pDuration].text
+        endif
+      endif]]></eval>
+    </thing>
+  <thing id="p5CMutiTxt" name="Multiattack Text" description="Use this adjustment to override or append target text to a creatures multiattack text. After adding select the text action of Append or Override and then type your text into the (Source) or (Duration) fields." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.SelectHelp &amp; Selection.5CTextAct"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Race"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <eval phase="First" priority="1"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+
+      ~ Set our focus to the hero's race &
+      perform hero.findchild[BaseRace].setfocus
+      doneif (state.isfocus = 0)
+
+      ~ 1 = Source
+      ~ 2 = Duration
+      var S2Type as number
+
+      ~ Figure out if we are to use Duration or Source text
+      Call S2SeleText
+      
+      ~ Use "Source" text
+      if (S2Type = 1) then
+
+        ~ Do we overwrite the text or append the text?
+        if (field[pChosen].chosen.tagis[5CTextAct.OverWrite] = 1) then
+          focus.field[rMultiatt].text = field[pSource].text
+        else
+          focus.field[rMultiatt].text &= field[pSource].text
+        endif
+      
+      ~..Use "Duration" text
+      elseif (S2Type = 2) then
+      
+        ~ Do we overwrite the text or append the text?
+        if (field[pChosen].chosen.tagis[5CTextAct.OverWrite] = 1) then
+          focus.field[rMultiatt].text = field[pDuration].text
+        else
+          focus.field[rMultiatt].text = field[pDuration].text
+        endif
+      endif]]></eval>
+    </thing>
   </document>
