@@ -145,4 +145,107 @@
       <assignval field="abText" value="rothé zombie"/>
       </bootstrap>
     </thing>
+  <thing id="r5CALRePlP" name="Red Plume Patrol" compset="Race">
+    <fieldval field="rHitDice" value="5"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="27"/>
+    <fieldval field="rSTR" value="3"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rCR" value="1"/>
+    <fieldval field="rMultiatt" value="The Red Plume patrol makes two melee attacks."/>
+    <usesource source="5eALROD"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <tag group="WepProf" tag="wCrssbwHvy"/>
+    <tag group="WepProf" tag="wLongsword"/>
+    <tag group="WepProf" tag="wNet"/>
+    <tag group="ArmProfGrp" tag="ArmorHeavy"/>
+    <bootstrap thing="ra5CDNParr">
+      <assignval field="abText" value="Red Plume patrol"/>
+      <assignval field="abValue" value="2"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttHuman"></bootstrap>
+    </thing>
+  <thing id="r5CALBreVa" name="Breex Vandermast" compset="Race">
+    <fieldval field="rHitDice" value="11"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="71"/>
+    <fieldval field="rSTR" value="6"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rCHA" value="5"/>
+    <fieldval field="rCR" value="3"/>
+    <fieldval field="rMultiatt" value="Breex makes two melee attacks."/>
+    <fieldval field="rSpCastLev" value="5"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSkill" tag="skAnimHand"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfSkill" tag="skPersuas"/>
+    <tag group="WepProf" tag="wGreatswrd"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Evil"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lOrc"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="tt5CHalfOr"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="ra5CRelEnd">
+      <assignval field="abText" value="Breex"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSavAtt">
+      <assignval field="abText" value="Breex"/>
+      </bootstrap>
+    <bootstrap thing="ra5CParryC">
+      <assignval field="abText" value="Breex"/>
+      <assignval field="abValue" value="2"/>
+      </bootstrap>
+    <bootstrap thing="ra5CBreeSC"></bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
+    </thing>
+  <thing id="ra5CRelEnd" name="Relentless Endurance" description="When {abText} are reduced to 0 hit points, but not killed outright, {abText}  can drop to 1 hit point instead." compset="RaceSpec">
+    <comment>For NPC</comment>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "When " & Field[abText].text & " are reduced to 0 hit points, but not killed outright, " & Field[abText].text & " can drop to 1 hit point instead."]]></eval>
+    </thing>
+  <thing id="ra5CSavAtt" name="Savage Attack" description="When {abText} scores a critical hit with a melee weapon attack, {abText} can roll one of the weapon&apos;s damage dice one additional time and add it to the extra damage of the critical hit." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "When " & Field[abText].text & " scores a critical hit with a melee weapon attack, " & Field[abText].text & " can roll one of the weapon's damage dice one additional time and add it to the extra damage of the critical hit."]]></eval>
+    </thing>
+  <thing id="ra5CParryC" name="Parry" description="{abText} adds {abValue} to its AC against one melee attack that would hit it. To do so, {abText} must see the attacker and be wielding a melee weapon." compset="RaceSpec">
+    <comment>For NPC</comment>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    <tag group="FeatureTyp" tag="Reaction" name="Reaction" abbrev="Reaction"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = Field[abText].text & " adds " & Field[abValue].value & " to its AC against one melee attack that would hit it. To do so, " & Field[abText].text & " must see the attacker and be wielding a melee weapon."]]></eval>
+    </thing>
+  <thing id="ra5CBreeSC" name="Spellcasting" description="Breex is a 5th-level spellcaster. His spellcasting ability is Charisma (spell save DC 13, +5 to hit with spell attacks). Breex knows the following sorcerer spells:\n\nCantrips (at will): chill touch, firebolt, message, minor image, shocking grasp\n1st level (4 slots): expeditious retreat, feather fall, sleep\n2nd level (3 slots): blur, misty step\n3rd level (2 slots): haste" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
   </document>
