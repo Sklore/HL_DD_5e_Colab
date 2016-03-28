@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="i5CPoisone" name="Poisoned Weapon" compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="wAttackEff" value="And the target must succeed on a DC 15 saving throw or become poisoned for 1d4 hours."/>
+    <eval phase="Final" priority="20000" index="3"><![CDATA[
+      ~restrict the list of weapons to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & (component.MyGear & component.BaseWep)"
+
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Poisoned "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+        field[sbName].text = field[livename].text
+      else
+        field[livename].text &= "Weapon"
+        endif
+      field[shortname].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  </document>
