@@ -225,7 +225,7 @@
     <link linkage="castattr" thing="aCHA"/>
     </thing>
   <thing id="ra5CRelEnd" name="Relentless Endurance" description="When {abText} are reduced to 0 hit points, but not killed outright, {abText}  can drop to 1 hit point instead." compset="RaceSpec">
-    <comment>For NPC</comment>
+    <comment>For NPC and generic</comment>
     <fieldval field="trkMax" value="1"/>
     <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
@@ -234,8 +234,9 @@
     <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "When " & Field[abText].text & " are reduced to 0 hit points, but not killed outright, " & Field[abText].text & " can drop to 1 hit point instead."]]></eval>
     </thing>
   <thing id="ra5CSavAtt" name="Savage Attack" description="When {abText} scores a critical hit with a melee weapon attack, {abText} can roll one of the weapon&apos;s damage dice one additional time and add it to the extra damage of the critical hit." compset="RaceSpec">
-    <tag group="FeatureTyp" tag="Special"/>
+    <comment>For NPC and generic</comment>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
     <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "When " & Field[abText].text & " scores a critical hit with a melee weapon attack, " & Field[abText].text & " can roll one of the weapon's damage dice one additional time and add it to the extra damage of the critical hit."]]></eval>
     </thing>
   <thing id="ra5CParryC" name="Parry" description="{abText} adds {abValue} to its AC against one melee attack that would hit it. To do so, {abText} must see the attacker and be wielding a melee weapon." compset="RaceSpec">
@@ -248,5 +249,101 @@
   <thing id="ra5CBreeSC" name="Spellcasting" description="Breex is a 5th-level spellcaster. His spellcasting ability is Charisma (spell save DC 13, +5 to hit with spell attacks). Breex knows the following sorcerer spells:\n\nCantrips (at will): chill touch, firebolt, message, minor image, shocking grasp\n1st level (4 slots): expeditious retreat, feather fall, sleep\n2nd level (3 slots): blur, misty step\n3rd level (2 slots): haste" compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="r5CALEvSor" name="Evil Sorcerer" compset="Race">
+    <fieldval field="rHitDice" value="5"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="22"/>
+    <fieldval field="rSTR" value="-1"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="1"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rCHA" value="7"/>
+    <fieldval field="rCR" value="1"/>
+    <fieldval field="rSpCastLev" value="4"/>
+    <fieldval field="rWIS" value="2"/>
+    <usesource source="5eALROD"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="WepProf" tag="wDagger"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="ProfDouble" tag="skArcana"/>
+    <tag group="ProfDouble" tag="skHistory"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="lDwarvish"></bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="tt5CHalfOr"></bootstrap>
+    <bootstrap thing="ra5CRelEnd">
+      <assignval field="abText" value="the evil sorcerer"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSavAtt">
+      <assignval field="abText" value="the evil sorcerer"/>
+      </bootstrap>
+    <bootstrap thing="ra5CEvSoSC"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
+    <eval phase="First">#skillbonus[skArcana] += 1
+#skillbonus[skHistory] += 1</eval>
+    </thing>
+  <thing id="ra5CEvSoSC" name="Spellcasting" description="The evil sorcerer is a 4th-level spellcaster. Its spellcasting ability is Charisma (spell save DC 13, +5 to hit with spell attacks). The evil sorcerer has the following sorcerer spells prepared:\n\nCantrips (at will): fire bolt, message, shocking grasp\n1st level (4 slots): expeditious retreat, mage armor, shield\n2nd level (3 slots): blur, misty step" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="r5CALCaElr" name="Captain Erlich" compset="Race">
+    <fieldval field="rHitDice" value="8"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="52"/>
+    <fieldval field="rSTR" value="6"/>
+    <fieldval field="rDEX" value="1"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rCHA" value="5"/>
+    <fieldval field="rCR" value="3"/>
+    <fieldval field="rMultiatt" value="Captain Erlich makes two melee attacks."/>
+    <usesource source="5eALROD"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="WepProf" tag="wCrssbwHvy"/>
+    <tag group="WepProf" tag="wLongsword"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="ArmProfGrp" tag="ArmorHeavy"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <tag group="ArmProfGrp" tag="Shields"/>
+    <bootstrap thing="ra5CBraveC">
+      <assignval field="abText" value="Captain Erlich"/>
+      </bootstrap>
+    <bootstrap thing="ra5CBatCrC">
+      <assignval field="abText" value="Captain Erlich"/>
+      </bootstrap>
+    <bootstrap thing="ttHuman"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    </thing>
+  <thing id="ra5CBraveC" name="Brave" description="{abText} have advantage on saving throws against being frightened." compset="RaceSpec">
+    <comment>For NPC</comment>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = Field[abText].text & " have advantage on saving throws against being frightened."]]></eval>
+    </thing>
+  <thing id="ra5CBatCrC" name="Battle Cry" description="Each creature of {abText}&apos;s choice that is within 30 feet of it, can hear it, and not already affected by Battle Cry gain advantage on attack rolls until the start of {abText}&apos;s next turn . {abText} can then make one attack as a bonus action." compset="RaceSpec">
+    <comment>Version for NPC</comment>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "Each creature of " & Field[abText].text & "'s choice that is within 30 feet of it, can hear it, and not already affected by Battle Cry gain advantage on attack rolls until the start of " & Field[abText].text & "'s next turn. " & Field[abText].text & " can then make one attack as a bonus action."]]></eval>
     </thing>
   </document>
