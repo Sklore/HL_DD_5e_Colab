@@ -49,7 +49,6 @@
       <autotag group="ClSpecWhen" tag="1"/>
       </bootstrap>
     <link linkage="castattr" thing="aINT"/>
-    <eval phase="Level" priority="6000"></eval>
     </thing>
   <thing id="c5CE34NOB" name="Noble" compset="ClassLevel" maxlimit="20">
     <usesource source="EN5_34"/>
@@ -107,10 +106,11 @@
       <autotag group="ClSpecWhen" tag="2"/>
       </bootstrap>
     </thing>
-  <thing id="c5CNHNonco" name="Noncombatant" description="You have disadvantage on all attack rolls. (TODO Not implemented.)\nYou lose all armor and weapon proficiencies and can never gain any such again. (TODO Not implemented).\nYou cannot cast spells that require an attack roll or save, or that deal damage. (TODO Not implemented, not sure it needs to be.)" compset="ClSpecial">
+  <thing id="c5CNHNonco" name="Noncombatant" description="You have disadvantage on all attack rolls.\nYou lose all armor and weapon proficiencies and can never gain any such again.\nYou cannot cast spells that require an attack roll or save, or that deal damage. (TODO Not implemented, and I can&apos;t see any tags on the spells to allow it.)" compset="ClSpecial">
     <usesource source="EN5_34"/>
     <tag group="Helper" tag="ClExLose"/>
-    <eval phase="Final" priority="10000">~TODO remove all weapon and armor proficiencies</eval>
+    <eval phase="Final" priority="20000">~remove all weapon and armor proficiencies
+perform hero.delete[ArmProfGrp.?]</eval>
     </thing>
   <thing id="c5CNHVicAt" name="Vicarious Attack" description="If you take the Attack action you can choose one of your allies to make a weapon attack or cast a cantrip, against an enemy. This replaces all your attacks." compset="ClSpecial">
     <usesource source="EN5_34"/>
@@ -158,14 +158,13 @@
     <tag group="Helper" tag="ClExLose" name="ClExLose" abbrev="ClExLose"/>
     <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
     </thing>
-  <thing id="c5CNHCries" name="Cries" description="You can Cry twice between short or long rests, max once per round.\nAt 14th level you can cry three times between short or long rests. (TODO Not implemented, see trk5CNHCri)" compset="ClSpecial">
+  <thing id="c5CNHCries" name="Cries (hidden)" description="You can Cry twice between short or long rests, max once per round. At 14th level you can cry three times between short or long rests." compset="ClSpecial">
     <fieldval field="trkMax" value="2"/>
     <usesource source="EN5_34"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="Usage" tag="ShortRest"/>
-    <tag group="User" tag="Tracker"/>
     <tag group="AbilType" tag="Extra"/>
     <tag group="Helper" tag="ClExLose"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
@@ -180,17 +179,23 @@
       ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
 
-      hero.childfound[trk5CNHCri].field[trkMax].value += field[xAllLev].value]]></eval>
+      hero.childfound[trk5CNHCri].field[trkMax].value += round(field[xAllLev].value/14,0,-1)]]></eval>
     </thing>
-  <thing id="trk5CNHCri" name="Cries tracker (should be hidden)" description="Cries tracker (should be hidden)" compset="Tracker" uniqueness="unique">
+  <thing id="trk5CNHCri" name="Cries" description="You can Cry twice between short or long rests, max once per round. At 14th level you can cry three times between short or long rests." compset="Tracker" uniqueness="unique">
     <usesource source="5eEN5IDER"/>
+    <tag group="Usage" tag="ShortRest"/>
     </thing>
-  <thing id="c5CNHFoOPe" name="Force of Personality" description="At level 6, become proficient in Persuasion. (TODO Not implemented)\nAdd Charisma bonus (min 1) to Rallying Word healing. (TODO Not implemented)" compset="ClSpecial">
+  <thing id="c5CNHFoOPe" name="Force of Personality" description="At level 6, become proficient in Persuasion. (TODO Can&apos;t figure it out, for now it simply adds one skill prof, choose Persuasion yourself. Also, not removed if you remove a level of noble.)\nAdd Charisma bonus (min 1) to Rallying Word healing." compset="ClSpecial">
+    <fieldval field="usrCandid1" value="(component.BaseSkill)"/>
     <usesource source="EN5_34"/>
-    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="ClExLose"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <eval phase="PostLevel" priority="10000" index="2">var NumOfSkill as number
+
+    NumOfSkill = 1
+    call 5CAddProf</eval>
     </thing>
   <thing id="c5CNHTePuH" name="Tears of the Pure-Hearted" description="One ally next to you can spend hit dice freely. One of blinded, charmed, deafened, paralyzed or poisoned condition ends on target." compset="ClSpecial">
     <fieldval field="trkMax" value="1"/>
@@ -245,7 +250,7 @@
 
       hero.child[ArmorClass].field[Bonus].value += #attrmod[aCHA]]]></eval>
     </thing>
-  <thing id="cCNRallCry" name="Rallying Word" description="Use a bonus action to heal an ally within 30 feet 1d8 + noble level hit points. From 3rd level heal two allies. Recharges with long rest, from level 7 recharges with short rest." compset="ClSpecial">
+  <thing id="cCNRallCry" name="Rallying Word" description="Use a bonus action to heal an ally within 30 feet 1d8 + noble level hit points (+Charisma bonus if Noble level 6 due to Force of Personality). From 3rd level heal two allies. Recharges with long rest, from level 7 recharges with short rest." compset="ClSpecial">
     <fieldval field="abRange" value="30"/>
     <usesource source="EN5_34"/>
     <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
