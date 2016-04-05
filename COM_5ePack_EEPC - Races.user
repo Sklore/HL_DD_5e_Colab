@@ -37,33 +37,39 @@
     <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
     <tag group="Alignment" tag="NeutralLC"/>
     <tag group="Alignment" tag="NeutralGE"/>
-    <bootstrap thing="raGnCunn"></bootstrap>
-    <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="raGnDStCam"></bootstrap>
-    <bootstrap thing="lGnomish"></bootstrap>
     <bootstrap thing="lUndercomm"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
     </thing>
   <thing id="f5CEESvMag" name="Svirfneblin Magic" description="This ability allows you to cast  {i}nondetection{/i} on yourself at will, without needing a material component. \n\nYou can also cast each of the following spells once with this ability: \n\n {i}blindness/deafness{/i}\n {i}blur{/i}\n {i}disguise self{/i}\n\nYou regain the ability to cast these spells when you finish a long rest." compset="Feat" uniqueness="useronce">
+    <usesource source="5eEEPCCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <bootstrap thing="spBlinDeaf">
-      <autotag group="Helper" tag="Free"/>
-      <autotag group="Helper" tag="Memorized"/>
-      </bootstrap>
     <bootstrap thing="spBlur">
       <autotag group="Helper" tag="Free"/>
       <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
       </bootstrap>
     <bootstrap thing="spDisgSelf">
       <autotag group="Helper" tag="Free"/>
       <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
       </bootstrap>
     <bootstrap thing="spNondetec">
       <autotag group="Helper" tag="Free"/>
       <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    <bootstrap thing="spBlinDeaf">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <pickreq thing="sr5CEEDeGn"/>
     </thing>
   <thing id="r5CEEGenas" name="Genasi" description="Genasi were human-derived planetouched infused with the power of the Elemental Chaos, most often as the result of crossbreeding between humans and the powerful genie races or other elementals that dwell in such planes. Physically powerful and cunning, genasi were a varied race with abilities that varied depending on their lineage and individual experience." compset="Race" summary="Genasi were human-derived planetouched infused with the power of the Elemental Chaos">
     <fieldval field="rCON" value="2"/>
@@ -219,6 +225,12 @@
   <thing id="ra5CEEMoBo" name="Powerful Build" description="You count as one size larger when determining your carrying capacity and the weight you can push, drag, or lift." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="First"><![CDATA[    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    herofield[tEncumLgt].value = herofield[tEncumLgt].value * 2
+    herofield[tEncumHvy].value = herofield[tEncumHvy].value * 2
+    herofield[tEncumMax].value = herofield[tEncumMax].value * 2]]></eval>
     </thing>
   <thing id="ra5CEEMBor" name="Mountain Born" description="You acclimated to high altitude, including elevations above 20,000 feet. You&apos;re also naturally adapted to cold climates, as described in chapter 5 of the Dungeon Master&apos;s Guide." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
