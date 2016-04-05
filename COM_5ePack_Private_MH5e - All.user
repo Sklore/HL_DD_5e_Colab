@@ -246,11 +246,14 @@
     <tag group="SplAttr" tag="aCHA" name="Charisma" abbrev="Charisma"/>
     <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
     <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="DamageImm" tag="dtDisease"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="ra5CFleSte"></bootstrap>
+    <bootstrap thing="ra5CSolidC"></bootstrap>
     <bootstrap thing="wUnarmed"></bootstrap>
     <bootstrap thing="ra5CHuV2A"></bootstrap>
     <bootstrap thing="ra5CConsBo"></bootstrap>
-    <bootstrap thing="ra5CFleSte"></bootstrap>
-    <bootstrap thing="ra5CSolidC"></bootstrap>
     </thing>
   <thing id="sp5CSoulFo" name="Soulforging" description="You and a willing humanoid subject must chant an incantation in unison during the entire casting time. At the end of this period the subject’s soul and consciousness leave its body. The subject must make a DC 14 Charisma saving throw. If it fails, you take 2d10 psychic damage and 2d10 radiant damage from waves of uncontrolled energy ripping out from the disembodied spirit. You can maintain the spell, allowing the subject to repeat the saving throw at the end of each of your turns, with the same consequence to you for each failure. If you choose not to maintain the spell or are unable to do so, the subject’s soul is traumatically drawn back to its body; the subject immediately drops to 0 hit points and is dying.\n\nIf the save succeeds, the subject’s soul is transferred into the waiting soul gem and immediately animates the constructed body. The subject is now a gearforged. It loses all of its previous racial traits and gains gearfoged traits. The subject’s original body dies and cannot be returned to life by any means unless its soul is freed from the soul gem.\n\nIf the spellcaster dies during a soulforging, the subject also dies and its soul becomes a wraith. \n\nUp to four other spellcasters of at least 5th level can assist you in casting soulforging. Each assistant reduces the DC of the subject’s Charisma saving throw by 1. In the event of a failed saving throw, the spellcaster and each assistant take damage. An assistant who drops out of the casting can’t rejoin.\n\nSoulforging can’t be added to a wizard’s spellbook as one of the two spells learned for gaining a level. It must be found in written form and copied into the spellbook.\nClerics can prepare the spell only if they worship a god of smithing, crafting, or a similar portfolio." compset="Spell">
     <fieldval field="sCompDesc" value="a complete mechanical body worth 10,000 gp"/>
@@ -308,11 +311,11 @@
     <tag group="Alignment" tag="Evil"/>
     <tag group="WepProf" tag="w5CHvyJaw"/>
     <tag group="WepProf" tag="w5CHeavJaw"/>
-    <bootstrap thing="wUnarmed"></bootstrap>
-    <bootstrap thing="l5CDarakhu"></bootstrap>
-    <bootstrap thing="ra5CHungFL"></bootstrap>
-    <bootstrap thing="ra5CSunSe2"></bootstrap>
-    <bootstrap thing="ra5CUndVit"></bootstrap>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnPoison"/>
     <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
@@ -324,6 +327,11 @@
       <assignval field="wDieCount" value="1"/>
       <assignval field="wReach" value="5"/>
       </bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="l5CDarakhu"></bootstrap>
+    <bootstrap thing="ra5CHungFL"></bootstrap>
+    <bootstrap thing="ra5CSunSe2"></bootstrap>
+    <bootstrap thing="ra5CUndVit"></bootstrap>
     </thing>
   <thing id="ra5CHungFL" name="Hunger for Flesh" description="You must consume a meal of raw meat each day or suffer the effects of starvation. If you go 24 hours without such a meal, you gain one level of exhaustion (this is an exception to the darakhul’s immunity). You cannot stave this off with half rations. While you have any levels of exhaustion, you cannot regain hit points or remove levels of exhaustion until you spend 1 hour consuming an amount of raw meat equal to a Small creature (about 30 pounds)." compset="RaceSpec" summary="You must consume a meal of raw meat each day or suffer the effects of starvation.">
     <usesource source="5CMHo5E"/>
@@ -351,14 +359,6 @@
     <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="Helper" tag="UserValue" name="Ability that needs a user-set value" abbrev="Ability that needs a user-set value"/>
-    <tag group="DamageRes" tag="dtPoison" name="Poison" abbrev="Poison"/>
-    <eval phase="First"><![CDATA[
-      ~if we've been replaced, get out now
-      doneif (tagis[Helper.Disable] <> 0)
-
-      perform hero.pushtags[DamageRes.?]
-
-      #situational[hero.child[svAll],"Advantage vs. poison",field[thingname].text]]]></eval>
     </thing>
   <thing id="l5CDarakhu" name="Darakhul" description="{b}Typical Speakers:{/b} Ghoul, Darakhul\n{b}Script:{/b} Darakhul" compset="Language" uniqueness="useronce">
     <usesource source="5CMHo5E"/>
