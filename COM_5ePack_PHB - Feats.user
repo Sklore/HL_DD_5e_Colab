@@ -149,20 +149,16 @@
       </prereq>
     </thing>
   <thing id="ft5CGWeaMa" name="Great Weapon Master" description="On your turn, when you score a critical hit with a melee weapon or reduce a creature to 0 hit points with one, you can make one melee weapon attack as a bonus action.\n• Before you make a melee attack with a heavy weapon that you are proficient with, you can choose to take a - 5 penalty to the attack roll. If the attack hits, you add +10 to the attack’s damage." compset="Feat" uniqueness="useronce">
-    <comment><![CDATA[doneif (field[abilActive].value = 0)
-foreach pick in hero from BaseWep where "(wCategory.RangeProj | wCategory.RangeThrow | wCategory.Firearm)"
-eachpick.field[atrBonus].value -= 5
-eachpick.field[dmrBonus].value += 10
-nexteach]]></comment>
     <fieldval field="actName" value="Activate Great Weapon Master (-5 to hit, +10 dmg)"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="User" tag="Activation"/>
-    <eval phase="First"><![CDATA[
+    <eval phase="PreLevel" priority="10000"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
       ~ If not active get out now!
       doneif (field[abilActive].value = 0)
+      
       foreach pick in hero from BaseWep where "(wProperty.Heavy)"
         eachpick.field[atmBonus].value -= 5
         eachpick.field[dmmBonus].value += 10
