@@ -201,4 +201,28 @@
       <tag group="Helper" tag="ChooseAmmo" name="ChooseAmmo" abbrev="ChooseAmmo"/>
       </child>
     </thing>
+  <thing id="w5CSpellAt" name="Spell Attack" description="Some spells require the caster to make an attack roll to determine whether the spell effect hits the intended target. Your attack bonus with a spell attack equals your spellcasting ability modifier + your proficiency bonus.\n\nMost spells that require attack rolls involve ranged attacks. Remember that you have disadvantage on a ranged attack roll if you are within 5 feet o f a hostile creature that can see you and that isn’t incapacitated." compset="Weapon">
+    <fieldval field="wFixDamage" value="As Spell"/>
+    <fieldval field="wFixRanDam" value="As Spell"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="wCategory" tag="RangeThrow"/>
+    <tag group="Helper" tag="FixSizeDmg"/>
+    <tag group="Helper" tag="Proficient"/>
+    <tag group="Helper" tag="NoOutGear"/>
+    <tag group="wProfReq" tag="Simple"/>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ Set to the characters class helper &
+      perform hero.findchild[Class].setfocus
+      doneif (state.isfocus = 0)
+
+      perform focus.pulltags[PrimeAbil.?,MelAttOver]
+      perform focus.pulltags[PrimeAbil.?,RanAttOver]
+      
+      field[wAttack].value = focus.field[cSplAttack].value
+      field[wRanAtk].value = focus.field[cSplAttack].value
+
+      ~ Don't let us display on the In-Play tab
+      perform delete[Helper.ShowCharge]
+      perform delete[User.Tracker]]]></eval>
+    </thing>
   </document>

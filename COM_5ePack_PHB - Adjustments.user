@@ -576,4 +576,33 @@
         endif
       endif]]></eval>
     </thing>
+  <thing id="p5CSplAtDm" name="Spell Attack Dmg" description="Use this adjustment to change the name and damage of the selected &quot;Spell Attack&quot; weapon.  After adding this adjustment select the &quot;Spell Attack&quot; weapon from the dropdown and set the spell name and damage dice." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseWep &amp; thingid.w5CSpellAt"/>
+    <fieldval field="pSource" value="Spell Name"/>
+    <fieldval field="pDuration" value="1d4+1"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="AdjShadow" tag="Name"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="OthAdjCat" tag="Spell"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <eval phase="Render" priority="99999999"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      field[pChosen].chosen.field[livename].text = field[pSource].text
+      field[pChosen].chosen.field[sbName].text = field[pSource].text]]></eval>
+    <eval phase="Final" index="2"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen <> 1)
+
+      field[pChosen].chosen.field[wFixDamage].text = field[pDuration].text
+      field[pChosen].chosen.field[wFixRanDam].text = field[pDuration].text]]></eval>
+    </thing>
   </document>
