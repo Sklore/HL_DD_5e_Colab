@@ -1,60 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
-  <thing id="ft5CAcroba" name="Acrobatic" description="You are skilled at leaping, jumping and flying. \n\n{b}Prerequisites:{/b}  Dex 13+, Acrobatics proficiency \n• Your Strength or Dexterity score (choose one) increases by +1. \n• You gain expertise with the Acrobatics proficiency. \n• You can stand from prone by only expending 5’ of your total movement. \n• Once per short rest you can gain advantage on any Dexterity based skill check.      " compset="Feat" summary="You are skilled at leaping, jumping and flying." uniqueness="useronce">
+  <thing id="ft5CAcroba" name="Acrobatic" description="You are skilled at leaping, jumping and flying. \n\n{b}Prerequisites:{/b}  Dex 13+,  Acrobatics proficiency \n• Your Strength or Dexterity score (choose one) increases by +1. \n• You gain expertise with the Acrobatics proficiency. \n• You can stand from prone by only expending 5’ of your total movement. \n• Once per short rest you can gain advantage on any Dexterity based skill check." compset="Feat" summary="You are skilled at leaping, jumping and flying." uniqueness="useronce">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aDEX)"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ProfDouble" tag="skAcrobat" name="Acrobatics" abbrev="Acrobatics"/>
+    <eval phase="First" priority="10000" index="2"><![CDATA[
+      ~if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~assign our expertise to the hero
+      perform hero.pushtags[ProfDouble.?]]]></eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
+    <exprreq message="Dexterity 13 required."><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
+    <exprreq message="Acrobatics proficiency required."><![CDATA[hero.tagis[ProfSkill.skAcrobat] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CAcrSte" name="Acrobatic Steps" description="You can easily move over and through obstacles. \n\n{b}Prerequisites:{/b}  Dex 13+, Acrobatics proficiency \n• Your Dexterity score increases by +1. \n• Whenever you move, you may move through up to half of your movement through difficult terrain each round as if it were normal terrain. \n• Once per short rest you can ignore all slowing effects of difficult terrain.        " compset="Feat" summary="You can easily move over and through obstacles. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[      
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      #skillbonus[aDEX] += 1]]></eval>
+    <exprreq message="Acrobatics proficiency required."><![CDATA[hero.tagis[ProfSkill.skAcrobat] <> 0]]></exprreq>
+    <exprreq message="Dexterity 13 required."><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CAgiMan" name="Agile Maneuvers" description="You’ve learned to use your quickness in place of brute force when performing combat maneuvers. \n\n{b}Prerequisite:{/b} Dex 13+\n• Your Dexterity bonus increases by +1.\n• You may substitute your Dexterity bonus to any combat maneuver attempt that uses Strength instead. \n• Once per rest, as a bonus action, you can gain advantage on any Dexteritybased combat maneuver* attempt. \n\n*See Total Party Kill Games’ Fifth Edition Options title for more information on combat maneuvers." compset="Feat" summary="You’ve learned to use your quickness in place of brute force when performing combat maneuvers. \n\n Pre" uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[      
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      #skillbonus[aDEX] += 1]]></eval>
+    <exprreq message="Dexterity 13 required."><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
-  <thing id="ft5CAlertn" name="Alertness" description="You are always cautious of danger, and are rarely caught unaware. \n\n{b}Prerequisite:{/b}  Perception proficiency \n• You have a +2 bonus to initiative checks. \n• You are never surprised, so long as you are not stunned or unconscious. \n• Enemies never gain advantage when striking you from stealth.           " compset="Feat" summary="You are always cautious of danger, and are rarely caught unaware. \n" uniqueness="useronce">
+  <thing id="ft5CAlertn" name="Alertness" description="You are always cautious of danger, and are rarely caught unaware. \n\n{b}Prerequisite:{/b}  Perception proficiency \n• You have a +2 bonus to initiative checks. \n• You are never surprised, so long as you are not stunned or unconscious. \n• Enemies never gain advantage when striking you from stealth." compset="Feat" summary="You are always cautious of danger, and are rarely caught unaware. \n" uniqueness="useronce">
     <usesource source="5e5EFeats"/>
-    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="ShowSpec" name="ShowSpec" abbrev="ShowSpec"/>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ Add a +5 bonus to our Initiative
+      #skillbonus[Initiative] = #skillbonus[Initiative] + 2]]></eval>
+    <exprreq message="Perception proficiency required."><![CDATA[hero.tagis[ProfSkill.skPercep] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CAniAff" name="Animal Affinity" description="You are skilled at working with animals and mounts. \n\n{b}Prerequisite:{/b}  Animal Handling proficiency \n• You gain expertise with all Animal Handling skill checks. \n• You can verbally command any of your beast companions or mounts to take the Attack, Dash, Disengage, Dodge, Help or Move as a free action during your turn. Your beast companion must be able to see or hear you in order to use this ability.        " compset="Feat" summary="You are skilled at working with animals and mounts." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ProfDouble" tag="skAnimHand" name="Animal Handling" abbrev="Animal Handling"/>
+    <eval phase="First" priority="10000"><![CDATA[      ~if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~assign our weapon proficiencies to the hero
+      perform hero.pushtags[ProfDouble.?]]]></eval>
+    <exprreq message="Animal handling profiency required."><![CDATA[hero.tagis[ProfSkill.skAnimHand] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CArcShi" name="Arcane Shield" description="You can convert any spell into a defense. \n\n{b}Prerequisite:{/b}  Ability to cast arcane spells \n• As a reaction, you can sacrifice a spell or spell slot of 1st level or higher and gain a shield bonus to AC equal to the level of the spell or spell slot you sacrificed for 1 minute. Cantrip spells may not be sacrificed in this manner.            " compset="Feat" summary="You can convert any spell into a defense." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <prereq message="Ability to cast arcane spells required.">
+      <validate><![CDATA[        ~ Test that the character has at least one spell
+        ~ or spell-like ability. &
+        var HasSpells as number
+        Call 5CHasSpell
+        @valid = HasSpells]]></validate>
+      </prereq>
     </thing>
   <thing id="ft5CArcStr" name="Arcane Strike" description="You draw upon your arcane power to enhance your weapons with magical energy. \n\n{b}Prerequisite:{/b}  Ability to cast arcane spells. \n• Weapons you hold glow with arcane power and count as though they are magical weapons. \n• You gain a +1 bonus to attacks and damage with these weapons as long as you are holding them. \n• Ranged weapons also grant these bonuses on attacks and damage, but the magic fades after striking their target.       " compset="Feat" summary="You draw upon your arcane power to enhance your weapons with magical energy." uniqueness="useronce">
+    <fieldval field="abValue" value="1"/>
     <usesource source="5e5EFeats"/>
-    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="Disable"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+~ If we're disabled, do nothing 
+doneif (tagis[Helper.Disable] = 1)
+foreach pick in hero from BaseWep where "!(wGroup.Natural) & (Hero.MainHand)"
+eachpick.Field[wAttBonus].value += 1
+eachpick.Field[wDamBonus].value += 1
+nexteach]]></eval>
+    <prereq message="Ability to cast arcane spells required.">
+      <validate><![CDATA[        ~ Test that the character has at least one spell
+        ~ or spell-like ability. &
+        var HasSpells as number
+        Call 5CHasSpell
+        @valid = HasSpells]]></validate>
+      </prereq>
     </thing>
   <thing id="ft5CAthltc" name="Athletic" description="You possess inherent physical prowess. \n\n{b}Prerequisites:{/b}  Str and Con 13+, Athletics proficiency \n• You gain expertise with the Athletics skill. \n• You can climb at your full movement rate instead of halved. \n• You can perform a running long jump or running high jump after moving 5’ instead of the usual 10’. \n• Once per short rest you can gain advantage on any Strength or Constitution based skill check.       " compset="Feat" summary="You possess inherent physical prowess." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Strenght 13 required."><![CDATA[#attrvalue[aSTR] >= 13]]></exprreq>
+    <exprreq message="Dexterity 13 required."><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
+    <exprreq message="Athletics proficiency required."><![CDATA[hero.tagis[ProfSkill.skAthletic] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CAugCon" name="Augmented Conjuring" description="Your conjured creatures are more powerful and robust. \n\n{b}Prerequisite:{/b}  Spell Focus (Conjuration) \n• Each creature you conjure with any summon spell gains a +2 bonus to attacks and damage and a bonus of +2 hit points per HD for the duration of the spell that summoned it.           " compset="Feat" summary="Your conjured creatures are more powerful and robust." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Spell Focus feat required."><![CDATA[hero.tagis[HasFeat.ft5CSpeFoc] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CBackst" name="Backstab" description="Foes unaware of your presence are downed with ease. \n\n{b}Prerequisites:{/b}  Stealth proficiency, Sneak Attack class ability. \n• When you attack a foe that is unaware of your presence you gain +1 to your critical threat range. \n• You also add an amount of damage equal to your sneak attack dice when you deal a critical hit.          " compset="Feat" summary="Foes unaware of your presence are downed with ease." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Stealth profiency required."><![CDATA[hero.tagis[ProfSkill.skStealth] <> 0]]></exprreq>
+    <exprreq message="Sneak Attack required."><![CDATA[hero.tagis[HasAbility.cSneakAtt] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CBeaSla" name="Beast Slayer" description="You’ve been trained to fight against all manner of dangerous beasts and survive. \n\n{b}Prerequisites:{/b}  Wis 13+, Nature proficiency \n• You gain a +1 to attacks made against beasts and a +1 bonus to AC against their attacks. \n• You gain a bonus equal to your proficiency bonus on all Survival checks to track beasts. \n• Your critical threat range against beasts increases by +1.         " compset="Feat" summary="You’ve been trained to fight against all manner of dangerous beasts and survive." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Nature proficiency required."><![CDATA[hero.tagis[ProfSkill.skNature] <> 0]]></exprreq>
+    <exprreq message="Wisdom 13 required."><![CDATA[#attrvalue[aWIS] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CBliFig" name="Blind-Fight" description="You are skilled at attacking opponents that you cannot clearly perceive. \n\n{b}Prerequisites:{/b}  Wis 13+, Perception proficiency \n• As long as you can hear an opponent, they do not gain advantage on attacks against you when you cannot see. \n• As long as you can hear an opponent, your attacks do not suffer disadvantage when you cannot see. \n• You can make Perception checks to discern the location of targets within 30’ while unable to see. You can discern the location of targets farther away than 30’, but suffer disadvantage on the skill check.   " compset="Feat" summary="You are skilled at attacking opponents that you cannot clearly perceive. \n\n" uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Wisdom 13 required."><![CDATA[#attrvalue[aWIS] >= 13]]></exprreq>
+    <exprreq message="Perception proficiency required."><![CDATA[hero.tagis[ProfSkill.skPercep] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CBloExp" name="Blocking Expertise" description="You turn away even the fiercest blows with your shield. \n\n{b}Prerequisite:{/b}  Shield proficiency \n• Your Strength score increases by +1. \n• When you wield a shield and are dealt a critical attack, you have a 50% chance to negate the critical hit.            " compset="Feat" summary="You turn away even the fiercest blows with your shield." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Shield proficiency required."><![CDATA[hero.tagis[ArmProfGrp.Shields] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CBodygu" name="Bodyguard" description="Your are adept at warding off enemies attacking nearby allies. \n\n{b}Prerequisite:{/b}  Shield proficiency, Combat Reflexes \n• You may grant your shield bonus to a single adjacent ally instead of yourself. \n• When an adjacent ally is attacked, you may use a reaction to cause the attack to suffer disadvantage. \n• When an adjacent ally is attacked, you may use a reaction to redirect the attack to yourself.       " compset="Feat" summary="Your are adept at warding off enemies attacking nearby allies. \n" uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Shield proficiency required."><![CDATA[hero.tagis[ArmProfGrp.Shields] <> 0]]></exprreq>
+    <exprreq message="Combat Reflexes feat required."><![CDATA[hero.tagis[HasFeat.ft5CComRef] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CBouSpe" name="Bouncing Spell" description="You can direct a failed spell against a different target. \n\n{b}Prerequisite:{/b}  Ability to cast 2nd level spells. \n• Whenever a bouncing spell targeting a single creature has no effect on its intended target (whether due to resistance or a successful saving throw) you may, as a bonus action, redirect it to target another eligible creature within the spell’s range. The redirected spell behaves in all ways as if its new target were the original target for the spell. Spells that affect a target in any way (including a lesser effect from a successful saving throw) may not be redirected in this manner. A bouncing spell uses up a spell slot or level one level higher than the spell’s actual level. " compset="Feat" summary="You can direct a failed spell against a different target." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -71,6 +150,11 @@
   <thing id="ft5CChaSmi" name="Channel Smite" description="You can channel your divine energy through a melee weapon you wield. \n\n{b}Prerequisites:{/b}  Channel Divinity or Lay on Hands class feature. \n• You can choose to spend one use of your channel divinity abilities as a bonus action. If you are good and hit an undead creature, that creature takes 2d6 additional radiant damage. If you are evil and you hit a living creature, that creature takes 2d6 additional necrotic damage. • When you hit with an attack, as a bonus action you can add an amount of radiant damage up to your level from your Lay on Hands pool.    " compset="Feat" summary="You can channel your divine energy through a melee weapon you wield." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <prereq message="Channel Divinity or Lay on Hands abilities required.">
+      <validate>~ Check whether the Ki Pool ability is active
+@valid = #hasability[cClrChaDiv]
+@valid = #hasability[cPalLayHan]</validate>
+      </prereq>
     </thing>
   <thing id="ft5CChaExp" name="Charging Expertise" description="You rush into combat, making a brutal attack at the end of a charge. \n\n• If you take the Dash action, you may spend a bonus action to make a melee attack or Shove attack during or after your movement. \n• If you move at least 10’ in a straight line during your Dash action, you gain a +5 bonus to damage on your attack or Shove a target 10’ away. \n• You do not suffer advantage on attacks against you in rounds in which you have charged. *See Total Party Kill Games’ Fifth Edition Options title for more information on combat maneuvers." compset="Feat" summary="You rush into combat, making a brutal attack at the end of a charge." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -79,6 +163,8 @@
   <thing id="ft5CCleave" name="Cleave" description="You can strike many adjacent foes with a single blow. \n\n{b}Prerequisites:{/b}  Str 13+, Power Attack \n• You can make an attack against a foe within reach that cleaves into other foes. If you hit, you deal damage normally and can make an additional attack as a bonus action against a foe that is adjacent to the previous foe and also within reach. This cleave attack only counts as one action (and your bonus action). • When you cleave, your movement is halved for your current turn. • At 5th level, and each additional five levels, you may make an additional attack against another adjacent foe that you also threaten as part of your cleave action. " compset="Feat" summary="You can strike many adjacent foes with a single blow." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Strenght 13 required."><![CDATA[#attrvalue[aSTR] >= 13]]></exprreq>
+    <exprreq message="Power Attack feat required."><![CDATA[hero.tagis[HasFeat.ft5CPowAtt] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CComCas" name="Combat Caster" description="You are adept at spellcasting when threatened or distracted. \n\n• Whenever attempting to maintain concentration on spells in combat, you gain advantage. \n• You can cast spells, even when holding weapons or shields. \n• When opponents provoke attacks of opportunity, you can spend your reaction to cast a cantrip at that target." compset="Feat" summary="You are adept at spellcasting when threatened or distracted." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -87,14 +173,21 @@
   <thing id="ft5CComExp" name="Combat Expertise" description="You can increase your defense at the expense of your accuracy. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• Your Dexterity score increases by +1. \n• You may choose to suffer disadvantage on all attacks in a round in order to force all opponents to suffer disadvantage on all attacks against you.           " compset="Feat" summary="You can increase your defense at the expense of your accuracy." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Dexterity 13 required."><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CComRef" name="Combat Reflexes" description="You quickly press the advantage of your foes’ mistakes. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• You can perform a number of opportunity attacks per round equal to your Dexterity modifier (minimum 1). \n• You gain advantage on all opportunity attacks.           " compset="Feat" summary="You quickly press the advantage of your foes’ mistakes." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Dexterity 13 requided."><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CComUnd" name="Command Undead" description="Using foul powers of necromancy, you can command undead creatures, making them into your servants. \n\n{b}Prerequisites:{/b}  Evil Alignment, Channel Divinity class feature. \n• As an action, you can use one of your uses of Channel Divinity to mentally enslave undead within 30 feet. You make a Turn Undead check as normal. Those undead that would be destroyed fall under your control, obeying your commands to the best of their ability. Intelligent undead shrug off your control after 24 hours. Controlled undead can have their will usurped by other clerics with this ability. When attempting to maintain control, each cleric makes a spellcasting check and the highest roll takes control. \n• You can control a number of undead whose combined hit dice are equal or less than your cleric level.           " compset="Feat" summary="Using foul powers of necromancy, you can command undead creatures, making them into your servants." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <prereq message="">
+      <validate>~ Check whether the Ki Pool ability is active
+@valid = #hasability[cClrChaDiv]
+@valid = #hasability[cPalChaDiv]</validate>
+      </prereq>
     </thing>
   <thing id="ft5CConSpe" name="Concussive Spell" description="You cause creatures to be disoriented when you affect them with a spell that has the sonic descriptor. \n\n{b}Prerequisite:{/b}  Ability to cast 3nd level spells \n• When you deal thunder damage with a spell, a concussive wave of energy rattles creatures affected by the spell. A concussive spell causes creatures that take damage from a spell that has the sonic descriptor to have disadvantage on attack rolls, saving throws, skill checks, and ability checks for a number of rounds equal to the actual spell level of the spell. A concussive spell only affects spells with the sonic descriptor. A concussive spell uses up a spell slot two levels higher than the spell’s actual level. " compset="Feat" summary="You cause creatures to be disoriented when you affect them with a spell that has the sonic descriptor." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -107,54 +200,72 @@
   <thing id="ft5CDanSen" name="Danger Sense" description="Your skill at sensing danger allows you to avoid harm more easily than others. \n\n{b}Prerequisites:{/b}  Wis 13+, Insight proficiency \n• Your Wisdom score increases by \n• Once per short you can gain advantage on any initiative roll. \n• When subjected to any effect that allows a Wisdom or Intelligence save, you may make an Insight check instead.          " compset="Feat" summary="Your skill at sensing danger allows you to avoid harm more easily than others." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Wisdom 13 required."><![CDATA[#attrvalue[aWIS] >= 13]]></exprreq>
+    <exprreq message="Insight proficiency required."><![CDATA[hero.tagis[ProfSkill.skInsight] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CDarStr" name="Darting Strike" description="Your quick attacks are more difficult to dodge. \n\n{b}Prerequisite:{/b}  Dex 15+ \n• Your Dexterity score increases by 1 \n• When moving at least a 10’ before an attack, you gain a +1 bonus on that attack.            " compset="Feat" summary="Your quick attacks are more difficult to dodge." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Dexterity 15 required."><![CDATA[#attrvalue[aDEX] >= 15]]></exprreq>
     </thing>
-  <thing id="ft5CDazDis" name="Dazzling Display" description="Your skill with your weapon can frighten enemies. \n\n{b}Prerequisite:{/b}  Intimidate proficiency \n• While wielding a weapon or unarmed strike, you can perform a bewildering show of prowess. You can take an action to make an Intimidate check to frighten all foes within 30 feet who can see your display.          " compset="Feat" summary="Your skill with your weapon can frighten enemies." uniqueness="useronce">
+  <thing id="ft5CDazDis" name="Dazzling Display" description="Your skill with your weapon can frighten enemies. \n\n{b}Prerequisite:{/b}  Intimidation proficiency \n• While wielding a weapon or unarmed strike, you can perform a bewildering show of prowess. You can take an action to make an Intimidate check to frighten all foes within 30 feet who can see your display." compset="Feat" summary="Your skill with your weapon can frighten enemies." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Intimidation proficiency required."><![CDATA[hero.tagis[ProfSkill.skIntim] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CDeaStr" name="Deadly Stroke" description="With a well-placed strike, you can bring a swift and painful end to most foes. \n\n{b}Prerequisite:{/b}  Weapon Specialization. \n• If you attack a blinded, restrained, stunned or incapacitated foe with the weapon you have chosen with weapon specialization, you automatically deal a critical hit. \n• When you drop a foe to below 0 hit points, they suffer an additional amount of damage equal to your weapon’s base damage dice.        " compset="Feat" summary="With a well-placed strike, you can bring a swift and painful end to most foes." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Weapon Specialization feat required."><![CDATA[hero.tagis[HasFeat.ft5CWeaSpe] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CDeceit" name="Deceitful" description="You are skilled at deceiving others, both with the spoken word and with physical disguises. \n\n{b}Prerequisite:{/b}  Deception proficiency \n• You gain expertise in the Deception skill. \n• Once per short rest you can gain advantage on any Deception skill check.           " compset="Feat" summary="You are skilled at deceiving others, both with the spoken word and with physical disguises. \n" uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Deception proficiency required."><![CDATA[hero.tagis[ProfSkill.skDecept] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CDefCom" name="Defensive Combat" description="Training You excel at defending yourself from all manner of combat maneuvers. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• You add your proficiency bonus as a bonus on all saves against combat maneuvers such as trips, pushes, disarms, etc.* \n• You can spend a reaction to negate a charging opponent’s free attack. \n• You do not suffer advantage on attacks against you when you are flanked. *See Total Party Kill Games’ Fifth Edition Options title for more information on combat maneuvers.     " compset="Feat" summary="Training You excel at defending yourself from all manner of combat maneuvers." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Dexterity 13 required."><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CDefWea" name="Defensive Weapon" description="Training You know how to defend yourself against a certain class of weaponry. \n\n{b}Prerequisite:{/b}  Int 13+ \n• Choose a type of weapon (finesse, heavy, light, reach, thrown or twohanded). By spending a reaction, you force opponents wielding weapons of that category to suffer disadvantage on their attack against you.         " compset="Feat" summary="Training You know how to defend yourself against a certain class of weaponry." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Intelect 13 required."><![CDATA[#attrvalue[aINT] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CDefExp" name="Defensive Expertise" description="You never let down your guard, and take advantage of every time your foes do. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• If you hit a target with an attack of opportunity, they are not able to move until the beginning of their next turn. \n• All creatures leaving your threatened spaces suffer opportunity attacks. Using the disengage action does not avoid this attack of opportunity, but other special abilities or feats that state you can avoid attacks of opportunity from movement do. • When a foe that you threaten rolls a 1 on an attack roll, you may make an attack of opportunity as a reaction.   " compset="Feat" summary="You never let down your guard, and take advantage of every time your foes do." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Dexterity 13 required."><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CDefArr" name="Deflect Arrows" description="You can knock arrows and other projectiles off course, preventing them from hitting you. \n\n{b}Prerequisites:{/b}  Dex 15+, Unarmed Fighting or Martial Arts class feature \n• If you would normally be hit with a ranged attack and are not unaware, you may make a Dexterity save as a reaction. If your save is greater than the attack, it is deflected.          " compset="Feat" summary="You can knock arrows and other projectiles off course, preventing them from hitting you." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Dexterity 15 required."><![CDATA[#attrvalue[aDEX] >= 15]]></exprreq>
+    <prereq message="Unarmed Fighting feat or Martial Arts Ability required.">
+      <validate>@valid = #hasfeat[ft5CUnaFig]
+@valid = #hasability[cMnkMarArt]</validate>
+      </prereq>
     </thing>
   <thing id="ft5CDefHan" name="Deft Hands" description="You have exceptional manual dexterity. \n\n{b}Prerequisite:{/b}  Sleight of Hand proficiency \n• You gain expertise in the Sleight of Hand skill. \n• You gain a bonus equal to your proficiency bonus on Dexterity checks made to disable devices and traps. \n• Once per short rest you can gain advantage on any Sleight of Hand skill check or any Dexterity check made to disable devices or traps.        " compset="Feat" summary="You have exceptional manual dexterity." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Sleight of Hand proficiency required."><![CDATA[hero.tagis[ProfSkill.skSleight] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CDEMSla" name="Demon Slayer" description="You’ve been trained to fight creatures of the lower planes and survive. \n\n{b}Prerequisite:{/b}  Wis 13+, Arcana or Religion proficiency \n• You gain a +1 bonus to attacks made against demons or devils and a +1 bonus to your AC against their attacks. \n• You may reroll a failed save against a devilish or demonic creature’s special ability. You may only use this ability once per short rest. • Your critical threat range against demons and devils increases by +1.      " compset="Feat" summary="You’ve been trained to fight creatures of the lower planes and survive." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Wisdom 13 required."><![CDATA[#attrvalue[aWIS] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CDiehar" name="Diehard" description="You are especially hard to kill. \n\n{b}Prerequisite:{/b}  Endurance. \n• You gain a +1 bonus to your Constitution score. \n• You do not die immediately until you reach an amount of negative hit points equal to your Con score plus your level. \n• You gain a +2 bonus on death saves.           " compset="Feat" summary="You are especially hard to kill. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Endurance feat required."><![CDATA[hero.tagis[HasFeat.ft5CEndura] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CDirFig" name="Dirty Fighter" description="You’ll use anything to your advantage in combat. \n\n{b}Prerequisite:{/b}  Int 13+ \n• As a bonus action, you can cause a foe to suffer disadvantage on their attacks this round. The target gains an Intelligence or Dexterity save (their choice) with a DC of 8 + your proficiency bonus + your Intelligence bonus. If they save, there is no effect. \n• By expending a bonus action, you gain +1d4 on all attack rolls against a single target during this round.      " compset="Feat" summary="You’ll use anything to your advantage in combat." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Inteligence 13 required."><![CDATA[#attrvalue[aINT] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CDisExp" name="Disarm Expertise" description="You are skilled at disarming an enemy. \n\n{b}Prerequisites:{/b}  Str or Dex 13+ \n• When you perform a disarm maneuver, you do so with advantage on your ability check. \n• Opponents suffer disadvantage when they attempt to disarm you. \n• You do not suffer disadvantage when attempting to disarm two-handed weapons. *See Total Party Kill Games’ Fifth Edition Options title for more information on combat maneuvers.        " compset="Feat" summary="You are skilled at disarming an enemy." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
