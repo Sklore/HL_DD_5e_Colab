@@ -7582,22 +7582,19 @@ perform focus.setlinkage[castattr,BaseAttr,"IsAttr.aWIS"]]]></eval>
     <tag group="CondImm" tag="pcnFright"/>
     <tag group="CondImm" tag="pcnParaly"/>
     <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="tpUndead"></bootstrap>
     <bootstrap thing="ra5CPixMRe">
       <assignval field="abText" value="dracolich"/>
       </bootstrap>
-    <bootstrap thing="tpUndead"></bootstrap>
+    <eval phase="First"><![CDATA[ ~if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.assign[OverType.tpUndead]]]></eval>
     <eval phase="First" priority="600" index="2"><![CDATA[
       ~ Set our focus to the hero's race &
       perform hero.findchild[BaseRace].setfocus
       doneif (state.isfocus = 0)
       ~ Set our race's name to be dracolich
       focus.field[livename].text = replace(lowercase(focus.field[name].text), "dragon", "dracolich", 0)]]></eval>
-    <eval phase="First"><![CDATA[ ~if we've been disabled, get out now
-      doneif (tagis[Helper.Disable] <> 0)
-
-perform hero.child[tpDragon].assign[Helper.Disable]
-foreach pick in hero where "thingid.tpDragon"
-  perform eachpick.assign[Helper.Disable]
-nexteach]]></eval>
     </thing>
   </document>
