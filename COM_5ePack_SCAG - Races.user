@@ -222,4 +222,71 @@
       </bootstrap>
     <bootstrap thing="ra5CStonCa"></bootstrap>
     </thing>
+  <thing id="ra5CFeral" name="Feral" description="Your Intelligence score increases by 1, and your Dexterity score increases by 2. This trait replaces the Ability Score Increase trait." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="AllowRCust" tag="r5CTieflin"/>
+    <eval phase="First" priority="500"><![CDATA[~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~overwrite the tiefling's default 
+      hero.child[r5CTieflin].field[rSTR].value = 0
+      hero.child[r5CTieflin].field[rDEX].value = 2
+      hero.child[r5CTieflin].field[rCON].value = 0
+      hero.child[r5CTieflin].field[rINT].value = 1
+      hero.child[r5CTieflin].field[rWIS].value = 0
+      hero.child[r5CTieflin].field[rCHA].value = 0]]></eval>
+    </thing>
+  <thing id="ra5CDevTon" name="Devil&apos;s Tongue" description="You know the {i}vicious mockery{/i} cantrip. When you reach 3rd level, you can cast the {i}charm person{/i} spell as a 2nd-level spell once with this trait. When you reach 5th level , you can cast the {i}enthrall{/i} spell once with this trait. You must finish a long rest to cast these spells once again with this trait. Charisma is your spellcasting ability for them. This trait replaces the Infernal Legacy trait." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="RaReplace" tag="ra5CInfLeg"/>
+    <tag group="AllowRCust" tag="r5CTieflin"/>
+    <tag group="RaReplace" tag="raTiLegacy"/>
+    <bootstrap thing="spViciMock">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spEnthrall">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCharPers">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 3)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CHellfi" name="Hellfire" description="Once you reach 3rd level , you can cast the {i}burning hands{/i} spell once per day as a 2nd-level spell. This trait replaces the hellish rebuke spell of the Infernal Legacy trait." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="RaReplace" tag="ra5CInfLeg"/>
+    <tag group="AllowRCust" tag="r5CTieflin"/>
+    <tag group="RaReplace" tag="raTiLegacy"/>
+    <bootstrap thing="spThaumatu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spBurnHand">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 3)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CWinged" name="Winged" description="You have bat-like wings growing from your back. You have a flying speed of 30 feet. This trait replaces the Infernal Legacy trait." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="AllowRCust" tag="r5CTieflin"/>
+    <tag group="RaReplace" tag="raTiLegacy"/>
+    <tag group="RaReplace" tag="ra5CInfLeg"/>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    </thing>
   </document>
