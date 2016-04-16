@@ -68,7 +68,7 @@
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <prereq message="Ability to cast arcane spells required.">
-      <validate><![CDATA[        ~ Test that the character has at least one spell
+      <validate><![CDATA[ ~ Test that the character has at least one spell
         ~ or spell-like ability. &
         var HasSpells as number
         Call 5CHasSpell
@@ -78,7 +78,9 @@
   <thing id="ft5CArcStr" name="Arcane Strike" description="You draw upon your arcane power to enhance your weapons with magical energy. \n\n{b}Prerequisite:{/b}  Ability to cast arcane spells. \n• Weapons you hold glow with arcane power and count as though they are magical weapons. \n• You gain a +1 bonus to attacks and damage with these weapons as long as you are holding them. \n• Ranged weapons also grant these bonuses on attacks and damage, but the magic fades after striking their target.       " compset="Feat" summary="You draw upon your arcane power to enhance your weapons with magical energy." uniqueness="useronce">
     <fieldval field="abValue" value="1"/>
     <usesource source="5e5EFeats"/>
-    <eval phase="PostAttr" priority="10000"><![CDATA[~ If we're disabled, do nothing 
+    <tag group="Helper" tag="Disable"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+~ If we're disabled, do nothing 
 doneif (tagis[Helper.Disable] = 1)
 foreach pick in hero from BaseWep where "!(wGroup.Natural) & (Hero.MainHand)"
 eachpick.Field[wAttBonus].value += 1
@@ -136,6 +138,7 @@ nexteach]]></eval>
   <thing id="ft5CBouSpe" name="Bouncing Spell" description="You can direct a failed spell against a different target. \n\n{b}Prerequisite:{/b}  Ability to cast 2nd level spells. \n• Whenever a bouncing spell targeting a single creature has no effect on its intended target (whether due to resistance or a successful saving throw) you may, as a bonus action, redirect it to target another eligible creature within the spell’s range. The redirected spell behaves in all ways as if its new target were the original target for the spell. Spells that affect a target in any way (including a lesser effect from a successful saving throw) may not be redirected in this manner. A bouncing spell uses up a spell slot or level one level higher than the spell’s actual level. " compset="Feat" summary="You can direct a failed spell against a different target." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Ability to cast 2nd lvl spells required."><![CDATA[herofield[tMaxCaster].value >= 3]]></exprreq>
     </thing>
   <thing id="ft5CBurSpe" name="Burning Spell" description="You cause creatures to take extra damage when you affect them with a spell that has the acid or fire descriptor. \n\n{b}Prerequisite:{/b}  Ability to cast 2nd level spells \n• If you cast a spell that deals acid or fire damage, you can cause that spell to continue to burn, dealing more damage the following round. You must increase the level of the spell cost by one, and the spell deals two dice of damage the following round to all affected targets. Saves continue to apply.       " compset="Feat" summary="You cause creatures to take extra damage when you affect them with a spell that has the acid or fire descriptor." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -181,7 +184,8 @@ nexteach]]></eval>
   <thing id="ft5CComUnd" name="Command Undead" description="Using foul powers of necromancy, you can command undead creatures, making them into your servants. \n\n{b}Prerequisites:{/b}  Evil Alignment, Channel Divinity class feature. \n• As an action, you can use one of your uses of Channel Divinity to mentally enslave undead within 30 feet. You make a Turn Undead check as normal. Those undead that would be destroyed fall under your control, obeying your commands to the best of their ability. Intelligent undead shrug off your control after 24 hours. Controlled undead can have their will usurped by other clerics with this ability. When attempting to maintain control, each cleric makes a spellcasting check and the highest roll takes control. \n• You can control a number of undead whose combined hit dice are equal or less than your cleric level.           " compset="Feat" summary="Using foul powers of necromancy, you can command undead creatures, making them into your servants." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <prereq message="">
+    <exprreq message="Evil Alignment required."><![CDATA[tagcount[Alignment.Evil] <> 0]]></exprreq>
+    <prereq message="Channel Divinity class feature required.">
       <validate>~ Check whether the Ki Pool ability is active
 @valid = #hasability[cClrChaDiv]
 @valid = #hasability[cPalChaDiv]</validate>
@@ -194,6 +198,13 @@ nexteach]]></eval>
   <thing id="ft5CCroExp" name="Crossbow Expertise" description="You are a master with the crossbow. \n\n{b}Prerequisite:{/b}  Crossbow proficiency \n• You can make the normal amount of attacks with loaded weapons, ignoring the loading quality. \n• You do not suffer Disadvantage on ranged attacks made within 5’ of a threatening creature. \n• If you have a loaded hand crossbow in your off-hand, you can fire it as a bonus action.         " compset="Feat" summary="You are a master with the crossbow." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <prereq message="Crossbow proficiency required.">
+      <validate><![CDATA[validif (hero.tagis[WepProf.wCrssbwHan] <> 0)
+validif (hero.tagis[WepProf.wCrssbwHvy] <> 0)
+validif (hero.tagis[WepProf.wCrossbowL] <> 0)
+validif (hero.tagis[ArmProfGrp.WepSimple] <> 0)
+validif (hero.tagis[ArmProfGrp.WepMartial] <> 0)]]></validate>
+      </prereq>
     </thing>
   <thing id="ft5CDanSen" name="Danger Sense" description="Your skill at sensing danger allows you to avoid harm more easily than others. \n\n{b}Prerequisites:{/b}  Wis 13+, Insight proficiency \n• Your Wisdom score increases by \n• Once per short you can gain advantage on any initiative roll. \n• When subjected to any effect that allows a Wisdom or Intelligence save, you may make an Insight check instead.          " compset="Feat" summary="Your skill at sensing danger allows you to avoid harm more easily than others." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -254,6 +265,10 @@ nexteach]]></eval>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <exprreq message="Wisdom 13 required."><![CDATA[#attrvalue[aWIS] >= 13]]></exprreq>
+    <prereq message="Arcana or Religion proficiency required.">
+      <validate><![CDATA[validif (hero.tagis[ProfSkill.skArcana] <> 0)
+validif (hero.tagis[ProfSkill.skReligion] <> 0)]]></validate>
+      </prereq>
     </thing>
   <thing id="ft5CDiehar" name="Diehard" description="You are especially hard to kill. \n\n{b}Prerequisite:{/b}  Endurance. \n• You gain a +1 bonus to your Constitution score. \n• You do not die immediately until you reach an amount of negative hit points equal to your Con score plus your level. \n• You gain a +2 bonus on death saves.           " compset="Feat" summary="You are especially hard to kill. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -268,6 +283,10 @@ nexteach]]></eval>
   <thing id="ft5CDisExp" name="Disarm Expertise" description="You are skilled at disarming an enemy. \n\n{b}Prerequisites:{/b}  Str or Dex 13+ \n• When you perform a disarm maneuver, you do so with advantage on your ability check. \n• Opponents suffer disadvantage when they attempt to disarm you. \n• You do not suffer disadvantage when attempting to disarm two-handed weapons. *See Total Party Kill Games’ Fifth Edition Options title for more information on combat maneuvers.        " compset="Feat" summary="You are skilled at disarming an enemy." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <prereq message="Strenght or Dexterity 13 required.">
+      <validate><![CDATA[validif (#attrvalue[aSTR] >= 13)
+validif (#attrvalue[aDEX] >= 13)]]></validate>
+      </prereq>
     </thing>
   <thing id="ft5CDisBlo" name="Disorienting Blow" description="You make a hammering attack that disorients your target. \n\n{b}Prerequisite:{/b}  Str 13+ \n• Your Strength or Dexterity score (choose one) increases by +1. \n• You may make an attack with a -5 penalty. If that attack hits, your target is unable to use reactions or bonus actions until the beginning of their next turn.          " compset="Feat" summary="You make a hammering attack that disorients your target." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -295,6 +314,10 @@ nexteach]]></eval>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <exprreq message="Wisdom 13 required."><![CDATA[#attrvalue[aWIS] >= 13]]></exprreq>
+    <prereq message="Arcana or Nature proficiency required.">
+      <validate><![CDATA[validif (hero.tagis[ProfSkill.skArcana] <> 0)
+validif (hero.tagis[ProfSkill.skNature] <> 0)]]></validate>
+      </prereq>
     </thing>
   <thing id="ft5CDreCar" name="Dreadful Carnage" description="Slaying an enemy demoralizes your other nearby foes. \n\n{b}Prerequisites:{/b}  Str 15+, Power Attack \n• Whenever you reduce an enemy to 0 or fewer hit points, you can make an Intimidate skill check to demoralize all enemies within 30 feet as a free action. Enemies that cannot see both you and the enemy you reduced to 0 or fewer hit points are unaffected. Demoralized (Condition) Demoralized targets suffer disadvantage on all attacks and skill tests against you for a number of rounds equal to your proficiency bonus. Resisting the Intimidate skill is a Wisdom save DC 8 + the creature’s proficiency bonus + Strength or Charisma bonus.  " compset="Feat" summary="Slaying an enemy demoralizes your other nearby foes. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -315,6 +338,10 @@ nexteach]]></eval>
   <thing id="ft5CEagleE" name="Eagle-Eyed" description="Your eyesight is especially keen, and you pick up on minute details. \n\n{b}Prerequisites:{/b}  Perception or Investigation proficiency \n• You gain expertise with the Perception and Investigation skills. \n• You can read lips of targets you can see as long as you speak the same language. \n• You never suffer disadvantage on Perception checks due to distance.         " compset="Feat" summary="Your eyesight is especially keen, and you pick up on minute details. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <prereq message="Perception or Investigation proficiency required.">
+      <validate><![CDATA[validif (hero.tagis[ProfSkill.skPercep] <> 0)
+validif (hero.tagis[ProfSkill.skInvestig] <> 0)]]></validate>
+      </prereq>
     </thing>
   <thing id="ft5CEleCha" name="Elemental Channel" description="Choose one elemental subtype, such as air, earth, fire, or water. You can channel divinity energy to turn or destroy outsiders that possess your chosen elemental subtype. \n\n{b}Prerequisite:{/b}  Channel Divinity class feature. \n• Your Wisdom score increases by +1. \n• Instead of its normal effect, you can choose to have your ability to Channel Divinity turn or destroy outsiders of your chosen elemental subtype. If you choose to turn or destroy creatures of the chosen elemental subtype, your channel energy has no effect on other creatures. • Thanks to your connection to an element, the save DC for your Channel Divinity ability increases by +1 against foes with that elemental subtype." compset="Feat" summary="Choose one elemental subtype, such as air, earth, fire, or water. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -367,6 +394,10 @@ nexteach]]></eval>
   <thing id="ft5CExtFig" name="Extra Fighting Style" description="Your versatility training in combat allows you to gain an additional fighting style. \n\n{b}Prerequisite:{/b}  Fighting Style class feature. \n• You may choose an extra combat style from your class.               " compset="Feat" summary="Your versatility training in combat allows you to gain an additional fighting style. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <prereq message="Fighting Style class feature required.">
+      <validate><![CDATA[validif (hero.tagis[abCategory.FtrFigStyl] <> 0)
+validif (hero.tagis[abCategory.RgrFigStyl] <> 0)]]></validate>
+      </prereq>
     </thing>
   <thing id="ft5CExtKi" name="Extra Ki" description="Your ki pool is greater than most. \n\n{b}Prerequisite:{/b}  Ki class feature. \n• Your ki pool increases by 3.                 " compset="Feat" summary="Your ki pool is greater than most. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -403,6 +434,10 @@ nexteach]]></eval>
   <thing id="ft5CFavDef" name="Favored Defense" description="Your cunning is your shield against your quarry’s attacks. \n\n{b}Prerequisite:{/b}  Favored enemy class feature. \n• Your Wisdom or Intelligence (choose one) increases by +1. \n• You add half of your proficiency bonus to your AC when attacked by a favored enemy.            " compset="Feat" summary="Your cunning is your shield against your quarry’s attacks. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <prereq message="Favored enemy class feature required.">
+      <validate><![CDATA[
+validif (hero.tagis[abCategory.RgrFavEnem] <> 0)]]></validate>
+      </prereq>
     </thing>
   <thing id="ft5CFeiExp" name="Feint Expertise" description="You are skilled at faking out an enemy in combat. \n\n{b}Prerequisite:{/b}  Int 13+ \n• When you perform a feint maneuver, you do so with advantage on your ability check. \n• Opponents suffer disadvantage when they attempt to feint you. \n• You can attempt to feint a target a number of times equal to your Intelligence modifier instead of just once. *See Total Party Kill Games’ Fifth Edition Options title for more information on combat maneuvers.      " compset="Feat" summary="You are skilled at faking out an enemy in combat. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -422,6 +457,10 @@ nexteach]]></eval>
   <thing id="ft5CFortui" name="Fortuitous" description="You have an uncanny amount of luck. \n\n{b}Prerequisites:{/b}  Cha 15+ or Halfling \n• You gain four d4s you can use towards lucky moments each day. \n• You can add these dice to any attack, skill check or saving throw, even after you see the results. You may also use more than one die. \n• You can use these dice to subtract from a foe’s attack or skill check against you, or on their save against one of your abilities.        " compset="Feat" summary="You have an uncanny amount of luck. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <prereq message="Charisma 15 or Halfling race required.">
+      <validate><![CDATA[validif (#attrvalue[aCHA] >= 15)
+validif (#hasrace[rHalfling] <> 0)]]></validate>
+      </prereq>
     </thing>
   <thing id="ft5CGiaSla" name="Giant Slayer" description="You’ve been trained to fight creatures much larger than yourself and survive. \n\n{b}Prerequisite:{/b}  Dwarf or Wis 13+ and Nature proficiency \n• You gain advantage on all attacks made against creatures at least two size categories larger than you. \n• You gain a +2 bonus to AC when fighting creatures at least two sizes larger than you. If the creature is only one size larger, you only gain a +1 bonus to AC. • Your critical threat range against giants increases by +1.      " compset="Feat" summary="You’ve been trained to fight creatures much larger than yourself and survive. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -430,10 +469,12 @@ nexteach]]></eval>
   <thing id="ft5CGreFor" name="Great Fortitude" description="You are resistant to poisons, diseases, and other maladies. \n\n{b}Prerequisite:{/b}  Con 13+ \n• Increase your Constitution score by 1 \n• You gain proficiency in Constitution saves.             " compset="Feat" summary="You are resistant to poisons, diseases, and other maladies. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Constitution 13 required."><![CDATA[#attrvalue[aCON] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CGreStr" name="Great Strength" description="You are herculean in strength, capable of great feats of endurance. \n\n{b}Prerequisite:{/b}  Str 13+ \n• Increase your Strength score by +1. \n• You gain proficiency in Strength saves.              " compset="Feat" summary="You are herculean in strength, capable of great feats of endurance. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Strenght 13 required."><![CDATA[#attrvalue[aSTR] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CGreWea" name="Great Weapon Expertise" description="You are a master of wielding heavy weapons. \n\n• When wielding a heavy weapon, you may reroll damage once per round, keeping the better result. \n• When wielding a heavy weapon, you can take a penalty of -5 to grant a +5 bonus to your damage. \n• If you hit a foe with a heavy weapon, you may spend a bonus action to make a Shove attack against that same target." compset="Feat" summary="You are a master of wielding heavy weapons." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -442,18 +483,35 @@ nexteach]]></eval>
   <thing id="ft5CGraExp" name="Grappling Expertise" description="You are adept at grappling and close-quarter physical combat. \n\n{b}Prerequisite:{/b}  Str 13+ \n• If you have a creature grappled, you gain advantage on all attacks against them. \n• If you have a creature grappled, you can spend a bonus action to attempt to pin the creature. Make another grapple check. If you succeed, both you and the creature are restrained and immobile. • You can grapple creatures up to one size larger than you without them escaping automatically. *See Total Party Kill Games’ Fifth Edition Options title for more information on combat maneuvers.   " compset="Feat" summary="You are adept at grappling and close-quarter physical combat. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Strenght 13 required."><![CDATA[#attrvalue[aSTR] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CHeaCha" name="Healing Chakra" description="You can use Ki to heal yourself and others. \n\n{b}Prerequisites:{/b}  Wis 15+, Ki class feature \n• As an action, you can spend a Ki point to automatically stabilize another creature. They become conscious with a number of hit points equal to your Wisdom modifier. \n• If you fail a death save, you can expend a point of Ki to reroll that save. \n• As an action you can expend a point of Ki to heal another creature. They regain 1d6 points plus your Wisdom modifier.     " compset="Feat" summary="You can use Ki to heal yourself and others. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Wisdom 15 required."><![CDATA[#attrvalue[aWIS] >= 15]]></exprreq>
+    <prereq message="Ki class feature required.">
+      <validate>@valid = #hasability[cMnkKi]</validate>
+      </prereq>
     </thing>
   <thing id="ft5CHeaArm" name="Heavy Armor Expertise" description="You know how to use heavy armor to its fullest. \n\n{b}Prerequisite:{/b}  Heavy Armor Proficiency \n• Increase your Strength score by +1. \n• If you are wearing heavy armor, you reduce all physical damage taken by 3 points.             " compset="Feat" summary="You know how to use heavy armor to its fullest. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      #skillbonus[aSTR] += 1]]></eval>
+    <exprreq message="Heavy Armor proficiency required."><![CDATA[tagis[ArmProfGrp.ArmorHeavy] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CHeaAmr" name="Heavy Armor" description="Proficiency You can wear heavy armor without penalty. \n\n{b}Prerequisite:{/b}  Medium armor proficiency \n• Increase your Strength score by +1. \n• You gain proficiency with heavy armors.              " compset="Feat" summary="Proficiency You can wear heavy armor without penalty. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ArmProfGrp" tag="ArmorHeavy" name="Heavy armor" abbrev="Heavy armor"/>
+    <eval phase="First"><![CDATA[~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      #skillbonus[aSTR] += 1
+      perform hero.pushtags[ArmProfGrp.?]]]></eval>
+    <exprreq message="Medium Armor proficiency required."><![CDATA[tagis[ArmProfGrp.ArmorMed] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CHeiSpe" name="Heighten Spell" description="Your spells are incredibly difficult to resist. \n\n{b}Prerequisite:{/b}  Ability to cast 3rd level spells. \n• When you cast a spell that forces a creature to make a saving throw to resist its effects, you can increase the spell by two levels to give one target of the spell disadvantage on its first saving throw made against the spell.            " compset="Feat" summary="Your spells are incredibly difficult to resist. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -462,10 +520,16 @@ nexteach]]></eval>
   <thing id="ft5CHerHea" name="Herbal Healer" description="You know which plants and herbs to use to make herbal poultices and unguents. \n\n{b}Prerequisites:{/b}  Wis 13+, Nature proficiency \n• You gain proficiency with the herbalist kit. \n• You can spend one hour to create a number of herbal healing salves equal to your proficiency bonus. These salves add +1d6 hit points to a target’s recovery dice during rest. Your salves are only good for 24 hours. • You can spend one hour to create a powerful healing salve that functions as lesser restoration.     " compset="Feat" summary="You know which plants and herbs to use to make herbal poultices and unguents. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message="Wisdom 13 required."><![CDATA[#attrvalue[aWIS] >= 13]]></exprreq>
+    <exprreq message="Nature proficiency required."><![CDATA[hero.tagis[ProfSkill.skNature] <> 0]]></exprreq>
     </thing>
-  <thing id="ft5CHerDef" name="Heroic Defiance" description="You struggle on when others would fall. \n\n{b}Prerequisites:{/b}  Diehard or Endurance. \n• Once per day as an immediate action you can delay the onset of one harmful condition or affliction (such as frightened, paralyzed, stunned, and so on). Activating this feat delays the onset of the condition until the end of your next turn, after which time the condition takes its normal effect. This feat has no effect on hit point damage or ability damage. • You may reroll failed saving throws three times each day. You may use the new result if it would benefit you to do so. You can use this ability again after a long rest.  " compset="Feat" summary="You struggle on when others would fall. " uniqueness="useronce">
+  <thing id="ft5CHerDef" name="Heroic Defiance" description="You struggle on when others would fall. \n\n{b}Prerequisites:{/b}  Diehard or Endurance. \n• Once per day as an immediate action you can delay the onset of one harmful condition or affliction (such as frightened, paralyzed, stunned, and so on). Activating this feat delays the onset of the condition until the end of your next turn, after which time the condition takes its normal effect. This feat has no effect on hit point damage or ability damage.\n • You may reroll failed saving throws three times each day. You may use the new result if it would benefit you to do so. You can use this ability again after a long rest." compset="Feat" summary="You struggle on when others would fall. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <prereq message=" Diehard or Endurance feat required.">
+      <validate><![CDATA[validif (hero.tagis[HasFeat.ft5CEndura] <> 0)
+validif (hero.tagis[HasFeat.ft5CDiehar] <> 0)]]></validate>
+      </prereq>
     </thing>
   <thing id="ft5CImpBea" name="Improved Beast" description="Companion Your beast companion is of greater power than most of its kind. \n\n{b}Prerequisite:{/b}  Beast Companion class feature, Animal Handling proficiency \n• Your beast companion may be up to CR ½. \n• Your beast companion’s natural attacks count as magical and silver for the purposes of over-coming resistance.         " compset="Feat" summary="Companion Your beast companion is of greater power than most of its kind. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
