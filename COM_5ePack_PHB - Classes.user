@@ -176,7 +176,7 @@
     <bootstrap thing="c5CBrdComI">
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
-    <bootstrap thing="cExtraAtt">
+    <bootstrap thing="cClr5CExAt">
       <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
     <bootstrap thing="c5CBrdBatM">
@@ -2878,5 +2878,20 @@
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
     <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cClr5CExAt" name="Extra Attack" description="Starting at 6th level, you can attack twice, instead of once, whenever you take the Attack action on your turn." compset="ClSpecial" summary="You can make an extra attack when you take the Attack action.">
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <eval phase="PostLevel" priority="20000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~If we're not already getting an extra attack, assign the extra attack tag
+      doneif (hero.tagis[Hero.ExtraAtt] <> 0)
+      perform hero.assign[Hero.ExtraAtt]]]>
+      <after name="Fighter extra attacks"/>
+      </eval>
     </thing>
   </document>
