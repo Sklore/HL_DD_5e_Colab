@@ -147,11 +147,35 @@ doneif (#levelcount[Wizard] < 14)
   <thing id="c5CSrcStFu" name="Storm&apos;s Fury" description="When hit by a melee attack, you can use your reaction to deal lightning damage equal to your sorcerer level to the attacker, who must also make a Strength saving throw against your sorcerer spell save DC or be pushed in a straight line up to 20 feet away from you." compset="ClSpecial" summary="When you are hit by a melee attack, you can use your reaction to deal lightning damage to the attacker.">
     <tag group="abAction" tag="Reaction"/>
     </thing>
-  <thing id="cCSrcWiSo" name="Wind Soul" description="You gain immunity to lightning and thunder damage and a magical flying speed of 60 feet. As an action, you your flying speed becomes 30 for one hour and up to 3+your Charisma modifier creatures within 30 feet of you equal to 3 +your Charisma modifier get the same flying speed. This recharges on a short or long rest" compset="ClSpecial" summary="You gain immunity to lightning and thunder damage and learn to fly.">
+  <thing id="cCSrcWiSo" name="Wind Soul" description="You gain immunity to lightning and thunder damage and a magical flying speed of 60 feet. As an action, you your flying speed becomes 30 for one hour and up to 3+your Charisma modifier creatures within 30 feet of you equal to 3 +your Charisma modifier get the same flying speed. This recharges on a short or long rest." compset="ClSpecial" summary="You gain immunity to lightning and thunder damage and learn to fly.">
+    <fieldval field="abValue" value="60"/>
+    <fieldval field="abValue2" value="30"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Include other creatures"/>
+    <tag group="User" tag="Tracker"/>
     <tag group="abAction" tag="Action"/>
-    <bootstrap thing="xFly">
-      <autotag group="Value" tag="60"/>
-      </bootstrap>
+    <tag group="Usage" tag="Hour"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] <> 1)
+      ~ if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abValue3].value += 3 + #attrmod[aCHA]
+      field[livename].text = field[thingname].text & " (" & field[abValue3].value & " Creatures)"
+
+      ~ The following should only happen once on the first copy
+      doneif (tagis[Helper.FirstCopy] = 0)
+
+      ~ If ability activated then we have only a 30ft fly
+      if (field[abilActive].value = 1) then
+        #value[xFly] += field[abValue2].value
+
+      ~ Default is 60ft
+      else
+        #value[xFly] += field[abValue].value
+      endif]]></eval>
     </thing>
   <thing id="c5CWlkUndy" name="The Undying" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
     <usesource source="5eSCAGCP"/>
