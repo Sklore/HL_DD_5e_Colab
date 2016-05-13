@@ -1,20 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
   <thing id="ft5CAcroba" name="Acrobatic" description="You are skilled at leaping, jumping and flying. \n\n{b}Prerequisites:{/b}  Dex 13+, Acrobatics proficiency \n• Your Strength or Dexterity score (choose one) increases by +1. \n• You gain expertise with the Acrobatics proficiency. \n• You can stand from prone by only expending 5’ of your total movement. \n• Once per short rest you can gain advantage on any Dexterity based skill check.      " compset="Feat" summary="You are skilled at leaping, jumping and flying." uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Dexterity"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      endif]]></eval>
+    <exprreq message=""><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CAcrSte" name="Acrobatic Steps" description="You can easily move over and through obstacles. \n\n{b}Prerequisites:{/b}  Dex 13+, Acrobatics proficiency \n• Your Dexterity score increases by +1. \n• Whenever you move, you may move through up to half of your movement through difficult terrain each round as if it were normal terrain. \n• Once per short rest you can ignore all slowing effects of difficult terrain.        " compset="Feat" summary="You can easily move over and through obstacles. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aDEX].field[aStartMod].value += 1]]></eval>
+    <exprreq message=""><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CAgiMan" name="Agile Maneuvers" description="You’ve learned to use your quickness in place of brute force when performing combat maneuvers. \n\n{b}Prerequisite:{/b} Dex 13+\n• Your Dexterity bonus increases by +1.\n• You may substitute your Dexterity bonus to any combat maneuver attempt that uses Strength instead. \n• Once per rest, as a bonus action, you can gain advantage on any Dexteritybased combat maneuver* attempt. \n\n*See Total Party Kill Games’ Fifth Edition Options title for more information on combat maneuvers." compset="Feat" summary="You’ve learned to use your quickness in place of brute force when performing combat maneuvers. \n\n Pre" uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aDEX].field[aStartMod].value += 1]]></eval>
+    <exprreq message=""><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CAlertn" name="Alertness" description="You are always cautious of danger, and are rarely caught unaware. \n\n{b}Prerequisite:{/b}  Perception proficiency \n• You have a +2 bonus to initiative checks. \n• You are never surprised, so long as you are not stunned or unconscious. \n• Enemies never gain advantage when striking you from stealth.           " compset="Feat" summary="You are always cautious of danger, and are rarely caught unaware. \n" uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ Add a +5 bonus to our Initiative
+      #skillbonus[Initiative] = #skillbonus[Initiative] + 2]]></eval>
     </thing>
   <thing id="ft5CAniAff" name="Animal Affinity" description="You are skilled at working with animals and mounts. \n\n{b}Prerequisite:{/b}  Animal Handling proficiency \n• You gain expertise with all Animal Handling skill checks. \n• You can verbally command any of your beast companions or mounts to take the Attack, Dash, Disengage, Dodge, Help or Move as a free action during your turn. Your beast companion must be able to see or hear you in order to use this ability.        " compset="Feat" summary="You are skilled at working with animals and mounts." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -31,6 +61,8 @@
   <thing id="ft5CAthltc" name="Athletic" description="You possess inherent physical prowess. \n\n{b}Prerequisites:{/b}  Str and Con 13+, Athletics proficiency \n• You gain expertise with the Athletics skill. \n• You can climb at your full movement rate instead of halved. \n• You can perform a running long jump or running high jump after moving 5’ instead of the usual 10’. \n• Once per short rest you can gain advantage on any Strength or Constitution based skill check.       " compset="Feat" summary="You possess inherent physical prowess." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message=""><![CDATA[#attrvalue[aSTR] >= 13]]></exprreq>
+    <exprreq message=""><![CDATA[#attrvalue[aCON] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CAugCon" name="Augmented Conjuring" description="Your conjured creatures are more powerful and robust. \n\n{b}Prerequisite:{/b}  Spell Focus (Conjuration) \n• Each creature you conjure with any summon spell gains a +2 bonus to attacks and damage and a bonus of +2 hit points per HD for the duration of the spell that summoned it.           " compset="Feat" summary="Your conjured creatures are more powerful and robust." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -43,14 +75,21 @@
   <thing id="ft5CBeaSla" name="Beast Slayer" description="You’ve been trained to fight against all manner of dangerous beasts and survive. \n\n{b}Prerequisites:{/b}  Wis 13+, Nature proficiency \n• You gain a +1 to attacks made against beasts and a +1 bonus to AC against their attacks. \n• You gain a bonus equal to your proficiency bonus on all Survival checks to track beasts. \n• Your critical threat range against beasts increases by +1.         " compset="Feat" summary="You’ve been trained to fight against all manner of dangerous beasts and survive." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message=""><![CDATA[#attrvalue[aWIS] >= 13]]></exprreq>
     </thing>
-  <thing id="ft5CBliFig" name="Blind-Fight" description="You are skilled at attacking opponents that you cannot clearly perceive. \n\n{b}Prerequisites:{/b}  Wis 13+, Perception proficiency \n• As long as you can hear an opponent, they do not gain advantage on attacks against you when you cannot see. \n• As long as you can hear an opponent, your attacks do not suffer disadvantage when you cannot see. \n• You can make Perception checks to discern the location of targets within 30’ while unable to see. You can discern the location of targets farther away than 30’, but suffer disadvantage on the skill check.   " compset="Feat" summary="You are skilled at attacking opponents that you cannot clearly perceive. \n\n" uniqueness="useronce">
+  <thing id="ft5CBliFig" name="Blind-Fight" description="You are skilled at attacking opponents that you cannot clearly perceive. \n\n{b}Prerequisites:{/b}  Wis 13+, Perception proficiency \n• As long as you can hear an opponent, they do not gain advantage on attacks against you when you cannot see. \n• As long as you can hear an opponent, your attacks do not suffer disadvantage when you cannot see. \n• You can make Perception checks to discern the laocation of targets within 30’ while unable to see. You can discern the location of targets farther away than 30’, but suffer disadvantage on the skill check." compset="Feat" summary="You are skilled at attacking opponents that you cannot clearly perceive. \n\n" uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message=""><![CDATA[#attrvalue[aWIS] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CBloExp" name="Blocking Expertise" description="You turn away even the fiercest blows with your shield. \n\n{b}Prerequisite:{/b}  Shield proficiency \n• Your Strength score increases by +1. \n• When you wield a shield and are dealt a critical attack, you have a 50% chance to negate the critical hit.            " compset="Feat" summary="You turn away even the fiercest blows with your shield." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aSTR].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CBodygu" name="Bodyguard" description="Your are adept at warding off enemies attacking nearby allies. \n\n{b}Prerequisite:{/b}  Shield proficiency, Combat Reflexes \n• You may grant your shield bonus to a single adjacent ally instead of yourself. \n• When an adjacent ally is attacked, you may use a reaction to cause the attack to suffer disadvantage. \n• When an adjacent ally is attacked, you may use a reaction to redirect the attack to yourself.       " compset="Feat" summary="Your are adept at warding off enemies attacking nearby allies. \n" uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -79,6 +118,7 @@
   <thing id="ft5CCleave" name="Cleave" description="You can strike many adjacent foes with a single blow. \n\n{b}Prerequisites:{/b}  Str 13+, Power Attack \n• You can make an attack against a foe within reach that cleaves into other foes. If you hit, you deal damage normally and can make an additional attack as a bonus action against a foe that is adjacent to the previous foe and also within reach. This cleave attack only counts as one action (and your bonus action). • When you cleave, your movement is halved for your current turn. • At 5th level, and each additional five levels, you may make an additional attack against another adjacent foe that you also threaten as part of your cleave action. " compset="Feat" summary="You can strike many adjacent foes with a single blow." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message=""><![CDATA[#attrvalue[aSTR] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CComCas" name="Combat Caster" description="You are adept at spellcasting when threatened or distracted. \n\n• Whenever attempting to maintain concentration on spells in combat, you gain advantage. \n• You can cast spells, even when holding weapons or shields. \n• When opponents provoke attacks of opportunity, you can spend your reaction to cast a cantrip at that target." compset="Feat" summary="You are adept at spellcasting when threatened or distracted." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -87,10 +127,17 @@
   <thing id="ft5CComExp" name="Combat Expertise" description="You can increase your defense at the expense of your accuracy. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• Your Dexterity score increases by +1. \n• You may choose to suffer disadvantage on all attacks in a round in order to force all opponents to suffer disadvantage on all attacks against you.           " compset="Feat" summary="You can increase your defense at the expense of your accuracy." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aDEX].field[aStartMod].value += 1]]></eval>
+    <exprreq message=""><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CComRef" name="Combat Reflexes" description="You quickly press the advantage of your foes’ mistakes. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• You can perform a number of opportunity attacks per round equal to your Dexterity modifier (minimum 1). \n• You gain advantage on all opportunity attacks.           " compset="Feat" summary="You quickly press the advantage of your foes’ mistakes." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <exprreq message=""><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CComUnd" name="Command Undead" description="Using foul powers of necromancy, you can command undead creatures, making them into your servants. \n\n{b}Prerequisites:{/b}  Evil Alignment, Channel Divinity class feature. \n• As an action, you can use one of your uses of Channel Divinity to mentally enslave undead within 30 feet. You make a Turn Undead check as normal. Those undead that would be destroyed fall under your control, obeying your commands to the best of their ability. Intelligent undead shrug off your control after 24 hours. Controlled undead can have their will usurped by other clerics with this ability. When attempting to maintain control, each cleric makes a spellcasting check and the highest roll takes control. \n• You can control a number of undead whose combined hit dice are equal or less than your cleric level.           " compset="Feat" summary="Using foul powers of necromancy, you can command undead creatures, making them into your servants." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -107,10 +154,20 @@
   <thing id="ft5CDanSen" name="Danger Sense" description="Your skill at sensing danger allows you to avoid harm more easily than others. \n\n{b}Prerequisites:{/b}  Wis 13+, Insight proficiency \n• Your Wisdom score increases by \n• Once per short you can gain advantage on any initiative roll. \n• When subjected to any effect that allows a Wisdom or Intelligence save, you may make an Insight check instead.          " compset="Feat" summary="Your skill at sensing danger allows you to avoid harm more easily than others." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aWIS].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CDarStr" name="Darting Strike" description="Your quick attacks are more difficult to dodge. \n\n{b}Prerequisite:{/b}  Dex 15+ \n• Your Dexterity score increases by 1 \n• When moving at least a 10’ before an attack, you gain a +1 bonus on that attack.            " compset="Feat" summary="Your quick attacks are more difficult to dodge." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aDEX].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CDazDis" name="Dazzling Display" description="Your skill with your weapon can frighten enemies. \n\n{b}Prerequisite:{/b}  Intimidate proficiency \n• While wielding a weapon or unarmed strike, you can perform a bewildering show of prowess. You can take an action to make an Intimidate check to frighten all foes within 30 feet who can see your display.          " compset="Feat" summary="Your skill with your weapon can frighten enemies." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -151,6 +208,11 @@
   <thing id="ft5CDiehar" name="Diehard" description="You are especially hard to kill. \n\n{b}Prerequisite:{/b}  Endurance. \n• You gain a +1 bonus to your Constitution score. \n• You do not die immediately until you reach an amount of negative hit points equal to your Con score plus your level. \n• You gain a +2 bonus on death saves.           " compset="Feat" summary="You are especially hard to kill. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCON].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CDirFig" name="Dirty Fighter" description="You’ll use anything to your advantage in combat. \n\n{b}Prerequisite:{/b}  Int 13+ \n• As a bonus action, you can cause a foe to suffer disadvantage on their attacks this round. The target gains an Intelligence or Dexterity save (their choice) with a DC of 8 + your proficiency bonus + your Intelligence bonus. If they save, there is no effect. \n• By expending a bonus action, you gain +1d4 on all attack rolls against a single target during this round.      " compset="Feat" summary="You’ll use anything to your advantage in combat." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -161,8 +223,19 @@
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CDisBlo" name="Disorienting Blow" description="You make a hammering attack that disorients your target. \n\n{b}Prerequisite:{/b}  Str 13+ \n• Your Strength or Dexterity score (choose one) increases by +1. \n• You may make an attack with a -5 penalty. If that attack hits, your target is unable to use reactions or bonus actions until the beginning of their next turn.          " compset="Feat" summary="You make a hammering attack that disorients your target." uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Dexterity"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      endif]]></eval>
     </thing>
   <thing id="ft5CDisStr" name="Disrupting Strike" description="With a well-placed attack, you make it harder for a nearby opponent to cast spells. \n\n• If you make a successful melee or ranged attack against an opponent casting a spell within 30 feet, the concentration DC to successfully cast the spell is increased by +4." compset="Feat" summary="With a well-placed attack, you make it harder for a nearby opponent to cast spells." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -203,6 +276,11 @@
   <thing id="ft5CEleCha" name="Elemental Channel" description="Choose one elemental subtype, such as air, earth, fire, or water. You can channel divinity energy to turn or destroy outsiders that possess your chosen elemental subtype. \n\n{b}Prerequisite:{/b}  Channel Divinity class feature. \n• Your Wisdom score increases by +1. \n• Instead of its normal effect, you can choose to have your ability to Channel Divinity turn or destroy outsiders of your chosen elemental subtype. If you choose to turn or destroy creatures of the chosen elemental subtype, your channel energy has no effect on other creatures. • Thanks to your connection to an element, the save DC for your Channel Divinity ability increases by +1 against foes with that elemental subtype." compset="Feat" summary="Choose one elemental subtype, such as air, earth, fire, or water. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aWIS].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CEleFoc" name="Elemental Focus" description="Your spells of a certain element are more difficult to resist. \n\n{b}Prerequisite:{/b}  Ability to cast 1st level spells \n• Choose one energy type (acid, cold, electricity, or fire). Add +1 to the Difficulty Class for all saving throws against spells that deal damage of the energy type you select. \n• Once per long rest when you cast a spell with your chosen energy type, you can force an opponent to suffer disadvantage on their saving throw.        " compset="Feat" summary="Your spells of a certain element are more difficult to resist. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -223,6 +301,11 @@
   <thing id="ft5CEndura" name="Endurance" description="Harsh conditions or long exertions do not easily tire you. \n\n{b}Prerequisite:{/b}  Con 13+ \n• Your Constitution score increases by 1 \n• You have advantage on all saves made to resist exhaustion, running out of breath, starvation and thirst, heat and cold. \n• You can sleep in armor that you are proficient in.         " compset="Feat" summary="Harsh conditions or long exertions do not easily tire you. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCON].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CExtSpe" name="Extended Spell" description="Your spells can last a great deal longer than normal. \n\n{b}Prerequisite:{/b}  Ability to cast 2nd level spells. \n• When you cast a spell that has a duration of 1 minute or longer, you can increase your spell’s level to double its duration, to a maximum duration of 24 hours.            " compset="Feat" summary="Your spells can last a great deal longer than normal. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -257,8 +340,19 @@
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CFavDef" name="Favored Defense" description="Your cunning is your shield against your quarry’s attacks. \n\n{b}Prerequisite:{/b}  Favored enemy class feature. \n• Your Wisdom or Intelligence (choose one) increases by +1. \n• You add half of your proficiency bonus to your AC when attacked by a favored enemy.            " compset="Feat" summary="Your cunning is your shield against your quarry’s attacks. " uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Wisdom"/>
+    <arrayval field="usrArray" index="1" value="Intelligence"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aWIS].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aINT].field[aStartMod].value += 1
+      endif]]></eval>
     </thing>
   <thing id="ft5CFeiExp" name="Feint Expertise" description="You are skilled at faking out an enemy in combat. \n\n{b}Prerequisite:{/b}  Int 13+ \n• When you perform a feint maneuver, you do so with advantage on your ability check. \n• Opponents suffer disadvantage when they attempt to feint you. \n• You can attempt to feint a target a number of times equal to your Intelligence modifier instead of just once. *See Total Party Kill Games’ Fifth Edition Options title for more information on combat maneuvers.      " compset="Feat" summary="You are skilled at faking out an enemy in combat. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -283,10 +377,20 @@
   <thing id="ft5CGreFor" name="Great Fortitude" description="You are resistant to poisons, diseases, and other maladies. \n\n{b}Prerequisite:{/b}  Con 13+ \n• Increase your Constitution score by 1 \n• You gain proficiency in Constitution saves.             " compset="Feat" summary="You are resistant to poisons, diseases, and other maladies. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCON].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CGreStr" name="Great Strength" description="You are herculean in strength, capable of great feats of endurance. \n\n{b}Prerequisite:{/b}  Str 13+ \n• Increase your Strength score by +1. \n• You gain proficiency in Strength saves.              " compset="Feat" summary="You are herculean in strength, capable of great feats of endurance. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aSTR].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CGreWea" name="Great Weapon Expertise" description="You are a master of wielding heavy weapons. \n\n• When wielding a heavy weapon, you may reroll damage once per round, keeping the better result. \n• When wielding a heavy weapon, you can take a penalty of -5 to grant a +5 bonus to your damage. \n• If you hit a foe with a heavy weapon, you may spend a bonus action to make a Shove attack against that same target." compset="Feat" summary="You are a master of wielding heavy weapons." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -303,10 +407,20 @@
   <thing id="ft5CHeaArm" name="Heavy Armor Expertise" description="You know how to use heavy armor to its fullest. \n\n{b}Prerequisite:{/b}  Heavy Armor Proficiency \n• Increase your Strength score by +1. \n• If you are wearing heavy armor, you reduce all physical damage taken by 3 points.             " compset="Feat" summary="You know how to use heavy armor to its fullest. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aSTR].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CHeaAmr" name="Heavy Armor" description="Proficiency You can wear heavy armor without penalty. \n\n{b}Prerequisite:{/b}  Medium armor proficiency \n• Increase your Strength score by +1. \n• You gain proficiency with heavy armors.              " compset="Feat" summary="Proficiency You can wear heavy armor without penalty. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aSTR].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CHeiSpe" name="Heighten Spell" description="Your spells are incredibly difficult to resist. \n\n{b}Prerequisite:{/b}  Ability to cast 3rd level spells. \n• When you cast a spell that forces a creature to make a saving throw to resist its effects, you can increase the spell by two levels to give one target of the spell disadvantage on its first saving throw made against the spell.            " compset="Feat" summary="Your spells are incredibly difficult to resist. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -335,6 +449,12 @@
   <thing id="ft5CImpIni" name="Improved Initiative" description="Your quick reflexes allow you to react rapidly to danger. \n\n• You gain a +5 bonus on initiative checks. \n• You always go first in initiative when tied with other creatures unless they too have Improved Initiative. If so, roll again or use the highest Dexterity score." compset="Feat" summary="Your quick reflexes allow you to react rapidly to danger." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ Add a +5 bonus to our Initiative
+      #skillbonus[Initiative] = #skillbonus[Initiative] + 5]]></eval>
     </thing>
   <thing id="ft5CImpWea" name="Improvised Weapon" description="Mastery You can turn nearly any object into a deadly weapon, from a razor-sharp chair leg to a sack of flour. \n\n{b}Prerequisite:{/b}  Catch Off-Guard \n• Increase the amount of damage dealt by the improvised weapon by one step (for example, 1d4 becomes 1d6) to a maximum of 1d8 (1d10 if the improvised weapon is two-handed). \n• Improvised weapons in your hands also have a critical threat range of 19–20.       " compset="Feat" summary="Mastery You can turn nearly any object into a deadly weapon, from a razor-sharp chair leg to a sack of flour. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -351,34 +471,81 @@
   <thing id="ft5CIroWil" name="Iron Will" description="You are more resistant to mental effects. \n\n{b}Prerequisite:{/b}  Wis 13+ \n• Increase your Wisdom score by +1. \n• You gain proficiency in Wisdom saves.               " compset="Feat" summary="You are more resistant to mental effects. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aWIS].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CIronsk" name="Ironskin" description="Through body hardening techniques, you can shrug off some blows without the use of armor. \n\n{b}Prerequisite:{/b}  Con 15+ \n• Your Constitution score increases by 1 \n• You may add your Con bonus to AC when not wearing armor.            " compset="Feat" summary="Through body hardening techniques, you can shrug off some blows without the use of armor. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCON].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CKeeInt" name="Keen Intellect" description="Your intellect is practiced and sharp. \n\n{b}Prerequisite:{/b}  Int 15+ \n• Your Intelligence score increases by 1 \n• You can recall anything you’ve seen or heard within a number of weeks equal to your Intelligence modifier. \n• Once per long rest you can gain advantage on any Intelligence-based skill check. \n• By discussing a problem with your allies, you can turn any Insight or Investigation check into a group skill check.      " compset="Feat" summary="Your intellect is practiced and sharp. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aINT].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CLigArm" name="Light Armor" description="Proficiency You know how to wear light armor without penalty. \n\n• Increase your Strength or Dexterity score (choose one) by +1. \n• You gain proficiency with light armors." compset="Feat" summary="Proficiency You know how to wear light armor without penalty." uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Dexterity"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      endif]]></eval>
     </thing>
   <thing id="ft5CLigRef" name="Lightning Reflexes" description="You have faster reflexes than normal. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• Increase your Dexterity score by +1. \n• You gain proficiency in Dexterity saves.               " compset="Feat" summary="You have faster reflexes than normal. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aDEX].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CLigSta" name="Lightning Stance" description="The speed at which you move makes it nearly impossible for opponents to strike you. \n\n{b}Prerequisites:{/b}  Dex 17+, Dodging Expertise \n• If you Dash during your turn, you also gain the benefits of the Dodge action.             " compset="Feat" summary="The speed at which you move makes it nearly impossible for opponents to strike you. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CLookou" name="Lookout" description="You help your allies avoid being surprised. \n\n{b}Prerequisite:{/b}  Perception proficiency \n• Your Dexterity or Wisdom score (choose one) increases by +1. \n• Allies within 30’ may use your Perception checks to determine surprise. \n• Adjacent allies may use your initiative checks to determine initiative order.          " compset="Feat" summary="You help your allies avoid being surprised. " uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Dexterity"/>
+    <arrayval field="usrArray" index="1" value="Wisdom"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aWIS].field[aStartMod].value += 1
+      endif]]></eval>
     </thing>
   <thing id="ft5CLinExp" name="Linguistics Expert" description="You are a scholar of languages, ancient tongues and scripts. \n\n{b}Prerequisite:{/b}  Int 13+ \n• You learn three languages of your choice. \n• You can get rough impressions of the meaning of written and spoken languages you don’t know with a DC 15 Intelligence check. \n• You can also create secret codes. The DC to understand your codes is equal to your Intelligence score + your proficiency bonus.       " compset="Feat" summary="You are a scholar of languages, ancient tongues and scripts. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      hero.child[resLangBck].field[resMax].value += 3]]></eval>
     </thing>
   <thing id="ft5CLunAtt" name="Lunging Attack" description="You can strike foes that would normally be out of reach. \n\n• You can declare that any attack you make is a lunge attack. This increases the reach of your melee attacks by 5 feet. \n• When you do so, you gain a +2 bonus to damage on all lunge attacks, but put yourself in an awkward position, and all attacks made against you have advantage until the beginning of your next turn. You must decide to use this ability at the beginning of your turn, before any attacks are made. \n• When lunging, you threaten an additional 5 feet." compset="Feat" summary="You can strike foes that would normally be out of reach." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -389,8 +556,22 @@
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CMagApt" name="Magical Aptitude" description="You have a knack for magic. \n\n{b}Prerequisites:{/b}  Int 13+, Arcana proficiency \n• Your Intelligence, Wisdom or Charisma score (choose one) increases by +1. \n• You gain expertise in the Arcana skill. \n• Once per short rest you can gain advantage on any Arcana skill check.            " compset="Feat" summary="You have a knack for magic. " uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Intelligence"/>
+    <arrayval field="usrArray" index="1" value="Wisdom"/>
+    <arrayval field="usrArray" index="2" value="Charisma"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aINT].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aWIS].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 2) then
+        hero.child[aCHA].field[aStartMod].value += 1
+      endif]]></eval>
     </thing>
   <thing id="ft5CMagKil" name="Mage Killer" description="You are a hunter and slayer of all who practice spellcraft. \n\n{b}Prerequisite:{/b}  Arcana proficiency \n• Spellcasters that you threaten provoke attacks of opportunity when casting spells in your presence. \n• If you harm a spellcaster while they are concentrating on a spell, they suffer disadvantage on the concentration check. \n• If you see a creature cast a spell, you gain a bonus of +1d4 on all attack rolls against that creature for one minute.      " compset="Feat" summary="You are a hunter and slayer of all who practice spellcraft. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -411,6 +592,11 @@
   <thing id="ft5CMedAmr" name="Medium Armor Proficiency" description="You can wear medium armor without penalty. \n\n{b}Prerequisite:{/b}  Light armor proficiency \n• Increase your Strength by +1. \n• You gain proficiency with medium armors.              " compset="Feat" summary="You can wear medium armor without penalty. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aSTR].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CMobili" name="Mobility" description="You can easily move through a dangerous melee. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• If you take the Dash action, you are not hindered by difficult terrain that turn. \n• When you exit a creature’s threatened area, you do not provoke attacks of opportunity. \n• You can move through a number of enemy squares equal to your Dexterity bonus each round as though they were friendly.       " compset="Feat" summary="You can easily move through a dangerous melee. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -433,8 +619,19 @@
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CPenStr" name="Penetrating Strike" description="Your attacks penetrate the defenses of most foes. \n\n{b}Prerequisites:{/b}  Power Attack or Weapon Specialization \n• Your Strength or Dexterity score (choose one) increases by +1. \n• Once per short rest, when you make a successful attack, your attack ignores nonmagical physical damage resistance.          " compset="Feat" summary="Your attacks penetrate the defenses of most foes. " uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Dexterity"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      endif]]></eval>
     </thing>
   <thing id="ft5CPerSpe" name="Persistent Spell" description="You can modify a spell to become more tenacious when its targets resist its effect. \n\n{b}Prerequisite:{/b}  Ability to cast 3rd level spells \n• Whenever a creature targeted by a persistent spell or within its area succeeds on its saving throw against the spell, it must make another saving throw against the effect. If a creature fails this second saving throw, it suffers the full effects of the spell, as if it had failed its first saving throw. A persistent spell uses up a spell slot two levels higher than the spell’s actual level. Spells that do not require a saving throw to resist or lessen the spell’s effect do not benefit from this feat.   " compset="Feat" summary="You can modify a spell to become more tenacious when its targets resist its effect. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -463,6 +660,12 @@
   <thing id="ft5CQuiDra" name="Quick Draw" description="You can draw weapons faster than most. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• You can draw weapons as a free action instead of as part of a move action. \n• You gain a +2 bonus on Initiative. \n• Even if you are surprised, you can still draw your weapons.            " compset="Feat" summary="You can draw weapons faster than most. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ Add a +5 bonus to our Initiative
+      #skillbonus[Initiative] = #skillbonus[Initiative] + 2]]></eval>
     </thing>
   <thing id="ft5CQuiSpe" name="Quicken Spell" description="You can cast spells in a blink of an eye. \n\n{b}Prerequisite:{/b}  Ability to cast 4th level spells \n• When you cast a spell that has a casting time of 1 action, you can increase the spell level by three to change the casting time to 1 bonus action for this casting. \n• A quickened spell does not suffer disadvantage when cast adjacent to threatening foes.          " compset="Feat" summary="You can cast spells in a blink of an eye. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -481,8 +684,19 @@
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CRazort" name="Razortooth" description="Your powerful jaws and steely teeth are deadly enough to give you a bite attack. \n\n{b}Prerequisite:{/b}  Half-orc \n• Your Strength or Constitution score (choose one) increases by +1. \n• As a bonus action, you can make a bite attack for 1d4 points of damage. You’re considered proficient in this attack and can apply feats or effects appropriate to natural attacks to it.          " compset="Feat" summary="Your powerful jaws and steely teeth are deadly enough to give you a bite attack. " uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Constitution"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aCON].field[aStartMod].value += 1
+      endif]]></eval>
     </thing>
   <thing id="ft5CRitual" name="Ritualist" description="You know how to cast some of your spells as rituals. \n\n{b}Prerequisites:{/b}  Int, Wis or Cha 13+ \n• You can cast spells as rituals. These spells must have the ritual tag. You cannot cast a ritual with a spell level of greater than half your level. \n• When you gain this feat, choose two first level spells from a class of your choosing that have the ritual tag. You cast these spells as a member of that class, using their primary casting stat. • You can add other rituals to your spellbook. The rituals must belong to your chosen ritual casting class. Adding new rituals costs 50 gp per level of spell and takes 2 hours per level of the spell. " compset="Feat" summary="You know how to cast some of your spells as rituals. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -519,6 +733,11 @@
   <thing id="ft5CSidest" name="Sidestep" description="You can reposition yourself after a foe’s missed swing. \n\n{b}Prerequisites:{/b}  Dex 13+ \n• Your Dexterity score increases by +1. \n• Whenever an opponent misses you with a melee attack, you may move 5 feet as a reaction. \n• This movement does not provoke opportunity attacks and does not count against your total movement.          " compset="Feat" summary="You can reposition yourself after a foe’s missed swing. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aDEX].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CSkiFoc" name="Skill Focus" description="You are particularly adept at a certain skill. \n\n{b}Prerequisite:{/b}  Proficiency in a chosen skill. \n• You gain expertise in a chosen skill.                 " compset="Feat" summary="You are particularly adept at a certain skill. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -543,6 +762,12 @@
   <thing id="ft5CSpeMas" name="Spell Mastery" description="You have mastered a small handful of spells, and can prepare these spells without referencing your spellbooks at all. \n\n{b}Prerequisite:{/b}  1st-level wizard. \n• Your Intelligence score increases by \n• Each time you take this feat, choose a number of spells that you already know equal to your 3 + your Intelligence modifier. From that point on, you can prepare these spells without referring to a spellbook.        " compset="Feat" summary="You have mastered a small handful of spells, and can prepare these spells without referencing your spellbooks at all. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+
+      hero.child[aINT].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CSpePen" name="Spell Penetration" description="Your spells break through resistances more easily than most. \n\n{b}Prerequisite:{/b}  Spell Focus \n• When casting a spell of the school you have chosen for Spell Focus, you ignore the resistance of targets.              " compset="Feat" summary="Your spells break through resistances more easily than most. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -567,14 +792,29 @@
   <thing id="ft5CSteMin" name="Steeled Mind" description="Your mind is extraordinarily keen, and your mental defenses are nearly impossible to penetrate. \n\n{b}Prerequisite:{/b}  Int 13+ \n• Your Intelligence score increases by \n• You gain proficiency in Intelligence saves.             " compset="Feat" summary="Your mind is extraordinarily keen, and your mental defenses are nearly impossible to penetrate." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aINT].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CStrBac" name="Strike Back" description="You can strike at foes that attack you using their superior reach, by targeting their limbs or weapons as they come at you. \n\n{b}Prerequisite:{/b}  Combat Reflexes \n• Your Dexterity score increases by +1. \n• You can expend a reaction to make an opportunity attack against any foe that attacks you with reach.            " compset="Feat" summary="You can strike at foes that attack you using their superior reach, by targeting their limbs or weapons as they come at you. \n\n" uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aDEX].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CStrPer" name="Strong Personality" description="Your sense of self never wavers, and your ego is rarely challenged. \n\n{b}Prerequisite:{/b}  Cha 13+ \n• Increase your Charisma score by +1. \n• You gain proficiency in Charisma saves.              " compset="Feat" summary="Your sense of self never wavers, and your ego is rarely challenged." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCHA].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CSubSpe" name="Subtle Spell" description="You can cast spells without others being aware of it. \n\n{b}Prerequisite:{/b}  Ability to cast 2nd level spells. \n• When you cast a spell, you can increase the spell level by one to cast it without any somatic or verbal components.             " compset="Feat" summary="You can cast spells without others being aware of it." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -587,10 +827,21 @@
   <thing id="ft5CTaunt" name="Taunt" description="Your vicious words infuriate others. \n\n{b}Prerequisites:{/b}  Cha 13+, Intimidate proficiency \n• Your Charisma score increases by +1. \n• You gain expertise in the Intimidate skill. \n• When you use the Intimidate skill, you can force an opponent to make a Wisdom save versus your Intimidate check. If they fail, they must use their next action to move closer and attack you. • If you use the Intimidate skill to fluster a target, they suffer disadvantage on all Persuasion checks for a number of rounds equal to your proficiency bonus.   " compset="Feat" summary="Your vicious words infuriate other." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCHA].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CThespi" name="Thespian" description="You are skilled at impersonation and drama. \n\n{b}Prerequisite:{/b}  Cha 13+ \n• Your Charisma score increases by +1. \n• When impersonating another person’s looks, mannerisms or speech, you gain advantage on Deception or Performance skill checks.            " compset="Feat" summary="You are skilled at impersonation and drama." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+
+      hero.child[aCHA].field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CThuSpe" name="Thundering Spell" description="You can conjure your spells into existence with blaring thunder or fearful shrieks, deafening creatures damaged by their effects. \n\n{b}Prerequisite:{/b}  Ability to cast 3rd level spells \n• You can modify a spell to deafen a creature damaged by the spell. When a creature takes damage from this spell, it becomes deafened for a number of rounds equal to the original level of the spell. If the spell allows a saving throw, a successful save negates the deafening effect. If the spell does not allow a save, the target can make a Constitution save to negate the deafening effect. If the spell effect also causes the creature to become deafened, the duration of this metamagic effect is added to the duration of the spell. A thundering spell uses up a spell slot two levels" compset="Feat" summary="You can conjure your spells into existence with blaring thunder or fearful shrieks, deafening creatures damaged by their effects." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -629,12 +880,34 @@
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CUnaFig" name="Unarmed Fighting" description="You are skilled at fighting while unarmed. \n\n{b}Prerequisites:{/b}  Str and Con 15+ \n• Increase your Strength or Constitution score by +1. \n• You gain proficiency with improvised weapons and unarmed strikes. Your unarmed strikes deal 1d4 damage (1d3 for small creatures and 1d6 for large). You are treated as armed when unarmed fighting. \n• If you hit a target with an unarmed strike on your turn, as a bonus action you can make a grapple attack.       " compset="Feat" summary="You are skilled at fighting while unarmed." uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Constitution"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aCON].field[aStartMod].value += 1
+      endif]]></eval>
     </thing>
   <thing id="ft5CWeaExp" name="Weapon Expert" description="You know how to handle more weapons than most of your class. \n• Your Strength or Dexterity score (choose one) increases by +1. \n• You gain proficiency with any five martial weapons.              " compset="Feat" summary="You know how to handle more weapons than most of your class." uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Dexterity"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      endif]]></eval>
     </thing>
   <thing id="ft5CWeaSpe" name="Weapon Specialization" description="You are especially skilled with one type of weapon. \n\n{b}Prerequisite:{/b}  Proficiency with selected weapon \n• Choose one weapon. You gain a +1 bonus on all attack rolls you make using the selected weapon. \n• With your chosen weapon, you also gain a +2 bonus to damage rolls. \n• Once per short rest you can gain advantage on an attack roll made with your chosen weapon.        " compset="Feat" summary="You are especially skilled with one type of weapon." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -647,5 +920,10 @@
   <thing id="ft5CWise" name="Wise" description="You are possessed of great wisdom and other seek you out for answers. \n\n{b}Prerequisite:{/b}  Wis 15+ \n• Your Wisdom score increases by +1. \n• You gain proficiency in the Insight skill if you did not already possess it. \n• You always know what direction you are facing and always know the time of day within an hour. \n• Once per long rest you can gain advantage on any Wisdom-based skill check.        " compset="Feat" summary="You are possessed of great wisdom and other seek you out for answ" uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aWIS].field[aStartMod].value += 1]]></eval>
     </thing>
   </document>
