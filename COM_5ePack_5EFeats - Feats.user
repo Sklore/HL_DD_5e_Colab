@@ -939,6 +939,31 @@ validif (#attrvalue[aCHA] >= 13)]]></validate>
   <thing id="ft5CSkiFoc" name="Skill Focus" description="You are particularly adept at a certain skill. \n\n{b}Prerequisite:{/b}  Proficiency in a chosen skill. \n• You gain expertise in a chosen skill.                 " compset="Feat" summary="You are particularly adept at a certain skill. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var tagexpr as string
+
+      if (field[usrChosen1].ischosen <> 0) then
+      tagexpr = field[usrChosen1].chosen.tagids[ProfSkill.?," | "]
+        foreach pick in hero from BaseSkill where tagexpr
+          perform eachpick.assign[Helper.ProfDouble]
+          nexteach
+
+        
+        endif]]></eval>
+    <eval phase="Final" priority="99999" index="2"><![CDATA[ var tagexpr as string
+      foreach pick in hero from BaseSkill where "Helper.Proficient"
+        perform eachpick.pulltags[ProfSkill.?]
+        nexteach
+
+      if (tagis[ProfSkill.?] <> 0) then
+        tagexpr = "(component.BaseSkill & (" & tagids[ProfSkill.?, " | "] & "))"
+      
+        endif
+
+      field[usrCandid1].text = tagexpr]]></eval>
     </thing>
   <thing id="ft5CSlaExp" name="Slam Expertise" description="You are skilled at slamming into an enemy and throw them off balance. \n\n{b}Prerequisite:{/b}  Str 13+ \n• When you perform a slam maneuver, you do so with advantage on your Strength check. \n• You can slam or shove targets up to two sizes larger than you. \n• In addition to knocking a foe back or prone, your slam also deals 1d6 damage plus your Strength modifier. *See Total Party Kill Games’ Fifth Edition Options title for more information on combat maneuvers.       " compset="Feat" summary="You are skilled at slamming into an enemy and throw them off balance. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
