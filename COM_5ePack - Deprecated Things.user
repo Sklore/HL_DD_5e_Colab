@@ -235,6 +235,52 @@
     <bootstrap thing="tpUndead"></bootstrap>
     <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
     </thing>
+	<thing id="sr5CTempDL" name="Dracolich" compset="SubRace" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="SubRace" tag="rAdultBlac"/>
+    <tag group="SubRace" tag="rAdultBlue"/>
+    <tag group="SubRace" tag="rAdultBras"/>
+    <tag group="SubRace" tag="rAdultBron"/>
+    <tag group="SubRace" tag="rAdultCopp"/>
+    <tag group="SubRace" tag="rAdultGold"/>
+    <tag group="SubRace" tag="rAdultGree"/>
+    <tag group="SubRace" tag="rAdultRed"/>
+    <tag group="SubRace" tag="rAdultSilv"/>
+    <tag group="SubRace" tag="rAdultWhit"/>
+    <tag group="SubRace" tag="rAncieBlac"/>
+    <tag group="SubRace" tag="rAncieBlue"/>
+    <tag group="SubRace" tag="rAncieBras"/>
+    <tag group="SubRace" tag="rAncieBron"/>
+    <tag group="SubRace" tag="rAncieCopp"/>
+    <tag group="SubRace" tag="rAncieGold"/>
+    <tag group="SubRace" tag="rAncieGree"/>
+    <tag group="SubRace" tag="rAncieRed"/>
+    <tag group="SubRace" tag="rAncieSilv"/>
+    <tag group="SubRace" tag="rAncieWhit"/>
+    <tag group="Race" tag="tpUndead"/>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="dracolich"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[ ~if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.assign[OverType.tpUndead]]]></eval>
+    <eval phase="First" priority="600" index="2"><![CDATA[
+      ~ Set our focus to the hero's race &
+      perform hero.findchild[BaseRace].setfocus
+      doneif (state.isfocus = 0)
+      ~ Set our race's name to be dracolich
+      focus.field[livename].text = replace(lowercase(focus.field[name].text), "dragon", "dracolich", 0)]]></eval>
+    </thing>
   <hidden id="sp5CGoodb"/>
   <hidden id="sp5CVicioM"/>
   <hidden id="sp5CFindFa"/>
@@ -249,4 +295,5 @@
   <hidden id="r5CMMFaer2"/>
   <hidden id="r5CMMSahua"/>
   <hidden id="r5CMMAdul"/>
+  <hidden id ="sr5CTempDL"/>
   </document>
