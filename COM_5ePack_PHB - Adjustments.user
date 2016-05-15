@@ -605,4 +605,44 @@
       field[pChosen].chosen.field[wFixDamage].text = field[pDuration].text
       field[pChosen].chosen.field[wFixRanDam].text = field[pDuration].text]]></eval>
     </thing>
+  <thing id="p5CSchMaDC" name="Spell DC, Specific School" description="This adjustment allows you to add a bonus/penalty to all your spell DCs of a specific school of magic.\n\n{b}Note:{/b} At this time 5e game system does not show individual spell DCs." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.SplSchool"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="OthAdjCat" tag="Spell"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+
+      ~ Increase/Decrease Spell DC
+      field[pChosen].chosen.field[schDC].value += field[pAdjust].value]]></eval>
+    </thing>
+  <thing id="p5CProfBon" name="Proficiency Bonus" description="This adjustment allows you to increase or decrease your characters Proficiency Bonus value." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Misc"/>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      ~ Increase/Decrease Proficiency Bonus
+      hero.child[ProfBonus].field[tProfBonus].value += field[pAdjust].value]]></eval>
+    </thing>
+  <thing id="p5CSpellDC" name="Spell DC, Single Spell" description="This adjustment allows you to add a bonus/penalty to the DC of a single spell.\n\n{b}Note:{/b} At this time 5e game system does not show individual spell DCs." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseSpell"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="OthAdjCat" tag="Spell"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing's been chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+
+      ~ Increase/Decrease Spell DC
+      field[pChosen].chosen.field[sDC].value += field[pAdjust].value]]></eval>
+    </thing>
   </document>

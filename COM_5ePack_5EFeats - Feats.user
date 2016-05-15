@@ -1013,11 +1013,30 @@ validif (#attrvalue[aCHA] >= 13)]]></validate>
         @valid = HasSpells]]></validate>
       </prereq>
     </thing>
-  <thing id="ft5CSpeFoc" name="Spell Focus" description="Spells you cast of a particular school are more difficult to resist. \n\n{b}Prerequisite:{/b}  Ability to cast spells. \n• Choose a school of magic. You add half your proficiency bonus as an additional bonus to the DC of saving throws against spells from the school of magic you select. \n• You gain advantage on all saves against that school of magic.          " compset="Feat" summary="Spells you cast of a particular school are more difficult to resist. " uniqueness="useronce">
+  <thing id="ft5CSpeFoc" name="Spell Focus" description="Spells you cast of a particular school are more difficult to resist. \n\n{b}Prerequisite:{/b} Ability to cast spells.\n• Choose a school of magic. You add half your proficiency bonus as an additional bonus to the DC of saving throws against spells from the school of magic you select.\n• You gain advantage on all saves against that school of magic." compset="Feat" summary="Spells you cast of a particular school are more difficult to resist. " uniqueness="useronce">
+    <fieldval field="usrCandid1" value="component.SplSchool &amp; MagSch5C.CORE"/>
     <usesource source="5e5EFeats"/>
+    <tag group="fShowWhat" tag="Freeform"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="PreLevel" priority="5000"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~ Focus to the selected pick either using the pick chosen
+      ~ or if a Target.? tag was used during a bootstrap.
+      call fTargetFoc
+      doneif (state.isfocus = 0)
+
+      ~ Add the appropriate tag to our target
+      perform focus.assign[Broadcast.SpellFocus]
+
+      ~ Set our short name and statblock names
+      field[shortname].text = "Focus: " & focus.field[name].text
+      field[sbName].text = "Spell Focus (" & lowercase(focus.field[name].text) & ")"]]></eval>
     <prereq message="Ability to cast spells required.">
-      <validate><![CDATA[~ Test that the character has at least one spell
+      <validate><![CDATA[
+        ~ Test that the character has at least one spell
         ~ or spell-like ability. &
         var HasSpells as number
         Call 5CHasSpell
