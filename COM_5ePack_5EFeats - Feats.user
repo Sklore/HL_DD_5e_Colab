@@ -49,7 +49,7 @@
     <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
       
-      ~ Add a +5 bonus to our Initiative
+      ~ Add a +2 bonus to our Initiative
       #skillbonus[Initiative] = #skillbonus[Initiative] + 2]]></eval>
     <exprreq message="Perception proficiency required."><![CDATA[hero.tagis[ProfSkill.skPercep] <> 0]]></exprreq>
     </thing>
@@ -127,6 +127,11 @@ nexteach]]></eval>
   <thing id="ft5CBloExp" name="Blocking Expertise" description="You turn away even the fiercest blows with your shield. \n\n{b}Prerequisite:{/b}  Shield proficiency \n• Your Strength score increases by +1. \n• When you wield a shield and are dealt a critical attack, you have a 50% chance to negate the critical hit.            " compset="Feat" summary="You turn away even the fiercest blows with your shield." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+	    <eval phase="First"><![CDATA[
+       ~ If we're disabled, do nothing &
+       doneif (tagis[Helper.Disable] = 1)
+
+       hero.child[aSTR].field[aStartMod].value += 1]]></eval>
     <exprreq message="Shield proficiency required."><![CDATA[hero.tagis[ArmProfGrp.Shields] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CBodygu" name="Bodyguard" description="Your are adept at warding off enemies attacking nearby allies. \n\n{b}Prerequisite:{/b}  Shield proficiency, Combat Reflexes \n• You may grant your shield bonus to a single adjacent ally instead of yourself. \n• When an adjacent ally is attacked, you may use a reaction to cause the attack to suffer disadvantage. \n• When an adjacent ally is attacked, you may use a reaction to redirect the attack to yourself.       " compset="Feat" summary="Your are adept at warding off enemies attacking nearby allies. \n" uniqueness="useronce">
@@ -175,6 +180,11 @@ nexteach]]></eval>
   <thing id="ft5CComExp" name="Combat Expertise" description="You can increase your defense at the expense of your accuracy. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• Your Dexterity score increases by +1. \n• You may choose to suffer disadvantage on all attacks in a round in order to force all opponents to suffer disadvantage on all attacks against you.           " compset="Feat" summary="You can increase your defense at the expense of your accuracy." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+       ~ If we're disabled, do nothing & 
+       doneif (tagis[Helper.Disable] = 1)
+ 
+       hero.child[aDEX].field[aStartMod].value += 1]]></eval>
     <exprreq message="Dexterity 13 required."><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CComRef" name="Combat Reflexes" description="You quickly press the advantage of your foes’ mistakes. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• You can perform a number of opportunity attacks per round equal to your Dexterity modifier (minimum 1). \n• You gain advantage on all opportunity attacks.           " compset="Feat" summary="You quickly press the advantage of your foes’ mistakes." uniqueness="useronce">
@@ -291,8 +301,17 @@ validif (#attrvalue[aDEX] >= 13)]]></validate>
       </prereq>
     </thing>
   <thing id="ft5CDisBlo" name="Disorienting Blow" description="You make a hammering attack that disorients your target. \n\n{b}Prerequisite:{/b}  Str 13+ \n• Your Strength or Dexterity score (choose one) increases by +1. \n• You may make an attack with a -5 penalty. If that attack hits, your target is unable to use reactions or bonus actions until the beginning of their next turn.          " compset="Feat" summary="You make a hammering attack that disorients your target." uniqueness="useronce">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aDEX)"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing &
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>	
     <exprreq message="Strength 13 required."><![CDATA[#attrvalue[aSTR] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CDisStr" name="Disrupting Strike" description="With a well-placed attack, you make it harder for a nearby opponent to cast spells. \n\n• If you make a successful melee or ranged attack against an opponent casting a spell within 30 feet, the concentration DC to successfully cast the spell is increased by +4." compset="Feat" summary="With a well-placed attack, you make it harder for a nearby opponent to cast spells." uniqueness="useronce">
@@ -350,8 +369,13 @@ validif (hero.tagis[ProfSkill.skInvestig] <> 0)]]></validate>
   <thing id="ft5CEleCha" name="Elemental Channel" description="Choose one elemental subtype, such as air, earth, fire, or water. You can channel divinity energy to turn or destroy outsiders that possess your chosen elemental subtype. \n\n{b}Prerequisite:{/b}  Channel Divinity class feature. \n• Your Wisdom score increases by +1. \n• Instead of its normal effect, you can choose to have your ability to Channel Divinity turn or destroy outsiders of your chosen elemental subtype. If you choose to turn or destroy creatures of the chosen elemental subtype, your channel energy has no effect on other creatures. • Thanks to your connection to an element, the save DC for your Channel Divinity ability increases by +1 against foes with that elemental subtype." compset="Feat" summary="Choose one elemental subtype, such as air, earth, fire, or water. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+       ~ If we're disabled, do nothing &
+       doneif (tagis[Helper.Disable] = 1)
+
+       hero.child[aWIS].field[aStartMod].value += 1]]></eval>
     <prereq message="Channel Divinity class feature required.">
-      <validate>@valid = #hasability[cClrChaDiv]
+    <validate>@valid = #hasability[cClrChaDiv]
 @valid = #hasability[cPalChaDiv]</validate>
       </prereq>
     </thing>
@@ -440,8 +464,17 @@ validif (hero.tagis[abCategory.RgrFigStyl] <> 0)]]></validate>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="ft5CFavDef" name="Favored Defense" description="Your cunning is your shield against your quarry’s attacks. \n\n{b}Prerequisite:{/b}  Favored enemy class feature. \n• Your Wisdom or Intelligence (choose one) increases by +1. \n• You add half of your proficiency bonus to your AC when attacked by a favored enemy.            " compset="Feat" summary="Your cunning is your shield against your quarry’s attacks. " uniqueness="useronce">
-    <usesource source="5e5EFeats"/>
-    <tag group="Helper" tag="ShowSpec"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aWIS|thingid.aINT)"/>
+     <usesource source="5e5EFeats"/>
+     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing &
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     <prereq message="Favored enemy class feature required.">
       <validate><![CDATA[
 validif (hero.tagis[abCategory.RgrFavEnem] <> 0)]]></validate>
@@ -482,11 +515,21 @@ validif (#hasrace[rDwarf] <> 0)]]></validate>
   <thing id="ft5CGreFor" name="Great Fortitude" description="You are resistant to poisons, diseases, and other maladies. \n\n{b}Prerequisite:{/b}  Con 13+ \n• Increase your Constitution score by 1 \n• You gain proficiency in Constitution saves.             " compset="Feat" summary="You are resistant to poisons, diseases, and other maladies. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+       ~ If we're disabled, do nothing & 
+       doneif (tagis[Helper.Disable] = 1)
+ 
+       hero.child[aCON].field[aStartMod].value += 1]]></eval>
     <exprreq message="Constitution 13 required."><![CDATA[#attrvalue[aCON] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CGreStr" name="Great Strength" description="You are herculean in strength, capable of great feats of endurance. \n\n{b}Prerequisite:{/b}  Str 13+ \n• Increase your Strength score by +1. \n• You gain proficiency in Strength saves.              " compset="Feat" summary="You are herculean in strength, capable of great feats of endurance. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+       ~ If we're disabled, do nothing & 
+       doneif (tagis[Helper.Disable] = 1)
+ 
+       hero.child[aSTR].field[aStartMod].value += 1]]></eval>
     <exprreq message="Strength 13 required."><![CDATA[#attrvalue[aSTR] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CGreWea" name="Great Weapon Expertise" description="You are a master of wielding heavy weapons. \n\n• When wielding a heavy weapon, you may reroll damage once per round, keeping the better result. \n• When wielding a heavy weapon, you can take a penalty of -5 to grant a +5 bonus to your damage. \n• If you hit a foe with a heavy weapon, you may spend a bonus action to make a Shove attack against that same target." compset="Feat" summary="You are a master of wielding heavy weapons." uniqueness="useronce">
@@ -621,10 +664,17 @@ validif (hero.tagis[HasFeat.ft5CDiehar] <> 0)]]></validate>
     <exprreq message="Int must be at least 15"><![CDATA[#attrvalue[aINT] >= 15]]></exprreq>
     </thing>
   <thing id="ft5CLigArm" name="Light Armor" description="Proficiency You know how to wear light armor without penalty. \n\n• Increase your Strength or Dexterity score (choose one) by +1. \n• You gain proficiency with light armors." compset="Feat" summary="Proficiency You know how to wear light armor without penalty." uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="Strength"/>
-    <arrayval field="usrArray" index="1" value="Dexterity"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aDEX)"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CLigRef" name="Lightning Reflexes" description="You have faster reflexes than normal. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• Increase your Dexterity score by +1. \n• You gain proficiency in Dexterity saves.               " compset="Feat" summary="You have faster reflexes than normal. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -633,11 +683,7 @@ validif (hero.tagis[HasFeat.ft5CDiehar] <> 0)]]></validate>
        ~ If we're disabled, do nothing & 
        doneif (tagis[Helper.Disable] = 1)
  
-       if (field[usrIndex].value = 0) then
-         hero.child[aSTR].field[aStartMod].value += 1
-       elseif (field[usrIndex].value = 1) then
-         hero.child[aDEX].field[aStartMod].value += 1
-       endif]]></eval>
+       hero.child[aDEX].field[aStartMod].value += 1]]></eval>
     <exprreq message="Dex must be at least 13"><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CLigSta" name="Lightning Stance" description="The speed at which you move makes it nearly impossible for opponents to strike you. \n\n{b}Prerequisites:{/b}  Dex 17+, Dodging Expertise \n• If you Dash during your turn, you also gain the benefits of the Dodge action.             " compset="Feat" summary="The speed at which you move makes it nearly impossible for opponents to strike you. " uniqueness="useronce">
@@ -652,19 +698,17 @@ validif (hero.tagis[HasFeat.ft5CDiehar] <> 0)]]></validate>
     <exprreq message="Dodging Expertise feat required."><![CDATA[hero.tagis[HasFeat.ft5CDodExp] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CLookou" name="Lookout" description="You help your allies avoid being surprised. \n\n{b}Prerequisite:{/b}  Perception proficiency \n• Your Dexterity or Wisdom score (choose one) increases by +1. \n• Allies within 30’ may use your Perception checks to determine surprise. \n• Adjacent allies may use your initiative checks to determine initiative order.          " compset="Feat" summary="You help your allies avoid being surprised. " uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="Dexterity"/>
-    <arrayval field="usrArray" index="1" value="Wisdom"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aDEX|thingid.aWIS)"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <eval phase="First"><![CDATA[
-       ~ If we're disabled, do nothing & 
-       doneif (tagis[Helper.Disable] = 1)
- 
-       if (field[usrIndex].value = 0) then
-         hero.child[aDEX].field[aStartMod].value += 1
-       elseif (field[usrIndex].value = 1) then
-         hero.child[aWIS].field[aStartMod].value += 1
-       endif]]></eval>
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     <exprreq message="Perception proficiency required."><![CDATA[hero.tagis[ProfSkill.skPercep] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CLinExp" name="Linguistics Expert" description="You are a scholar of languages, ancient tongues and scripts. \n\n{b}Prerequisite:{/b}  Int 13+ \n• You learn three languages of your choice. \n• You can get rough impressions of the meaning of written and spoken languages you don’t know with a DC 15 Intelligence check. \n• You can also create secret codes. The DC to understand your codes is equal to your Intelligence score + your proficiency bonus.       " compset="Feat" summary="You are a scholar of languages, ancient tongues and scripts. " uniqueness="useronce">
@@ -688,22 +732,17 @@ validif (hero.tagis[HasFeat.ft5CDiehar] <> 0)]]></validate>
     <exprreq message="Arcana proficiency required."><![CDATA[hero.tagis[ProfSkill.skArcana] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CMagApt" name="Magical Aptitude" description="You have a knack for magic. \n\n{b}Prerequisites:{/b}  Int 13+, Arcana proficiency \n• Your Intelligence, Wisdom or Charisma score (choose one) increases by +1. \n• You gain expertise in the Arcana skill. \n• Once per short rest you can gain advantage on any Arcana skill check.            " compset="Feat" summary="You have a knack for magic. " uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="Intelligence"/>
-    <arrayval field="usrArray" index="1" value="Wisdom"/>
-    <arrayval field="usrArray" index="2" value="Charisma"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aINT|thingid.aWIS|thingid.aCHA)"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <eval phase="First"><![CDATA[
-       ~ If we're disabled, do nothing & 
-       doneif (tagis[Helper.Disable] = 1)
- 
-       if (field[usrIndex].value = 0) then
-         hero.child[aINT].field[aStartMod].value += 1
-       elseif (field[usrIndex].value = 1) then
-         hero.child[aWIS].field[aStartMod].value += 1
-       elseif (field[usrIndex].value = 2) then
-         hero.child[aCHA].field[aStartMod].value += 1
-       endif]]></eval>
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     <exprreq message="Int must be at least 13"><![CDATA[#attrvalue[aINT] >= 13]]></exprreq>
     <exprreq message="Arcana proficiency required."><![CDATA[hero.tagis[ProfSkill.skArcana] <> 0]]></exprreq>
     </thing>
@@ -735,6 +774,11 @@ validif (hero.tagis[HasFeat.ft5CDiehar] <> 0)]]></validate>
   <thing id="ft5CMedAmr" name="Medium Armor Proficiency" description="You can wear medium armor without penalty. \n\n{b}Prerequisite:{/b}  Light armor proficiency \n• Increase your Strength by +1. \n• You gain proficiency with medium armors.              " compset="Feat" summary="You can wear medium armor without penalty. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+       ~ If we're disabled, do nothing & 
+       doneif (tagis[Helper.Disable] = 1)
+ 
+       hero.child[aSTR].field[aStartMod].value += 1]]></eval>
     <exprreq message="Light armor proficiency required."><![CDATA[tagis[ArmProfGrp.ArmorLight] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CMobili" name="Mobility" description="You can easily move through a dangerous melee. \n\n{b}Prerequisite:{/b}  Dex 13+ \n• If you take the Dash action, you are not hindered by difficult terrain that turn. \n• When you exit a creature’s threatened area, you do not provoke attacks of opportunity. \n• You can move through a number of enemy squares equal to your Dexterity bonus each round as though they were friendly.       " compset="Feat" summary="You can easily move through a dangerous melee. " uniqueness="useronce">
@@ -764,19 +808,17 @@ validif (hero.tagis[HasFeat.ft5CDiehar] <> 0)]]></validate>
     <exprreq message="Dex must be at least 15"><![CDATA[#attrvalue[aDEX] >= 15]]></exprreq>
     </thing>
   <thing id="ft5CPenStr" name="Penetrating Strike" description="Your attacks penetrate the defenses of most foes. \n\n{b}Prerequisites:{/b}  Power Attack or Weapon Specialization \n• Your Strength or Dexterity score (choose one) increases by +1. \n• Once per short rest, when you make a successful attack, your attack ignores nonmagical physical damage resistance.          " compset="Feat" summary="Your attacks penetrate the defenses of most foes. " uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="Strength"/>
-    <arrayval field="usrArray" index="1" value="Dexterity"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aDEX)"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <eval phase="First"><![CDATA[
-       ~ If we're disabled, do nothing & 
-       doneif (tagis[Helper.Disable] = 1)
- 
-       if (field[usrIndex].value = 0) then
-         hero.child[aSTR].field[aStartMod].value += 1
-       elseif (field[usrIndex].value = 1) then
-         hero.child[aDEX].field[aStartMod].value += 1
-       endif]]></eval>
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     <prereq message="Power Attack or Weapon Specialization feat required.">
       <validate><![CDATA[validif (hero.tagis[HasFeat.ft5CPowAtt] <> 0)
 validif (hero.tagis[HasFeat.ft5CWeaSpe] <> 0)]]></validate>
@@ -855,19 +897,17 @@ validif (#attrvalue[aWIS] >= 13)]]></validate>
     <exprreq message="Dex must be at least 13"><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CRazort" name="Razortooth" description="Your powerful jaws and steely teeth are deadly enough to give you a bite attack. \n\n{b}Prerequisite:{/b}  Half-orc \n• Your Strength or Constitution score (choose one) increases by +1. \n• As a bonus action, you can make a bite attack for 1d4 points of damage. You’re considered proficient in this attack and can apply feats or effects appropriate to natural attacks to it.          " compset="Feat" summary="Your powerful jaws and steely teeth are deadly enough to give you a bite attack. " uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="Strength"/>
-    <arrayval field="usrArray" index="1" value="Constitution"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aCON)"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <eval phase="First"><![CDATA[
-       ~ If we're disabled, do nothing & 
-       doneif (tagis[Helper.Disable] = 1)
- 
-       if (field[usrIndex].value = 0) then
-         hero.child[aSTR].field[aStartMod].value += 1
-       elseif (field[usrIndex].value = 1) then
-         hero.child[aCON].field[aStartMod].value += 1
-       endif]]></eval>
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     <prereq message="Half-orc race required.">
       <validate><![CDATA[validif (#hasrace[rHalfOrc] <> 0)]]></validate>
       </prereq>
@@ -1155,36 +1195,32 @@ validif (hero.tagis[ProfSkill.skReligion] <> 0)]]></validate>
       </prereq>
     </thing>
   <thing id="ft5CUnaFig" name="Unarmed Fighting" description="You are skilled at fighting while unarmed. \n\n{b}Prerequisites:{/b}  Str and Con 15+ \n• Increase your Strength or Constitution score by +1. \n• You gain proficiency with improvised weapons and unarmed strikes. Your unarmed strikes deal 1d4 damage (1d3 for small creatures and 1d6 for large). You are treated as armed when unarmed fighting. \n• If you hit a target with an unarmed strike on your turn, as a bonus action you can make a grapple attack.       " compset="Feat" summary="You are skilled at fighting while unarmed." uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="Strength"/>
-    <arrayval field="usrArray" index="1" value="Constitution"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aCON)"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <eval phase="First"><![CDATA[
-       ~ If we're disabled, do nothing & 
-       doneif (tagis[Helper.Disable] = 1)
- 
-       if (field[usrIndex].value = 0) then
-         hero.child[aSTR].field[aStartMod].value += 1
-       elseif (field[usrIndex].value = 1) then
-         hero.child[aCON].field[aStartMod].value += 1
-       endif]]></eval>
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     <exprreq message="Constitution 15 required."><![CDATA[#attrvalue[aCON] >= 15]]></exprreq>
     <exprreq message="Strength 15 required."><![CDATA[#attrvalue[aSTR] >= 15]]></exprreq>
     </thing>
   <thing id="ft5CWeaExp" name="Weapon Expert" description="You know how to handle more weapons than most of your class. \n• Your Strength or Dexterity score (choose one) increases by +1. \n• You gain proficiency with any five martial weapons.              " compset="Feat" summary="You know how to handle more weapons than most of your class." uniqueness="useronce">
-    <arrayval field="usrArray" index="0" value="Strength"/>
-    <arrayval field="usrArray" index="1" value="Dexterity"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aDEX)"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <eval phase="First"><![CDATA[
-       ~ If we're disabled, do nothing & 
-       doneif (tagis[Helper.Disable] = 1)
- 
-       if (field[usrIndex].value = 0) then
-         hero.child[aSTR].field[aStartMod].value += 1
-       elseif (field[usrIndex].value = 1) then
-         hero.child[aDEX].field[aStartMod].value += 1
-       endif]]></eval>
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+
+      ~ Increase the selected ability score by 1
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     </thing>
   <thing id="ft5CWeaSpe" name="Weapon Specialization" description="You are especially skilled with one type of weapon. \n\n{b}Prerequisite:{/b}  Proficiency with selected weapon \n• Choose one weapon. You gain a +1 bonus on all attack rolls you make using the selected weapon. \n• With your chosen weapon, you also gain a +2 bonus to damage rolls. \n• Once per short rest you can gain advantage on an attack roll made with your chosen weapon.        " compset="Feat" summary="You are especially skilled with one type of weapon." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
