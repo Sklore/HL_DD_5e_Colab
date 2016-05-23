@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
   <fileinfo>
-    <info_todo>Need scripting
-	Efreeti Chain
-	Sentinel Shield
+    <info_todo>
+    Need scripting
 	Rod of the Pact Keeper
 
-Not added
-	Instruments of the Bard
-	Staff of the Adder
-	Sword of Answering
-	Sword of Vengeance
-	Tentacle Rod
-	Tome of the Stilled Tongue
-
-Artifacts
+	Artifacts
 	?
 	
-Sentient items
+	Sentient items
 	?</info_todo>
     </fileinfo>
   <thing id="i5CDMGWoWa" name="Weapon of Warning" description="Weapon (any), uncommon (requires attunement)\nThis magic weapon warns you of danger. While the weapon is on your person, you have advantage on initiative rolls. In addition, you and any of your companions within 30 feet of you can&apos;t be surprised, except when incapacitated by something other than nonmagical sleep. The weapon magically awakens you and your companions within range if any of you are sleeping naturally when combat begins." compset="MagicWep" summary="This magic weapon warns you of danger." buytemplate="BuyMoney" xactspecial="2">
@@ -66,12 +57,21 @@ Sentient items
     <tag group="ProductId" tag="Wizards"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     </thing>
-  <thing id="i5CEfrChai" name="Efreeti Chain" description="You gain a +3 bonus to AC while you wear this armor, become immune to fire damage, can understand and speak Primordial and can walk on molten rock as if it were solid ground.\nTODO: Needs scripting" compset="MagicArmor">
+  <thing id="i5CEfrChai" name="Efreeti Chain" description="You gain a +3 bonus to AC while you wear this armor, become immune to fire damage, can understand and speak Primordial and can walk on molten rock as if it were solid ground." compset="MagicArmor">
     <fieldval field="miTypeDet" value="chain mail"/>
     <fieldval field="Bonus" value="3"/>
     <tag group="Helper" tag="Proficient" name="Proficient" abbrev="Proficient"/>
     <tag group="ItemRarity" tag="Legendary"/>
     <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="lPrimord"></bootstrap>
+    <eval phase="First">
+
+      doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      perform hero.assign[DamageImm.dtFire]</eval>
     <child entity="mSpecMagic">
       <bootstrap thing="mChainMail"></bootstrap>
       </child>
@@ -141,22 +141,27 @@ Sentient items
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="Helper" tag="AlwaysAvl"/>
     </thing>
-  <thing id="iJSentiShi" name="Sentinel Shield" description="You have advantage on Wisdom (Perception) rolls and initiative while it is equipped.\nTODO: Unscripted" compset="MagicArmor">
+  <thing id="iJSentiShi" name="Sentinel Shield" description="You have advantage on Wisdom (Perception) rolls and initiative while it is equipped." compset="MagicArmor">
     <fieldval field="miTypeDet" value="shield"/>
     <tag group="ItemRarity" tag="Uncommon"/>
     <tag group="Helper" tag="EquipAvail" name="EquipAvail" abbrev="EquipAvail"/>
+    <tag group="Helper" tag="ShowSpec"/>
     <child entity="mSpecMagic">
       <bootstrap thing="mShield"></bootstrap>
       </child>
     </thing>
   <thing id="id5CDMGPaK" name="Rod of Pact Keeper" description="Rod, very rare\n(requires attunement by a warlock)\n\nWhile holding this rod, you gain a bonus to spell attack rolls and to the saving throw DCs of your warlock spells. The bonus is determined by the rod&apos;s rarity.\n\nIn addition, you can regain one warlock spell slot as an action while holding the rod. You can&apos;t use this property again until you finish a long rest." compset="Rod">
+    <fieldval field="miAttunTxt" value="requires attunement by a warlock"/>
+    <fieldval field="trkMax" value="1"/>
+    <arrayval field="usrArray" index="2" value="+3"/>
     <arrayval field="usrArray" index="0" value="+1"/>
     <arrayval field="usrArray" index="1" value="+2"/>
-    <arrayval field="usrArray" index="2" value="+3"/>
-    <tag group="User" tag="HideActChk" name="HideActChk" abbrev="HideActChk"/>
-    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="ItemRarity" tag="Varies"/>
+    <tag group="User" tag="HideActChk" name="HideActChk" abbrev="HideActChk"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Usage" tag="LongRest"/>
     </thing>
   <thing id="io5CAlcJug" name="Alchemy Jug" description="This apparently everfull ceramic jug seems to be able to hold a gallon of liquid and always weighs 12 pounds whether it is full or empty.\nAs an action select one of the liquids below and pour said liquid - at a rate of up to 2 gallons per minute - up to the amount given per liquid, per day.\nNote that once a liquid has been selected you must pour all of it before choosing another liquid.\n\nAcid, 8 ounces\nBasic poison, 1/2 ounce\nBeer, 4 gallons\nHoney, 1 gallon\nMayonnaise, 2 gallons\nOil, 1 quart\nVinegar, 2 gallons\nWater, 8 gallons\nWine, 1 gallons" compset="Wondrous" summary="Magic jug that can pour several types of liquid.">
     <fieldval field="gWeight" value="12"/>
@@ -166,6 +171,306 @@ Sentient items
     <tag group="ProductId" tag="Wizards"/>
     <tag group="Helper" tag="AlwaysAvl"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <eval phase="PreLevel" priority="10000"></eval>
+    </thing>
+  <thing id="is5CStAdde" name="Staff of the Adder" description="You can use a bonus action to speak this staff&apos;s command word and make the head of the staff become that of an animate poisonous snake for 1 minute. By using another bonus action to speak the command word again, you return the staff to its normal inanimate form. You can make a melee attack using the snake head, which has a reach of 5 feet. Your proficiency bonus applies to the attack roll. On a hit, the target takes 1d6 piercing damage and must succeed on a DC 15 Constitution saving throw or take 3d6 poison damage.\n\nThe snake head can be attacked while it is animate. It has an Armor Class of 15 and 20 hit points. If the head drops to 0 hit points, the staff is destroyed. As long as it&apos;s not destroyed, the staff regains all lost hit points when it reverts to its inanimate form." compset="Staff">
+    <fieldval field="miAttunTxt" value="requires attunement by a cleric, druid, or warlock"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="Usage" tag="Charges" name=" charges" abbrev=" charges"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Helper" tag="NoCharge"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="w5CStAdder"></bootstrap>
+    </thing>
+  <thing id="w5CStAdder" name="Staff of the Adder: Snake Head Attack" description="You can use a bonus action to speak this staff&apos;s command word and make the head of the staff become that of an animate poisonous snake for 1 minute. By using another bonus action to speak the command word again, you return the staff to its normal inanimate form. You can make a melee attack using the snake head, which has a reach of 5 feet. Your proficiency bonus applies to the attack roll. On a hit, the target takes 1d6 piercing damage and must succeed on a DC 15 Constitution saving throw or take 3d6 poison damage.\n\nThe snake head can be attacked while it is animate. It has an Armor Class of 15 and 20 hit points. If the head drops to 0 hit points, the staff is destroyed. As long as it&apos;s not destroyed, the staff regains all lost hit points when it reverts to its inanimate form." compset="Weapon">
+    <fieldval field="wDamExtra" value=" must succeed on a DC 15 Constitution saving throw or take 3d6 poison damage."/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="6"/>
+    <fieldval field="gSizeCost" value="1800"/>
+    <fieldval field="gWeight" value="10"/>
+    <fieldval field="wDCntVers" value="1"/>
+    <fieldval field="wDSizVers" value="8"/>
+    <tag group="DamageType" tag="dtPiercing"/>
+    <tag group="Helper" tag="NoSelect"/>
+    <tag group="Helper" tag="NoOutGear"/>
+    <tag group="wCategory" tag="Melee"/>
+    <tag group="wProperty" tag="Versatile"/>
+    <tag group="EquipType" tag="Wood"/>
+    <tag group="DamageType" tag="dtPoison"/>
+    </thing>
+  <thing id="mw5CSwAnsw" name="Sword of Answering" description="In the world of Greyhawk, only nine of these blades are known to exist. Each is patterned after the legendary sword Fragarach, which is variously translated as &quot;Final Word.&quot; Each of the nine swords has its own name and alignment, and each bears a different gem in its pommel.\n\nName Alignment Gem\nAnswerer | Chaotic good | Emerald\nBack Talker | Chaotic evil | jet\nConcluder | Lawful neutral | Amethyst\nLast Quip | Chaotic neutral | Tourmaline\nRebutter | Neutral good | Topaz\nReplier | Neutral | Peridot\nRetorter | Lawful good | Aquamarine\nScather | Lawful evil | Garnet\nSquelcher | Neutral evil | Spinel\n\nYou gain a +3 bonus to attack and damage rolls made with this sword. In addition, while you hold the sword, you can use your reaction to make one melee attack with it against any creature in your reach that deals damage to you. You have advantage on the attack roll, and any damage dealt with this special attack ignores any damage immunity or resistance the target has." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="any sword"/>
+    <fieldval field="gCost" value="36000"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a creature with the same alignment as the sword"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="8"/>
+    <fieldval field="wAttBonus" value="3"/>
+    <fieldval field="gWeight" value="3"/>
+    <fieldval field="wDCntVers" value="1"/>
+    <fieldval field="wDSizVers" value="10"/>
+    <fieldval field="wDamBonus" value="3"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="wCategory" tag="Melee"/>
+    <tag group="wProperty" tag="Versatile"/>
+    <tag group="DamageType" tag="dtSlashing"/>
+    <tag group="EquipType" tag="Metal"/>
+    <tag group="ItemRarity" tag="Rare" name="Rare" abbrev="Rare"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="GearType" tag="gtWeapon"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="IsWeapon" tag="wLongsword"/>
+    <tag group="wGroup" tag="Sword"/>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="mw5CSwVeng" name="Sword of Vengeance" description="You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n\nCurse. This sword is cursed and possessed by a vengeful spirit. Becoming attuned to it extends the curse to you. As long as you remain cursed, you are unwilling to part with the sword, keeping it on your person at all times. While attuned to this weapon, you have disadvantage on attack rolls made with weapons other than this one.\n\nIn addition, while the sword is on your person, you must succeed on a DC 15 Wisdom saving throw whenever you take damage in combat. On a failed save you must attack the creature that damaged you until you drop to 0 hit points or it does, or until you can&apos;t reach the creature to make a melee attack against it. \n\nYou can break the curse in the usual ways. \n\nAlternatively, casting banishment on the sword forces the vengeful spirit to leave it. The sword then becomes a +1 weapon with no other properties." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="any sword"/>
+    <fieldval field="miAttunTxt" value="requires attunement"/>
+    <fieldval field="wAttBonus" value="1"/>
+    <fieldval field="wDamBonus" value="1"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="wCategory" tag="Melee"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="GearType" tag="gtWeapon"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="wGroup" tag="Sword"/>
+    <tag group="EquipType" tag="Metal"/>
+    <tag group="IsWeapon" tag="wGreatswrd"/>
+    <tag group="IsWeapon" tag="wLongsword"/>
+    <tag group="IsWeapon" tag="wShortswor"/>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="id5CRodTen" name="Tentacle Rod" description="Made by the drow, this rod is a magic weapon that ends in three rubbery tentacles. While holding the rod, you can use an action to direct each tentacle to attack a creature you can see within 15 feet of you. Each tentacle makes a melee attack roll with a +9 bonus. On a hit, the tentacle deals 1d6 bludgeoning damage. If you hit a target with all three tentacles, it must make a DC 15 Constitution saving throw. On a failure, the creature&apos;s speed is halved, it has disadvantage on Dexterity saving throws, and it can&apos;t use reactions for 1 minute. \n\nMoreover, on each of its turns, it can take either an action or a bonus action, but not both. At the end of each of its turns, it can repeat the saving throw, ending the effect on itself on a success." compset="Rod">
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare" name="Rare" abbrev="Rare"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    </thing>
+  <thing id="io5CToStTo" name="Tome of the Stilled Tongue" description="This thick leather-bound volume has a desiccated tongue pinned to the front cover. Five of these tomes exist, and it&apos;s unknown which one is the original. The grisly cover decoration on the first tome of the stilled tongue once belonged to a  treacherous former servant of the lich-god Vecna, keeper of secrets. The tongues pinned to the covers of the four copies came from other spellcasters who crossed Vecna. The first few pages of each tome are filled with indecipherable scrawls. The remaining pages are blank and pristine. \n\nIf you can attune to this item, you can use it as a spellbook and an arcane focus. In addition, while holding the tome, you can use a bonus action to cast a spell you have written in this tome, without expend in a spell slot or using any verbal or somatic component Once used, this property of the tome can&apos;t be used again until the next dawn.\n\nWhile attuned to the book, you can remove the tongue from the book&apos;s cover. If you do so, all spells written in the book are permanently erased.\n\nVecna watches anyone using this tome. He can also write cryptic messages in the book. These messages appear at midnight and fade away after they are read." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a wizard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    </thing>
+  <thing id="io5CAnsHar" name="Instrument of the Bard (Anstruth Harp)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nWhen you use the instrument to cast a spell that causes targets to become charmed on a failed save, the targets have disadvantage on the saving throw. This effect applies whether you are using the instrument as the source of the spell or as a spellcasting focus." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <fieldval field="gCost" value="109000"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <bootstrap thing="spFly">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spProtGoEv">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spContWeat">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spCureWoun">
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="sLevel" tag="5"/>
+      </bootstrap>
+    <bootstrap thing="spWallThor">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    </thing>
+  <thing id="io5CCanMan" name="Instrument of the Bard (Canaith Mandolin)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nWhen you use the instrument to cast a spell that causes targets to become charmed on a failed save, the targets have disadvantage on the saving throw. This effect applies whether you are using the instrument as the source of the spell or as a spellcasting focus." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <fieldval field="gCost" value="30000"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <bootstrap thing="spFly">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spProtGoEv">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spCureWoun">
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="sLevel" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="spDispMagi">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spProtEner">
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="CustDesc" value="For the duration, the willing creature you touch has resistance to lightning damage type. "/>
+      </bootstrap>
+    </thing>
+  <thing id="io5CFocBan" name="Instrument of the Bard (Fochulan Bandlore)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nWhen you use the instrument to cast a spell that causes targets to become charmed on a failed save, the targets have disadvantage on the saving throw. This effect applies whether you are using the instrument as the source of the spell or as a spellcasting focus." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <fieldval field="gCost" value="26500"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <bootstrap thing="spFly">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spProtGoEv">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spEntangle">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spFaerFire">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spShillela">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spSpeaAnim">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    </thing>
+  <thing id="io5CMaFuCi" name="Instrument of the Bard (Mac-Fuirmidh Cittern)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nWhen you use the instrument to cast a spell that causes targets to become charmed on a failed save, the targets have disadvantage on the saving throw. This effect applies whether you are using the instrument as the source of the spell or as a spellcasting focus." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <fieldval field="gCost" value="27000"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <bootstrap thing="spFly">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spProtGoEv">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spBarkskin">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spCureWoun">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spFogClou">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    </thing>
+  <thing id="io5CDosLut" name="Instrument of the Bard (Doss Lute)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nWhen you use the instrument to cast a spell that causes targets to become charmed on a failed save, the targets have disadvantage on the saving throw. This effect applies whether you are using the instrument as the source of the spell or as a spellcasting focus." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <fieldval field="gCost" value="28500"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <bootstrap thing="spFly">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spProtGoEv">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="sp5CAnimFr">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spProtEner">
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="CustDesc" value="For the duration, the willing creature you touch has resistance to fire damage type. "/>
+      </bootstrap>
+    <bootstrap thing="spProtPois">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    </thing>
+  <thing id="io5CCliLyr" name="Instrument of the Bard (Cli Lyre)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nWhen you use the instrument to cast a spell that causes targets to become charmed on a failed save, the targets have disadvantage on the saving throw. This effect applies whether you are using the instrument as the source of the spell or as a spellcasting focus." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <fieldval field="gCost" value="35000"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <bootstrap thing="spFly">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spProtGoEv">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spStonShap">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spWallFire">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spWindWall">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    </thing>
+  <thing id="io5COllHar" name="Instrument of the Bard (Ollamh Harp)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nWhen you use the instrument to cast a spell that causes targets to become charmed on a failed save, the targets have disadvantage on the saving throw. This effect applies whether you are using the instrument as the source of the spell or as a spellcasting focus." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <fieldval field="gCost" value="125000"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <bootstrap thing="spFly">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spProtGoEv">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spConfusio">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spContWeat">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spFireStor">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
     </thing>
   </document>
