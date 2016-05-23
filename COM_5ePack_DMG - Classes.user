@@ -299,7 +299,7 @@
       doneif (tagis[Helper.Disable] = 1)
 
       ~ Set the damage resistances to the hero
-      perform hero.pushtags[DamageRes.?]]]></eval>
+      perform hero.pushtags[DamageRes.dt5CBPSNon]]]></eval>
     </thing>
   <thing id="c5CClrDreL" name="Dread Lord" description="At 20th-level, the paladin can, as an action, surround himself or herself with an aura of gloom that lasts for 1 minute. The aura reduces any bright light in a 30-foot radius around the paladin to dim light. Whenever an enemy that is frightened by the paladin starts its turn in the aura, it takes 4d10 psychic damage. Additionally, the paladin and creatures he or she chooses in the aura are draped in deeper shadow. Creatures that rely on sight have disadvantage on attack rolls against creatures draped in this shadow.\n\nWhile the aura lasts, the paladin can use a bonus action on his or her turn to cause the shadows in the aura to attack one creature. The paladin makes a melee spell attack against the target. If the attack hits, the target takes necrotic damage equal to 3d10 + the paladin&apos;s Charisma modifier.\n\nAfter activating the aura, the paladin can&apos;t do so again until he or she finishes a long rest." compset="ClSpecial" summary="Surround yourself with an aura of gloom that lasts for 1 minute.">
     <fieldval field="trkMax" value="1"/>
@@ -344,5 +344,12 @@
 
       ~ We get damage bonus to melee attacks
       hero.childfound[Damage].field[dmmBonus].value += field[abValue].value]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+      ~ if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] = 1)
+
+~ Add our charisma bonus to the melee attack bonus
+hero.child[Attack].field[tAtkMelee].value = hero.child[Attack].field[tAtkMelee].value + hero.child[aCHA].field[aModBonus].value]]></eval>
     </thing>
   </document>
