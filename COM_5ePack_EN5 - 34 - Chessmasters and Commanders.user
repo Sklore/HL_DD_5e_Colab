@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
   <fileinfo>
-    <info_history>Version 1
-      Only one Path of the Heart is implemented (still needs some scripting), the other two paths are just empty placeholders.</info_history>
+    <info_history>Version 1.1
+      still needs some scripting</info_history>
     </fileinfo>
   <thing id="cHelpENO" name="Noble" compset="Class" uniqueness="unique">
     <fieldval field="cSpecName" value="Noble Paths"/>
@@ -220,21 +220,63 @@ perform hero.delete[ArmProfGrp.?]</eval>
     <tag group="abAction" tag="Action"/>
     <tag group="abDuration" tag="Instant"/>
     </thing>
-  <thing id="c5CNPTacti" name="Noble Path of the Tactician" description="TODO: Totally unimplemented" compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CNPTacti" name="Noble Path of the Tactician" description="Though nobles who follow the Path of the Tactician may seem like lazy aristocrats, always letting others do the hard work while they keep their distance and leeching off other people’s effort. That couldn’t be farther from the truth. Tacticians lead from the sidelines, guiding others with knowledge and strategy while keeping their distance." compset="CustomSpec" uniqueness="unique">
     <usesource source="EN5_34"/>
     <tag group="Hide" tag="Statblock" name="Statblock" abbrev="Statblock"/>
     <tag group="SpecSource" tag="cHelpENO" name="Noble" abbrev="Noble"/>
     <tag group="abCategory" tag="JK5NobPath" name="Noble Path" abbrev="Noble Path"/>
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
     <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <bootstrap thing="c5CNHTaAda">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CNHBonPr">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CCNManCo">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CNHRulEn">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CNHFocFi">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CNHRenSu">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CNHTacMa">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
     </thing>
-  <thing id="c5CNPBrave" name="Noble Path of the Brave" description="TODO: Totally unimplemented" compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CNPBrave" name="Noble Path of the Brave" description="Few nobles possess the courage and selflessness to walk the Path of the Brave. Those who do often won their rank through deeds of valor, or are descended from someone who did.\n\nWhen you first choose the Path of the Brave you gain the following features:" compset="CustomSpec" uniqueness="unique">
     <usesource source="EN5_34"/>
     <tag group="Hide" tag="Statblock" name="Statblock" abbrev="Statblock"/>
     <tag group="SpecSource" tag="cHelpENO" name="Noble" abbrev="Noble"/>
     <tag group="abCategory" tag="JK5NobPath" name="Noble Path" abbrev="Noble Path"/>
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
     <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <bootstrap thing="c5CNPBBoPr">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CNPBReLe">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CNPBDaun">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CNPBCoSt">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CNPBExAt">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CNPBOvSt">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CNPBLion">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
     </thing>
   <thing id="c5CNHAuInn" name="Aura of Innocence" description="When without armor and shield your AC becomes 10 + Charisma bonus + Dexterity bonus." compset="ClSpecial" summary="Add Charisma modifier to AC when not wearing armor or wielding a shield.">
     <usesource source="EN5_34"/>
@@ -285,5 +327,75 @@ perform hero.delete[ArmProfGrp.?]</eval>
     <tag group="abRange" tag="HearSight" name="Hearing/Sight" abbrev="hear/see"/>
     <tag group="abAction" tag="None"/>
     <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    </thing>
+  <thing id="c5CNHTaAda" name="Tactical Adaptability" description="When you roll for initiative, you can switch your initiative roll with any ally." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CNHBonPr" name="Bonus Proficiencies" description="You gain proficiency with all simple weapons, the longbow, the glaive, the halberd, and the whip. You also gain proficiency with light and medium armor." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CCNManCo" name="Maneuvering Command" description="Starting at 2nd level, you gain knowledge of tactical maneuvers that you can direct your allies to use in combat.\n\nManeuvers. You know two maneuvers from those available to the battlemaster. You can choose any maneuver except for Rally, Commander’s Strike, Riposte, and Parry. You learn one additional maneuver at 6th, 11th, 14th and 17th level.\nYou cannot use these maneuvers yourself. \n\n     If the maneuver requires a saving throw, the DC is equal to 8 + your proficiency bonus + your Intelligence modifier.\n\nSuperiority Dice. You have four superiority dice, which are d6s. As a bonus action, you may give a superiority die to an ally to allow that ally to use a maneuver you know. If the ally already has the Combat Superiority or Improved Combat Superiority class features, they use a superiority die of the appropriate size for their level instead of a d6. If the maneuver is not used in a number of rounds equal to your Intelligence modifier, the maneuver is lost. You regain all spent superiority\ndice after a long rest. \n\n     You gain another superiority die at 6th level and again at 14th level." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CNHRulEn" name="Rules of Engagement" description="Starting at 6th level, you and allies within 30 feet of you add your Intelligence modifier to their initiative." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CNHFocFi" name="Focused Fire" description="Starting at 11th level, you can spend one superiority die as a bonus action to select an enemy. Until the end of your next turn, creatures of your choice within 30 feet may deal extra damage equal to your superiority die when they damage the\nchosen target." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CNHRenSu" name="Renewed Superiority" description="Starting at 14th level, you regain a number of superiority dice equal to your Intelligence modifier each time you take a short rest. You cannot exceed your normal maximum this way." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CNHTacMa" name="Tactical Mastery" description="At 17th level, you can effortlessly identify your enemies’ weaknesses. As a bonus action, you can spend any number of superiority dice to expose a single creature’s fatal weakness. Until the end of your next turn, all weapon and spell attacks\nagainst that creature have advantage and deal extra damage as if all the superiority dice you spent rolled the maximum result." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CNPBBoPr" name="Bonus Proficiencies" description="You gain proficiency with simple weapons, melee martial weapons, and with light and medium armors and shields." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CNPBReLe" name="Resilient Leader" description="Your hit point maximum increases by 2 for every noble level you possess." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CNPBDaun" name="Dauntless" description="Starting at 2nd level, you have advantage on saving throws against spells and abilities that would cause you to become frightened." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CNPBCoSt" name="Combat Style" description="At 6th level, you gain one Combat Style from among those available to the fighter." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CNPBExAt" name="Extra Attack" description="Starting 11th level, you may make two attacks instead of one whenever you take the Attack action." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CNPBOvSt" name="Overwhelming Stroke" description="At 14th level, you learn a deadly technique. You may choose to make a single weapon attack as an action. If this attack hits, the target must make a Strength saving throw (DC is equal to 8 + your Charisma modifier + your proficiency bonus) or\nbe knocked prone and stunned until the end of your next turn. This feature may be used three times, and uses are regained after a short or long rest." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CNPBLion" name="Lionheart" description="Beginning at 17th level, you cannot be frightened and allies who can see or hear you have advantage on saving throws made to resist becoming frightened." compset="ClSpecial">
+    <usesource source="EN5_34"/>
+    <tag group="Helper" tag="ClExLose"/>
+    <tag group="abAction" tag="None"/>
     </thing>
   </document>
