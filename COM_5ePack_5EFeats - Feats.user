@@ -127,7 +127,7 @@ nexteach]]></eval>
   <thing id="ft5CBloExp" name="Blocking Expertise" description="You turn away even the fiercest blows with your shield. \n\n{b}Prerequisite:{/b}  Shield proficiency \n• Your Strength score increases by +1. \n• When you wield a shield and are dealt a critical attack, you have a 50% chance to negate the critical hit.            " compset="Feat" summary="You turn away even the fiercest blows with your shield." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
-	    <eval phase="First"><![CDATA[
+    <eval phase="First"><![CDATA[
        ~ If we're disabled, do nothing &
        doneif (tagis[Helper.Disable] = 1)
 
@@ -311,7 +311,7 @@ validif (#attrvalue[aDEX] >= 13)]]></validate>
       doneif (field[usrChosen1].ischosen = 0)
 
       ~ Increase the selected ability score by 1
-      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>	
+      field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     <exprreq message="Strength 13 required."><![CDATA[#attrvalue[aSTR] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CDisStr" name="Disrupting Strike" description="With a well-placed attack, you make it harder for a nearby opponent to cast spells. \n\n• If you make a successful melee or ranged attack against an opponent casting a spell within 30 feet, the concentration DC to successfully cast the spell is increased by +4." compset="Feat" summary="With a well-placed attack, you make it harder for a nearby opponent to cast spells." uniqueness="useronce">
@@ -375,7 +375,7 @@ validif (hero.tagis[ProfSkill.skInvestig] <> 0)]]></validate>
 
        hero.child[aWIS].field[aStartMod].value += 1]]></eval>
     <prereq message="Channel Divinity class feature required.">
-    <validate>@valid = #hasability[cClrChaDiv]
+      <validate>@valid = #hasability[cClrChaDiv]
 @valid = #hasability[cPalChaDiv]</validate>
       </prereq>
     </thing>
@@ -465,8 +465,8 @@ validif (hero.tagis[abCategory.RgrFigStyl] <> 0)]]></validate>
     </thing>
   <thing id="ft5CFavDef" name="Favored Defense" description="Your cunning is your shield against your quarry’s attacks. \n\n{b}Prerequisite:{/b}  Favored enemy class feature. \n• Your Wisdom or Intelligence (choose one) increases by +1. \n• You add half of your proficiency bonus to your AC when attacked by a favored enemy.            " compset="Feat" summary="Your cunning is your shield against your quarry’s attacks. " uniqueness="useronce">
     <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aWIS|thingid.aINT)"/>
-     <usesource source="5e5EFeats"/>
-     <tag group="Helper" tag="ShowSpec"/>
+    <usesource source="5e5EFeats"/>
+    <tag group="Helper" tag="ShowSpec"/>
     <eval phase="First"><![CDATA[
       ~ If we're disabled, do nothing &
       doneif (tagis[Helper.Disable] = 1)
@@ -1173,8 +1173,12 @@ validif (#attrvalue[aCHA] >= 13)]]></validate>
   <thing id="ft5CTwoFiM" name="Two-Weapon Fighting Mastery" description="You are especially skilled at fighting with two weapons. \n\n{b}Prerequisites:{/b}  Dex 15+, Two-Weapon Fighter \n• When fighting with two weapons, you gain a +1 bonus to AC. \n• You gain an extra attack action when wielding two weapons.            " compset="Feat" summary="You are especially skilled at fighting with two weapons." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+hero.childfound[ArmorClass].field[tACDexMod].value =  hero.childfound[ArmorClass].field[tACDexMod].value +1]]></eval>
     <exprreq message="Dex must be at least 15"><![CDATA[#attrvalue[aDEX] >= 15]]></exprreq>
-    <exprreq message="Two-Weapon Fighter feat required."><![CDATA[hero.tagis[HasFeat.ft5CTwoFig] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CTwoRen" name="Two-Weapon Rend" description="Striking with both of your weapons simultaneously, you can use them to deliver devastating wounds. \n\n{b}Prerequisites:{/b}  Dex 15+, Two-Weapon Fighter \n• If you hit an opponent with both your primary attack and your offhand bonus attack, you deal an additional +5 points of damage.           " compset="Feat" summary="Striking with both of your weapons simultaneously, you can use them to deliver devastating wounds." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
