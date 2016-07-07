@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
-  <thing id="c5CFgtMari" name="Mariner" description="Whether a buccaneer, an experienced sailor, or a specially trained marine, a mariner can scale a ship’s rigging and swim through choppy water with ease. Adapted to wearing light and medium armor, mariners can defend themselves without relying on heavy armor or bulky shields. Most of them thus wield two‐handed weapons or fight with a pair of blades.\n\nAs long as you are not wearing heavy armor or using a shield, you have a swimming speed and a climbing speed equal to your normal speed, and you gain a +1 bonus to AC." compset="CustomSpec" uniqueness="unique">
-    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+	 <thing id="c5CFgtMari" name="Mariner" description="As long as you are not wearing heavy armor or using a shield, you have a swimming speed and a climbing speed equal to your normal speed, and you gain a +1 bonus to AC." compset="CustomSpec" summary="Gain swim and climb speed" uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
     <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="SpecSource" tag="cHelpPal" name="Paladin" abbrev="Paladin"/>
     <tag group="SpecSource" tag="cHelpRgr" name="Ranger" abbrev="Ranger"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abCategory" tag="FtrFigStyl" name="Fighter Fighting Style" abbrev="Fighter Fighting Style"/>
+    <tag group="abCategory" tag="PalFigStyl" name="Paladin Fighting Style" abbrev="Paladin Fighting Style"/>
     <tag group="abCategory" tag="RgrFigStyl" name="Ranger Fighting Style" abbrev="Ranger Fighting Style"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
-    <tag group="SpecSource" tag="cHelpPal"/>
-    <tag group="abCategory" tag="PalFigStyl"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+     var myspeed as number
+     myspeed = hero.child[Speed].field[tSpeed].value
+     field[abValue].value = 1
+     foreach pick in hero from BaseArmor where "( ArmorClass.Heavy | ArmorClass.Shield ) & ( Helper.CurrArmor | Helper.CurrShield )"
+          field[abValue].value = 0
+          myspeed = 0
+     nexteach
+     hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value
+     hero.child[xClimb].field[abValue].value = myspeed
+     hero.child[xSwim].field[abValue].value = myspeed]]></eval>
     </thing>
   </document>
