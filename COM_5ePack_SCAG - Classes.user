@@ -1292,16 +1292,66 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
       </bootstrap>
     </thing>
   <thing id="c5CMastInt" name="Master of Intrigue" description="When you choose this archetype at 3rd level, you gain proficiency with the disguise kit, the forgery kit, and one gaming set of your choice. You also learn two languages of your choice.\n\nAdditionally, you can unerringly mimic the speech patterns and accent of a creature that you hear speak for at least 1 minute, allowing you to pass yourself off as a native speaker of a particular land, provided that you know the language." compset="ClSpecial">
+    <fieldval field="abValue" value="1"/>
+    <fieldval field="abValue2" value="2"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <bootstrap thing="gKitDisgui">
+      <autotag group="Helper" tag="TrainTool"/>
+      <autotag group="Hide" tag="Tool"/>
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <bootstrap thing="gTooForger">
+      <autotag group="Helper" tag="TrainTool"/>
+      <autotag group="Hide" tag="Tool"/>
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[~ If not shown get out now!
+       doneif (tagis[Helper.ShowSpec] = 0)
+       ~ If disabled get out now!
+       doneif (tagis[Helper.Disable]  = 1)
+       
+       call 5Cfoctocls
+       doneif (state.isfocus = 0)
+
+       ~ Let the class helper choose one Gaming tool
+       perform focus.assign[AllowTool1.Gaming]
+       focus.field[cToolMax].value += field[abValue].value
+
+       ~ Now we need to ask for the two languages
+
+      doneif (isroot = 0)
+
+      doneif (root.islinkage[table] = 0)
+
+      perform root.linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue2].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue2].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue2].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
     </thing>
   <thing id="c5CMastTac" name="Master of Tactics" description="Starting at 3rd level, you can use the Help action as a bonus action. Additionally, when you use the Help action to aid an ally in attacking a creature, the target of that attack can be within 30 feet of you, rather than 5 feet of you, if the target can see or hear you." compset="ClSpecial">
     <tag group="abAction" tag="Bonus"/>
     </thing>
   <thing id="c5CInsiMan" name="Insightful Manipulator" description="S ta rting at 9th level, if you spend at least 1 minute observing or interacting with another creature outside combat, you can learn certain information about its capabilities compared to your own. The DM tells you if the creature is your equa l, s uperior, or inferior in regard to two of the following characteris tics of your choice: \n\n• Intelligence score \n• Wisdom score\n• Charisma score\n• Class levels (if any)\n\nAt the DM&apos;s option, you might also realize you know a piece of the creature&apos;s his tory or one of its persona lity traits, if it has any." compset="ClSpecial">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Sight"/>
     <tag group="abAction" tag="Bonus"/>
+    <tag group="abDuration" tag="Minute"/>
     </thing>
   <thing id="c5CMisdire" name="Misdirection" description="Beginning at 13th level, when you a re targeted by an attack while a creature within 5 feet of you is granting you cover against that attack, you can use your reaction to have the attack target that creature instead of you." compset="ClSpecial">
+    <fieldval field="abRange" value="5"/>
     <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
     </thing>
   <thing id="c5CSoulDec" name="Soul of Deceit" description="Starting at 17th level, your thoughts can&apos;t be read by telepathy or other means, unless you allow it. You can present false thoughts by making a Charisma (Deception) check contested by the mind reader&apos;s Wisdom (Insight) check. \n\nAdditionally, no matter what you say, magic that would determine if you are telling the truth indicates you are being truthful, if you so choose, and you can&apos;t be compelled to tell the truth by magic." compset="ClSpecial">
     <tag group="abAction" tag="Free"/>
