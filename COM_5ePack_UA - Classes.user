@@ -28,4 +28,65 @@
      hero.child[xClimb].field[abValue].value = myspeed
      hero.child[xSwim].field[abValue].value = myspeed]]></eval>
     </thing>
+  <thing id="c5CWlkUnLi" name="The Undying Light" description="Your patron is not a specific entity, but the energy that radiates from the Positive Plane. Your pact allows you to experience the barest touch of the raw stuff of life that powers the multiverse. Anything more, and you would be instantly incinerated by its energy.\n\nContact with the Positive Plane causes subtle changes to your behavior and beliefs. You are driven to bring light to dark places, to annihilate undead creatures, and to protect all living things. At the same time, you crave the light and find total darkness a suffocating experience akin to drowning\n\nAs an optional way to add more flavor to your character, you can pick from or roll on the following table of flaws associated with warlocks of the Undying Light.\n\n{b}Expanded Spell List{/b}\nThe Undying Light lets you choose from an expanded list of spells when you learn a warlock spell. The following spells are added to the warlock spell list for you.\n\n{b}Undying Light Expanded Spells{/b} \n{b}Spell Level Spells{/b}\n1st               {i}burning hands{/i}\n2nd              {i}flaming sphere{/i}\n3rd               {i}daylight{/i}\n4th               {i}fire shield{/i}\n5th               {i}flame strike{/i}" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eLDUnUACP" parent="UserParent" name="5e Unearthed Arcana - Light, Dark, Underdark!"/>
+    <tag group="ClsAllowSp" tag="spFlamSphe" name="Flaming Sphere" abbrev="Flaming Sphere"/>
+    <tag group="ClsAllowSp" tag="spDaylight" name="Daylight" abbrev="Daylight"/>
+    <tag group="ClsAllowSp" tag="spFireShie" name="Fire Shield" abbrev="Fire Shield"/>
+    <tag group="ClsAllowSp" tag="spFlamStri" name="Flame Strike" abbrev="Flame Strike"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron" abbrev="Warlock Otherworldly Patron"/>
+    <tag group="ClsAllowSp" tag="spBurnHand" name="Burning Hands" abbrev="Burning Hands"/>
+    <bootstrap thing="c5CWlkSeaV">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkRadR">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkHeaL">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkRadS">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    </thing>
+  <thing id="c5CWlkSeaV" name="Searing Vengeance" description="Starting at 6th level, the radiant energy you channel allows you to overcome grievous injuries. When you would make a death saving throw, you can instead spring back to your feet with a burst of radiant energy. You immediately stand up (if you so choose), and you regain hit points equal to half your hit point maximum. All hostile creatures within 30 feet of you take 10 + your Charisma modifier radiant damage and are blinded until the end of your turn.\n\nOnce you use this feature, you can’t use it again until you finish a long rest." compset="ClSpecial">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    </thing>
+  <thing id="c5CWlkRadS" name="Radiant Soul" description="Starting at 1st level, your link to the Positive Plane allows you to serve as a conduit for radiant energy. You have resistance to radiant damage, and when you cast a spell that deals radiant damage or fire damage, you add your Charisma modifier to that damage. Additionally, you know the sacred flame and light cantrips and can cast them at will. They don’t count against your number of cantrips known." compset="ClSpecial">
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <bootstrap thing="spSacrFlam">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spLight">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="1000"><![CDATA[      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.assign[DamageRes.dtRadiant]]]></eval>
+    </thing>
+  <thing id="c5CWlkRadR" name="Radiant Resilience" description="Starting at 10th level, you gain temporary hit points whenever you finish a long or short rest. These temporary hit points equal your warlock level + your Charisma modifier. Additionally, choose up to five creatures you can see at the end of your rest. Those creatures gain temporary hit points equal to half your warlock level + your Charisma modifier." compset="ClSpecial">
+    <tag group="abAction" tag="ShortRest"/>
+    <tag group="abAction" tag="LongRest"/>
+    </thing>
+  <thing id="c5CWlkHeaL" name="Healing Light" description="At 14th level, you gain the ability to channel the Undying Light to heal yourself and other creatures. As a bonus action, you can touch a creature and heal it. With each touch, a creature regains from 1d6 to 5d6 hit points (your choice). You have a total pool of 15d6 you can expend. Subtract the dice you use with each touch from that total.\n\nYou regain all expended dice from your pool when you finish a long rest." compset="ClSpecial">
+    <fieldval field="trkMax" value="15"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
   </document>
