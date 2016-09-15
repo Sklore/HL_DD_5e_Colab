@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
   <fileinfo>
-    <info_todo>
-    Need scripting
+    <info_todo>Need scripting
 	Rod of the Pact Keeper
 
 	Artifacts
@@ -66,9 +65,7 @@
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="ShowSpec"/>
     <bootstrap thing="lPrimord"></bootstrap>
-    <eval phase="First">
-
-      doneif (field[gIsEquip].value = 0)
+    <eval phase="First">doneif (field[gIsEquip].value = 0)
       doneif (field[gIsAttuned].value = 0)
 
       perform hero.assign[DamageImm.dtFire]</eval>
@@ -146,6 +143,13 @@
     <tag group="ItemRarity" tag="Uncommon"/>
     <tag group="Helper" tag="EquipAvail" name="EquipAvail" abbrev="EquipAvail"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ Situationals
+#situational[hero.child[Initiative], "You have advantage while wielding the Sentinel Shield", field[thingname].text]
+#situational[hero.child[skPercep], "You have advantage on perception while wielding the Sentinel Shield", field[thingname].text]]]></eval>
     <child entity="mSpecMagic">
       <bootstrap thing="mShield"></bootstrap>
       </child>
