@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <fileinfo>
+    <info_history>Version 1.0
+	Only added The Silver Knight</info_history>
+    </fileinfo>
+  <thing id="c5CWlkATSK" name="The Archfey - The Silver Knight" description="He is the mightiest warrior hero of the Seelie Court, and lesser fey knights (and some paladins of the Oath of the Ancients) emulate him as much as they can. His silver sword cleaves through lycanthropes and fiends, and his shining armor and shield dazzle his enemies. The Silver Knight is the kind of Patron that places a low value on your personal survival. He suffers grave wounds when he goes into battle, and restoring his strength so that he can aid you always costs something you don’t want to sacrifice. If it were easy, he – and you, his protégé – would not be heroes." compset="CustomSpec" summary="Your patron is the mightiest warrior hero of the Seelie Court" uniqueness="unique">
+    <usesource source="TribFeyI"/>
+    <tag group="ClsAllowSp" tag="spDomiBeas" name="Dominate Beast" abbrev="Dominate Beast"/>
+    <tag group="ClsAllowSp" tag="spDomiPers" name="Dominate Person" abbrev="Dominate Person"/>
+    <tag group="ClsAllowSp" tag="spFaerFire" name="Faerie Fire" abbrev="Faerie Fire"/>
+    <tag group="ClsAllowSp" tag="spGreaInvi" name="Greater Invisibility" abbrev="Greater Invisibility"/>
+    <tag group="ClsAllowSp" tag="spPlanGrow" name="Plant Growth" abbrev="Plant Growth"/>
+    <tag group="ClsAllowSp" tag="spSeeming" name="Seeming" abbrev="Seeming"/>
+    <tag group="ClsAllowSp" tag="spHeroism" name="Heroism" abbrev="Heroism"/>
+    <tag group="ClsAllowSp" tag="spWardBo" name="Warding Bond" abbrev="Warding Bond"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron" abbrev="Warlock Otherworldly Patron"/>
+    <tag group="ClsAllowSp" tag="sp5CCrusMa" name="Crusader&apos;s Mantle" abbrev="Crusader&apos;s Mantle"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="ClsAllowSp" tag="spCalmEmot" name="Calm Emotions" abbrev="Calm Emotions"/>
+    <bootstrap thing="c5CWlkDarD">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CTBFSPAr">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CTBFArSh">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkBegD">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    </thing>
+  <thing id="c5CTBFSPAr" name="The Silver Prince’s Armaments" description="At 1st level when you choose the Silver Prince as your Patron, you gain proficiency in medium armor and shields. If you are a Blade Pact warlock, you also gain proficiency in heavy armor. If you have any other Pact, you gain proficiency in one martial weapon. (TODO: Badly scripted, always adds medium, shield and martial.)" compset="ClSpecial">
+    <usesource source="TribFeyI"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abDuration" tag="Round" name="Round" abbrev="rd"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform root.linkage[table].assign[ArmProfGrp.ArmorMed]
+      perform root.linkage[table].assign[ArmProfGrp.Shields]
+      perform root.linkage[table].assign[ArmProfGrp.WepMartial]]]></eval>
+    </thing>
+  <thing id="c5CTBFArSh" name="Argent Shield" description="Starting at 6th level, when an ally within 60 feet is hit by an attack, you vanish in a puff of mist and teleport to an open space adjacent to both the attacker and your ally. Using the original attack roll, the attack resolves as if you were the target. You reduce the damage that you take from this attack by 1d6 per point of proficiency bonus that you have. If there is no open space adjacent to both your ally and the attacker, you cannot use this feature. Once you use this feature, you cannot do so again until you complete a short or long rest." compset="ClSpecial">
+    <usesource source="TribFeyI"/>
+    <tag group="abDuration" tag="Round" name="Round" abbrev="rd"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    </thing>
+  <thing id="c5CTBFSKSp" name="The Silver Knight Expanded Spell List" description="The following spells are added to the warlock spell list for you.\n\n1st Level - faerie fire, heroism\n2nd calm emotions, warding bond\n3rd crusader&apos;s mantle, plant growth\n4th dominate beast, greater invisibility\n5th dominate person, seeming" compset="ClSpecial" summary="Your patron adds additional spell choices to your list.">
+    <usesource source="TribFeyI"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (isroot = 0)
+
+      doneif (root.islinkage[table] = 0)
+
+      perform root.linkage[table].pushtags[ClsAllowSp.?]]]></eval>
+    </thing>
+  </document>
