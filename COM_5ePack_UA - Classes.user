@@ -153,4 +153,114 @@ perform hero.assign[ProfSkill.skSleight]]]></eval>
   <thing id="c5CBrdFooL" name="Fool&apos;s Luck" description="Jesters seem to have a knack for pulling themselves out of tight situations, transforming what looks like sure failure into an embarrassing but effective success.\n\nAt 14th level, you can expend one use of Bardic Inspiration after you fail an ability check, fail a saving throw, or miss with an attack roll. Roll a Bardic Inspiration die and add the number rolled to your attack, saving throw, or ability check, using the new result in place of the failed one. If using this ability grants you a success on the attack, saving throw, or ability check, note the number you rolled on the Bardic Inspiration die. The DM can then apply that result as a penalty to an attack or check you make, and you cannot use this ability again until you suffer this drawback. When the DM invokes this penalty, describe an embarrassing gaffe or mistake you make as part of the affected die roll." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
     </thing>
+  <thing id="c5CSorFaSo" name="Favored Soul" description="A sorcerer who&apos;s magic comes from being imbued with divine power.\n\nSource: https://dnd.wizards.com/articles/unearthed-arcana/modifying-classes" compset="CustomSpec" uniqueness="unique">
+    <comment>Source: https://dnd.wizards.com/articles/unearthed-arcana/modifying-classes</comment>
+    <usesource source="5eMoClUACP" parent="UserParent" name="5e Unearthed Arcana - Modifying Classes"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="ProductId" tag="5CUAFavSou" name="Unearthed Arcana: Favored Souls" abbrev="Favored Souls"/>
+    <tag group="SpecSource" tag="cHelpSor"/>
+    <tag group="abCategory" tag="5CSorDomai"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <bootstrap thing="cExtraAtt">
+      <autotag group="ClSpecWhen" tag="6"/>
+      <assignval field="CustDesc" value="Beginning at 6th level, you can attack twice, instead of once, whenever you take the Attack action on your turn."/>
+      </bootstrap>
+    <bootstrap thing="c5CSorDWin">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cfgUSFSCof">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorPotC">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorBPro">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CSorBPro" name="Bonus Proficiencies" description="  You gain proficiency with medium armor, shields, and martial weapons." compset="ClSpecial">
+    <usesource source="5eMoClUACP"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="ProductId" tag="5CUAFavSou"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform root.linkage[table].assign[ArmProfGrp.ArmorLight]
+      perform root.linkage[table].assign[ArmProfGrp.ArmorMed]
+      perform root.linkage[table].assign[ArmProfGrp.Shields]
+      perform root.linkage[table].assign[ArmProfGrp.WepSimple]]]></eval>
+    </thing>
+  <thing id="c5CSorDWin" name="Divine Wings" description="At 14th level, you gain the ability to sprout a pair of wings from your back (feathered or bat-like, your choice), gaining a flying speed equal to your current walking speed. You can create these wings as a bonus action on your turn. They last until you dismiss them as a bonus action on your turn.\nYou can’t manifest your wings while wearing armor unless the armor is made to accommodate them, and clothing not made to accommodate your wings might be destroyed when you manifest them." compset="ClSpecial">
+    <fieldval field="actName" value="Sprout winds"/>
+    <arrayval field="usrArray" index="0" value="Feathered"/>
+    <arrayval field="usrArray" index="1" value="Bat-like"/>
+    <usesource source="5eMoClUACP"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="AbilType" tag="Super"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="ProductId" tag="5CUAFavSou"/>
+    <eval phase="Render" priority="10000"><![CDATA[    doneif (field[abilActive].value = 0)
+
+    field[livename].text = field[usrSelect].text & " Wings (Flight: " & hero.child[Speed].field[tSpeedMod].value & "-ft.)"]]></eval>
+    </thing>
+  <thing id="c5CSorPotC" name="Power of the Chosen" description="Starting at 18th level, when you cast one of the spells you learned from your Chosen of the Gods class feature, you regain hit points equal to your Charisma modifier (minimum +1) + the spell’s level." compset="ClSpecial">
+    <usesource source="5eMoClUACP"/>
+    <tag group="ProductId" tag="5CUAFavSou"/>
+    <bootstrap thing="cfgUSFSCof"></bootstrap>
+    </thing>
+  <thing id="cfgUSFSCof" name="Chosen of the Gods" description="  At 1st level, you choose one of the cleric class’s divine domains. You add that domain’s spells for 1st-level clerics to your known spells. These spells do not count against the number of spells you can know, and they are considered to be sorcerer spells for you. When you reach 3rd, 5th, 7th, and 9th levels in the sorcerer class, you likewise learn your domain’s spells that become available at those levels." compset="Configure" uniqueness="unique">
+    <fieldval field="cfgMax1" value="1"/>
+    <fieldval field="cfgAllow1" value="component.Ability &amp; abCategory.ClrDomain"/>
+    <fieldval field="cfgObject1" value="Favored Soul Domains"/>
+    <usesource source="5CUECP"/>
+    <tag group="ProductId" tag="5CUAFavSou"/>
+    <tag group="Helper" tag="NoAdvLeag" name="Not Allowed for Adventurers League Characters" abbrev="Not Allowed for Adventurers League Characters"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="Helper" tag="ClsCastLev"/>
+    <eval phase="First" priority="10000"><![CDATA[
+      var searchexpr as string
+      var domain as string
+      searchexpr = "abCategory.ClrDomain & CustTaken." & idstring
+      
+      ~ Find the single cleric domain that was selected
+      perform hero.findchild[Ability,searchexpr].setfocus
+      doneif (state.isfocus = 0)
+
+      searchexpr = ""
+      ~ Loop through all the spells that the domain bootstraps and build
+      ~ a search expression of them all.
+      foreach bootstrap in focus where "component.BaseSpell"
+        searchexpr = splice(searchexpr,eachthing.tagids[thingid.?],"|")
+      nexteach
+
+      ~ Make sure we find spells setup as Bonus Spells
+      searchexpr = "(" & searchexpr & ") & BonusSplAt.?"
+      domain = "thingid." & focus.idstring 
+
+      ~ Loop through all the spells and make them sorcerer spells
+      foreach pick in hero from BaseSpell where searchexpr
+      
+        ~ Make sure this spell is bootstrapped to the cleric domain
+        if (eachpick.root.tagcountstr[domain] = 1) then
+          perform eachpick.tagreplace[SpellType.cHelpClr,SpellType.cHelpSor]
+          perform eachpick.tagreplace[Helper.Memorized,Helper.Known]     
+        endif
+      nexteach
+      
+      searchexpr = "SpecSource." & idstring
+
+      ~ Loop through all the class specials and disable them from the domain
+      foreach pick in hero from BaseClSpec where searchexpr
+        perform eachpick.assign[Helper.Disable]
+      nexteach]]></eval>
+    <eval phase="PreLevel" index="3"><![CDATA[      
+      ~ Set the configurable level &
+      field[cfgLevel].value += hero.child[cHelpSor].field[cTotalLev].value]]></eval>
+    </thing>
   </document>
