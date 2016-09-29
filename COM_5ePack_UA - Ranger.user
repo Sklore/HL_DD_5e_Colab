@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="cHelpRgC" name="Ranger (Sept 2016)" description="This is the Ranger class described in the Unearthed Arcana Article of September 2016" compset="Class" uniqueness="unique">
+    <fieldval field="cHDSides" value="10"/>
+    <fieldval field="cAbbr" value="RgC"/>
+    <fieldval field="cSkillMax" value="3"/>
+    <fieldval field="cSpecSing" value="Fighting Style"/>
+    <fieldval field="cSpec2ndSi" value="Ranger Conclave"/>
+    <fieldval field="cSpec3rdSi" value="Favored Enemy"/>
+    <fieldval field="StartWeap" value="• ({i}a{/i}) two shortswords or ({i}b{/i}) two simple melee weapons{br}• A longbow and a quiver of 20 arrows"/>
+    <fieldval field="StartArmor" value="• ({i}a{/i}) scale mail or ({i}b{/i}) leather armor"/>
+    <fieldval field="StartGear" value="• ({i}a{/i}) a dungeoneer&apos;s pack or ({i}b{/i}) an explorer&apos;s pack"/>
+    <fieldval field="StartAll" value="• ({i}a{/i}) scale mail or ({i}b{/i}) leather armor{br}• ({i}a{/i}) two shortswords or ({i}b{/i}) two simple melee weapons{br}• ({i}a{/i}) a dungeoneer&apos;s pack or ({i}b{/i}) an explorer&apos;s pack{br}• A longbow and a quiver of 20 arrows"/>
+    <arrayval field="cAttrArray" index="3" value="2"/>
+    <arrayval field="cAttrArray" index="7" value="4"/>
+    <arrayval field="cAttrArray" index="11" value="6"/>
+    <arrayval field="cAttrArray" index="15" value="8"/>
+    <arrayval field="cAttrArray" index="18" value="10"/>
+    <arrayval field="cArrKnSpl" index="1" value="2"/>
+    <arrayval field="cArrKnSpl" index="2" value="3"/>
+    <arrayval field="cArrKnSpl" index="4" value="4"/>
+    <arrayval field="cArrKnSpl" index="6" value="5"/>
+    <arrayval field="cArrKnSpl" index="8" value="6"/>
+    <arrayval field="cArrKnSpl" index="10" value="7"/>
+    <arrayval field="cArrKnSpl" index="12" value="8"/>
+    <arrayval field="cArrKnSpl" index="14" value="9"/>
+    <arrayval field="cArrKnSpl" index="16" value="10"/>
+    <arrayval field="cCustTot" index="1" value="1"/>
+    <arrayval field="cArrKnSpl" index="18" value="11"/>
+    <arrayval field="cCustTeTot" index="0" value="1"/>
+    <arrayval field="cCustTeTot" index="5" value="2"/>
+    <arrayval field="cCustScTot" index="2" value="1"/>
+    <arrayval field="cCustScTot" index="6" value="1"/>
+    <usesource source="p5eUneRgr" parent="p5eUneArc" name="5e Unearthed Arcana - The Ranger, Revised"/>
+    <tag group="PrimeAbil" tag="aDEX"/>
+    <tag group="PrimeAbil" tag="aWIS"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <tag group="ArmProfGrp" tag="Shields"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <tag group="Classes" tag="5CRgC" name="Ranger (Sept 2016)"/>
+    <tag group="AllowSkl1" tag="skAnimHand"/>
+    <tag group="AllowSkl1" tag="skAthletic"/>
+    <tag group="AllowSkl1" tag="skInsight"/>
+    <tag group="AllowSkl1" tag="skNature"/>
+    <tag group="AllowSkl1" tag="skInvestig"/>
+    <tag group="AllowSkl1" tag="skPercep"/>
+    <tag group="AllowSkl1" tag="skSurvival"/>
+    <tag group="AllowSkl1" tag="skStealth"/>
+    <tag group="AllowC3rd" tag="cHelpRgr"/>
+    <tag group="sClass" tag="cHelpRgr"/>
+    <tag group="CasterType" tag="SpontKnow"/>
+    <tag group="Helper" tag="HalfCaster"/>
+    <tag group="CasterSrc" tag="Divine"/>
+    <bootstrap thing="c5CRgChdps">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cRgrVanish">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cRgrFerSen">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="cRgrFoeSla">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCFavE">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCNatE">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCFlFt">
+      <autotag group="ClSpecWhen" tag="8"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
+    <eval phase="Level" priority="6000"><![CDATA[      ~ Don't reduce our capabilities for multiclassing if this is the first
+      ~ class we have taken.
+      doneif (tagis[Helper.FirstLevel] <> 0)
+
+      ~ Multiclass rangers lose two skills, and all save proficiencies
+      perform delete[ProfSave.?]
+      field[cSkillMax].value -= 2]]>
+      <before name="Class Helper forwards Proficiency Tags"/>
+      <before name="Weapon and Armor group proficiencies forwarded to hero"/>
+      <after name="Declare First Level"/>
+      </eval>
+    </thing>
+  <thing id="c5CRgC" name="Ranger (Sept 2016)" compset="ClassLevel" maxlimit="20">
+    <tag group="ClassType" tag="Normal"/>
+    <bootstrap thing="cHelpRgC"></bootstrap>
+    <link linkage="helper" thing="cHelpRgC"/>
+    </thing>
+  <thing id="c5CRgCFlFt" name="Fleet of Foot" description="Beginning at 8th level, you can use the Dash action as a bonus action." compset="ClSpecial" summary="You can Dash as a bonus Action">
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Personal"/>
+    </thing>
+  <thing id="c5CRgChdps" name="Hide in Plain Sight" description="Starting at level 10th, you can remain perfectly still for long periods of time to set ambushes.\n\nWhen you attempt to hide on your turn, you can opt to not move on that turn. If you avoid moving, creatures that attempt to detect you take a -10 penalty to their Wisdom (Perception) checks until the start of your next turn. You lose this benefit if you move or fall prone, either voluntarily or because of some external effect. You are still automatically detected if any effect or action causes you to no longer be hidden.\n\nIf you are still hidden on your next turn, you can continue to remain motionless and gain this benefit until you are detected." compset="ClSpecial">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    </thing>
+  <thing id="c5CRgCNatE" name="Natural Explorer" description="You are a master of the natural world, and you react with swift and decisive action when attacked. This grants you the following benefits:\n\n• You ignore difficult terrain.\n• You have advantage on initiative rolls.\n• On your first turn during combat, you have advantage on attack rolls against creatures that have not yet acted.\n\nIn addition, you are skilled at navigating the wilderness. You gain the following benefits when traveling for an hour or more:\n\n• Difficult terrain doesn&apos;t slow your group&apos;s travel.\n• Your group can become lost except for magical means.\n• Even when you are engaged in another activity while traveling (suck as foraging, navigating or tracking), you remaing alert to danger.\n• If you are traveling alone, you can move stealthily at a normal pace.\n• When you forage, you find twice as much food as you normally would.\n• While tracking other creatures, you also learn their exact number, their sizes, and how long ago they passed through the area." compset="ClSpecial"></thing>
+  <thing id="cRgCArcher" name="Archery" description="You gain a +2 bonus to attack rolls you make with ranged weapons." compset="CustomSpec" summary="+2 to attack with ranged weapons." uniqueness="unique">
+    <fieldval field="abValue" value="2"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="FtrFigStyl" name="Fighter Fighting Style" abbrev="Fighter Fighting Style"/>
+    <tag group="abCategory" tag="RgrFigStyl" name="Ranger Fighting Style" abbrev="Ranger Fighting Style"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.childfound[Attack].field[atrBonus].value += field[abValue].value]]></eval>
+    </thing>
+  <thing id="cRgCTwWeFi" name="Two-Weapon Fighting" description="When you engage in two-weapon fighting, you can add your ability modifier to the damage of the second attack." compset="CustomSpec" summary="Add your ability modifier to second attack&apos;s damage when fighting with two weapons." uniqueness="unique">
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="FtrFigStyl" name="Fighter Fighting Style" abbrev="Fighter Fighting Style"/>
+    <tag group="abCategory" tag="RgrFigStyl" name="Ranger Fighting Style" abbrev="Ranger Fighting Style"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.assign[Hero.2WepStyle]]]></eval>
+    </thing>
+  <thing id="cRgCDuelin" name="Dueling" description="When you are wielding a melee weapon in one hand and no other weapons, you gain a +2 bonus to damage rolls with that weapon." compset="CustomSpec" summary="+2 damage when wielding a melee weapon in one hand and no other weapons." uniqueness="unique">
+    <fieldval field="abValue" value="2"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="FtrFigStyl" name="Fighter Fighting Style" abbrev="Fighter Fighting Style"/>
+    <tag group="abCategory" tag="PalFigStyl" name="Paladin Fighting Style" abbrev="Paladin Fighting Style"/>
+    <tag group="abCategory" tag="RgrFigStyl" name="Ranger Fighting Style" abbrev="Ranger Fighting Style"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (hero.tagis[Hero.EquipOff] <> 0)
+
+      foreach pick in hero from BaseWep where "!wProperty.TwoHanded"
+        eachpick.field[dmmBonus].value += field[abValue].value
+        nexteach]]></eval>
+    </thing>
+  <thing id="cRgCDefens" name="Defense" description="While you are wearing armor, you gain a +1 bonus to AC." compset="CustomSpec" summary="+1 AC when wearing armor." uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="FtrFigStyl" name="Fighter Fighting Style" abbrev="Fighter Fighting Style"/>
+    <tag group="abCategory" tag="PalFigStyl" name="Paladin Fighting Style" abbrev="Paladin Fighting Style"/>
+    <tag group="abCategory" tag="RgrFigStyl" name="Ranger Fighting Style" abbrev="Ranger Fighting Style"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (hero.tagis[Hero.EquipArmor] = 0)
+
+      hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
+    </thing>
+  <thing id="c5CRgCMari" name="Mariner" description="As long as you are not wearing heavy armor or using a shield, you have a swimming speed and a climbing speed equal to your normal speed, and you gain a +1 bonus to AC." compset="CustomSpec" summary="Gain swim and climb speed" uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <usesource source="5eWaAdUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Waterborne Adventures"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="FtrFigStyl" name="Fighter Fighting Style" abbrev="Fighter Fighting Style"/>
+    <tag group="abCategory" tag="PalFigStyl" name="Paladin Fighting Style" abbrev="Paladin Fighting Style"/>
+    <tag group="abCategory" tag="RgrFigStyl" name="Ranger Fighting Style" abbrev="Ranger Fighting Style"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+     var myspeed as number
+     myspeed = hero.child[Speed].field[tSpeed].value
+     field[abValue].value = 1
+     foreach pick in hero from BaseArmor where "( ArmorClass.Heavy | ArmorClass.Shield ) & ( Helper.CurrArmor | Helper.CurrShield )"
+          field[abValue].value = 0
+          myspeed = 0
+     nexteach
+     hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value
+     hero.child[xClimb].field[abValue].value = myspeed
+     hero.child[xSwim].field[abValue].value = myspeed]]></eval>
+    </thing>
+  <thing id="c5CRgCFavE" name="Favored Enemy" description="Beginning at 1st level, you have significant experience studying, tracking, hunting, and even talking to a certain type of enemy commonly encountered in the wilds. Choose a type of favored enemy: beasts, fey, humanoids, monstrosities, or undead. You gain a +2 bonus to damage rolls with weapon attacks against creatures of the chosen type. Additionally, you have advantage on Wisdom (Survival) checks to track your favored enemies, as well as on Intelligence checks to recall information about them.\nWhen you gain this feature, you also learn one language of your choice, typically one spoken by your favored enemy or creatures associated with it. However, you are free to pick any language you wish to learn." compset="ClSpecial">
+    <fieldval field="actName" value="Favored Enemy"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[~ If we're disabled, do nothing & 
+doneif (tagis[Helper.Disable] = 1)
+~ If not active get out now!
+doneif (field[abilActive].value = 0)
+
+var FavEn as number
+var FavDmg as number
+FavEn = Hero.tagcount[abCategory.RgrFavEnem]
+if ( FavEn > 2 ) then
+   FavEn = 2
+endif
+FavDmg = FavEn * 2
+
+foreach pick in hero from BaseWep
+        eachpick.field[dmmBonus].value += FavDmg
+nexteach]]></eval>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[~ If we're disabled, do nothing & 
+doneif (tagis[Helper.Disable] = 1)
+
+if ( hero.tagcount[Classes.5CRgC] > 5) then
+   hero.child[c5CRgCFavE].field[actName].text = "Greater Favored Enemy"
+   hero.child[c5CRgCFavE].field[sbName].text = "Greater Favored Enemy"
+   hero.child[c5CRgCFavE].field[listname].text = "Greater Favored Enemy"
+   hero.child[c5CRgCFavE].field[shortname].text = "Greater Favored Enemy"
+endif]]></eval>
+    </thing>
+  <thing id="c5CRgCHunC" name="Hunter Conclave" description="Some rangers seek to master weapons to better protect civilization from the terrors of the wilderness. Members of the Hunter Conclave learn specialized fighting techniques for use against the most dire threats, from rampaging ogres and hordes of orcs to towering giants and terrifying dragons." compset="CustomSpec" uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <tag group="Helper" tag="Secondary"/>
+    <bootstrap thing="cfgRgrHunt"></bootstrap>
+    <bootstrap thing="cExtraAtt">
+      <autotag group="ClSpecWhen" tag="5"/>
+      <autotag group="SpecialTab" tag="SQClsAbil"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+     if (field[xTotalLev].value >= 15) then
+       hero.childfound[cfgRgrHunt].field[cfgMax4].value += 1
+       endif
+     if (field[xTotalLev].value >= 11) then
+       hero.childfound[cfgRgrHunt].field[cfgMax3].value += 1
+       endif
+     if (field[xTotalLev].value >= 7) then
+       hero.childfound[cfgRgrHunt].field[cfgMax2].value += 1
+       endif
+     if (field[xTotalLev].value >= 3) then
+       hero.childfound[cfgRgrHunt].field[cfgMax1].value += 1
+       endif]]></eval>
+    </thing>
+  <thing id="c5CRgCDeeS" name="Deep Stalker Conclave" description="Most folks descend into the depths of the Underdark only under the most pressing conditions, undertaking some desperate quest or following the promise of vast riches. All to often, evil festers beneath the earth unnoticed, and rangers of the Deep Stalker Conclave strive to uncover and defeat such threats before they can reach  the surface." compset="CustomSpec" uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="cExtraAtt">
+      <autotag group="ClSpecWhen" tag="5"/>
+      <autotag group="SpecialTab" tag="SQClsAbil"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCStMi">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCunSc">
+      <autotag group="ClSpecWhen" tag="3"/>
+      <autotag group="SpecialTab" tag="SQClsAbil"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCdepM">
+      <autotag group="ClSpecWhen" tag="3"/>
+      <autotag group="SpecialTab" tag="SQClsAbil"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCstfl">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCStDg">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgCBeas" name="Beast Conclave" description="Many rangers are more at home in the wilds than in civilization, to the point where animals consider them kin. Rangers of the Beast Conclave develop a close bond with a beast, then further strengthen that bond with magic." compset="CustomSpec" uniqueness="unique">
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpRgC" name="Ranger (Sept 2016)" abbrev="Ranger (Sept 2016)"/>
+    <bootstrap thing="c5CRgCAnCo">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCCoBo">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCCoAt">
+      <autotag group="ClSpecWhen" tag="5"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCBeDe">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCStCF">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCSBDe">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgCStMi" name="Iron Mind" description="At 7th level, you have acquired greater mental strength. You gain proficiency in Wisdom saving throws." compset="ClSpecial" summary="Proficient in Wisdom saving throws">
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+
+       doneif (tagis[Helper.ShowSpec] = 0)
+
+       doneif (tagis[Helper.Disable] <> 0)
+
+       perform hero.assign[ProfSave.svWIS]]]></eval>
+    </thing>
+  <thing id="c5CRgCunSc" name="Underdark Scout" description="At 3rd level, you master the art of the ambush. On your first turn during combat, you gain a +10 bonus to your speed, and if you use the attack action, you can make one additional attack.\nYou are also adept at evading creatures that rely on darkvision. Such creatures gain no benefit when attempting to detect you in dark and dim conditions. Additionally, when the DM determines that you can hide from a creature, that creature gains no benefit from its darkvision to find you." compset="ClSpecial">
+    <tag group="User" tag="Activation"/>
+    <eval phase="Final" priority="10000"><![CDATA[~ If we're disabled, do nothing & 
+doneif (tagis[Helper.Disable] = 1)
+~ If not active get out now!
+doneif (field[abilActive].value = 0)
+
+     hero.child[Speed].field[tSpeed].value += 10]]></eval>
+    </thing>
+  <thing id="c5CRgCdepM" name="Deep Stalker Magic" description="At 3rd level, you gain darkvision out to a range of 90 feet. If you already have darkvision, you increase its range by 30 feet.\nYou also gain access to additional spells at 3rd, 5th, 9th, 13th and 17th level. Once you gain a deep stalker spell, it counts as a ranger spell for you but doesn&apos;t count against the number of ranger spells you know.\n\n{b}Deep Stalker Spells{/b}\n{b}Ranger Level     Spells{/b}\n      3rd                       {i}disguise self{/i}\n      5th                       {i}rope trick{/i}\n      9th                       {i}glyph of warding{/i}\n      13th                     {i}greater invisibility{/i}\n      17th                     {i}seeming{/i}" compset="ClSpecial">
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="90"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    <bootstrap thing="spRopeTric">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    <bootstrap thing="spGlypWard">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    <bootstrap thing="spGreaInvi">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    <bootstrap thing="spSeeming">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgCstfl" name="Stalker&apos;s Flurry" description="Starting at 11th level, once on each of your turns when you miss an attack, you can make another attack." compset="ClSpecial">
+    <tag group="abAction" tag="5CN1Attack"/>
+    <tag group="abRange" tag="Personal"/>
+    </thing>
+  <thing id="c5CRgCStDg" name="Stalker&apos;s Dodge" description="At 15th level, whenever a creature attacks you and does not have advantage, you can use your reaction to impose disadvantage on the creature&apos;s attack roll against you. You can use this feature before or after the attack roll is made, but before the outcome of the roll is determined." compset="ClSpecial">
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="c5CRgCAnCo" name="Animal Companion" description="At 3rd level, you learn to use your magic to create a poweful bond with a creature of the natural bond.\nWith 8 hour of work and the expenditure of 50gp of rare herbs and fine food, you call forth an animal from the wilderness to serve as your faithful companion. You normally select your companion from among the following animals: an {b}ape{/b}, a {b}black bear{/b}, a {b}boar{/b}, a {b}giant badger{/b}, a {b}giant weasel{/b}, a {b}mule{/b}, a {b}panther{/b}, or a {b}wolf{/b}. However, your DM might pick one of these animals for you, based on the surrounding terrain and on what types of creatures would logically be present in the area.\nAt the end of the 8 hours, your animal companion appears and gains all of the benefits of your Companion&apos;s bond ability. You can have only one animal companion at a time.\nIf your animal companion is ever slain, the magical bond you share allows you to magically returns it to life. With 8 hour of work and the expenditure of 25gp of rare herbs and fine food, you call forth your companion&apos;s spirit and use your magic to create a new body for it. You can return an animal companion to life in this manner even if you do not possess any part of its body.\nIf you use this ability to return a former animal companion to life while you have a current animal companion, your current companion leaves you and is replaced by the restored companion." compset="ClSpecial"></thing>
+  <thing id="c5CRgCCoBo" name="Companion&apos;s bond" description="You animal companion gains a variety of benefits while it&apos;s linked to you. \nThe animal companion loses it&apos;s multiattack action, if it has one. \nThe companion obeys your commands as best as it can. It rolls for initiative like any other creature, but you determine its actions, decisions, attitudes, and so on. If you are incapacitaded or absent, it acts on its own. \nWhen using the natural explorer feature, you and your animal companion can both move stealthily at a normal pace.\nYour animal companion has abilities and game statistics determined in part by your level:\n• It uses your proficiency bonus in place of its own.\n• It adds your proficiency to its AC and damage rolls.\n• It becomes proficient in two skills of your choice.\n• It also becomes proficient in all saving throws.\n• For each ranger level you have over third, it gains an additional hit dice, increasing its hit points accordingly.\n• When you gain an ability score improvement, the companion gains one as well." compset="ClSpecial">
+    <bootstrap thing="c5CRgCCTAC"></bootstrap>
+    </thing>
+  <thing id="c5CRgCCoAt" name="Coordinated Attack" description="Beginning at 5th level, you and your animal companion form a more potent fighting team. When you use the Attack action on your turn, if your companion can see you, it can use its reaction to make a melee attack." compset="ClSpecial">
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="AttackMel"/>
+    </thing>
+  <thing id="c5CRgCBeDe" name="Beast&apos;s Defense" description="At 7th level, while your companion can see you, it has advantage on all saving throws." compset="ClSpecial"></thing>
+  <thing id="c5CRgCStCF" name="Storm of claws and fangs" description="At 11th level, your companion can use its action to make a melee attack against each creature of it&apos;s choice within 5 feet of it, with a separate atack roll for each target." compset="ClSpecial"></thing>
+  <thing id="c5CRgCSBDe" name="Superior Beast&apos;s Defense" description="At 15th level, whenever an attacker that your companion can see hits it with and attack, it can use its reaction to halve the attack&apos;s damage against it." compset="ClSpecial"></thing>
+  <thing id="c5CRgCCTAC" name="Animal Companion" compset="Companion" stacking="never" uniqueness="unique">
+    <fieldval field="CompType" value="AnimComp"/>
+    <arrayval field="CompAbiArr" index="3" value="2"/>
+    <arrayval field="CompAbiArr" index="7" value="4"/>
+    <arrayval field="CompAbiArr" index="11" value="6"/>
+    <arrayval field="CompAbiArr" index="15" value="8"/>
+    <arrayval field="CompAbiArr" index="18" value="10"/>
+    <eval phase="PostAttr" priority="12000" index="2"><![CDATA[~ store the proficiency of the hero:
+var heroprof as number
+heroprof = hero.childfound[ProfBonus].field[tProfBonus].value
+
+~ now we replace the prof bonus of the minion 
+~ with the one from the hero...
+minion.childfound[ProfBonus].field[tProfBonus].value = heroprof
+
+~ and add it to its armor class...
+minion.childfound[ArmorClass].field[Bonus].value += heroprof
+
+~ and damage.
+foreach pick in minion from BaseWep where "wGroup.Natural"
+   eachpick.field[dmmBonus].value += heroprof
+   eachpick.field[dmrBonus].value += heroprof
+nexteach]]></eval>
+    <eval phase="PostLevel" priority="450" index="3">~ store the proficiency of the hero:
+var heroprof as number
+heroprof = hero.childfound[ProfBonus].field[tProfBonus].value
+
+~ now we replace the prof bonus of the minion 
+~ with the one from the hero...
+minion.childfound[ProfBonus].field[tProfBonus].value = heroprof</eval>
+    <eval phase="PostAttr" priority="11000"><![CDATA[
+      var searchexpr as string
+      searchexpr = "(Race.rApe) | (Race.rBlackBear) | (Race.rBoar) | (Race.rGiantBadg) | (Race.rGiantWeas) | (Race.rMule) | (Race.rPanther) | (Race.rWolf)"
+      minion.childfound[Totals].field[tRaceExpr].text = searchexpr]]></eval>
+    <eval phase="First" priority="455" index="4"><![CDATA[~ Well, there's no way (afaik) to count the class levels from the hero
+~ at the minion, so we need to do it somewhere in the hero context and 
+~ send the info to be used at the minion. 
+~
+~ In this case, since all animal companions will receive the 
+~ companion bond racial ability to add their extra skills, we'll
+~ use it to bootstrap the extra HD as well. The tag expression used 
+~ in the condition for the bootstrap will test the value of the
+~ abValue5 field, which we set here.
+
+~ This must be done at the First stage, since the bootstraps happen
+~ there. Or so I'm told by the error messages.
+
+var level as number
+level = hero.tagcount[Classes.5CRgC]
+minion.childfound[ra5Ccobo].field[abValue5].value = level]]></eval>
+    <minion id="Familiar">
+      <tag group="AllowRCust" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="CompIs" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="Hero" tag="NoFamLvReq" name="No familiar Level requirements" abbrev="No familiar Level requirements"/>
+      <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+      <tag group="ProfSave" tag="svDEX" name="Dexterity" abbrev="DEX"/>
+      <tag group="ProfSave" tag="svSTR" name="Strength" abbrev="STR"/>
+      <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="CON"/>
+      <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="WIS"/>
+      <tag group="ProfSave" tag="svINT" name="Intelligence" abbrev="INT"/>
+      <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="CHA"/>
+      <tag group="HideTab" tag="race" name="race" abbrev="race"/>
+      <tag group="Hero" tag="NoAdvance" name="NoAdvance" abbrev="NoAdvance"/>
+      <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+      <bootstrap thing="ra5Ccobo"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="ra5Ccobo" name="Companion Bond" description="You animal companion gains a variety of benefits while it&apos;s linked to you. \nThe animal companion loses it&apos;s multiattack action, if it has one. \nThe companion obeys your commands as best as it can. It rolls for initiative like any other creature, but you determine its actions, decisions, attitudes, and so on. If you are incapacitaded or absent, it acts on its own. \nWhen using the natural explorer feature, you and your animal companion can both move stealthily at a normal pace.\nYour animal companion has abilities and game statistics determined in part by your level:\n• It uses your proficiency bonus in place of its own.\n• It adds your proficiency to its AC and damage rolls.\n• It becomes proficient in two skills of your choice.\n• It also becomes proficient in all saving throws.\n• For each ranger level you have over third, it gains an additional hit dice, increasing its hit points accordingly.\n• When you gain an ability score improvement, the companion gains one as well." compset="RaceSpec">
+    <fieldval field="abValue" value="2"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 3)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 4)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 5)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 6)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 7)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 8)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 9)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 10)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 11)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 12)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 13)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 14)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 15)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 16)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 17)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 18)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonusHD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 19)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CRgCCoA">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 4)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CBeDe">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 6)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CRgCStC">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 10)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CRgCSBD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 14)]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cBonHDHelp"></bootstrap>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+~ the animal companion gets 2 new skills.
+
+      var NumOfSkill as number
+      ~ Increase or decrease the number of proficiencies 
+      NumOfSkill = field[abValue].value
+      call 5CAddProf
+
+~ also, take a look at the coment in the c5CRgCCTAC thing, since 
+~ what we do there affects the bootstraps done arround here.]]></eval>
+    </thing>
+  <thing id="ra5CRgCCoA" name="Coordinated Attack" description="Beginning at 5th level, you and your animal companion form a more potent fighting team. When you use the Attack action on your turn, if your companion can see you, it can use its reaction to make a melee attack." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="AttackMel"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    </thing>
+  <thing id="ra5CBeDe" name="Beast&apos;s Defense" description="At 7th level, while your companion can see you, it has advantage on all saving throws." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If not active get out now!
+      doneif (field[abilActive].value = 0)
+
+      #situational[hero.child[svAll],"Advantage on all saves, while can see master",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CRgCStC" name="Storm of claws and fangs" description="At 11th level, your companion can use its action to make a melee attack against each creature of it&apos;s choice within 5 feet of it, with a separate atack roll for each target." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abRange" tag="AttackMel"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CRgCSBD" name="Superior Beast&apos;s Defense" description="At 15th level, whenever an attacker that your companion can see hits it with and attack, it can use its reaction to halve the attack&apos;s damage against it." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="Personal"/>
+    </thing>
+  </document>
