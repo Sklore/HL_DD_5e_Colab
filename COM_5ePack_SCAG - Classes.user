@@ -19,8 +19,9 @@
     <bootstrap thing="c5CWizBlS">
       <autotag group="ClSpecWhen" tag="2"/>
       </bootstrap>
-    <bootstrap thing="cExtraAtt">
+    <bootstrap thing="c5CWizExAt">
       <autotag group="ClSpecWhen" tag="6"/>
+      <assignval field="CustDesc" value="Beginning at 6th level, you can attack twice, instead of once, whenever you take the Attack action on your turn."/>
       </bootstrap>
     <exprreq message="You must be an elf or half-elf to become a Bladesinger."><![CDATA[#hasrace[rElf] + #hasrace[rHalfElf] <> 0]]></exprreq>
     </thing>
@@ -115,8 +116,9 @@ doneif (#levelcount[Wizard] < 14)
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <bootstrap thing="lPrimord"></bootstrap>
     </thing>
-  <thing id="c5CSrcTeMa" name="Tempestuous Magic" description="Use a bonus action on your turn, immediately before or after you cast a spell of 1st level or higher, to have whirling gusts of elemental air fly you up to 10 feet without provoking opportunity attacks." compset="ClSpecial" summary="You can use a bonus action on your turn to cause whirling gusts of elemental air to briefly surround you">
+  <thing id="c5CSrcTeMa" name="Tempestuous Magic" description="Use a bonus action on your turn, immediately before or after you cast a spell of 1st level or higher, to have whirling gusts of elemental air fly you up to 10 feet without provoking opportunity attacks." compset="ClSpecial">
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="abAction" tag="Bonus"/>
@@ -146,11 +148,35 @@ doneif (#levelcount[Wizard] < 14)
   <thing id="c5CSrcStFu" name="Storm&apos;s Fury" description="When hit by a melee attack, you can use your reaction to deal lightning damage equal to your sorcerer level to the attacker, who must also make a Strength saving throw against your sorcerer spell save DC or be pushed in a straight line up to 20 feet away from you." compset="ClSpecial" summary="When you are hit by a melee attack, you can use your reaction to deal lightning damage to the attacker.">
     <tag group="abAction" tag="Reaction"/>
     </thing>
-  <thing id="cCSrcWiSo" name="Wind Soul" description="You gain immunity to lightning and thunder damage and a magical flying speed of 60 feet. As an action, you your flying speed becomes 30 for one hour and up to 3+your Charisma modifier creatures within 30 feet of you equal to 3 +your Charisma modifier get the same flying speed. This recharges on a short or long rest" compset="ClSpecial" summary="You gain immunity to lightning and thunder damage and learn to fly.">
+  <thing id="cCSrcWiSo" name="Wind Soul" description="You gain immunity to lightning and thunder damage and a magical flying speed of 60 feet. As an action, you your flying speed becomes 30 for one hour and up to 3+your Charisma modifier creatures within 30 feet of you equal to 3 +your Charisma modifier get the same flying speed. This recharges on a short or long rest." compset="ClSpecial" summary="You gain immunity to lightning and thunder damage and learn to fly.">
+    <fieldval field="abValue" value="60"/>
+    <fieldval field="abValue2" value="30"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Include other creatures"/>
+    <tag group="User" tag="Tracker"/>
     <tag group="abAction" tag="Action"/>
-    <bootstrap thing="xFly">
-      <autotag group="Value" tag="60"/>
-      </bootstrap>
+    <tag group="Usage" tag="Hour"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] <> 1)
+      ~ if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abValue3].value += 3 + #attrmod[aCHA]
+      field[livename].text = field[thingname].text & " (" & field[abValue3].value & " Creatures)"
+
+      ~ The following should only happen once on the first copy
+      doneif (tagis[Helper.FirstCopy] = 0)
+
+      ~ If ability activated then we have only a 30ft fly
+      if (field[abilActive].value = 1) then
+        #value[xFly] += field[abValue2].value
+
+      ~ Default is 60ft
+      else
+        #value[xFly] += field[abValue].value
+      endif]]></eval>
     </thing>
   <thing id="c5CWlkUndy" name="The Undying" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
     <usesource source="5eSCAGCP"/>
@@ -186,7 +212,7 @@ doneif (#levelcount[Wizard] < 14)
     </thing>
   <thing id="c5CWlkAmtD" name="Among the Dead" description="You learn the spare the dying cantrip, as a warlock cantrip. You have advantage on saving throws against any disease.\n\If an undead targets you directly a a harmful spell or an attack, it must make a Wisdom saving throw against your spell save DC or it must choose a new target or forfeit targeting someone instead of you. If it succeeds on the save, or you target it with an attack or a harmful spell, it is immune to this effect for 24 hours." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
-    <bootstrap thing="sp5CSpareD">
+    <bootstrap thing="spSparDyi">
       <autotag group="Helper" tag="Free"/>
       <autotag group="Helper" tag="Memorized"/>
       <autotag group="BonusSplAt" tag="1"/>
@@ -200,7 +226,7 @@ doneif (#levelcount[Wizard] < 14)
     <tag group="abAction" tag="None"/>
     <tag group="Usage" tag="LongRest"/>
     </thing>
-  <thing id="c5CWlkUnNa" name="Undying Nature" description="You don&apos;t require food, water, or sleep and can hold your breath indefinitely, though rest is still need to reduce exhaustion, and finishing short and long rests affect you as normal.\n\nAlso you age slowly, you are immune to being magically aged and age only 1 year for every 10 that pass." compset="ClSpecial" summary="You can hold your breath indefinitely, and you don&apos;t require food, water, or sleep.">
+  <thing id="c5CWlkUnNa" name="Undying Nature" description="You don&apos;t require food, water, or sleep and can hold your breath indefinitely, though rest is still need to reduce exhaustion, and finishing short and long rests affect you as normal.\n\nAlso you age slowly, you are immune to being magically aged and age only 1 year for every 10 that pass." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
     </thing>
   <thing id="c5CWlkInLi" name="Indestructible Life" description="Use a bonus action on your turn to regain 1d8 + your warlock level hit points and, if neccessary, any severed body part you hold in place reattaches.\n\nThis ability recharges when you finish a short or long rest." compset="ClSpecial" summary=" On your turn, you can use a bonus action to regain hit points equal to 1d8 + your warlock level.">
@@ -251,7 +277,7 @@ doneif (#levelcount[Wizard] < 14)
         field[listname].text = field[thingname].text & " (" & field[xIndex].value & " die)"
         endif]]></eval>
     </thing>
-  <thing id="c5CBbnReAb" name="Reckless Abandon" description="You gain your Constitution modifier (minimum 1) temporary hitpoints when you use Reckless Attack while raging, which vanish if any are left when your rage ends." compset="ClSpecial" summary="when you use Reckless Attack while raging, you also gain temporary hit points equal to your Constitution modifier">
+  <thing id="c5CBbnReAb" name="Reckless Abandon" description="You gain your Constitution modifier (minimum 1) temporary hitpoints when you use Reckless Attack while raging, which vanish if any are left when your rage ends." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[
@@ -383,7 +409,7 @@ doneif (#levelcount[Wizard] < 14)
     <tag group="ToolCat" tag="Instrument" name="Musical instrument" abbrev="Musical instrument"/>
     <tag group="GearType" tag="gtTools" name="Tools" abbrev="Tools"/>
     </thing>
-  <thing id="c5CBrdCoFo" name="College of Fochlucan" description="Placeholder" compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CBrdCoFo" name="College of Fochlucan" description="The Fochlucan scholar is a handyman both feared and welcomed among great kings, revered by the common folk and famous for knowing unfathomable lore from erased lands. The Fochlucan scholar seeks information, embraces new knowledge, applies it on the battlefield and spreads rumors to control the environment. She often tends to supervise adventurers groups as common bards do, in order to lead them to right place in front of the right threat and protect the interests of the Fochlucan." compset="CustomSpec" uniqueness="unique">
     <usesource source="5eSCAGCP"/>
     <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
     <tag group="SpecSource" tag="cHelpBrd" name="Bard" abbrev="Bard"/>
@@ -402,7 +428,7 @@ doneif (#levelcount[Wizard] < 14)
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
     </thing>
-  <thing id="c5CBrdCoNO" name="College of New Olamn" description="Placeholder" compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CBrdCoNO" name="College of New Olamn" compset="CustomSpec" uniqueness="unique">
     <usesource source="5eSCAGCP"/>
     <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
     <tag group="SpecSource" tag="cHelpBrd" name="Bard" abbrev="Bard"/>
@@ -421,7 +447,7 @@ doneif (#levelcount[Wizard] < 14)
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
     </thing>
-  <thing id="c5CBbnBlRa" name="Black Raven" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CBbnBlRa" name="Black Raven" description="Spirit: Eagle" compset="CustomSpec" uniqueness="unique">
     <usesource source="5eSCAGCP"/>
     <tag group="AllowRCust" tag="cfg5CTotWa" name="Totem Warrior Abilities" abbrev="Totem Warrior Abilities"/>
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
@@ -432,7 +458,7 @@ doneif (#levelcount[Wizard] < 14)
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="AbilType" tag="Extra" name="Extraordinary Ability" abbrev=" (Ex)"/>
     </thing>
-  <thing id="c5CBbnGrif" name="Griffon" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CBbnGrif" name="Griffon" description="Spirit: Eagle" compset="CustomSpec" uniqueness="unique">
     <usesource source="5eSCAGCP"/>
     <tag group="AllowRCust" tag="cfg5CTotWa" name="Totem Warrior Abilities" abbrev="Totem Warrior Abilities"/>
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
@@ -443,7 +469,7 @@ doneif (#levelcount[Wizard] < 14)
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="AbilType" tag="Extra" name="Extraordinary Ability" abbrev=" (Ex)"/>
     </thing>
-  <thing id="c5CBbnSkPo" name="Sky Pony" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CBbnSkPo" name="Sky Pony" description="Spirit: Eagle, with the Elk Apect of the Beast" compset="CustomSpec" uniqueness="unique">
     <usesource source="5eSCAGCP"/>
     <tag group="AllowRCust" tag="cfg5CTotWa" name="Totem Warrior Abilities" abbrev="Totem Warrior Abilities"/>
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
@@ -454,29 +480,7 @@ doneif (#levelcount[Wizard] < 14)
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="AbilType" tag="Extra" name="Extraordinary Ability" abbrev=" (Ex)"/>
     </thing>
-  <thing id="c5CBbnBlBe" name="Blue Bear" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
-    <usesource source="5eSCAGCP"/>
-    <tag group="AllowRCust" tag="cfg5CTotWa" name="Totem Warrior Abilities" abbrev="Totem Warrior Abilities"/>
-    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
-    <tag group="SpecType" tag="Attack" name="Attack" abbrev="Attack"/>
-    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
-    <tag group="abCategory" tag="BbnTotSpi" name="Barbarian Totem Spirit" abbrev="Barbarian Totem Spirit"/>
-    <tag group="abDuration" tag="ConstRage" name="Constant While Raging" abbrev="rage"/>
-    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
-    <tag group="AbilType" tag="Extra" name="Extraordinary Ability" abbrev=" (Ex)"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-       doneif (hero.tagis[Hero.Raging] = 0)
-
-       doneif (tagis[Helper.Disable] <> 0)
-
-       ~ Foreach through all types of damage and pull the Resistance tags from them.
-       foreach thing in DamageType where "!thingid.dtPsychic"
-         perform eachthing.pulltags[DamageRes.?]
-         nexteach
-
-       perform forward[DamageRes.?]]]></eval>
-    </thing>
-  <thing id="cBbn5CThBe" name="Thunderbeast" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CBbnBlBe" name="Blue Bear" description="Spirit: Bear" compset="CustomSpec" uniqueness="unique">
     <usesource source="5eSCAGCP"/>
     <tag group="AllowRCust" tag="cfg5CTotWa" name="Totem Warrior Abilities" abbrev="Totem Warrior Abilities"/>
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
@@ -498,7 +502,7 @@ doneif (#levelcount[Wizard] < 14)
 
        perform forward[DamageRes.?]]]></eval>
     </thing>
-  <thing id="c5CBbnTrGh" name="Tree Ghost" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+  <thing id="cBbn5CThBe" name="Thunderbeast" description="Spirit: Bear, with the Tiger Totemic Attunement" compset="CustomSpec" uniqueness="unique">
     <usesource source="5eSCAGCP"/>
     <tag group="AllowRCust" tag="cfg5CTotWa" name="Totem Warrior Abilities" abbrev="Totem Warrior Abilities"/>
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
@@ -520,7 +524,29 @@ doneif (#levelcount[Wizard] < 14)
 
        perform forward[DamageRes.?]]]></eval>
     </thing>
-  <thing id="c5CBbnBlLi" name="Black Lion" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CBbnTrGh" name="Tree Ghost" description="Spirit: Bear, with &apos;speak with plants&apos; in place of normal rituals for the Spirit Seeker feature." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="AllowRCust" tag="cfg5CTotWa" name="Totem Warrior Abilities" abbrev="Totem Warrior Abilities"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="SpecType" tag="Attack" name="Attack" abbrev="Attack"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="BbnTotSpi" name="Barbarian Totem Spirit" abbrev="Barbarian Totem Spirit"/>
+    <tag group="abDuration" tag="ConstRage" name="Constant While Raging" abbrev="rage"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="AbilType" tag="Extra" name="Extraordinary Ability" abbrev=" (Ex)"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+       doneif (hero.tagis[Hero.Raging] = 0)
+
+       doneif (tagis[Helper.Disable] <> 0)
+
+       ~ Foreach through all types of damage and pull the Resistance tags from them.
+       foreach thing in DamageType where "!thingid.dtPsychic"
+         perform eachthing.pulltags[DamageRes.?]
+         nexteach
+
+       perform forward[DamageRes.?]]]></eval>
+    </thing>
+  <thing id="c5CBbnBlLi" name="Black Lion" description="Spirit: Tiger" compset="CustomSpec" uniqueness="unique">
     <usesource source="5eSCAGCP"/>
     <tag group="AllowRCust" tag="cfg5CTotWa" name="Totem Warrior Abilities" abbrev="Totem Warrior Abilities"/>
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
@@ -716,7 +742,7 @@ doneif (#levelcount[Wizard] < 14)
   <thing id="c5CRogMasD" name="Master Duelist" description="Once per short or long rest you can immediately reroll a missed attack roll with advantage." compset="ClSpecial">
     <tag group="abAction" tag="Bonus"/>
     </thing>
-  <thing id="c5CClrArca" name="Arcana" description="Placeholder" compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CClrArca" name="Arcana" description="The arcana domain, or magic domain as it is sometimes called, (not to be confused with the spell domain) is a deity domain that grants divine spellcasters prayers connected to the power of the arcane. They may, as part of their training, gain the ability to use wizardly implements such as scrolls, wands, and rods." compset="CustomSpec" uniqueness="unique">
     <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
     <tag group="SpecSource" tag="cHelpClr" name="Cleric" abbrev="Cleric"/>
     <tag group="abCategory" tag="ClrDomain" name="Cleric Domain" abbrev="Cleric Domain"/>
@@ -897,7 +923,7 @@ perform hero.assign[ProfSkill.skArcana]]]></eval>
     <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
     <tag group="abCategory" tag="ClrChanDiv"/>
     </thing>
-  <thing id="c5CClrSpBr" name="Spell Breaker" description="You can end one spell of your choice (up to spell level equal to the healing spell slot used) on creatures you restore hit points to." compset="ClSpecial" summary="When you restore hit points to an ally with a spell of 1st level or higher, you can also end one spell of your choice on that creature.">
+  <thing id="c5CClrSpBr" name="Spell Breaker" description="Starting at 6th level, when you restore hit points to an ally with a spell of 1st level or higher, you can also end one spell of your choice on that creature. The level of the spell you end must be equal to or lower than the level of the spell slot you use to cast the healing spell." compset="ClSpecial">
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
@@ -984,7 +1010,7 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
         @message = "You have selected the following spells for Arcane Mastery but not added them to your Cleric spells known: " & messnames
         endif]]></evalrule>
     </thing>
-  <thing id="c5CDrdCiSw" name="Circle of Swords" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CDrdCiSw" name="Circle of Swords" description="The Neverwinter Wood had a circle of druids, the Ring of Swords, who worked to drive out hobgoblins, gnolls, and bugbears from the woods, as well as protect its ancient sites from treasure seekers." compset="CustomSpec" uniqueness="unique">
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
     <tag group="SpecSource" tag="cHelpDrd" name="Druid" abbrev="Druid"/>
     <bootstrap thing="c5CDrdCirF">
@@ -1071,16 +1097,14 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
       <autotag group="ClSpecWhen" tag="1"/>
       </bootstrap>
     </thing>
-  <thing id="c5CDrdMoWe" name="Moonwells" description="Placeholder..." compset="ClSpecial" summary="Cast spells with verbal and somatic components in wild shape.">
+  <thing id="c5CDrdMoWe" name="Moonwells" description="The water of a moonwell, drunk directly from cupped hands, restores ld8 hit points, plus the drinker&apos;s Wisdom bonus, if any .. If the drinker has threatened the balance of nature since the last full moon, the water ins tead deals ld8 poison damage to the drinker. This damage is also dealt by a corrupted moonwell. Either effect occurs once only per day per drinker. On the nights of the full moon, drinkin·g the water of a moonwell can, at the DM&apos;s discretion, have additional effects, such as conferring the benefits of a less er restoration spell. \n\nMoonwell water placed in a container or taken more than 30 feet away from the well no longer has any of these properties; it is simply water. \n\nOn the three nights of the full moon, three or more druids gathered around a moonwell can cast commune and scrying once each without expending spell slots and without material components, provided that one of the druids is at least 9th level and the rest a re at least 4th level. At the DM&apos;s option, the druids can use a moonwell on such nights to cast different spells." compset="ClSpecial">
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     </thing>
-  <thing id="c5CFtrPuDK" name="Banneret (Purple Dragon Knight)" description="Placeholder" compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CFtrPuDK" name="Banneret (Purple Dragon Knight)" description="Purple Dragon knights were the officers and warrior elite of the Cormyrian army, the bulk of which was known as the Purple Dragons. The Purple Dragons and the knights within distinguished themselves with courage and honor several times in the past and being awarded knighthood within the Purple Dragons was a great honor for anyone from the Forest Country. On the battlefield they worked with the War Wizards in order to overcome the enemy.\n\nThe knights&apos; name came from Thauglor, an ancient black dragon who once dominated the area encompassed by the present kingdom. As Thauglor matured, his scales faded from ebony to violet ." compset="CustomSpec" uniqueness="unique">
     <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
     <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
     <tag group="abCategory" tag="FtrMarArch" name="Fighter Martial Archetype" abbrev="Fighter Martial Archetype"/>
-    <bootstrap thing="c5CFtrRaCr">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
+    <tag group="Helper" tag="Secondary"/>
     <bootstrap thing="c5CFtrRoEn">
       <autotag group="ClSpecWhen" tag="7"/>
       </bootstrap>
@@ -1090,19 +1114,22 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
     <bootstrap thing="c5CFtrBulw">
       <autotag group="ClSpecWhen" tag="15"/>
       </bootstrap>
+    <bootstrap thing="c5CFtrRaCr">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
     </thing>
-  <thing id="c5CFtrRaCr" name="Rallying Cry" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CFtrRaCr" name="Rallying Cry" description="When you choose this archetype at 3rd level, when you use your Second Wind feature, you can choose up to three creatures within 60 feet of you that are allied with you. Each one regains hit points equal to your fighter level, provided that the creature can see or hear you." compset="ClSpecial">
     <fieldval field="abRange" value="60"/>
     <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
     <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
     <tag group="abAction" tag="Free" name="Free" abbrev="Free"/>
     </thing>
-  <thing id="c5CFtrRoEn" name="Royal Envoy" description="Placeholder..." compset="ClSpecial"></thing>
-  <thing id="c5CFtrInSu" name="Inspiring Surge" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CFtrRoEn" name="Royal Envoy" description="At 7th level, you gain proficiency in the Persuasion skill. If you are already proficient in it, you gain proficiency in one of the following skills of your choice: Animal Handling, Insight, Intimidation, or Performance. \n\nYour proficiency bonus is doubled for any ability check you make that uses Persuasion. You receive this benefit regardless of the skill proficiency you gain from this feature." compset="ClSpecial"></thing>
+  <thing id="c5CFtrInSu" name="Inspiring Surge" description="Starting at 10th level, when you use your Action Surge feature, you can choose one creature within 60 feet of you that is allied with you. That creature can make one melee or ranged weapon attack with its reaction, provided that it can see or hear you. Starting at 17th level, you can choose two allies within 60 feet of you, rather than one." compset="ClSpecial">
     <fieldval field="abRange" value="60"/>
     <tag group="abRange" tag="Feet"/>
     </thing>
-  <thing id="c5CFtrBulw" name="Bulwark" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CFtrBulw" name="Bulwark" description="Beginning at 15th level, you can extend the benefit of your Indomitable feature to an ally. When you decide to use Indomitable to reroll an Intelligence, a Wisdom, or a Charisma saving throw and you aren&apos;t incapacitated, you can choose one ally within 60 feet of you that also failed its saving throw against the same effect. If that creature can see or hear you, it can reroll its saving throw and must use the new roll." compset="ClSpecial">
     <fieldval field="abRange" value="60"/>
     <tag group="abRange" tag="Feet"/>
     </thing>
@@ -1178,13 +1205,13 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
     </thing>
-  <thing id="c5CToOfDth" name="Touch of Death" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CToOfDth" name="Touch of Death" description="Starting when you choose this tradition at 3rd level, when you reduce a creature within 5 feet of you to 0 hit points, you gain temporary hit points equal to your Wisdom modifier + your monk level (minimum of 1 temporary hit point)." compset="ClSpecial">
     <fieldval field="abRange" value="5"/>
     <tag group="abRange" tag="Feet"/>
     <tag group="abAction" tag="None"/>
     <tag group="abDuration" tag="Instant"/>
     </thing>
-  <thing id="c5CHourRea" name="Hour of Reaping" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CHourRea" name="Hour of Reaping" description="At 6th level, when you take this action, each creature within 30 feet of you that can see you must succeed on a Wisdom saving throw or be frightened of you until the end of your next turn." compset="ClSpecial">
     <fieldval field="abRange" value="30"/>
     <fieldval field="abDuration" value="end of your next turn"/>
     <tag group="abAction" tag="Action"/>
@@ -1192,12 +1219,12 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
     <tag group="abSave" tag="aWIS"/>
     <tag group="abRange" tag="Feet"/>
     </thing>
-  <thing id="c5CMastDth" name="Mastery of Death" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CMastDth" name="Mastery of Death" description="Beginning at 11th level, when you are reduced to 0 hit points, you can expend 1 ki point (no action required) to have 1 hit point instead." compset="ClSpecial">
     <tag group="abDuration" tag="Permanent" name="Permanent" abbrev="perm"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="abAction" tag="None"/>
     </thing>
-  <thing id="c5CTouchLD" name="Touch of the Long Death" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CTouchLD" name="Touch of the Long Death" description="Starting at 17th level, as an action, you touch one creature within 5 feet of you, and you expend 1 to 10 ki points. The target must make a Constitution saving throw, and it takes 2d10 necrotic damage per ki point spent on a fai led save, or half as much damage on a successful one." compset="ClSpecial">
     <tag group="abAction" tag="Action"/>
     </thing>
   <thing id="c5CWaySSou" name="Way of the Sun Soul" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
@@ -1219,10 +1246,10 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
       <autotag group="ClSpecWhen" tag="17"/>
       </bootstrap>
     </thing>
-  <thing id="c5CRadSunB" name="Radiant Sun Bolt" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CRadSunB" name="Radiant Sun Bolt" description="Starting when you choose this tradition at 3rd level, you gain a ranged spell attack that you can use with the Attack action. The attack has a range of 30 feet. You are proficient with it, and you add your Dexterity modifier to its attack and damage rolls. Its damage is radiant, and its damage die is a d4. This die changes as you gain monk levels, as shown in the Martial Arts column of the Monk table.\n\nWhen you use the Attack action on your turn to use this special attack, you can spend 1 ki point to make two additional attacks with it as a bonus action." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
     </thing>
-  <thing id="c5CSearArS" name="Searing Arc Strike" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CSearArS" name="Searing Arc Strike" description="At 6th level, immediately after you take the Attack action on your turn, you can spend 2 ki points to cast the 1st-level spell burning hands as a bonus action. \n\nYou can spend additional ki points to cast burning hands as a higher level spell. Each additional ki point you spend increases the spell&apos;s level by 1. The maximum number of ki points (2 plus any additional points) that you can spend on the spell equals half your monk level (round down)." compset="ClSpecial">
     <tag group="abAction" tag="Bonus"/>
     <bootstrap thing="spBurnHand">
       <autotag group="BonusSplAt" tag="3"/>
@@ -1231,13 +1258,13 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
       <autotag group="SpellType" tag="cHelpMnk"/>
       </bootstrap>
     </thing>
-  <thing id="c5CSearSun" name="Searing Sunburst" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CSearSun" name="Searing Sunburst" description="At 11th level, as an action, you create an orb and hurl it at a point you choose within 150 feet, each creature in that 20-foot-radius sphere must succeed on a Constitution saving throw or take 2d6 radiant damage. A creature doesn&apos;t need to make the save if the creature is behind total cover that is opaque.\n\nYou can increase the sphere&apos;s damage by spending ki points. Each point you spend, up to a maximum of 3, increases the damage by 2d6." compset="ClSpecial">
     <fieldval field="abRange" value="150"/>
     <tag group="abRange" tag="Feet"/>
     <tag group="abAction" tag="Action"/>
     <tag group="abSave" tag="aCON"/>
     </thing>
-  <thing id="c5CWSunShi" name="Sun Shield" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CWSunShi" name="Sun Shield" description="At 17th level, you shed bright light in a 30-foot radius and dim light for an additional 30 feet. You can extinguish or restore the light as a bonus action.\n\nIf a creature hits you with a melee attack while this light shines, you can use your reaction to deal radiant damage to the creature. The radiant damage equals 5 + your Wisdom modifier." compset="ClSpecial">
     <fieldval field="abRange" value="30"/>
     <tag group="abRange" tag="Feet"/>
     <tag group="abAction" tag="Action"/>
@@ -1265,19 +1292,69 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
       <autotag group="ClSpecWhen" tag="17"/>
       </bootstrap>
     </thing>
-  <thing id="c5CMastInt" name="Master of Intrigue" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CMastInt" name="Master of Intrigue" description="When you choose this archetype at 3rd level, you gain proficiency with the disguise kit, the forgery kit, and one gaming set of your choice. You also learn two languages of your choice.\n\nAdditionally, you can unerringly mimic the speech patterns and accent of a creature that you hear speak for at least 1 minute, allowing you to pass yourself off as a native speaker of a particular land, provided that you know the language." compset="ClSpecial">
+    <fieldval field="abValue" value="1"/>
+    <fieldval field="abValue2" value="2"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <bootstrap thing="gKitDisgui">
+      <autotag group="Helper" tag="TrainTool"/>
+      <autotag group="Hide" tag="Tool"/>
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <bootstrap thing="gTooForger">
+      <autotag group="Helper" tag="TrainTool"/>
+      <autotag group="Hide" tag="Tool"/>
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[~ If not shown get out now!
+       doneif (tagis[Helper.ShowSpec] = 0)
+       ~ If disabled get out now!
+       doneif (tagis[Helper.Disable]  = 1)
+       
+       call 5Cfoctocls
+       doneif (state.isfocus = 0)
+
+       ~ Let the class helper choose one Gaming tool
+       perform focus.assign[AllowTool1.Gaming]
+       focus.field[cToolMax].value += field[abValue].value
+
+       ~ Now we need to ask for the two languages
+
+      doneif (isroot = 0)
+
+      doneif (root.islinkage[table] = 0)
+
+      perform root.linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue2].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue2].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue2].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
     </thing>
-  <thing id="c5CMastTac" name="Master of Tactics" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CMastTac" name="Master of Tactics" description="Starting at 3rd level, you can use the Help action as a bonus action. Additionally, when you use the Help action to aid an ally in attacking a creature, the target of that attack can be within 30 feet of you, rather than 5 feet of you, if the target can see or hear you." compset="ClSpecial">
     <tag group="abAction" tag="Bonus"/>
     </thing>
-  <thing id="c5CInsiMan" name="Insightful Manipulator" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CInsiMan" name="Insightful Manipulator" description="S ta rting at 9th level, if you spend at least 1 minute observing or interacting with another creature outside combat, you can learn certain information about its capabilities compared to your own. The DM tells you if the creature is your equa l, s uperior, or inferior in regard to two of the following characteris tics of your choice: \n\n• Intelligence score \n• Wisdom score\n• Charisma score\n• Class levels (if any)\n\nAt the DM&apos;s option, you might also realize you know a piece of the creature&apos;s his tory or one of its persona lity traits, if it has any." compset="ClSpecial">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Sight"/>
     <tag group="abAction" tag="Bonus"/>
+    <tag group="abDuration" tag="Minute"/>
     </thing>
-  <thing id="c5CMisdire" name="Misdirection" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CMisdire" name="Misdirection" description="Beginning at 13th level, when you a re targeted by an attack while a creature within 5 feet of you is granting you cover against that attack, you can use your reaction to have the attack target that creature instead of you." compset="ClSpecial">
+    <fieldval field="abRange" value="5"/>
     <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
     </thing>
-  <thing id="c5CSoulDec" name="Sould of Deceit" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CSoulDec" name="Soul of Deceit" description="Starting at 17th level, your thoughts can&apos;t be read by telepathy or other means, unless you allow it. You can present false thoughts by making a Charisma (Deception) check contested by the mind reader&apos;s Wisdom (Insight) check. \n\nAdditionally, no matter what you say, magic that would determine if you are telling the truth indicates you are being truthful, if you so choose, and you can&apos;t be compelled to tell the truth by magic." compset="ClSpecial">
     <tag group="abAction" tag="Free"/>
     </thing>
   <thing id="c5CPalOaCr" name="Oath of the Crown" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
@@ -1364,12 +1441,12 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
     </thing>
-  <thing id="c5CPalTeCr" name="Tenets of the Crown" description="Placeholder..." compset="ClSpecial">
+  <thing id="c5CPalTeCr" name="Tenets of the Crown" description="The tenets of the Oath of the Crown are often set by the sovereign to which their oath is sworn, but generally emphasize the following tenets.\n\n• Law. The law is paramount. It is the mortar that holds the stones of civilization together, and it must be respected.\n• Loyalty. Your word is your bond. Without loyalty, oaths and laws are meaningless. \n• Courage. You must be willing to do what needs to be done for the sake of order, even in the face of overwhelming odds. If you don&apos;t act, then who will?\n• Responsibility. You must deal with the consequences of your actions, and you are responsible for fulfilling your duties and obligations." compset="ClSpecial">
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
     <tag group="abRange" tag="Personal"/>
     </thing>
-  <thing id="c5CPalCDCC" name="Channel Divinity: Champion Challenge" description="Placeholder..." compset="ClSpecial" summary="You issue a challenge that compels other creatures to do battle with you">
+  <thing id="c5CPalCDCC" name="Channel Divinity: Champion Challenge" description="You declare a challge against someone else who can&apos;t resist doing combat with you. Each creature of your choice that you can see within 30 feet of you must make a Wisdom saving throw. On a failed save, a creature can&apos;t willingly move more than 30 feet away from you. This effect ends on the creature if you are incapacitated or die or if the creature is moved more than 30 feet away from you." compset="ClSpecial" summary="You issue a challenge that compels other creatures to do battle with you">
     <fieldval field="abRange" value="30"/>
     <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
     <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
@@ -1377,21 +1454,21 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
     <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
     <tag group="StandardDC" tag="aCHA" name="Charisma" abbrev="Charisma"/>
     </thing>
-  <thing id="c5CPalCDTT" name="Channel Divinity: Turn the Tide" description="Placehplder..." compset="ClSpecial" summary="As a bonus action, you can bolster injured creatures with your Channel Divinity.">
+  <thing id="c5CPalCDTT" name="Channel Divinity: Turn the Tide" description="As a bonus action, you can bolster injured creatures with your Channel Divinity. Each creature of your choice that can hear you within 30 feet of you regains hit points equal to ld6 +your Charisma modifier (minimum of 1) if it has no more than half of its hit points." compset="ClSpecial" summary="As a bonus action, you can bolster injured creatures with your Channel Divinity.">
     <fieldval field="abRange" value="30"/>
     <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
     <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
     <tag group="abAction" tag="Bonus"/>
     </thing>
-  <thing id="c5CPalDiAl" name="Divine Allegiance" description="Placeholder..." compset="ClSpecial" summary="You can use your reaction to magically substitute your own health for that of the target creature">
+  <thing id="c5CPalDiAl" name="Divine Allegiance" description="Starting at 7th level, when a creature within 5 feet of you takes damage, you can use your reaction to magically substitute your own health for that of the target creature, causing that creature not to take the damage. Instead, you take the damage. This damage to you can&apos;t be reduced or prevented in any way." compset="ClSpecial" summary="You can use your reaction to magically substitute your own health for that of the target creature">
     <fieldval field="abRange" value="5"/>
     <tag group="abAction" tag="Reaction"/>
     <tag group="abRange" tag="Feet"/>
     </thing>
-  <thing id="c5CPalUnSp" name="Unyielding Spirit" description="Placeholder..." compset="ClSpecial" summary="You have advantage on saving throws to avoid becoming paralyzed or stunned.">
+  <thing id="c5CPalUnSp" name="Unyielding Spirit" description="Starting at 15th level, you have advantage on saving throws to avoid becoming paralyzed or stunned." compset="ClSpecial" summary="You have advantage on saving throws to avoid becoming paralyzed or stunned.">
     <tag group="abAction" tag="None"/>
     </thing>
-  <thing id="c5CPalExCh" name="Exalted Champion" description="Placeholder..." compset="ClSpecial" summary="Your presence on the field of battle is an inspiration  to those dedicated to your cause.">
+  <thing id="c5CPalExCh" name="Exalted Champion" description="At 20th level, you can use your action to gain the following benefits for 1 hour:\n\n• You have resistance to bludgeoning, piercing, and slashing damage from nonmagical weapons.\n• Your allies have advantage on death saving throws while within 30 feet of you. \n• You have advantage on Wisdom saving throws, as do your allies within 30 feet of you.\n\nThis effect ends early if you are incapacitated or die. Once you use this feature, you can&apos;t use it again until you finish a long rest." compset="ClSpecial">
     <fieldval field="abRange" value="30"/>
     <tag group="abAction" tag="Action"/>
     <tag group="abRange" tag="Feet"/>
@@ -1542,5 +1619,20 @@ endif
     <tag group="wCategory" tag="Melee"/>
     <tag group="wProperty" tag="Special"/>
     <tag group="wProfReq" tag="Special"/>
+    </thing>
+  <thing id="c5CWizExAt" name="Extra Attack" description="Starting at 6th level, you can attack twice, instead of once, whenever you take the Attack action on your turn." compset="ClSpecial" summary="You can make an extra attack when you take the Attack action.">
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <eval phase="PostLevel" priority="20000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~If we're not already getting an extra attack, assign the extra attack tag
+      doneif (hero.tagis[Hero.ExtraAtt] <> 0)
+      perform hero.assign[Hero.ExtraAtt]]]>
+      <after name="Fighter extra attacks"/>
+      </eval>
     </thing>
   </document>

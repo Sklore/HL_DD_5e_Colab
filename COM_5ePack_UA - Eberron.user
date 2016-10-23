@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="rWARFORGED" name="Warforged" description="The warforged were made as the ideal soldiers to serve in the devastating Last War. Although they are constructs, they have much in common with living creatures, including emotions and social bonds, and perhaps even souls." compset="Race">
+    <fieldval field="rSTR" value="1"/>
+    <fieldval field="rCON" value="1"/>
+    <fieldval field="rHeightMin" value="58"/>
+    <fieldval field="rWeightMin" value="140"/>
+    <fieldval field="rAC" value="+1"/>
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eEberUACP" parent="p5eBooks" name="Eberron"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="WeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="WeightSize" tag="6" name="d6" abbrev="d6"/>
+    <tag group="HeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="HeightSize" tag="10" name="d10" abbrev="d10"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="ralivcon"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    </thing>
+  <thing id="ralivcon" name="Living Construct" description="Even though you were constructed, you are a living creature. You are immune to disease. You do not need to eat or breathe, but you can ingest food and drink if you wish. Instead of sleeping, you enter an inactive state for 4 hours each day. You do not dream in this state; you are fully aware of your surroundings and notice approaching enemies and other events as normal." compset="RaceSpec" summary="You are immune to disease. You do not need to eat or breathe, but you can ingest food and drink if you wish.">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="rChange" name="Changeling" description="Changelings are subtle shapeshifters capable of disguising their appearance. Their ability to adopt other\ncreatures’ guises makes them consummate spies and criminals." compset="Race" summary="Changelings are subtle shapeshifters capable of disguising their appearance.">
+    <fieldval field="rDEX" value="1"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rLanguages" value="2"/>
+    <fieldval field="rHeightMin" value="58"/>
+    <fieldval field="rWeightMin" value="140"/>
+    <usesource source="5eEberUACP"/>
+    <tag group="HeightSize" tag="10" name="d10" abbrev="d10"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="WeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="WeightSize" tag="6" name="d6" abbrev="d6"/>
+    <tag group="HeightDice" tag="2" name="2" abbrev="2"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="raChaDup"></bootstrap>
+    <bootstrap thing="raCHASC"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    </thing>
+  <thing id="raChaDup" name="Duplicity" description="You gain proficiency in the Deception skill." compset="RaceSpec">
+    <eval phase="PreLevel" priority="5000"><![CDATA[
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.child[skDecept].assign[Helper.Proficient]]]></eval>
+    </thing>
+  <thing id="raCHASC" name="Shapechanger" description="As an action, you can polymorph into any humanoid of your size that you have seen, or back into your true form. However, your equipment does not change with you. If you die, you revert to your natural appearance." compset="RaceSpec" summary="You can polymorph into any humanoid you have seen.">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="rShifter" name="Shifter" description="Shifters are descended from humans and lycanthropes. Although they cannot fully change to animal form, they can take on animalistic features by a process they call shifting." compset="Race" summary="Shifters are descended from humans and lycanthropes.">
+    <fieldval field="rDEX" value="1"/>
+    <fieldval field="rHeightMin" value="58"/>
+    <fieldval field="rWeightMin" value="140"/>
+    <usesource source="5eEberUACP"/>
+    <tag group="WeightSize" tag="6" name="d6" abbrev="d6"/>
+    <tag group="HeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="HeightSize" tag="10" name="d10" abbrev="d10"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="WeightDice" tag="2" name="2" abbrev="2"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="lSylvan"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    </thing>
+  <thing id="raShifting" name="Shifting" description="On your turn, you can shift as a bonus action. Shifting lasts for 1 minute or until you end it on your turn as a bonus action.\nWhile shifting, you gain temporary hit points equal to your level + your Constitution bonus (minimum of 1). \nYou must finish a short or long rest before you can shift again." compset="RaceSpec" summary="You can shift into a more bestial version of yourself">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Activation"/>
+    </thing>
+  <thing id="srbhshif" name="Beasthide Shifter" description="As a beasthide shifter, you are especially tough and persistent in battle." compset="SubRace" uniqueness="unique">
+    <fieldval field="rCON" value="1"/>
+    <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
+    <tag group="ClVaryName" tag="Prepend" name="Prepend" abbrev="Prepend"/>
+    <tag group="SubRace" tag="rShifter"/>
+    <bootstrap thing="rabhshift"></bootstrap>
+    </thing>
+  <thing id="rabhshift" name="Beasthide Shifting" description="On your turn, you can shift as a bonus action. Shifting lasts for 1 minute or until you end it on your turn as a bonus action.\nWhile shifting, you gain temporary hit points equal to your level + your Constitution bonus (minimum of 1), plus +1 to your AC.\nYou must finish a short or long rest before you can shift again." compset="RaceSpec" summary="You can shift into a more bestial version of yourself">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostAttr"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If not active get out now!
+      doneif (field[abilActive].value = 0)
+
+      hero.childfound[ArmorClass].field[Bonus].value += 1]]></eval>
+    </thing>
+  <thing id="srcwshif" name="Cliffwalk Shifter" description="Your cliffwalk heritage grants you the agility of a mountain goat." compset="SubRace" uniqueness="unique">
+    <fieldval field="rDEX" value="1"/>
+    <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
+    <tag group="SubRace" tag="rShifter" name="Shifter" abbrev="Shifter"/>
+    <tag group="ClVaryName" tag="Prepend" name="Prepend" abbrev="Prepend"/>
+    <bootstrap thing="racwshift"></bootstrap>
+    </thing>
+  <thing id="racwshift" name="Clifwalk Shifting" description="On your turn, you can shift as a bonus action. Shifting lasts for 1 minute or until you end it on your turn as a bonus action.\nWhile shifting, you gain temporary hit points equal to your level + your Constitution bonus (minimum of 1), plus a climb speed of 30 feet.\nYou must finish a short or long rest before you can shift again." compset="RaceSpec" summary="You can shift into a more bestial version of yourself">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostAttr"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If not active get out now!
+      doneif (field[abilActive].value = 0)
+
+      hero.child[xClimb].field[abValue].value = 30]]></eval>
+    </thing>
+  <thing id="ralsshift" name="Longstride Shifting" description="On your turn, you can shift as a bonus action. Shifting lasts for 1 minute or until you end it on your turn as a bonus action.\nWhile shifting, you gain temporary hit points equal to your level + your Constitution bonus (minimum of 1), and use the Dash action as a bonus action.\nYou must finish a short or long rest before you can shift again." compset="RaceSpec" summary="You can shift into a more bestial version of yourself">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="srlsshif" name="Longstride Shifter" description="Longstride shifters are fleet and elusive." compset="SubRace" uniqueness="unique">
+    <fieldval field="rDEX" value="1"/>
+    <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
+    <tag group="ClVaryName" tag="Prepend" name="Prepend" abbrev="Prepend"/>
+    <tag group="SubRace" tag="rShifter" name="Shifter" abbrev="Shifter"/>
+    <bootstrap thing="ralsshift"></bootstrap>
+    </thing>
+  <thing id="raltshift" name="Longtooth Shifting" description="On your turn, you can shift as a bonus action. Shifting lasts for 1 minute or until you end it on your turn as a bonus action.\nWhile shifting, you gain temporary hit points equal to your level + your Constitution bonus (minimum of 1). Also, you can make a bite attack as an action. This is a melee weapon attack that uses Strength for its attack roll and damage bonus and deals 1d6 piercing damage. If this attack hits a target that is your size or smaller, the target is also grappled. \nYou must finish a short or long rest before you can shift again." compset="RaceSpec" summary="You can shift into a more bestial version of yourself">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <bootstrap thing="wBite">
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <eval phase="PostAttr"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If not active get out now!
+      doneif (field[abilActive].value = 0)]]></eval>
+    </thing>
+  <thing id="srltshif" name="Longtooth Shifter" description="As a longtooth shifter, you are a ferocious combatant." compset="SubRace" uniqueness="unique">
+    <fieldval field="rSTR" value="1"/>
+    <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
+    <tag group="SubRace" tag="rShifter" name="Shifter" abbrev="Shifter"/>
+    <tag group="ClVaryName" tag="Prepend" name="Prepend" abbrev="Prepend"/>
+    <bootstrap thing="raltshift"></bootstrap>
+    </thing>
+  <thing id="rarcshif" name="Razorclaw Shifting" description="On your turn, you can shift as a bonus action. Shifting lasts for 1 minute or until you end it on your turn as a bonus action.\nWhile shifting, you gain temporary hit points equal to your level + your Constitution bonus (minimum of 1). Also while shifting, you can make an unarmed strike as a bonus action. You can use your Dexterity for its attack roll and damage bonus, and this attack deals slashing damage.\nYou must finish a short or long rest before you can shift again." compset="RaceSpec" summary="You can shift into a more bestial version of yourself">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostLevel" priority="9500" index="3"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If not active get out now!
+      doneif (field[abilActive].value = 0)
+
+      var searchexpr as string
+      searchexpr = "IsWeapon.wUnarmed"
+
+      foreach pick in hero from BaseWep where searchexpr
+         perform eachpick.delete[DamageType.dtBludgeon]
+         perform eachpick.assign[DamageType.dtSlashing]
+         perform eachpick.assign[MelAttOpt.aDEX]
+         perform eachpick.assign[DamageOpt.aDEX]
+      nexteach]]>
+      <before name="Default Unarmed Attack damage"/>
+      </eval>
+    </thing>
+  <thing id="srrcshif" name="Razorclaw Shifter" description="As a razorclaw shifter, you make swift, slashing strikes in battle." compset="SubRace" uniqueness="unique">
+    <fieldval field="rDEX" value="1"/>
+    <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
+    <tag group="SubRace" tag="rShifter" name="Shifter" abbrev="Shifter"/>
+    <tag group="ClVaryName" tag="Prepend" name="Prepend" abbrev="Prepend"/>
+    <bootstrap thing="rarcshif"></bootstrap>
+    </thing>
+  <thing id="rawhshif" name="Wildhunt Shifting" description="On your turn, you can shift as a bonus action. Shifting lasts for 1 minute or until you end it on your turn as a bonus action.\nWhile shifting, you gain temporary hit points equal to your level + your Constitution bonus (minimum of 1) and you have advantage on all Wisdom-based checks and saving throws.\nYou must finish a short or long rest before you can shift again." compset="RaceSpec" summary="You can shift into a more bestial version of yourself">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostLevel" priority="9500"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If not active get out now!
+      doneif (field[abilActive].value = 0)
+
+      perform hero.childfound[svWIS].assign[Helper.Advantage]
+      perform hero.childfound[aWIS].assign[Helper.Advantage]]]></eval>
+    </thing>
+  <thing id="srwhshif" name="Wildhunt Shifter" description="Your wildhunt heritage makes you a consummate tracker and survivor." compset="SubRace" uniqueness="unique">
+    <fieldval field="rWIS" value="1"/>
+    <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
+    <tag group="SubRace" tag="rShifter" name="Shifter" abbrev="Shifter"/>
+    <tag group="ClVaryName" tag="Prepend" name="Prepend" abbrev="Prepend"/>
+    <bootstrap thing="rawhshif"></bootstrap>
+    </thing>
+  <thing id="c5CWIZArt" name="Artificer" description="Artificers are a key part of the world of Eberron. They illustrate the evolution of magic from a wild, unpredictable force to one that is becoming available to the masses. Magic items are part of everyday life in the Five Nations of Khorvaire; with an artificer in your party, they become part of every adventuring expedition.\nThe artificer was a separate class in prior editions of the Eberron setting, a melee combatant who specialized in mystically enhanced arms and armor. The fifth edition rules treat the artificer as a new wizard tradition that focuses on mystical invention, which you can choose starting at 2nd level." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eEberUACP"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWiz" name="Wizard" abbrev="Wizard"/>
+    <tag group="abCategory" tag="WizArcTrad" name="Wizard Arcane Tradition" abbrev="Wizard Arcane Tradition"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CWizArSA">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CWizArMA">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CWizArIP">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CWizArIS">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CWizArIW">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CWizArIP" name="Infused Potions" description="Starting at 2nd level, you can produce magic potions. You spend 10 minutes focusing your magic on a vial of mundane water and expend a spell slot to transform it into a potion. Once you have expended a spell slot to create a potion, you cannot regain that slot until the potion is consumed or after 1 week, at which time the potion loses its effectiveness. You can create up to three potions at a time; creating a fourth potion causes the oldest currently active one to immediately lose its potency. If that potion has been consumed, its effects immediately end.\n\nThe spell slot you expend determines the type of potion you can create. See chapter 7 of the Dungeon Master’s Guide for complete rules on potions.\n\n{b}Spell Slot            Potion Created{/b}\n1st                        Climbing, growth, or healing\n2nd                       Mind reading or greater healing\n3rd                        Invisibility, superior healing, or water breathing\n4th                        Resistance" compset="ClSpecial">
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="c5CWizArIS" name="Infuse Scrolls" description="At 2nd level, you can also tap into your reserves of magical energy to create spell scrolls. You can use your Arcane Recovery ability to create a scroll instead of regaining expended spell slots.\nYou must finish a short rest, then spend 10 minutes with parchment, quill, and ink to create a spell scroll containing one spell chosen from those you know. Subtract the spell’s level from the total levels worth of slots you regain using Arcane Recovery. This reduction to your Arcane Recovery applies until you use the scroll and then finish a long rest." compset="ClSpecial">
+    <tag group="abAction" tag="Free" name="Free" abbrev="Free"/>
+    <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
+    <tag group="abRange" tag="Sight" name="Sight" abbrev="see"/>
+    </thing>
+  <thing id="c5CWizArIW" name="Infuse Weapons and Armor" description="Beginning at 6th level, you can produce magic weapons and armor. You spend 10 minutes focusing your magic on a mundane weapon, suit of armor, shield, or bundle of twenty pieces of ammunition, and expend a spell slot to infuse it with magical energy. The magic item retains its enhancement for 8 hours or until used (in the case of magic ammunition). You can infuse only one item at a time; if you infuse a second one, the first immediately loses its potency. Once you have expended a spell slot to create such an item, you cannot regain that slot until the item becomes nonmagical. \n\nThe spell slot you expend determines the type of weapon, armor, or shield you can create.\n{b}Spell Slot               Item Created{/b}\n2nd                          +1 ammunition (20 pieces)\n3rd                           +1 weapon or +1 shield\n4th                           +1 armor\n5th                           +2 weapon or +2 ammunition (20 pieces)\n6th                           +2 armor" compset="ClSpecial">
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="c5CWizArSA" name="Superior Artificer" description="Starting at 10th level, you can create a second magic weapon, suit of armor, shield, or bundle of ammunition using your Infuse Weapons and Armor ability. Attempting to infuse a third item causes the oldest one to immediately lose its potency.\n\nYou can also create one additional potion or scroll using Infuse Potions or Infuse Scrolls." compset="ClSpecial">
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="c5CWizArMA" name="Master Artificer" description="On reaching 14th level, your mastery of arcane magic allows you to produce a variety of magic items. You can create a single item chosen from Magic Item Tables A and B in chapter 7 of the Dungeon Master’s Guide. It takes you 1 week to produce such an item, and you must rest for 1 month before using this ability to craft another item." compset="ClSpecial">
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="ft5CDRMrDT" name="Dragonmark of Detection" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Medani. \nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Wisdom as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip mage hand, and the spell Detect magic.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Detect thoughts.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Clairvoyance." compset="Feat" summary="You have a magical mark that indicates you are a member of house Medani" uniqueness="useronce">
+    <usesource source="5eEberUACP"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="AbilType" tag="SpellLike"/>
+    <bootstrap thing="spDeteThou">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spClairvoy">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <pickreq thing="rHalfElf"/>
+    </thing>
+  <thing id="ft5CDRMrFI" name="Dragonmark of Finding" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Tharashk. \nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Wisdom as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip mage hand, and the spell Identify.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Locate object.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Clairvoyance." compset="Feat" summary="You have a magical mark that indicates you are a member of house Tharashk" uniqueness="useronce">
+    <usesource source="5eEberUACP"/>
+    <tag group="StandardDC" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="AbilType" tag="SpellLike" name="Spell-Like Ability" abbrev=" (Sp)"/>
+    <bootstrap thing="spLocaObje">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spClairvoy">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spIdentify">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <exprreq message="Human or Half-Orc Required"><![CDATA[#hasrace[rHuman] + #hasrace[rHalfOrc] <> 0]]></exprreq>
+    </thing>
+  <thing id="ft5CDRMrHA" name="Dragonmark of Handling" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Vadalis. \nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Wisdom as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip Druidcraft, and the spell Speak with animals.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Beast Sense.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Conjure Animals." compset="Feat" summary="You have a magical mark that indicates you are a member of house Vadalis" uniqueness="useronce">
+    <usesource source="5eEberUACP" parent="p5eBooks" name="Eberron"/>
+    <tag group="StandardDC" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="AbilType" tag="SpellLike" name="Spell-Like Ability" abbrev=" (Sp)"/>
+    <bootstrap thing="spConjAnim">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDruidcra">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spSpeaAnim">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="sp5CBeastS">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <pickreq thing="rHuman"/>
+    </thing>
+  <thing id="ft5CDRMrHE" name="Dragonmark of Healing" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Jorasco. \nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Wisdom as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip Spare the Dying, and the spell Cure Wounds.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Lesser Restoration.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Revivify." compset="Feat" summary="You have a magical mark that indicates you are a member of house Jorasco" uniqueness="useronce">
+    <usesource source="5eEberUACP" parent="p5eBooks" name="Eberron"/>
+    <tag group="StandardDC" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="AbilType" tag="SpellLike" name="Spell-Like Ability" abbrev=" (Sp)"/>
+    <bootstrap thing="sp5CSpareD">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spCureWoun">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLessRest">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spRevivify">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <pickreq thing="rHalfling"/>
+    </thing>
+  <thing id="ft5CDRMrHO" name="Dragonmark of Hospitality" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Ghallanda. \nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Charisma as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip Friends, and the spell Unseen servant.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Rope Trick.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Leomund&apos;s tiny hut." compset="Feat" summary="You have a magical mark that indicates you are a member of house Ghallanda" uniqueness="useronce">
+    <usesource source="5eEberUACP" parent="p5eBooks" name="Eberron"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="AbilType" tag="SpellLike" name="Spell-Like Ability" abbrev=" (Sp)"/>
+    <bootstrap thing="spUnseServ">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spRopeTric">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spTinyHut">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="sp5CFriend">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <pickreq thing="rHalfling"/>
+    </thing>
+  <thing id="ft5CDRMrMK" name="Dragonmark of Making" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Cannith. \nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Intelligence as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip Mending, and the spell Identify.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Magic Weapon.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Fabricate." compset="Feat" summary="You have a magical mark that indicates you are a member of house Cannith" uniqueness="useronce">
+    <usesource source="5eEberUACP" parent="p5eBooks" name="Eberron"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="AbilType" tag="SpellLike" name="Spell-Like Ability" abbrev=" (Sp)"/>
+    <bootstrap thing="spMending">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spIdentify">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMagiWeap">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spFabricat">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <pickreq thing="rHuman"/>
+    </thing>
+  <thing id="ft5CDRMrPA" name="Dragonmark of Passage" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Orien.\nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Intelligence as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip light, and the spell Expeditious retreat.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Misty Step.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Teleportation Circle." compset="Feat" summary="You have a magical mark that indicates you are a member of house Orien" uniqueness="useronce">
+    <usesource source="5eEberUACP" parent="p5eBooks" name="Eberron"/>
+    <tag group="StandardDC" tag="aINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="AbilType" tag="SpellLike" name="Spell-Like Ability" abbrev=" (Sp)"/>
+    <bootstrap thing="spExpeRetr">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMistStep">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spTeleCirc">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLight">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <pickreq thing="rHuman"/>
+    </thing>
+  <thing id="ft5CDRMrSC" name="Dragonmark of Scribing" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Sivis.\nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Intelligence as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip message, and the spell Comprehend languages.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Sending.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Tongues." compset="Feat" summary="You have a magical mark that indicates you are a member of house Sivis" uniqueness="useronce">
+    <usesource source="5eEberUACP" parent="p5eBooks" name="Eberron"/>
+    <tag group="StandardDC" tag="aINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="AbilType" tag="SpellLike" name="Spell-Like Ability" abbrev=" (Sp)"/>
+    <bootstrap thing="spSending">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spTongues">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMessage">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spCompLang">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <pickreq thing="rGnome"/>
+    </thing>
+  <thing id="ft5CDRMrSE" name="Dragonmark of Sentinel" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Deneith.\nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Wisdom as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip Blade ward, and the spell Compelled duel.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Blur.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Protection from energy." compset="Feat" summary="You have a magical mark that indicates you are a member of house Deneith" uniqueness="useronce">
+    <usesource source="5eEberUACP" parent="p5eBooks" name="Eberron"/>
+    <tag group="StandardDC" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="AbilType" tag="SpellLike" name="Spell-Like Ability" abbrev=" (Sp)"/>
+    <bootstrap thing="sp5CBladeW">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="sp5CCompDu">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spBlur">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spProtEner">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <pickreq thing="rHuman"/>
+    </thing>
+  <thing id="ft5CDRMrS1" name="Dragonmark of Shadow (Phiarlan)" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Phiarlan. \nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Charisma as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip Dancing lights, and the spell Disguise self.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Darkness.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Nondetection." compset="Feat" summary="You have a magical mark that indicates you are a member of house Phiarlan" uniqueness="useronce">
+    <usesource source="5eEberUACP" parent="p5eBooks" name="Eberron"/>
+    <tag group="StandardDC" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="AbilType" tag="SpellLike" name="Spell-Like Ability" abbrev=" (Sp)"/>
+    <bootstrap thing="spDarkness">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spNondetec">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <pickreq thing="rElf"/>
+    </thing>
+  <thing id="ft5CDRMrS2" name="Dragonmark of Shadow (Thuranni)" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Thuranni. \nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Charisma as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip Dancing lights, and the spell Disguise self.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Darkness.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Nondetection." compset="Feat" summary="You have a magical mark that indicates you are a member of house Thuranni" uniqueness="useronce">
+    <usesource source="5eEberUACP" parent="p5eBooks" name="Eberron"/>
+    <tag group="StandardDC" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="AbilType" tag="SpellLike" name="Spell-Like Ability" abbrev=" (Sp)"/>
+    <bootstrap thing="spNondetec">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <pickreq thing="rElf"/>
+    </thing>
+  <thing id="ft5CDRMrST" name="Dragonmark of Storm" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Lyrander. \nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Intelligence as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip Shocking grasp, and the spell Fog cloud.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Gust of Wind.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Sleet Storm." compset="Feat" summary="You have a magical mark that indicates you are a member of house Lyrander" uniqueness="useronce">
+    <tag group="AbilType" tag="SpellLike" name="Spell-Like Ability" abbrev=" (Sp)"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <bootstrap thing="spFogClou">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spGustWind">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSleeStor">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spShocGras">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <pickreq thing="rHalfElf"/>
+    </thing>
+  <thing id="ft5CDRMrWA" name="Dragonmark of Warding" description="Dragonmarks are elaborate skin patterns, similar to tattoos, that grant their bearers innate spellcasting abilities. Each type of mark is tied to large, extended families that each control a different industry or trade in Eberron. Not every member of a given family possesses a dragonmark; conversely, merely possessing a dragonmark does not grant special status within the house.\n\nYou have a magical mark that indicates you are a member of the dragonmarked house of Kundarak. \nYou gain the ability to innately cast spells and cantrips, as summarized below, using your Intelligence as spellcasting ability. You cast each spell at its lowest level. Once you cast a given spell this way, you must finish a long rest before you can cast it innately again. You must still expend any material components. Your dragonmark confers the following benefits:\n\n• When you first take this feat, you gain the {b}least dragonmark{/b}. You learn the cantrip resistance, and the spell Alarm.\n• At 5th level and higher, your mark becomes more potent, improving to {b}lesser dragonmark{/b}. You also learn the spell Arcane Lock.\n• At 9th level and higher, your mark’s power increases again, becoming a {b}greater dragonmark{/b}. You also learn the spell Magic Circle." compset="Feat" summary="You have a magical mark that indicates you are a member of house Kundarak" uniqueness="useronce">
+    <tag group="AbilType" tag="SpellLike" name="Spell-Like Ability" abbrev=" (Sp)"/>
+    <tag group="StandardDC" tag="aINT" name="Intelligence" abbrev="Intelligence"/>
+    <bootstrap thing="spAlarm">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spArcaLock">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMagiCirc">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 9)]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spResistan">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <pickreq thing="rDwarf"/>
+    </thing>
+  </document>
