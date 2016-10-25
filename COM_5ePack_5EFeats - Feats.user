@@ -97,9 +97,16 @@ nexteach]]></eval>
   <thing id="ft5CAthltc" name="Athletic" description="You possess inherent physical prowess. \n\n{b}Prerequisites:{/b}  Str and Con 13+, Athletics proficiency \n• You gain expertise with the Athletics skill. \n• You can climb at your full movement rate instead of halved. \n• You can perform a running long jump or running high jump after moving 5’ instead of the usual 10’. \n• Once per short rest you can gain advantage on any Strength or Constitution based skill check.       " compset="Feat" summary="You possess inherent physical prowess." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ProfDouble" tag="skAthletic" name="Athletics" abbrev="Athletics"/>
+    <eval phase="First" priority="1000"><![CDATA[
+      ~if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~assign our expertise to the hero
+      perform hero.pushtags[ProfDouble.?]]]></eval>
+    <exprreq message="Athletics proficiency required."><![CDATA[hero.tagis[ProfSkill.skAthletic] <> 0]]></exprreq>
     <exprreq message="Strength 13 required."><![CDATA[#attrvalue[aSTR] >= 13]]></exprreq>
     <exprreq message="Constitution 13 required."><![CDATA[#attrvalue[aCON] >= 13]]></exprreq>
-    <exprreq message="Athletics proficiency required."><![CDATA[hero.tagis[ProfSkill.skAthletic] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CAugCon" name="Augmented Conjuring" description="Your conjured creatures are more powerful and robust. \n\n{b}Prerequisite:{/b}  Spell Focus (Conjuration) \n• Each creature you conjure with any summon spell gains a +2 bonus to attacks and damage and a bonus of +2 hit points per HD for the duration of the spell that summoned it.           " compset="Feat" summary="Your conjured creatures are more powerful and robust." uniqueness="useronce">
     <usesource source="5e5EFeats"/>
@@ -391,15 +398,21 @@ validif (hero.tagis[ProfSkill.skNature] <> 0)]]></validate>
     <tag group="Helper" tag="ShowSpec"/>
     <exprreq message="Perception proficiency required."><![CDATA[hero.tagis[ProfSkill.skPercep] <> 0]]></exprreq>
     </thing>
-  <thing id="ft5CEagleE" name="Eagle-Eyed" description="Your eyesight is especially keen, and you pick up on minute details. \n\n{b}Prerequisites:{/b}  Perception or Investigation proficiency \n• You gain expertise with the Perception and Investigation skills. \n• You can read lips of targets you can see as long as you speak the same language. \n• You never suffer disadvantage on Perception checks due to distance.         " compset="Feat" summary="Your eyesight is especially keen, and you pick up on minute details. " uniqueness="useronce">
+  <thing id="ft5CEagleE" name="Eagle-Eyed" description="Your eyesight is especially keen, and you pick up on minute details. \n\n{b}Prerequisites:{/b}  Perception or Investigation proficiency \n• You gain expertise with the Perception and Investigation skills. \n• You can read lips of targets you can see as long as you speak the same language. \n• You never suffer disadvantage on Perception checks due to distance." compset="Feat" summary="Your eyesight is especially keen, and you pick up on minute details. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ProfDouble" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="ProfDouble" tag="skInvestig" name="Investigation" abbrev="Investigation"/>
+    <eval phase="First" priority="1000"><![CDATA[~if we've been disabled, get out now doneif (tagis[Helper.Disable] <> 0)
+
+  ~assign our expertise to the hero
+  perform hero.pushtags[ProfDouble.?]]]></eval>
     <prereq message="Perception or Investigation proficiency required.">
       <validate><![CDATA[validif (hero.tagis[ProfSkill.skPercep] <> 0)
 validif (hero.tagis[ProfSkill.skInvestig] <> 0)]]></validate>
       </prereq>
     </thing>
-  <thing id="ft5CEleCha" name="Elemental Channel" description="Choose one elemental subtype, such as air, earth, fire, or water. You can channel divinity energy to turn or destroy outsiders that possess your chosen elemental subtype. \n\n{b}Prerequisite:{/b}  Channel Divinity class feature. \n• Your Wisdom score increases by +1. \n• Instead of its normal effect, you can choose to have your ability to Channel Divinity turn or destroy outsiders of your chosen elemental subtype. If you choose to turn or destroy creatures of the chosen elemental subtype, your channel energy has no effect on other creatures. • Thanks to your connection to an element, the save DC for your Channel Divinity ability increases by +1 against foes with that elemental subtype." compset="Feat" summary="Choose one elemental subtype, such as air, earth, fire, or water. " uniqueness="useronce">
+  <thing id="ft5CEleCha" name="Elemental Channel" description="Choose one elemental subtype, such as air, earth, fire, or water. You can channel divinity energy to turn or destroy outsiders that possess your chosen elemental subtype. \n\n{b}Prerequisite:{/b}  Channel Divinity class feature. \n• Your Wisdom score increases by +1. \n• Instead of its normal effect, you can choose to have your ability to Channel Divinity turn or destroy outsiders of your chosen elemental subtype. If you choose to turn or destroy creatures of the chosen elemental subtype, your channel energy has no effect on other creatures. \n• Thanks to your connection to an element, the save DC for your Channel Divinity ability increases by +1 against foes with that elemental subtype." compset="Feat" summary="Choose one elemental subtype, such as air, earth, fire, or water. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <eval phase="First"><![CDATA[
@@ -413,11 +426,20 @@ validif (hero.tagis[ProfSkill.skInvestig] <> 0)]]></validate>
       </prereq>
     </thing>
   <thing id="ft5CEleFoc" name="Elemental Focus" description="Your spells of a certain element are more difficult to resist. \n\n{b}Prerequisite:{/b}  Ability to cast 1st level spells \n• Choose one energy type (acid, cold, electricity, or fire). Add +1 to the Difficulty Class for all saving throws against spells that deal damage of the energy type you select. \n• Once per long rest when you cast a spell with your chosen energy type, you can force an opponent to suffer disadvantage on their saving throw.        " compset="Feat" summary="Your spells of a certain element are more difficult to resist. " uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="acid"/>
+    <arrayval field="usrArray" index="1" value="cold"/>
+    <arrayval field="usrArray" index="2" value="electricity"/>
+    <arrayval field="usrArray" index="3" value="fire"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <exprreq message="Ability to cast 1st lvl spells required."><![CDATA[herofield[tMaxCaster].value >= 2]]></exprreq>
     </thing>
   <thing id="ft5CEleMas" name="Elemental Mastery" description="You are a master of the elemental forces, marrying the elements to magic. \n\n{b}Prerequisite:{/b}  Ability to cast spells. \n• Choose an energy type (acid, cold, fire, lightning or thunder). When you cast spells of this type, your target does not gain any resistance to that energy type. \n• Once per short rest when you cast a spell of the chosen energy type you can reroll the damage and take the best result.        " compset="Feat" summary="You are a master of the elemental forces, marrying the elements to magic. " uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="acid"/>
+    <arrayval field="usrArray" index="1" value="cold"/>
+    <arrayval field="usrArray" index="2" value="fire"/>
+    <arrayval field="usrArray" index="3" value="lightning"/>
+    <arrayval field="usrArray" index="4" value="thunder"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <prereq message="Ability to cast spells required.">
@@ -428,12 +450,16 @@ validif (hero.tagis[ProfSkill.skInvestig] <> 0)]]></validate>
         @valid = HasSpells]]></validate>
       </prereq>
     </thing>
-  <thing id="ft5CEleSpe" name="Elemental Spell" description="You can manipulate the elemental nature of your spells. \n\n{b}Prerequisite:{/b}  Ability to cast 1st level spells \n• Choose one energy type: acid, cold, electricity, or fire. You may replace a spell’s normal damage with that energy type or split the spell’s damage, so that half is of that energy type and half is of its normal type. An elemental spell uses up a spell slot one level higher than the spell’s actual level.        " compset="Feat" summary="You can manipulate the elemental nature of your spells. " uniqueness="useronce">
+  <thing id="ft5CEleSpe" name="Elemental Spell" description="You can manipulate the elemental nature of your spells. \n\n{b}Prerequisite:{/b}  Ability to cast 1st level spells \n\n• Choose one energy type: acid, cold, electricity, or fire. You may replace a spell’s normal damage with that energy type or split the spell’s damage, so that half is of that energy type and half is of its normal type. An elemental spell uses up a spell slot one level higher than the spell’s actual level." compset="Feat" summary="You can manipulate the elemental nature of your spells. " uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="acid"/>
+    <arrayval field="usrArray" index="1" value="cold"/>
+    <arrayval field="usrArray" index="2" value="electricity"/>
+    <arrayval field="usrArray" index="3" value="fire"/>
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <exprreq message="Ability to cast 1st lvl spells required."><![CDATA[herofield[tMaxCaster].value >= 2]]></exprreq>
     </thing>
-  <thing id="ft5CEmpSpe" name="Empowered Spell" description="Your channel additional energy into your spells, causing them to deal great harm. \n\n{b}Prerequisite:{/b}  Ability to cast 2nd level spells. \n• When you roll damage for a spell, you can increase the spell’s level by one to reroll a number of the damage dice up to your primary casting stat modifier (minimum of one). You must use the new rolls.           " compset="Feat" summary="Your channel additional energy into your spells, causing them to deal great harm. " uniqueness="useronce">
+  <thing id="ft5CEmpSpe" name="Empowered Spell" description="Your channel additional energy into your spells, causing them to deal great harm. \n\n{b}Prerequisite:{/b}  Ability to cast 2nd level spells. \n\n• When you roll damage for a spell, you can increase the spell’s level by one to reroll a number of the damage dice up to your primary casting stat modifier (minimum of one). You must use the new rolls." compset="Feat" summary="Your channel additional energy into your spells, causing them to deal great harm. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
     <exprreq message="Ability to cast 2nd lvl spells required."><![CDATA[herofield[tMaxCaster].value >= 3]]></exprreq>
@@ -441,6 +467,11 @@ validif (hero.tagis[ProfSkill.skInvestig] <> 0)]]></validate>
   <thing id="ft5CEndura" name="Endurance" description="Harsh conditions or long exertions do not easily tire you. \n\n{b}Prerequisite:{/b}  Con 13+ \n• Your Constitution score increases by 1 \n• You have advantage on all saves made to resist exhaustion, running out of breath, starvation and thirst, heat and cold. \n• You can sleep in armor that you are proficient in.         " compset="Feat" summary="Harsh conditions or long exertions do not easily tire you. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[
+       ~ If we're disabled, do nothing &
+       doneif (tagis[Helper.Disable] = 1)
+
+       hero.child[aCON].field[aStartMod].value += 1]]></eval>
     <exprreq message="Constitution 13 required."><![CDATA[#attrvalue[aCON] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CExtSpe" name="Extended Spell" description="Your spells can last a great deal longer than normal. \n\n{b}Prerequisite:{/b}  Ability to cast 2nd level spells. \n• When you cast a spell that has a duration of 1 minute or longer, you can increase your spell’s level to double its duration, to a maximum duration of 24 hours.            " compset="Feat" summary="Your spells can last a great deal longer than normal. " uniqueness="useronce">
@@ -456,10 +487,10 @@ validif (hero.tagis[ProfSkill.skInvestig] <> 0)]]></validate>
 @valid = #hasability[cPalChaDiv]</validate>
       </prereq>
     </thing>
-  <thing id="ft5CExtFig" name="Extra Fighting Style" description="Your versatility training in combat allows you to gain an additional fighting style. \n\n{b}Prerequisite:{/b}  Fighting Style class feature. \n• You may choose an extra combat style from your class.               " compset="Feat" summary="Your versatility training in combat allows you to gain an additional fighting style. " uniqueness="useronce">
+  <thing id="ft5CExtFig" name="Extra Fighting Style" description="Your versatility training in combat allows you to gain an additional fighting style. \n\n{b}Prerequisite:{/b}  Fighting Style class feature. \n• You may choose an extra combat style from your class.               \n\nft5CExtFig" compset="Feat" summary="Your versatility training in combat allows you to gain an additional fighting style. " uniqueness="useronce">
     <usesource source="5e5EFeats"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <prereq message="Fighting Style class feature required.">
+    <prereq message="Fighting Style class feature. ">
       <validate><![CDATA[validif (hero.tagis[abCategory.FtrFigStyl] <> 0)
 validif (hero.tagis[abCategory.RgrFigStyl] <> 0)]]></validate>
       </prereq>
