@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CArchRe" name="Archon of Redemption" compset="Race">
+    <comment>Source: http://media.wizards.com/2016/downloads/magic/Plane%20Shift%20Zendikar.pdf</comment>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="8"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="7"/>
+    <fieldval field="rWIS" value="10"/>
+    <fieldval field="rCHA" value="10"/>
+    <fieldval field="rAC" value="7"/>
+    <fieldval field="rCR" value="10"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rMultiatt" value="The archon makes two attacks: one with its sword and one with its claws."/>
+    <fieldval field="rHitDice" value="16"/>
+    <fieldval field="rHPStart" value="136"/>
+    <usesource source="5CSourceB"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfDouble" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="WepProf" tag="wLongsword"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="DamageRes" tag="dtRadiant"/>
+    <tag group="DamageRes" tag="dt5CBPSNon"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <bootstrap thing="raMagRes">
+      <assignval field="abText" value="&quot;Archon&quot;"/>
+      </bootstrap>
+    <bootstrap thing="ra5CInnSp"></bootstrap>
+    <bootstrap thing="ra5COneBe"></bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      <assignval field="abValue" value="120"/>
+      </bootstrap>
+    <bootstrap thing="tpCelestia"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="90"/>
+      </bootstrap>
+    <bootstrap thing="wLongsword"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wReach" value="10"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lAll"></bootstrap>
+    <bootstrap thing="ra5CAngWe"></bootstrap>
+    <bootstrap thing="ra5CAxiMi"></bootstrap>
+    </thing>
+  <thing id="ra5CAngWe" name="Angelic Weapons" description="The archon&apos;s weapon attacks are magical. When the deva hits with any weapon, the weapon deals an extra 3d8 radiant damage (included in the attack)." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      foreach pick in hero from BaseWep
+        #extradamage[eachpick, " plus 13 (3d8) radiant", field[thingname].text]
+        nexteach]]></eval>
+    </thing>
+  <thing id="ra5CAxiMi" name="Axiomatic Mind" description="The Archon can&apos;t be compelled to act in a manner contrary to its nature or its instructions." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The Archon can't be compelled to act in a manner contrary to its nature or its instructions."]]></eval>
+    </thing>
+  <thing id="ra5CInnSp" name="Innate Spellcasting" description="The archon&apos;s innate spellcasting ability is Charisma (spell save DC 17). The archon can innately cast the following spells, requiring only verbal components:\n\nAt will: {i}detect evil and good{/i}\n1/day each: {i}destructive wave, geas{/i}" compset="RaceSpec">
+    <comment/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5CSourceB"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spDeteEvil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="sp5CDestrS">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spGeas">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5COneBe" name="OneBeing" description="Though it appears as a humanoid creature riding a mount, an archon is a single being. The &quot;rider&quot; can&apos;t be dismounted, and no other means can seperate the two portions of the archon&apos;s being short of its death." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="r5CFelida" name="Felidar" compset="Race">
+    <comment>Source: http://media.wizards.com/2016/downloads/magic/Plane%20Shift%20Zendikar.pdf</comment>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rWIS" value="7"/>
+    <fieldval field="rCHA" value="6"/>
+    <fieldval field="rAC" value="2"/>
+    <fieldval field="rCR" value="5"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHitDice" value="9"/>
+    <fieldval field="rHPStart" value="67"/>
+    <fieldval field="rSpeed" value="50"/>
+    <fieldval field="rMultiatt" value="The felidar makes two attacks with its claws."/>
+    <usesource source="5CSourceB"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Good"/>
+    <bootstrap thing="tpCelestia"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wReach" value="5"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="raMagRes">
+      <assignval field="abText" value="&quot;Archon&quot;"/>
+      </bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="60"/>
+      <assignval field="abValue" value="120"/>
+      </bootstrap>
+    <bootstrap thing="lCelestial"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wReach" value="5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFeInS"></bootstrap>
+    <bootstrap thing="ra5CFeIPo"></bootstrap>
+    <bootstrap thing="raMagWeap"></bootstrap>
+    <bootstrap thing="ra5CFeHTo"></bootstrap>
+    <bootstrap thing="ra5CFeTel"></bootstrap>
+    <bootstrap thing="ra5CFeCla"></bootstrap>
+    <bootstrap thing="ra5CShiSh"></bootstrap>
+    <bootstrap thing="ra5CFeHeS"></bootstrap>
+    </thing>
+  <thing id="ra5CFeInS" name="Innate Spellcasting" description="The felidar&apos;s innate spellcasting ability is Charisma (spell save DC 14). The archon can innately cast the following spells, requiring only verbal components:\n\nAt will: {i}detect evil and good, light, thaumaturgy{/i}\n1/day each: {i}calm emotions, daylight, dispel evil and good{/i}" compset="RaceSpec">
+    <comment/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5CSourceB"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spDeteEvil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spCalmEmot">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDaylight">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLight">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spThaumatu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDispEvil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CFeIPo" name="Pounce" description="If the felidar moves at least 20 feet straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 15 Strength saving throw or be knocked prone. If the target is prone, the felidar can make one bite attack against it as a bonus action." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="StandardDC" tag="aSTR" name="Strength" abbrev="Strength"/>
+    <tag group="abSave" tag="aSTR" name="Strength" abbrev="Str"/>
+    </thing>
+  <thing id="ra5CFeHTo" name="Healing Touch" description="Touch a creature with its horns and healfor 11 (2d8+2) hit points. Removes all diseases and neutralizes all poisons." compset="RaceSpec">
+    <fieldval field="trkMax" value="3"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="ra5CFeTel" name="Teleport" description="Teleport self and up to 3 willing creatures it can see within 5 feet to a location the felidar is familiar with at most a mile away." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="ra5CFeCla" name="Claws" description="Felidar may attack with its claw as a Legendary Action at the end of another creature&apos;s turn." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="LegenAct" tag="1"/>
+    </thing>
+  <thing id="ra5CShiSh" name="Shimmering Shield" description="Grant +2 bonus to AC for felidar or another creature it can see within 60 feet until the end of the felidar&apos;s next turn." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="LegenAct" tag="2"/>
+    </thing>
+  <thing id="ra5CFeHeS" name="Heal Self" description="Magically regain 11 (2d8+2) hit points." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="LegenAct" tag="3"/>
+    </thing>
+  <thing id="r5CKraken" name="Kraken (Zendikar)" compset="Race">
+    <comment>Source: http://media.wizards.com/2016/downloads/magic/Plane%20Shift%20Zendikar.pdf</comment>
+    <fieldval field="rHDSides" value="12"/>
+    <fieldval field="rHPStart" value="230"/>
+    <fieldval field="rSTR" value="19"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="10"/>
+    <fieldval field="rINT" value="6"/>
+    <fieldval field="rWIS" value="8"/>
+    <fieldval field="rCHA" value="8"/>
+    <fieldval field="rAC" value="6"/>
+    <fieldval field="rCR" value="13"/>
+    <fieldval field="rMultiatt" value="Two attacks: one with its claw and one with its tentacles."/>
+    <fieldval field="rHitDice" value="20"/>
+    <usesource source="5CSourceB"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceSize" tag="Huge2"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="DamageImm" tag="dtLightnin"/>
+    <tag group="DamageImm" tag="dtThunder"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <bootstrap thing="wTentacle">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="6"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wReach" value="20"/>
+      <assignval field="wAttackEff" value="and target is grappled (escape DC 17). Until this grapple ends, target is restrained."/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="50"/>
+      </bootstrap>
+    <bootstrap thing="tpMonstros"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="raAmphib"></bootstrap>
+    <bootstrap thing="ra5CKrakk"></bootstrap>
+    <bootstrap thing="ra5CLigSt"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="6"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wReach" value="10"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CKrakk" name="Innate Spellcasting" description="The kraken&apos;s innate spellcasting ability is Charisma (spell save DC 17). The kraken can innately cast the following spells, requiring no components components:\n\n3/day each: {i}control weather, water breathing{/i}" compset="RaceSpec">
+    <comment/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5CSourceB"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spContWeat">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spWateBrea">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CLigSt" name="Lightning Strike" description="Hurl a lightning bolt at a point within 500 ft. Each within 10 ft. of spot must make a DC 17 Dexterity saving throw. On failure they take 54 (12d8) lightning damage, half as much on success." compset="RaceSpec">
+    <fieldval field="abRange" value="500"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="abSave" tag="HalfEffect"/>
+    <tag group="Recharge" tag="5"/>
+    </thing>
+  </document>

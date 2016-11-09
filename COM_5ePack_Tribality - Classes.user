@@ -76,4 +76,231 @@
 
       perform root.linkage[table].pushtags[ClsAllowSp.?]]]></eval>
     </thing>
+  <thing id="c5CWlkATQD" name="The Archfey - The Queen of Air and Darkness" description="The Queen of Air and Darkness is the queen of the Unseelie Court, more frightening than charming." compset="CustomSpec" summary="Your patron is the queen of the Unseelie Court" uniqueness="unique">
+    <usesource source="TribFeyI" parent="pTribality" name="Archfey Patrons I"/>
+    <tag group="ClsAllowSp" tag="spDomiBeas" name="Dominate Beast" abbrev="Dominate Beast"/>
+    <tag group="ClsAllowSp" tag="spDomiPers" name="Dominate Person" abbrev="Dominate Person"/>
+    <tag group="ClsAllowSp" tag="sp5CDissW" name="Dissonant Whispers" abbrev="Dissonant Whispers"/>
+    <tag group="ClsAllowSp" tag="spGreaInvi" name="Greater Invisibility" abbrev="Greater Invisibility"/>
+    <tag group="ClsAllowSp" tag="spSleep" name="Sleep" abbrev="Sleep"/>
+    <tag group="ClsAllowSp" tag="spSpirGuar" name="Spirit Guardians" abbrev="Spirit Guardians"/>
+    <tag group="ClsAllowSp" tag="spSeeming" name="Seeming" abbrev="Seeming"/>
+    <tag group="ClsAllowSp" tag="sp5CPhantF" name="Phantasmal Force" abbrev="Phantasmal Force"/>
+    <tag group="ClsAllowSp" tag="sp5CBlink" name="Blink" abbrev="Blink"/>
+    <tag group="Helper" tag="NoAdvLeag" name="Not Allowed for Adventurers League Characters" abbrev="Not Allowed for Adventurers League Characters"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron" abbrev="Warlock Otherworldly Patron"/>
+    <tag group="ClsAllowSp" tag="spPassTrac" name="Pass Without Trace" abbrev="Pass Without Trace"/>
+    <bootstrap thing="c5CWlkFeyP">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CTBFAiDa">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CTBFBeDe">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkDarD">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    </thing>
+  <thing id="c5CTBFQDSp" name="The Queen of Air and Darkness Expanded Spell List" description="The following spells are added to the warlock spell list for you.\n\n1st Level - dissonant whispers, sleep\n2nd pass without trace, phantasmal force\n3rd blink, spirit guardians (note that only the necrotic version can be cast)\n4th dominate beast, greater invisibility\n5th dominate person, seeming" compset="ClSpecial" summary="Your patron adds additional spell choices to your list.">
+    <usesource source="TribFeyI" parent="pTribality" name="Archfey Patrons I"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (isroot = 0)
+
+      doneif (root.islinkage[table] = 0)
+
+      perform root.linkage[table].pushtags[ClsAllowSp.?]]]></eval>
+    </thing>
+  <thing id="c5CTBFQuDe" name="The Queen&apos;s Decorum" description="When you cast a spell that imposes the charmed or frightened effect, or you use a class or subclass feature that imposes the charmed or frightened effect, and all targets succeed their saving throws, you may give the effect your Concentration. As long as you maintain your Concentration, you may use this spell or feature again until at least one creature fails its saving throw and becomes charmed or frightened. Once you use this feature, you may not do so again until you complete a long rest.\n\nTODO: Should be available for base Archfey" compset="ClSpecial">
+    <usesource source="TribFeyI" parent="pTribality" name="Archfey Patrons I"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)]]></eval>
+    </thing>
+  <thing id="c5CTBFAiDa" name="Air and Darkness" description="Beginning at 6th level, you vanish in a puff of mist in response to harm, and prepare for a deadly retribution. When you take damage from a creature’s attack or spell, you may spend your reaction to turn invisible until the end of your next turn. The first time you deal damage to the creature that triggered this reaction before the end of your next turn, you deal 2d6 additional damage of the same type to that creature. Edited to Add: Once you use this feature, you must complete a short or long rest before you may do so again." compset="ClSpecial" summary="Become invisible as reaction when damaged, get revenge">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="TribFeyI"/>
+    <tag group="abDuration" tag="Round" name="Round" abbrev="rd"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    </thing>
+  <thing id="c5CTBFBeDe" name="Reign of Terror" description="Beginning at 10th level, your patron teaches you how to rise above fear and spread it among your enemies. As long as one enemy that you can see is frightened, you suppress the effects of the frightened condition on yourself. You can still gain the frightened condition, but you ignore its effects, including effects that only work on frightened targets.\n\nWhile at least one enemy that you can see is frightened of you, you may use a bonus action to force its nearest ally that can see it to succeed a Charisma saving throw against your warlock spell save DC or become frightened of you for 1 minute. A creature that fails this saving throw may attempt a new saving throw at the end of each of its turns, and ends the frightened condition on a success. Once you use this feature, you must complete a short or long rest before you may do so again." compset="ClSpecial">
+    <fieldval field="abDuration" value="1"/>
+    <usesource source="TribFeyI"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abRange" tag="Sight" name="Sight" abbrev="see"/>
+    <tag group="StandardDC" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="abSave" tag="aCHA"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)]]></eval>
+    </thing>
+  <thing id="c5CWlkATLH" name="The Archfey - The Lord of the Hunt" description="The Silver Knight’s opposite number in the Unseelie Court, the Lord of the Hunt is an accomplished combatant, though more given to stealth, inspiring fear, and the hunt than glory in open combat. Fey huntsmen and leashed terorrs are, of course, his chief servants. The sliver of good in this cruel and terrifying force of nature is that he lavishes gifts and blessings on those who truly best his huntsmen and terrors." compset="CustomSpec" uniqueness="unique">
+    <usesource source="TribFeyI"/>
+    <tag group="ClsAllowSp" tag="sp5CBeastS" name="Beast Sense" abbrev="Beast Sense"/>
+    <tag group="ClsAllowSp" tag="spDomiBeas" name="Dominate Beast" abbrev="Dominate Beast"/>
+    <tag group="ClsAllowSp" tag="spDomiPers" name="Dominate Person" abbrev="Dominate Person"/>
+    <tag group="ClsAllowSp" tag="spFaerFire" name="Faerie Fire" abbrev="Faerie Fire"/>
+    <tag group="ClsAllowSp" tag="sp5CMordFh" name="Mage&apos;s Faithful Hound" abbrev="Mage&apos;s Faithful Hound"/>
+    <tag group="ClsAllowSp" tag="spPlanGrow" name="Plant Growth" abbrev="Plant Growth"/>
+    <tag group="ClsAllowSp" tag="spSeeming" name="Seeming" abbrev="Seeming"/>
+    <tag group="ClsAllowSp" tag="spSleep" name="Sleep" abbrev="Sleep"/>
+    <tag group="ClsAllowSp" tag="sp5CPhantF" name="Phantasmal Force" abbrev="Phantasmal Force"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron" abbrev="Warlock Otherworldly Patron"/>
+    <tag group="ClsAllowSp" tag="spTreeStri" name="Tree Stride" abbrev="Tree Stride"/>
+    <tag group="ClsAllowSp" tag="spBlink" name="Blink" abbrev="Blink"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <bootstrap thing="c5CWlkDarD">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CTBFLHPr">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkMisE">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CTBFBeDe">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    </thing>
+  <thing id="c5CTBFLHPr" name="The Lord of the Hunt&apos;s Prey" description="At 1st level when you choose the Lord of the Hunt as your Patron, you gain proficiency in Survival, and you add 1d6 to the result of Wisdom (Perception) and Wisdom (Survival) checks to find a creature currently affected by a hex you cast." compset="ClSpecial">
+    <usesource source="TribFeyI" parent="pTribality" name="Archfey Patrons I"/>
+    <tag group="abDuration" tag="Round" name="Round" abbrev="rd"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.assign[ProfSkill.skSurvival]]]></eval>
+    </thing>
+  <thing id="c5CTBFLHSp" name="The Lord of the Hunt Expanded Spell List" description="The following spells are added to the warlock spell list for you.\n\n1st Level - faerie fire, sleep\n2nd beast sense, phantasmal force\n3rd blink, plant growth\n4th dominate beast, mordenkainen&apos;s faithful hound\n5th dominate person, seeming, tree stride" compset="ClSpecial" summary="Your patron adds additional spell choices to your list.">
+    <usesource source="TribFeyI" parent="pTribality" name="Archfey Patrons I"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (isroot = 0)
+
+      doneif (root.islinkage[table] = 0)
+
+      perform root.linkage[table].pushtags[ClsAllowSp.?]]]></eval>
+    </thing>
+  <thing id="c5CWlkAT" name="The Archfey - The Good Fellow" description="Gentles, do not reprehend:\nIf you pardon, we will mend:\nAnd, as I am an honest Puck,\nIf we have unearned luck\nNow to ‘scape the serpent’s tongue,\nWe will make amends ere long;\nElse the Puck a liar call;\nSo, good night unto you all.\nGive me your hands, if we be friends,\nAnd Robin shall restore amends." compset="CustomSpec" uniqueness="unique">
+    <usesource source="TribFeyI"/>
+    <tag group="ClsAllowSp" tag="spDeteThou" name="Detect Thoughts" abbrev="Detect Thoughts"/>
+    <tag group="ClsAllowSp" tag="spFreeMove" name="Freedom of Movement" abbrev="Freedom of Movement"/>
+    <tag group="ClsAllowSp" tag="spDomiPers" name="Dominate Person" abbrev="Dominate Person"/>
+    <tag group="ClsAllowSp" tag="spFaerFire" name="Faerie Fire" abbrev="Faerie Fire"/>
+    <tag group="ClsAllowSp" tag="spGreaInvi" name="Greater Invisibility" abbrev="Greater Invisibility"/>
+    <tag group="ClsAllowSp" tag="spPlanGrow" name="Plant Growth" abbrev="Plant Growth"/>
+    <tag group="ClsAllowSp" tag="spSeeming" name="Seeming" abbrev="Seeming"/>
+    <tag group="ClsAllowSp" tag="spSleep" name="Sleep" abbrev="Sleep"/>
+    <tag group="ClsAllowSp" tag="sp5CPhantF" name="Phantasmal Force" abbrev="Phantasmal Force"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron" abbrev="Warlock Otherworldly Patron"/>
+    <tag group="ClsAllowSp" tag="spHideLaug" name="Tasha’s hideous laughter" abbrev="Tasha’s hideous laughter"/>
+    <tag group="ClsAllowSp" tag="spBlink" name="Blink" abbrev="Blink"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <bootstrap thing="c5CTBGraJe">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkBegD">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkMisE">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CTBFPuTr">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    </thing>
+  <thing id="c5CTBFPuTr" name="Puckish Tricks" description="At 1st level when you choose the Good Fellow as your Patron, you gain proficiency in Sleight of Hand and thieves’ tools. You never use somatic or material components to cast hex, and your verbal components can be masked as conversation or jokes. You may choose to learn vicious mockery as one of your cantrips.\n\nWhen you make a Dexterity (Sleight of Hand) or Charisma (Deception) check against a creature currently affected by a hex that you cast, add 1d6 to your check result.\n\nTODO: Badly scripted, adds Vicious Mockery for free" compset="ClSpecial">
+    <usesource source="TribFeyI" parent="pTribality" name="Archfey Patrons I"/>
+    <tag group="abDuration" tag="Round" name="Round" abbrev="rd"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <bootstrap thing="spViciMock">
+      <autotag group="SpellSort" tag="cHelpWlk"/>
+      <autotag group="SpellType" tag="cHelpWlk"/>
+      <autotag group="Helper" tag="Cantrip"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.assign[ProfSkill.skSleight]
+      perform hero.assign[ProfTool.gTooThieve]]]></eval>
+    </thing>
+  <thing id="c5CTBGraJe" name="The Grand Jest, or: “Lord, What Fools these Mortals Be!”" description="Starting at 14th level, you can reveal the grand jest that you have played on everyone. All creatures within 60 feet of you roll Wisdom saving throws against your warlock spell save DC. Take the total number of failed saving throws and halve it, rounding fractions up. You and the DM each switch the positions of that number of pairs of creatures within range, alternating turns. Neither you nor the DM may switch back a change that the other has made. (Creatures may not choose to fail this saving throw.) You may switch the positions of creatures that succeeded their saving throws, but doing so costs two of your position changes rather than one. (If both members of a switching pair succeeded their saving throws, that costs three position changes rather than one.) Once you use this feature, you may not do so again until you complete a long rest." compset="ClSpecial">
+    <usesource source="TribFeyI"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wis"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    </thing>
+  <thing id="c5CTBFSPGF" name="The Good Fellow Expanded Spell List" description="The following spells are added to the warlock spell list for you.\n\n1st Level - faerie fire, sleep, tasha’s hideous laughter\n2nd calm emotions, phantasal force\n3rd blink, plant growth\n4th freedom of movement, greater invisibility\n5th dominate person, seeming" compset="ClSpecial" summary="Your patron adds additional spell choices to your list.">
+    <usesource source="TribFeyI" parent="pTribality" name="Archfey Patrons I"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (isroot = 0)
+
+      doneif (root.islinkage[table] = 0)
+
+      perform root.linkage[table].pushtags[ClsAllowSp.?]]]></eval>
+    </thing>
   </document>

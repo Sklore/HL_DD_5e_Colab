@@ -12,15 +12,22 @@
     <tag group="DeityCat" tag="5CGnomish" name="Gnomish Pantheon" abbrev="Gnomish"/>
     <tag group="DeityCat" tag="5COrc" name="Orc Pantheon" abbrev="Orc"/>
     <tag group="abCategory" tag="5COrdKnife" name="Mystic Order of the Knife"/>
+
+    <!-- Simple Helper Things -->
+    <bootstrap thing="5CJournal"></bootstrap>
+    
+    <!-- Configurable Tabs -->
     <bootstrap thing="cfg5CFeatB"></bootstrap>
     <bootstrap thing="cfg5CProf"></bootstrap>
+
+    <!-- Selection Choices -->
     <bootstrap thing="sel5CEleAc"></bootstrap>
     <bootstrap thing="sel5CEleCo"></bootstrap>
     <bootstrap thing="sel5CEleLi"></bootstrap>
     <bootstrap thing="sel5CEleFi"></bootstrap>
     <bootstrap thing="sel5CEleTh"></bootstrap>
 
-
+    <!-- Schools of Magic -->
     <bootstrap thing="ss5CAbjura"></bootstrap>
     <bootstrap thing="ss5CConjur"></bootstrap>
     <bootstrap thing="ss5CDivi"></bootstrap>
@@ -39,6 +46,33 @@
     <bootstrap thing="ss5CWood"></bootstrap>
     <bootstrap thing="ss5CElemen"></bootstrap>
     </thing>
+
+  <!-- ======================================================================================= -->
+  <!-- Always Show Journal Tab                                                                 -->
+  <!-- ======================================================================================= -->
+  <thing id="5CJournal" name="Always Show Journal Tab" 
+    description="This simple thing forces the {b}Journal{/b} tab to appear which is useful on NPC&apos;s which has the tab hidden." 
+    compset="Simple" 
+    uniqueness="useronce">
+    <usesource source="5eJournal"/>
+    <eval phase="PostAttr" priority="10000" index="1"><![CDATA[
+      ~ If not a NPC get out now!
+      doneif (hero.tagis[CharType.typNPC] = 0)
+    
+      ~ Prevent the Journal Tab from being hidden for NPCs
+      perform hero.delete[HideTab.journal]
+      perform hero.delete[Hero.NoAdvance]
+      ~perform hero.delete[Hero.ClsErLev?]
+      ]]></eval>
+
+    <eval phase="PostAttr" priority="50000" index="2"><![CDATA[
+      ~ If not a NPC get out now!
+      doneif (hero.tagis[CharType.typNPC] = 0)
+
+      perform hero.delete[Hero.ClsErLev?]
+      ]]></eval>
+    </thing>
+
 
   <thing id="sel5CEleAc" name="Acid" description="Base Elemental Type" compset="SelectHelp" uniqueness="unique">
     <tag group="Selection" tag="Energy" name="Energy Type (All)"/>
