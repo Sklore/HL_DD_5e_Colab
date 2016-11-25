@@ -152,5 +152,106 @@
     ]]>
     </procedure>
 
+  <procedure id="5CSizeChg" context="pick"><![CDATA[
+    ~ This procedure tries to centralize all the logic of changing
+    ~ a characters size for the 5e Community. So far the best timing
+    ~ appears to be First/20000
 
+    ~ Example use:
+    ~ Sizemod is the +/- change to characters's size.
+    ~ var sizemod as number
+    ~ sizemod = 1
+    ~ Call 5CSizeChg
+
+    ~ I have implented the DMG size change rule of dice size changing:
+    ~ Hit Die - Page: 276
+    ~       Tiny: d4
+    ~      Small: d6
+    ~     Medium: d8
+    ~      Large: d10
+    ~       Huge: d12
+    ~ Gargantuan: d20     
+  
+    ~ Sizemod is the +/- change to apply to the hero's size.
+    var sizemod as number
+    var iX as number
+
+    sizemod = field[pAdjust].value
+
+    ~ If no size mode then we are done!
+    doneif (sizemod = 0)
+
+    ~ Add to size - must come after race and template size set
+    herofield[tSize].value += sizemod
+
+    ~ Make sure the user didn't try to adjust size greater than Gargantuan (+3), or
+    ~ smaller than Tiny (-2)
+    herofield[tSize].value = maximum(herofield[tSize].value, -2)
+    herofield[tSize].value = minimum(herofield[tSize].value, 3)
+
+    ~ Set pointer to our base race    
+    perform hero.findchild[BaseRace].setfocus
+    doneif (state.isfocus = 0)
+  
+    ~ Based on the races final size reset the hit dice size
+  
+    ~ Tiny
+    If (herofield[tSize].value = -2) then
+      focus.field[rHDSides].value = 4
+    ~ Small
+    ElseIf (herofield[tSize].value = -1) then
+      focus.field[rHDSides].value = 6
+    ~ Medium
+    ElseIf (herofield[tSize].value = 0) then
+      focus.field[rHDSides].value = 8
+    ~ Large
+    ElseIf (herofield[tSize].value = 1) then
+      focus.field[rHDSides].value = 10
+    ~ Huge
+    ElseIf (herofield[tSize].value = 2) then
+      focus.field[rHDSides].value = 12
+    ~ Gargantuan
+    ElseIf (herofield[tSize].value = 3) then
+      focus.field[rHDSides].value = 20
+    Endif
+    ]]>
+    </procedure>
+
+  <procedure id="5CSetSize" context="pick"><![CDATA[
+    ~ This procedure forces a charcter to be a specific size no matter the
+    ~ starting size of the character. In example force the character
+    ~ to always be size large!
+    ~ So far the best timing appears to be First/20000
+
+    ~       Tiny: -2
+    ~      Small: -1
+    ~     Medium:  0
+    ~      Large:  1
+    ~       Huge:  2
+    ~ Gargantuan:  3
+
+    ~ Example use:
+    ~ sizetarget is the new characters size
+    ~ var sizetarget as number
+    ~ sizemod = 3
+    ~ Call 5CSetSize
+
+    ~ sizetarget is our incoming variable - the tSize that the character will be set to
+    var sizetarget as number
+   
+    ~ sizemod is our outgoing variable - the modifier to the existing tSize
+    ~ that's needed in order to get to that target size
+    var sizemod as number
+
+    ~ Make sure the user didn't try to adjust size greater than Gargantuan (+3), or
+    ~ smaller than Tiny (-2)
+    sizetarget = maximum(sizetarget, -2)
+    sizetarget = minimum(sizetarget, 3)
+  
+    ~ Calculate the modifier we need
+    sizemod = sizetarget - herofield[tSize].value
+
+    ~ call the Size Change procedure
+    Call 5CSizeChg
+    ]]></procedure>
   </document>

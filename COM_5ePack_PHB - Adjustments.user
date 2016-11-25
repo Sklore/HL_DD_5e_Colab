@@ -645,4 +645,46 @@
       ~ Increase/Decrease Spell DC
       field[pChosen].chosen.field[sDC].value += field[pAdjust].value]]></eval>
     </thing>
+  <thing id="p5CRceSize" name="Race, Size Category" description="Select this adjustment to change your size category only. No other changes will be made to your character." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Race"/>
+    <eval phase="First" priority="20000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      ~ Sizemod is the +/- change to apply to the hero's size.
+      var sizemod as number
+
+      Call 5CSizeChg]]>
+      <before name="Resize Same Size Gear"/>
+      </eval>
+    </thing>
+  <thing id="p5CRaceAbi" name="Race, Custom Ability" description="Use this adjustment to add a generic ability to your character. You will be able to set the abilities name and description text up to 100 characters." compset="InPlay">
+    <fieldval field="pSource" value="Name"/>
+    <fieldval field="pDuration" value="Text"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="Race"/>
+    <bootstrap thing="pS2GenAbil">
+      </bootstrap>
+    </thing>
+  <thing id="pS2GenAbil" name="Generic Ability" description="" compset="GenericAb">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~ Note this component set will not be visable in the editor.
+    
+      ~ If we're not bootstrapped to something, get out now!
+      doneif (isroot = 0)
+      ~ If the root is not an adjustment, get out now!
+      doneif (root.tagis[component.BaseAdjust] = 0)
+
+      ~ Set the live name by pulling from the adjustments source
+      field[livename].text = root.field[pSource].text
+      
+      ~ Set the custom description by pulling from the adjustments
+      ~ duration field.
+      field[CustDesc].text = root.field[pDuration].text
+      ]]></eval>
+    </thing>
   </document>
