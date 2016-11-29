@@ -11,7 +11,7 @@
     <fieldval field="StartArmor" value="• ({i}a{/i}) scale mail or ({i}b{/i}) leather armor"/>
     <fieldval field="StartGear" value="• ({i}a{/i}) a dungeoneer&apos;s pack or ({i}b{/i}) an explorer&apos;s pack"/>
     <fieldval field="StartAll" value="• ({i}a{/i}) scale mail or ({i}b{/i}) leather armor{br}• ({i}a{/i}) two shortswords or ({i}b{/i}) two simple melee weapons{br}• ({i}a{/i}) a dungeoneer&apos;s pack or ({i}b{/i}) an explorer&apos;s pack{br}• A longbow and a quiver of 20 arrows"/>
-    <arrayval field="cAttrArray" index="3" value="2"/>
+    <fieldval field="cSpec4thSi" value="Greater Favored Enemy"/>
     <arrayval field="cAttrArray" index="7" value="4"/>
     <arrayval field="cAttrArray" index="11" value="6"/>
     <arrayval field="cAttrArray" index="15" value="8"/>
@@ -27,14 +27,12 @@
     <arrayval field="cArrKnSpl" index="16" value="10"/>
     <arrayval field="cCustTot" index="1" value="1"/>
     <arrayval field="cArrKnSpl" index="18" value="11"/>
-    <arrayval field="cCustTeTot" index="0" value="1"/>
-    <arrayval field="cCustTeTot" index="5" value="2"/>
     <arrayval field="cCustScTot" index="2" value="1"/>
     <arrayval field="cCustScTot" index="6" value="1"/>
+    <arrayval field="cCustTeTot" index="0" value="1"/>
+    <arrayval field="cCustQuTot" index="5" value="1"/>
+    <arrayval field="cAttrArray" index="3" value="2"/>
     <usesource source="p5eUneRgr" parent="p5eUneArc" name="5e Unearthed Arcana - The Ranger, Revised"/>
-    <tag group="PrimeAbil" tag="aDEX"/>
-    <tag group="PrimeAbil" tag="aWIS"/>
-    <tag group="ProfSave" tag="svDEX"/>
     <tag group="ProfSave" tag="svSTR"/>
     <tag group="ArmProfGrp" tag="ArmorLight"/>
     <tag group="ArmProfGrp" tag="WepMartial"/>
@@ -50,20 +48,13 @@
     <tag group="AllowSkl1" tag="skPercep"/>
     <tag group="AllowSkl1" tag="skSurvival"/>
     <tag group="AllowSkl1" tag="skStealth"/>
-    <tag group="AllowC3rd" tag="cHelpRgr"/>
     <tag group="sClass" tag="cHelpRgr"/>
     <tag group="CasterType" tag="SpontKnow"/>
     <tag group="Helper" tag="HalfCaster"/>
     <tag group="CasterSrc" tag="Divine"/>
-    <bootstrap thing="c5CRgChdps">
-      <autotag group="ClSpecWhen" tag="10"/>
-      </bootstrap>
-    <bootstrap thing="cRgrVanish">
-      <autotag group="ClSpecWhen" tag="14"/>
-      </bootstrap>
-    <bootstrap thing="cRgrFerSen">
-      <autotag group="ClSpecWhen" tag="18"/>
-      </bootstrap>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="PrimeAbil" tag="aDEX"/>
+    <tag group="PrimeAbil" tag="aWIS"/>
     <bootstrap thing="cRgrFoeSla">
       <autotag group="ClSpecWhen" tag="20"/>
       </bootstrap>
@@ -75,6 +66,15 @@
       </bootstrap>
     <bootstrap thing="c5CRgCFlFt">
       <autotag group="ClSpecWhen" tag="8"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgChdps">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cRgrVanish">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cRgrFerSen">
+      <autotag group="ClSpecWhen" tag="18"/>
       </bootstrap>
     <link linkage="castattr" thing="aWIS"/>
     <eval phase="Level" priority="6000"><![CDATA[      ~ Don't reduce our capabilities for multiclassing if this is the first
@@ -224,6 +224,14 @@ if ( hero.tagcount[Classes.5CRgC] > 5) then
    hero.child[c5CRgCFavE].field[sbName].text = "Greater Favored Enemy"
    hero.child[c5CRgCFavE].field[listname].text = "Greater Favored Enemy"
    hero.child[c5CRgCFavE].field[shortname].text = "Greater Favored Enemy"
+endif]]></eval>
+    <eval phase="PostAttr" priority="10000" index="3"><![CDATA[~ If we're disabled, do nothing & 
+doneif (tagis[Helper.Disable] = 1)
+~ If not active get out now!
+doneif (field[abilActive].value = 0)
+
+if ( Hero.tagcount[Classes.5CRgC] >= 6 ) then
+      #situational[hero.child[svAll], "Advantage on all saves against spells and abilities of your Greater Favored Enemy",field[thingname].text]
 endif]]></eval>
     </thing>
   <thing id="c5CRgCHunC" name="Hunter Conclave" description="Some rangers seek to master weapons to better protect civilization from the terrors of the wilderness. Members of the Hunter Conclave learn specialized fighting techniques for use against the most dire threats, from rampaging ogres and hordes of orcs to towering giants and terrifying dragons." compset="CustomSpec" uniqueness="unique">
@@ -556,5 +564,329 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="FeatureTyp" tag="Reaction"/>
     <tag group="abAction" tag="Reaction"/>
     <tag group="abRange" tag="Personal"/>
+    </thing>
+  <thing id="c5CRgCFEB" name="Beasts" description="Beginning at 1st level, you have significant experience studying, tracking, hunting, and even talking to a certain type of enemy commonly encountered in the wilds.\n\nChoose a type of favored enemy:  beasts, fey, humanoid, monstrosities, or undead. You gain a +2 bonus to damage rolls with weapon attacks against creatures of the choosen type. Additionaly, you have advantage on Wisdom (Survival) checks to track your favored enemies, as well as on Intelligence checks to recall information about them.\n\nWhen you gain this feature, you also learn one language of your choice, typically one that is spoken by your favored enemy or creatures associated with it. However, you are free to pick any language you wish to learn." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="abCategory" tag="RgrFavEnem"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CRgCFEF" name="Fey" description="Beginning at 1st level, you have significant experience studying, tracking, hunting, and even talking to a certain type of enemy commonly encountered in the wilds.\n\nChoose a type of favored enemy:  beasts, fey, humanoid, monstrosities, or undead. You gain a +2 bonus to damage rolls with weapon attacks against creatures of the choosen type. Additionaly, you have advantage on Wisdom (Survival) checks to track your favored enemies, as well as on Intelligence checks to recall information about them.\n\nWhen you gain this feature, you also learn one language of your choice, typically one that is spoken by your favored enemy or creatures associated with it. However, you are free to pick any language you wish to learn." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CRgCFEH" name="Humanoids" description="Beginning at 1st level, you have significant experience studying, tracking, hunting, and even talking to a certain type of enemy commonly encountered in the wilds.\n\nChoose a type of favored enemy:  beasts, fey, humanoid, monstrosities, or undead. You gain a +2 bonus to damage rolls with weapon attacks against creatures of the choosen type. Additionaly, you have advantage on Wisdom (Survival) checks to track your favored enemies, as well as on Intelligence checks to recall information about them.\n\nWhen you gain this feature, you also learn one language of your choice, typically one that is spoken by your favored enemy or creatures associated with it. However, you are free to pick any language you wish to learn." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+    <fieldval field="abValue" value="2"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CRgCFEM" name="Monstrosities" description="Beginning at 1st level, you have significant experience studying, tracking, hunting, and even talking to a certain type of enemy commonly encountered in the wilds.\n\nChoose a type of favored enemy:  beasts, fey, humanoid, monstrosities, or undead. You gain a +2 bonus to damage rolls with weapon attacks against creatures of the choosen type. Additionaly, you have advantage on Wisdom (Survival) checks to track your favored enemies, as well as on Intelligence checks to recall information about them.\n\nWhen you gain this feature, you also learn one language of your choice, typically one that is spoken by your favored enemy or creatures associated with it. However, you are free to pick any language you wish to learn." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CRgCFEU" name="Undead" description="Beginning at 1st level, you have significant experience studying, tracking, hunting, and even talking to a certain type of enemy commonly encountered in the wilds.\n\nChoose a type of favored enemy:  beasts, fey, humanoid, monstrosities, or undead. You gain a +2 bonus to damage rolls with weapon attacks against creatures of the choosen type. Additionaly, you have advantage on Wisdom (Survival) checks to track your favored enemies, as well as on Intelligence checks to recall information about them.\n\nWhen you gain this feature, you also learn one language of your choice, typically one that is spoken by your favored enemy or creatures associated with it. However, you are free to pick any language you wish to learn." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CRgCGFEA" name="Aberrations" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CRgCGFEC" name="Celestials" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CRgCGFEO" name="Constructs" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CRgCGFED" name="Dragons" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CRgCGFEE" name="Elementals" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CRgCGFEF" name="Fiends" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CRgCGFEG" name="Giants" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (islinkage[table] = 0)
+
+      perform linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
     </thing>
   </document>
