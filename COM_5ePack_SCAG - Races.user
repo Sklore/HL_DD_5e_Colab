@@ -212,15 +212,17 @@
   <thing id="sr5CDeeGno" name="Deep Gnome (Svirfneblin)" description="Deep gnomes, called svirfneblin in their own language, are a gnome subrace that live in the Underdark. While their surface cousins are known for their boundless optimism and cheerful mischief, the svirfneblin are serious and suspicious creatures. They survive in the Underdark by maintaining wariness of others and working hard to keep their underground society secret.\n\nPhysical description\nDeep gnomes are wiry and lean with a body as hard as a slab of rock. Males are completely bald and beardless, while the females sport hair. Ranging from 3&apos; to 3&apos;6&quot; (107 cm) in height and weighing between 40 and 45 lbs (20.4 kg), the deep gnomes are small enough to give them a size advantage when battling larger opponents. Deep gnome complexions are sometimes described as &quot;gnarled&quot; and, like drow and duergar, are commonly dark in hue, with most deep gnomes demonstrating brown or gray skin, with dark gray eyes, as well as gray hair if female. Deep gnomes do not live quite as long as their kin, with a life expectancy just under two centuries. Due to this and a number of cultural affectations, deep gnome children are considered adults at roughly twenty years of age.\n\nAbilities\nDeep gnome are better adapted for underground living than either rock gnomes or forest gnomes, with darkvision to help them see where there is no light. Similarly, deep gnomes have a dwarven-like affinity for stone and innately understand it on a level few other races can appreciate. Deep gnomes also lack most gnomes&apos; predilection for cantrip like abilities but can instead blind other beings, obscure their own presence, or shapeshift. Deep gnomes also have a great deal of resistance to magic of any kind, and can go undetected as if they were using the nondetection spell, alongside their natural affinity for avoiding danger or hiding.\n\nDeep Gnome Feat\nIf your DM allows the use of feats, your deep gnome character has the option of taking the Svirfneblin Magic feat." compset="SubRace" summary="Deep gnomes, called svirfneblin in their own language, are a gnome subrace that live in the Underdark." uniqueness="unique">
     <fieldval field="rWeightMin" value="80"/>
     <fieldval field="rDEX" value="1"/>
-    <tag group="Alignment" tag="NeutralLC"/>
-    <tag group="Alignment" tag="NeutralGE"/>
+    <usesource source="5eSCAGCP"/>
+    <usesource source="5eEEPCCP"/>
     <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
     <tag group="SubRace" tag="rGnome" name="Gnome" abbrev="Gnome"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <bootstrap thing="ra5CStonCa"></bootstrap>
     <bootstrap thing="lUndercomm"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
-    <bootstrap thing="ra5CStonCa"></bootstrap>
     </thing>
   <thing id="ra5CFeral" name="Feral" description="Your Intelligence score increases by 1, and your Dexterity score increases by 2. This trait replaces the Ability Score Increase trait." compset="VarRaceTrt" uniqueness="unique">
     <usesource source="5eSCAGCP"/>
@@ -354,5 +356,141 @@
     <bootstrap thing="raHiElfWep">
       <containerreq phase="First" priority="500"><![CDATA[fieldval:usrIndex >= 5]]></containerreq>
       </bootstrap>
+    </thing>
+  <thing id="f5CEESvMag" name="Svirfneblin Magic" description="This ability allows you to cast  {i}nondetection{/i} on yourself at will, without needing a material component. \n\nYou can also cast each of the following spells once with this ability: \n\n {i}blindness/deafness{/i}\n {i}blur{/i}\n {i}disguise self{/i}\n\nYou regain the ability to cast these spells when you finish a long rest." compset="Feat" uniqueness="useronce">
+    <usesource source="5eEEPCCP" parent="p5ePOTA" name="Elemental Evil Player&apos;s Companion"/>
+    <usesource source="5eSCAGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="spNondetec">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spBlinDeaf">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spBlur">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <pickreq thing="sr5CDeeGno"/>
+    </thing>
+  <thing id="ra5CElveKS" name="Keen Senses" description="You have proficiency in the Perception skill." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="AllowRCust" tag="rHalfElf"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="RaReplace" tag="ra5CSkiVe"/>
+    <eval phase="First" priority="11000"><![CDATA[
+      ~if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~we set these to zero to make the field disappear.
+      hero.childfound[rHalfElf].field[cSkillMax].value=0
+      perform hero.childfound[rHalfElf].delete[AllowSkl1.Any]
+
+      ~assign our weapon proficiencies to the hero
+      perform hero.pushtags[ProfSkill.?]]]></eval>
+    </thing>
+  <thing id="ra5CElvWT" name="Elf Weapon Training" description="You have proficiency with the longsword, shortsword, shortbow, and longbow." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="RaReplace" tag="ra5CSkiVe"/>
+    <tag group="AllowRCust" tag="rHalfElf"/>
+    <tag group="WepProf" tag="wLongbow" name="Long bow" abbrev="Longbow"/>
+    <tag group="WepProf" tag="wLongsword" name="Longsword" abbrev="Longsword"/>
+    <tag group="WepProf" tag="wShortbow" name="Shortbow" abbrev="Shortbow"/>
+    <tag group="WepProf" tag="wShortswor" name="Shortsword" abbrev="Shortsword"/>
+    <eval phase="First" priority="11000"><![CDATA[
+      ~if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~we set these to zero to make the field disappear.
+      hero.childfound[rHalfElf].field[cSkillMax].value=0
+      perform hero.childfound[rHalfElf].delete[AllowSkl1.Any]
+
+      ~assign our weapon proficiencies to the hero
+      perform hero.pushtags[WepProf.?]]]></eval>
+    </thing>
+  <thing id="ra5CHEFof" name="Fleet of Foot" description="Your base walking speed increases to 35 feet." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="RaReplace" tag="ra5CSkiVe"/>
+    <tag group="AllowRCust" tag="rHalfElf"/>
+    <eval phase="First" priority="11000">      ~we set these to zero to make the field disappear.
+      hero.childfound[rHalfElf].field[cSkillMax].value=0
+      perform hero.childfound[rHalfElf].delete[AllowSkl1.Any]</eval>
+    <eval phase="Final" priority="10000" index="2">hero.child[Speed].field[tSpeed].value += 5</eval>
+    </thing>
+  <thing id="ra5CHEMoW" name="Mask of the Wild" description="You can attempt to hide even when you are only lightly obscured by foliage, heavy rain, falling snow, mist, and other natural phenomena." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="RaReplace" tag="ra5CSkiVe"/>
+    <tag group="AllowRCust" tag="rHalfElf"/>
+    <eval phase="First" priority="11000">      ~we set these to zero to make the field disappear.
+      hero.childfound[rHalfElf].field[cSkillMax].value=0
+      perform hero.childfound[rHalfElf].delete[AllowSkl1.Any]</eval>
+    </thing>
+  <thing id="ra5CHECant" name="Cantrip" description="Vou know one Canlrip of your choice from lhe wizard spelllist. Inlelligence is your spellcasling abilily for it." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="AllowRCust" tag="rHalfElf"/>
+    <tag group="RaReplace" tag="ra5CSkiVe"/>
+    <eval phase="First" priority="11000"><![CDATA[      ~if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~we set these to zero to make the field disappear.
+      hero.childfound[rHalfElf].field[cSkillMax].value=0
+      perform hero.childfound[rHalfElf].delete[AllowSkl1.Any]
+
+      ~add tags and fields for cantrip
+      perform hero.childfound[rHalfElf].assign[SplAttr.aINT]
+      hero.childfound[rHalfElf].field[rSpExLst].text = "sClass.cHelpWiz & sLevel.0"
+      hero.childfound[rHalfElf].field[rSpExLstNm].text = "Wizard Cantrips"
+      hero.childfound[rHalfElf].field[rSpExAllw].value = 1]]></eval>
+    </thing>
+  <thing id="ra5CHEDrMa" name="Drow Magic" description="You know the {i}dancing lights{/i} cantrip. When you reach 3rd level, you can cast the {i}faerie fire{/i} spell once per long rest. When you reach 5th level, you can cast the {i}darkness{/i} spell once per day. Charisma is your spellcasting ability for these spells." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="RaReplace" tag="ra5CSkiVe"/>
+    <tag group="AllowRCust" tag="rHalfElf"/>
+    <bootstrap thing="spFaerFire">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <eval phase="First" priority="11000"><![CDATA[      ~if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~we set these to zero to make the field disappear.
+      hero.childfound[rHalfElf].field[cSkillMax].value=0
+      perform hero.childfound[rHalfElf].delete[AllowSkl1.Any]]]></eval>
+    </thing>
+  <thing id="ra5CHEAqua" name="Aquatic Heritage" description="You gain a swim speed of 30 feet." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="RaReplace" tag="ra5CSkiVe"/>
+    <tag group="AllowRCust" tag="rHalfElf"/>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <eval phase="First" priority="11000">      ~we set these to zero to make the field disappear.
+      hero.childfound[rHalfElf].field[cSkillMax].value=0
+      perform hero.childfound[rHalfElf].delete[AllowSkl1.Any]</eval>
     </thing>
   </document>
