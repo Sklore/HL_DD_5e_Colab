@@ -1124,7 +1124,30 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
     <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
     <tag group="abAction" tag="Free" name="Free" abbrev="Free"/>
     </thing>
-  <thing id="c5CFtrRoEn" name="Royal Envoy" description="At 7th level, you gain proficiency in the Persuasion skill. If you are already proficient in it, you gain proficiency in one of the following skills of your choice: Animal Handling, Insight, Intimidation, or Performance. \n\nYour proficiency bonus is doubled for any ability check you make that uses Persuasion. You receive this benefit regardless of the skill proficiency you gain from this feature." compset="ClSpecial"></thing>
+  <thing id="c5CFtrRoEn" name="Royal Envoy" description="At 7th level, you gain proficiency in the Persuasion skill. If you are already proficient in it, you gain proficiency in one of the following skills of your choice: Animal Handling, Insight, Intimidation, or Performance. \n\nYour proficiency bonus is doubled for any ability check you make that uses Persuasion. You receive this benefit regardless of the skill proficiency you gain from this feature." compset="ClSpecial">
+    <fieldval field="usrCandid1" value="component.BaseSkill &amp; (Reference.skAnimHand | Reference.skInsight | Reference.skIntim | Reference.skPerform)"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+      ~now, double the proficiency
+      perform hero.childfound[skPersuas].assign[Helper.ProfDouble]]]>
+      <before name="Calc skProfBon"/>
+      </eval>
+    <eval phase="PostLevel" priority="11000" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+     ~ are we already proficient in Persuasion?
+     if (hero.tagis[ProfSkill.skPersuas] = 0 ) then
+        perform delete[ChooseSrc1.Hero]
+        field[usrCandid1].text = ""
+        perform hero.assign[ProfSkill.skPersuas]
+     endif
+     if (field[usrChosen1].ischosen <> 0) then
+         perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
+     endif
+     perform forward[ProfSkill.?]]]></eval>
+    </thing>
   <thing id="c5CFtrInSu" name="Inspiring Surge" description="Starting at 10th level, when you use your Action Surge feature, you can choose one creature within 60 feet of you that is allied with you. That creature can make one melee or ranged weapon attack with its reaction, provided that it can see or hear you. Starting at 17th level, you can choose two allies within 60 feet of you, rather than one." compset="ClSpecial">
     <fieldval field="abRange" value="60"/>
     <tag group="abRange" tag="Feet"/>
@@ -1251,6 +1274,17 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
     <tag group="abRange" tag="Feet"/>
     <tag group="abAction" tag="Action"/>
     <tag group="abDuration" tag="Instant"/>
+    <bootstrap thing="sp5CMkRSB">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpMnk"/>
+      </bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[~doneif (tagis[Helper.ShowSpec] = 0)
+~doneif (tagis[Helper.Disable] <> 0)
+      
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
     </thing>
   <thing id="c5CSearArS" name="Searing Arc Strike" description="At 6th level, immediately after you take the Attack action on your turn, you can spend 2 ki points to cast the 1st-level spell burning hands as a bonus action. \n\nYou can spend additional ki points to cast burning hands as a higher level spell. Each additional ki point you spend increases the spell&apos;s level by 1. The maximum number of ki points (2 plus any additional points) that you can spend on the spell equals half your monk level (round down)." compset="ClSpecial">
     <tag group="abAction" tag="Bonus"/>
@@ -1266,6 +1300,12 @@ KnowSpell.spDisinteg & SpellType.cHelpClr]]></comment>
     <tag group="abRange" tag="Feet"/>
     <tag group="abAction" tag="Action"/>
     <tag group="abSave" tag="aCON"/>
+    <bootstrap thing="sp5CMkSSB">
+      <autotag group="BonusSplAt" tag="11"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpMnk"/>
+      </bootstrap>
     </thing>
   <thing id="c5CWSunShi" name="Sun Shield" description="At 17th level, you shed bright light in a 30-foot radius and dim light for an additional 30 feet. You can extinguish or restore the light as a bonus action.\n\nIf a creature hits you with a melee attack while this light shines, you can use your reaction to deal radiant damage to the creature. The radiant damage equals 5 + your Wisdom modifier." compset="ClSpecial">
     <fieldval field="abRange" value="30"/>
@@ -1629,5 +1669,27 @@ endif
       perform hero.assign[Hero.ExtraAtt]]]>
       <after name="Fighter extra attacks"/>
       </eval>
+    </thing>
+  <thing id="sp5CMkRSB" name="Radiant Sun Bolt" description="Starting when you choose this tradition at 3rd level, you gain a ranged spell attack that you can use with the Attack action. The attack has a range of 30 feet. You are proficient with it, and you add your Dexterity modifier to its attack and damage rolls. Its damage is radiant, and its damage die is a d4. This die changes as you gain monk levels, as shown in the Martial Arts column of the Monk table.\n\nWhen you use the Attack action on your turn to use this special attack, you can spend 1 ki point to make two additional attacks with it as a bonus action." compset="Spell">
+    <usesource source="5eSCAGCP"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sClass" tag="cHelpMnk"/>
+    <tag group="Helper" tag="SplAttack"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sRange" tag="30"/>
+    <tag group="sDuration" tag="Instant"/>
+    <tag group="sLevel" tag="0"/>
+    <tag group="sSchool" tag="Evocation"/>
+    </thing>
+  <thing id="sp5CMkSSB" name="Searing Sunburst" description="At 11th level, as an action, you create an orb and hurl it at a point you choose within 150 feet, each creature in that 20-foot-radius sphere must succeed on a Constitution saving throw or take 2d6 radiant damage. A creature doesn&apos;t need to make the save if the creature is behind total cover that is opaque.\n\nYou can increase the sphere&apos;s damage by spending ki points. Each point you spend, up to a maximum of 3, increases the damage by 2d6." compset="Spell">
+    <usesource source="5eSCAGCP"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="Helper" tag="SplSave"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sRange" tag="150"/>
+    <tag group="sClass" tag="cHelpMnk"/>
+    <tag group="sSchool" tag="Enchant"/>
+    <tag group="sLevel" tag="5"/>
+    <tag group="sDuration" tag="Instant"/>
     </thing>
   </document>
