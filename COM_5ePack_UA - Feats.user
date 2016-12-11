@@ -8,8 +8,8 @@
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="fCategory" tag="CombMast"/>
     <tag group="User" tag="Activation"/>
-    <eval phase="First"><![CDATA[    ~ If we're disabled, do nothing & 
-    doneif (tagis[Helper.Disable] = 1)
+    <eval phase="PostLevel" priority="10000"><![CDATA[    ~ If we're disabled, do nothing & 
+~    doneif (tagis[Helper.Disable] = 1)
 
     foreach pick in hero from BaseWep where "wGroup.Axe"
       eachpick.field[wAttMelee].value += 1
@@ -33,7 +33,7 @@
     <tag group="User" tag="Activation"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="abAction" tag="Reaction"/>
-    <eval phase="First"><![CDATA[    ~ If we're disabled, do nothing & 
+    <eval phase="PostLevel" priority="10000"><![CDATA[    ~ If we're disabled, do nothing & 
     doneif (tagis[Helper.Disable] = 1)
 
     foreach pick in hero from BaseWep where "wGroup.Sword"
@@ -55,7 +55,7 @@
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="abAction" tag="Bonus"/>
     <tag group="StandardDC" tag="aSTR"/>
-    <eval phase="First"><![CDATA[    ~ If we're disabled, do nothing & 
+    <eval phase="PostLevel" priority="10000"><![CDATA[    ~ If we're disabled, do nothing & 
     doneif (tagis[Helper.Disable] = 1)
 
     foreach pick in hero from BaseWep where "thingid.wFlail"
@@ -78,29 +78,31 @@
     <tag group="User" tag="Activation"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="Helper" tag="NoAdvLeag"/>
-    <eval phase="Final" priority="10000"><![CDATA[    ~ If we're disabled, do nothing & 
+    <eval phase="PostLevel" priority="10000"><![CDATA[    ~ If we're disabled, do nothing & 
     doneif (tagis[Helper.Disable] = 1)
 
     foreach pick in hero from BaseWep where "IsWeapon.wSpear"
       eachpick.field[wAttMelee].value += 1
       eachpick.field[wDSizVers].value += 2
       eachpick.field[wDieSize].value += 2
+    nexteach
 
+
+    foreach pick in hero from BaseWep where "IsWeapon.wSpear"
       if (field[abilAct2].value <> 0) then
         perform eachpick.delete[wProperty.Thrown]
         perform eachpick.assign[wProperty.Reach]
         eachpick.field[wReach].value += 5
       endif
+    nexteach
 
-
-      doneif (field[abilActive].value = 0)
-
-      #extradamage[eachpick,"+1d8 piercing damage",field[name].text]
-
-      if (eachpick.field[wIs2nd].value <> 0) then
-      #extradamage[eachpick,"+1d10 piercing damage",field[name].text]
+    foreach pick in hero from BaseWep where "IsWeapon.wSpear"
+      if (field[abilActive].value <> 0) then
+        #extradamage[eachpick,"+1d8 piercing damage",field[name].text]
+        if (eachpick.field[wIs2nd].value <> 0) then
+           #extradamage[eachpick,"+1d10 piercing damage",field[name].text]
+        endif
       endif
-
     nexteach]]></eval>
     </thing>
   <thing id="f5CUEAlche" name="Alchemist" description="You have studied the secrets of alchemy and are an expert in its practice, gaining the following benefits:\n\n•   Increase your Intelligence score by 1, to a maximum of 20.\n•   You gain proficiency with alchemist’s supplies. If you are already proficient with them, you add double your proficiency bonus to checks you make with them.\n•   As an action, you can identify one potion within 5 feet of you, as if you had tasted it. You must see the liquid for this benefit to work.\n•   Over the course of any short rest, you can temporarily improve the potency of one potion of healing of any rarity. To use this benefit, you must have alchemist’s supplies with you, and the potion must be within reach. If the potion\nis drunk no more than 1 hour after the short rest ends, the creature drinking the potion can forgo the potion’s die roll and regains the maximum number of hit points that the potion can restore." compset="Feat" summary="You have studied the secrets of alchemy and are an expert in its practice." uniqueness="useronce">
