@@ -688,4 +688,34 @@
       field[CustDesc].text = root.field[pDuration].text
       ]]></eval>
     </thing>
+
+  <thing id="p5CSplKnwn" name="Spells Known" description="Select this adjustment to add to the number of spells known for a spontaneous casting class (ie Sorcerer)." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.Class &amp; CasterType.SpontKnow"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <tag group="Adjustment" tag="Class"/>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+
+      ~ Increase max spells known
+      field[pChosen].chosen.field[cMaxKnSpl].value += field[pAdjust].value]]></eval>
+    </thing>
+  <thing id="p5CSplMem" name="Spells Memorized" description="Select this adjustment to add to the number of spells memorized for spellbook classes (ie Wizard)." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.Class &amp; CasterType.MemBook"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <tag group="Adjustment" tag="Class"/>
+    <eval phase="First" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing chosen, get out now
+      doneif (field[pChosen].ischosen = 0)
+
+      ~ Increase max spells Memorized
+      field[pChosen].chosen.field[cMaxSpMem].value += field[pAdjust].value]]></eval>
+    </thing>
+
   </document>
