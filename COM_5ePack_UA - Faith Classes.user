@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CWlkSeek" name="The Seeker" description="Your search for knowledge led you to firm a pact with a likeminded entity from the astral plane.\n\nSource: https://dnd.wizards.com/articles/features/faithful" compset="CustomSpec" uniqueness="unique">
+    <comment>Source: https://dnd.wizards.com/articles/features/faithful</comment>
+    <usesource source="5eFaitUACP"/>
+    <tag group="ClsAllowSp" tag="spArcaEye" name="Arcane Eye" abbrev="Arcane Eye"/>
+    <tag group="ClsAllowSp" tag="spLegeLore" name="Legend Lore" abbrev="Legend Lore"/>
+    <tag group="ClsAllowSp" tag="spFeatFall" name="Feather Fall" abbrev="Feather Fall"/>
+    <tag group="ClsAllowSp" tag="spLocaCrea" name="Locate Creature" abbrev="Locate Creature"/>
+    <tag group="ClsAllowSp" tag="spSending" name="Sending" abbrev="Sending"/>
+    <tag group="ClsAllowSp" tag="spPasswall" name="Passwall" abbrev="Passwall"/>
+    <tag group="ClsAllowSp" tag="spJump" name="Jump" abbrev="Jump"/>
+    <tag group="ClsAllowSp" tag="spLocaObje" name="Locate Object" abbrev="Locate Object"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron" abbrev="Warlock Otherworldly Patron"/>
+    <tag group="ClsAllowSp" tag="spLevitate" name="Levitate" abbrev="Levitate"/>
+    <tag group="ClsAllowSp" tag="spClairvoy" name="Clairvoyance" abbrev="Clairvoyance"/>
+    <bootstrap thing="c5CWlkFarW">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkAstS">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkShiA">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkAstR">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    </thing>
+  <thing id="c5CWlkShiA" name="Shielding Aurora" description="Starting at 1st level, you can invoke the Seeker’s power to protect you from harm. As a bonus action, you create a whirling aurora of brilliant energy that swirls around you. Until the end of your next turn, you gain resistance to all damage, and if a hostile creature ends its turn within 10 feet of you, it takes radiant damage equal to your warlock level + your Charisma modifier.\n\nOnce you use this feature, you can’t use it again until you finish a short or long rest." compset="ClSpecial">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="10"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="abDuration" tag="Round" name="Round" abbrev="rd"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="c5CWlkAstR" name="Astral Refuge" description="You gain the ability to step into an astral refuge. As an Action, you disapear from the world for a brief moment and enter the Astral Plane, taking advantage of its timeless nature. While in your astral refuge, you can take two actions to cast spells that target only you. After using those two actions, you retur to the space you occupied and your turn ends." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="c5CWlkFarW" name="Far Wanderer" description="You no longer need to breathe, and you gain resistance to fire damage and cold damage." compset="ClSpecial">
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abRange" tag="Personal"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform forward[DamageRes.dtFire]
+      perform forward[DamageRes.dtCold]]]></eval>
+    </thing>
+  <thing id="c5CWlkAstS" name="Astral Sequestration" description="You gain the ability to sequester yourself and your allies in the Astral Plane. \n\nBy performing a special ritual over the course of 5 minutes, you shif yourself and up to ten willing creatures you can see to the Astral Plane. You and those creatures gain the benefits of a short rest while sequestered on the Astral Plane. You then return to the spaces you all occupied when you use this ability, with no time having passed in the world.\n\nDuring this short rest, you and the creatures you sequester can make use of any options available during a rest that affect only you and the creatures you sequester.\n\nOnce you use this ability, you cannot use it again until you complete a long rest." compset="ClSpecial" summary="You gain the ability to sequester yourself and your allies in the Astral Plane.">
+    <fieldval field="abDuration" value="5"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abRange" tag="Sight"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    </thing>
+  <thing id="c5CWlkStar" name="Pact of the Star Chain" description="The Seeker grants you a chain forged from starlight, decorated with gleaming motes of brightness. While the chain is on your person, you know the {i}augury{/i} spell and you can cast it as a ritual. The spell does not count against your number of spells known.\n\nAdditionally, you can invoke the Seeker&apos;s power to gain advantage on an intelligence check while you carry this item. Once you use this feature, you cannot use it again until you complete a short or long rest.\n\nIf you lose your Star Chain, you can perform a 1- hour ceremony to receive a replacement from the Seeker. The ceremony can be performed during a short or long rest, and it destroys the previous chain. The chain disapears in a flash of light when you die.\n\nSource: https://dnd.wizards.com/articles/features/faithful" compset="CustomSpec" summary="Gain the ability to cast {i}augury{/i}." uniqueness="unique">
+    <comment>Source: https://dnd.wizards.com/articles/features/faithful</comment>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eFaitUACP" parent="UserParent" name="5e Unearthed Arcana - The Faithful"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="WlkPacBoon" name="Warlock Pact Boon" abbrev="Warlock Pact Boon"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <bootstrap thing="spAugury">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpWlk"/>
+      </bootstrap>
+    <pickreq thing="c5CWlkSeek"/>
+    </thing>
+  </document>

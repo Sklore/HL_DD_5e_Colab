@@ -52,7 +52,7 @@
     <fieldval field="rSTR" value="2"/>
     <fieldval field="rHeightMin" value="44"/>
     <fieldval field="rWeightMin" value="115"/>
-    <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
+    <usesource source="5ePHBCP"/>
     <tag group="WeightDice" tag="2" name="2" abbrev="2"/>
     <tag group="WeightSize" tag="6" name="d6" abbrev="d6"/>
     <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
@@ -109,7 +109,7 @@
     </thing>
   <thing id="sr5CStrHal" name="Strongheart Halfling" description="The strongheart halflings were, like the ghostwise and lightfoot hin, native to Luiren. They traced their ancestry back to the same long-lost days as the other subraces, but unlike their cousins, the stronghearts elected to remain in their homeland following the events of the Hin Ghostwar. The legacy of Chand, the strong-heart war chieftain who galvanized his tribe against the threat of the feral ghostwise, lived on in a nation that both reinforced and defied many of the expectations non-halflings had of this race." compset="SubRace" uniqueness="unique">
     <fieldval field="rCON" value="1"/>
-    <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
+    <usesource source="5ePHBCP"/>
     <tag group="ClVaryName" tag="Prepend" name="Prepend" abbrev="Prepend"/>
     <tag group="SubRace" tag="rHalfling" name="Halfling" abbrev="Halfling"/>
     <bootstrap thing="ra5CStoRes"></bootstrap>
@@ -221,5 +221,138 @@
       <autotag group="Value" tag="120"/>
       </bootstrap>
     <bootstrap thing="ra5CStonCa"></bootstrap>
+    </thing>
+  <thing id="ra5CFeral" name="Feral" description="Your Intelligence score increases by 1, and your Dexterity score increases by 2. This trait replaces the Ability Score Increase trait." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="AllowRCust" tag="r5CTieflin"/>
+    <eval phase="First" priority="500"><![CDATA[~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~overwrite the tiefling's default 
+      hero.child[r5CTieflin].field[rSTR].value = 0
+      hero.child[r5CTieflin].field[rDEX].value = 2
+      hero.child[r5CTieflin].field[rCON].value = 0
+      hero.child[r5CTieflin].field[rINT].value = 1
+      hero.child[r5CTieflin].field[rWIS].value = 0
+      hero.child[r5CTieflin].field[rCHA].value = 0]]></eval>
+    </thing>
+  <thing id="ra5CDevTon" name="Devil&apos;s Tongue" description="You know the {i}vicious mockery{/i} cantrip. When you reach 3rd level, you can cast the {i}charm person{/i} spell as a 2nd-level spell once with this trait. When you reach 5th level , you can cast the {i}enthrall{/i} spell once with this trait. You must finish a long rest to cast these spells once again with this trait. Charisma is your spellcasting ability for them. This trait replaces the Infernal Legacy trait." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="RaReplace" tag="ra5CInfLeg"/>
+    <tag group="AllowRCust" tag="r5CTieflin"/>
+    <tag group="RaReplace" tag="raTiLegacy"/>
+    <bootstrap thing="spViciMock">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spEnthrall">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCharPers">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 3)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CHellfi" name="Hellfire" description="Once you reach 3rd level , you can cast the {i}burning hands{/i} spell once per day as a 2nd-level spell. This trait replaces the hellish rebuke spell of the Infernal Legacy trait." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="RaReplace" tag="ra5CInfLeg"/>
+    <tag group="AllowRCust" tag="r5CTieflin"/>
+    <tag group="RaReplace" tag="raTiLegacy"/>
+    <bootstrap thing="spThaumatu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spBurnHand">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:Classes.? >= 3)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CWinged" name="Winged" description="You have bat-like wings growing from your back. You have a flying speed of 30 feet. This trait replaces the Infernal Legacy trait." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <tag group="AllowRCust" tag="r5CTieflin"/>
+    <tag group="RaReplace" tag="raTiLegacy"/>
+    <tag group="RaReplace" tag="ra5CInfLeg"/>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CAppear" name="Appearance" description="Your tiefling does not look like common tieflings" compset="VarRaceTrt">
+    <fieldval field="usrLabelAr" value="Choose:"/>
+    <arrayval field="usrArray" index="0" value="Small horns"/>
+    <arrayval field="usrArray" index="1" value="Fangs"/>
+    <arrayval field="usrArray" index="2" value="Sharp teeth"/>
+    <arrayval field="usrArray" index="3" value="Forked tongue"/>
+    <arrayval field="usrArray" index="4" value="Catlike eyes"/>
+    <arrayval field="usrArray" index="5" value="Six fingers on each hand"/>
+    <arrayval field="usrArray" index="6" value="Goatlike legs"/>
+    <arrayval field="usrArray" index="7" value="Cloven hoofs"/>
+    <arrayval field="usrArray" index="8" value="Forked tail"/>
+    <arrayval field="usrArray" index="9" value="Leathery skin"/>
+    <arrayval field="usrArray" index="10" value="Scaly skin"/>
+    <arrayval field="usrArray" index="11" value="Red skin"/>
+    <arrayval field="usrArray" index="12" value="Dark blue skin"/>
+    <arrayval field="usrArray" index="13" value="Cast no shadow"/>
+    <arrayval field="usrArray" index="14" value="No reflection"/>
+    <arrayval field="usrArray" index="15" value="Exude a smell of brimstone"/>
+    <usesource source="5eSCAGCP"/>
+    <tag group="AllowRCust" tag="r5CTieflin"/>
+    </thing>
+  <thing id="r5CSCAGHEl" name="Half-Elf (Variants)" description="Your half-elf character has some qualities in common with elves and some that are unique to half- elves." compset="Race">
+    <fieldval field="rCHA" value="2"/>
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="rHeightMin" value="57"/>
+    <fieldval field="rWeightMin" value="110"/>
+    <usesource source="5eSCAGCP"/>
+    <tag group="HeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="HeightSize" tag="8" name="d8" abbrev="d8"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="WeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="WeightSize" tag="4" name="d4" abbrev="d4"/>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="raHElfAbil"></bootstrap>
+    <bootstrap thing="raFeyAnces"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CHaElVa"></bootstrap>
+    </thing>
+  <thing id="ra5CHaElVa" name="Half-Elf Variants" description="HALF-ELF VARIANTS\nSome half-elves in FaerOn have a racial trait in place of the Skill Versatility trait. If your DM allows it, your half-elf character can forgo Skill Versatility and instead take the elf trait Keen Senses or a trait based on your elf parentage: \n\n• A half-elf of wood elf descent can choose the wood elf&apos;s Elf Weapon Training, Fleet of Foot, or Mask of the Wild.\n• A half-elf of moon elf or sun elf descent can choose the high elf&apos;s Elf Weapon Training or Cantrip.\n• A half-elf of drow descent can choose the drow&apos;s Drow Magic.\n• A half-elf of aquatic heritage can choose a swimming speed of 30 feet." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Wood Elf (Elf Weapon Training)"/>
+    <arrayval field="usrArray" index="1" value="Wood Elf (Fleet of Foot)"/>
+    <arrayval field="usrArray" index="2" value="Wood Elf (Mask of the Wild)"/>
+    <arrayval field="usrArray" index="3" value="Moon Elf (Elf Weapon Training)"/>
+    <arrayval field="usrArray" index="4" value="Moon Elf (Cantrip)"/>
+    <arrayval field="usrArray" index="5" value="Sun Elf (Elf Weapon Training)"/>
+    <arrayval field="usrArray" index="6" value="Sun Elf (Cantrip)"/>
+    <arrayval field="usrArray" index="7" value="Drow (Drow Magic)"/>
+    <arrayval field="usrArray" index="8" value="Aquatic (Swimming Speed)"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="raHiElfWep">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:usrIndex >= 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="raHiElfWep">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:usrIndex >= 3]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="raHiElfWep">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:usrIndex >= 5]]></containerreq>
+      </bootstrap>
     </thing>
   </document>

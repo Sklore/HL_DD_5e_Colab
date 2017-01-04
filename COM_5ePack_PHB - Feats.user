@@ -70,11 +70,11 @@
       hero.childfound[ArmorClass].field[Bonus].value += hero.child[ProfBonus].field[tProfBonus].value]]></eval>
     <exprreq message="Dexterity 13 required."><![CDATA[#attrvalue[aDEX] >= 13]]></exprreq>
     </thing>
-  <thing id="ft5CDuelWi" name="Duel Wielder" description="You gain a +1 bonus to AC while you are wielding a separate melee weapon in each hand.\n• You can use two-weapon fighting even when the onehanded melee weapons you are wielding aren’t light.\n• You can draw or stow two one-handed weapons when you would normally be able to draw or stow only one." compset="Feat" uniqueness="useronce">
+  <thing id="ft5CDuelWi" name="Dual Wielder" description="You gain a +1 bonus to AC while you are wielding a separate melee weapon in each hand.\n• You can use two-weapon fighting even when the one handed melee weapons you are wielding aren’t light.\n• You can draw or stow two one-handed weapons when you would normally be able to draw or stow only one." compset="Feat" uniqueness="useronce">
     <fieldval field="abValue" value="1"/>
-    <usesource source="5ePHBCP"/>
-    <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[
+    <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostLevel" priority="15000" index="2"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
 
@@ -99,6 +99,31 @@
       
       ~ Give +1 AC bonus as we are wielding two melee weapons
       hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
+    <eval phase="PostAttr" priority="15000" index="10"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ If we don't have a weapon in each hand get out now!
+      ~ This saves us from wasting CPU with a Foreach loop if
+      ~ its not needed.
+      doneif (hero.tagis[Hero.EquipMain] + hero.tagis[Hero.EquipOff] <> 2)
+
+      ~ we get the attribute bonus to add to the offhand damage
+      ~ as a kludge to non-light weapons
+      debug "Style = " & hero.tagis[Hero.2WepStyle]
+      if ( hero.tagis[Hero.2WepStyle] <> 0 ) then
+         var StrBonus as number
+         var DexBonus as number
+         StrBonus = hero.child[aSTR].field[aModBonus].value
+         DexBonus = hero.child[aDEX].field[aModBonus].value
+         debug " StrBonus " & StrBonus & " DexBonus " & DexBonus
+         foreach pick in hero from BaseWep where "(wCategory.Melee) &   (fieldval:wIs2nd <> 0) & !wProperty.TwoHanded & !wProperty.Light "
+         if (eachpick.tagis[wProperty.Finesse] <> 0 ) then
+             eachpick.field[dmmBonus].value += maximum(StrBonus,DexBonus)
+         else
+             eachpick.field[dmmBonus].value += StrBonus
+         endif
+         nexteach
+      endif]]></eval>
     </thing>
   <thing id="ft5CDungeD" name="Dungeon Delver" description="You have advantage on Wisdom (Perception) and Intelligence (Investigation) checks made to detect the presence of secret doors.\n• You have advantage on saving throws made to avoid or resist traps.\n• You have resistance to the damage dealt by traps. \n• You can search for traps while traveling at a normal pace, instead of only at a slow pace." compset="Feat" uniqueness="useronce">
     <usesource source="5ePHBCP"/>
@@ -148,21 +173,17 @@
         @valid = HasSpells]]></validate>
       </prereq>
     </thing>
-  <thing id="ft5CGWeaMa" name="Great Weapon Master" description="On your turn, when you score a critical hit with a melee weapon or reduce a creature to 0 hit points with one, you can make one melee weapon attack as a bonus action.\n• Before you make a melee attack with a heavy weapon that you are proficient with, you can choose to take a - 5 penalty to the attack roll. If the attack hits, you add +10 to the attack’s damage." compset="Feat" uniqueness="useronce">
-    <comment><![CDATA[doneif (field[abilActive].value = 0)
-foreach pick in hero from BaseWep where "(wCategory.RangeProj | wCategory.RangeThrow | wCategory.Firearm)"
-eachpick.field[atrBonus].value -= 5
-eachpick.field[dmrBonus].value += 10
-nexteach]]></comment>
-    <fieldval field="actName" value="Activate Great Weapon Master (-5 to hit, +10 dmg)"/>
+  <thing id="ft5CGWeaMa" name="Great Weapon Master" description="On your turn, when you score a critical hit with a melee weapon or reduce a creature to 0 hit points with one, you can make one melee weapon attack as a bonus action. Before you make a melee attack with a heavy weapon that you are proficient with, you can choose to take a - 5 penalty to the attack roll. If the attack hits, you add +10 to the attack’s damage." compset="Feat" summary="Bonus action when dropping a creature. Take -5H to gain +10 dmg." uniqueness="useronce">
+    <fieldval field="actName" value="-5 to hit, +10 dmg"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="User" tag="Activation"/>
-    <eval phase="First"><![CDATA[
+    <eval phase="PreLevel" priority="10000"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
       ~ If not active get out now!
       doneif (field[abilActive].value = 0)
+      
       foreach pick in hero from BaseWep where "(wProperty.Heavy)"
         eachpick.field[atmBonus].value -= 5
         eachpick.field[dmmBonus].value += 10
@@ -193,7 +214,7 @@ nexteach]]></comment>
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
       
-      #skillbonus[aSTR] += 1]]></eval>
+      hero.child[aSTR].field[aStartMod].value += 1]]></eval>
     <exprreq message="Proficiency with heavy armor required. "><![CDATA[tagis[ArmProfGrp.ArmorHeavy] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CInspiL" name="Inspiring Leader" description="You can spend 10 minutes inspiring your companions, shoring up their resolve to fight. \n\nWhen you do so, choose up to six friendly creatures (which can include yourself) within 30 feet of you who can see or hear you and who can understand  you. Each creature can gain temporary hit points equal to your level + your Charisma modifier. A creature can’t gain temporary hit points from this feat again until it has finished a short or long rest.\n\nPrerequisite: Charisma 13 or higher" compset="Feat" summary="You can spend 10 minutes inspiring your companions, shoring up their resolve to fight." uniqueness="useronce">
@@ -436,7 +457,7 @@ nexteach]]></comment>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="User" tag="Activation"/>
-    <eval phase="First"><![CDATA[
+    <eval phase="Final" priority="10000"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
       ~ If not active get out now!
