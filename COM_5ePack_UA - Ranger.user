@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
   <thing id="cHelpRgC" name="Ranger (Sept 2016)" description="This is the Ranger class described in the Unearthed Arcana Article of September 2016" compset="Class" uniqueness="unique">
-    <fieldval field="cHDSides" value="10"/>
+    <comment>Source: https://media.wizards.com/2016/dnd/downloads/UA_RevisedRanger.pdf</comment>
     <fieldval field="cAbbr" value="RgC"/>
     <fieldval field="cSkillMax" value="3"/>
     <fieldval field="cSpecSing" value="Fighting Style"/>
@@ -12,10 +12,12 @@
     <fieldval field="StartGear" value="• ({i}a{/i}) a dungeoneer&apos;s pack or ({i}b{/i}) an explorer&apos;s pack"/>
     <fieldval field="StartAll" value="• ({i}a{/i}) scale mail or ({i}b{/i}) leather armor{br}• ({i}a{/i}) two shortswords or ({i}b{/i}) two simple melee weapons{br}• ({i}a{/i}) a dungeoneer&apos;s pack or ({i}b{/i}) an explorer&apos;s pack{br}• A longbow and a quiver of 20 arrows"/>
     <fieldval field="cSpec4thSi" value="Greater Favored Enemy"/>
-    <arrayval field="cAttrArray" index="7" value="4"/>
+    <fieldval field="cHDSides" value="10"/>
     <arrayval field="cAttrArray" index="11" value="6"/>
     <arrayval field="cAttrArray" index="15" value="8"/>
     <arrayval field="cAttrArray" index="18" value="10"/>
+    <arrayval field="cAttrArray" index="3" value="2"/>
+    <arrayval field="cAttrArray" index="7" value="4"/>
     <arrayval field="cArrKnSpl" index="1" value="2"/>
     <arrayval field="cArrKnSpl" index="2" value="3"/>
     <arrayval field="cArrKnSpl" index="4" value="4"/>
@@ -25,14 +27,20 @@
     <arrayval field="cArrKnSpl" index="12" value="8"/>
     <arrayval field="cArrKnSpl" index="14" value="9"/>
     <arrayval field="cArrKnSpl" index="16" value="10"/>
-    <arrayval field="cCustTot" index="1" value="1"/>
     <arrayval field="cArrKnSpl" index="18" value="11"/>
+    <arrayval field="cCustQuTot" index="5" value="1"/>
+    <arrayval field="cCustTeTot" index="0" value="1"/>
+    <arrayval field="cCustTot" index="1" value="1"/>
     <arrayval field="cCustScTot" index="2" value="1"/>
     <arrayval field="cCustScTot" index="6" value="1"/>
-    <arrayval field="cCustTeTot" index="0" value="1"/>
-    <arrayval field="cCustQuTot" index="5" value="1"/>
-    <arrayval field="cAttrArray" index="3" value="2"/>
     <usesource source="p5eUneRgr" parent="p5eUneArc" name="5e Unearthed Arcana - The Ranger, Revised"/>
+    <tag group="CasterType" tag="SpontKnow"/>
+    <tag group="Helper" tag="HalfCaster"/>
+    <tag group="CasterSrc" tag="Divine"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="PrimeAbil" tag="aDEX"/>
+    <tag group="PrimeAbil" tag="aWIS"/>
+    <tag group="sClass" tag="cHelpRgr"/>
     <tag group="ProfSave" tag="svSTR"/>
     <tag group="ArmProfGrp" tag="ArmorLight"/>
     <tag group="ArmProfGrp" tag="WepMartial"/>
@@ -48,13 +56,6 @@
     <tag group="AllowSkl1" tag="skPercep"/>
     <tag group="AllowSkl1" tag="skSurvival"/>
     <tag group="AllowSkl1" tag="skStealth"/>
-    <tag group="sClass" tag="cHelpRgr"/>
-    <tag group="CasterType" tag="SpontKnow"/>
-    <tag group="Helper" tag="HalfCaster"/>
-    <tag group="CasterSrc" tag="Divine"/>
-    <tag group="ProfSave" tag="svDEX"/>
-    <tag group="PrimeAbil" tag="aDEX"/>
-    <tag group="PrimeAbil" tag="aWIS"/>
     <bootstrap thing="cRgrFoeSla">
       <autotag group="ClSpecWhen" tag="20"/>
       </bootstrap>
@@ -66,6 +67,9 @@
       </bootstrap>
     <bootstrap thing="c5CRgCFlFt">
       <autotag group="ClSpecWhen" tag="8"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgGFaE">
+      <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
     <bootstrap thing="c5CRgChdps">
       <autotag group="ClSpecWhen" tag="10"/>
@@ -92,6 +96,7 @@
   <thing id="c5CRgC" name="Ranger (Sept 2016)" compset="ClassLevel" maxlimit="20">
     <usesource source="p5eUneRgr"/>
     <tag group="ClassType" tag="Normal"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
     <bootstrap thing="cHelpRgC"></bootstrap>
     <link linkage="helper" thing="cHelpRgC"/>
     </thing>
@@ -197,43 +202,7 @@
      hero.child[xClimb].field[abValue].value = myspeed
      hero.child[xSwim].field[abValue].value = myspeed]]></eval>
     </thing>
-  <thing id="c5CRgCFavE" name="Favored Enemy" description="Beginning at 1st level, you have significant experience studying, tracking, hunting, and even talking to a certain type of enemy commonly encountered in the wilds. Choose a type of favored enemy: beasts, fey, humanoids, monstrosities, or undead. You gain a +2 bonus to damage rolls with weapon attacks against creatures of the chosen type. Additionally, you have advantage on Wisdom (Survival) checks to track your favored enemies, as well as on Intelligence checks to recall information about them.\nWhen you gain this feature, you also learn one language of your choice, typically one spoken by your favored enemy or creatures associated with it. However, you are free to pick any language you wish to learn." compset="ClSpecial">
-    <fieldval field="actName" value="Favored Enemy"/>
-    <tag group="User" tag="Activation"/>
-    <eval phase="PreLevel" priority="10000"><![CDATA[~ If we're disabled, do nothing & 
-doneif (tagis[Helper.Disable] = 1)
-~ If not active get out now!
-doneif (field[abilActive].value = 0)
-
-var FavEn as number
-var FavDmg as number
-FavEn = Hero.tagcount[abCategory.RgrFavEnem]
-if ( FavEn > 2 ) then
-   FavEn = 2
-endif
-FavDmg = FavEn * 2
-
-foreach pick in hero from BaseWep
-        eachpick.field[dmmBonus].value += FavDmg
-nexteach]]></eval>
-    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[~ If we're disabled, do nothing & 
-doneif (tagis[Helper.Disable] = 1)
-
-if ( hero.tagcount[Classes.5CRgC] > 5) then
-   hero.child[c5CRgCFavE].field[actName].text = "Greater Favored Enemy"
-   hero.child[c5CRgCFavE].field[sbName].text = "Greater Favored Enemy"
-   hero.child[c5CRgCFavE].field[listname].text = "Greater Favored Enemy"
-   hero.child[c5CRgCFavE].field[shortname].text = "Greater Favored Enemy"
-endif]]></eval>
-    <eval phase="PostAttr" priority="10000" index="3"><![CDATA[~ If we're disabled, do nothing & 
-doneif (tagis[Helper.Disable] = 1)
-~ If not active get out now!
-doneif (field[abilActive].value = 0)
-
-if ( Hero.tagcount[Classes.5CRgC] >= 6 ) then
-      #situational[hero.child[svAll], "Advantage on all saves against spells and abilities of your Greater Favored Enemy",field[thingname].text]
-endif]]></eval>
-    </thing>
+  <thing id="c5CRgCFavE" name="Favored Enemy" description="Beginning at 1st level, you have significant experience studying, tracking, hunting, and even talking to a certain type of enemy commonly encountered in the wilds. \n\nChoose a type of favored enemy: \n\nbeasts, fey, humanoids, monstrosities, or undead. \n\nYou gain a +2 bonus to damage rolls with weapon attacks against creatures of the chosen type. Additionally, you have advantage on Wisdom (Survival) checks to track your favored enemies, as well as on Intelligence checks to recall information about them.\n\nWhen you gain this feature, you also learn one language of your choice, typically one spoken by your favored enemy or creatures associated with it. However, you are free to pick any language you wish to learn." compset="ClSpecial"></thing>
   <thing id="c5CRgCHunC" name="Hunter Conclave" description="Some rangers seek to master weapons to better protect civilization from the terrors of the wilderness. Members of the Hunter Conclave learn specialized fighting techniques for use against the most dire threats, from rampaging ogres and hordes of orcs to towering giants and terrifying dragons." compset="CustomSpec" uniqueness="unique">
     <tag group="SpecSource" tag="cHelpRgC"/>
     <tag group="Helper" tag="Secondary"/>
@@ -380,7 +349,7 @@ doneif (field[abilActive].value = 0)
     <tag group="abRange" tag="AttackMel"/>
     </thing>
   <thing id="c5CRgCBeDe" name="Beast&apos;s Defense" description="At 7th level, while your companion can see you, it has advantage on all saving throws." compset="ClSpecial"></thing>
-  <thing id="c5CRgCStCF" name="Storm of claws and fangs" description="At 11th level, your companion can use its action to make a melee attack against each creature of it&apos;s choice within 5 feet of it, with a separate atack roll for each target." compset="ClSpecial"></thing>
+  <thing id="c5CRgCStCF" name="Storm of Claws and Fangs" description="At 11th level, your companion can use its action to make a melee attack against each creature of it&apos;s choice within 5 feet of it, with a separate atack roll for each target." compset="ClSpecial"></thing>
   <thing id="c5CRgCSBDe" name="Superior Beast&apos;s Defense" description="At 15th level, whenever an attacker that your companion can see hits it with and attack, it can use its reaction to halve the attack&apos;s damage against it." compset="ClSpecial"></thing>
   <thing id="c5CRgCCTAC" name="Animal Companion" compset="Companion" stacking="never" uniqueness="unique">
     <fieldval field="CompType" value="AnimComp"/>
@@ -573,8 +542,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
     <tag group="abCategory" tag="RgrFavEnem"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
       doneif (islinkage[table] = 0)
 
@@ -600,8 +568,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
       doneif (islinkage[table] = 0)
 
@@ -627,8 +594,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
       doneif (islinkage[table] = 0)
 
@@ -654,8 +620,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
       doneif (islinkage[table] = 0)
 
@@ -681,8 +646,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
       doneif (islinkage[table] = 0)
 
@@ -700,7 +664,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
         focus.field[cLaCandEx3].text = "component.BaseLang"
         endif]]></eval>
     </thing>
-  <thing id="c5CRgCGFEA" name="Aberrations" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+  <thing id="c5CRgCGFEA" name="Aberrations" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: \n\naberrations, celestials, constructs, dragons, elementals, fiends, or giants.\n\nYou gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language.Your bonus to damage rolls against all your favored enemies increases to +4.\n\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greaterfavored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
     <fieldval field="abValue" value="1"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
@@ -708,8 +672,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="Quaternary"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
       doneif (islinkage[table] = 0)
 
@@ -727,7 +690,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
         focus.field[cLaCandEx3].text = "component.BaseLang"
         endif]]></eval>
     </thing>
-  <thing id="c5CRgCGFEC" name="Celestials" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+  <thing id="c5CRgCGFEC" name="Celestials" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: \n\naberrations, celestials, constructs, dragons, elementals, fiends, or giants.\n\nYou gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language.Your bonus to damage rolls against all your favored enemies increases to +4.\n\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greaterfavored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
     <fieldval field="abValue" value="1"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
@@ -735,8 +698,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="Quaternary"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
       doneif (islinkage[table] = 0)
 
@@ -754,7 +716,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
         focus.field[cLaCandEx3].text = "component.BaseLang"
         endif]]></eval>
     </thing>
-  <thing id="c5CRgCGFEO" name="Constructs" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+  <thing id="c5CRgCGFEO" name="Constructs" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: \n\naberrations, celestials, constructs, dragons, elementals, fiends, or giants.\n\nYou gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language.Your bonus to damage rolls against all your favored enemies increases to +4.\n\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greaterfavored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
     <fieldval field="abValue" value="1"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
@@ -762,8 +724,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="Quaternary"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
       doneif (islinkage[table] = 0)
 
@@ -781,7 +742,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
         focus.field[cLaCandEx3].text = "component.BaseLang"
         endif]]></eval>
     </thing>
-  <thing id="c5CRgCGFED" name="Dragons" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+  <thing id="c5CRgCGFED" name="Dragons" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: \n\naberrations, celestials, constructs, dragons, elementals, fiends, or giants.\n\nYou gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language.Your bonus to damage rolls against all your favored enemies increases to +4.\n\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greaterfavored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
     <fieldval field="abValue" value="1"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
@@ -789,8 +750,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="Quaternary"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
       doneif (islinkage[table] = 0)
 
@@ -808,7 +768,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
         focus.field[cLaCandEx3].text = "component.BaseLang"
         endif]]></eval>
     </thing>
-  <thing id="c5CRgCGFEE" name="Elementals" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+  <thing id="c5CRgCGFEE" name="Elementals" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: \n\naberrations, celestials, constructs, dragons, elementals, fiends, or giants.\n\nYou gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language.Your bonus to damage rolls against all your favored enemies increases to +4.\n\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greaterfavored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
     <fieldval field="abValue" value="1"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
@@ -816,8 +776,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="Quaternary"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
       doneif (islinkage[table] = 0)
 
@@ -835,7 +794,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
         focus.field[cLaCandEx3].text = "component.BaseLang"
         endif]]></eval>
     </thing>
-  <thing id="c5CRgCGFEF" name="Fiends" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+  <thing id="c5CRgCGFEF" name="Fiends" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: \n\naberrations, celestials, constructs, dragons, elementals, fiends, or giants.\n\nYou gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language.Your bonus to damage rolls against all your favored enemies increases to +4.\n\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greaterfavored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
     <fieldval field="abValue" value="1"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
@@ -843,8 +802,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="Quaternary"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
       doneif (islinkage[table] = 0)
 
@@ -862,7 +820,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
         focus.field[cLaCandEx3].text = "component.BaseLang"
         endif]]></eval>
     </thing>
-  <thing id="c5CRgCGFEG" name="Giants" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: aberrations, celestials, constructs, dragons, elementals, fiends, or giants. You gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language. Your bonus to damage rolls against all your favored enemies increases to +4.\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
+  <thing id="c5CRgCGFEG" name="Giants" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: \n\naberrations, celestials, constructs, dragons, elementals, fiends, or giants.\n\nYou gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language.Your bonus to damage rolls against all your favored enemies increases to +4.\n\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greaterfavored enemy." compset="CustomSpec" summary="Advantage to track selected type or recall information about them." uniqueness="unique">
     <fieldval field="abValue" value="1"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abCategory" tag="RgrFavEnem" name="Ranger Favored Enemy" abbrev="Ranger Favored Enemy"/>
@@ -870,8 +828,7 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="Quaternary"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
       doneif (islinkage[table] = 0)
 
@@ -888,5 +845,15 @@ perform minion.childfound[xMultiatt].assign[Helper.Disable]]]></eval>
         focus.field[cLangMax3].value += field[abValue].value
         focus.field[cLaCandEx3].text = "component.BaseLang"
         endif]]></eval>
+    </thing>
+  <thing id="c5CRgGFaE" name="Greater Favored Enemy" description="At 6th level, you are ready to hunt even deadlier game. Choose a type of greater favored enemy: \n\naberrations, celestials, constructs, dragons, elementals, fiends, or giants.\n\nYou gain all the benefits against this chosen enemy that you normally gain against your favored enemy, including an additional language.Your bonus to damage rolls against all your favored enemies increases to +4.\n\nAdditionally, you have advantage on saving throws against the spells and abilities used by a greater favored enemy." compset="ClSpecial">
+    <eval phase="PostAttr" priority="10000" index="3"><![CDATA[~ If we're disabled, do nothing & 
+doneif (tagis[Helper.Disable] = 1)
+~ If not active get out now!
+doneif (field[abilActive].value = 0)
+
+if ( Hero.tagcount[Classes.5CRgC] >= 6 ) then
+      #situational[hero.child[svAll], "Advantage on all saves against spells and abilities of your Greater Favored Enemy",field[thingname].text]
+endif]]></eval>
     </thing>
   </document>
