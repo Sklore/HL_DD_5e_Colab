@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CRgrHWal" name="Horizon Walker" description="Rangers of the Horizon Conclave guard the world against threats that originate from other planes. They seek out planar portals and keep watch over them, venturing to the outer and inner planes as needed to defeat threats." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eRRAUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Ranger/Rogue Archetypes"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="RgrArchety"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <bootstrap thing="c5CRgrPlaM">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrPlaW">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrPorL">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrEthS">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrDisS">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrSpeD">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgrPriG" name="Primeval Guardian" description="Rangers of the Primeval Guardian Conclave follow an ancient tradition rooted in powerful druidic magic. These rangers learn to become one with nature, allowing them to channel the aspects of various beasts and plants in order to overcome their foes.\nThese rangers dwell in the elder forests of the world. They venture out only rarely, as they consider it their sacred duty to protect the druidic groves and ancient trees that saw the earliest days of the world." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eRRAUACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="RgrArchety"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="c5CRgrGuaM">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrGuaS">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrPieT">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrAncF">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrRooD">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrGuaA">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRogScou" name="Scout" description="You are skilled in woodcraft and stealth, allowing you to range ahead of your companions during expeditions. Rogues who embrace this archetype are at home in the wilderness and among barbarians and fighters, as they serve as the eyes and ears of war bands across the world. Compared to other rogues, you are skilled at surviving in the wilds." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eRRAUACP"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="abCategory" tag="RogArchety"/>
+    <tag group="SpecSource" tag="cHelpRog"/>
+    <bootstrap thing="c5CRogSurv">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogSkir">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogSupM">
+      <autotag group="ClSpecWhen" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogAmbM">
+      <autotag group="ClSpecWhen" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogSudS">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRogSurv" name="Survivalist" description="When you choose this archetype at 3rd level, you gain proficiency in the Nature and Survival skills. Your proficiency bonus is doubled for any ability check you make that uses either of those proficiencies." compset="ClSpecial">
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="ProfDouble" tag="skSurvival"/>
+    <tag group="ProfSkill" tag="skNature"/>
+    <tag group="ProfDouble" tag="skNature"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+perform forward[ProfSkill.?]
+perform forward[ProfDouble.?]]]></eval>
+    </thing>
+  <thing id="c5CRogSkir" name="Skirmisher" description="Starting at 3rd level, you are difficult to pin down during a fight. You can move up to half your speed as a reaction when an enemy ends its turn within 5 feet of you. This movement doesn’t provoke opportunity attacks." compset="ClSpecial">
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abRange" tag="Personal"/>
+    </thing>
+  <thing id="c5CRogSupM" name="Superior Mobility" description="At 9th level, your walking speed increases by 10 feet. If you have a climbing or swimming speed, this increase applies to that speed as well." compset="ClSpecial">
+    <fieldval field="abValue" value="10"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abRange" tag="Personal"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+hero.child[Speed].field[tSpeed].value += field[abValue].value
+if ( hero.child[xClimb].field[abValue].value > 0 ) then
+     hero.child[xClimb].field[abValue].value += field[abValue].value
+endif
+if ( hero.child[xSwim].field[abValue].value > 0 ) then
+     hero.child[xSwim].field[abValue].value += field[abValue].value
+endif
+if ( hero.child[xFly].field[abValue].value > 0 ) then
+     hero.child[xFly].field[abValue].value += field[abValue].value
+endif]]></eval>
+    </thing>
+  <thing id="c5CRogAmbM" name="Ambush Master" description="Starting at 13th level, you excel at leading ambushes. If any of your foes are surprised, you can use a bonus action on your turn in the first round of the combat to grant each ally who can see you a +5 bonus to initiative that lasts until the combat ends. If the initiative bonus would increase an ally’s initiative above yours, the ally’s initiative instead equals your initiative.  \nEach of the allies also receives a 10-foot increase to speed that lasts until the end of the ally’s next turn." compset="ClSpecial"></thing>
+  <thing id="c5CRogSudS" name="Sudden Strike" description="Starting at 17th level, you can strike with deadly speed. If you take the Attack action on your turn, you can make one additional attack as a bonus action. This attack can benefit from your Sneak Attack even if you have already used it this turn, but only if the attack is the only one you make against the target this turn." compset="ClSpecial">
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="c5CRgrPlaM" name="Planar Magic" description="Starting at 3rd level, you learn an additional spell when you reach certain levels in this class, as shown in the Horizon Walker Spells table. The spell counts as a ranger spell for you, and it doesn’t count against the number of ranger spells you know.\n\n{b}Horizon Walker Spells{/b}\n{b}Ranger Level    Spells{/b}\n           3rd        {i}protection from evil and good{/i}\n           5th        {i}alter self{/i}\n           9th        {i}protection from energy{/i}\n           13th      {i}banishment{/i}\n           17th      {i}teleportation circle{/i}" compset="ClSpecial">
+    <bootstrap thing="spProtGoEv">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spAlteSelf">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    <bootstrap thing="spProtEner">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    <bootstrap thing="spBanishme">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    <bootstrap thing="spTeleCirc">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgrPlaW" name="Planar Warrior" description="At 3rd level, you learn to draw on the energy of the planes to augment your attacks.\nAs a bonus action, choose one creature you can see within 30 feet of you. Until the end of this turn, your attacks against that creature ignore its damage resistances, and the next time you hit it  on this turn, it takes an additional 1d6 force damage." compset="ClSpecial">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abValue" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abDuration" tag="Round"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] = 1)
+doneif (field[abilActive].value = 0)
+
+foreach pick in hero from BaseWep 
+  eachpick.field[wDamExtra].text = "+" & field[abValue].value & "d6 Force"
+nexteach]]></eval>
+    </thing>
+  <thing id="c5CRgrPorL" name="Portal Lore" description="At 3rd level, you gain the ability to detect the presence of planar portals. As an action, you detect the distance and direction to any planar portals within 1,000 feet of you. You also sense which plane of existence each portal leads to. However, if magic obscures any details of a portal, this feature doesn’t reveal them. \nOnce you use this feature, you can’t use it again until you finish a short or long rest. Alternatively, you can use the feature again if you expend a spell slot of 2nd level or higher. \nSee the “Planar Travel” section in chapter 2 of the Dungeon Master’s Guide for examples of planar portals." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="c5CRgrEthS" name="Ethereal Step" description="At 7th level, you learn to step through the Ethereal Plane. As a bonus action on your turn, you can cast the etherealness spell with this feature, but the spell ends at the end of the current turn. Once you use this feature, you can’t use it again until you finish a short or long rest." compset="ClSpecial">
+    <tag group="abAction" tag="Bonus"/>
+    <bootstrap thing="spEthereal">
+      <containerreq phase="First" priority="499"><![CDATA[(count:Classes.Ranger >= 7) | (count:Classes.5CRgC >= 7)]]></containerreq>
+      <autotag group="Usage" tag="ShortRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgrDisS" name="Distant Strike" description="At 11th level, you gain the ability to step between the planes in a blink of an eye. When you use the Attack action, you can teleport up to 10 feet before each attack. You must be able to see the destination of the teleportation.\nIf you attack at least two different creatures with the action, you can make one additional attack with it against a third creature." compset="ClSpecial">
+    <fieldval field="abRange" value="10"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Free"/>
+    </thing>
+  <thing id="c5CRgrSpeD" name="Spectral Defense" description="At 15th level, your ability to move between planes becomes even more finely tuned. As a reaction when you take damage, you can halve that damage against you. For a moment, you slip into the planar boundary to lessen the harm." compset="ClSpecial">
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="c5CRgCHwal" name="Horizon Walker Conclave" description="Rangers of the Horizon Conclave guard the world against threats that originate from other planes. They seek out planar portals and keep watch over them, venturing to the outer and inner planes as needed to defeat threats." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eRRAUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Ranger/Rogue Archetypes"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <bootstrap thing="c5CRgrPorL">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrEthS">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrDisS">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrSpeD">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrPlaM">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrPlaW">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cExtraAtt">
+      <autotag group="ClSpecWhen" tag="5"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgrGuaM" name="Guardian Magic" description="Starting at 3rd level, you learn an additional spell when you reach certain levels in this class, as shown in the Primeval Guardian Spells table. The spell counts as a ranger spell for you, and it doesn’t count against the number of ranger spells you know.\n\n{b}Primeval Guardian Spells{/b}\n{b}Ranger Level      Spells{/b}\n          3rd          {i}entangle{/i}\n          5th          {i}enhance ability{/i}\n          9th          {i}conjure animals{/i}\n          13th        {i}giant insect{/i}\n          17th        {i}insect plague{/i}" compset="ClSpecial">
+    <bootstrap thing="spEntangle">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    <bootstrap thing="spEnhaAbil">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    <bootstrap thing="spConjAnim">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    <bootstrap thing="spGianInse">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    <bootstrap thing="spInsePlag">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgC"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgrGuaS" name="Guardian Soul" description="Starting at 3rd level, you gain the ability to temporarily grow and take on the appearance of a treelike person, covered with leaves and bark. As a bonus action, you assume this guardian form, which lasts until you end it as a bonus action or until you are incapacitated.\nYou undergo the following changes while in your guardian form:\n•  Your size becomes Large, unless you were larger.\n•  Any speed you have becomes 5 feet, unless the speed was lower.\n•  Your reach increases by 5 feet.\n•  You gain a number of temporary hit points at the start of each of your turns. The number equals half your ranger level. When the form ends, you lose any temporary hit points you have from it." compset="ClSpecial">
+    <fieldval field="actName" value="Guardian Form"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abAction" tag="Bonus"/>
+    <eval phase="PostLevel" priority="15000"><![CDATA[doneif (tagis[Helper.Disable] = 1)
+doneif (field[abilActive].value = 0)
+
+~reduce all speeds to 5ft
+hero.child[Speed].field[tSpeed].value = 5
+if ( hero.child[xClimb].field[abValue].value > 0 ) then
+     hero.child[xClimb].field[abValue].value = 5
+endif
+if ( hero.child[xSwim].field[abValue].value > 0 ) then
+     hero.child[xSwim].field[abValue].value = 5
+endif
+if ( hero.child[xFly].field[abValue].value > 0 ) then
+     hero.child[xFly].field[abValue].value = 5
+endif
+
+~increase our size to large
+hero.child[Totals].field[tSize].value += 1
+perform hero.assign[Size.Large]
+perform hero.assign[MountSize.Large11]
+perform hero.delete[Size.Medium]
+perform hero.delete[MountSize.Medium10]
+
+~If we have Ancient Fortitude, modify our hit points
+var extraHP as number
+if (hero.tagcount[Classes.Ranger] >= 7) then
+   extraHP = hero.tagcount[Classes.Ranger]
+   extraHP = extraHP * 2
+   hero.child[Totals].field[tBonusHP].value += extraHP
+endif
+
+if (hero.tagcount[Classes.5CRgC] >= 7) then
+   extraHP = hero.tagcount[Classes.5CRgC]
+   extraHP = extraHP * 2
+   hero.child[Totals].field[tBonusHP].value += extraHP
+endif]]></eval>
+    </thing>
+  <thing id="c5CRgrPieT" name="Piercing Thorns" description="At 3rd level, your command of primal magic allows you to enhance your attacks with thorns. Once during each of your turns, you can deal an additional 1d6 piercing damage to one creature you hit with a weapon attack." compset="ClSpecial">
+    <fieldval field="abValue" value="1"/>
+    <tag group="abAction" tag="5CN1Attack"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] = 1)
+doneif (field[abilActive].value = 0)
+
+foreach pick in hero from BaseWep 
+  eachpick.field[wDamExtra].text = "+" & field[abValue].value & "d6 Piercing"
+nexteach]]></eval>
+    </thing>
+  <thing id="c5CRgrAncF" name="Ancient Fortitude" description="At 7th level, you gain the endurance of the ancient forests. Your hit point maximum and current hit points increase by 2 per ranger level when you assume your guardian form. This increase lasts until you leave the form; your hit point maximum then returns to normal, but your current hit points remain the same, unless they must decrease to abide by your hit point maximum." compset="ClSpecial"></thing>
+  <thing id="c5CRgrRooD" name="Rooted Defense" description="At 11th level, you gain the ability to twist and turn the ground beneath you. While you are in your guardian form, the ground within 30 feet of you is difficult terrain for your enemies." compset="ClSpecial">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="c5CRgrGuaA" name="Guardian Aura" description="Starting at 15th level, your guardian form emanates a magical aura that fortifies your injured allies. When any ally starts their turn within 30 feet of your guardian form, that ally regains a number of hit points equal to half your ranger level. This aura has no effect on a creature that has half or more of its hit points, and it has no effect on undead and constructs." compset="ClSpecial">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="c5CRgCPriG" name="Primeval Guardian Conclave" description="Rangers of the Primeval Guardian Conclave follow an ancient tradition rooted in powerful druidic magic. These rangers learn to become one with nature, allowing them to channel the aspects of various beasts and plants in order to overcome their foes.\nThese rangers dwell in the elder forests of the world. They venture out only rarely, as they consider it their sacred duty to protect the druidic groves and ancient trees that saw the earliest days of the world." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eRRAUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Ranger/Rogue Archetypes"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <bootstrap thing="c5CRgrPieT">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrAncF">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrRooD">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrGuaA">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrGuaM">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrGuaS">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cExtraAtt">
+      <autotag group="ClSpecWhen" tag="5"/>
+      </bootstrap>
+    </thing>
+  </document>
