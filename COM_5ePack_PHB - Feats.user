@@ -102,11 +102,6 @@
     <eval phase="PostAttr" priority="15000" index="10"><![CDATA[      ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
 
-      ~ If we don't have a weapon in each hand get out now!
-      ~ This saves us from wasting CPU with a Foreach loop if
-      ~ its not needed.
-      doneif (hero.tagis[Hero.EquipMain] + hero.tagis[Hero.EquipOff] <> 2)
-
       ~ we get the attribute bonus to add to the offhand damage
       ~ as a kludge to non-light weapons
       debug "Style = " & hero.tagis[Hero.2WepStyle]
@@ -116,12 +111,12 @@
          StrBonus = hero.child[aSTR].field[aModBonus].value
          DexBonus = hero.child[aDEX].field[aModBonus].value
          debug " StrBonus " & StrBonus & " DexBonus " & DexBonus
-         foreach pick in hero from BaseWep where "(wCategory.Melee) &   (fieldval:wIs2nd <> 0) & !wProperty.TwoHanded & !wProperty.Light "
-         if (eachpick.tagis[wProperty.Finesse] <> 0 ) then
-             eachpick.field[dmmBonus].value += maximum(StrBonus,DexBonus)
-         else
-             eachpick.field[dmmBonus].value += StrBonus
-         endif
+         foreach pick in hero from BaseWep where "(wCategory.Melee) &   (fieldval:wIs2nd <> 0) & !wProperty.TwoHanded & !wProperty.Light & !Hero.MainHand"
+             if (eachpick.tagis[wProperty.Finesse] <> 0 ) then
+                eachpick.field[dmmBonus].value += maximum(StrBonus,DexBonus)
+             else
+                eachpick.field[dmmBonus].value += StrBonus
+             endif
          nexteach
       endif]]></eval>
     </thing>
