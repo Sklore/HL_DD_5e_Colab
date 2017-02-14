@@ -329,9 +329,19 @@
       </bootstrap>
     </thing>
   <thing id="ra5CFurySm" name="Fury of the Small" description="When you damage a creature with an attack or a spell and the creature&apos;s size is larger than yours, you can cause the attack or spell to deal extra damage to the creature. The extra damage equals your level. Once you use this trait, you can&apos;t use it again until you finish a short or long rest." compset="RaceSpec">
-    <tag group="Helper" tag="ShowSpec"/>
+    <fieldval field="trkMax" value="1"/>
     <tag group="abAction" tag="None"/>
     <tag group="FeatureTyp" tag="Special"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] = 1)
+doneif (field[abilActive].value = 0)
+
+foreach pick in hero from BaseWep 
+  eachpick.field[wDamExtra].text = "+" & #totallevelcount[]
+nexteach]]></eval>
     </thing>
   <thing id="r5CVGMHobG" name="Hobgoblin" description="Hobgoblins are a larger, stronger, smarter, and more menacing form of goblinoids than goblins, but not as powerful as bugbears. It is believed they may have created the latter two races.\n\nBy and large hobgoblins, like their kin, are considered evil creatures and often meet this expectation. While Goblinoid society is cruel and harsh, some individuals escape it to carry on lives of virtue, though fewer such individuals are hobgoblins than true goblins. Those few who do take this risk and succeed often meet cautious praise and acceptance from outsiders.\n\nThose that do are, however, continuously plagued by their nature. Though hobgoblins are not necessarily evil they are prone to violence and hot tempers and find it difficult to be truly altruistic. When provoked, which is often easy, hobgoblins are vindictive creatures who take glee in causing pain to those that injured them. Those hobgoblins who overcome this nature often do so because of the rewards they find in serving good, rather than evil." compset="Race">
     <fieldval field="rHeightMin" value="60"/>
@@ -473,10 +483,8 @@
       <autotag group="Helper" tag="RaceSpell"/>
       </bootstrap>
     <bootstrap thing="spSuggesti">
-      <containerreq phase="First" priority="500"><![CDATA[(count:Classes.? >= 3)]]></containerreq>
-      <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="LongRest"/>
-      <assignval field="trkMax" value="1"/>
+      <autotag group="Helper" tag="RaceSpell"/>
       </bootstrap>
     <bootstrap thing="ra5CMagRes"></bootstrap>
     <bootstrap thing="ra5CPoiImm"></bootstrap>
