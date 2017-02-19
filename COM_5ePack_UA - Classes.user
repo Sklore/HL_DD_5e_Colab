@@ -82,6 +82,20 @@
   <thing id="c5CWlkRadR" name="Radiant Resilience" description="Starting at 10th level, you gain temporary hit points whenever you finish a long or short rest. These temporary hit points equal your warlock level + your Charisma modifier. Additionally, choose up to five creatures you can see at the end of your rest. Those creatures gain temporary hit points equal to half your warlock level + your Charisma modifier." compset="ClSpecial">
     <tag group="abAction" tag="ShortRest"/>
     <tag group="abAction" tag="LongRest"/>
+    <bootstrap thing="PoolWlkBls">
+      <autotag group="Value" tag="7"/>
+      <assignval field="livename" value="Radiant Resilience"/>
+      </bootstrap>
+    <eval phase="Final" priority="500" name="Calculate dark one&apos;s blessing temp Hp"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+field[abValue].value += #levelcount[Warlock] + #attrmod[aCHA]
+
+var temphp as number
+temphp = maximum(field[abValue].value,1)
+
+hero.findchild[TempHpPool,"Value.7"].field[thpMinAllw].value = temphp
+hero.findchild[TempHpPool,"Value.7"].field[thpMaxAllw].value = temphp]]></eval>
     </thing>
   <thing id="c5CWlkHeaL" name="Healing Light" description="At 14th level, you gain the ability to channel the Undying Light to heal yourself and other creatures. As a bonus action, you can touch a creature and heal it. With each touch, a creature regains from 1d6 to 5d6 hit points (your choice). You have a total pool of 15d6 you can expend. Subtract the dice you use with each touch from that total.\n\nYou regain all expended dice from your pool when you finish a long rest." compset="ClSpecial">
     <fieldval field="trkMax" value="15"/>
