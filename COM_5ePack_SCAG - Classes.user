@@ -280,6 +280,16 @@ doneif (#levelcount[Wizard] < 14)
   <thing id="c5CBbnReAb" name="Reckless Abandon" description="You gain your Constitution modifier (minimum 1) temporary hitpoints when you use Reckless Attack while raging, which vanish if any are left when your rage ends." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
+    <bootstrap thing="PoolWlkBls">
+      <autotag group="Value" tag="3"/>
+      <assignval field="livename" value="Reckless Abandon"/>
+      </bootstrap>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[
+      if (field[xIndex].value >= 2) then
+        field[listname].text = field[thingname].text & " (" & field[xIndex].value & " dice)"
+      else
+        field[listname].text = field[thingname].text & " (" & field[xIndex].value & " die)"
+        endif]]></eval>
     <eval phase="PostLevel" priority="10000"><![CDATA[
 
       ~These calculations should only happen for the first copy
@@ -294,12 +304,16 @@ doneif (#levelcount[Wizard] < 14)
         perform assign[LvNamePar.AppValue]
         perform assign[LvNamePar.AppText]
         endif]]></eval>
-    <eval phase="Render" priority="10000" index="2"><![CDATA[
-      if (field[xIndex].value >= 2) then
-        field[listname].text = field[thingname].text & " (" & field[xIndex].value & " dice)"
-      else
-        field[listname].text = field[thingname].text & " (" & field[xIndex].value & " die)"
-        endif]]></eval>
+    <eval phase="Final" priority="500" index="3" name="Calculate dark one&amp;apos;s blessing temp Hp"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+field[abValue].value = #attrmod[aCON]
+
+var temphp as number
+temphp = maximum(field[abValue].value,1)
+
+hero.findchild[TempHpPool,"Value.3"].field[thpMinAllw].value = temphp
+hero.findchild[TempHpPool,"Value.3"].field[thpMaxAllw].value = temphp]]></eval>
     </thing>
   <thing id="c5CBbnBaCh" name="Battlerager Charge" description="While raging you can take the Dash action as a bonus action." compset="ClSpecial" summary="You can take the Dash action as a bonus action while you are raging.">
     <tag group="abRange" tag="Personal"/>
@@ -1241,6 +1255,20 @@ doneif (tagis[Helper.Disable] <> 0)
     <tag group="abRange" tag="Feet"/>
     <tag group="abAction" tag="None"/>
     <tag group="abDuration" tag="Instant"/>
+    <bootstrap thing="PoolWlkBls">
+      <autotag group="Value" tag="4"/>
+      <assignval field="livename" value="Touch of Death"/>
+      </bootstrap>
+    <eval phase="Final" priority="500" name="Calculate dark one&amp;apos;s blessing temp Hp"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+field[abValue].value = #totallevelcount[] + #attrmod[aWIS]
+
+var temphp as number
+temphp = maximum(field[abValue].value,1)
+
+hero.findchild[TempHpPool,"Value.4"].field[thpMinAllw].value = temphp
+hero.findchild[TempHpPool,"Value.4"].field[thpMaxAllw].value = temphp]]></eval>
     </thing>
   <thing id="c5CHourRea" name="Hour of Reaping" description="At 6th level, when you take this action, each creature within 30 feet of you that can see you must succeed on a Wisdom saving throw or be frightened of you until the end of your next turn." compset="ClSpecial">
     <fieldval field="abRange" value="30"/>
