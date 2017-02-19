@@ -215,6 +215,19 @@
   <thing id="ft5CInspiL" name="Inspiring Leader" description="You can spend 10 minutes inspiring your companions, shoring up their resolve to fight. \n\nWhen you do so, choose up to six friendly creatures (which can include yourself) within 30 feet of you who can see or hear you and who can understand  you. Each creature can gain temporary hit points equal to your level + your Charisma modifier. A creature can’t gain temporary hit points from this feat again until it has finished a short or long rest.\n\nPrerequisite: Charisma 13 or higher" compset="Feat" summary="You can spend 10 minutes inspiring your companions, shoring up their resolve to fight." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="PoolWlkBls">
+      <autotag group="Value" tag="2"/>
+      <assignval field="livename" value="Inspiring Leader"/>
+      </bootstrap>
+    <eval phase="Final" priority="500" name="Calculate dark one&apos;s blessing temp Hp"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+field[abValue].value += #totallevelcount[] + #attrmod[aCHA]
+
+var temphp as number
+temphp = maximum(field[abValue].value,1)
+hero.findchild[TempHpPool,"Value.2"].field[thpMinAllw].value = temphp
+hero.findchild[TempHpPool,"Value.2"].field[thpMaxAllw].value = temphp]]></eval>
     <exprreq message="Charisma 13 or higher. "><![CDATA[#attrvalue[aCHA] >= 13]]></exprreq>
     </thing>
   <thing id="ft5CKeenMi" name="Keen Mind" description="Increase your Intelligence score by 1, to a maximum of 20.\n• You always know which way is north.\n• You always know the number of hours left before the next sunrise or sunset.\n• You can accurately recall anything you have seen or heard within the past month." compset="Feat" uniqueness="useronce">
