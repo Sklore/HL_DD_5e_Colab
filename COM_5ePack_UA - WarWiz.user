@@ -157,7 +157,7 @@ nexteach]]></eval>
     <tag group="abRange" tag="Personal"/>
     </thing>
   <thing id="c5CWlkMH01" name="Master of Hexes" description="Starting at 14th level, you can use your Hexblade’s Curse again without resting, but when you apply it to a new target, the curse immediately ends on the previous target." compset="ClSpecial"></thing>
-  <thing id="c5CWlkSR01" name="Sentinel Raven" description="Starting at 1st level, you gain the service of a spirit sent by the Raven Queen to watch over you. The spirit assumes the form and game statistics of a raven, and it always obeys your commands, which you can give telepathically while it is within 100 feet of you.\nWhile the raven is perched on your shoulder, you gain darkvision with a range of 30 feet and a bonus to your passive Wisdom (Perception) score and to Wisdom (Perception) checks. The bonus equals your Charisma modifier. While perched on your shoulder, the raven can’t be targeted by any attack or other harmful effect; only you can cast spells on it; it can’t take damage; and it is incapacitated.\nYou can see through the raven’s eyes and hear what it hears while it is within 100 feet of you.\nIn combat, you roll initiative for the raven and control how it acts. If it is slain by a creature, you gain advantage on all attack rolls against the killer for the next 24 hours. \nThe raven doesn’t require sleep. While it is within 100 feet of you, it can awaken you from sleep as a bonus action.\nThe raven vanishes when it dies, if you die, or if the two of you are separated by more than 5 miles.\nAt the end of a short or long rest, you can call the raven back to you—no matter where it is or whether it died—and it reappears within 5 feet of you." compset="ClSpecial">
+  <thing id="c5CWlkSR01" name="Sentinel Raven" description="Starting at 1st level, you gain the service of a spirit sent by the Raven Queen to watch over you. The spirit assumes the form and game statistics of a raven, and it always obeys your commands, which you can give telepathically while it is within 100 feet of you.\nWhile the raven is perched on your shoulder, you gain darkvision with a range of 30 feet and a bonus to your passive Wisdom (Perception) score and to Wisdom (Perception) checks. The bonus equals your Charisma modifier. While perched on your shoulder, the raven can’t be targeted by any attack or other harmful effect; only you can cast spells on it; it can’t take damage; and it is incapacitated.\nYou can see through the raven’s eyes and hear what it hears while it is within 100 feet of you. \nIn combat, you roll initiative for the raven and control how it acts. If it is slain by a creature, you gain advantage on all attack rolls against the killer for the next 24 hours. \nThe raven doesn’t require sleep. While it is within 100 feet of you, it can awaken you from sleep as a bonus action.\nThe raven vanishes when it dies, if you die, or if the two of you are separated by more than 5 miles.\nAt the end of a short or long rest, you can call the raven back to you—no matter where it is or whether it died—and it reappears within 5 feet of you." compset="ClSpecial">
     <fieldval field="actName" value="Perched on shoulder"/>
     <tag group="User" tag="Activation"/>
     <bootstrap thing="raDarkVis">
@@ -409,9 +409,8 @@ endif]]></eval>
     <tag group="Usage" tag="ShortRest"/>
     <tag group="abAction" tag="Reaction"/>
     <bootstrap thing="PoolWlkBls">
-      <autotag group="Value" tag="6"/>
-      <assignval field="actIncrNam" value="ToLHP"/>
       <assignval field="livename" value="Tomb of Levistus"/>
+      <assignval field="actIncrNam" value="ToLHP"/>
       </bootstrap>
     <eval phase="Final" priority="500" name="Calculate dark one&apos;s blessing temp Hp"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
 doneif (tagis[Helper.Disable] <> 0)
@@ -421,12 +420,12 @@ field[abValue].value += #levelcount[Warlock] * 10
 var temphp as number
 temphp = maximum(field[abValue].value,1)
 
-hero.findchild[TempHpPool,"Value.6"].field[thpMinAllw].value = temphp
-hero.findchild[TempHpPool,"Value.6"].field[thpMaxAllw].value = temphp]]></eval>
+hero.findchild[TempHpPool,"!fieldisempty:actIncrNam"].field[thpMinAllw].value = temphp
+hero.findchild[TempHpPool,"!fieldisempty:actIncrNam"].field[thpMaxAllw].value = temphp]]></eval>
     <eval phase="Final" priority="1000" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
 doneif (tagis[Helper.Disable] <> 0)
 
-if ( hero.findchild[TempHpPool,"Value.6"].field[abilActive].value <> 0 ) then
+if ( hero.findchild[TempHpPool,"!fieldisempty:actIncrNam"].field[abilActive].value <> 0 ) then
    perform hero.assign[DamageVuln.dtFire]
    hero.child[Speed].field[tSpeed].value = 0
 endif]]></eval>
@@ -449,12 +448,8 @@ endif]]></eval>
     <exprreq message="15th level required."><![CDATA[#levelcount[Warlock] >= 15]]></exprreq>
     </thing>
   <thing id="c5CWizLM02" name="Lore Master" description="Starting at 2nd level, you become a compendium of knowledge on a vast array of topics. Your proficiency bonus is doubled for any ability check you make that uses the Arcana, History, Nature, or Religion skill if you are proficient in that skill.\nIn addition, your analytical abilities are so well-honed that your initiative in combat can be driven by mental agility, rather than physical agility. When you roll initiative, it is either an Intelligence check or a Dexterity check for you (your choice)." compset="ClSpecial">
-    <usesource source="p5eW_WUACP"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
-doneif (tagis[Helper.Disable] <> 0)
-
-if (hero.tagis[ProfSkill.skArcana] <> 0) then
-   perform forward[ProfDouble.skArcana]
+    <comment><![CDATA[if (hero.tagis[ProfSkill.skArcana] <> 0) then
+   perform forward[ProfDouble.skHistory]
 endif
 
 if (hero.tagis[ProfSkill.skHistory] <> 0) then
@@ -467,13 +462,36 @@ endif
 
 if (hero.tagis[ProfSkill.skReligion] <> 0) then
    perform forward[ProfDouble.skReligion]
-endif]]></eval>
+endif]]></comment>
+    <usesource source="p5eW_WUACP"/>
     <eval phase="Final" priority="9000" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
 doneif (tagis[Helper.Disable] <> 0)
 
 if ( #attrmod[aINT] > #attrmod[aDEX] ) then
     hero.childfound[Initiative].field[tInitAttr].value = #attrmod[aINT]
 endif]]></eval>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+     doneif (tagis[Helper.ShowSpec] = 0)
+
+     doneif (tagis[Helper.Disable] <> 0)
+
+       if (hero.child[skArcana].tagis[component.BaseSkill] <> 0) then
+         perform hero.child[skArcana].assign[Helper.ProfDouble]
+       endif
+
+       if (hero.child[skHistory].tagis[component.BaseSkill] <> 0) then
+         perform hero.child[skHistory].assign[Helper.ProfDouble]
+       endif
+
+       if (hero.child[skNature].tagis[component.BaseSkill] <> 0) then
+         perform hero.child[skNature].assign[Helper.ProfDouble]
+       endif
+
+       if (hero.child[skReligion].tagis[component.BaseSkill] <> 0) then
+         perform hero.child[skReligion].assign[Helper.ProfDouble]
+       endif]]>
+      <before name="Calc skProfBon"/>
+      </eval>
     </thing>
   <thing id="c5CWizLM03" name="Spell Secrets" description="At 2nd level, you master the first in a series of arcane secrets uncovered by your extensive studies.\nWhen you cast a spell with a spell slot and the spell deals acid, cold, fire, force, lightning, necrotic, radiant, or thunder damage, you can substitute that damage type with one other type from that list  (you can change only one damage type per casting of a spell). You replace one energy type for another by altering the spell’s formula as you cast it.\nWhen you cast a spell with a spell slot and the spell requires a saving throw, you can change the saving throw from one ability score to another of your choice. Once you change a saving throw in this way, you can’t do so again until you finish a short or long rest.\n\n{b}Altering Spells{/b}\nWhile the Spell Secrets feature offers increased versatility, at the table its effects can be difficult to spot by the other players. If you’re playing a savant, take a moment to describe how you alter your spells. Think of a signature change your character is particularly proud of. Be inventive, and make the game more fun for everyone by playing up the sudden, unexpected tricks you character can employ.  For example, a fireball transformed to require a Strength save might become a sphere of burning rock that shatters and slams into its target. A charm person that requires a Constitution save might take the form of a vaporous narcotic that alters the target’s mood." compset="ClSpecial">
     <fieldval field="trkMax" value="1"/>
@@ -494,78 +512,5 @@ endif]]></eval>
     <tag group="abAction" tag="Bonus"/>
     <tag group="User" tag="Tracker"/>
     <tag group="Usage" tag="LongRest"/>
-    </thing>
-  <thing id="c5CWlkIn21" name="Raven Queen’s Blessing" description="When you score a critical hit with your eldritch blast cantrip, pick yourself or an ally you can see within 30 feet of you. The chosen creature can immediately expend a Hit Die to regain hit points equal to the roll + the creature’s Constitution modifier (minimum of 1 hit point)." compset="CustomSpec" uniqueness="unique">
-    <usesource source="p5eW_WUACP"/>
-    <tag group="Helper" tag="Tertiary"/>
-    <tag group="abCategory" tag="WlkEldInvo"/>
-    <tag group="SpecSource" tag="cHelpWlk"/>
-    <exprreq message="Prerequisite: Raven Queen patron"><![CDATA[#hasability[c5CWlkRQ01] <> 0]]></exprreq>
-    <exprreq message="Eldritch Blast cantrip required."><![CDATA[childlives[spEldrBlas] <> 0]]></exprreq>
-    </thing>
-  <thing id="c5CWlkIn22" name="Relentless Hex" description="Your Hexblade’s Curse creates a temporary bond between you and your target. As a bonus action, you can magically teleport to a space you can see within 5 feet of the target cursed by your Hexblade’s Curse. To do so, you must be able to see the target and must be within 30 feet of it." compset="CustomSpec" uniqueness="unique">
-    <fieldval field="abRange" value="30"/>
-    <usesource source="p5eW_WUACP"/>
-    <tag group="SpecSource" tag="cHelpWlk"/>
-    <tag group="Helper" tag="Tertiary"/>
-    <tag group="abCategory" tag="WlkEldInvo"/>
-    <tag group="abAction" tag="Bonus"/>
-    <tag group="abRange" tag="Feet"/>
-    <exprreq message="5th level required."><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
-    <exprreq message="Prerequisite: The Hexblade patron"><![CDATA[#hasability[c5CWlkHB01] <> 0]]></exprreq>
-    </thing>
-  <thing id="c5CWlkIn23" name="Sea Twins’ Gift" description="The Sea Twins rule seas in the Feywild. Their gift allows you to travel through water with ease. You can breathe underwater, and you gain a swimming speed equal to your walking speed. You can also cast water breathing using a warlock spell slot. Once you cast it using this invocation, you can’t do so again until you finish a long rest." compset="CustomSpec" uniqueness="unique">
-    <usesource source="p5eW_WUACP"/>
-    <tag group="Helper" tag="Tertiary"/>
-    <tag group="abCategory" tag="WlkEldInvo"/>
-    <tag group="SpecSource" tag="cHelpWlk"/>
-    <bootstrap thing="spWateBrea">
-      <autotag group="Helper" tag="SpellLike"/>
-      <autotag group="Usage" tag="LongRest"/>
-      <assignval field="trkMax" value="1"/>
-      </bootstrap>
-    <eval phase="Final" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
-
-var myspeed as number
-myspeed = hero.child[Speed].field[tSpeed].value
-hero.child[xSwim].field[abValue].value = myspeed]]></eval>
-    <exprreq message="Prerequisite: The Archfey patron"><![CDATA[#hasability[c5CWlkArch] <> 0]]></exprreq>
-    </thing>
-  <thing id="c5CWlkIn24" name="Seeker’s Speech" description="Your quest for knowledge allows you to master any spoken language. When you complete a long rest, you can pick two languages. You gain the ability to speak, read, and write the chosen languages until you finish your next long rest." compset="CustomSpec" uniqueness="unique">
-    <fieldval field="usrCandid1" value="component.BaseLang &amp; !thingid.l5Cchooser"/>
-    <fieldval field="usrCandid2" value="component.BaseLang &amp; !thingid.l5Cchooser"/>
-    <usesource source="p5eW_WUACP"/>
-    <tag group="abCategory" tag="WlkPacBoon"/>
-    <tag group="SpecSource" tag="cHelpWlk"/>
-    <tag group="ChooseSrc1" tag="Thing"/>
-    <tag group="Helper" tag="Tertiary"/>
-    <tag group="ChooseSrc2" tag="Thing"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
-
-      doneif (tagis[Helper.Disable] <> 0)
-
-var lang as string
-      if (field[usrChosen1].ischosen <> 0) then
-        lang = field[usrChosen1].chosen.tagids[SpeakLang.?]
-        perform hero.assignstr[lang]
-        endif
-
-      if (field[usrChosen2].ischosen <> 0) then
-        lang = field[usrChosen2].chosen.tagids[SpeakLang.?]
-        perform hero.assignstr[lang]
-        endif]]></eval>
-    <exprreq message="Prerequisite: The Seeker patron"><![CDATA[#hasability[c5CWlkSeek] <> 0]]></exprreq>
-    </thing>
-  <thing id="c5CWlkIn25" name="Shroud of Ulban" description="The blue-white star Ulban maintains a fickle presence among the stars, fluttering into view only to herald a dire omen. As an action, you can turn invisible for 1 minute. If you attack, deal damage, or force a creature to make a saving throw, you become visible at the end of the current turn." compset="CustomSpec" uniqueness="unique">
-    <fieldval field="abDuration" value="1"/>
-    <usesource source="p5eW_WUACP"/>
-    <tag group="abCategory" tag="WlkEldInvo"/>
-    <tag group="SpecSource" tag="cHelpWlk"/>
-    <tag group="abAction" tag="Action"/>
-    <tag group="abRange" tag="Personal"/>
-    <tag group="abDuration" tag="Minute"/>
-    <tag group="Helper" tag="Tertiary"/>
-    <exprreq message="Prerequisite: The Great Old One patron"><![CDATA[#hasability[c5CWlkGrOO] <> 0]]></exprreq>
-    <exprreq message="18th level required"><![CDATA[#levelcount[Warlock] >= 18]]></exprreq>
     </thing>
   </document>

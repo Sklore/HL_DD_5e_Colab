@@ -48,7 +48,11 @@
 
       perform root.linkage[table].assign[ArmProfGrp.ArmorMed]
       perform root.linkage[table].assign[ArmProfGrp.Shields]
-      perform root.linkage[table].assign[ArmProfGrp.WepMartial]]]></eval>
+      perform root.linkage[table].assign[ArmProfGrp.WepMartial]
+
+      if (hero.tagcount[Ability.cWlkPacBla] > 0) then
+        perform root.linkage[table].assign[ArmProfGrp.ArmorHeavy]
+      endif]]></eval>
     </thing>
   <thing id="c5CTBFArSh" name="Argent Shield" description="Starting at 6th level, when an ally within 60 feet is hit by an attack, you vanish in a puff of mist and teleport to an open space adjacent to both the attacker and your ally. Using the original attack roll, the attack resolves as if you were the target. You reduce the damage that you take from this attack by 1d6 per point of proficiency bonus that you have. If there is no open space adjacent to both your ally and the attacker, you cannot use this feature. Once you use this feature, you cannot do so again until you complete a short or long rest." compset="ClSpecial">
     <usesource source="TribFeyI"/>
@@ -242,38 +246,36 @@
     <tag group="ClsAllowSp" tag="spHideLaug" name="Tasha’s hideous laughter" abbrev="Tasha’s hideous laughter"/>
     <tag group="ClsAllowSp" tag="spBlink" name="Blink" abbrev="Blink"/>
     <tag group="Helper" tag="NoAdvLeag"/>
-    <bootstrap thing="c5CTBGraJe">
-      <autotag group="ClSpecWhen" tag="14"/>
-      </bootstrap>
+    <tag group="ClsAllowSp" tag="spViciMock" name="Vicious Mockery" abbrev="Vicious Mockery"/>
     <bootstrap thing="c5CWlkBegD">
-      <autotag group="ClSpecWhen" tag="1"/>
+      <autotag group="ClSpecWhen" tag="10"/>
       </bootstrap>
     <bootstrap thing="c5CWlkMisE">
       <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
     <bootstrap thing="c5CTBFPuTr">
-      <autotag group="ClSpecWhen" tag="10"/>
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CTBGraJe">
+      <autotag group="ClSpecWhen" tag="14"/>
       </bootstrap>
     <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
 
       perform linkage[table].pushtags[ClsAllowSp.?]</eval>
     </thing>
-  <thing id="c5CTBFPuTr" name="Puckish Tricks" description="At 1st level when you choose the Good Fellow as your Patron, you gain proficiency in Sleight of Hand and thieves’ tools. You never use somatic or material components to cast hex, and your verbal components can be masked as conversation or jokes. You may choose to learn vicious mockery as one of your cantrips.\n\nWhen you make a Dexterity (Sleight of Hand) or Charisma (Deception) check against a creature currently affected by a hex that you cast, add 1d6 to your check result.\n\nTODO: Badly scripted, adds Vicious Mockery for free" compset="ClSpecial">
+  <thing id="c5CTBFPuTr" name="Puckish Tricks" description="At 1st level when you choose the Good Fellow as your Patron, you gain proficiency in Sleight of Hand and thieves’ tools. You never use somatic or material components to cast hex, and your verbal components can be masked as conversation or jokes. You may choose to learn vicious mockery as one of your cantrips.\n\nWhen you make a Dexterity (Sleight of Hand) or Charisma (Deception) check against a creature currently affected by a hex that you cast, add 1d6 to your check result." compset="ClSpecial">
     <usesource source="TribFeyI" parent="pTribality" name="Archfey Patrons I"/>
     <tag group="abDuration" tag="Round" name="Round" abbrev="rd"/>
     <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
-    <bootstrap thing="spViciMock">
-      <autotag group="SpellSort" tag="cHelpWlk"/>
-      <autotag group="SpellType" tag="cHelpWlk"/>
-      <autotag group="Helper" tag="Cantrip"/>
+    <bootstrap thing="gTooThieve">
+      <autotag group="Proficienc" tag="Tool"/>
       </bootstrap>
     <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.ShowSpec] = 0)
-
       doneif (tagis[Helper.Disable] <> 0)
 
-      perform hero.assign[ProfSkill.skSleight]
-      perform hero.assign[ProfTool.gTooThieve]]]></eval>
+      ~perform hero.child[skSleight].assign[Helper.Proficient]
+      perform hero.childfound[skSleight].assign[Helper.Proficient]
+      ~perform hero.assign[ProfTool.gTooThieve]]]></eval>
     </thing>
   <thing id="c5CTBGraJe" name="The Grand Jest, or: “Lord, What Fools these Mortals Be!”" description="Starting at 14th level, you can reveal the grand jest that you have played on everyone. All creatures within 60 feet of you roll Wisdom saving throws against your warlock spell save DC. Take the total number of failed saving throws and halve it, rounding fractions up. You and the DM each switch the positions of that number of pairs of creatures within range, alternating turns. Neither you nor the DM may switch back a change that the other has made. (Creatures may not choose to fail this saving throw.) You may switch the positions of creatures that succeeded their saving throws, but doing so costs two of your position changes rather than one. (If both members of a switching pair succeeded their saving throws, that costs three position changes rather than one.) Once you use this feature, you may not do so again until you complete a long rest." compset="ClSpecial">
     <usesource source="TribFeyI"/>
