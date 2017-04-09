@@ -117,12 +117,25 @@
   <thing id="c5CSRgCS01" name="Combat Superiority" description="At 2nd  level, you learn maneuvers that are fueled by special dice called superiority dice. \n{b}Maneuvers{/b}. You learn two maneuvers of your choice, which are chosen from the list of maneuvers available to fighters with the Battle Master archetype. Many maneuvers enhance an attack in some way. You can use only one maneuver per attack.\nYou learn one additional maneuver of your choice at 5th, 9th, 13th, and 17th levels. Each time you learn a new maneuver, you can also replace one maneuver you know with a different one.\n{b}Superiority Dice{/b}. You have four superiority dice, which are d8s. A superiority die is expended when you use it. You regain all of your expended superiority dice when you finish a short or long rest.\nYou gain another superiority die at 9th level and one more at 17th level.\nSaving Throws. Some of your maneuvers require your target to make a saving throw to resist the maneuver’s effects. The saving throw DC is calculated as follows:\nManeuver save DC = 8 + your proficiency bonus + your Strength or Dexterity modifier (your choice)" compset="ClSpecial">
     <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aSTR | IsAttr.aDEX)"/>
     <fieldval field="trkMax" value="4"/>
+    <fieldval field="abValue" value="1"/>
+    <fieldval field="abValue2" value="8"/>
+    <tag group="Usage" tag="ShortRest"/>
     <tag group="User" tag="Tracker"/>
     <tag group="ChooseSrc1" tag="Hero"/>
-    <tag group="Usage" tag="ShortRest"/>
+    <tag group="LvNamePar" tag="DieCntVal"/>
+    <tag group="LvNamePar" tag="AppValue3"/>
+    <tag group="LvNamePar" tag="SignAppVal"/>
+    <tag group="LvNamePar" tag="DieSizVal2"/>
     <eval phase="PostLevel" priority="9000"><![CDATA[       if (field[usrChosen1].ischosen <> 0) then
          perform field[usrChosen1].chosen.pulltags[StandardDC.?]
          endif]]></eval>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[
+      ~ Increase the number of dice at level 9 and again at 17
+      if (field[xAllLev].value >= 17) then
+        field[trkMax].value += 2
+      elseif (field[xAllLev].value >= 9) then
+        field[trkMax].value += 1
+      endif]]></eval>
     </thing>
   <thing id="c5CSRgNAV1" name="Natural Antivenom" description="Starting at 9th level, you have advantage on saving throws against poison and have resistance to poison damage. Additionally, you can use one of your poultices to cure one poison effect on the creature you are applying it to, in addition to restoring hit points." compset="ClSpecial">
     <tag group="DamageRes" tag="dtPoison"/>
