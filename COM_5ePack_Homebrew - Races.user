@@ -307,4 +307,55 @@
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="abAction" tag="None"/>
     </thing>
+  <thing id="r5CKasatha" name="Kasatha" description="Exiles from an arid world circling a red star, modern kasathas have no idea how they left their home or how to return, but they keep searching for a way back. A clannish and secretive people, they have a matriarchal society, but other races have difficulty recognizing any physical difference between females and males. Kasathas keep their mouths hidden behind clothing, and don&apos;t remove this clothing in the presence of other races. They are omnivores, but prefer meat and salty foods.\n\nUpon reaching adulthood, many kasathas leave their clans to search the world for adventure, treasure, and ways to return to their homeworld." compset="Race">
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rAC" value="2"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="ra5CDsrtRt"></bootstrap>
+    <bootstrap thing="ra5CDsrtSt"></bootstrap>
+    <bootstrap thing="ra5CJumper"></bootstrap>
+    <bootstrap thing="ra5CMltArm"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="l5CKasatha"></bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're disabled, just get out now
+      doneif (tagis[Helper.SpcDisable] <> 0)
+
+      #makeclassskill[skPercep]
+      #makeclassskill[skStealth]]]></eval>
+    </thing>
+  <thing id="ra5CDsrtRt" name="Desert Runner" description="{b}Benefit{/b}: Members of this race receive advantage on Constitution saves to avoid fatigue and exhaustion, as well as any other ill effects from running, forced marches, starvation, thirst, and hot or cold environments." compset="RaceSpec">
+    <tag group="SpecType" tag="Defense" name="Defense" abbrev="Defense"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.SpcDisable] <> 0)
+
+      #situational[hero.child[aCON],"+4 vs. fatigue, exhaustion, running, forced marches, starvation, thirst, and hot or cold environments",field[name].text]]]></eval>
+    </thing>
+  <thing id="ra5CDsrtSt" name="Desert Stride" description="A kasatha moves through nonmagical difficult terrain in desert environments at normal speed." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="ra5CJumper" name="Jumper" description="A kasatha is always considered to have a running start when attempting Acrobatics checks to jump." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="ra5CMltArm" name="Multi-Armed" description="{b}Benefit{/b}: Members of this race possess four arms. A member of this race can wield multiple weapons, but only one hand is its primary hand, and all others are off hands. It can also use its hands for other purposes that require free hands." compset="RaceSpec">
+    <tag group="AbilType" tag="Extra" name="Extraordinary Ability" abbrev=" (Ex)"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.SpcDisable] <> 0)
+
+      herofield[tNumHands].value += 2]]></eval>
+    </thing>
+  <thing id="l5CKasatha" name="Kasatha" description="Language of the strange, four-armed Kasatha." compset="Language" uniqueness="useronce">
+    <tag group="LangCat" tag="Monster" name="Monster Languages" abbrev="Monster"/>
+    <tag group="LangPreval" tag="Exotic" name="Exotic Languages" abbrev="Exotic"/>
+    </thing>
   </document>
