@@ -84,6 +84,13 @@
       <autotag group="Helper" tag="Memorized"/>
       <autotag group="SpellType" tag="cHelpClr"/>
       </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+~      perform linkage[table].assign[Helper.HasSplExp]
+
+~      linkage[table].field[sLevel.0].value += 1]]></eval>
     </thing>
   <thing id="c5CClrDeBP" name="Bonus Proficiency" description="When the cleric chooses this domain at 1st level, he or she gains proficiency with martial weapons." compset="ClSpecial" summary="Proficient with martial weapons.">
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
@@ -100,6 +107,7 @@
   <thing id="c5CClrReap" name="Reaper" description="At 1st level, the cleric learns one necromancy cantrip of his or her choice from any spell list. When the cleric casts a necromancy cantrip that normally targets only one creature, the spell can instead target two creatures within range and within 5 feet of each other.\n\n{b}Note:{/b} Once you have selected your necromancy cantrip, you must add it manually to your list of prepared cantrips." compset="ClSpecial">
     <fieldval field="usrCandid1" value="component.BaseSpell &amp; sLevel.0 &amp; sSchool.Necromancy"/>
     <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="abAction" tag="None"/>
     <eval phase="First" priority="10000"><![CDATA[   
       ~ If disabled get out now!
       doneif (tagis[Helper.Disable] = 1)
