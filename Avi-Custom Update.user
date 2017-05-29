@@ -3263,8 +3263,110 @@ hero.child[svCHA].field[svTotal].value += field[abValue2].value
     <fieldval field="cfgMax2" value="2"/>
     <fieldval field="cfgObject2" value="Order of the Wu Jen disciplines"/>
     <fieldval field="cfgAllow2" value="Helper.Secondary &amp; abCategory.5COrdWuJen"/>
+    <fieldval field="cfgMaxSp1" value="3"/>
     <usesource source="Mystic_v3"/>
-    <tag group="SpecSource" tag="cHelp5CMY3"/>
     <tag group="Helper" tag="SpecUp"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="SpecSource" tag="cHelp5CMY3"/>
+    </thing>
+  <thing id="c5COImmort" name="Order of the Immortal" description="Mystics of this Order use psionic energy to improve and change the physical form. These mystics are known as Immortals. Using their psionic energy to improve their bodies against attack and changing themselves into living weapons." compset="CustomSpec" uniqueness="useronce">
+    <usesource source="Mystic_v3"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelp5CMY3"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="abCategory" tag="5COrdImmor"/>
+    <bootstrap thing="cfg5CImmrt"></bootstrap>
+    <bootstrap thing="c5CImmDur">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CPsiRes">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CSrgOHlt">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CImmrtWl">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CImmDur" name="Immortal Durability" description="At 1st level your HP max increases by 1 per mystic level.\n\nIn addition when you are not wearing armor or using a shield, your base AC equals 10 + Dex + Con mods." compset="ClSpecial">
+    <tag group="AddReq" tag="ArmorNoSh" name="Cannot be used with a shield"/>
+    <tag group="AddReq" tag="ArmorNone" name="Cannotbe used in armor"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp"/>
+    <eval phase="PostLevel" priority="5000">field[abValue].value += maximum(herofield[tHitDice].value, 1)</eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[      ~ If we're not shown, just get out now
+~      doneif (tagis[Helper.ShowSpec] = 0)
+
+~      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abValue2].value += #attrmod[aCON]
+
+      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue2].value)]]></eval>
+    <eval phase="PostLevel" priority="15000" index="3">
+      herofield[tBonusHP].value += field[abValue].value</eval>
+    </thing>
+  <thing id="c5CPsiRes" name="Psionic Resilience" description="At 3rd level, your psionic ability gives you temporary hit points equal to your Intelligence modifier (min 0) as long as you have 1 or more hit points." compset="ClSpecial"></thing>
+  <thing id="c5CSrgOHlt" name="Surge of Health" description="At 6th level, you can use your psychic focus to escape death&apos;s grasp. As a reaction, when you take damage you may halve that damage against you. Your focus immediately ends if it is active, you cannot reactivate your focus until you finish a short or long rest.\n\nYou may not use this feature if you cannot use your focus." compset="ClSpecial"></thing>
+  <thing id="c5CImmrtWl" name="Immortal Will" description="At 14th level, you may draw upon your reserves of psychic power to survive beyond death. At the end of your turn, while at 0 HP you may spend 5 psi points to immediately regain a number of HP equal to your Mystic level + your Con modifier." compset="ClSpecial"></thing>
+  <thing id="c5COWuJen" name="Order of the Wu Jen" description="These mystics are some of the moste devoted, seeking to lock themselves away from the world. They deny the limits of the physical world and replace it with their own reality. \n\nThey excel in controlling the forces of the natural world." compset="CustomSpec" uniqueness="useronce">
+    <usesource source="Mystic_v3"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelp5CMY3"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="abCategory" tag="5COrdWuJen"/>
+    <bootstrap thing="cfg5CWuJen"></bootstrap>
+    <bootstrap thing="c5CHrmStdy">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CHrmStdy" name="Hermit&apos;s Study" description="At 1st level, you gain proficiency with two of the following skills; Animal Handling, Arcana, History, Insight, Medicine, Nature, Perception, Religion, or Survival." compset="ClSpecial">
+    <fieldval field="abValue" value="2"/>
+    <fieldval field="usrCandid1" value="component.BaseSkill &amp; (Reference.skAnimHand | Reference.skArcana | Reference.skHistory | Reference.skInsight | Reference.skMedicine| Reference.skNature | Reference.skPercep | Reference.skReligion | Reference.skSurvival)  &amp; !Helper.Proficient"/>
+    <fieldval field="usrCandid2" value="component.BaseSkill &amp; (Reference.skAnimHand | Reference.skArcana | Reference.skHistory | Reference.skInsight | Reference.skMedicine| Reference.skNature | Reference.skPercep | Reference.skReligion | Reference.skSurvival)  &amp; !Helper.Proficient"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="ChooseSrc2" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
+        perform field[usrChosen1].chosen.assign[Helper.ProfDouble]
+        endif
+
+      if (field[usrChosen2].ischosen <> 0) then
+        perform field[usrChosen2].chosen.pulltags[ProfSkill.?]
+        perform field[usrChosen2].chosen.assign[Helper.ProfDouble]
+        endif
+
+      perform forward[ProfSkill.?]]]>
+      <before name="Calc skProfBon"/>
+      </eval>
+    </thing>
+  <thing id="c5CElmntAt" name="Elemental Attunement" description="At 3rd level, you may spend 1 psi point to overcome a creatures resistance to damage being delt by a psionic discipline of yours. You cannot go over your psi limit using this ability." compset="ClSpecial"></thing>
+  <thing id="c5CArcnDab" name="Arcane Dabbler" description="At 6th level, you may learn three spells from the wizard spell list of your choice. They are always prepared and must be between levels 1 through 3. Using a bonus action, you may spend psi points to create spell slots to cast these spells with, or any other spells that you may be capable to cast.\n\nSpell Slot level Psi Cost\n             1st                2\n             2nd               3\n             3rd               5\n             4th                6\n             5th                7\n\nThe spell slots last until you use it or finish a long rest. You cannot go above your psi limit when using this feature to create a spell slot. When you gain a mystic level, you can replace one of the choses spells with another between 1st and 3rd levels." compset="ClSpecial">
+    <eval phase="PreLevel" priority="10000"><![CDATA[perform linkage[table].setfocus
+doneif (state.isfocus = 0)
+
+doneif (tagis[Helper.Disable] <> 0)
+
+~ Spellcasting attribute
+perform focus.setlinkage[castattr,BaseAttr,"IsAttr.aINT"]
+
+~ Spellcasting type
+perform focus.assign[CasterType.SpontKnow]
+perform focus.assign[CasterSrc.Arcane]
+perform focus.assign[Helper.3rdCaster]
+perform focus.assign[sClass.cHelpWiz]
+
+~ Spells Known Array
+focus.field[cArrKnSpl].arrayvalue[2] += 3
+
+~ Max Spell Levels Array
+focus.field[cArrKnLev].arrayvalue[2] += 3]]></eval>
     </thing>
   </document>
