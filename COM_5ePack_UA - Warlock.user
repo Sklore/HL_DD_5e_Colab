@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CWlkCL" name="The Celestial" description="This warlocks patron is a being of immense power from the Upper Planes. You have bound yourself to an ancient empyrean, solar, ki-rin, or unicorn or to another entity that resides in the planes of everlasting bliss. Your pact with said being, allows you to experience the barest touch of the illuminating holy light of the multiverse.\n\nThe connection to this immense power, can cause changes in your behavior and beliefs. You may find yourself driven to annihilate the undead, to defeat fiends, and to protect the innocent. Your heart at times, may also be filled with a longing for the celestial realm of your patron, a desire to wander the lost paradise for the rest of your days." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="abCategory" tag="WlkOthPatr"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="spBurnHand"/>
+    <tag group="ClsAllowSp" tag="spCureWoun"/>
+    <tag group="ClsAllowSp" tag="spFlamSphe"/>
+    <tag group="ClsAllowSp" tag="spLessRest"/>
+    <tag group="ClsAllowSp" tag="spDaylight"/>
+    <tag group="ClsAllowSp" tag="spRevivify"/>
+    <tag group="ClsAllowSp" tag="spGuarFait"/>
+    <tag group="ClsAllowSp" tag="spWallFire"/>
+    <tag group="ClsAllowSp" tag="spFlamStri"/>
+    <tag group="ClsAllowSp" tag="spGreaRest"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <bootstrap thing="c5CWlkHeal">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkRdSl">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkClRs">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkSear">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkBnsC">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    </thing>
+  <thing id="c5CWlkBnsC" name="Bonus Cantrips" description="At 1st level, you gain the sacred flame and light cantrips. They are counted as Warlock cantrips for you, but do not count against your number of cantrips known." compset="ClSpecial">
+    <usesource source="5eWlkUACP"/>
+    <bootstrap thing="spLight">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="SpellType" tag="cHelpWlk"/>
+      </bootstrap>
+    <bootstrap thing="spSacrFlam">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="SpellType" tag="cHelpWlk"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CWlkHeal" name="Healing Light" description="At 1st level, you gain the power to channel celestial energy to heal wounds. You have a pool equal to your warlock level +1 of d6s to fuel this healing.\n\nAs a bonus action you may touch a creature to heal it, spending dice from your pool. You may only spend up to your charisma modifier at one time. \n\nThese dice refresh after a long rest." compset="ClSpecial">
+    <fieldval field="abValue" value="1"/>
+    <fieldval field="abValue2" value="6"/>
+    <usesource source="5eWlkUACP"/>
+    <tag group="Usage" tag="LongRest" name="/long rest"/>
+    <tag group="LvNamePar" tag="DieSizVal2" name="Xd &quot;field[abValue2].value&quot;"/>
+    <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY"/>
+    <tag group="LvNamePar" tag="SignAppVal" name="Sign appended value"/>
+    <tag group="LvNamePar" tag="AppValue3" name="Append &quot;field[abValue3].value&quot;"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Tracker"/>
+    <eval phase="PostLevel" priority="10000">field[trkMax].value += #levelcount[Warlock]+1</eval>
+    </thing>
+  <thing id="c5CWlkRdSl" name="Radiant Soul" description="Beginning at 6th level, your link to the Celestial gives you the ability to serve as a holy conduit. You gain resistance to radiant damage, and add your Charisma modifier to any spell that deals Radiant or Fire damage against one target of your choice." compset="ClSpecial">
+    <usesource source="5eWlkUACP"/>
+    </thing>
+  <thing id="c5CWlkClRs" name="Celestial Resilience" description="Upon reaching 10th level, you gain tempory hit points whenever you finsih a short or long rest. These temp HP are equal to your warlock level + your Charisma modifer. In addition, you may choose up to five creatures that you can see at the end of the rest, each gaining temp HP equal to 1/2 your warlock level + your Charisma modifier." compset="ClSpecial">
+    <usesource source="5eWlkUACP"/>
+    <eval phase="PostAttr" priority="15000">herofield[tBonusHP].value += #attrmod[aCHA] + #levelcount[Warlock]</eval>
+    </thing>
+  <thing id="c5CWlkSear" name="Searing Vengeance" description="Reaching 14th level, gives you the ability to overcome grievous injuries when channeling radiant energy. When making a death saving throw at the start of your turn, you may use a burst of radiant energy to spring back to your feet instead. Regaining HP equal to half your HP max, and bringing you back to your feet if you choose to do so. Each creature of your choice within 30ft of you takes 2d8 + Charisma Modifier in radiant damage, and is blinded until the end if its turn.\n\nYou can only use this once per long rest." compset="ClSpecial">
+    <usesource source="5eWlkUACP"/>
+    </thing>
+  <thing id="c5CInAspMn" name="Aspect of the Moon" description="You no longer need to sleep and can’t be forced to sleep by any means. To gain the benefits of a long rest, you can spend all 8 hours doing light activity, such as reading and keeping watch." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <exprreq message="Prerequisite: Pact of the Tome feature"><![CDATA[#hasability[cWlkPacTom] <> 0]]></exprreq>
+    </thing>
+  <thing id="c5CWlkInCk" name="Cloak of Flies" description="As a bonus action, you can conjure an aura that looks like buzzing flies around you. The aura includes your space and extends in a 5ft  sphere, and is blocked by total cover. Lasting until you are incapacitated or you dismiss it with a bonus action.\n\nThe arua grants you advantage on Charisma (Intimidation) checks but disadvantage on all other Charisma checks. In addition, a creature that starts its turn within 5 feet of you takes poison damage equal to your Charisma modifier. \n\nYou may only use this once per short or long rest." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <exprreq message="Prerequisite: 5th level"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CWlkInSm" name="Eldritch Smite" description="Once per turn you may expend a warlock spell slot, to deal an extra 1d8 force damage to the target, plus 1d8 per level of the spell slot. If the target takes any of this damage you can knock the target prone if it is Huge size or smaller." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <exprreq message="Prerequisite: Pact of the Blade feature"><![CDATA[#hasability[cWlkPacBla] <> 0]]></exprreq>
+    <exprreq message="Prerequisite: 5th level"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CWlkInGh" name="Ghostly Gaze" description="As an action, you gain the power to see through solid objects, to a range of 30ft. Within that range, you have darkvision if you do not already have it. This lasts till the end of your current turn, during that time you may perceive objects as ghostly, transparent images.\n\nYou may only use this once per short or long rest." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <exprreq message="Prerequisite: 7th level"><![CDATA[#levelcount[Warlock] >= 7]]></exprreq>
+    </thing>
+  <thing id="c5CWlkGft" name="Gift of the Depths" description="You gain the ability to breath underwater, and a swiming speed equal to your walking speed. \n\nAdditionally you may cast water breathing without expending a spell slot. You may only cast this invocation once per long rest." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <bootstrap thing="raAmphib"></bootstrap>
+    <bootstrap thing="xSwim"></bootstrap>
+    <eval phase="PreLevel" priority="10000">     #applyvalue[xSwim, hero.child[Speed].field[tSpeed].value]</eval>
+    <exprreq message="Prerequisite: 5th level"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CWlkInGf" name="Gift of the Ever-Living Ones" description="Whenever you regain HP, as long as your familiar is within 100ft of you, treat all dice rolled as if they rolled their max." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <exprreq message="Prerequisite: Pact of the Chain feature"><![CDATA[#hasability[cWlkPacCha] <> 0]]></exprreq>
+    </thing>
+  <thing id="c5CWlkGrsp" name="Grasp of Hadar" description="On each of your turns, upon hitting a creature with your eldritch blast cantrip, you may move that creature in a straight line up to 10 ft closer to yourself." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <exprreq message="Prerequisite: Eldritch Blast cantrip"><![CDATA[childlives[spEldrBlas] <> 0]]></exprreq>
+    </thing>
+  <thing id="c5CWlkKiss" name="Kiss of Mephistopheles" description="Upon you hit a creature with your eldritch blast, you may cast fireball as a bonus action using a warlock spell slot. You must target the creature you hit with Eldritch Blast." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <exprreq message="Prerequisite: Eldritch Blast cantrip"><![CDATA[childlives[spEldrBlas] <> 0]]></exprreq>
+    <exprreq message="Prerequisite: 5th level"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CWlkMHex" name="Maddening Hex" description="As a bonus action, you cause a psychic disturbance around the target cursed by your hex spell, or other warlock features such as Hexblade&apos;s Curse or Sign of Ill Omen. Doing so, you deal psychic damage to the target and each creature of your choice within 5ft of it, equal to your charisma modifier." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <exprreq message="Prerequisite: 5th level"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CWlkRnHx" name="Relentless Hex" description="Your curse creatures a temporary bond between you and the target of your curse. As a bonus action, you may teleport up to 30ft towards the target, into a square within 5ft of the target cursed by your Hex spell or other warlock features such as Hexblade&apos;s Curse or Sign of Ill Omen. You must be able to see the cursed target." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <exprreq message="Prerequisite: 7th level"><![CDATA[#levelcount[Warlock] >= 7]]></exprreq>
+    </thing>
+  <thing id="c5CWlkShrd" name="Shroud of Shadow" description="You can cast Invisibility at will, without expending a spell slot." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <exprreq message="Prerequisist: 15th level"><![CDATA[#levelcount[Warlock] >= 15]]></exprreq>
+    </thing>
+  <thing id="c5CWlkTomb" name="Tomb of Levistus" description="As a reaction, you can entomb yourself in ice when you take damage. The ice melts away at the end of your next turn. You gain 10 temp HP per warlock level, which will take as much of the triggering damage as possible. You also gain vulnerability to fire damage, your speed is reduced to 0 and you are incapacitated for the duration of the ice.\n\nYou can only use this once per short or long rest." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <exprreq message="Prerequisist: 5th level"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CWlkTrks" name="Trickster&apos;s Escape" description="You may cast freedom of movement once on yourself without expending a spell slot. You may only do this once per long rest." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eWlkUACP"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abCategory" tag="WlkEldInvo"/>
+    <exprreq message="Prerequisist: 5th level"><![CDATA[#levelcount[Warlock] >= 7]]></exprreq>
+    </thing>
+  </document>
