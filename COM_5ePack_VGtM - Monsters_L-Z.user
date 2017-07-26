@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CVGMLeuc" name="Leucrotta" compset="Race">
+    <fieldval field="rHitDice" value="9"/>
+    <fieldval field="rHPStart" value="67"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rINT" value="-1"/>
+    <fieldval field="rWIS" value="2"/>
+    <fieldval field="rCHA" value="-4"/>
+    <fieldval field="rSpeed" value="50"/>
+    <fieldval field="rAC" value="2"/>
+    <fieldval field="rCR" value="3.0"/>
+    <fieldval field="rMultiatt" value="The leucrotta makes one attack with its bite and one attack with its hooves on its turn. "/>
+    <usesource source="5eVGtMCP"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="ProfDouble" tag="skDecept"/>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lGnoll"></bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wAttackEff" value="If the leucrotta scores a critical hit, roll the damage dice three times, instead of twice. "/>
+      </bootstrap>
+    <bootstrap thing="tpMonstros"></bootstrap>
+    <bootstrap thing="raMimicry"></bootstrap>
+    <bootstrap thing="ra5CLeucRa"></bootstrap>
+    <bootstrap thing="ra5CLeucSm"></bootstrap>
+    <bootstrap thing="ra5CLeuKiR"></bootstrap>
+    <bootstrap thing="wHooves">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CLeucSm" name="Keen Smell" description="The leucrotta has advantage on Wisdom (Perception) checks that rely on smell." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="10000"><![CDATA[#situational[hero.child[skPercep], "Advantage on Perception checks that rely on smell.", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CLeucRa" name="Rampage" description="When the leucrotta reduces a creature to 0 hit points with a melee attack on its turn, this creature can take a bonus action to move up to half its speed and make an attack with its hooves." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
+    <eval phase="PostLevel" priority="10000">hero.childfound[cmhHelper].field[cmhDamage].value += 2</eval>
+    </thing>
+  <thing id="ra5CLeuKiR" name="Kicking Retreat" description="If the leucrotta attacks with its hooves, it can take the Disengage action as a bonus action." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="r5CVGMMeen" name="Meenlock" compset="Race">
+    <fieldval field="rHitDice" value="7"/>
+    <fieldval field="rHPStart" value="31"/>
+    <fieldval field="rSTR" value="-3"/>
+    <fieldval field="rDEX" value="5"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rCHA" value="-2"/>
+    <fieldval field="rAC" value="3"/>
+    <fieldval field="rCR" value="2.0"/>
+    <usesource source="5eVGtMCP"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="ProfDouble" tag="skPercep"/>
+    <tag group="ProfDouble" tag="skStealth"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="tpFey"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="livename" value="Claws"/>
+      <assignval field="sbName" value="Claws"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wAttackEff" value="The target must succeed on a DC 11 Constitution saving throw or be paralyzed for 1 minute. The paralyzed creature can repeat the save at the end of each of its turns to end the effect on a successful roll. "/>
+      <assignval field="wAttack" value="4"/>
+      <assignval field="wDamBonus" value="4"/>
+      </bootstrap>
+    <bootstrap thing="raLighSens"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMeenFA"></bootstrap>
+    <bootstrap thing="ra5CMeenTe"></bootstrap>
+    </thing>
+  <thing id="ra5CMeenFA" name="Fear Aura" description="Any beast or humanoid that starts its turn within 10 feet of the meenlock must make a DC 11 Wisdom saving throw. Failure means that the creature is frightened until the start of its next turn." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wis"/>
+    </thing>
+  <thing id="ra5CMeenTe" name="Shadow Teleport" description="As a bonus action, the meenlock can teleport up to 30 feet into an unoccupied space as long as the start and end of the teleport are in dim light or darkness. The meenlock does not have to be able to see its destination, nor does it need to be in line of sight." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Recharge" tag="5"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="r5CVGMAlho" name="Alhoon" compset="Race">
+    <fieldval field="rHitDice" value="16"/>
+    <fieldval field="rHPStart" value="120"/>
+    <fieldval field="rCR" value="10.0"/>
+    <fieldval field="rSTR" value="1"/>
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="9"/>
+    <fieldval field="rWIS" value="7"/>
+    <fieldval field="rCHA" value="7"/>
+    <fieldval field="rSpCastLev" value="12"/>
+    <fieldval field="rAC" value="4"/>
+    <usesource source="5eVGtMCP"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSkill" tag="skArcana" name="Arcana" abbrev="Arcana"/>
+    <tag group="ProfSkill" tag="skDecept" name="Deception" abbrev="Deception"/>
+    <tag group="ProfSkill" tag="skInsight" name="Insight" abbrev="Insight"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSkill" tag="skHistory"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="DamageRes" tag="dtLightnin"/>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="DamComImm" tag="dcAtkNonMa"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="AlgnReq" tag="Evil"/>
+    <tag group="ProfSave" tag="svINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="Charisma"/>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="mind flayer"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMindBl">
+      <assignval field="abText" value="alhoon"/>
+      <assignval field="abDC" value="16"/>
+      </bootstrap>
+    <bootstrap thing="raTurnRes"></bootstrap>
+    <bootstrap thing="lDeepSpeec"></bootstrap>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="xSpellcast"></bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtCold"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="livename" value="Chilling Grasp"/>
+      <assignval field="sbName" value="Chilling Grasp"/>
+      <assignval field="wAttack" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CAlhPsi"></bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    </thing>
+  <thing id="r5CVGMIlli" name="Illithilich" compset="Race">
+    <comment><![CDATA[Spellcasting
+
+For Monster Output:
+Alignment - "any evil alignment"
+Languages - "plus up to five other languages"]]></comment>
+    <fieldval field="rHitDice" value="18"/>
+    <fieldval field="rHPStart" value="135"/>
+    <fieldval field="rCR" value="22.0"/>
+    <fieldval field="rSTR" value="1"/>
+    <fieldval field="rDEX" value="6"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="10"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCHA" value="6"/>
+    <fieldval field="rAC" value="4"/>
+    <fieldval field="rSpCastLev" value="18"/>
+    <usesource source="5eVGtMCP"/>
+    <tag group="ProfSave" tag="svINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSkill" tag="skArcana" name="Arcana" abbrev="Arcana"/>
+    <tag group="ProfSkill" tag="skHistory" name="History" abbrev="History"/>
+    <tag group="ProfSkill" tag="skInsight" name="Insight" abbrev="Insight"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="sClass" tag="cHelpWiz" name="Wizard" abbrev="Wizard"/>
+    <tag group="AlgnReq" tag="Evil" name="Any Evil" abbrev="Any Evil"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnExhaust" name="Exhaustion" abbrev="Exhaustion"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="DamComImm" tag="dcAtkNonMa" name="Bludgeoning, piercing, and slashing from nonmagical attacks" abbrev="Bludgeoning, piercing, and slashing from nonmagical attacks"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <tag group="DamageRes" tag="dtCold" name="Cold" abbrev="Cold"/>
+    <tag group="DamageRes" tag="dtLightnin" name="Lightning" abbrev="Lightning"/>
+    <tag group="DamageRes" tag="dtNecrotic" name="Necrotic" abbrev="Necrotic"/>
+    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="raLicLeRes"></bootstrap>
+    <bootstrap thing="raLicRejuv"></bootstrap>
+    <bootstrap thing="xSpellcast"></bootstrap>
+    <bootstrap thing="raLicTuRes"></bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtCold"/>
+      <autotag group="Helper" tag="NoAttrDam"/>
+      <autotag group="MelAttOver" tag="aDEX"/>
+      <autotag group="StandardDC" tag="aCON"/>
+      <autotag group="abSave" tag="aCON"/>
+      <autotag group="wProperty" tag="Spell"/>
+      <assignval field="livename" value="Paralyzing Touch"/>
+      <assignval field="sbName" value="Paralyzing Touch"/>
+      <assignval field="wAttackEff" value="The target must succeed on a DC #StandardDC# Constitution saving throw or be paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wReach" value="5"/>
+      </bootstrap>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="lDeepSpeec"></bootstrap>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="raMagRes">
+      <assignval field="abText" value="illithilich"/>
+      </bootstrap>
+    <bootstrap thing="ra5CIlliMi">
+      <assignval field="abText" value="lich"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPsychic"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wAttackEff" value="If the target is Large or smaller it is grappled (escape DC 15) and must succeed on a DC 20 Intelligence saving throw or be stunned until the grapple ends. "/>
+      <assignval field="livename" value="Tentacles"/>
+      <assignval field="sbName" value="Tentacles"/>
+      <assignval field="wDamBonus" value="5"/>
+      <assignval field="wAttack" value="5"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wDieCount" value="10"/>
+      <assignval field="wAttackEff" value="This attack can only be made on one incapacitated humanoid grappled by the lich. If this damage reduces the target to 0 hit points, the target is killed as the lich extracts and devours its brain. "/>
+      <assignval field="livename" value="Extract Brain"/>
+      <assignval field="sbName" value="Extract Brain"/>
+      <assignval field="wAttack" value="5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CIllTen"></bootstrap>
+    <bootstrap thing="ra5CIllMiB"></bootstrap>
+    <bootstrap thing="ra5CIllExB"></bootstrap>
+    <bootstrap thing="ra5CIllCas"></bootstrap>
+    <bootstrap thing="ra5CIlliPs"></bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    <eval phase="PostLevel" priority="10000">#skillbonus[skArcana] += 6</eval>
+    </thing>
+  <thing id="ra5CIlliMi" name="Mind Blast" description="The illithilich magically emits psychic energy in a 60-foot cone. Each creature in that area must succeed on a DC {abDC} Intelligence saving throw or take 27 (5d8 + 5) psychic damage and be stunned for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Recharge" tag="5" name="5-6" abbrev="5-6"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="abSave" tag="aINT" name="Intelligence" abbrev="Int"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " magically emits psychic energy in a 60-foot cone. Each creature in that area must succeed on a DC " & Field[abDC].value & " Intelligence saving throw or take 22 (4d8 + 4) psychic damage and be stunned for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."]]></eval>
+    </thing>
+  <thing id="ra5CIllTen" name="Legendary Action: Tentacles" description="The illithilich makes one attack with its tentacles." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Legendary" name="Legendary" abbrev="Legendary"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="ra5CIllExB" name="Legendary Action: Extract Brain" description="The illithilich uses Extract Brain." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Legendary" name="Legendary" abbrev="Legendary"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="LegenAct" tag="2" name="2" abbrev="2"/>
+    </thing>
+  <thing id="ra5CIllMiB" name="Legendary Action: Mind Blast" description="The illithilich recharges its Mind Blast and uses it." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Legendary" name="Legendary" abbrev="Legendary"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="LegenAct" tag="2" name="2" abbrev="2"/>
+    </thing>
+  <thing id="ra5CIllCas" name="Legendary Action: Cast Spell" description="The illithilich uses a spell slot to cast a 1st-, 2nd- or 3rd-level spell that is has prepared. Doing so costs 1 legendary action per level of the spell." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Legendary" name="Legendary" abbrev="Legendary"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="LegenAct" tag="1"/>
+    </thing>
+  <thing id="r5CVGMElBr" name="Elder Brain" compset="Race">
+    <fieldval field="rHitDice" value="20"/>
+    <fieldval field="rHPStart" value="210"/>
+    <fieldval field="rSTR" value="5"/>
+    <fieldval field="rCON" value="10"/>
+    <fieldval field="rINT" value="11"/>
+    <fieldval field="rWIS" value="9"/>
+    <fieldval field="rCHA" value="14"/>
+    <fieldval field="rSpeed" value="5"/>
+    <fieldval field="rCR" value="14.0"/>
+    <usesource source="5eVGtMCP"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfSkill" tag="skIntim"/>
+    <tag group="ProfSkill" tag="skPersuas"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="ProfDouble" tag="skInsight"/>
+    <bootstrap thing="lCommon">
+      <autotag group="Helper" tag="CantSpeak"/>
+      </bootstrap>
+    <bootstrap thing="lDeepSpeec">
+      <autotag group="Helper" tag="CantSpeak"/>
+      </bootstrap>
+    <bootstrap thing="lUndercomm">
+      <autotag group="Helper" tag="CantSpeak"/>
+      </bootstrap>
+    <bootstrap thing="tpAberr"></bootstrap>
+    <bootstrap thing="wTentacle">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wReach" value="30"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wAttackEff" value="If the target is Huge or smaller, it is grappled (escape DC 15) and it takes 9 (1d8 + 5) psychic damage at the start of each of its turns until the grapple is ended. The elder brain can have up to four targets grappled at any time. "/>
+      </bootstrap>
+    <bootstrap thing="spDeteThou">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDomiMons">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="raMagRes">
+      <assignval field="abText" value="elder brain"/>
+      </bootstrap>
+    <bootstrap thing="ra5CElBLeR"></bootstrap>
+    <bootstrap thing="ra5CElBrCS"></bootstrap>
+    <bootstrap thing="ab5CLRTele">
+      <autotag group="Value" tag="5"/>
+      </bootstrap>
+    <bootstrap thing="xInnatSpel">
+      <assignval field="livename" value="Innate Spellcasting (Psionics)"/>
+      <assignval field="sbName" value="Innate Spellcasting (Psionics)"/>
+      </bootstrap>
+    <bootstrap thing="ra5CElBrTH"></bootstrap>
+    <bootstrap thing="ra5CElBrMB"></bootstrap>
+    <bootstrap thing="ra5CElBrPL"></bootstrap>
+    <bootstrap thing="ra5CElBrST"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CElBLeB"></bootstrap>
+    <bootstrap thing="ra5CElBLeP"></bootstrap>
+    <bootstrap thing="ra5CElBLeS"></bootstrap>
+    <bootstrap thing="ra5CElBrLT"></bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    </thing>
+  <thing id="ra5CElBLeR" name="Legendary Resistance" description="If the creature fails a saving throw, it can choose to succeed instead." compset="RaceSpec">
+    <fieldval field="abUserVal" value="3"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Helper" tag="UserValue" name="Ability that needs a user-set value" abbrev="Ability that needs a user-set value"/>
+    <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
+    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <eval phase="First" priority="100000">field[trkMax].value += field[abUserVal].value</eval>
+    <eval phase="PostLevel" priority="100000" index="2"><![CDATA[
+      var cr as number
+      var hp as number
+      cr = hero.child[cmhHelper].field[cmhCR].value
+      if (cr >= 11) then
+        hp = 30
+      elseif (cr >= 5) then
+        hp = 20
+      elseif (cr >= 1) then
+        hp = 10
+        endif
+      
+      hero.child[cmhHelper].field[cmhHPEffBo].value += hp * field[abUserVal].value]]></eval>
+    </thing>
+  <thing id="ra5CElBrCS" name="Creature Sense" description="The elder brain can sense the presence of creatures within 5 miles of it that have Intelligence scores of 4 or higher. It knows the distance and direction to each creature, but can only sense the Intelligence score, sensing nothing else about it. A creature can hide itself from the sense with {i}mind blank{/i}, {i}nondetection{/i} and similar spells and magic effects." compset="RaceSpec">
+    <fieldval field="abRange" value="5"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Mile"/>
+    </thing>
+  <thing id="ra5CAlhPsi" name="Innate Spellcasting (Psionics)" description="The mind flayer&apos;s innate spellcasting ability is Intelligence (spell save DC 16). It can innately cast the following spells, requiring no components:\n\nAt will: {i}detect thoughts{/i}, {i}levitate{/i}\n1/day each: {i}dominate monster{/i}, {i}plane shift{/i} (self only)" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spDeteThou">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDomiMons">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CIlliPs" name="Innate Spellcasting (Psionics)" description="The lich&apos;s innate spellcasting ability is Intelligence (spell save DC 20). It can innately cast the following spells, requiring no components:\n\nAt will: {i}detect thoughts{/i}, {i}levitate{/i}\n1/day each: {i}dominate monster{/i}, {i}plane shift{/i} (self only)" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spDeteThou">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDomiMons">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ab5CLRTele" name="Telepathy" description="Telepathy is a magical ability that allows a monster to communicate mentally with another creature within a specified range. The contacted creature doesn&apos;t need to share a language with the monster to communicate in this way with it, but it must be able to understand at least one language. A creature without telepathy can receive and respond to telepathic messages but can&apos;t initiate or terminate a telepathic conversation.{br}{br}A telepathic monster doesn&apos;t need to see a contacted creature and can end the telepathic contact at any time. The contact is broken as soon as the two creatures are no longer within range of each other or if the telepathic monster contacts a different creature within range. A telepathic monster can initiate or terminate a telepathic conversation without using an action, but while the monster is incapacitated, it can&apos;t initiate telepathic contact, and any current contact is terminated.{br}{br}A creature within the area of an {i}antimagic field{/i} or in any other location where magic doesn&apos;t function can&apos;t send or receive telepathic messages." compset="Ability" summary="Communicate telepathically if the target has a language.">
+    <tag group="FeatureTyp" tag="Language" name="Language" abbrev="Language"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="LvNamePar" tag="AppText2" name="Append &quot;field[abText2].text&quot;" abbrev="Append &quot;field[abText2].text&quot;"/>
+    <tag group="LvNamePar" tag="IncRange" name="Include Range text" abbrev="Include Range text"/>
+    <tag group="SbNameApp" tag="IncRange" name="Include Range text" abbrev="Include Range text"/>
+    <tag group="SbNameBase" tag="CaseLower" name="Lower Case for name" abbrev="Lower Case for name"/>
+    <tag group="SbNamePar" tag="AppText2" name="Append &quot;field[abText2].text&quot;" abbrev="Append &quot;field[abText2].text&quot;"/>
+    <tag group="abRange" tag="Mile"/>
+    <eval phase="PostAttr" priority="9000">
+      call CalcRange</eval>
+    <eval phase="Final" priority="20000" index="2"><![CDATA[
+      field[abRange].value = maximum(field[abRange].value,field[abValue].value)
+
+      ~ Note: To get touch range, bootstrap this with a Helper.TouchRange tag -
+      ~ It is also possible to bootstrap it with an abValue that is between 0
+      ~ and 1, but this is no longer reccomended
+      if (tagexpr[Helper.TouchRange | AbilModify.TouchRange] <> 0) then
+        field[abRangText].text = "(touch)"
+        perform assign[Helper.ShowSpec]
+        perform delete[Hide.Special]
+        endif]]></eval>
+    </thing>
+  <thing id="ra5CElBrTH" name="Telepathic Hub" description="The elder brain can use its telepathy to initiate and maintain telepathic conversations with up to ten creatures at a time. The elder brain can let those creatures telepathically hear each other while connected in this way." compset="RaceSpec">
+    <fieldval field="abRange" value="5"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Mile"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="ra5CElBrMB" name="Mind Blast" description="The elder brain magically emits psychic energy in a 60-foot radius from itself. Each creature in that area must succeed on a DC 18 Intelligence saving throw or take 32 (5d10 + 5) psychic damage and be stunned for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Recharge" tag="5" name="5-6" abbrev="5-6"/>
+    <tag group="StandardDC" tag="aCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="abSave" tag="aINT" name="Intelligence" abbrev="Int"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "The " & Field[abText].text & " magically emits psychic energy in a 60-foot cone. Each creature in that area must succeed on a DC " & Field[abDC].value & " Intelligence saving throw or take 22 (4d8 + 4) psychic damage and be stunned for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."]]></eval>
+    </thing>
+  <thing id="ra5CElBrPL" name="Psychic Link" description="The elder brain targets one incapacitated creature it can sense with its Creature Sense trait and establishes a psychic link with it. Until the link ends, the elder brainc can sense everything the target senses. The target becomes aware that something is linked to its mind once it is no longer incapacitated and the elder brain can terminate the link at any time (no action required). The target can reists by using an action on its turn, breaking the link on a successful DC 18 Charisma saving throw and taking 10 (3d6) psychic damage in the process. The psychic link also ends if the elder brain and the target are more than 5 miles apart, without the painful consequences. The elder brain can form psychic links with up to ten creatures at a time." compset="RaceSpec">
+    <fieldval field="abRange" value="5"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Mile"/>
+    <tag group="abDuration" tag="Instant"/>
+    </thing>
+  <thing id="ra5CElBrST" name="Sense Thoughts" description="An elderbrain targest a creature with which it has established a psychic link. The elder brain gains information about the target&apos;s reasoning, its emotional state and thoughts that loome large in its mind. The elder brain can also make a Charisma (Deception) check with advantage to trick the target&apos;s mind into thinking it believes one idea or feels a particular emotion. The target can contest this attempt with a Wisdom (Insight) check. If the elder brain succeeds, the mind believes the decption for 1 hour or until evidence contray to the lie is presented to it." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CElBrLT" name="Legendary Action: Tentacle" description="The elder brain makes a tentacle attack." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LegenAct" tag="1"/>
+    </thing>
+  <thing id="ra5CElBLeB" name="Legendary Action: Break Concentration" description="The elder brain targets a creature within 120 feet of it which it has a psychic link to. The elder brain breaks the concentration on a spell the target has cast and it takes 1d4 psychic damage per level of the spell." compset="RaceSpec">
+    <fieldval field="abRange" value="120"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LegenAct" tag="1"/>
+    </thing>
+  <thing id="ra5CElBLeP" name="Legendary Action: Psychic Pulse" description="The elder brain targets a creature within 120 feet of it which it has a psychic link to. Enemies of the elder brain within 10 feet of the creature take 10 (3d6) psychic damage." compset="RaceSpec">
+    <fieldval field="abRange" value="120"/>
+    <fieldval field="wDieCount" value="3"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="NoAttrDam"/>
+    <tag group="DamageType" tag="dtPsychic"/>
+    <tag group="LegenAct" tag="1"/>
+    </thing>
+  <thing id="ra5CElBLeS" name="Legendary Action: Sever Psychic Link" description="A creature within 120 feet of the brain that shares a psychic link with it is targetted. The elder brain ends the link causing the creature to have disadvantage on all ability checks, attack rolls, and saving throws until the end of the creature&apos;s next turn." compset="RaceSpec">
+    <fieldval field="abRange" value="120"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LegenAct" tag="1"/>
+    </thing>
+  <thing id="r5CVGMUlit" name="Ulitharid" compset="Race">
+    <fieldval field="rHitDice" value="17"/>
+    <fieldval field="rHPStart" value="127"/>
+    <fieldval field="rCR" value="9"/>
+    <fieldval field="rSTR" value="5"/>
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rINT" value="11"/>
+    <fieldval field="rWIS" value="9"/>
+    <fieldval field="rCHA" value="11"/>
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Evil" name="Evil" abbrev="E"/>
+    <tag group="Alignment" tag="Lawful" name="Lawful" abbrev="L"/>
+    <tag group="ArmProfGrp" tag="ArmorLight" name="Light armor" abbrev="Light armor"/>
+    <tag group="ArmProfGrp" tag="ArmorMed" name="Medium armor" abbrev="Medium armor"/>
+    <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="ProfSave" tag="svINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSkill" tag="skArcana" name="Arcana" abbrev="Arcana"/>
+    <tag group="ProfSkill" tag="skInsight" name="Insight" abbrev="Insight"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="mind flayer"/>
+      </bootstrap>
+    <bootstrap thing="ra5CUliPsi"></bootstrap>
+    <bootstrap thing="ra5CUlitMB">
+      <assignval field="abText" value="mind flayer"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="livename" value="Extract Brain"/>
+      <assignval field="sbName" value="Extract Brain"/>
+      <assignval field="wAttackEff" value="If this damage reduces the target to 0 hit points, the mind flayer kills the target by extracting and devouring its brain ."/>
+      <assignval field="wDieCount" value="10"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wTarget" value="one incapacitated humanoid grappled by the mind flayer"/>
+      <assignval field="wDamBonus" value="-2"/>
+      <assignval field="wAttack" value="3"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="lDeepSpeec"></bootstrap>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="ab5CLRTele">
+      <autotag group="Value" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="tpAberr"></bootstrap>
+    <bootstrap thing="wTentacle">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtPsychic"/>
+      <assignval field="livename" value="Tentacles"/>
+      <assignval field="sbName" value="Tentacles"/>
+      <assignval field="wAttackEff" value="If the target is Large or smaller, it is grappled (escape DC 14) and must succeed on a DC 17 intelligence saving throw or be stunned until this grapple ends."/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wAttack" value="3"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wDamBonus" value="3"/>
+      </bootstrap>
+    <bootstrap thing="ra5CUliCS"></bootstrap>
+    <bootstrap thing="ra5CUliHub"></bootstrap>
+    </thing>
+  <thing id="ra5CUlitMB" name="Mind Blast" description="The ulitharid magically emits psychic energy in a 60-foot cone. Each creature in that area must succeed on a DC 17 Intelligence saving throw or take 31 (4d12 + 5) psychic damage and be stunned for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success." compset="RaceSpec">
+    <fieldval field="abRange" value="60"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Recharge" tag="5" name="5-6" abbrev="5-6"/>
+    <tag group="StandardDC" tag="aINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="abSave" tag="aINT" name="Intelligence" abbrev="Int"/>
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="abDuration" tag="Instant"/>
+    </thing>
+  <thing id="ra5CUliPsi" name="Innate Spellcasting (Psionics)" description="The mind flayer&apos;s innate spellcasting ability is Intelligence (spell save DC 15). It can innately cast the following spells, requiring no components:\n\nAt will: {i}detect thoughts{/i}, {i}levitate{/i}\n1/day each: {i}confusion{/i}, {i}dominate monster{/i}, {i}eyebite{/i},  {i}feeblemind{/i},  {i}mass suggestion{/i}, {i}plane shift{/i} (self only),  {i}project image{/i},  {i}scrying{/i},  {i}telekinesis{/i}" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <bootstrap thing="spLevitate">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDomiMons">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spConfusio">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spEyebite">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spFeeblemi">
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMassSugg">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDeteThou">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spProjImag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spScrying">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spTelekine">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CUliCS" name="Creature Sense" description="The ulitharid can sense the presence of creatures within 2 miles of it that have Intelligence scores of 4 or higher. It knows the distance and direction to each creature, but can only sense the Intelligence score, sensing nothing else about it. A creature can hide itself from the sense with {i}mind blank{/i}, {i}nondetection{/i} and similar spells and magic effects." compset="RaceSpec">
+    <fieldval field="abRange" value="2"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Mile" name="Mile" abbrev="mi"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="ra5CUliHub" name="Psychic Hub" description="If an ulitharid has a psychic link with an elder brain, the elder brain can form psychic links with creatures that the ulitharid can sense with its Creature Sense, extending the brain&apos;s Telepathic Hub range. Any such link ends if the creature falls outside the telepathy ranges of both ulitharid and elder brain. The ulitharid can maintain its psychic link with the elder brain regardless of the distance between them as long as they are on the same plane of existence. If the ulitharid moves more than 5 miles away from the eleder brain, it can end the psychic link at any time (no action required)." compset="RaceSpec">
+    <fieldval field="abRange" value="5"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Mile" name="Mile" abbrev="mi"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="r5CVGMMind" name="Mindwitness" compset="Race">
+    <fieldval field="rHitDice" value="10"/>
+    <fieldval field="rHPStart" value="75"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="5"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rAC" value="3"/>
+    <fieldval field="rCR" value="5.0"/>
+    <fieldval field="rMultiatt" value="The mindwitness makes two attacks: one with its tntacles and one with its bite. "/>
+    <usesource source="5eVGtMCP"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfDouble" tag="skPercep"/>
+    <tag group="CondImm" tag="pcnProne"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPsychic"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wAttack" value="2"/>
+      <assignval field="wDamBonus" value="2"/>
+      <assignval field="wAttackEff" value="If the target is Large or smaller, it is grappled (escape DC 13) and must succeed on a DC 13 Intelligence saving throw or be stunned until this grapple ends. "/>
+      <assignval field="livename" value="Tentacles"/>
+      <assignval field="sbName" value="Tentacles"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="20"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="600"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="tpAberr"></bootstrap>
+    <bootstrap thing="lDeepSpeec"></bootstrap>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wAttack" value="2"/>
+      <assignval field="wDamBonus" value="2"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMindEy"></bootstrap>
+    <bootstrap thing="ra5CMindHu"></bootstrap>
+    </thing>
+  <thing id="ra5CMindEy" name="Eye Rays" description="The mindwitness shoots three of the following magical eye rays at random (reroll duplicates), choosing one to three targets it can see within 120 feet of it:\n\n1. Aversion Ray. The targeted creature must succeed on a DC 13 Charisma saving throw or have disadvantage on attack rolls for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect with a success. \n2. Fear Ray. The targeted creature must succeed on a DC 13 Wisdom saving throw or be frightened for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.\n3. Psychic Ray. The target must succeed ona DC 13 Intelligence saving throw or take 27 (6d8) psychic damage.\n4. Slowing Ray. The targeted creature must make a DC 13 Dexterity saving throw. On a failed save, the target&apos;s speed is halved for 1 minute. In addition, the creature can&apos;t take reactions, and it can take either an action or a bonus action on its turn but not both. The creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.\n5. Stunning Ray. The target creature must succeed on a DC 13 Constitution saving throw or be stunned for 1 minute. The creature can repeat the saving throw at the start of each of its turns, ending the effect on itself with a success.\n6. Telekinetic Ray. If the target is a creature, it must make a DC 13 Strength saving throw. If it fails, the mindwithness moves it up to 30 feet in any direction and it is restrained by the ray&apos;s telekinetic grip until the start of the mindwitness&apos;s next turn or until the mindwitness is incapacitated. \nIf the target is an object weighing 300 pounds or less that isn&apos;t being worn or carried, it is telekinetically moved up to 30 feet in any direction. The mindwitness can also exert fine control on objects with this ray, such as manipulating a simple tool or opening a door or container." compset="RaceSpec">
+    <fieldval field="abRange" value="120"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    </thing>
+  <thing id="ra5CMindHu" name="Telepathic Hub" description="When the mindwitness receives a telepathic message, it can share that message telepathically with up to seven other creatures within 600 feet of it that it can see." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="r5CVGMMork" name="Morkoth" compset="Race">
+    <fieldval field="rHitDice" value="20"/>
+    <fieldval field="rHPStart" value="130"/>
+    <fieldval field="rSTR" value="4"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="10"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rCHA" value="3"/>
+    <fieldval field="rSpeed" value="25"/>
+    <fieldval field="rAC" value="5"/>
+    <fieldval field="rCR" value="11.0"/>
+    <fieldval field="rSpCastLev" value="11"/>
+    <fieldval field="rMultiatt" value="The morkoth makes three attacks: two bite attacks and one tentacle attack or three bite attacks. "/>
+    <usesource source="5eVGtMCP"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skHistory"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfDouble" tag="skPercep"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="DamComRes" tag="dcAtkNonMa"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="xSpellcast"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="50"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="raAmphib"></bootstrap>
+    <bootstrap thing="wTentacle">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wReach" value="15"/>
+      <assignval field="livename" value="Tentacles"/>
+      <assignval field="sbName" value="Tentacles"/>
+      <assignval field="wAttackEff" value="If the target is Large or smaller it becomes grappled (DC 14). Until this grapple ends, the target is restrained and takes 15 (3d8 + 2) bludgeoning damage at the start of each of the morkoth&apos;s turns. The morkoth can&apos;t use its tentacles on another target while maintaining a grapple."/>
+      </bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="tpAberr"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMorkHy"></bootstrap>
+    <bootstrap thing="ra5CMorkRe"></bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    </thing>
+  <thing id="ra5CMorkHy" name="Hypnosis" description="The morkoth projects a 30-foot cone of magical energy from itelf. Each creature in that area must make a DC 17 Wisdom saving throw or become charmed by the morkoth for 1 minute. While charmed in this way, the target tries to get as close to the morkoth as possible, using its actions to Dash until it is within 5 feet of the morkoth. A charmed target can repeat the saving throw at the end of each of its turns and whenever it takes damage, ending the effect on itself with a success. If a creature makes a successful saving throw or the effect ends for it, the creature has advantage on saving throws against the morkoth&apos;s Hypnosis for 24 hours." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aINT"/>
+    </thing>
+  <thing id="ra5CMorkRe" name="Spell Reflection" description="If the morkoth makes a successful saving throw against a spell, or a spell attack misses it, the morkoth can choose another creature (including the spellcaster) it can see within 120 feet of it. The spell targets the chosen creature instead of the morkoth. If the spell forced a saving throw, the chosen creature makes its own save. If the spell was an attack, the attack roll is rerolled against the chosen creature." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Reaction" name="Reaction" abbrev="Reaction"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    </thing>
+  </document>
