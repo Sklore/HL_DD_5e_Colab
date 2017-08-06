@@ -860,21 +860,21 @@
     <tag group="Helper" tag="EquipMag"/>
     <tag group="Usage" tag="LongRest"/>
     </thing>
-  <thing id="io5CIngSko" name="Ingot of the Skold Rune" description="Placeholder..." compset="Wondrous">
-    <tag group="Helper" tag="EquipMag"/>
+  <thing id="io5CIngSko" name="Ingot of the Skold Rune" description="This appears as a simple ingot of iron ore, about a foot long and a few inches across. Close inspection reveals the faint outline of the skold rune (shield). The ingot has the following properties, which only work while it&apos;s on your person:\n\n{b}Runic Shield.{/b} You have a +1 bonus to AC.\n\n{b}Shield Bond.{/b} As a bonus action, choose a creature that you can see within 30 feet of you other than yourself. Until the end of your next turn, any damage the target takes is reduced to 1, but you take half the damage prevented this way. The damage taken cannot be reduced in any way. Once you use this property, you can&apos;t use it again until you finish a short or long rest. \n\n{b}Shield Ward.{/b} You can transfer the ingot&apos;s magic to a non-magical shield or two-handed melee weapon. The transfer takes 8 hours of work and requires that the ingot and item to be enchanted stay within 5 feet of each other. At the end, the ingot is destoryed, and the rune appears in silver on the chosen item, which receives the following benefits:\n\n{b}Shield.{/b} The shield is now a rare magic item requiring attunement. Its magic gives a +1 bonus to AC, and the first time after your long rests that damage reduces you to -0 hit points, you are instead reduced to 1 hit point. You must weild the shield to gain these benefits.\n\n{b}Weapon.{/b} The weapon is now an uncommon magic weapon. It grants a +1 bonus to AC while in your hand." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="GearType" tag="gtWondrous"/>
     <tag group="Helper" tag="EquipAvail"/>
     <tag group="ItemRarity" tag="VeryRare"/>
     <tag group="Helper" tag="NeedAttune"/>
-    </thing>
-  <thing id="io5CKorSce" name="Korolnor Scepter" description="Placeholder..." compset="Wondrous">
+    <tag group="User" tag="Tracker"/>
     <tag group="Helper" tag="EquipMag"/>
-    <tag group="Helper" tag="ShowSpec"/>
-    <tag group="GearType" tag="gtWondrous"/>
-    <tag group="Helper" tag="EquipAvail"/>
-    <tag group="ItemRarity" tag="Legendary"/>
-    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <eval phase="PreLevel" priority="10000">~ Apply Runic Shield
+      doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      hero.child[ArmorClass].field[Bonus].value += 1</eval>
     </thing>
   <thing id="io5CNavOrb" name="Navigation Orb" description="Placeholder.." compset="Wondrous">
     <tag group="Helper" tag="EquipMag"/>
@@ -938,28 +938,72 @@
     <tag group="Helper" tag="EquipAvail"/>
     <tag group="ItemRarity" tag="Artifact"/>
     </thing>
-  <thing id="mw5CGurtGr" name="Gurt&apos;s Greataxe" description="Placeholder..." compset="MagicWep">
+  <thing id="mw5CGurtGr" name="Gurt&apos;s Greataxe" description="This axe is sized for a giant. The axe sheds light as a torch when the temperature around it drops below 0 degrees Fahrenheit. The light can&apos;t be shut off in these conditions. \n\nAs an action, you can cast a version of the {i}heat metal{/i} spell (save DC 13) that deals cold damage instead of fire damage. Once this power is used, it can&apos;t be used again until the next dawn." compset="MagicWep">
     <fieldval field="miTypeDet" value="greataxe"/>
     <fieldval field="Bonus" value="1"/>
     <fieldval field="gWeight" value="325"/>
-    <fieldval field="wFixDamage" value="3"/>
-    <fieldval field="wFixRanDam" value="12"/>
-    <fieldval field="wDamExtra" value=" , if the target is human do 2d12 extra slashing"/>
+    <fieldval field="wDamExtra" value=", if the target is human do 13 (2d12) extra slashing damage."/>
     <fieldval field="wReach" value="10"/>
-    <usesource source="5eDMGCP" parent="p5ePack" name="5e Dungeon Master&apos;s Guide - Beta"/>
-    <tag group="IsWeapon" tag="wGreataxe"/>
-    <tag group="ItemRarity" tag="Legendary" name="Legendary" abbrev="Legendary"/>
-    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <fieldval field="wDieCount" value="3"/>
+    <fieldval field="wDieSize" value="12"/>
+    <usesource source="p5eSKTP"/>
     <tag group="GearType" tag="gtWeapon"/>
     <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="DamageType" tag="dtSlashing"/>
     <tag group="Helper" tag="NoSelect"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="IsWeapon" tag="wGreataxe"/>
+    <tag group="ItemRarity" tag="Legendary" name="Legendary" abbrev="Legendary"/>
+    <tag group="EquipType" tag="Metal"/>
+    <tag group="Helper" tag="Always2H"/>
+    <tag group="wCategory" tag="Melee"/>
+    <tag group="wProperty" tag="Heavy"/>
+    <tag group="wProperty" tag="TwoHanded"/>
+    <bootstrap thing="spHeatMeta">
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="EquipAvail"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Heat Metal (cold vers.) - 1/day"/>
+      </bootstrap>
     <eval phase="PostLevel" priority="10000"><![CDATA[doneif (field[gIsEquip].value = 0)
-      doneif (tagis[Helper.Disable] <> 0)
-
-      ~ If we're not shown, just get out now
-      doneif (tagis[Helper.ShowSpec] = 0)]]></eval>
+doneif (tagis[Helper.Disable] <> 0)
+~ If we're not shown, just get out now
+doneif (tagis[Helper.ShowSpec] = 0)
+doneif (field[gIsAttuned].value = 0)]]></eval>
     <child entity="wSpecMagic"></child>
+    </thing>
+  <thing id="ro5CKoroln" name="Korolnor Scepter" description="The {i}Korolnor Scepter{/i} is a tapered mithral rod as thick and long as a dwarf&apos;s forearm, with a small platinum knob at the bottom and a rounded disk adorned with a ring of seven tiny blue gems at the top. \n\nYou gain a +3 to attack and damage rolls made with this scepter, which can be weilded as a magic club. \n\nYou can use the properties of the {i}Wyrmskull Throne{/i} as well as the magical properties of the scepter. The scepter has 10 charges and it regains 1d6+4 expended charges at dawn. Its properties are:\n* Expending 1 charge as an action while underwater or underground will allow you to determine the direction to the surface.\n* As an action, expending 2 charges allows you to cast the {i}sending{/i} spell.\n* As an action, expending 3 charges allows you to cast the {i}teleport{/i} spell. If the destination is within 60 feet of the {i}Wyrmskull Throne{/i} there is no chance of mishap or teleport error." compset="MagicWep">
+    <fieldval field="trkMax" value="10"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="4"/>
+    <tag group="Hide" tag="Tracker" name="Tracker" abbrev="Tracker"/>
+    <tag group="GearType" tag="gtRod" name="Rod" abbrev="Rod"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="ItemRarity" tag="Legendary" name="Legendary" abbrev="Legendary"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="wProfReq" tag="Simple"/>
+    <tag group="wCategory" tag="Melee"/>
+    <tag group="DamageType" tag="dtBludgeon"/>
+    <tag group="EquipType" tag="Metal"/>
+    <tag group="wProperty" tag="Light"/>
+    <bootstrap thing="spSending">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="spTeleport">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="3"/>
+      </bootstrap>
+    <eval phase="First" priority="1000"><![CDATA[~No magic bonuses if you're not attuned to it
+      doneif (field[gIsAttuned].value = 0)
+      field[Bonus].value += 3]]></eval>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wClub">
+        <containerreq phase="First" priority="490">fieldval:usrIndex = 3</containerreq>
+        </bootstrap>
+      </child>
     </thing>
   </document>
