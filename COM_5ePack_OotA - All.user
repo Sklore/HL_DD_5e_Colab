@@ -131,6 +131,7 @@
     <bootstrap thing="raDarkVis">
       <assignval field="abValue" value="60"/>
       </bootstrap>
+    <eval phase="First">perform assign[Hero.HasDarkvis]</eval>
     <exprreq message="NPC race required."><![CDATA[#hasrace[rAcolyte] + #hasrace[rArchmage] + #hasrace[rAssassin] + #hasrace[rBandit] + #hasrace[rBandiCapt] + #hasrace[rBerserker] + #hasrace[rCommoner] + #hasrace[rCultFana] + #hasrace[rCultist] + #hasrace[rDruid] + #hasrace[rGladiator] + #hasrace[rGuard] + #hasrace[rKnight] + #hasrace[rMage] + #hasrace[rNoble] + #hasrace[rPriest] + #hasrace[rScout] + #hasrace[rSpy] + #hasrace[rThug] + #hasrace[rTribaWarr] + #hasrace[rVeteran] <> 0]]></exprreq>
     </thing>
   <thing id="r5COAIxitx" name="Ixitxachitl" compset="Race">
@@ -241,11 +242,6 @@
     <tag group="DamageType" tag="dtPiercing" name="Piercing" abbrev="Piercing"/>
     <tag group="FeatureTyp" tag="Reaction" name="Reaction" abbrev="Reaction"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    </thing>
-  <thing id="t5CIxitCle" name="Ixitxachitl Cleric" description="Placeholder - Not Working.\n\nSome Ixitxachitl (including the vampiric ixitxachitl) are able to cast divine spells. Such a creature gains the following feature (as example):\n\n{b}{i}Spellcasting.{/i}{/b} The ixitxachitl is a 5th-level spellcaster that uses Wisdom as its spellcasting ability (spell save DC 11, +3 to hit with spell attacks). The ixitxachitl has the following cleric spells prepared:\n\nCantrips (at will): {i}guidance, thaumaturgy{/i}\n1st Level (4 slots): {i}charm person, create or destroy water{/i}\n2nd Level (3 slots): {i}hold person, silence{/i}\n3rd Level (2 slots): {i}dispel magic, tongues{/i}" compset="Template" uniqueness="unique">
-    <usesource source="5eRODOA"/>
-    <bootstrap thing="xSpellcast"></bootstrap>
-    <exprreq message="Requires an Ixitxachitl."><![CDATA[#hasrace[r5COAIxitx] + #hasrace[r5COAVamIx] <> 0]]></exprreq>
     </thing>
   <thing id="r5COADueDa" name="Duergar Darkhaft" compset="Race">
     <comment>war pick, javelin, scale mail, shield</comment>
@@ -582,19 +578,6 @@
     <tag group="Usage" tag="Day"/>
     <tag group="FeatureTyp" tag="Action"/>
     <tag group="abAction" tag="Action"/>
-    </thing>
-  <thing id="t5CMycCaus" name="Myconid: Caustic Spores" description="Myconid adults can have up to two of the Myconid Option templates applied. Myconid soverigns can have three. \n\nThis option grants the Caustic Spores ability." compset="Template" uniqueness="unique">
-    <usesource source="5eRODOA"/>
-    <bootstrap thing="ra5CMycCau"></bootstrap>
-    <exprreq message="Requires a myconid adult or sovereign. "><![CDATA[#hasrace[r5CMMMycoA] + #hasrace[r5CMMMycon] <> 0.]]></exprreq>
-    </thing>
-  <thing id="t5CMycInfe" name="Myconid: Infestation Spores" description="Myconid adults can have up to two of the Myconid Option templates applied. Myconid soverigns can have three. \n\nThis option grants the Infestation Spores ability." compset="Template" uniqueness="unique">
-    <bootstrap thing="ra5CMycInf"></bootstrap>
-    <exprreq message="Requires a myconid adult or sovereign. "><![CDATA[#hasrace[r5CMMMycoA] + #hasrace[r5CMMMycon] <> 0.]]></exprreq>
-    </thing>
-  <thing id="t5CMycEuph" name="Myconid: Euphoria Spores" description="Myconid adults can have up to two of the Myconid Option templates applied.  Myconid soverigns can have three. \n\nThis option grants the Euphoria Spores ability." compset="Template" uniqueness="unique">
-    <bootstrap thing="ra5CMycEup"></bootstrap>
-    <exprreq message="Requires a myconid adult or sovereign. "><![CDATA[#hasrace[r5CMMMycoA] + #hasrace[r5CMMMycon] <> 0.]]></exprreq>
     </thing>
   <thing id="ra5CMycInf" name="Infestation Spores" description="The myconid releases a cloud of spores in a 10-foot-radius sphere that lingers for up to 1 minute. Any flesh-and-blood creature in the cloud when it appears, or that enters it later must make a DC #StandardDC# #abSave# or become infected with a disease called the spores of Zuggtmoy and gains a random form of indefinite madness (see appendix D of Out of the Abyss). A creature that makes its save can&apos;t be infected with these spores for 24 hours. The disease lasts until the creature is cured or dies. While infected in this way, the creature can&apos;t be reinfected and it must repeat the saving thrwo at the end of every 24 hours, ending the infection on a success. On a failure, the infected creature&apos;s body is slowly taken over by fungal growth, killing it after three failures. The creature is then reanimated as a spore servant if it is a type that can be." compset="RaceSpec">
     <fieldval field="trkMax" value="1"/>
@@ -1452,6 +1435,7 @@ field[CustDesc].text = replace(field[CustDesc].text, "#abValue#",distance,0)]]><
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
+    <eval phase="PostLevel" priority="10000">herofield[tLegAction].value = 2</eval>
     </thing>
   <thing id="ra5CYestCa" name="Caustic Spores" description="Yestabrod releases spores in a 30-foot cone. Each creature in the area of effect must succeed on a DC #StandardDC# #abSave# saving throw or take 1d6 acid damage at the start of each of the Yestabrod&apos;s turns. A creature can repeat the saving throw at the end of its turn, ending the effect on itself on a success." compset="RaceSpec">
     <fieldval field="trkMax" value="1"/>
@@ -1611,8 +1595,7 @@ field[CustDesc].text = replace(field[CustDesc].text, "#abValue#",distance,0)]]><
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
-    <eval phase="PostLevel" priority="100000">
-      hero.childfound[cmhHelper].field[cmhACEff].value += 4</eval>
+    <eval phase="PostLevel" priority="100000">hero.childfound[cmhHelper].field[cmhACEff].value += 4</eval>
     </thing>
   <thing id="ra5CBaphRe" name="Reckless" description="At the start of his turn, Baphomet can gain advantage on all melee weapon attack rolls he makes during that turn, but attack rolls against him have advantage until the start of his next turn." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
@@ -1655,5 +1638,23 @@ field[CustDesc].text = replace(field[CustDesc].text, "#abValue#",distance,0)]]><
   <thing id="ra5CBapMir" name="Mirage Arcane" description="Baphomet casts {i}mirage arcane{/i}, affecting a room that is no longer in any dimension than 100 feet. The effect ends on the next initiative count 20." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Lair"/>
+    </thing>
+  <thing id="ra5CMycCaS" name="Caustic Spores" description="Some myconids can shoot caustic spores at their foes.\n\nMyconid adults can have up to two of the Myconid variants applied.  Myconid sovereigns can have three." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eRODOA"/>
+    <tag group="AllowRCust" tag="r5CMMMycon"/>
+    <tag group="AllowRCust" tag="r5CMMMycoA"/>
+    <bootstrap thing="ra5CMycCau"></bootstrap>
+    </thing>
+  <thing id="ra5CMycEuS" name="Euphoria Spores" description="Some myconid can release mind-affecting spores.\n\nMyconid adults can have up to two of the Myconid variants applied.  Myconid sovereigns can have three." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eRODOA" parent="p5eROD" name="Out of the Abyss"/>
+    <tag group="AllowRCust" tag="r5CMMMycon" name="Myconid Sovereign" abbrev="Myconid Sovereign"/>
+    <tag group="AllowRCust" tag="r5CMMMycoA" name="Myconid Adult" abbrev="Myconid Adult"/>
+    <bootstrap thing="ra5CMycEup"></bootstrap>
+    </thing>
+  <thing id="ra5CMycInS" name="Infestation Spores" description="Some myconids can spew spores that cause a horrible disease. \n\nMyconid adults can have up to two of the Myconid variants applied.  Myconid soverigns can have three." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eRODOA" parent="p5eROD" name="Out of the Abyss"/>
+    <tag group="AllowRCust" tag="r5CMMMycon" name="Myconid Sovereign" abbrev="Myconid Sovereign"/>
+    <tag group="AllowRCust" tag="r5CMMMycoA" name="Myconid Adult" abbrev="Myconid Adult"/>
+    <bootstrap thing="ra5CMycInf"></bootstrap>
     </thing>
   </document>

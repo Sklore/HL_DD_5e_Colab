@@ -98,6 +98,8 @@ perform hero.assign[ProfDouble.skStealth]</eval>
       ~ Set our race's name to be shadow dragon
       focus.field[livename].text = replace(lowercase(focus.field[name].text), "dragon", "shadow dragon", 0)]]></eval>
     <eval phase="Render" priority="10000" index="4">~ remove the Breath weapon shown
+~ Young red example.
+perform hero.childfound[raYoRPoBre].assign[Helper.SpcDisable]
 perform hero.childfound[raYoRPoBre].assign[Helper.Disable]</eval>
     <eval phase="Render" priority="15000" index="2"><![CDATA[~set our focus on the bite attack, if it does acid, cold, fire, lightning, or poison damage with its bite, change the damage type to necrotic
 var temp as string
@@ -113,11 +115,6 @@ temp = replace(temp,"lightning",dam,0)
 temp = replace(temp,"poison",dam,0)
 hero.childfound[wBite].field[wDamExtra].text = temp]]></eval>
     <exprreq message="Dragon required."><![CDATA[#hastype[tpDragon] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CBalSumD" name="Balor: Summon Demon" description="Some demons have an action option that allows them to summon other demons." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP"/>
-    <bootstrap thing="ra5CBalSum"></bootstrap>
-    <exprreq message="Must be a Balor. "><![CDATA[#hasrace[rBalor] <> 0]]></exprreq>
     </thing>
   <thing id="ra5CBalSum" name="Summon Demon" description="A balor has a 50 percent chance of summoning 1d8 vrocks, 1d6 hezrous, 1d4 glabrezus, 1d3 nalfeshnees, 1d2 mariliths, or one goristro.\n\nA summoned demon appears in an unoccupied space within 60 feet of its summoner, acts as an ally of the sumoner, and can&apos;t summon other demons. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as an action." compset="RaceSpec">
     <fieldval field="trkMax" value="1"/>
@@ -182,57 +179,12 @@ hero.childfound[wBite].field[wDamExtra].text = temp]]></eval>
     <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
     <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
     </thing>
-  <thing id="t5CBarSumD" name="Barlgura: Summon Demon" description="Some demons have an action option that allows them to summon other demons." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CBarSum"></bootstrap>
-    <exprreq message="Must be a Barlgura."><![CDATA[#hasrace[r5CMMBarl] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CChaSumD" name="Chasme: Summon Demon" description="Some demons have an action option that allows them to summon other demons." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CChaSum"></bootstrap>
-    <exprreq message="Must be a Chasme."><![CDATA[#hasrace[r5CMMChas] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CGlaSumD" name="Glabrezu: Summon Demon" description="Some demons have an action option that allows them to summon other demons." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CGlaSum"></bootstrap>
-    <exprreq message="Must be a Glabrezu."><![CDATA[#hasrace[rGlabrezu] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CHezSumD" name="Hezrou: Summon Demon" description="Some demons have an action option that allows them to summon other demons." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CHezSum"></bootstrap>
-    <exprreq message="Must be a Hezrou."><![CDATA[#hasrace[rHezrou] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CMarSumD" name="Marilith: Summon Demon" description="Some demons have an action option that allows them to summon other demons." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CMarSum"></bootstrap>
-    <exprreq message="Must be a Marilith. "><![CDATA[#hasrace[rMarilith] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CNalSumD" name="Nalfeshnee: Summon Demon" description="Some demons have an action option that allows them to summon other demons." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CNalSum"></bootstrap>
-    <exprreq message="Must be a Nalfeshnee."><![CDATA[#hasrace[rNalfeshne] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CVroSumD" name="Vrock: Summon Demon" description="Some demons have an action option that allows them to summon other demons." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CVroSum"></bootstrap>
-    <exprreq message="Must be a Vrock."><![CDATA[#hasrace[rVrock] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CYocSumD" name="Yochlol: Summon Demon" description="Some demons have an action option that allows them to summon other demons." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CYocSum"></bootstrap>
-    <exprreq message="Must be a Yochlol."><![CDATA[#hasrace[r5CMMYoch] <> 0]]></exprreq>
-    </thing>
   <thing id="ra5CBarbSu" name="Summon Devil" description="A barbed devil has a 30 percent chance of summoning one barbed devil.\n\nA summoned devil appears in an unoccupied space within 60 feet of its summoner, acts as an ally of the sumoner, and can&apos;t summon other devils. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as an action." compset="RaceSpec">
     <fieldval field="trkMax" value="1"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
     <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
     <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
-    </thing>
-  <thing id="t5CBarbSu" name="Barbed Devil: Summon Devil" description="Some devils have an action option that allows them to summon other devils." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CBarbSu"></bootstrap>
-    <exprreq message="Must be a barbed devil."><![CDATA[#hasrace[rBarbeDevi] <> 0]]></exprreq>
     </thing>
   <thing id="ra5CBearSu" name="Summon Devil" description="A bearded devil has a 30 percent chance of summoning one bearded devil.\n\nA summoned devil appears in an unoccupied space within 60 feet of its summoner, acts as an ally of the sumoner, and can&apos;t summon other devils. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as an action." compset="RaceSpec">
     <fieldval field="trkMax" value="1"/>
@@ -276,72 +228,6 @@ hero.childfound[wBite].field[wDamExtra].text = temp]]></eval>
     <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
     <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
     </thing>
-  <thing id="t5CBearSum" name="Bearded Devil: Summon Devil" description="Some devils have an action option that allows them to summon other devils." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CBearSu"></bootstrap>
-    <exprreq message="Must be a bearded devil."><![CDATA[#hasrace[rBeardDevi] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CBoneSum" name="Bone Devil: Summon Devil" description="Some devils have an action option that allows them to summon other devils." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CBoneSu"></bootstrap>
-    <exprreq message="Must be a bone devil."><![CDATA[#hasrace[rBoneDevi] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CErinSum" name="Erinyes: Summon Devil" description="Some devils have an action option that allows them to summon other devils." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CErinSu"></bootstrap>
-    <exprreq message="Must be an erinyes."><![CDATA[#hasrace[rErinyes] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CHornSum" name="Horned Devil: Summon Devil" description="Some devils have an action option that allows them to summon other devils." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CHornSu"></bootstrap>
-    <exprreq message="Must be a horned devil."><![CDATA[#hasrace[rHorneDevi] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CIceDSum" name="Ice Devil: Summon Devil" description="Some devils have an action option that allows them to summon other devils." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CIceDSu"></bootstrap>
-    <exprreq message="Must be an ice devil."><![CDATA[#hasrace[rIceDevi] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CPitFSum" name="Pit Fiend: Summon Devil" description="Some devils have an action option that allows them to summon other devils." compset="Template" uniqueness="unique">
-    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
-    <bootstrap thing="ra5CPitFSu"></bootstrap>
-    <exprreq message="Must be a pit fiend."><![CDATA[#hasrace[rPitFien] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CBonePol" name="Bone Devil: Polearm" description="Some bone devils have a polearm action that changes its multiattack." compset="Template" uniqueness="unique">
-    <bootstrap thing="wOtherMel">
-      <autotag group="AttackTarg" tag="1Target"/>
-      <autotag group="DamTypeOvr" tag="dtPiercing"/>
-      <assignval field="livename" value="Hooked Polearm"/>
-      <assignval field="wDieCount" value="2"/>
-      <assignval field="wDieSize" value="12"/>
-      <assignval field="wReach" value="10"/>
-      <assignval field="sbName" value="Hooked Polearm"/>
-      <assignval field="wAttackEff" value="If the target is a Huge or smaller creature, it is grappled (escape DC 14). Until this grapple ends, the devil can&apos;t use its polearm on another target. "/>
-      </bootstrap>
-    <eval phase="First" priority="1"><![CDATA[~ Change the multiattack text.
-hero.findchild[BaseRace].field[rMultiatt].text &= " While the devil is armed with its polearm it instead makes two attacks: one with its hooked polearm and one with its sting."]]></eval>
-    <exprreq message="Requires bone devil."><![CDATA[#hasrace[rBoneDevi] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CErinRop" name="Erinyes: Rope of Entanglement" description="Some erinyes carry a {i}rope of entanglement{/i} described in the Dungeon Master&apos;s Guide." compset="Template" uniqueness="unique">
-    <eval phase="First" priority="1"><![CDATA[~ Change the multiattack text.
-hero.findchild[BaseRace].field[rMultiatt].text &= " An erinyes with a {i}rope of entanglement{/i} can use the rope in place of two of its attacks."]]></eval>
-    <exprreq message="Requires erinyes."><![CDATA[#hasrace[rErinyes] <> 0]]></exprreq>
-    </thing>
-  <thing id="t5CIceDSpe" name="Ice Devil: Spear" description="Some ice devils have a spear attack." compset="Template" uniqueness="unique">
-    <bootstrap thing="wOtherMel">
-      <autotag group="AttackTarg" tag="1Target"/>
-      <autotag group="DamTypeOvr" tag="dtPiercing"/>
-      <assignval field="livename" value="Ice Spear"/>
-      <assignval field="sbName" value="Ice Spear"/>
-      <assignval field="wAttackEff" value="If the target is a creature, it must succeed on a DC 15 Constitution saving throw, or for 1 minute, its speed is reduced by 10 feet; it can take either an action or a bonus action on each of its turns; but not both; and it can&apos;t take reactions. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself with a success."/>
-      <assignval field="wDieCount" value="2"/>
-      <assignval field="wDieSize" value="8"/>
-      <assignval field="wReach" value="10"/>
-      <assignval field="wDamExtra" value=" plus 10 (3d6) cold"/>
-      </bootstrap>
-    <eval phase="First" priority="1"><![CDATA[~ Change the multiattack text.
-hero.findchild[BaseRace].field[rMultiatt].text &= " While the devil is armed with its ice spear it instead makes two attacks: one with its ice spear and one with its tail."]]></eval>
-    <exprreq message="Requires ice devil."><![CDATA[#hasrace[rIceDevi] <> 0]]></exprreq>
-    </thing>
   <thing id="ra5CShDrSt" name="Shadow Stealth" description="While in dim light or darkness, the shadow dragon can take the Hide action as a bonus action." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
@@ -353,13 +239,6 @@ hero.findchild[BaseRace].field[rMultiatt].text &= " While the devil is armed wit
   <thing id="ra5CShDrSu" name="Sunlight Sensitivity" description="While in sunlight, the dragon has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Special"/>
-    </thing>
-  <thing id="ra5CTest" name="Fire Breath" description="The dragon exhales fire in a 30-foot cone. Each creature in that area must make a DC 17 Dexterity saving throw, taking 56 (16d6) fire damage on a failed save, or half as much damage on a successful one." compset="RaceSpec">
-    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="Recharge" tag="5" name="5-6" abbrev="5-6"/>
-    <tag group="StandardDC" tag="aCON" name="Constitution" abbrev="Constitution"/>
-    <tag group="abSave" tag="aDEX" name="Dexterity" abbrev="Dex"/>
     </thing>
   <thing id="ra5CShaBre" name="Shadow Breath" description="The dragon exhales a shadowy version of its original breath weapon. The damage done by its breath weapon is now necrotic damage instead of the original damage type. The other attributes; area affected and saving throw DC are unchanged. If a humanoid dies after being reduced to 0 hit points with this breath weapon, an undead {b}shadow{/b} rises from its corpse and acts immediately after the dragon in the initiative order. The shadow is under the dragon&apos;s control." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
@@ -432,10 +311,59 @@ hero.findchild[BaseRace].field[rMultiatt].text &= " While the devil is armed wit
         #extradamage[eachpick, " plus 4 (1d8) poison", field[thingname].text]
         nexteach]]></eval>
     </thing>
-  <thing id="t5CEtterGa" name="Ettercap: Web Garrote" description="Some ettercaps use garrotes fashioned from webbing. These ettercap gain the following action, which they can use to replace their claws attack action." compset="Template" uniqueness="unique">
+  <thing id="ra5CBalorS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rBalor"/>
+    <bootstrap thing="ra5CBalSum"></bootstrap>
+    </thing>
+  <thing id="ra5CBarbeS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rBarbeDevi"/>
+    <bootstrap thing="ra5CBarbSu"></bootstrap>
+    </thing>
+  <thing id="ra5CBarlgS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="r5CMMBarl"/>
+    <bootstrap thing="ra5CBarSum"></bootstrap>
+    </thing>
+  <thing id="ra5CBeardS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rBeardDevi"/>
+    <bootstrap thing="ra5CBearSu"></bootstrap>
+    </thing>
+  <thing id="ra5CBonePo" name="Hooked Polearm" description="Some bone devils have a polearm they use instead of their claws." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rBoneDevi"/>
     <bootstrap thing="wOtherMel">
       <autotag group="AttackTarg" tag="1Target"/>
       <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="12"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wAttackEff" value="If the target is a Huge or smaller creature, it is grappled (escape DC 14). Until this grapple ends, the devil can&apos;t use its polearm on another target. "/>
+      <assignval field="livename" value="Hooked Polearm"/>
+      <assignval field="sbName" value="Hooked Polearm"/>
+      </bootstrap>
+    <eval phase="First" priority="1"><![CDATA[~ Change the multiattack text.
+hero.findchild[BaseRace].field[rMultiatt].text &= " While the devil is armed with its polearm it instead makes two attacks: one with its hooked polearm and one with its sting."]]></eval>
+    </thing>
+  <thing id="ra5CBoneDS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rBoneDevi"/>
+    <bootstrap thing="ra5CBoneSu"></bootstrap>
+    </thing>
+  <thing id="ra5CChasmS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="r5CMMChas"/>
+    <bootstrap thing="ra5CChaSum"></bootstrap>
+    </thing>
+  <thing id="ra5CErinyR" name="Rope of Entanglement" description="Some erinyes carry a {i}rope of entanglement{/i}." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rErinyes"/>
+    <eval phase="First" priority="1"><![CDATA[~ Change the multiattack text.
+hero.findchild[BaseRace].field[rMultiatt].text &= " An erinyes with a {i}rope of entanglement{/i} can use the rope in place of two of its attacks."]]></eval>
+    </thing>
+  <thing id="ra5CErinyS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rErinyes"/>
+    <bootstrap thing="ra5CErinSu"></bootstrap>
+    </thing>
+  <thing id="ra5CEttWeG" name="Web Garrote" description="Some ettercaps use garrotes fashioned from webbing. These ettercap gain the following action, which they can use to replace their claws attack action." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rEttercap"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
       <assignval field="livename" value="Web Garrote"/>
       <assignval field="sbName" value="Web Garrote"/>
       <assignval field="wAttackEff" value="The target must be a Medium or Small creature against which the ettercap has advantage on the attack roll. The target is grappled (escape DC 12). Until the grapple ends, the target can&apos;t breathe, and the ettercap has advantage on attack rolls against it."/>
@@ -444,32 +372,176 @@ hero.findchild[BaseRace].field[rMultiatt].text &= " While the devil is armed wit
       <assignval field="wReach" value="5"/>
       </bootstrap>
     <eval phase="First" priority="1"><![CDATA[~ Change the multiattack text.
-hero.findchild[BaseRace].field[rMultiatt].text &= " The ettercap may use its web garrote in place of its claws."]]></eval>
-    <exprreq message="Requires ettercap"><![CDATA[#hasrace[rEttercap] <> 0]]></exprreq>
+hero.findchild[BaseRace].field[rMultiatt].text &= " An ettercap with advantage on a Medium or Small target can use the Web Garrote action in place of its claws against that target."]]></eval>
     </thing>
-  <thing id="t5CGeniDis" name="Genie: Disguise Self" description="A genie with this template can use the {i}disguise self{/i} spell at will." compset="Template" uniqueness="unique">
+  <thing id="ra5CGenDis" name="Disguise Self" description="Some geniekin have the ability to cast the {i}disguise self{/i} spell at will and with increased duration." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="r5CMMGeDao"/>
+    <tag group="AllowRCust" tag="rDjinni"/>
+    <tag group="AllowRCust" tag="rEfreeti"/>
+    <tag group="AllowRCust" tag="r5CMMMarid"/>
     <bootstrap thing="spDisgSelf">
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="AtWill"/>
-      <assignval field="sNameOver" value="Disguise Self (often longer duration)"/>
+      <assignval field="sNameOver" value="Disguise Self (can extend duration)"/>
       </bootstrap>
-    <exprreq message="Requires a genie."><![CDATA[#hasrace[rDjinni] + #hasrace[r5CMMGeDao] + #hasrace[rEfreeti] + #hasrace[r5CMMMarid] <> 0]]></exprreq>
     </thing>
-  <thing id="t5CGeniTru" name="Genie: True Polymorph" description="A genie with this template can use the {i}true polymorph{/i} spell 3 times per day." compset="Template" uniqueness="unique">
+  <thing id="ra5CGenTru" name="True Polymorph" description="Some geniekin have the ability to cast the {i}true polymorph{/i} spell up to three times per day." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rDjinni" name="Djinni" abbrev="Djinni"/>
+    <tag group="AllowRCust" tag="rEfreeti" name="Efreeti" abbrev="Efreeti"/>
+    <tag group="AllowRCust" tag="r5CMMGeDao" name="Dao" abbrev="Dao"/>
+    <tag group="AllowRCust" tag="r5CMMMarid" name="Marid" abbrev="Marid"/>
     <bootstrap thing="spTruePoly">
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="Day"/>
+      <assignval field="sNameOver" value="True Polymorph (can extend duration)"/>
       <assignval field="trkMax" value="3"/>
-      <assignval field="sNameOver" value="True Polymorph (often longer, sometimes only self)"/>
       </bootstrap>
-    <exprreq message="Requires a genie."><![CDATA[#hasrace[rDjinni] + #hasrace[r5CMMGeDao] + #hasrace[rEfreeti] + #hasrace[r5CMMMarid] <> 0]]></exprreq>
     </thing>
-  <thing id="t5CGeniWis" name="Genie: Wishes" description="A genie with this template can use the {i}wish{/i} spell up to three times a year. A recipient of a wish can only ever receive three wishes from any genie in its existence." compset="Template" uniqueness="unique">
+  <thing id="ra5CGenWis" name="Wish" description="A genie can in some cases use the {i}wish{/i} spell up to three times a year. A recipient of a wish can only ever receive three wishes from any genie in its existence." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rDjinni" name="Djinni" abbrev="Djinni"/>
+    <tag group="AllowRCust" tag="rEfreeti" name="Efreeti" abbrev="Efreeti"/>
+    <tag group="AllowRCust" tag="r5CMMGeDao" name="Dao" abbrev="Dao"/>
+    <tag group="AllowRCust" tag="r5CMMMarid" name="Marid" abbrev="Marid"/>
     <bootstrap thing="spWish">
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="Year"/>
       <assignval field="trkMax" value="3"/>
       </bootstrap>
-    <exprreq message="Requires a genie."><![CDATA[#hasrace[rDjinni] + #hasrace[r5CMMGeDao] + #hasrace[rEfreeti] + #hasrace[r5CMMMarid] <> 0]]></exprreq>
+    </thing>
+  <thing id="ra5CGlabrS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rGlabrezu"/>
+    <bootstrap thing="ra5CGlaSum"></bootstrap>
+    </thing>
+  <thing id="ra5CHezroS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rHezrou"/>
+    <bootstrap thing="ra5CHezSum"></bootstrap>
+    </thing>
+  <thing id="ra5CHorneS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rHorneDevi"/>
+    <bootstrap thing="ra5CHornSu"></bootstrap>
+    </thing>
+  <thing id="ra5CIceDeS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rIceDevi"/>
+    <bootstrap thing="ra5CIceDSu"></bootstrap>
+    </thing>
+  <thing id="ra5CIceDSp" name="Ice Spear" description="Some ice devils carry a special ice spear." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rIceDevi"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="sbName" value="Ice Spear"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wDamExtra" value=" plus 10 (3d6) cold"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must succeed on a DC 15 Constitution saving throw, or for 1 minute, its speed is reduced by 10 feet; it can take either an action or a bonus action on each of its turns; but not both; and it can&apos;t take reactions. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself with a success."/>
+      <assignval field="livename" value="Ice Spear"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CMarilS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rMarilith"/>
+    <bootstrap thing="ra5CMarSum"></bootstrap>
+    </thing>
+  <thing id="ra5CNalfeS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rNalfeshne"/>
+    <bootstrap thing="ra5CNalSum"></bootstrap>
+    </thing>
+  <thing id="ra5CPitFiS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rPitFien"/>
+    <bootstrap thing="ra5CPitFSu"></bootstrap>
+    </thing>
+  <thing id="ra5CVrockS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rVrock"/>
+    <bootstrap thing="ra5CVroSum"></bootstrap>
+    </thing>
+  <thing id="ra5CYochlS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="r5CMMYoch"/>
+    <bootstrap thing="ra5CYocSum"></bootstrap>
+    </thing>
+  <thing id="ra5CDragIS" name="Innate Spellcaster" description="Some dragons are innate spellcasters. This template can be applied to a young, adult or ancient dragon to reflect the MM spellcasting variations:\n* A dragon can cast a number of spells equal to its Charisma modifier, and the spell&apos;s level can be no higher than one-third the dragon&apos;s CR (rounded down). \n* The dragon&apos;s bonus to hit with spell attacks is equal to its proficiency bonus + it&apos;s Charisma bonus.\n* The dragon&apos;s spell save DC equal 8 + its proficiency bonus + its Charisma modifier." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rAdultBlac"/>
+    <tag group="AllowRCust" tag="rAdultBlue"/>
+    <tag group="AllowRCust" tag="rAdultBras"/>
+    <tag group="AllowRCust" tag="rAdultBron"/>
+    <tag group="AllowRCust" tag="rAdultCopp"/>
+    <tag group="AllowRCust" tag="rAdultGold"/>
+    <tag group="AllowRCust" tag="rAdultGree"/>
+    <tag group="AllowRCust" tag="rAdultRed"/>
+    <tag group="AllowRCust" tag="rAdultSilv"/>
+    <tag group="AllowRCust" tag="rAdultWhit"/>
+    <tag group="AllowRCust" tag="rAncieBlac"/>
+    <tag group="AllowRCust" tag="rAncieBlue"/>
+    <tag group="AllowRCust" tag="rAncieBras"/>
+    <tag group="AllowRCust" tag="rAncieBron"/>
+    <tag group="AllowRCust" tag="rAncieCopp"/>
+    <tag group="AllowRCust" tag="rAncieGold"/>
+    <tag group="AllowRCust" tag="rAncieGree"/>
+    <tag group="AllowRCust" tag="rAncieRed"/>
+    <tag group="AllowRCust" tag="rAncieSilv"/>
+    <tag group="AllowRCust" tag="rAncieWhit"/>
+    <tag group="AllowRCust" tag="rYoungBlac"/>
+    <tag group="AllowRCust" tag="rYoungBlue"/>
+    <tag group="AllowRCust" tag="rYoungBras"/>
+    <tag group="AllowRCust" tag="rYoungBron"/>
+    <tag group="AllowRCust" tag="rYoungCopp"/>
+    <tag group="AllowRCust" tag="rYoungGold"/>
+    <tag group="AllowRCust" tag="rYoungGree"/>
+    <tag group="AllowRCust" tag="rYoungRed"/>
+    <tag group="AllowRCust" tag="rYoungSilv"/>
+    <tag group="AllowRCust" tag="rYoungWhit"/>
+    <bootstrap thing="xInnatSpel"></bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[~ Calculate 1/3 the CR, always round down.
+  var tempCR as number
+  tempCR = round(hero.findchild[BaseRace].field[rCR].value/3, 0, -1)
+~ calculate number of spells available from CHA (the modifier)
+  var foo2 as number
+  foo2 = round(hero.child[aCHA].field[aStartMod].value/2,0,-1)
+  hero.findchild[BaseRace].field[rSpExAllw].value = foo2
+
+~ Drop out if the dragon can't cast 1st level spells because of CR
+  doneif (tempCR < 1)
+~ Drop out if dragon has a low charisma 
+  doneif (foo2 < 1)
+~ The number of spells equal to the charisma modifier calculated by foo2.
+  hero.findchild[BaseRace].field[rSpExAllw].value = foo2
+~ make the spell tabs show up
+  perform hero.assign[Hero.Caster]
+
+~ Dragons are normally arcane sorcerer types, so giving the basics
+  perform hero.assign[sClass.cHelpSor]
+  perform hero.assign[CasterSrc.Arcane]
+  perform hero.assign[CasterType.SpontKnow]
+  perform hero.assign[SplAttr.aCHA]
+
+~ build the spells available list with the class and levels.
+  var foo as number
+  var tempstr as string
+  foo = 1
+  tempstr = "sClass.cHelpSor"
+  while (foo <= tempCR)
+    ~ if first time through loop, start the string
+    if (foo = 1) then
+      tempstr &= " & (sLevel." & foo
+    else
+    ~ add additional spell levels if we have them
+      tempstr &= " | sLevel." & foo
+      endif 
+      foo += 1
+      loop
+    ~ close the string with an end parenthesis and push it to the race.
+    tempstr &= ")"
+  hero.findchild[BaseRace].field[rSpExLst].text = tempstr
+
+~ make the label show up as Dragon Innate Spells under Race Tab
+  hero.findchild[BaseRace].field[rSpExLstNm].text = "Dragon Innate Spells"
+
+~ add 1/day and make each spell chosen a race spell.
+  foreach pick in hero from BaseSpell
+  ~ assign tags
+    perform eachpick.assign[Helper.RaceSpell]
+    perform eachpick.assign[Usage.Day]
+    perform eachpick.assign[Helper.SpellLike]
+    eachpick.field[trkMax].value = 1
+    nexteach]]></eval>
     </thing>
   </document>
