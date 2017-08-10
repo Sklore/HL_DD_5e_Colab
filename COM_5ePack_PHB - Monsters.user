@@ -5134,6 +5134,7 @@ foreach pick in hero from BaseWep where "IsWeapon.wLongbow"
     </thing>
   <thing id="ra5CMycHaS" name="Hallucination Spores" description="The myconid ejects spores at one creature it can see within 5 feet of it. The target must succeed on a DC 12 Constitution saving throw or be poisoned for 1 minute. The poisoned target is incapacitated while it hallucinates. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
     </thing>
   <thing id="ra5CMycAnS" name="Animating Spores" description="The myconid targets one corpse of a humanoid or a Large or smaller beast within 5 feet of it and releases spores at the corpse. In 24 hours, the corpse rises as a spore servant. The corpse stays animated for 1d4 + 1 weeks or until destroyed, and it can&apos;t be animated again in this way." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
@@ -7551,7 +7552,7 @@ perform focus.setlinkage[castattr,BaseAttr,"IsAttr.aWIS"]]]></eval>
   <thing id="tt5CHalfOr" name="Half-Orc" compset="TypeTag" uniqueness="unique">
     <tag group="NeedType" tag="tpHumanoid"/>
     </thing>
-  <thing id="t5CDraLich" name="Dracolich" compset="Template" uniqueness="unique">
+  <thing id="t5CDraLich" name="Dracolich - depreciated" compset="Template" uniqueness="unique">
     <usesource source="5eMMCP"/>
     <tag group="OverType" tag="tpUndead"/>
     <tag group="DamageRes" tag="dtNecrotic"/>
@@ -7572,5 +7573,85 @@ perform focus.setlinkage[castattr,BaseAttr,"IsAttr.aWIS"]]]></eval>
       ~ Set our race's name to be dracolich
       focus.field[livename].text = replace(lowercase(focus.field[name].text), "dragon", "dracolich", 0)]]></eval>
     <exprreq message="Ancient or Adult Dragon required."><![CDATA[#hasrace[rAdultBlac] + #hasrace[rAdultBlue] + #hasrace[rAdultBras] + #hasrace[rAdultBron] + #hasrace[rAdultCopp] + #hasrace[rAdultGold] + #hasrace[rAdultGree] + #hasrace[rAdultRed] + #hasrace[rAdultSilv] + #hasrace[rAdultWhit] + #hasrace[rAncieBlac] + #hasrace[rAncieBlue] + #hasrace[rAncieBras] + #hasrace[rAncieBron] + #hasrace[rAncieCopp] + #hasrace[rAncieGold] + #hasrace[rAncieGree] + #hasrace[rAncieRed] + #hasrace[rAncieSilv] + #hasrace[rAncieWhit] <> 0]]></exprreq>
+    </thing>
+  <thing id="mi5CSoulBa" name="Soul Bag" description="When an evil humanoid is slain with the night hag&apos;s {i}Nightmare Haunting{/i} ability, the night hag can catch the soul in this black bag made of stitched flesh." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a night hag"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="RaceEquip" tag="rNightHag"/>
+    </thing>
+  <thing id="mi5CHearst" name="Heartstone" description="This lustrous black gem allows a night hag to become ethereal while in her possession. The touch of a heartstone also cures any disease." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a night hag"/>
+    <tag group="Helper" tag="EquipAvail" name="EquipAvail" abbrev="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag" name="EquipMag" abbrev="EquipMag"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="VeryRare" name="Very Rare" abbrev="Very Rare"/>
+    <tag group="RaceEquip" tag="rNightHag" name="Night Hag" abbrev="Night Hag"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    </thing>
+  <thing id="r5CMMKuoMo" name="Kuo-Toa Monitor" compset="Race">
+    <fieldval field="rHitDice" value="10"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="65"/>
+    <fieldval field="rCR" value="3"/>
+    <fieldval field="rMultiatt" value="The kuo-toa makes one bite attack and two unarmed strikes."/>
+    <fieldval field="rSTR" value="4"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="2"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rAC" value="1"/>
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="WepProf" tag="w5CPincSta" name="Pincer Staff" abbrev="Pincer Staff"/>
+    <tag group="Alignment" tag="Evil" name="Evil" abbrev="E"/>
+    <tag group="Alignment" tag="NeutralLC" name="Neutral" abbrev="N"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="ProfSkill" tag="skReligion" name="Religion" abbrev="Religion"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wAttack" value="2"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMMAmph">
+      <assignval field="abText" value="kuo-toa"/>
+      </bootstrap>
+    <bootstrap thing="ra5COthPer">
+      <assignval field="abText" value="kuo-toa"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSlippe">
+      <assignval field="abText" value="kuo-toa"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSunSen">
+      <assignval field="abText" value="kuo-toa"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="tt5CKuotoa"></bootstrap>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDamExtra" value=" plus 3 (1d6) lightning"/>
+      <assignval field="wAttackEff" value="The target can&apos;t take reactions until the end of the kuo-toa&apos;s next turn."/>
+      <assignval field="wAttack" value="2"/>
+      </bootstrap>
+    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]
+#skillbonus[skReligion] += 1
+hero.childfound[ArmorClass].field[Bonus].value += 2</eval>
     </thing>
   </document>
