@@ -22,7 +22,7 @@
   focus.field[livename].text = replace(lowercase(focus.field[name].text), "dragon", "dracolich", 0)]]></eval>
     <exprreq message="Ancient or Adult Dragon required."><![CDATA[#hasrace[rAdultBlac] + #hasrace[rAdultBlue] + #hasrace[rAdultBras] + #hasrace[rAdultBron] + #hasrace[rAdultCopp] + #hasrace[rAdultGold] + #hasrace[rAdultGree] + #hasrace[rAdultRed] + #hasrace[rAdultSilv] + #hasrace[rAdultWhit] + #hasrace[rAncieBlac] + #hasrace[rAncieBlue] + #hasrace[rAncieBras] + #hasrace[rAncieBron] + #hasrace[rAncieCopp] + #hasrace[rAncieGold] + #hasrace[rAncieGree] + #hasrace[rAncieRed] + #hasrace[rAncieSilv] + #hasrace[rAncieWhit] <> 0]]></exprreq>
     </thing>
-  <thing id="t5CDraSpel" name="Dragon: Innate Spellcaster" description="Some dragons are innate spellcasters. This template can be applied to a young, adult or ancient dragon to reflect the MM spellcasting variations:\n* A dragon can cast a number of spells equal to its Charisma modifier, and the spell&apos;s level can be no higher than one-third the dragon&apos;s CR (rounded down). \n* The dragon&apos;s bonus to hit with spell attacks is equal to its proficiency bonus + it&apos;s Charisma bonus.\n* The dragon&apos;s spell save DC equal 8 + its proficiency bonus + its Charisma modifier." compset="Template" uniqueness="unique">
+  <thing id="t5CDraSpel" name="Dragon: Innate Spellcaster - Depreciated for Variant" description="Some dragons are innate spellcasters. This template can be applied to a young, adult or ancient dragon to reflect the MM spellcasting variations:\n* A dragon can cast a number of spells equal to its Charisma modifier, and the spell&apos;s level can be no higher than one-third the dragon&apos;s CR (rounded down). \n* The dragon&apos;s bonus to hit with spell attacks is equal to its proficiency bonus + it&apos;s Charisma bonus.\n* The dragon&apos;s spell save DC equal 8 + its proficiency bonus + its Charisma modifier." compset="Template" uniqueness="unique">
     <comment>Note: Charisma set on base race, ignores bonuses added later.</comment>
     <usesource source="5eMMCP"/>
     <bootstrap thing="xInnatSpel"></bootstrap>
@@ -244,7 +244,7 @@ hero.childfound[wBite].field[wDamExtra].text = temp]]></eval>
     <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     </thing>
-  <thing id="r5CDridSpe" name="Drider Spellcaster" description="Some driders are spellcasters, retaining the ability from their lives before." compset="Race">
+  <thing id="r5CMMDriCl" name="Drider Cleric" description="Some driders are spellcasters, retaining the ability from their lives before." compset="Race">
     <fieldval field="rHitDice" value="13"/>
     <fieldval field="rHPStart" value="123"/>
     <fieldval field="rCR" value="6.0"/>
@@ -257,7 +257,7 @@ hero.childfound[wBite].field[wDamExtra].text = temp]]></eval>
     <fieldval field="rCHA" value="2"/>
     <fieldval field="rAC" value="6"/>
     <fieldval field="rSpCastLev" value="7"/>
-    <tag group="ProfDouble" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <usesource source="5eMMCP"/>
     <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
     <tag group="RaceSize" tag="Large1" name="Large" abbrev="Large"/>
     <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
@@ -268,9 +268,7 @@ hero.childfound[wBite].field[wDamExtra].text = temp]]></eval>
     <tag group="Helper" tag="Undersized" name="Undersized Weapons" abbrev="Undersized Weapons"/>
     <tag group="sClass" tag="cHelpClr"/>
     <tag group="ClsAllowSp" tag="spPoisSpra"/>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="120"/>
-      </bootstrap>
+    <tag group="ProfDouble" tag="skStealth" name="Stealth" abbrev="Stealth"/>
     <bootstrap thing="xClimb">
       <autotag group="Value" tag="30"/>
       </bootstrap>
@@ -305,29 +303,40 @@ hero.childfound[wBite].field[wDamExtra].text = temp]]></eval>
     <bootstrap thing="tpMonstros"></bootstrap>
     <bootstrap thing="lElvish"></bootstrap>
     <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
     <link linkage="castattr" thing="aWIS"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[
       foreach pick in hero from BaseWep where "wCategory.RangeProj"
         #extradamage[eachpick, " plus 4 (1d8) poison", field[thingname].text]
         nexteach]]></eval>
     </thing>
-  <thing id="ra5CBalorS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CBalorS" name="Summoner" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="rBalor"/>
     <bootstrap thing="ra5CBalSum"></bootstrap>
     </thing>
-  <thing id="ra5CBarbeS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CBarbeS" name="Summoner" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="rBarbeDevi"/>
     <bootstrap thing="ra5CBarbSu"></bootstrap>
     </thing>
-  <thing id="ra5CBarlgS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CBarlgS" name="Summoner" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="r5CMMBarl"/>
     <bootstrap thing="ra5CBarSum"></bootstrap>
     </thing>
-  <thing id="ra5CBeardS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CBeardS" name="Summoner" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
     <tag group="AllowRCust" tag="rBeardDevi"/>
     <bootstrap thing="ra5CBearSu"></bootstrap>
     </thing>
   <thing id="ra5CBonePo" name="Hooked Polearm" description="Some bone devils have a polearm they use instead of their claws." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
     <tag group="AllowRCust" tag="rBoneDevi"/>
     <bootstrap thing="wOtherMel">
       <autotag group="AttackTarg" tag="1Target"/>
@@ -342,24 +351,32 @@ hero.childfound[wBite].field[wDamExtra].text = temp]]></eval>
     <eval phase="First" priority="1"><![CDATA[~ Change the multiattack text.
 hero.findchild[BaseRace].field[rMultiatt].text &= " While the devil is armed with its polearm it instead makes two attacks: one with its hooked polearm and one with its sting."]]></eval>
     </thing>
-  <thing id="ra5CBoneDS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CBoneDS" name="Summoner" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="rBoneDevi"/>
     <bootstrap thing="ra5CBoneSu"></bootstrap>
     </thing>
-  <thing id="ra5CChasmS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CChasmS" name="Summoner" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="r5CMMChas"/>
     <bootstrap thing="ra5CChaSum"></bootstrap>
     </thing>
   <thing id="ra5CErinyR" name="Rope of Entanglement" description="Some erinyes carry a {i}rope of entanglement{/i}." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
     <tag group="AllowRCust" tag="rErinyes"/>
     <eval phase="First" priority="1"><![CDATA[~ Change the multiattack text.
 hero.findchild[BaseRace].field[rMultiatt].text &= " An erinyes with a {i}rope of entanglement{/i} can use the rope in place of two of its attacks."]]></eval>
     </thing>
-  <thing id="ra5CErinyS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CErinyS" name="Summoner" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="LHC17LMM"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="rErinyes"/>
     <bootstrap thing="ra5CErinSu"></bootstrap>
     </thing>
   <thing id="ra5CEttWeG" name="Web Garrote" description="Some ettercaps use garrotes fashioned from webbing. These ettercap gain the following action, which they can use to replace their claws attack action." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
     <tag group="AllowRCust" tag="rEttercap"/>
     <bootstrap thing="wOtherMel">
       <autotag group="AttackTarg" tag="1Target"/>
@@ -375,10 +392,11 @@ hero.findchild[BaseRace].field[rMultiatt].text &= " An erinyes with a {i}rope of
 hero.findchild[BaseRace].field[rMultiatt].text &= " An ettercap with advantage on a Medium or Small target can use the Web Garrote action in place of its claws against that target."]]></eval>
     </thing>
   <thing id="ra5CGenDis" name="Disguise Self" description="Some geniekin have the ability to cast the {i}disguise self{/i} spell at will and with increased duration." compset="VarRaceTrt" uniqueness="unique">
-    <tag group="AllowRCust" tag="r5CMMGeDao"/>
+    <usesource source="5eMMCP"/>
     <tag group="AllowRCust" tag="rDjinni"/>
     <tag group="AllowRCust" tag="rEfreeti"/>
     <tag group="AllowRCust" tag="r5CMMMarid"/>
+    <tag group="AllowRCust" tag="r5CMMGeDao"/>
     <bootstrap thing="spDisgSelf">
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="AtWill"/>
@@ -386,10 +404,11 @@ hero.findchild[BaseRace].field[rMultiatt].text &= " An ettercap with advantage o
       </bootstrap>
     </thing>
   <thing id="ra5CGenTru" name="True Polymorph" description="Some geniekin have the ability to cast the {i}true polymorph{/i} spell up to three times per day." compset="VarRaceTrt" uniqueness="unique">
-    <tag group="AllowRCust" tag="rDjinni" name="Djinni" abbrev="Djinni"/>
+    <usesource source="5eMMCP"/>
     <tag group="AllowRCust" tag="rEfreeti" name="Efreeti" abbrev="Efreeti"/>
     <tag group="AllowRCust" tag="r5CMMGeDao" name="Dao" abbrev="Dao"/>
     <tag group="AllowRCust" tag="r5CMMMarid" name="Marid" abbrev="Marid"/>
+    <tag group="AllowRCust" tag="rDjinni" name="Djinni" abbrev="Djinni"/>
     <bootstrap thing="spTruePoly">
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="Day"/>
@@ -398,33 +417,44 @@ hero.findchild[BaseRace].field[rMultiatt].text &= " An ettercap with advantage o
       </bootstrap>
     </thing>
   <thing id="ra5CGenWis" name="Wish" description="A genie can in some cases use the {i}wish{/i} spell up to three times a year. A recipient of a wish can only ever receive three wishes from any genie in its existence." compset="VarRaceTrt" uniqueness="unique">
-    <tag group="AllowRCust" tag="rDjinni" name="Djinni" abbrev="Djinni"/>
+    <usesource source="5eMMCP"/>
     <tag group="AllowRCust" tag="rEfreeti" name="Efreeti" abbrev="Efreeti"/>
     <tag group="AllowRCust" tag="r5CMMGeDao" name="Dao" abbrev="Dao"/>
     <tag group="AllowRCust" tag="r5CMMMarid" name="Marid" abbrev="Marid"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <tag group="AllowRCust" tag="rDjinni" name="Djinni" abbrev="Djinni"/>
     <bootstrap thing="spWish">
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="Year"/>
       <assignval field="trkMax" value="3"/>
       </bootstrap>
     </thing>
-  <thing id="ra5CGlabrS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CGlabrS" name="Summoner" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="rGlabrezu"/>
     <bootstrap thing="ra5CGlaSum"></bootstrap>
     </thing>
-  <thing id="ra5CHezroS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CHezroS" name="Summoner" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="rHezrou"/>
     <bootstrap thing="ra5CHezSum"></bootstrap>
     </thing>
-  <thing id="ra5CHorneS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CHorneS" name="Summoner" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="rHorneDevi"/>
     <bootstrap thing="ra5CHornSu"></bootstrap>
     </thing>
-  <thing id="ra5CIceDeS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CIceDeS" name="Summoner" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="rIceDevi"/>
     <bootstrap thing="ra5CIceDSu"></bootstrap>
     </thing>
   <thing id="ra5CIceDSp" name="Ice Spear" description="Some ice devils carry a special ice spear." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
     <tag group="AllowRCust" tag="rIceDevi"/>
     <bootstrap thing="wOtherMel">
       <autotag group="AttackTarg" tag="1Target"/>
@@ -438,28 +468,38 @@ hero.findchild[BaseRace].field[rMultiatt].text &= " An ettercap with advantage o
       <assignval field="livename" value="Ice Spear"/>
       </bootstrap>
     </thing>
-  <thing id="ra5CMarilS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CMarilS" name="Summoner" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="Append"/>
     <tag group="AllowRCust" tag="rMarilith"/>
     <bootstrap thing="ra5CMarSum"></bootstrap>
     </thing>
-  <thing id="ra5CNalfeS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CNalfeS" name="Summoner" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="rNalfeshne"/>
     <bootstrap thing="ra5CNalSum"></bootstrap>
     </thing>
-  <thing id="ra5CPitFiS" name="Devil Summoning" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CPitFiS" name="Summoner" description="Some devils have an action option that allows them to summon other devils." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="rPitFien"/>
     <bootstrap thing="ra5CPitFSu"></bootstrap>
     </thing>
-  <thing id="ra5CVrockS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CVrockS" name="Summoner" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="rVrock"/>
     <bootstrap thing="ra5CVroSum"></bootstrap>
     </thing>
-  <thing id="ra5CYochlS" name="Demon Summoning" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CYochlS" name="Summoner" description="Some demons have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="r5CMMYoch"/>
     <bootstrap thing="ra5CYocSum"></bootstrap>
     </thing>
   <thing id="ra5CDragIS" name="Innate Spellcaster" description="Some dragons are innate spellcasters. This template can be applied to a young, adult or ancient dragon to reflect the MM spellcasting variations:\n* A dragon can cast a number of spells equal to its Charisma modifier, and the spell&apos;s level can be no higher than one-third the dragon&apos;s CR (rounded down). \n* The dragon&apos;s bonus to hit with spell attacks is equal to its proficiency bonus + it&apos;s Charisma bonus.\n* The dragon&apos;s spell save DC equal 8 + its proficiency bonus + its Charisma modifier." compset="VarRaceTrt" uniqueness="unique">
-    <tag group="AllowRCust" tag="rAdultBlac"/>
+    <usesource source="5eMMCP"/>
     <tag group="AllowRCust" tag="rAdultBlue"/>
     <tag group="AllowRCust" tag="rAdultBras"/>
     <tag group="AllowRCust" tag="rAdultBron"/>
@@ -489,6 +529,8 @@ hero.findchild[BaseRace].field[rMultiatt].text &= " An ettercap with advantage o
     <tag group="AllowRCust" tag="rYoungRed"/>
     <tag group="AllowRCust" tag="rYoungSilv"/>
     <tag group="AllowRCust" tag="rYoungWhit"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <tag group="AllowRCust" tag="rAdultBlac"/>
     <bootstrap thing="xInnatSpel"></bootstrap>
     <eval phase="First" priority="10000"><![CDATA[~ Calculate 1/3 the CR, always round down.
   var tempCR as number
@@ -543,5 +585,1357 @@ hero.findchild[BaseRace].field[rMultiatt].text &= " An ettercap with advantage o
     perform eachpick.assign[Helper.SpellLike]
     eachpick.field[trkMax].value = 1
     nexteach]]></eval>
+    </thing>
+  <thing id="t5CWereBea" name="Werebear" description="A humanoid can become infected with lycanthropy." compset="Template" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <bootstrap thing="raWBeShape"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="StandardDC" tag="aCON"/>
+      <autotag group="abSave" tag="aCON"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wAttackEff" value="If the target is a humanoid, it must succeed on a DC #StandardDC# #abSave# saving throw or be cursed with werebear lycanthropy. "/>
+      <assignval field="livename" value="Bite (Bear or Hybrid Form)"/>
+      <assignval field="sbName" value="Bite (Bear or Hybrid Form)"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <assignval field="livename" value="Claw (Bear or Hybrid Form)"/>
+      <assignval field="sbName" value="Claw (Bear or Hybrid Form)"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="12"/>
+      </bootstrap>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <bootstrap thing="raWBeKeSme"></bootstrap>
+    <bootstrap thing="ra5CWBeMul"></bootstrap>
+    <eval phase="First" priority="10000">~ Give the humanoid the damage immunity of the wererat
+      perform hero.assign[DamComImm.dcWepNonSi]
+~ Set the minimum STR to 19
+      hero.child[aSTR].field[Minimum].value = maximum(hero.child[aSTR].field[Minimum].value,19)</eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[foreach pick in hero from BaseWep where "!wGroup.Natural"
+  eachpick.field[livename].text = eachpick.field[name].text & " (Humanoid or Hybrid Form Only)"
+  eachpick.field[sbName].text = eachpick.field[livename].text
+  nexteach
+~Adjust CR (rough adjustment)
+~ Quit if the CR value is already enough to be Tier 2 play
+~ PHB 
+
+doneif (herofield[tCR].value > 4)
+if (herofield[tCR].value < 1) then
+~ if humanoid is pretty weak, then damage immunity grants it CR 1
+   herofield[tCR].value = 1
+else
+~ Tier 1 monsters should get a CR bump of 1.
+   herofield[tCR].value += 1
+endif]]></eval>
+    <exprreq message="Humanoid required."><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="ra5CSubDra" name="Dracolich - Testing" description="The dracolich template as a subrace instead of a template (changes name)." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="AllowRCust" tag="rAdultBlue"/>
+    <tag group="AllowRCust" tag="rAdultBras"/>
+    <tag group="AllowRCust" tag="rAdultBron"/>
+    <tag group="AllowRCust" tag="rAdultCopp"/>
+    <tag group="AllowRCust" tag="rAdultGold"/>
+    <tag group="AllowRCust" tag="rAdultGree"/>
+    <tag group="AllowRCust" tag="rAdultRed"/>
+    <tag group="AllowRCust" tag="rAdultSilv"/>
+    <tag group="AllowRCust" tag="rAdultWhit"/>
+    <tag group="AllowRCust" tag="rAncieBlac"/>
+    <tag group="AllowRCust" tag="rAncieBlue"/>
+    <tag group="AllowRCust" tag="rAncieBras"/>
+    <tag group="AllowRCust" tag="rAncieBron"/>
+    <tag group="AllowRCust" tag="rAncieCopp"/>
+    <tag group="AllowRCust" tag="rAncieGold"/>
+    <tag group="AllowRCust" tag="rAncieGree"/>
+    <tag group="AllowRCust" tag="rAncieRed"/>
+    <tag group="AllowRCust" tag="rAncieSilv"/>
+    <tag group="AllowRCust" tag="rAncieWhit"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <tag group="AllowRCust" tag="rAdultBlac"/>
+    </thing>
+  <thing id="t5CWereBoa" name="Wereboar" description="A humanoid can become infected with lycanthropy." compset="Template" uniqueness="unique">
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="StandardDC" tag="aCON"/>
+      <autotag group="abSave" tag="aCON"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wAttackEff" value="If the target is a humanoid, it must succeed on a DC #StandardDC# #abSave# saving throw or be cursed with werebear lycanthropy. "/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="livename" value="Tusks (Boar or Hybrid Form)"/>
+      <assignval field="sbName" value="Tusks (Boar or Hybrid Form)"/>
+      <assignval field="wReach" value="5"/>
+      </bootstrap>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <bootstrap thing="raWBoShape"></bootstrap>
+    <bootstrap thing="ra5CWBTCha"></bootstrap>
+    <bootstrap thing="ra5CWBoMu"></bootstrap>
+    <eval phase="First" priority="10000" index="2">~ Give the humanoid the damage immunity of the wererat
+      perform hero.assign[DamComImm.dcWepNonSi]
+~ Set the minimum Strenght of 17.
+      hero.child[aSTR].field[Minimum].value = maximum(hero.child[aSTR].field[Minimum].value,17)</eval>
+    <eval phase="PostAttr" priority="10000" index="3"><![CDATA[~Adjust CR (rough adjustment)
+~ Quit if the CR value is already enough to be Tier 2 play
+~ PHB 
+doneif (herofield[tCR].value > 4)
+if (herofield[tCR].value < 1) then
+~ if humanoid is pretty weak, then damage immunity grants it CR 1
+   herofield[tCR].value = 1
+else
+~ Tier 1 monsters should get a CR bump of 1.
+   herofield[tCR].value += 1
+endif]]></eval>
+    <eval phase="PostAttr" priority="10000"><![CDATA[foreach pick in hero from BaseWep where "!wGroup.Natural"
+  eachpick.field[livename].text = eachpick.field[name].text & " (Humanoid or Hybrid Form Only)"
+  eachpick.field[sbName].text = eachpick.field[livename].text
+  nexteach]]></eval>
+    <exprreq message="Humanoid required."><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="ra5CWBTCha" name="Charge (Boar or Hybrid Form Only)" description="If the wereboar moves at least 15 feet straight toward a target and then hits it with its tusks on the same turn, the target takes an extra 7 (2d6) slashing damage. If the target is a creature, it must succeed on a DC #StandardDC# #abSave#  saving throw or be knocked prone." compset="RaceSpec">
+    <fieldval field="wDieCount" value="2"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="NoAttrDam" name="NoAttrDam" abbrev="NoAttrDam"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="StandardDC" tag="aSTR" name="Strength" abbrev="Strength"/>
+    <tag group="abSave" tag="aSTR" name="Strength" abbrev="Str"/>
+    <tag group="DamageType" tag="dtSlashing" name="Slashing" abbrev="Slashing"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="t5CWererat" name="Wererat" description="A humanoid can become infected with lycanthropy." compset="Template" uniqueness="unique">
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <bootstrap thing="wBite">
+      <autotag group="StandardDC" tag="aCON"/>
+      <autotag group="abSave" tag="aCON"/>
+      <assignval field="livename" value="Bite (Rat or Hybrid Form)"/>
+      <assignval field="sbName" value="Bite (Rat of Hybrid Form)"/>
+      <assignval field="wAttackEff" value="If the target is a humanoid, it must succeed on a DC #StandardDC# #abSave# saving throw or be cursed with werebear lycanthropy. "/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <bootstrap thing="raWRaShape"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <bootstrap thing="raWRaKeSme"></bootstrap>
+    <bootstrap thing="ra5CWRaMul"></bootstrap>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[foreach pick in hero from BaseWep where "!wGroup.Natural"
+  eachpick.field[livename].text = eachpick.field[name].text & " (Humanoid or Hybrid Form Only)"
+  eachpick.field[sbName].text = eachpick.field[livename].text
+  nexteach]]></eval>
+    <eval phase="First" index="3">perform assign[Hero.HasDarkvis]</eval>
+    <eval phase="Render" priority="10000" index="4"><![CDATA[hero.child[raDarkVis].field[livename].text = replace(hero.child[raDarkVis].field[livename].text, ")", ", rat form only)", 1)
+hero.child[raDarkVis].field[sbName].text &= " (rat form only)"
+hero.child[raDarkVis].field[shortname].text &= " (rat form only)"]]></eval>
+    <eval phase="PostAttr" priority="10000" index="5"><![CDATA[~Adjust CR (rough adjustment)
+~ Quit if the CR value is already enough to be Tier 2 play
+~ PHB 
+doneif (herofield[tCR].value > 4)
+if (herofield[tCR].value < 1) then
+~ if humanoid is pretty weak, then damage immunity grants it CR 1
+   herofield[tCR].value = 1
+else
+~ Tier 1 monsters should get a CR bump of 1.
+   herofield[tCR].value += 1
+endif]]></eval>
+    <eval phase="First" priority="10000">~ Give the humanoid the damage immunity of the wererat
+      perform hero.assign[DamComImm.dcWepNonSi]
+~ Set the minimum DEX to 15
+      hero.child[aDEX].field[Minimum].value = maximum(hero.child[aDEX].field[Minimum].value,15)</eval>
+    <exprreq message="Humanoid required."><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="t5CWeretig" name="Weretiger" description="A humanoid can become infected with lycanthropy." compset="Template" uniqueness="unique">
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <bootstrap thing="wBite">
+      <autotag group="StandardDC" tag="aCON"/>
+      <autotag group="abSave" tag="aCON"/>
+      <assignval field="livename" value="Bite (Tiger or Hybrid Form)"/>
+      <assignval field="sbName" value="Bite (Tiger or Hybrid Form)"/>
+      <assignval field="wAttackEff" value="If the target is a humanoid, it must succeed on a DC #StandardDC# #abSave# saving throw or be cursed with werebear lycanthropy. "/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="10"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <assignval field="livename" value="Claw (Tiger or Hybrid Form)"/>
+      <assignval field="sbName" value="Claw (Tiger or Hybrid Form)"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <bootstrap thing="raWTiShape"></bootstrap>
+    <bootstrap thing="raWTiKeHea"></bootstrap>
+    <bootstrap thing="ra5CWTPoun"></bootstrap>
+    <bootstrap thing="raDarkVis"></bootstrap>
+    <bootstrap thing="ra5CWTiMul"></bootstrap>
+    <eval phase="First" priority="10000">~ Give the humanoid the damage immunity of the weretiger
+      perform hero.assign[DamComImm.dcWepNonSi]
+~ Set the minimum STR to 17
+      hero.child[aSTR].field[Minimum].value = maximum(hero.child[aSTR].field[Minimum].value,17)</eval>
+    <eval phase="First" index="3">perform assign[Hero.HasDarkvis]</eval>
+    <eval phase="PostAttr" priority="10000" index="4"><![CDATA[~Adjust CR (rough adjustment)
+~ Quit if the CR value is already enough to be Tier 2 play
+~ PHB 
+doneif (herofield[tCR].value > 4)
+if (herofield[tCR].value < 1) then
+~ if humanoid is pretty weak, then damage immunity grants it CR 1
+   herofield[tCR].value = 1
+else
+~ Tier 1 monsters should get a CR bump of 1.
+   herofield[tCR].value += 1
+endif]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[foreach pick in hero from BaseWep where "!wGroup.Natural"
+  eachpick.field[livename].text = eachpick.field[name].text & " (Humanoid or Hybrid Form Only)"
+  eachpick.field[sbName].text = eachpick.field[livename].text
+  nexteach]]></eval>
+    <exprreq message="Humanoid required."><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="ra5CWTPoun" name="Pounce (Tiger or Hybrid Form Only)" description="If the weretiger moves at least 15 feet straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC #StandardDC# #abSave# saving throw or be knocked prone. If the target is prone, the weretiger can make one bite attack against it as a bonus action." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="StandardDC" tag="aSTR" name="Strength" abbrev="Strength"/>
+    <tag group="abSave" tag="aSTR" name="Strength" abbrev="Str"/>
+    </thing>
+  <thing id="t5CWerewol" name="Werewolf" description="A humanoid can become infected with lycanthropy." compset="Template" uniqueness="unique">
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <bootstrap thing="wBite">
+      <autotag group="StandardDC" tag="aCON"/>
+      <autotag group="abSave" tag="aCON"/>
+      <assignval field="livename" value="Bite (Wolf or Hybrid Form)"/>
+      <assignval field="sbName" value="Bite (Wolf or Hybrid Form)"/>
+      <assignval field="wAttackEff" value="If the target is a humanoid, it must succeed on a DC #StandardDC# #abSave# saving throw or be cursed with werebear lycanthropy. "/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <assignval field="livename" value="Claw (Wolf or Hybrid Form)"/>
+      <assignval field="sbName" value="Claw (Wolf or Hybrid Form)"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <bootstrap thing="raWWoKeHea"></bootstrap>
+    <bootstrap thing="raWWoShape"></bootstrap>
+    <bootstrap thing="ra5CWWoMul"></bootstrap>
+    <eval phase="First" priority="10000">~ Give the humanoid the damage immunity
+      perform hero.assign[DamComImm.dcWepNonSi]
+~ Set the minimum STR to 15
+      hero.child[aSTR].field[Minimum].value = maximum(hero.child[aSTR].field[Minimum].value,15)</eval>
+    <eval phase="PostAttr" priority="10000" index="3"><![CDATA[~Adjust CR (rough adjustment)
+~ Quit if the CR value is already enough to be Tier 2 play
+~ PHB 
+doneif (herofield[tCR].value > 4)
+if (herofield[tCR].value < 1) then
+~ if humanoid is pretty weak, then damage immunity grants it CR 1
+   herofield[tCR].value = 1
+else
+~ Tier 1 monsters should get a CR bump of 1.
+   herofield[tCR].value += 1
+endif]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[foreach pick in hero from BaseWep where "!wGroup.Natural"
+  eachpick.field[livename].text = eachpick.field[name].text & " (Humanoid or Hybrid Form Only)"
+  eachpick.field[sbName].text = eachpick.field[livename].text
+  nexteach]]></eval>
+    <exprreq message="Humanoid required."><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="ra5CSumMep" name="Summoner" description="Some mephits have an action option that allows them to summon other mephits." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="AllowRCust" tag="rIceMeph"/>
+    <tag group="AllowRCust" tag="rMagmaMeph"/>
+    <tag group="AllowRCust" tag="r5CMMMudMe"/>
+    <tag group="AllowRCust" tag="r5CMMSmoke"/>
+    <tag group="AllowRCust" tag="rSteamMeph"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <tag group="AllowRCust" tag="rDustMeph"/>
+    <bootstrap thing="ra5CSummMe"></bootstrap>
+    </thing>
+  <thing id="ra5CSummMe" name="Summon Mephit" description="The mephit has a 25% chance of summoning 1d4 mephits of its type (magma mephits summon magma mephits, etc.). A summoned mephit appears in an unoccupied space within 60 feet of its summoner, and can&apos;t summon other mephits. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as an action." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="r5CMMMFArc" name="Mind Flayer Arcanist" compset="Race">
+    <fieldval field="rHitDice" value="13"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="71"/>
+    <fieldval field="rCR" value="8"/>
+    <fieldval field="rSTR" value="1"/>
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="9"/>
+    <fieldval field="rWIS" value="7"/>
+    <fieldval field="rCHA" value="7"/>
+    <fieldval field="rSpCastLev" value="10"/>
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Evil" name="Evil" abbrev="E"/>
+    <tag group="Alignment" tag="Lawful" name="Lawful" abbrev="L"/>
+    <tag group="ArmProfGrp" tag="ArmorLight" name="Light armor" abbrev="Light armor"/>
+    <tag group="ArmProfGrp" tag="ArmorMed" name="Medium armor" abbrev="Medium armor"/>
+    <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="ProfSave" tag="svINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSkill" tag="skArcana" name="Arcana" abbrev="Arcana"/>
+    <tag group="ProfSkill" tag="skDecept" name="Deception" abbrev="Deception"/>
+    <tag group="ProfSkill" tag="skInsight" name="Insight" abbrev="Insight"/>
+    <tag group="ProfSkill" tag="skPersuas" name="Persuasion" abbrev="Persuasion"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <bootstrap thing="ra5CMindBl">
+      <assignval field="abText" value="mind flayer"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="livename" value="Extract Brain"/>
+      <assignval field="sbName" value="Extract Brain"/>
+      <assignval field="wAttack" value="4"/>
+      <assignval field="wAttackEff" value="If this damage reduces the target to 0 hit points, the mind flayer kills the target by extracting and devouring its brain ."/>
+      <assignval field="wDieCount" value="10"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wTarget" value="one incapacitated humanoid grappled by the mind flayer"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="lDeepSpeec"></bootstrap>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="tpAberr"></bootstrap>
+    <bootstrap thing="wTentacle">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtPsychic"/>
+      <assignval field="livename" value="Tentacles"/>
+      <assignval field="sbName" value="Tentacles"/>
+      <assignval field="wAttack" value="4"/>
+      <assignval field="wAttackEff" value="If the target is Medium or smaller, it is grappled (escape DC 15) and must succeed on a DC 15 intelligence saving throw or be stunned until this grapple ends."/>
+      <assignval field="wDamBonus" value="4"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="10"/>
+      </bootstrap>
+    <bootstrap thing="xSpellcast"></bootstrap>
+    <bootstrap thing="ra5CPixMRe">
+      <assignval field="abText" value="mind flayer"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMFInSp"></bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    </thing>
+  <thing id="r5CMMRogMo" name="Rogue Monodrone" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="5"/>
+    <fieldval field="rCR" value="0.125"/>
+    <fieldval field="rDEX" value="3"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="-6"/>
+    <fieldval field="rCHA" value="-5"/>
+    <fieldval field="rAC" value="4"/>
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="ArmProfGrp" tag="WepSimple" name="Simple weapons" abbrev="Simple weapons"/>
+    <bootstrap thing="l5CModron"></bootstrap>
+    <bootstrap thing="ra5CDisint">
+      <assignval field="abText" value="monodrone"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    </thing>
+  <thing id="r5CMMRogDu" name="Rogue Duodrone" compset="Race">
+    <fieldval field="rHitDice" value="2"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="11"/>
+    <fieldval field="rCR" value=".25"/>
+    <fieldval field="rMultiatt" value="The duodrone makes two fist attacks or two javelin attacks."/>
+    <fieldval field="rSTR" value="1"/>
+    <fieldval field="rDEX" value="3"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="-4"/>
+    <fieldval field="rCHA" value="-3"/>
+    <fieldval field="rAC" value="4"/>
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="ArmProfGrp" tag="WepSimple" name="Simple weapons" abbrev="Simple weapons"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="l5CModron"></bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="ra5CDisint">
+      <assignval field="abText" value="duodrone"/>
+      </bootstrap>
+    <bootstrap thing="wFist">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    </thing>
+  <thing id="r5CMMRogTr" name="Rogue Tridrone" compset="Race">
+    <fieldval field="rHitDice" value="3"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="16"/>
+    <fieldval field="rCR" value="0.5"/>
+    <fieldval field="rMultiatt" value="The tridrone makes three fist attacks or three javelin attacks."/>
+    <fieldval field="rSTR" value="2"/>
+    <fieldval field="rDEX" value="3"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="-1"/>
+    <fieldval field="rCHA" value="-1"/>
+    <fieldval field="rAC" value="4"/>
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="ArmProfGrp" tag="WepSimple" name="Simple weapons" abbrev="Simple weapons"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="wFist">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="ra5CDisint">
+      <assignval field="abText" value="tridrone"/>
+      </bootstrap>
+    <bootstrap thing="l5CModron"></bootstrap>
+    </thing>
+  <thing id="r5CMMRogQu" name="Rogue Quadrone" compset="Race">
+    <fieldval field="rHitDice" value="4"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="22"/>
+    <fieldval field="rCR" value="1"/>
+    <fieldval field="rMultiatt" value="The quad rone makes two fist attacks or four shortbow attacks."/>
+    <fieldval field="rSTR" value="2"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rAC" value="4"/>
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="ArmProfGrp" tag="WepSimple" name="Simple weapons" abbrev="Simple weapons"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="wFist">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDisint">
+      <assignval field="abText" value="quadrone"/>
+      </bootstrap>
+    <bootstrap thing="l5CModron"></bootstrap>
+    </thing>
+  <thing id="r5CMMRogPe" name="Rogue Pentadrone" compset="Race">
+    <fieldval field="rHitDice" value="5"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="32"/>
+    <fieldval field="rCR" value="2"/>
+    <fieldval field="rMultiatt" value="The pentadrone makes five arm attacks."/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rSTR" value="5"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rCHA" value="3"/>
+    <fieldval field="rAC" value="4"/>
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="RaceSize" tag="Large1" name="Large" abbrev="Large"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <bootstrap thing="l5CModron"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="wArm">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDisint">
+      <assignval field="abText" value="pentadrone"/>
+      </bootstrap>
+    <bootstrap thing="ra5CParGas">
+      <assignval field="abText" value="pentadrone"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <eval phase="First">perform hero.child[skPercep].assign[Helper.ProfDouble]</eval>
+    </thing>
+  <thing id="ra5CGrOPsy" name="Psychic Crush" description="The ooze targets one creature that it can sense within 60 feet of it. The target must make a DC #StandardDC# #abSave# saving throw, taking 10 (3d6) psychic damage on a failed save or half as much damage on a successful one." compset="RaceSpec">
+    <fieldval field="abDC" value="10"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abSave" tag="aINT"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CGrOoPs" name="Psychic" description="A gray ooze that has lived a long time may grow more intelligent and develop limited psionic ability." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <tag group="ClVaryName" tag="Prepend"/>
+    <tag group="AllowRCust" tag="rGrayOoze"/>
+    <bootstrap thing="ra5CGrOPsy"></bootstrap>
+    <eval phase="First" priority="10000">hero.child[aINT].field[Minimum].value = 6</eval>
+    </thing>
+  <thing id="ra5CFamili" name="Familiar" description="Some fantastic creatures, like pseudo dragons can be taken by a spellcaster as a familiar." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rImp"/>
+    <tag group="AllowRCust" tag="rPseudodra"/>
+    <tag group="AllowRCust" tag="rQuasit"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <bootstrap thing="ra5CFamFea"></bootstrap>
+    </thing>
+  <thing id="ra5CFamFea" name="Familiar" description="This magical creature has become a familiar. It shares a telepathic, magical bond with a willing companion. While the two are bonded, the companion can sense what the creature senses as long as they are within 1 mile of each other. While the creature is within 10 feet of its companion it shares the familiar&apos;s {i}Magic Resistance{/i} trait if it has one. At any time, for any reason, the creature can end is service as a familiar, ending the telepathic bond." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="r5CMMQuaTh" name="Quaggoth Thonot" compset="Race">
+    <fieldval field="rHitDice" value="6"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="45"/>
+    <fieldval field="rCR" value="2"/>
+    <fieldval field="rMultiatt" value="The quaggoth makes two claw attacks."/>
+    <fieldval field="rSTR" value="7"/>
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="-4"/>
+    <fieldval field="rWIS" value="2"/>
+    <fieldval field="rCHA" value="-3"/>
+    <fieldval field="rAC" value="2"/>
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Chaotic" name="Chaotic" abbrev="C"/>
+    <tag group="Alignment" tag="NeutralGE" name="Neutral" abbrev="N"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <tag group="ProfSkill" tag="skAthletic" name="Athletics" abbrev="Athletics"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CQuagWF"></bootstrap>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="ra5CQuaInn"></bootstrap>
+    </thing>
+  <thing id="ra5CQuaInn" name="Innate Spellcasting (Psionics)" description="The quaggoth&apos;s innate spellcasting ability is Wisdom (spell save DC 11). The quaggoth can innately cast the following spells, requiring no components:\n\nAt will: {i}feather fall, mage hand{/i} (the hand is invisible)\n1/day each: {i}cure wounds, enlarge/reduce, heat metal, mirror image{/i}" compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <bootstrap thing="spFeatFall">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sNameOver" value="Mage Hand (the hand is invisible)"/>
+      </bootstrap>
+    <bootstrap thing="spCureWoun">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spEnlargeR">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spHeatMeta">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMirrImag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CSatyPi" name="Satyr Pipes" description="A satyr might carry panpipes that it can play to create magical effects." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rSatyr"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <bootstrap thing="ra5CMMSaPa"></bootstrap>
+    </thing>
+  <thing id="ra5CMMSaPa" name="Panpipes" description="The satyr plays its pipes and any creature within 60 feet of the satyr that can hear the pipes must succeed on a DC #StandardDC# #abSave# saving throw or be affected by one of the three effects below (satyr&apos;s choice). An affected creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. If a creature&apos;s saving throw is successful or effect ends for it, the creature is immune to these panpipes for the next 24 hours. Other satyrs and creatures that cannot be charmed are unaffected by the panpipes.\n\n{b}Charming Melody{/b}: The creature is charmed by the satyr for 1 minute. If the satyr or any of its companions harms the creature, the effect ends on it immediately.\n\n{b}Frightening Strain{/b}: The creature is frightened for 1 minute.\n\n{b}Gentle Lullaby{/b}: The creature falls asleep and is unconscious for 1 minute. The effect ends if the creature takes damage or if someone takes an action to shake the creature awake." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aDEX"/>
+    </thing>
+  <thing id="ra5CMMSlCG" name="Control Gem" description="Implanted in the slaad&apos;s brain is a magic control gem. The slaad must obey whoever possess the gem and is immune to being chamed while so controlled.\nCertain spells can be used to acquire the gem. If the slaad fails its saving throw against {i}imprisonment{/i}, the spell can transfer the gem to the spellcaster&apos;s open hand, instead of imprisoning the slaad. A {i}wish{/i} spell, if cast in the slaad&apos;s presence, can be worded to acquire the gem.\nA {i}greater restoration{/i} spell cast on the slaad destroys the gem without harming the slaad. \nSomeone who is proficient in Wisdom (Medicine) can try to remove the gem from an incapacitated slaad. Each try requires 1 minute of uninterrupted work and a successful DC 20 (Wisdom) check. Each failed attempt deals 22 (4d10) psychic damage to the slaad." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="ra5CSlaaCo" name="Slaad Control Gem" description="Some slaad have a gem implanted in their brain that allows them to be controlled." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="ClVaryName" tag="AppParen"/>
+    <tag group="AllowRCust" tag="r5CMMBlueS"/>
+    <tag group="AllowRCust" tag="r5CMMDeath"/>
+    <tag group="AllowRCust" tag="r5CMMGrays"/>
+    <tag group="AllowRCust" tag="r5CMMGreSl"/>
+    <tag group="AllowRCust" tag="r5CMMRedSl"/>
+    <tag group="AllowRCust" tag="r5CMMSlaad"/>
+    <bootstrap thing="ra5CMMSlCG"></bootstrap>
+    </thing>
+  <thing id="r5CMMPolte" name="Poltergeist" description="Variant Specter" compset="Race">
+    <fieldval field="rHitDice" value="5"/>
+    <fieldval field="rHPStart" value="22"/>
+    <fieldval field="rCR" value="2.0"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="1"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rLangPromp" value="all languages it knew in life"/>
+    <usesource source="5eMMCP"/>
+    <tag group="CondImm" tag="pcnUnconc" name="Unconscious" abbrev="Unconscious"/>
+    <tag group="DamComRes" tag="dcAtkNonMa" name="Bludgeoning, piercing, and slashing from nonmagical attacks" abbrev="Bludgeoning, piercing, and slashing from nonmagical attacks"/>
+    <tag group="DamageImm" tag="dtNecrotic" name="Necrotic" abbrev="Necrotic"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <tag group="DamageRes" tag="dtAcid" name="Acid" abbrev="Acid"/>
+    <tag group="DamageRes" tag="dtCold" name="Cold" abbrev="Cold"/>
+    <tag group="DamageRes" tag="dtFire" name="Fire" abbrev="Fire"/>
+    <tag group="DamageRes" tag="dtLightnin" name="Lightning" abbrev="Lightning"/>
+    <tag group="DamageRes" tag="dtThunder" name="Thunder" abbrev="Thunder"/>
+    <tag group="Helper" tag="CantSpeak" name="Cannot Speak" abbrev="Cannot Speak"/>
+    <tag group="Helper" tag="UndLifLaCS" name="Understands the languages it knew in life, but can&apos;t speak" abbrev="Understands the languages it knew in life, but can&apos;t speak"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Chaotic" name="Chaotic" abbrev="C"/>
+    <tag group="Alignment" tag="Evil" name="Evil" abbrev="E"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnExhaust" name="Exhaustion" abbrev="Exhaustion"/>
+    <tag group="CondImm" tag="pcnGrapple" name="Grappled" abbrev="Grappled"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPetri" name="Petrified" abbrev="Petrified"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="CondImm" tag="pcnProne" name="Prone" abbrev="Prone"/>
+    <tag group="CondImm" tag="pcnRestr" name="Restrained" abbrev="Restrained"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtForce"/>
+      <autotag group="Helper" tag="NoAttrDam"/>
+      <autotag group="MelAttOver" tag="aDEX"/>
+      <autotag group="StandardDC" tag="aCON"/>
+      <autotag group="abSave" tag="aCON"/>
+      <autotag group="wProperty" tag="Spell"/>
+      <assignval field="livename" value="Forceful Slam"/>
+      <assignval field="sbName" value="Forceful Slam"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wReach" value="5"/>
+      </bootstrap>
+    <bootstrap thing="raSpeInMov"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="AbilModify" tag="Hover"/>
+      <autotag group="Value" tag="50"/>
+      </bootstrap>
+    <bootstrap thing="raSpeSuSen"></bootstrap>
+    <bootstrap thing="raInvisbil"></bootstrap>
+    <bootstrap thing="ra5CPolTel"></bootstrap>
+    </thing>
+  <thing id="ra5CPolTel" name="Telekinetic Thrust" description="The poltergeist targets a creature or unattended object within 30 feet of it. A creature must be Medium or smaller to be affected by this magic, and an object can weigh up to 150 pounds.\n\nIf the target is a creature, the poltergeist makes a Charisma check contested by the target&apos;s Strength check. If the poltergiest wins, the target is hurled up to 30 feet in any direction, including upward. If the target comes into contact with a hard surface or heavy object, it takes 1d6 damage per 10 feet moved.\n\nIf the target is an object that isn&apos;t being worn or carried, the poltergeist hurls it up to 30 feet in any direction. The poltergeist can use the object as a ranged weapon, attacking one creature along the object&apos;s path (+4 to hit, deals 5 (2d4) bludgeoning damage on a hit)." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    </thing>
+  <thing id="ra5CWBeMul" name="Multiattack (Werebear)" description="In bear form, the werebear makes two claw attacks. In humanoid form, it attacks like its base humanoid form. In hybrid form, it can choose to attack like a bear or attack like the base humanoid." compset="RaceSpec">
+    <comment>To configure this ability, set the rMultiAtt field on the race.</comment>
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="SbSort" tag="MultiAtt" name="Multiattack" abbrev="Multiattack"/>
+    </thing>
+  <thing id="ra5CWBoMu" name="Multiattack (Humanoid or Hybrid Form Only)" description="The wereboar can make replace a single melee attack with a tusk attack if it has multiple attacks. If the base creature did not have multiple attacks, grant it one additional attack with tusks on its turn." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="SbSort" tag="MultiAtt" name="Multiattack" abbrev="Multiattack"/>
+    </thing>
+  <thing id="ra5CWRaMul" name="Multiattack (Humanoid or Hybrid Form Only)" description="The wererat can make replace a single melee attack with a bite attack if it has multiple attacks. If the base creature did not have multiple attacks, grant it one additional attack with its bite when it attacks." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="SbSort" tag="MultiAtt" name="Multiattack" abbrev="Multiattack"/>
+    </thing>
+  <thing id="ra5CWTiMul" name="Multiattack (Humanoid or Hybrid Form Only)" description="In humanoid form, the weretiger attacks as the base creature. In hybrid form, it can attack like the base humanoid or make two claw attacks." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="SbSort" tag="MultiAtt" name="Multiattack" abbrev="Multiattack"/>
+    </thing>
+  <thing id="ra5CWWoMul" name="Multiattack (Humanoid or Hybrid Form Only)" description="The werewolf makes at least two attacks on its round: one with its bite and it may use any weapon attacks the base creature had or replace those attacks with its claws on a 1 for 1 replacement basis." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="SbSort" tag="MultiAtt" name="Multiattack" abbrev="Multiattack"/>
+    </thing>
+  <thing id="ra5CHagSpe" name="Shared Spellcasting" description="While all three members of a hag coven are within 30 feet of one another they can each cast spells but must share the spell slots among themselves. The hags are considered 12th-level spellcasters (spell attack +4, spell save DC #StandardDC#) with the following spells available:\n\n1st level (4 slots): {i}identify, ray of sickness{/i}\n2nd level (3 slots): {i}hold person, locate object{/i}\n3rd level (3 slots): {i}bestow curse, counterspell, lightning bolt{/i}\n4th level (3 slots): {i}phantasmal killer, polymorph{/i}\n5th level (2 slots): {i}contact other plane, scrying{/i}\n6th level (1 slot): {i}eyebite{/i}" compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <eval phase="Final" priority="20000"><![CDATA[var modtext as number 
+modtext = 4
+modtext += hero.child[aINT].field[aBonus].value
+field[CustDesc].text = "While all three members of a hag coven are within 30 feet of one another they can each cast spells but must share the spell slots among themselves. The hags are considered 12th-level spellcasters (spell attack +" & modtext & ", spell save DC #StandardDC#) with the following spells available:\n\n1st level (4 slots): {i}identify, ray of sickness{/i}\n2nd level (3 slots): {i}hold person, locate object{/i}\n3rd level (3 slots): {i}bestow curse, counterspell, lightning bolt{/i}\n4th level (3 slots): {i}phantasmal killer, polymorph{/i}\n5th level (2 slots): {i}contact other plane, scrying{/i}\n6th level (1 slot): {i}eyebite{/i}\n"]]></eval>
+    </thing>
+  <thing id="ra5CGRHaCo" name="Coven Member" description="Hags sometimes form covens and become more dangerous." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rGreenHag"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <tag group="AllowRCust" tag="r5CVGMAnni"/>
+    <tag group="AllowRCust" tag="r5CVGMBheu"/>
+    <tag group="AllowRCust" tag="rNightHag"/>
+    <tag group="AllowRCust" tag="rSeaHag"/>
+    <bootstrap thing="ra5CHagEye"></bootstrap>
+    <bootstrap thing="ra5CHagSpe"></bootstrap>
+    <eval phase="Final" priority="10000">herofield[tCR].value += 2</eval>
+    </thing>
+  <thing id="ra5CHagEye" name="Hag Eye" description="A hag coven can craft a {i}hag eye{/i}. A hag in the coven can take an action to see what the {i}hag eye{/i} sees if the {i}hag eye{/i} is on the same plane of existence. A {i}hag eye{/i} has AC 10, 1 hit point and darkvision with a radius of 60 feet. If it is destroyed, each coven member takes 3d10 psychic damage and is blinded for 24 hours. \n\nA hag coven can have only one {i}hag eye{/i} at a time, and creating a new on requires all three members of the coven to perform a 1 hour ritual. The hags cannot perform the ritual if blinded. If the hags take any other action other than performing the ritual, they must start over." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    </thing>
+  <thing id="w5CMMGythk" name="Gythka" description="A two-handed polearm with a blade at each end." compset="Weapon">
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="8"/>
+    <usesource source="5eMMCP"/>
+    <tag group="wCategory" tag="Melee"/>
+    <tag group="wProperty" tag="TwoHanded"/>
+    <tag group="RaceEquip" tag="r5CMMThriK"/>
+    <tag group="DamageType" tag="dtSlashing"/>
+    <tag group="wProfReq" tag="Martial"/>
+    <tag group="EquipType" tag="Metal"/>
+    </thing>
+  <thing id="w5CMMChatk" name="Chatkcha" description="A thri-kreen throwing weapon." compset="Weapon">
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="6"/>
+    <fieldval field="wRangeNorm" value="30"/>
+    <fieldval field="wRangeLong" value="120"/>
+    <usesource source="5eMMCP"/>
+    <tag group="wCategory" tag="RangeProj"/>
+    <tag group="wCategory" tag="RangeThrow"/>
+    <tag group="wProperty" tag="Light"/>
+    <tag group="wProperty" tag="Thrown"/>
+    <tag group="EquipType" tag="Metal"/>
+    <tag group="DamageType" tag="dtSlashing"/>
+    <tag group="RaceEquip" tag="r5CMMThriK"/>
+    <tag group="wProfReq" tag="Martial"/>
+    <tag group="wProperty" tag="Finesse"/>
+    </thing>
+  <thing id="ra5CThrKWe" name="Weapons" description="Some thri-kreen train to use strange weapons." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="r5CMMThriK"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <bootstrap thing="ra5CThrKMu"></bootstrap>
+    <eval phase="First" priority="1000"><![CDATA[      foreach pick in hero where "IsWeapon.w5CMMChatk" 
+        perform eachpick.forward[WepProf.?]
+        perform eachpick.assign[Broadcast.WepProf]
+        perform eachpick.assign[Helper.ExoticProf]
+        nexteach
+      foreach pick in hero where "IsWeapon.w5CMMGythk" 
+        perform eachpick.forward[WepProf.?]
+        perform eachpick.assign[Broadcast.WepProf]
+        perform eachpick.assign[Helper.ExoticProf]
+        nexteach]]></eval>
+    </thing>
+  <thing id="ra5CThKrPs" name="Innate Spellcasting (Psionics)" description="The thri-kreen&apos;s innate spellcasting ability is Wisdom (spell save DC #StandardDC#). It can innately cast the following spells, requiring no components:\n\nAt will: {i}mage hand{/i} (the hand is invisible)\n2/day each: {i}blur{/i}, {i}magic weapon{/i}\n1/day each: {i}invisibility{/i} (self only)" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sNameOver" value="Mage Hand (the hand is invisible)"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameOver" value="Invisibility (self only)"/>
+      </bootstrap>
+    <bootstrap thing="spBlur">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spMagiWeap">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="xTelepathy">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CThKPsi" name="Psionic" description="Some thri-kreen are psionic." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="r5CMMThriK"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <bootstrap thing="ra5CThKrPs"></bootstrap>
+    </thing>
+  <thing id="ra5CThrKMu" name="Multiattack (Weapons)" description="The thri-kreen makes two gythka attacks or two chatkca attacks. If unarmed it makes the normal thri-kreen multiattacks." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="SbSort" tag="MultiAtt" name="Multiattack" abbrev="Multiattack"/>
+    </thing>
+  <thing id="ra5CTrVLoa" name="Loathsome Limbs" description="Some trolls have the Loathsome Limbs trait." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="ClVaryName" tag="AppParen"/>
+    <tag group="AllowRCust" tag="rTroll"/>
+    <bootstrap thing="ra5CvTrLoL"></bootstrap>
+    </thing>
+  <thing id="ra5CvTrLoL" name="Loathsome Limbs" description="Whenever the troll takes at least 15 slashing damage at one time, roll a d20 to determine what else happens to it:\n\n{b}1-10:{/b} Nothing else happens.\n{b}11-14:{/b} One leg is severed from the troll if it has any legs left.\n{b}15-18:{/b} One arm is severed from the troll if it has any arms left.\n{b}19-20:{/b} The troll is decapitated, but the troll dies only if it can&apos;t regenerate. If it dies, so does the severed head.\n\nIf the troll finishes a short or long rest without reataching a severed limb or head, the part regrows. At that point the severed part dies. Until then, a severed part acts on the troll&apos;s initiative and has its own action and movement. A severed part has AC 13, 10 hit points, and the troll&apos;s regeneration trait. \n\nA {b}severed leg{/b} is unable to attack and has a speed of 5 feet. \n\nA {b}severed arm{/b} has a speed of 5 feet and can make one claw attack on its turn, with disadvantage on the attack roll unless the troll can see the arm and target. Each time the troll loses an arm, it loses a claw attack. \n\nA {b}severed head{/b} has a speed of 0 feet and the troll&apos;s Keen Smell trait. It can make a bite attack only against creatures that share its space. The troll&apos;s body loses the Bite attack and is blinded unless the head can see it. \n\nThe troll&apos;s speed is halfed if it&apos;s missing a leg. If it loses both legs, it falls prone. If it has both arms, it can crawl. If is missing one arm, its speed is halved. With no arms and legs, its speed is 0, and it can&apos;t benefit from bonuses to speed." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="r5CMMVamSp" name="Vampire (Spellcaster)" compset="Race">
+    <comment>Bite Target: one willing creature, or a creature that is grappled by the vampire, incapacitated, or restrained.</comment>
+    <fieldval field="rHitDice" value="17"/>
+    <fieldval field="rHPStart" value="144"/>
+    <fieldval field="rCR" value="15.0"/>
+    <fieldval field="rMultiatt" value="The vampire makes two attacks, only one of which can be a bite attack."/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="8"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="7"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rCHA" value="8"/>
+    <fieldval field="rLangPromp" value="the languages it knew in life"/>
+    <fieldval field="rAC" value="2"/>
+    <fieldval field="rSpCastLev" value="9"/>
+    <usesource source="5eMMCP"/>
+    <tag group="DamComRes" tag="dcAtkNonMa" name="Bludgeoning, piercing, and slashing from nonmagical attacks" abbrev="Bludgeoning, piercing, and slashing from nonmagical attacks"/>
+    <tag group="DamageRes" tag="dtNecrotic" name="Necrotic" abbrev="Necrotic"/>
+    <tag group="Helper" tag="UndLifLang" name="The languages it knew in life" abbrev="The languages it knew in life"/>
+    <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="ProfSave" tag="svDEX" name="Dexterity" abbrev="Dexterity"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="Alignment" tag="Evil" name="Evil" abbrev="E"/>
+    <tag group="Alignment" tag="Lawful" name="Lawful" abbrev="L"/>
+    <bootstrap thing="raVamCharm"></bootstrap>
+    <bootstrap thing="raVamChNig"></bootstrap>
+    <bootstrap thing="raVamMove"></bootstrap>
+    <bootstrap thing="raVamUnStr"></bootstrap>
+    <bootstrap thing="raVamBiCos"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamageType" tag="dtBludgeon"/>
+      <assignval field="livename" value="Unarmed Strike (Vampire Form Only)"/>
+      <assignval field="sbName" value="Unarmed Strike (Vampire Form Only)"/>
+      <assignval field="wAttackEff" value="Instead of dealing damage, the vampire can grapple the target (escape DC 18)."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <bootstrap thing="xMultiatt">
+      <assignval field="livename" value="Multiattack (Vampire Form Only)"/>
+      <assignval field="sbName" value="Multiattack (Vampire Form Only)"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="raVamShape"></bootstrap>
+    <bootstrap thing="raVamLeRes"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <assignval field="livename" value="Bite (Bat or Vampire Form Only)"/>
+      <assignval field="sbName" value="Bite (Bat or Vampire Form Only)"/>
+      <assignval field="wAttackEff" value="The target&apos;s hit point maximum is reduced by an amount equal to the necrotic damage taken, and the vampire regains hit points equal to that amount. The reduction lasts until the target finishes a long rest. The target dies if this effect reduces its hit point maximum to 0. A humanoid slain in this way and then buried in the ground rises the following night as a vampire spawn under the vampire&apos;s control."/>
+      <assignval field="wDamExtra" value=" plus 10 (3d6) necrotic damage"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="raVamMiEsc"></bootstrap>
+    <bootstrap thing="raVamRegen"></bootstrap>
+    <bootstrap thing="raVamSpCli"></bootstrap>
+    <bootstrap thing="raVamVaWea"></bootstrap>
+    <bootstrap thing="xSpellcast"></bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    </thing>
+  <thing id="r5CMMVamWa" name="Vampire Warrior" compset="Race">
+    <comment>Bite Target: one willing creature, or a creature that is grappled by the vampire, incapacitated, or restrained.</comment>
+    <fieldval field="rHitDice" value="17"/>
+    <fieldval field="rHPStart" value="144"/>
+    <fieldval field="rCR" value="13.0"/>
+    <fieldval field="rMultiatt" value="The vampire makes two greatsword attacks."/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="8"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="7"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rCHA" value="8"/>
+    <fieldval field="rLangPromp" value="the languages it knew in life"/>
+    <fieldval field="rAC" value="2"/>
+    <usesource source="5eMMCP"/>
+    <tag group="Alignment" tag="Lawful" name="Lawful" abbrev="L"/>
+    <tag group="DamComRes" tag="dcAtkNonMa" name="Bludgeoning, piercing, and slashing from nonmagical attacks" abbrev="Bludgeoning, piercing, and slashing from nonmagical attacks"/>
+    <tag group="DamageRes" tag="dtNecrotic" name="Necrotic" abbrev="Necrotic"/>
+    <tag group="Helper" tag="UndLifLang" name="The languages it knew in life" abbrev="The languages it knew in life"/>
+    <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="ProfSave" tag="svDEX" name="Dexterity" abbrev="Dexterity"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Evil" name="Evil" abbrev="E"/>
+    <tag group="WepProf" tag="wGreatswrd"/>
+    <tag group="ArmProfGrp" tag="ArmorHeavy"/>
+    <bootstrap thing="raVamCharm"></bootstrap>
+    <bootstrap thing="raVamChNig"></bootstrap>
+    <bootstrap thing="raVamMove"></bootstrap>
+    <bootstrap thing="raVamUnStr"></bootstrap>
+    <bootstrap thing="raVamBiCos"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamageType" tag="dtBludgeon"/>
+      <assignval field="livename" value="Unarmed Strike (Vampire Form Only)"/>
+      <assignval field="sbName" value="Unarmed Strike (Vampire Form Only)"/>
+      <assignval field="wAttackEff" value="Instead of dealing damage, the vampire can grapple the target (escape DC 18)."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <bootstrap thing="xMultiatt">
+      <assignval field="livename" value="Multiattack (Vampire Form Only)"/>
+      <assignval field="sbName" value="Multiattack (Vampire Form Only)"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="raVamShape"></bootstrap>
+    <bootstrap thing="raVamLeRes"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <assignval field="livename" value="Bite (Bat or Vampire Form Only)"/>
+      <assignval field="sbName" value="Bite (Bat or Vampire Form Only)"/>
+      <assignval field="wAttackEff" value="The target&apos;s hit point maximum is reduced by an amount equal to the necrotic damage taken, and the vampire regains hit points equal to that amount. The reduction lasts until the target finishes a long rest. The target dies if this effect reduces its hit point maximum to 0. A humanoid slain in this way and then buried in the ground rises the following night as a vampire spawn under the vampire&apos;s control."/>
+      <assignval field="wDamExtra" value=" plus 10 (3d6) necrotic damage"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="raVamMiEsc"></bootstrap>
+    <bootstrap thing="raVamRegen"></bootstrap>
+    <bootstrap thing="raVamSpCli"></bootstrap>
+    <bootstrap thing="raVamVaWea"></bootstrap>
+    </thing>
+  <thing id="ra5CArcSum" name="Summon Yugoloth" description="An {b}arcanoloth{/b} has a 40 percent chance of summoning one arcanaloth.\n\nA summoned yugoloth appears in an unoccupied space within 60 feet of its summoner, does as it pleases, and can&apos;t summon other yugoloths. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as a bonus action." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    </thing>
+  <thing id="ra5CMezSum" name="Summon Yugoloth" description="A {b}mezzoloth{/b} has a 30 percent chance of summoning one mezzoloth.\n\nA summoned yugoloth appears in an unoccupied space within 60 feet of its summoner, does as it pleases, and can&apos;t summon other yugoloths. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as a bonus action." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    </thing>
+  <thing id="ra5CNycSum" name="Summon Yugoloth" description="A {b}nycaloth{/b} has a 50 percent chance of summoning 1d4 mezzoloths or one nycaloth.\n\nA summoned yugoloth  appears in an unoccupied space within 60 feet of its summoner, does as it pleases, and can&apos;t summon other yugoloths. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as a bonus action." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    </thing>
+  <thing id="ra5CUltSum" name="Summon Yugoloth" description="An {b}ultraloth{/b} has a 50 percent chance of summoning 1d6 mezzoloths, 1d4 nycaloths, or one ultroloth.\n\nA summoned yugoloth appears in an unoccupied space within 60 feet of its summoner, acts as an ally of the summoner, and can&apos;t summon other yugoloths. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as a bonus action." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    </thing>
+  <thing id="ra5CvArcSu" name="Summoner" description="Some yugoloths have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="ClVaryName" tag="AppParen" name="Append (in Parentheses)" abbrev="Append (in Parentheses)"/>
+    <tag group="AllowRCust" tag="r5CMMArcan"/>
+    <bootstrap thing="ra5CArcSum"></bootstrap>
+    </thing>
+  <thing id="ra5CvMezSu" name="Summoner" description="Some yugoloths have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="ClVaryName" tag="AppParen" name="Append (in Parentheses)" abbrev="Append (in Parentheses)"/>
+    <tag group="AllowRCust" tag="r5CMMMezzo"/>
+    <bootstrap thing="ra5CMezSum"></bootstrap>
+    </thing>
+  <thing id="ra5CvNycSu" name="Summoner" description="Some yugoloths have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="ClVaryName" tag="AppParen" name="Append (in Parentheses)" abbrev="Append (in Parentheses)"/>
+    <tag group="AllowRCust" tag="r5CMMNycal"/>
+    <bootstrap thing="ra5CNycSum"></bootstrap>
+    </thing>
+  <thing id="ra5CvUltSu" name="Summoner" description="Some yugoloths have an action option that allows them to summon other demons." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <tag group="ClVaryName" tag="AppParen" name="Append (in Parentheses)" abbrev="Append (in Parentheses)"/>
+    <tag group="AllowRCust" tag="r5CMMUltro"/>
+    <bootstrap thing="ra5CUltSum"></bootstrap>
+    </thing>
+  <thing id="ra5CvGiLiB" name="Hold Breath" description="Some giant lizards have one or more alternate traits." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rGiantLiza"/>
+    <tag group="FeatureTyp" tag="Movement"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGiLizB"></bootstrap>
+    </thing>
+  <thing id="ra5CGiLizB" name="Hold Breath" description="The lizard can hold its breath for 15 minutes. It also gains a swimming speed of 30 feet." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="ra5CvGiLiC" name="Spider Climb" description="Some giant lizards have one or more alternate traits." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rGiantLiza" name="Giant Lizard" abbrev="Giant Lizard"/>
+    <tag group="FeatureTyp" tag="Movement" name="Movement" abbrev="Movement"/>
+    <bootstrap thing="ra5CGiLiSC"></bootstrap>
+    </thing>
+  <thing id="ra5CGiLiSC" name="Spider Climb" description="The giant lizard can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="r5CMMGiRaD" name="Giant Rat (Diseased)" compset="Race">
+    <comment>UnalignedVariant Giant Rat seems to only add an extra effect to the Bite.</comment>
+    <fieldval field="rHitDice" value="2"/>
+    <fieldval field="rHPStart" value="7"/>
+    <fieldval field="rCR" value="0.125"/>
+    <fieldval field="rSTR" value="-3"/>
+    <fieldval field="rDEX" value="5"/>
+    <fieldval field="rCON" value="1"/>
+    <fieldval field="rINT" value="-8"/>
+    <fieldval field="rCHA" value="-6"/>
+    <usesource source="5eMMCP"/>
+    <tag group="Helper" tag="CantSpeak" name="Cannot Speak" abbrev="Cannot Speak"/>
+    <tag group="RaceSize" tag="Small11" name="Small" abbrev="Small"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <bootstrap thing="raGiRPaTac"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamageOver" tag="aDEX"/>
+      <autotag group="MelAttOver" tag="aDEX"/>
+      <autotag group="StandardDC" tag="aCON"/>
+      <autotag group="abSave" tag="aCON"/>
+      <assignval field="wDamBonus" value="-1"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must succeed on a DC #StandardDC# #abSave# saving throw or contract a disease. Until the disease is cured, the target can&apos;t regain hit points except by magical means, and the target&apos;s hit point maximum decreases by 3 (1d6) every 24 hours. If the target&apos;s hit point maximum drops to 0 as a result of this disease, the target dies. "/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="tpBeast"></bootstrap>
+    <bootstrap thing="raGiRKeSme"></bootstrap>
+    </thing>
+  <thing id="r5CMMCavBe" name="Cave Bear" compset="Race">
+    <fieldval field="rHitDice" value="5"/>
+    <fieldval field="rHPStart" value="42"/>
+    <fieldval field="rCR" value="2.0"/>
+    <fieldval field="rMultiatt" value="The bear makes two attacks: one with its bite and one with its claws."/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rSTR" value="10"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="-8"/>
+    <fieldval field="rWIS" value="3"/>
+    <fieldval field="rCHA" value="-3"/>
+    <fieldval field="rAC" value="2"/>
+    <usesource source="5eMMCP"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="RaceSize" tag="Large1" name="Large" abbrev="Large"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="Helper" tag="CantSpeak" name="Cannot Speak" abbrev="Cannot Speak"/>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="livename" value="Claws"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpBeast"></bootstrap>
+    <bootstrap thing="raBlBKeSme"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CvHiDwa" name="Hill Dwarf" description="Some NPCs gain abilities from a base race." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="r5CVGMAbju"/>
+    <tag group="AllowRCust" tag="rAcolyte"/>
+    <tag group="AllowRCust" tag="r5CVGMAppr"/>
+    <tag group="AllowRCust" tag="r5CVGMArDr"/>
+    <tag group="AllowRCust" tag="r5CVGMArcr"/>
+    <tag group="AllowRCust" tag="rArchmage"/>
+    <tag group="AllowRCust" tag="rAssassin"/>
+    <tag group="AllowRCust" tag="rBandit"/>
+    <tag group="AllowRCust" tag="rBandiCapt"/>
+    <tag group="AllowRCust" tag="r5CVGMBard"/>
+    <tag group="AllowRCust" tag="rBerserker"/>
+    <tag group="AllowRCust" tag="r5CVGMBlac"/>
+    <tag group="AllowRCust" tag="r5CVGMCham"/>
+    <tag group="AllowRCust" tag="rCommoner"/>
+    <tag group="AllowRCust" tag="r5CVGMConj"/>
+    <tag group="AllowRCust" tag="rCultFana"/>
+    <tag group="AllowRCust" tag="rCultist"/>
+    <tag group="AllowRCust" tag="r5CVGMDivi"/>
+    <tag group="AllowRCust" tag="rDruid"/>
+    <tag group="AllowRCust" tag="r5CVGMEnch"/>
+    <tag group="AllowRCust" tag="r5CVGMEvok"/>
+    <tag group="AllowRCust" tag="rGladiator"/>
+    <tag group="AllowRCust" tag="rGuard"/>
+    <tag group="AllowRCust" tag="r5CVGMIllu"/>
+    <tag group="AllowRCust" tag="rKnight"/>
+    <tag group="AllowRCust" tag="r5CVGMKraP"/>
+    <tag group="AllowRCust" tag="rMage"/>
+    <tag group="AllowRCust" tag="rNoble"/>
+    <tag group="AllowRCust" tag="rPriest"/>
+    <tag group="AllowRCust" tag="rScout"/>
+    <tag group="AllowRCust" tag="rSpy"/>
+    <tag group="AllowRCust" tag="rThug"/>
+    <tag group="AllowRCust" tag="rTribaWarr"/>
+    <tag group="AllowRCust" tag="rVeteran"/>
+    <tag group="AllowRCust" tag="r5CVGMWarP"/>
+    <tag group="AllowRCust" tag="r5CVGMWlkA"/>
+    <tag group="AllowRCust" tag="r5CVGMMart"/>
+    <tag group="AllowRCust" tag="r5CVGMMasT"/>
+    <tag group="AllowRCust" tag="r5CVGMNecr"/>
+    <tag group="AllowRCust" tag="r5CVGMSwas"/>
+    <tag group="AllowRCust" tag="r5CVGMTran"/>
+    <tag group="AllowRCust" tag="r5CVGMWlkF"/>
+    <tag group="AllowRCust" tag="r5CVGMWlkG"/>
+    <tag group="AllowRCust" tag="r5CVGMWarl"/>
+    <tag group="ClVaryName" tag="Prepend"/>
+    <bootstrap thing="ttDwarf"></bootstrap>
+    <bootstrap thing="lDwarvish"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <bootstrap thing="raDwfResil"></bootstrap>
+    <bootstrap thing="raDwfComTr"></bootstrap>
+    <bootstrap thing="raStonecun"></bootstrap>
+    <eval phase="First" index="2">perform assign[Hero.HasDarkvis]</eval>
+    <eval phase="Final" priority="10000">hero.child[Speed].field[tSpeed].value += -5
+hero.child[Speed].field[tSpeedMod].value += -5</eval>
+    </thing>
+  <thing id="r5Cdwtest" name="test" compset="Race">
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttDwarf"></bootstrap>
+    <bootstrap thing="lDwarvish"></bootstrap>
+    </thing>
+  <thing id="ra5CvMoDwa" name="Mountain Dwarf" description="Some NPCs gain abilities from a base race." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rAcolyte" name="Acolyte" abbrev="Acolyte"/>
+    <tag group="AllowRCust" tag="rArchmage" name="Archmage" abbrev="Archmage"/>
+    <tag group="AllowRCust" tag="rAssassin" name="Assassin" abbrev="Assassin"/>
+    <tag group="AllowRCust" tag="rBandiCapt" name="Bandit Captain" abbrev="Bandit Captain"/>
+    <tag group="AllowRCust" tag="rBandit" name="Bandit" abbrev="Bandit"/>
+    <tag group="AllowRCust" tag="rBerserker" name="Berserker" abbrev="Berserker"/>
+    <tag group="AllowRCust" tag="rCommoner" name="Commoner" abbrev="Commoner"/>
+    <tag group="AllowRCust" tag="rCultFana" name="Cult Fanatic" abbrev="Cult Fanatic"/>
+    <tag group="AllowRCust" tag="rCultist" name="Cultist" abbrev="Cultist"/>
+    <tag group="AllowRCust" tag="rDruid" name="Druid" abbrev="Druid"/>
+    <tag group="AllowRCust" tag="rGladiator" name="Gladiator" abbrev="Gladiator"/>
+    <tag group="AllowRCust" tag="rGuard" name="Guard" abbrev="Guard"/>
+    <tag group="AllowRCust" tag="rKnight" name="Knight" abbrev="Knight"/>
+    <tag group="AllowRCust" tag="rMage" name="Mage" abbrev="Mage"/>
+    <tag group="AllowRCust" tag="rNoble" name="Noble" abbrev="Noble"/>
+    <tag group="AllowRCust" tag="rPriest" name="Priest" abbrev="Priest"/>
+    <tag group="AllowRCust" tag="rScout" name="Scout" abbrev="Scout"/>
+    <tag group="AllowRCust" tag="rSpy" name="Spy" abbrev="Spy"/>
+    <tag group="AllowRCust" tag="rThug" name="Thug" abbrev="Thug"/>
+    <tag group="AllowRCust" tag="rTribaWarr" name="Tribal Warrior" abbrev="Tribal Warrior"/>
+    <tag group="AllowRCust" tag="rVeteran" name="Veteran" abbrev="Veteran"/>
+    <tag group="AllowRCust" tag="r5CVGMAbju" name="Abjurer" abbrev="Abjurer"/>
+    <tag group="AllowRCust" tag="r5CVGMAppr" name="Apprentice Wizard" abbrev="Apprentice Wizard"/>
+    <tag group="AllowRCust" tag="r5CVGMArDr" name="Archdruid" abbrev="Archdruid"/>
+    <tag group="AllowRCust" tag="r5CVGMArcr" name="Archer" abbrev="Archer"/>
+    <tag group="AllowRCust" tag="r5CVGMBard" name="Bard" abbrev="Bard"/>
+    <tag group="AllowRCust" tag="r5CVGMBlac" name="Blackguard" abbrev="Blackguard"/>
+    <tag group="AllowRCust" tag="r5CVGMCham" name="Champion" abbrev="Champion"/>
+    <tag group="AllowRCust" tag="r5CVGMConj" name="Conjurer" abbrev="Conjurer"/>
+    <tag group="AllowRCust" tag="r5CVGMDivi" name="Diviner" abbrev="Diviner"/>
+    <tag group="AllowRCust" tag="r5CVGMEnch" name="Enchanter" abbrev="Enchanter"/>
+    <tag group="AllowRCust" tag="r5CVGMEvok" name="Evoker" abbrev="Evoker"/>
+    <tag group="AllowRCust" tag="r5CVGMIllu" name="Illusionist" abbrev="Illusionist"/>
+    <tag group="AllowRCust" tag="r5CVGMKraP" name="Kraken Priest" abbrev="Kraken Priest"/>
+    <tag group="AllowRCust" tag="r5CVGMMart" name="Martial Arts Adept" abbrev="Martial Arts Adept"/>
+    <tag group="AllowRCust" tag="r5CVGMMasT" name="Master Thief" abbrev="Master Thief"/>
+    <tag group="AllowRCust" tag="r5CVGMNecr" name="Necromancer" abbrev="Necromancer"/>
+    <tag group="AllowRCust" tag="r5CVGMSwas" name="Swashbuckler" abbrev="Swashbuckler"/>
+    <tag group="AllowRCust" tag="r5CVGMTran" name="Transmuter" abbrev="Transmuter"/>
+    <tag group="AllowRCust" tag="r5CVGMWarP" name="War Priest" abbrev="War Priest"/>
+    <tag group="AllowRCust" tag="r5CVGMWarl" name="Warlord" abbrev="Warlord"/>
+    <tag group="AllowRCust" tag="r5CVGMWlkA" name="Warlock of the Archfey" abbrev="Warlock of the Archfey"/>
+    <tag group="AllowRCust" tag="r5CVGMWlkF" name="Warlock of the Fiend" abbrev="Warlock of the Fiend"/>
+    <tag group="AllowRCust" tag="r5CVGMWlkG" name="Warlock of the Great Old One" abbrev="Warlock of the Great Old One"/>
+    <tag group="ClVaryName" tag="Prepend" name="Prepend" abbrev="Prepend"/>
+    <bootstrap thing="ttDwarf"></bootstrap>
+    <bootstrap thing="lDwarvish"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <bootstrap thing="raDwfResil"></bootstrap>
+    <bootstrap thing="raDwfComTr"></bootstrap>
+    <bootstrap thing="ra5CDwArT"></bootstrap>
+    <eval phase="Final" priority="10000">hero.child[Speed].field[tSpeed].value += -5
+hero.child[Speed].field[tSpeedMod].value += -5</eval>
+    <eval phase="First" index="2">perform assign[Hero.HasDarkvis]</eval>
+    </thing>
+  <thing id="ra5CvHiElf" name="High Elf" description="Some NPCs gain abilities from a base race." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rAcolyte" name="Acolyte" abbrev="Acolyte"/>
+    <tag group="AllowRCust" tag="rArchmage" name="Archmage" abbrev="Archmage"/>
+    <tag group="AllowRCust" tag="rAssassin" name="Assassin" abbrev="Assassin"/>
+    <tag group="AllowRCust" tag="rBandiCapt" name="Bandit Captain" abbrev="Bandit Captain"/>
+    <tag group="AllowRCust" tag="rBandit" name="Bandit" abbrev="Bandit"/>
+    <tag group="AllowRCust" tag="rBerserker" name="Berserker" abbrev="Berserker"/>
+    <tag group="AllowRCust" tag="rCommoner" name="Commoner" abbrev="Commoner"/>
+    <tag group="AllowRCust" tag="rCultFana" name="Cult Fanatic" abbrev="Cult Fanatic"/>
+    <tag group="AllowRCust" tag="rCultist" name="Cultist" abbrev="Cultist"/>
+    <tag group="AllowRCust" tag="rDruid" name="Druid" abbrev="Druid"/>
+    <tag group="AllowRCust" tag="rGladiator" name="Gladiator" abbrev="Gladiator"/>
+    <tag group="AllowRCust" tag="rGuard" name="Guard" abbrev="Guard"/>
+    <tag group="AllowRCust" tag="rKnight" name="Knight" abbrev="Knight"/>
+    <tag group="AllowRCust" tag="rMage" name="Mage" abbrev="Mage"/>
+    <tag group="AllowRCust" tag="rNoble" name="Noble" abbrev="Noble"/>
+    <tag group="AllowRCust" tag="rPriest" name="Priest" abbrev="Priest"/>
+    <tag group="AllowRCust" tag="rScout" name="Scout" abbrev="Scout"/>
+    <tag group="AllowRCust" tag="rSpy" name="Spy" abbrev="Spy"/>
+    <tag group="AllowRCust" tag="rThug" name="Thug" abbrev="Thug"/>
+    <tag group="AllowRCust" tag="rTribaWarr" name="Tribal Warrior" abbrev="Tribal Warrior"/>
+    <tag group="AllowRCust" tag="rVeteran" name="Veteran" abbrev="Veteran"/>
+    <tag group="AllowRCust" tag="r5CVGMAbju" name="Abjurer" abbrev="Abjurer"/>
+    <tag group="AllowRCust" tag="r5CVGMAppr" name="Apprentice Wizard" abbrev="Apprentice Wizard"/>
+    <tag group="AllowRCust" tag="r5CVGMArDr" name="Archdruid" abbrev="Archdruid"/>
+    <tag group="AllowRCust" tag="r5CVGMArcr" name="Archer" abbrev="Archer"/>
+    <tag group="AllowRCust" tag="r5CVGMBard" name="Bard" abbrev="Bard"/>
+    <tag group="AllowRCust" tag="r5CVGMBlac" name="Blackguard" abbrev="Blackguard"/>
+    <tag group="AllowRCust" tag="r5CVGMCham" name="Champion" abbrev="Champion"/>
+    <tag group="AllowRCust" tag="r5CVGMConj" name="Conjurer" abbrev="Conjurer"/>
+    <tag group="AllowRCust" tag="r5CVGMDivi" name="Diviner" abbrev="Diviner"/>
+    <tag group="AllowRCust" tag="r5CVGMEnch" name="Enchanter" abbrev="Enchanter"/>
+    <tag group="AllowRCust" tag="r5CVGMEvok" name="Evoker" abbrev="Evoker"/>
+    <tag group="AllowRCust" tag="r5CVGMIllu" name="Illusionist" abbrev="Illusionist"/>
+    <tag group="AllowRCust" tag="r5CVGMKraP" name="Kraken Priest" abbrev="Kraken Priest"/>
+    <tag group="AllowRCust" tag="r5CVGMMart" name="Martial Arts Adept" abbrev="Martial Arts Adept"/>
+    <tag group="AllowRCust" tag="r5CVGMMasT" name="Master Thief" abbrev="Master Thief"/>
+    <tag group="AllowRCust" tag="r5CVGMNecr" name="Necromancer" abbrev="Necromancer"/>
+    <tag group="AllowRCust" tag="r5CVGMSwas" name="Swashbuckler" abbrev="Swashbuckler"/>
+    <tag group="AllowRCust" tag="r5CVGMTran" name="Transmuter" abbrev="Transmuter"/>
+    <tag group="AllowRCust" tag="r5CVGMWarP" name="War Priest" abbrev="War Priest"/>
+    <tag group="AllowRCust" tag="r5CVGMWarl" name="Warlord" abbrev="Warlord"/>
+    <tag group="AllowRCust" tag="r5CVGMWlkA" name="Warlock of the Archfey" abbrev="Warlock of the Archfey"/>
+    <tag group="AllowRCust" tag="r5CVGMWlkF" name="Warlock of the Fiend" abbrev="Warlock of the Fiend"/>
+    <tag group="AllowRCust" tag="r5CVGMWlkG" name="Warlock of the Great Old One" abbrev="Warlock of the Great Old One"/>
+    <tag group="ClVaryName" tag="Prepend" name="Prepend" abbrev="Prepend"/>
+    <bootstrap thing="ttElf"></bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <bootstrap thing="raKeenSens"></bootstrap>
+    <bootstrap thing="raFeyAnces"></bootstrap>
+    <bootstrap thing="raElfTranc"></bootstrap>
+    <bootstrap thing="raHiElfWep"></bootstrap>
+    <eval phase="First" index="2">perform assign[Hero.HasDarkvis]</eval>
+    </thing>
+  <thing id="ra5CvWoElf" name="Wood Elf" description="Some NPCs gain abilities from a base race." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="rAcolyte" name="Acolyte" abbrev="Acolyte"/>
+    <tag group="AllowRCust" tag="rArchmage" name="Archmage" abbrev="Archmage"/>
+    <tag group="AllowRCust" tag="rAssassin" name="Assassin" abbrev="Assassin"/>
+    <tag group="AllowRCust" tag="rBandiCapt" name="Bandit Captain" abbrev="Bandit Captain"/>
+    <tag group="AllowRCust" tag="rBandit" name="Bandit" abbrev="Bandit"/>
+    <tag group="AllowRCust" tag="rBerserker" name="Berserker" abbrev="Berserker"/>
+    <tag group="AllowRCust" tag="rCommoner" name="Commoner" abbrev="Commoner"/>
+    <tag group="AllowRCust" tag="rCultFana" name="Cult Fanatic" abbrev="Cult Fanatic"/>
+    <tag group="AllowRCust" tag="rCultist" name="Cultist" abbrev="Cultist"/>
+    <tag group="AllowRCust" tag="rDruid" name="Druid" abbrev="Druid"/>
+    <tag group="AllowRCust" tag="rGladiator" name="Gladiator" abbrev="Gladiator"/>
+    <tag group="AllowRCust" tag="rGuard" name="Guard" abbrev="Guard"/>
+    <tag group="AllowRCust" tag="rKnight" name="Knight" abbrev="Knight"/>
+    <tag group="AllowRCust" tag="rMage" name="Mage" abbrev="Mage"/>
+    <tag group="AllowRCust" tag="rNoble" name="Noble" abbrev="Noble"/>
+    <tag group="AllowRCust" tag="rPriest" name="Priest" abbrev="Priest"/>
+    <tag group="AllowRCust" tag="rScout" name="Scout" abbrev="Scout"/>
+    <tag group="AllowRCust" tag="rSpy" name="Spy" abbrev="Spy"/>
+    <tag group="AllowRCust" tag="rThug" name="Thug" abbrev="Thug"/>
+    <tag group="AllowRCust" tag="rTribaWarr" name="Tribal Warrior" abbrev="Tribal Warrior"/>
+    <tag group="AllowRCust" tag="rVeteran" name="Veteran" abbrev="Veteran"/>
+    <tag group="AllowRCust" tag="r5CVGMAbju" name="Abjurer" abbrev="Abjurer"/>
+    <tag group="AllowRCust" tag="r5CVGMAppr" name="Apprentice Wizard" abbrev="Apprentice Wizard"/>
+    <tag group="AllowRCust" tag="r5CVGMArDr" name="Archdruid" abbrev="Archdruid"/>
+    <tag group="AllowRCust" tag="r5CVGMArcr" name="Archer" abbrev="Archer"/>
+    <tag group="AllowRCust" tag="r5CVGMBard" name="Bard" abbrev="Bard"/>
+    <tag group="AllowRCust" tag="r5CVGMBlac" name="Blackguard" abbrev="Blackguard"/>
+    <tag group="AllowRCust" tag="r5CVGMCham" name="Champion" abbrev="Champion"/>
+    <tag group="AllowRCust" tag="r5CVGMConj" name="Conjurer" abbrev="Conjurer"/>
+    <tag group="AllowRCust" tag="r5CVGMDivi" name="Diviner" abbrev="Diviner"/>
+    <tag group="AllowRCust" tag="r5CVGMEnch" name="Enchanter" abbrev="Enchanter"/>
+    <tag group="AllowRCust" tag="r5CVGMEvok" name="Evoker" abbrev="Evoker"/>
+    <tag group="AllowRCust" tag="r5CVGMIllu" name="Illusionist" abbrev="Illusionist"/>
+    <tag group="AllowRCust" tag="r5CVGMKraP" name="Kraken Priest" abbrev="Kraken Priest"/>
+    <tag group="AllowRCust" tag="r5CVGMMart" name="Martial Arts Adept" abbrev="Martial Arts Adept"/>
+    <tag group="AllowRCust" tag="r5CVGMMasT" name="Master Thief" abbrev="Master Thief"/>
+    <tag group="AllowRCust" tag="r5CVGMNecr" name="Necromancer" abbrev="Necromancer"/>
+    <tag group="AllowRCust" tag="r5CVGMSwas" name="Swashbuckler" abbrev="Swashbuckler"/>
+    <tag group="AllowRCust" tag="r5CVGMTran" name="Transmuter" abbrev="Transmuter"/>
+    <tag group="AllowRCust" tag="r5CVGMWarP" name="War Priest" abbrev="War Priest"/>
+    <tag group="AllowRCust" tag="r5CVGMWarl" name="Warlord" abbrev="Warlord"/>
+    <tag group="AllowRCust" tag="r5CVGMWlkA" name="Warlock of the Archfey" abbrev="Warlock of the Archfey"/>
+    <tag group="AllowRCust" tag="r5CVGMWlkF" name="Warlock of the Fiend" abbrev="Warlock of the Fiend"/>
+    <tag group="AllowRCust" tag="r5CVGMWlkG" name="Warlock of the Great Old One" abbrev="Warlock of the Great Old One"/>
+    <tag group="ClVaryName" tag="Prepend" name="Prepend" abbrev="Prepend"/>
+    <bootstrap thing="ttElf"></bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <bootstrap thing="raKeenSens"></bootstrap>
+    <bootstrap thing="raFeyAnces"></bootstrap>
+    <bootstrap thing="raElfTranc"></bootstrap>
+    <bootstrap thing="raHiElfWep"></bootstrap>
+    <bootstrap thing="ra5CFltoF"></bootstrap>
+    <bootstrap thing="ra5CMskWld"></bootstrap>
+    <eval phase="First" index="2">perform assign[Hero.HasDarkvis]</eval>
+    <eval phase="Final" priority="10000" index="3">hero.child[Speed].field[tSpeed].value += 5
+hero.child[Speed].field[tSpeedMod].value += 5</eval>
     </thing>
   </document>
