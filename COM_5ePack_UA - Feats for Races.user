@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="f5CDraFea" name="Dragon Fear" description="Increase your Strength or Charisma score by 1, to a maximum of 20.\n• You can expend a use of your breath weapon to force each creature of your choice within 30 feet of you to make a DC #StandardDC# #abSave# saving throw. On a failed save, a target becomes frightened for 1 minute. If the frightened target takes any damage in that minute, it can repeat the save, ending the effect on a success. A target automatically succeeds if it cannot see or hear you." compset="Feat" uniqueness="useronce">
+    <comment>! NOT COMPLETE !</comment>
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abDuration" value="1"/>
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Charisma"/>
+    <usesource source="p5eRFeUACP"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Minute"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aCHA].field[aStartMod].value += 1
+      endif]]></eval>
+    <exprreq message="Requires Dragonborn character."><![CDATA[#hasrace[rDragonbor] <> 0]]></exprreq>
+    </thing>
+  <thing id="f5CBarHid" name="Barbed Hide" description="Increase your Constitution or Charisma score by 1, to a maximum of 20.\n* As a bonus action, you may extrude or retract barbs from your skin. While the barbs are out, you deal 1d6 piercing damage to any creature you are grappling or are grappled by.\n* You gain proficiency with the Intimidation skill, if you are already proficient, you gain double proficiency when using it for checks." compset="Feat" uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Constitution"/>
+    <arrayval field="usrArray" index="1" value="Charisma"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Bonus"/>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+if (hero.tagis[ProfSkill.skIntim] <> 0) then
+       perform hero.assign[ProfDouble.skIntim]
+else
+       perform hero.childfound[skIntim].assign[Helper.Proficient]
+endif]]></eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aCON].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aCHA].field[aStartMod].value += 1
+      endif]]></eval>
+    <exprreq message="Requires Tiefling character."><![CDATA[#hasrace[rTiefling] <> 0]]></exprreq>
+    </thing>
+  <thing id="f5CBouLuc" name="Bountiful Luck" description="Whenever an ally you can see within 30 feet of you rolls a 1 on a d20 for a saving throw, ability check or attack roll, you can use your reaction to let the ally reroll the die. The ally must use the new roll." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <exprreq message="Requires Halfling character."><![CDATA[#hasrace[rHalfling] <> 0]]></exprreq>
+    </thing>
+  <thing id="f5CCriFri" name="Critter Friend" description="You gain proficiency in the  {i}Animal Handling{/i} skill. If you are already proficient in it, your proficiency is doubled.\n* You learn the {i}speak with animals{/i} spell, you can cast it at will without requiring any components.\n* You learn the {i}animal friendship{/i} spell, you can cast it once between long rests. \n\nYour spellcasting ability for these spells in Intelligence, and the DC for the {i}animal friendship{/i} spell is #StandardDC#." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="spAnimFrie">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSpeaAnim">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+if (hero.tagis[ProfSkill.skAnimHand] <> 0) then
+       perform hero.assign[ProfDouble.skAnimHand]
+else
+       perform hero.childfound[skAnimHand].assign[Helper.Proficient]
+endif]]></eval>
+    <exprreq message="Requires a forest gnome. "><![CDATA[#hasrace[rGnome] <> 0]]></exprreq>
+    </thing>
+  </document>
