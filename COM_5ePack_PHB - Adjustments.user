@@ -694,4 +694,117 @@ doneif (field[pIsOn].value = 0)
 
 hero.child[Totals].field[tAttunMax].value += field[pAdjust].value]]></eval>
     </thing>
+  <thing id="p5CWildsha" name="Wildshape" description="Starting at 2nd level, you can use your action to magically assume the shape of a beast that you have seen before. You can use this feature twice. You regain expended uses when you finish a short or long rest.\n\nYour druid level determines the beasts you can transform into, as shown in the Beast Shapes table. At 2nd level, for example, you can transform into any beast that has a challenge rating of 1/4 or lower that doesn&apos;t have a flying or swimming speed.\n\n{b}Beast Shapes Level Max. CR Limitations                         Example{/b}\n2nd                              1/4       No flying or swimming speed Wolf \n4th                               1/2       No flying speed                    Crocodile\n8th                                1                                                   Giant eagle\n\nYou can stay in a beast shape for a number of hours equal to half your druid level (rounded down). You then revert to your normal form unless you expend another use of this feature. You can revert to your normal form earlier by using a bonus action on your turn. You automatically revert if you fall unconscious, drop to 0 hit points, or die.\n\nWhile you are transformed, the following rules apply:\n\n• Your game statistics are replaced by the statistics of the beast, but you retain your alignment, personality, and Intelligence, Wisdom, and Charisma scores. You also retain all of your skill and saving throw proficiencies, in addition to gaining those of the creature. If the creature has the same proficiency as you and the bonus in its stat block is higher than yours, use the creature&apos;s bonus instead of yours. If the creature has any legendary or lair actions, you can&apos;t use them.\n\n• When you transform, you assume the beast&apos;s hit points and Hit Dice. When you revert to your normal form, you return to the number of hit points you had before you transformed. However, if you revert as a result of dropping to 0 hit points, any excess damage carries over to your normal form. For example, if you take 10 damage in animal form and have only 1 hit point left, you revert and take 9 damage. As long as the excess damage doesn&apos;t reduce your normal form to 0 hit points, you aren&apos;t knocked unconscious.\n\n• You can&apos;t cast spells, and your ability to speak or take any action that requires hands is limited to the capabilities of your beast form. Transforming doesn&apos;t break your concentration on a spell you&apos;ve already cast, however, or prevent you from taking actions that are part of a spell, such as {i}call lightning{/i}, that you&apos;ve already cast.\n\n• You retain the benefit of any features from your class, race, or other source and can use them if the new form is physically capable of doing so. However, you can&apos;t use any of your special senses, such as darkvision, unless your new form also has that sense.\n\n• You choose whether your equipment falls to the ground in your space, merges into your new form, or is worn by it. Worn equipment functions as normal, but the GM decides whether it is practical for the new form to wear a piece of equipment, based on the creature&apos;s shape and size. Your equipment doesn&apos;t change size or shape to match the new form, and any equipment that the new form can&apos;t wear must either fall to the ground or merge with it. Equipment that merges with the form has no effect until you leave the form.\n\n{b}Combat Wild Shape{/b}\nYou gain the ability to use Wild Shape on your turn as a bonus action, rather than as an action.\n\nAdditionally, while you are transformed by Wild Shape, you can use a bonus action to expend one spell slot to regain 1d8 hit points per level of the spell slot expended." compset="InPlay">
+    <comment>iValue = master.child[svINT].field[svTotal].value
+    hero.child[svINT].field[svTotal].value = iValue
+
+    iValue = master.child[svWIS].field[svTotal].value
+    hero.child[svWIS].field[svTotal].value = iValue
+
+    iValue = master.child[svCHA].field[svTotal].value
+    hero.child[svCHA].field[svTotal].value = iValue</comment>
+    <fieldval field="pSource" value="This minion is actually a wildshape."/>
+    <fieldval field="pDuration" value="Based on Druid Level"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="Custom" tag="5CWildshap" name="Wildshape"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <eval phase="PreLevel" priority="10000" index="3"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+
+    var searchexpr as string
+    ~ Get list of Proficient Skills from master
+    searchexpr = master.hero.tagids[ProfSkill.?,"|"]
+
+    ~ Loop through those same skills on the hero and
+    ~ apply the proficient tag.
+    foreach pick in hero from BaseSkill where searchexpr
+      perform eachpick.assign[Helper.Proficient]
+      nexteach]]></eval>
+    <eval phase="PostAttr" priority="10000"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+
+   ~ Set Wild Shape creature's Intelligence
+    var iINT as number
+    iINT = master.child[aINT].field[aFinalVal].value
+    hero.child[aINT].field[aFinalVal].value = iINT
+    iINT = master.child[aINT].field[aModBonus].value
+    hero.child[aINT].field[aModBonus].value = iINT
+
+    ~ Set Wild Shape creature's Wisdom
+    var iWIS as number
+    iWIS = master.child[aWIS].field[aFinalVal].value
+    hero.child[aWIS].field[aFinalVal].value = iWIS
+    iWIS = master.child[aWIS].field[aModBonus].value
+    hero.child[aWIS].field[aModBonus].value = iWIS
+
+    ~ Set Wild Shape creature's Charisma
+    var iCHA as number
+    iCHA = master.child[aCHA].field[aFinalVal].value
+    hero.child[aCHA].field[aFinalVal].value = iCHA
+    iCHA = master.child[aCHA].field[aModBonus].value
+    hero.child[aCHA].field[aModBonus].value = iCHA]]></eval>
+    <eval phase="PostLevel" priority="10000" index="4"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+
+    var iProfBon as number
+    iProfBon = master.child[ProfBonus].field[tProfBonus].value
+
+    hero.child[ProfBonus].field[tProfBonus].value = iProfBon]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+
+    if (master.child[svSTR].tagis[Helper.Proficient] <> 0) then
+      perform hero.child[svSTR].assign[Helper.Proficient]
+    endif
+    if (master.child[svDEX].tagis[Helper.Proficient] <> 0) then
+      perform hero.child[svDEX].assign[Helper.Proficient]
+    endif
+    if (master.child[svCON].tagis[Helper.Proficient] <> 0) then
+      perform hero.child[svCON].assign[Helper.Proficient]
+    endif
+    if (master.child[svINT].tagis[Helper.Proficient] <> 0) then
+      perform hero.child[svINT].assign[Helper.Proficient]
+    endif
+    if (master.child[svWIS].tagis[Helper.Proficient] <> 0) then
+      perform hero.child[svWIS].assign[Helper.Proficient]
+    endif
+    if (master.child[svCHA].tagis[Helper.Proficient] <> 0) then
+      perform hero.child[svCHA].assign[Helper.Proficient]
+    endif
+
+    var iValue as number
+    var iBonus as number
+    var iProf as number
+    iProf = #profbonus[]
+
+    ~ Intelligence saves
+    iBonus = master.child[aINT].field[aModBonus].value
+    if (hero.child[svINT].tagis[Helper.Proficient] <> 0) then
+      hero.child[svINT].field[svAttr].value = iBonus
+      hero.child[svINT].field[svProfBon].value = iProf
+    else
+      hero.child[svINT].field[svAttr].value = iBonus
+    endif
+      
+    ~ Wisdom saves
+    iBonus = master.child[aWIS].field[aModBonus].value
+    if (hero.child[svWIS].tagis[Helper.Proficient] <> 0) then
+      hero.child[svWIS].field[svAttr].value = iBonus
+      hero.child[svWIS].field[svProfBon].value = iProf
+    else
+      hero.child[svWIS].field[svAttr].value = iBonus
+    endif
+
+    ~ Charisma saves
+    iBonus = master.child[aCHA].field[aModBonus].value
+    if (hero.child[svCHA].tagis[Helper.Proficient] <> 0) then
+      hero.child[svCHA].field[svAttr].value = iBonus
+      hero.child[svCHA].field[svProfBon].value = iProf
+    else
+      hero.child[svCHA].field[svAttr].value = iBonus
+    endif]]></eval>
+    <exprreq message="Must be a minion"><![CDATA[tagis[Hero.FullMinion] >= 1]]></exprreq>
+    </thing>
   </document>
