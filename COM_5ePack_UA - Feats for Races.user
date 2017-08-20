@@ -115,14 +115,17 @@ endif]]></eval>
   <thing id="f5CDraWin" name="Dragon Wings" description="You sprout wings that grant you a flying speed of 20 feet as long as you are not wearing heavy armor and aren&apos;t exceeding your maximum carrying capacity." compset="Feat" uniqueness="useronce">
     <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] = 1)
-~ are we wearing heavy armor?  
-     field[abValue].value = 0
-     foreach pick in hero from BaseArmor where "ArmorClass.Heavy & Helper.CurrArmor"
-          field[abValue].value = 1
-     nexteach
-~ exit if we have heavy armor equipped.
-     doneif (field[abValue].value > 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[      ~ If we fail the test for wearing Heavy Armor, get out
+      if (hero.tagis[Hero.HeavyArmor] <> 0) then
+        perform assign[Helper.Disable]
+        endif
+
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
 ~ should exit if carrying capacity exceeded, but you can turn off encumbrance so not calcing. 
      hero.child[xFly].field[abValue].value = 20]]></eval>
     <exprreq message="Requires Dragonborn character."><![CDATA[#hasrace[rDragonbor] <> 0]]></exprreq>
@@ -388,5 +391,76 @@ doneif (tagis[Helper.Disable] <> 0)]]></eval>
         hero.child[aCHA].field[aStartMod].value += 1
       endif]]></eval>
     <exprreq message="Requires Halfling character."><![CDATA[#hasrace[rHalfling] <> 0]]></exprreq>
+    </thing>
+  <thing id="f5CSquNim" name="Squat Nimbleness" description="* Increase your Strength or Dexterity score by 1, to a maximum of 20.\n* Increase your walking speed by 5 feet.\n* Gain proficiency in the Acrobatics or Athletics skill, if you are already proficient in the skill chosen,  your proficiency bonus is doubled for any check you make with it." compset="Feat" uniqueness="useronce">
+    <fieldval field="usrCandid1" value="thingid.skAcrobat | thingid.skAthletic"/>
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Dexterity"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Touch" name="Touch" abbrev="tch"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      ~ get the user chosen skill]]></eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      endif
+
+      hero.child[Speed].field[tSpeed].value += 5]]></eval>
+    <exprreq message="Requires a dwarf, gnome or halfling."><![CDATA[#hasrace[rDwarf] + #hasrace[rGnome] + #hasrace[rHalfling] <> 0]]></exprreq>
+    </thing>
+  <thing id="f5CWonMak" name="Wonder Maker" description="* Increase your Dexterity or Intelligence score by 1 to a maximum of 20.\n* When you make a skill check with your Tinker&apos;s tools, you add double your proficiency bonus.\n* When you make a device with your Tinker trait, the following options are available for your creations:\n\n{i}Alarm{/i}. This device emits an alarm audible to 300 feet, lasting for 1 minute, if a creature approaches within 15 feet of it and doesn&apos;t speak the password set for it. \n{i}Calculator{/i}. The device can add up sums.\n{i}Lifter{/i}. The device works as a block and tackle, allowing you to lift up to five times what you could normally lift.  \n{i}Timekeeper{/i}. The device works as a pocketwatch, keeping accurate time.\n{i}Weather Sensor{/i}. Used as an action, the device provides weather conditions for a 1-mile radius, predicting the weather for the next 4 hours in hour intervals with simple symbols." compset="Feat" uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Dexterity"/>
+    <arrayval field="usrArray" index="1" value="Intelligence"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aINT].field[aStartMod].value += 1
+      endif]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+       perform hero.assign[ProfTooDbl.gTooTinker]]]></eval>
+    <exprreq message="Requires a rock gnome. "><![CDATA[#hasrace[rGnome] <> 0]]></exprreq>
+    </thing>
+  <thing id="f5CWooMag" name="Wood Elf Magic" description="* You can cast one druid cantrip of your choice. \n* You can cast {i}longstrider{/i} and {i}pass without trace{/i} once each between long rests.\n\nYour spellcasting ability is Wisdom for these spells (Spell save DC #StandardDC#)." compset="Feat" uniqueness="useronce">
+    <fieldval field="usrCandid1" value="(component.BaseSpell &amp; sLevel.0) &amp; sClass.cHelpDrd"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <bootstrap thing="spPassTrac">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLongstri">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+
+     ~ perform field[usrChosen1].chosen.assign[Usage.AtWill]
+     ~ perform field[usrChosen1].chosen.assign[Helper.SpellLike]]]></eval>
+    <exprreq message="Requires drow."><![CDATA[#hasrace[rElf] <> 0]]></exprreq>
     </thing>
   </document>
