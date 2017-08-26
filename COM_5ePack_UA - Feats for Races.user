@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="f5CBarHid" name="Barbed Hide" description="Increase your Constitution or Charisma score by 1, to a maximum of 20.\n* As a bonus action, you may extrude or retract barbs from your skin. While the barbs are out, you deal 1d6 piercing damage to any creature you are grappling or are grappled by.\n* You gain proficiency with the Intimidation skill, if you are already proficient, you gain double proficiency when using it for checks." compset="Feat" uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Constitution"/>
+    <arrayval field="usrArray" index="1" value="Charisma"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Bonus"/>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+if (hero.tagis[ProfSkill.skIntim] <> 0) then
+       perform hero.assign[ProfDouble.skIntim]
+else
+       perform hero.childfound[skIntim].assign[Helper.Proficient]
+endif]]></eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aCON].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aCHA].field[aStartMod].value += 1
+      endif]]></eval>
+    <pickreq thing="rTiefling"/>
+    </thing>
+  <thing id="f5CBouLuc" name="Bountiful Luck" description="Whenever an ally you can see within 30 feet of you rolls a 1 on a d20 for a saving throw, ability check or attack roll, you can use your reaction to let the ally reroll the die. The ally must use the new roll." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <pickreq thing="rHalfling"/>
+    </thing>
+  <thing id="f5CCriFri" name="Critter Friend" description="You gain proficiency in the  {i}Animal Handling{/i} skill. If you are already proficient in it, your proficiency is doubled.\n* You learn the {i}speak with animals{/i} spell, you can cast it at will without requiring any components.\n* You learn the {i}animal friendship{/i} spell, you can cast it once between long rests. \n\nYour spellcasting ability for these spells in Intelligence, and the DC for the {i}animal friendship{/i} spell is #StandardDC#." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="spAnimFrie">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSpeaAnim">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+if (hero.tagis[ProfSkill.skAnimHand] <> 0) then
+       perform hero.assign[ProfDouble.skAnimHand]
+else
+       perform hero.childfound[skAnimHand].assign[Helper.Proficient]
+endif]]></eval>
+    <pickreq thing="ra5CFrGno"/>
+    </thing>
+  <thing id="f5CDraHid" name="Dragon Hide" description="Increase your Strength or Charisma score by 1, to a maximum of 20.\n* You gain a +1 to AC when not wearing armor.\n* You grow claws that can be used in place of your unarmed strike." compset="Feat" uniqueness="useronce">
+    <comment>! NOT COMPLETE !</comment>
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Charisma"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+      
+      field[abValue].value += 1
+
+      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aCHA].field[aStartMod].value += 1
+      endif]]></eval>
+    <pickreq thing="rDragonbor"/>
+    </thing>
+  <thing id="f5CDraWin" name="Dragon Wings" description="You sprout wings that grant you a flying speed of 20 feet as long as you are not wearing heavy armor and aren&apos;t exceeding your maximum carrying capacity." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~ If we fail the test for wearing Heavy Armor, get out
+      if (hero.tagis[Hero.HeavyArmor] <> 0) then
+        perform assign[Helper.Disable]
+        endif
+
+      ~ Get out if we are overweight.
+      doneif (herofield[tEncum].value > herofield[tEncumMax].value)
+ 
+     hero.child[xFly].field[abValue].value = 20]]></eval>
+    <pickreq thing="rDragonbor"/>
+    </thing>
+  <thing id="f5CDroHiMa" name="Drow High Magic" description="You can cast the {i}detect magic{/i} spell at will without expending a spell slot. \n* You can cast {i}levitate{/i} and {i}dispel magic{/i} once each between long rests.\n\nYour spellcasting ability is Charisma for these spells (Spell save DC #StandardDC#)." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="spDispMagi">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <pickreq thing="ra5CDrow"/>
+    </thing>
+  <thing id="f5CDwaRes" name="Dwarf Resilience" description="Increase your Constitution score by 1, to a maximum of 20.\n* When your dwarf takes the Dodge action in combat, you may spend one Hit Die to heal yourself. Roll the die once, add your Constitution modifer, and regain a number of hit points equal to the total (minimum of 1)." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCON].field[aStartMod].value += 1]]></eval>
+    <pickreq thing="rDwarf"/>
+    </thing>
+  <thing id="f5CElvAcc" name="Elven Accuracy" description="Increase your Dexterity score by 1, to a maximum of 20.\n* Whenever you have advantage on an attack roll, you can reroll one of the damage dice once. The new roll must be used." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aDEX].field[aStartMod].value += 1]]></eval>
+    <exprreq message="Requires an elf or half-elf."><![CDATA[#hasrace[rElf] + #hasrace[rHalfElf] <> 0]]></exprreq>
+    </thing>
+  <thing id="f5CEveFri" name="Everybody&apos;s Friend" description="Increase your Charisma score by 1, to a maximum of 20.\n* You gain proficiency in the Deception and Persuasion skills. If you already have proficiency in those skills, your proficiency bonus becomes doubled when you use those skills." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCHA].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+if (hero.tagis[ProfSkill.skDecept] <> 0) then
+       perform hero.assign[ProfDouble.skDecept]
+else
+       perform hero.childfound[skDecept].assign[Helper.Proficient]
+endif
+if (hero.tagis[ProfSkill.skPersuas] <> 0) then
+       perform hero.assign[ProfDouble.skPersuas]
+else
+       perform hero.childfound[skPersuas].assign[Helper.Proficient]
+endif]]></eval>
+    <pickreq thing="rHalfElf"/>
+    </thing>
+  <thing id="f5CFadAwa" name="Fade Away" description="Increase your Intelligence score by 1, to a maximum of 20.\n* When you take damage, you can use a reaction to magically become invisible until the end of your next turn or until you attack, deal damage, or force someone to make a saving throw. You cannot do this again until you finish a short or long rest." compset="Feat" uniqueness="useronce">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aINT].field[aStartMod].value += 1]]></eval>
+    <pickreq thing="rGnome"/>
+    </thing>
+  <thing id="f5CFeyTel" name="Fey Teleportation" description="Increase your Intelligence score by 1, to a maximum of 20.\n* You can cast the {i}misty step{/i} spell once between short or long rests. Intelligence is your spellcasting ability for this spell." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="spMistStep">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="ShortRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aINT].field[aStartMod].value += 1]]></eval>
+    <pickreq thing="srElfHigh"/>
+    </thing>
+  <thing id="f5CFlaPhl" name="Flames of Phlegethos" description="Increase your Intelligence or Charisma score by 1, to a maximum of 20.\n* When you roll fire damage for a spell you cast, you can reroll any result of 1 on the fire damage dice. You must use the new roll even if it is another 1.\n* When you cast a spell that deals fire damage, you can wrap yourself in an aura of flames until the end of your next turn. The flames are harmless to you and shed bright light out to 30 feet and dim light an additional 30 feet. While the flames are present, any creature within 5 feet of you that hits you with a melee attack takes 1d4 fire damage." compset="Feat" uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Intelligence"/>
+    <arrayval field="usrArray" index="1" value="Charisma"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aINT].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aCHA].field[aStartMod].value += 1
+      endif]]></eval>
+    <pickreq thing="rTiefling"/>
+    </thing>
+  <thing id="f5CGruBea" name="Grudge-Bearer" description="Choose a type of creature or two humanoid types that are your chosen enemy.\n\n* Increase your Strength, Constitution, or Wisdom score by 1, up to a maximum of 20. \n* During the first round of combat versus your chosen foes, your attacks are made at advantage.\n* When any of your chosen foes make an opportunity attack against you, they have disadvantage.\n* Whenever you make an Intelligence (Arcana, History, Nature, or Religion) check to recall information about your chosen foes, you may double the proficiency bonus to the check even if you are not proficient." compset="Feat" summary="Choose enemies to have bonuses against." uniqueness="useronce">
+    <fieldval field="usrCandid1" value="thingid.aSTR | thingid.aCON | thingid.aWIS"/>
+    <arrayval field="usrArray" index="0" value="Aberrations"/>
+    <arrayval field="usrArray" index="1" value="Beasts"/>
+    <arrayval field="usrArray" index="2" value="Celestials"/>
+    <arrayval field="usrArray" index="3" value="Constructs"/>
+    <arrayval field="usrArray" index="4" value="Dragons"/>
+    <arrayval field="usrArray" index="5" value="Elementals"/>
+    <arrayval field="usrArray" index="6" value="Fey"/>
+    <arrayval field="usrArray" index="7" value="Fiends"/>
+    <arrayval field="usrArray" index="8" value="Giants"/>
+    <arrayval field="usrArray" index="9" value="Humanoids (Choose two)"/>
+    <arrayval field="usrArray" index="10" value="Monstrosities"/>
+    <arrayval field="usrArray" index="11" value="Oozes"/>
+    <arrayval field="usrArray" index="12" value="Plants"/>
+    <arrayval field="usrArray" index="13" value="Undead"/>
+    <usesource source="p5eRFeUACP"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+~ add 1 to chosen ability
+field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[~ If we're disabled, do nothing & 
+doneif (tagis[Helper.Disable] = 1)
+
+      #situational[hero.child[skArcana], "Double your proficiency when using this to remember things about your chosen foe.",field[thingname].text]
+      #situational[hero.child[skHistory], "Double your proficiency when using this to remember things about your chosen foe.",field[thingname].text]
+      #situational[hero.child[skReligion], "Double your proficiency when using this to remember things about your chosen foe.",field[thingname].text]
+      #situational[hero.child[skNature], "Double your proficiency when using this to remember things about your chosen foe.",field[thingname].text]]]></eval>
+    <pickreq thing="rDwarf"/>
+    </thing>
+  <thing id="f5CHumDet" name="Human Determination" description="Increase one ability score of your choice by 1, up to 20.\n* Once between short rests, when you make an attack roll, saving throw, or ability check, you do so with advantage." compset="Feat" uniqueness="useronce">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="fShowWhat" tag="Attributes"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <eval phase="PreAttr" priority="5000"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        field[usrChosen1].chosen.field[aStartMod].value += 1
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif]]></eval>
+    <pickreq thing="rHuman"/>
+    </thing>
+  <thing id="f5CInfCon" name="Infernal Constitution" description="Increase your Constitution to a maximum of 20.\n* You have resistance to cold and poison damage.\n* You have advantage on saving throws versus being poisoned." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)]]></eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+        hero.child[aCON].field[aStartMod].value += 1
+
+        perform hero.assign[DamageRes.dtCold]
+        perform hero.assign[DamageRes.dtPoison]
+
+#situational[hero.child[svAll], "Advantage on saving throws versus poison.", field[thingname].text]]]></eval>
+    <pickreq thing="rTiefling"/>
+    </thing>
+  <thing id="f5COrcAgg" name="Orcish Aggression" description="As a bonus action, you can make a move up to your speed toward an enemy you can see or hear. You must end this move closer to an enemy than when you started." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Bonus"/>
+    <pickreq thing="rHalfOrc"/>
+    </thing>
+  <thing id="f5COrcFur" name="Orcish Fury" description="Increase your Strength or Constitution score by 1, up to a maximum of 20.\n* When you hit with an attack made with a simple or martial weapon, you can roll one of the weapon&apos;s damage dice an additional time and add it as extra damage of the type inflicted by the weapon. You can do this once between short rests. \n* Immediately after you use your Relentless Endurance trait, you can use your reaction to make one attack." compset="Feat" uniqueness="useronce">
+    <fieldval field="trkMax" value="1"/>
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Constitution"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="User" tag="Tracker"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aCON].field[aStartMod].value += 1
+      endif]]></eval>
+    <pickreq thing="rHalfOrc"/>
+    </thing>
+  <thing id="f5CProdigy" name="Prodigy" description="Increase one ability score of your choice by 1, up to 20.\n* You gain one skill proficiency of your choice, one tool proficiency of your choice, and fluency in one language of your choice." compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="fShowWhat" tag="Attributes" name="Attributes" abbrev="Attributes"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PreAttr" priority="5000"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        field[usrChosen1].chosen.field[aStartMod].value += 1
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif]]></eval>
+    <eval phase="First" index="2"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+      
+      ~ Add 1 language to Background tab
+      hero.child[resLangBck].field[resMax].value += 1]]></eval>
+    <eval phase="PostAttr" priority="10000" index="3">var NumOfSkill as number
+var NumOfTool as number
+
+NumOfSkill = 1
+NumOfTool = 1
+
+call 5CAddProf</eval>
+    <exprreq message="Requires human or half-elf."><![CDATA[#hasrace[rHuman] + #hasrace[rHalfElf] <> 0]]></exprreq>
+    </thing>
+  <thing id="f5CSecCha" name="Second Chance" description="* Increase your Dexterity, Constitution, or Charisma score by 1, to a maximum of 20.\n* When a creature you can see hits you with an attack roll, you can use your reaction to force that creature to reroll. You can use this ability once between short rests." compset="Feat" uniqueness="useronce">
+    <fieldval field="trkMax" value="1"/>
+    <arrayval field="usrArray" index="0" value="Dexterity"/>
+    <arrayval field="usrArray" index="1" value="Constitution"/>
+    <arrayval field="usrArray" index="2" value="Charisma"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Reaction" name="Reaction" abbrev="Reaction"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aCON].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 2) then
+        hero.child[aCHA].field[aStartMod].value += 1
+      endif]]></eval>
+    <pickreq thing="rHalfling"/>
+    </thing>
+  <thing id="f5CSquNim" name="Squat Nimbleness" description="* Increase your Strength or Dexterity score by 1, to a maximum of 20.\n* Increase your walking speed by 5 feet.\n* Gain proficiency in the Acrobatics or Athletics skill, if you are already proficient in the skill chosen,  your proficiency bonus is doubled for any check you make with it." compset="Feat" uniqueness="useronce">
+    <fieldval field="usrCandid1" value="thingid.skAcrobat | thingid.skAthletic"/>
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Dexterity"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Touch" name="Touch" abbrev="tch"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      ~ get the user chosen skill]]></eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      endif
+
+      hero.child[Speed].field[tSpeed].value += 5]]></eval>
+    <exprreq message="Requires a dwarf, gnome or halfling."><![CDATA[#hasrace[rDwarf] + #hasrace[rGnome] + #hasrace[rHalfling] <> 0]]></exprreq>
+    </thing>
+  <thing id="f5CWonMak" name="Wonder Maker" description="* Increase your Dexterity or Intelligence score by 1 to a maximum of 20.\n* When you make a skill check with your Tinker&apos;s tools, you add double your proficiency bonus.\n* When you make a device with your Tinker trait, the following options are available for your creations:\n\n{i}Alarm{/i}. This device emits an alarm audible to 300 feet, lasting for 1 minute, if a creature approaches within 15 feet of it and doesn&apos;t speak the password set for it. \n{i}Calculator{/i}. The device can add up sums.\n{i}Lifter{/i}. The device works as a block and tackle, allowing you to lift up to five times what you could normally lift.  \n{i}Timekeeper{/i}. The device works as a pocketwatch, keeping accurate time.\n{i}Weather Sensor{/i}. Used as an action, the device provides weather conditions for a 1-mile radius, predicting the weather for the next 4 hours in hour intervals with simple symbols." compset="Feat" uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Dexterity"/>
+    <arrayval field="usrArray" index="1" value="Intelligence"/>
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aINT].field[aStartMod].value += 1
+      endif]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+       perform hero.assign[ProfTooDbl.gTooTinker]]]></eval>
+    <pickreq thing="srGnRock"/>
+    </thing>
+  <thing id="f5CWooMag" name="Wood Elf Magic" description="* You can cast one druid cantrip of your choice. \n* You can cast {i}longstrider{/i} and {i}pass without trace{/i} once each between long rests.\n\nYour spellcasting ability is Wisdom for these spells," compset="Feat" uniqueness="useronce">
+    <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="spPassTrac">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLongstri">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+ ~ add the spell to the end of the base race spell list
+ hero.findchild[BaseRace].field[rSpExLstNm].text = "Druid Cantrip"
+ hero.findchild[BaseRace].field[rSpExLst].text = "sClass.cHelpDrd & sLevel.0"
+ hero.findchild[BaseRace].field[rSpExAllw].value += 1
+ foreach pick in hero where "(!Usage.LongRest & !Usage.ShortRest & !Usage.Day) & Helper.RaceSpell"
+   perform eachpick.assign[Usage.AtWill]
+ nexteach]]></eval>
+    <pickreq thing="ra5CWdElf"/>
+    </thing>
+  <thing id="f5CDraFea" name="Dragon Fear" description="Increase your Strength or Charisma score by 1, to a maximum of 20.\n• You can expend a use of your breath weapon to force each creature of your choice within 30 feet of you to make a DC #StandardDC# #abSave# saving throw. On a failed save, a target becomes frightened for 1 minute. If the frightened target takes any damage in that minute, it can repeat the save, ending the effect on a success. A target automatically succeeds if it cannot see or hear you." compset="Feat" uniqueness="useronce">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abDuration" value="1"/>
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Charisma"/>
+    <usesource source="p5eRFeUACP"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Minute"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aCHA].field[aStartMod].value += 1
+      endif]]></eval>
+    <pickreq thing="rDragonbor"/>
+    </thing>
+  </document>
