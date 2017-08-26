@@ -1,27 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
-  <thing id="f5CDraFea" name="Dragon Fear" description="Increase your Strength or Charisma score by 1, to a maximum of 20.\n• You can expend a use of your breath weapon to force each creature of your choice within 30 feet of you to make a DC #StandardDC# #abSave# saving throw. On a failed save, a target becomes frightened for 1 minute. If the frightened target takes any damage in that minute, it can repeat the save, ending the effect on a success. A target automatically succeeds if it cannot see or hear you." compset="Feat" uniqueness="useronce">
-    <fieldval field="abRange" value="30"/>
-    <fieldval field="abDuration" value="1"/>
-    <arrayval field="usrArray" index="0" value="Strength"/>
-    <arrayval field="usrArray" index="1" value="Charisma"/>
-    <usesource source="p5eRFeUACP"/>
-    <tag group="abSave" tag="aWIS"/>
-    <tag group="StandardDC" tag="aCHA"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="abRange" tag="Feet"/>
-    <tag group="abDuration" tag="Minute"/>
-    <eval phase="First"><![CDATA[
-      ~ If we're disabled, do nothing & 
-      doneif (tagis[Helper.Disable] = 1)
-
-      if (field[usrIndex].value = 0) then
-        hero.child[aSTR].field[aStartMod].value += 1
-      elseif (field[usrIndex].value = 1) then
-        hero.child[aCHA].field[aStartMod].value += 1
-      endif]]></eval>
-    <pickreq thing="rDragonbor"/>
-    </thing>
   <thing id="f5CBarHid" name="Barbed Hide" description="Increase your Constitution or Charisma score by 1, to a maximum of 20.\n* As a bonus action, you may extrude or retract barbs from your skin. While the barbs are out, you deal 1d6 piercing damage to any creature you are grappling or are grappled by.\n* You gain proficiency with the Intimidation skill, if you are already proficient, you gain double proficiency when using it for checks." compset="Feat" uniqueness="useronce">
     <arrayval field="usrArray" index="0" value="Constitution"/>
     <arrayval field="usrArray" index="1" value="Charisma"/>
@@ -245,12 +223,29 @@ endif]]></eval>
     </thing>
   <thing id="f5CGruBea" name="Grudge-Bearer" description="Choose a type of creature or two humanoid types that are your chosen enemy.\n\n* Increase your Strength, Constitution, or Wisdom score by 1, up to a maximum of 20. \n* During the first round of combat versus your chosen foes, your attacks are made at advantage.\n* When any of your chosen foes make an opportunity attack against you, they have disadvantage.\n* Whenever you make an Intelligence (Arcana, History, Nature, or Religion) check to recall information about your chosen foes, you may double the proficiency bonus to the check even if you are not proficient." compset="Feat" summary="Choose enemies to have bonuses against." uniqueness="useronce">
     <fieldval field="usrCandid1" value="thingid.aSTR | thingid.aCON | thingid.aWIS"/>
-    <fieldval field="usrCandid2" value="Race.tpAberr | Race.tpBeast | Race.tpCelestia | Race.tpConst | Race.tpDragon | Race.tpElementa | Race.tpFey | Race.tpFiend | Race.tpGiant | Race.tpHumanoid | Race.tpMonstros | Race.tpOoze | Race.tpPlant |  Race.tpUndead"/>
+    <arrayval field="usrArray" index="0" value="Aberrations"/>
+    <arrayval field="usrArray" index="1" value="Beasts"/>
+    <arrayval field="usrArray" index="2" value="Celestials"/>
+    <arrayval field="usrArray" index="3" value="Constructs"/>
+    <arrayval field="usrArray" index="4" value="Dragons"/>
+    <arrayval field="usrArray" index="5" value="Elementals"/>
+    <arrayval field="usrArray" index="6" value="Fey"/>
+    <arrayval field="usrArray" index="7" value="Fiends"/>
+    <arrayval field="usrArray" index="8" value="Giants"/>
+    <arrayval field="usrArray" index="9" value="Humanoids (Choose two)"/>
+    <arrayval field="usrArray" index="10" value="Monstrosities"/>
+    <arrayval field="usrArray" index="11" value="Oozes"/>
+    <arrayval field="usrArray" index="12" value="Plants"/>
+    <arrayval field="usrArray" index="13" value="Undead"/>
     <usesource source="p5eRFeUACP"/>
     <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <tag group="ChooseSrc2" tag="Thing"/>
     <tag group="User" tag="NoAutoName"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+~ add 1 to chosen ability
+field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     <eval phase="PostAttr" priority="10000" index="2"><![CDATA[~ If we're disabled, do nothing & 
 doneif (tagis[Helper.Disable] = 1)
 
@@ -258,11 +253,6 @@ doneif (tagis[Helper.Disable] = 1)
       #situational[hero.child[skHistory], "Double your proficiency when using this to remember things about your chosen foe.",field[thingname].text]
       #situational[hero.child[skReligion], "Double your proficiency when using this to remember things about your chosen foe.",field[thingname].text]
       #situational[hero.child[skNature], "Double your proficiency when using this to remember things about your chosen foe.",field[thingname].text]]]></eval>
-    <eval phase="First"><![CDATA[
-      ~ If we're disabled, do nothing & 
-      doneif (tagis[Helper.Disable] = 1)
-~ add 1 to chosen ability
-field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
     <pickreq thing="rDwarf"/>
     </thing>
   <thing id="f5CHumDet" name="Human Determination" description="Increase one ability score of your choice by 1, up to 20.\n* Once between short rests, when you make an attack roll, saving throw, or ability check, you do so with advantage." compset="Feat" uniqueness="useronce">
@@ -448,5 +438,27 @@ call 5CAddProf</eval>
    perform eachpick.assign[Usage.AtWill]
  nexteach]]></eval>
     <pickreq thing="ra5CWdElf"/>
+    </thing>
+  <thing id="f5CDraFea" name="Dragon Fear" description="Increase your Strength or Charisma score by 1, to a maximum of 20.\n• You can expend a use of your breath weapon to force each creature of your choice within 30 feet of you to make a DC #StandardDC# #abSave# saving throw. On a failed save, a target becomes frightened for 1 minute. If the frightened target takes any damage in that minute, it can repeat the save, ending the effect on a success. A target automatically succeeds if it cannot see or hear you." compset="Feat" uniqueness="useronce">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abDuration" value="1"/>
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Charisma"/>
+    <usesource source="p5eRFeUACP"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Minute"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aCHA].field[aStartMod].value += 1
+      endif]]></eval>
+    <pickreq thing="rDragonbor"/>
     </thing>
   </document>
