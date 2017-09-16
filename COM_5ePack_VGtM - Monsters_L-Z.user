@@ -3224,4 +3224,54 @@ nexteach]]></eval>
       </bootstrap>
     <link linkage="castattr" thing="aINT"/>
     </thing>
+  <thing id="rc5CYuanT4" name="Type 4" description="Human form with one or more serpentine tails." compset="RaceCustom">
+    <usesource source="5eVGtMCP"/>
+    <tag group="AllowRCust" tag="r5CMMYuanM" name="Yuan-Ti Malison" abbrev="Yuan-Ti Malison"/>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <assignval field="wDamExtra" value=" damage plus 7 (2d6) poison"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="livename" value="Bite (Snake Form Only)"/>
+      <assignval field="sbName" value="Bite (Snake Form Only)"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+      
+foreach pick in hero from BaseWep where "IsWeapon.wLongbow"
+        #extradamage[eachpick, " damage plus 7 (2d6) poison", field[thingname].text]
+        nexteach]]></eval>
+    <eval phase="Render" priority="999999999" index="3"><![CDATA[hero.child[xMultiatt].field[CustDesc].text &= " The yuan-ti makes two ranged attacks or two melee attacks."]]></eval>
+    <eval phase="PostLevel" priority="10000"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+     foreach pick in hero from BaseWep where "!(wGroup.Natural)"
+        eachpick.Field[sbName].text = eachpick.Field[name].text & " (Yuan-ti Form Only)"
+eachpick.Field[livename].text = eachpick.Field[sbName].text
+        nexteach]]></eval>
+    </thing>
+  <thing id="rc5CYuanT5" name="Type 5" description="Human form covered in scales." compset="RaceCustom">
+    <usesource source="5eVGtMCP"/>
+    <tag group="AllowRCust" tag="r5CMMYuanM" name="Yuan-Ti Malison" abbrev="Yuan-Ti Malison"/>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <assignval field="livename" value="Bite (Snake Form Only)"/>
+      <assignval field="sbName" value="Bite (Snake Form Only)"/>
+      <assignval field="wDamExtra" value=" damage plus 7 (2d6) poison"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+      
+foreach pick in hero from BaseWep where "IsWeapon.wLongbow"
+        #extradamage[eachpick, " damage plus 7 (2d6) poison", field[thingname].text]
+        nexteach]]></eval>
+    <eval phase="Render" priority="999999999" index="3"><![CDATA[hero.child[xMultiatt].field[CustDesc].text &= " The yuan-ti makes two ranged attacks or two melee attacks."]]></eval>
+    <eval phase="PostLevel" priority="10000"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+     foreach pick in hero from BaseWep where "!(wGroup.Natural)"
+        eachpick.Field[sbName].text = eachpick.Field[name].text & " (Yuan-ti Form Only)"
+eachpick.Field[livename].text = eachpick.Field[sbName].text
+        nexteach]]></eval>
+    </thing>
   </document>
