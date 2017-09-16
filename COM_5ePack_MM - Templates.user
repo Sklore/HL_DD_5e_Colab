@@ -1299,14 +1299,19 @@ endif]]></eval>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="SbSort" tag="MultiAtt" name="Multiattack" abbrev="Multiattack"/>
     </thing>
-  <thing id="ra5CHagSpe" name="Shared Spellcasting" description="While all three members of a hag coven are within 30 feet of one another they can each cast spells but must share the spell slots among themselves. The hags are considered 12th-level spellcasters (spell attack +4, spell save DC #StandardDC#) with the following spells available:\n\n1st level (4 slots): {i}identify, ray of sickness{/i}\n2nd level (3 slots): {i}hold person, locate object{/i}\n3rd level (3 slots): {i}bestow curse, counterspell, lightning bolt{/i}\n4th level (3 slots): {i}phantasmal killer, polymorph{/i}\n5th level (2 slots): {i}contact other plane, scrying{/i}\n6th level (1 slot): {i}eyebite{/i}" compset="RaceSpec">
+  <thing id="ra5CHagSpe" name="Shared Spellcasting" description="While all three members of a hag coven are within 30 feet of one another they can each cast spells but must share the spell slots among themselves. The hags are considered 12th-level spellcasters (spell attack +4+INT modifer, spell save DC #StandardDC#) with the following spells available:\n\n1st level (4 slots): {i}identify, ray of sickness{/i}\n2nd level (3 slots): {i}hold person, locate object{/i}\n3rd level (3 slots): {i}bestow curse, counterspell, lightning bolt{/i}\n4th level (3 slots): {i}phantasmal killer, polymorph{/i}\n5th level (2 slots): {i}contact other plane, scrying{/i}\n6th level (1 slot): {i}eyebite{/i}" compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="StandardDC" tag="aINT"/>
+    <bootstrap thing="spIdentify"></bootstrap>
+    <bootstrap thing="sp5CRaySi"></bootstrap>
     <eval phase="Final" priority="20000"><![CDATA[var modtext as number 
+var dctext as number
 modtext = 4
+dctext = 12
 modtext += hero.child[aINT].field[aBonus].value
-field[CustDesc].text = "While all three members of a hag coven are within 30 feet of one another they can each cast spells but must share the spell slots among themselves. The hags are considered 12th-level spellcasters (spell attack +" & modtext & ", spell save DC #StandardDC#) with the following spells available:\n\n1st level (4 slots): {i}identify, ray of sickness{/i}\n2nd level (3 slots): {i}hold person, locate object{/i}\n3rd level (3 slots): {i}bestow curse, counterspell, lightning bolt{/i}\n4th level (3 slots): {i}phantasmal killer, polymorph{/i}\n5th level (2 slots): {i}contact other plane, scrying{/i}\n6th level (1 slot): {i}eyebite{/i}\n"]]></eval>
+dctext += hero.child[aINT].field[aBonus].value
+field[CustDesc].text = "While all three members of a hag coven are within 30 feet of one another they can each cast spells but must share the spell slots among themselves. The hags are considered 12th-level spellcasters (spell attack +" & modtext & ", spell save DC " & dctext & ") with the following spells available:\n\n1st level (4 slots): {i}identify, ray of sickness{/i}\n2nd level (3 slots): {i}hold person, locate object{/i}\n3rd level (3 slots): {i}bestow curse, counterspell, lightning bolt{/i}\n4th level (3 slots): {i}phantasmal killer, polymorph{/i}\n5th level (2 slots): {i}contact other plane, scrying{/i}\n6th level (1 slot): {i}eyebite{/i}\n"]]></eval>
     </thing>
   <thing id="ra5CGRHaCo" name="Coven Member" description="Hags sometimes form covens and become more dangerous." compset="VarRaceTrt" uniqueness="unique">
     <tag group="AllowRCust" tag="rGreenHag"/>
