@@ -399,6 +399,7 @@
     <tag group="Helper" tag="EquipMag" name="EquipMag" abbrev="EquipMag"/>
     <bootstrap thing="spAnimFrie">
       <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="1"/>
       </bootstrap>
     </thing>
   <thing id="r5CTAlbDwa" name="Albino Dwarf Warrior" compset="Race">
@@ -1738,38 +1739,44 @@
     <tag group="Usage" tag="Charges"/>
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="ItemRarity" tag="Artifact"/>
-    <bootstrap thing="spFlesSton">
-      <autotag group="Helper" tag="ItemSpell"/>
-      <assignval field="trkMax" value="3"/>
-      </bootstrap>
+    <tag group="User" tag="Tracker"/>
     <bootstrap thing="spFreeSphe">
       <autotag group="Helper" tag="ItemSpell"/>
-      <assignval field="trkMax" value="3"/>
+      <autotag group="ChargeUse" tag="3"/>
       </bootstrap>
     <bootstrap thing="spIceStor">
       <autotag group="Helper" tag="ItemSpell"/>
-      <assignval field="trkMax" value="2"/>
+      <autotag group="ChargeUse" tag="2"/>
       </bootstrap>
     <bootstrap thing="spSleeStor">
       <autotag group="Helper" tag="ItemSpell"/>
-      <assignval field="trkMax" value="1"/>
+      <autotag group="ChargeUse" tag="1"/>
       </bootstrap>
     <bootstrap thing="spSpikGrow">
       <autotag group="Helper" tag="ItemSpell"/>
-      <assignval field="trkMax" value="1"/>
+      <autotag group="ChargeUse" tag="1"/>
       </bootstrap>
     <bootstrap thing="spWallIce">
       <autotag group="Helper" tag="ItemSpell"/>
-      <assignval field="trkMax" value="2"/>
+      <autotag group="ChargeUse" tag="2"/>
       </bootstrap>
     <bootstrap thing="spArcaHand">
       <autotag group="Helper" tag="ItemSpell"/>
-      <assignval field="trkMax" value="2"/>
+      <autotag group="ChargeUse" tag="2"/>
       </bootstrap>
     <bootstrap thing="spConeCold">
       <autotag group="Helper" tag="ItemSpell"/>
-      <assignval field="trkMax" value="2"/>
+      <autotag group="ChargeUse" tag="2"/>
       </bootstrap>
+    <bootstrap thing="spFlesSton">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="3"/>
+      <assignval field="sNameOver" value="Flesh to Ice"/>
+      </bootstrap>
+    <eval phase="First" priority="10000">doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+
+perform hero.assign[DamageImm.dtCold]</eval>
     </thing>
   <thing id="ma5CScorpA" name="Scorpion Armor" description="This suit of plate is fashioned from the shell of a giant scorpion. While wearing this armor, you gain the following benefits:\n* You are granted a +5 bonus to Initiative as long as you aren&apos;t incapacitated.\n* Scorpion armor doesn&apos;t impose disadvantage on your Dexterity (Stealth) checks.\n* Scorpion armor doesn&apos;t impose disadvantage on saving throws to resist the effects of extreme heat.\n\n{b}{i}Cursed{/i}{/b}. Scorpoin armor is cursed. Whenever you don or doff it, you must make a DC 15 Constitution saving throw, taking 100 (10d10+45) poison damage on a failed save, of half as much on a success. The curse can only be removed by a {i}wish{/i} spell." compset="MagicArmor">
     <fieldval field="miTypeDet" value="plate"/>
@@ -1970,5 +1977,17 @@ Languages - "plus up to five other languages"]]></comment>
     <tag group="abDuration" tag="Constant"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="mi5CGhoLan" name="Ghost Lantern" description="While holding this lantern, as a bonus action you can command the restless spirit trapped inside to shed bright light in a 30-foot radius and a dim light for an additional 30 feet.\n\nWhile holding the lantern, you can use an action to order the spirit to duplicate the effect of a {i}mage hand{/i} spell. The spirit leaves the lantern for the duration of the spell, returning afterwards.\n\nIf you fall unconscious within 10 feet of the lantern, the spirit will emerge from the lantern and stablize you (if you are at 0 hit points), and then quickly return to the lantern. \n\nThe spirit bound to the lantern can&apos;t be harmed, turned, or raised from the dead. The lantern&apos;s spirit can be driven away by the casting of a {i}dispel evil and good{/i}, which renders the lantern nonmagical." compset="Wondrous">
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
     </thing>
   </document>
