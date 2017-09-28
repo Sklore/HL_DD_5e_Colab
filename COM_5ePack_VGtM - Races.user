@@ -561,4 +561,130 @@ nexteach]]></eval>
     herofield[tEncumHvy].value = herofield[tEncumHvy].value * 2
     herofield[tEncumMax].value = herofield[tEncumMax].value * 2]]></eval>
     </thing>
+  <thing id="mw5CMinBla" name="Mind Blade" description="Mind flayers can turn any nonmagical sword into a mind blade. The sword can only be attuned by the creature that the mind flayer specifies: itself or one of its thralls. In the hands of anyone else it functions as a normal sword. In the hands of its attuned master, the mind blade is a magic weapon that deals an extra 2d6 psychic damage to any creature struck." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="any sword"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a specific individual"/>
+    <fieldval field="wDamExtra" value=" plus 2d6 psychic"/>
+    <usesource source="5eVGtMCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare" name="Rare" abbrev="Rare"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~restrict the list of weapons to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & (wGroup.Sword)"
+
+      ~set our name based on the type of weapon chosen
+      perform gizmo.findchild[BaseWep].setfocus
+
+        field[livename].text = "Mind Blade"
+
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="ma5CMinCar" name="Mind Carapace Armor" description="Created by mind flayers, this suit of armor grants advantage on Intelligence, Wisdom, and Charisma saving throws and makes its wearer immune to the frightened condition. The armor can only be attuned by a creature the mind flayer selects. For all other users, the armor functions as normal armor of its type." compset="MagicArmor" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="heavy armor"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a specific individual"/>
+    <usesource source="5eVGtMCP"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~restrict the list of armor to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & (ArmorClass.Heavy)"
+
+      ~set our name based on the type of armor chosen
+      field[livename].text = "Mind Carapace Armor"
+      perform gizmo.findchild[BaseArmor].setfocus
+
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text
+
+      ~show in specials list when equipped
+      doneif (field[gIsEquip].value = 0)
+      perform assign[Helper.ShowSpec]]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[      doneif (field[gIsAttuned].value = 0)
+      doneif (field[gIsEquip].value = 0)
+
+      perform hero.assign[CondImm.pcnFright]
+#situational[hero.child[svINT], "Advantage on saving throws", field[thingname].text]
+#situational[hero.child[svWIS], "Advantage on saving throws", field[thingname].text]
+#situational[hero.child[svCHA], "Advantage on saving throws", field[thingname].text]]]></eval>
+    <child entity="gMagArmor"></child>
+    </thing>
+  <thing id="mw5CMinLas" name="Mind Lash" description="A mind flayer can enchant a whip to also strip away the will to live by doing an extra 2d4 psychic damage to any target it hits. Any creature that takes psychic damage must also succeed on a DC 15 Wisdom saving throw or have disadvantage on Intelligence, Wisdom, and Charisma saving throws for 1 minute. The creature can repeat the saving throw at the end of each of its turns, ending the effect on a success." compset="MagicWep">
+    <fieldval field="miTypeDet" value="whip"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a min flayer"/>
+    <fieldval field="wDamExtra" value=" plus 2d4 psychic"/>
+    <fieldval field="wAttackEff" value="A creature taking psychic damage must succeed at a DC 15 Wisdom saveing throw or have disadvantage on Intelligence, Wisdom, and Charisma saving throws for 1 minute. The creature can repeat the saving throw at the end of each of its turns, ending the effect on a success. "/>
+    <usesource source="5eVGtMCP"/>
+    <tag group="ItemRarity" tag="Rare" name="Rare" abbrev="Rare"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="RaceEquip" tag="r5CVGMIlli"/>
+    <tag group="RaceEquip" tag="r5CMMMindF"/>
+    <tag group="RaceEquip" tag="r5CMMMFArc"/>
+    <tag group="RaceEquip" tag="r5CVGMiPsi"/>
+    <tag group="RaceEquip" tag="r5CVGMUlit"/>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wWhip"></bootstrap>
+      </child>
+    </thing>
+  <thing id="ma5CShFarS" name="Shield of Far Sight" description="This shield allows the mind flayer that created it the ability to view through the eye mounted on the shield. As long as it is on the same plane of existence as the mind flayer, the mind flayer can see through the eye, which has darkvision out to 60 feet. While peering through the eye, the mind flayer can use its Mind Blast action as though it were standing behind the shield.\n\nIf the shield of far sight is destroyed, the mind flayer that created it is blinded for 2d12 hours." compset="MagicArmor">
+    <fieldval field="miTypeDet" value="shield"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <child entity="mSpecMagic">
+      <bootstrap thing="mShield"></bootstrap>
+      </child>
+    </thing>
+  <thing id="ma5CSurMan" name="Survival Mantle" description="This carapace crafted by mind flayers encases parts of the wearer&apos;s shoulders, neck, and chest, functioning like a suit of half plate. While wearing it, the creature can breath normally in any environment (including vacuum) and has advantage on saving throws against harmful gases." compset="MagicArmor">
+    <fieldval field="miTypeDet" value="half plate"/>
+    <fieldval field="Bonus" value="2"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      doneif (field[gIsEquip].value = 0)
+
+      perform assign[Helper.ShowSpec]
+
+      #situational[hero.child[svAll], "Advantage on saving throws involving harmful gasses.", field[thingname].text]]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="mHalfplate"></bootstrap>
+      </child>
+    </thing>
+  <thing id="p5CFleClaw" name="Flensing Claws" description="This adjustment ability is granted to creatures that have been modified by mind flayers. If the creature already has claws or an unarmed attack with its forelegs, this attack replaces them. \n\nThese cannot be fitted to Tiny or Gargantuan creatures." compset="InPlay">
+    <usesource source="5eVGtMCP"/>
+    <tag group="OthAdjCat" tag="SpecAbil"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Flensing Claws"/>
+      <assignval field="sbName" value="Flensing Claws"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10000"><![CDATA[doneif (hero.tagis[Size.Tiny] = 1)
+doneif (hero.tagis[Size.Gargantuan] = 1)
+     foreach pick in hero from BaseWep where "thingid.wClaw"
+     
+     if (hero.tagis[Size.Small] <> 0) then
+          eachpick.field[wDieCount].value = 1
+          eachpick.field[wDieSize].value = 8
+     elseif (hero.tagis[Size.Medium] <> 0) then
+          eachpick.field[wDieCount].value = 1
+          eachpick.field[wDieSize].value = 10
+     elseif (hero.tagis[Size.Large] <> 0) then
+          eachpick.field[wDieCount].value = 1
+          eachpick.field[wDieSize].value = 12
+     elseif (hero.tagis[Size.Huge] <> 0) then
+          eachpick.field[wDieCount].value = 2
+          eachpick.field[wDieSize].value = 8       
+     endif
+     nexteach]]></eval>
+    <exprreq message="Cannot be Tiny or Gargantuan">hero.tagis[Size.Tiny] + hero.tagis[Size.Gargantuan] = 0</exprreq>
+    </thing>
   </document>

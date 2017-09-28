@@ -173,4 +173,104 @@ foreach pick in hero from BaseWep where "component.BaseNatWep"
       <bootstrap thing="wGreatswrd"></bootstrap>
       </child>
     </thing>
+  <thing id="r5CHDQAmDr" name="Ambush Drake" compset="Race">
+    <comment>d6 for hit dice is not normal for a medium creature.</comment>
+    <fieldval field="rHitDice" value="4"/>
+    <fieldval field="rHDSides" value="6"/>
+    <fieldval field="rCR" value="0.5"/>
+    <fieldval field="rSTR" value="3"/>
+    <fieldval field="rDEX" value="5"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="-6"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rCHA" value="-4"/>
+    <fieldval field="rAC" value="1"/>
+    <usesource source="5eHOTDQCP"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="DamageRes" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <tag group="ProfDouble" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="raPackTact"></bootstrap>
+    <bootstrap thing="ra5CAmDrSu">
+      <autotag group="Value" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="tpDragon"></bootstrap>
+    <bootstrap thing="lDraconic">
+      <autotag group="Helper" tag="CantSpeak"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CAmDrSu" name="Surprise Attack" description="If the ambush drake surprises a creature and hits it with an attack during the first round of combat, the target takes an extra 4 (1d6 + 1) damage from the attack." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="r5CHDQAzJo" name="Azbara Jos" compset="Race">
+    <fieldval field="rHitDice" value="6"/>
+    <fieldval field="rHPStart" value="39"/>
+    <fieldval field="rSTR" value="-1"/>
+    <fieldval field="rDEX" value="6"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="6"/>
+    <fieldval field="rWIS" value="3"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rCR" value="4"/>
+    <fieldval field="rSpCastLev" value="6"/>
+    <usesource source="5eHOTDQCP"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="WepProf" tag="wCrossbowL"/>
+    <tag group="WepProf" tag="wDagger"/>
+    <tag group="WepProf" tag="wDart"/>
+    <tag group="WepProf" tag="wQtrstaff"/>
+    <bootstrap thing="xSpellcast">
+      <assignval field="CustDesc" value="Azbara Jos is a 6th-level spellcaster. His spellcasting ability is Intelligence (spell save DC 13, +5 to hit with spell attacks). He has the following wizard spells prepared:"/>
+      </bootstrap>
+    <bootstrap thing="ttHuman"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="lInfernal"></bootstrap>
+    <bootstrap thing="lPrimord"></bootstrap>
+    <bootstrap thing="l5CThayan"></bootstrap>
+    <bootstrap thing="ra5CAzJoSp"></bootstrap>
+    <bootstrap thing="ra5CPotCan">
+      <assignval field="abText" value="Azbara"/>
+      </bootstrap>
+    <bootstrap thing="ra5CScuSpe">
+      <assignval field="abText" value="Azbara"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    </thing>
+  <thing id="ra5CAzJoSp" name="Special Equipment" description="Azbara has two scrolls of {i}mage armor{/i} in addition to his normal equipment." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="ra5CPotCan" name="Potent Cantrips" description="When #abText# casts an evocation cantrip and misses, or the target succeeds on its saving throw, the target still takes half the cantrip&apos;s damage but avoids other effects." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "When " & Field[abText].text & " casts an evocation cantrip and misses, or the target succeeds on its saving throw, the target still takes half the cantrip's damage but avoids other effects."]]></eval>
+    </thing>
+  <thing id="ra5CScuSpe" name="Sculpt Spells" description="When #abText# casts an evocation spell that affects other creatures that can be seen, a number of them equal to 1 + the spell&apos;s level can be choosen to succeed on their saving throws against the spell. Those creatures take no damage if they would normally take half damage from a successful save." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = "When " & Field[abText].text & " casts an evocation spell that affects other creatures that can be seen, a number of them equal to 1 + the spell's level can be choosen to succeed on their saving throws against the spell. Those creatures take no damage if they would normally take half damage from a successful save."]]></eval>
+    </thing>
   </document>
