@@ -29,15 +29,19 @@
        hero.childfound[cfg5CTotWa].field[cfgMax1].value += 1
        endif]]></eval>
     </thing>
-  <thing id="c5CBbnSpiS" name="Spirit Seeker" description="The Totem Warrior looks for attunement to nature, giving the warrior a connection with nature’s beasts. At 3rd level when you adopt this path, you gain the ability to cast the beast sense and speak with animals spells, but only as rituals." compset="ClSpecial" summary="The Totem Warrior looks for attunement to nature, giving the warrior a connection with nature’s beasts. At 3rd level when you adopt this path, you gain the ability to cast the beast sense and speak with animals spells, but only as rituals.">
+  <thing id="c5CBbnSpiS" name="Spirit Seeker" description="The Totem Warrior looks for attunement to nature, giving the warrior a connection with nature’s beasts. At 3rd level when you adopt this path, you gain the ability to cast the {i}beast sense{/i} and {i}speak with animals{/i} spells, but only as rituals." compset="ClSpecial" summary="The Totem Warrior looks for attunement to nature, giving the warrior a connection with nature’s beasts. At 3rd level when you adopt this path, you gain the ability to cast the beast sense and speak with animals spells, but only as rituals.">
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
     <bootstrap thing="spSpeaAnim">
-      <assignval field="livename" value="Speak with Animals (Ritual only)"/>
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Barbarian >= 3]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="sNameOver" value="Speak with Animals (Ritual only)"/>
       </bootstrap>
     <bootstrap thing="sp5CBeastS">
-      <assignval field="livename" value="Beast Sense (Ritual only)"/>
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Barbarian >= 3]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="sNameOver" value="Beast Sense (Ritual only)"/>
       </bootstrap>
     </thing>
   <thing id="c5CBbnSpiW" name="Spirit Walker" description="At 10th level, you can cast the commune with nature spell, but only as a ritual. When you do so, a spiritual version of one of the animals you chose for Totem Spirit or Aspect of the Beast appears to you to convey the information sought." compset="ClSpecial" summary="At 10th level, you can cast the commune with nature spell, but only as a ritual. When you do so, a spiritual version of one of the animals you chose for Totem Spirit or Aspect of the Beast appears to you to convey the information sought.">
@@ -45,7 +49,9 @@
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
     <bootstrap thing="spCommNatu">
-      <assignval field="livename" value="Commune with Nature (Ritual only)"/>
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Barbarian >= 10]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="sNameOver" value="Commune with Nature (Ritual only)"/>
       </bootstrap>
     </thing>
   <thing id="cfg5CTotWa" name="Totem Warrior Abilities" compset="Configure" uniqueness="unique">
@@ -165,6 +171,16 @@
     <tag group="Helper" tag="Tertiary"/>
     <tag group="AllowRCust" tag="cfg5CTotWa"/>
     <tag group="abCategory" tag="BbnTotAttn" name="Barbarian Totemic Attunement"/>
+    <eval phase="Final" priority="10000"><![CDATA[doneif (hero.tagis[Hero.Raging] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+doneif (#levelcount[Barbarian] < 14)
+
+
+var myspeed as number
+
+myspeed = hero.child[Speed].field[tSpeed].value
+
+hero.child[xFly].field[abValue].value = myspeed]]></eval>
     </thing>
   <thing id="c5CBrdColV" name="College of Valor" description="The College of Valor is composed of daring bards whose ballads sustain the memory of the legendary heroes of yore, inspiring a new generation to achieve such lofty heights. These bards gather in great halls or in the light of camp fires to recite the tales and legends. They travel across the realms to witness and record fantastic events and ensure that the memories of those deeds are not lost to the world. With their tales, they embolden others to strive for the same status as the heroes that came before." compset="CustomSpec" summary="The College of Valor is composed of daring bards whose ballads sustain the memory of the legendary heroes of yore, inspiring a new generation to achieve such lofty heights." uniqueness="unique">
     <tag group="SpecSource" tag="cHelpBrd"/>
@@ -356,9 +372,12 @@
     <tag group="abDuration" tag="Constant"/>
     </thing>
   <thing id="c5CClrVisP" name="Visions of the Past" description="You can manifest visions of the past concerning an object you hold or your immediate surroundings. You can use this feature when you obtain 17th level. You spend at least 1 minute in meditation and prayer, then receive dreamlike, murky glimpses of recent events. You can meditate in this way for a number of minutes equal to your Wisdom score and must maintain concentration during that time, as if you were casting a spell. Once you use this feature, you can’t use it again until you finish a short or long rest.\n\nObject Reading. You can perceive visions of the object’s previous owner when holding an object during your state of meditation. After meditating for 1 minute, you learn how the owner acquired and lost the object, as w ell as the most recent significant event involving the object and that owner. If the object was owned by another creature in the recent past (within a number of days equal to your Wisdom score), you can spend 1 additional minute for each owner to learn the same information about that creature.\n\nArea Reading. While meditating, you perceive visions of recent events in your immediate vicinity (a room, street, tunnel, clearing, or similar, up to a 50-foot cube), going back a number of days equal to your Wisdom score. For each minute you meditate, you learn about one significant event, beginning with the most recent. Significant events typically involve powerful emotions, such as fierce battles and terrible betrayals, unions of betrothed and murder most foul. However, the events might include more mundane occurrences that are important in your current situation." compset="ClSpecial">
-    <tag group="abRange" tag="Touch"/>
+    <fieldval field="trkMax" value="1"/>
     <tag group="abDuration" tag="Minute"/>
     <tag group="abAction" tag="Minute"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="Usage" tag="LongRest"/>
     </thing>
   <thing id="c5CClrLig" name="Light" description="Gods of light champion the ideals of rebirth, rejuvenation, truth, vigilance, and beauty. These gods often using the symbol of the sun or are are portrayed as the sun itself. Sometimes gods of light act as a charioteer who leads the sun across the sky. Others are tireless guardians whose eyes penetrate every shadow and pierce every deceit.\n\nA few are divinities of beauty and artistry, who instruct that art is a means for the soul&apos;s enlightenment. Clerics of a god of light are enlightened souls filled with radiance and the power of their gods’ discerning vision, charged with driving away deception and blasting away darkness." compset="CustomSpec" uniqueness="unique">
     <tag group="SpecSource" tag="cHelpClr"/>
@@ -496,13 +515,9 @@
     <fieldval field="abRange" value="60"/>
     <fieldval field="abDuration" value="1"/>
     <tag group="abRange" tag="Feet"/>
-    <tag group="User" tag="Tracker"/>
-    <tag group="ChargeCalc" tag="AttrOnly"/>
-    <tag group="ChargeCalc" tag="Minimum1"/>
-    <tag group="Usage" tag="Day"/>
-    <tag group="ChargeAttr" tag="aWIS"/>
     <tag group="abAction" tag="Action"/>
     <tag group="abDuration" tag="Minute"/>
+    <tag group="User" tag="Activation"/>
     </thing>
   <thing id="c5CClrNatu" name="Nature" description="While many priests who served nature deities like Silvanus or Eldath are druids, clerics were also numbered among their servants. Many clerics who did venerate the gods of the wilderness made use of the Nature domain, which granted them some semblance of control over wild animals and plants alike. Whereas their druid compatriots were secretive and reclusive by inclination, clerics in the service of nature took a more active role, championing the cause of their gods by hunting evil monsters, blessing harvests, or bringing a famine upon their enemies.\n\nClerics specializing in the Nature domain had a number of abilities to claim as their own. One such ability was their ability to calm animals or plants, reducing their hostility for a period of up to a minute or so. With additional training, Nature domain clerics could learn even to control such creatures, commanding them to do as they wish." compset="CustomSpec" uniqueness="unique">
     <tag group="SpecSource" tag="cHelpClr"/>
@@ -592,7 +607,7 @@
     </thing>
   <thing id="c5CClrAcoN" name="Acolyte of Nature" description="Proficiency in one skill (Animal Handling, Nature, or Survival) and and you have access to one druid cantrip." compset="ClSpecial" summary="Skill proficiency and one druid cantrip.">
     <fieldval field="usrCandid1" value="component.BaseSkill &amp; (Target.skAnimHand | Target.skNature | Target.skSurvival)"/>
-    <fieldval field="usrCandid2" value="component.BaseSpell &amp; sClass.cHelpDrd &amp; sLevel.0"/>
+    <fieldval field="usrCandid2" value="component.BaseSpell &amp; sClass.cHelpDrd &amp; sLevel.0 &amp; !sClass.cHelpClr"/>
     <tag group="ChooseSrc2" tag="Thing"/>
     <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="abAction" tag="None"/>
