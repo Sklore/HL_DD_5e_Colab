@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
   <thing id="c5CBbnTotW" name="Path of the Totem Warrior" description="Barbarians who follow the Path of the Totem Warrior follow a spiritual journey, accepting a spirit animal as the barbarian’s guide and guardian. The totem spirit fills the totem warrior with supernatural might in battle, adding magical sustenance to the barbarian’s rage.\n\nBarbarian tribes generally consider a specific totem animal as kin. It is atypical for an individual to connect with more than on totem animal spirit, however, there are exceptions." compset="CustomSpec" summary="Barbarians who follow the Path of the Totem Warrior follow a spiritual journey, accepting a spirit animal as the barbarian’s guide and guardian." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpBbn"/>
-    <tag group="SpecType" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="AbilType" tag="Extra"/>
     <tag group="Custom" tag="cAnimFury" name="Animal Fury" abbrev="Animal Fury"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="ConstRage"/>
     <tag group="abCategory" tag="BbnPriPath" name="Barbarian Primal Path"/>
+    <tag group="SpecSource" tag="cHelpBbn"/>
+    <tag group="SpecType" tag="Attack"/>
+    <bootstrap thing="cfg5CTotWa"></bootstrap>
     <bootstrap thing="c5CBbnSpiS">
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
     <bootstrap thing="c5CBbnSpiW">
       <autotag group="ClSpecWhen" tag="10"/>
       </bootstrap>
-    <bootstrap thing="cfg5CTotWa"></bootstrap>
     <eval phase="PostLevel" priority="10000"><![CDATA[
        doneif (tagis[Helper.Disable] <> 0)
 
@@ -60,7 +61,7 @@
     <fieldval field="cfgObject3" value="Totemic Attunements"/>
     </thing>
   <thing id="c5CBbnTSBe" name="Bear" description="You have resistance to all damage except psychic damage while raging. The bear spirit toughens the totem warrior to withstand punishment." compset="CustomSpec" summary="You have resistance to all damage except psychic damage while raging. The bear spirit toughens the totem warrior to withstand punishment." uniqueness="unique">
-    <tag group="SpecType" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="AbilType" tag="Extra"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
@@ -68,6 +69,7 @@
     <tag group="Helper" tag="Primary"/>
     <tag group="AllowRCust" tag="cfg5CTotWa"/>
     <tag group="abCategory" tag="BbnTotSpi" name="Barbarian Totem Spirit"/>
+    <tag group="SpecType" tag="Attack"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[
        doneif (hero.tagis[Hero.Raging] = 0)
 
@@ -81,7 +83,7 @@
        perform forward[DamageRes.?]]]></eval>
     </thing>
   <thing id="c5CBbnTSEa" name="Eagle" description="While the totem warrior is raging and not wearing heavy armor, other creatures have disadvantage on opportunity attack rolls against the totem warrior, and the totem warrior can use the Dash action as a bonus action on his turn. The eagle spirit allows the totem warrior to weave through the battle with ease." compset="CustomSpec" summary="While the totem warrior is raging and not wearing heavy armor, other creatures have disadvantage on opportunity attack rolls against the totem warrior, and the totem warrior can use the Dash action as a bonus action on his turn." uniqueness="unique">
-    <tag group="AllowRCust" tag="cfg5CTotWa"/>
+    <usesource source="5ePHBCP"/>
     <tag group="SpecType" tag="Attack"/>
     <tag group="AbilType" tag="Extra"/>
     <tag group="abAction" tag="None"/>
@@ -89,9 +91,10 @@
     <tag group="abDuration" tag="ConstRage"/>
     <tag group="Helper" tag="Primary"/>
     <tag group="abCategory" tag="BbnTotSpi" name="Barbarian Totem Spirit"/>
+    <tag group="AllowRCust" tag="cfg5CTotWa"/>
     </thing>
   <thing id="c5CBbnTSWo" name="Wolf" description="While the totem warrior is raging, your allies have advantage on melee attack rolls against any creature within 5 feet of you that is hostile to you. With the spirit of the wolf guiding you; you become a leader of hunters." compset="CustomSpec" summary="While the totem warrior is raging, your allies have advantage on melee attack rolls against any creature within 5 feet of you that is hostile to you. With the spirit of the wolf guiding you; you become a leader of hunters." uniqueness="unique">
-    <tag group="AllowRCust" tag="cfg5CTotWa"/>
+    <usesource source="5ePHBCP"/>
     <tag group="SpecType" tag="Attack"/>
     <tag group="AbilType" tag="Extra"/>
     <tag group="abAction" tag="None"/>
@@ -99,9 +102,10 @@
     <tag group="abDuration" tag="ConstRage"/>
     <tag group="Helper" tag="Primary"/>
     <tag group="abCategory" tag="BbnTotSpi" name="Barbarian Totem Spirit"/>
+    <tag group="AllowRCust" tag="cfg5CTotWa"/>
     </thing>
   <thing id="c5CBbnABBe" name="Bear" description="You acquire the prowess of a bear. Your carrying capacity (including maximum load and maximum lift) is doubled, and you have advantage on Strength checks made to push, pull, lift, or break objects." compset="CustomSpec" summary="You acquire the prowess of a bear. Your carrying capacity (including maximum load and maximum lift) is doubled, and you have advantage on Strength checks made to push, pull, lift, or break objects." uniqueness="unique">
-    <tag group="SpecType" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="AbilType" tag="Extra"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
@@ -109,18 +113,19 @@
     <tag group="Helper" tag="Secondary"/>
     <tag group="AllowRCust" tag="cfg5CTotWa"/>
     <tag group="abCategory" tag="BbnAspBeas" name="Barbarian Aspect of the Beast"/>
+    <tag group="SpecType" tag="Attack"/>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      #situational[hero.child[aSTR], "Advantage on checks made to push, pull, lift, or break objects", field[thingname].text]]]></eval>
     <eval phase="PostLevel" priority="10000"><![CDATA[
       doneif (tagis[Helper.Disable] <> 0)
 
       ~ double our encumbrance
       herofield[tEncum].value *= 2]]></eval>
-    <eval phase="Render" priority="10000" index="2"><![CDATA[
-      doneif (tagis[Helper.Disable] <> 0)
-
-      #situational[hero.child[aSTR], "Advantage on checks made to push, pull, lift, or break objects", field[thingname].text]]]></eval>
     </thing>
   <thing id="c5CBbnABEa" name="Eagle" description="You acquire the keen eyesight of an eagle. You can see up to 1 mile away with no difficulty, able to discern even fine details as though looking at something no more than 100 feet away from you. Additionally, dim light doesn&apos;t impose disadvantage on your Wisdom (Perception) checks." compset="CustomSpec" summary="You acquire the keen eyesight of an eagle. You can see up to 1 mile away with no difficulty, able to discern even fine details as though looking at something no more than 100 feet away from you. Additionally, dim light doesn&apos;t impose disadvantage on" uniqueness="unique">
-    <tag group="SpecType" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="AbilType" tag="Extra"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
@@ -128,12 +133,13 @@
     <tag group="Helper" tag="Secondary"/>
     <tag group="AllowRCust" tag="cfg5CTotWa"/>
     <tag group="abCategory" tag="BbnAspBeas" name="Barbarian Aspect of the Beast"/>
+    <tag group="SpecType" tag="Attack"/>
     <eval phase="Render" priority="10000">doneif (tagis[Helper.Disable] &lt;&gt; 0)
 
       #situational[hero.childfound[skPercep], &quot;Dim light doesnâ€™t impose disadvantage&quot;, field[thingname].text]</eval>
     </thing>
   <thing id="c5CBbnABWo" name="Wolf" description="You acquire the keen hunting acumen of a wolf. You can track other creatures while traveling at a fast pace, and you can move stealthily while traveling at a normal pace (see chapter 8 for rules on travel pace)." compset="CustomSpec" summary="You acquire the keen hunting acumen of a wolf. You can track other creatures while traveling at a fast pace, and you can move stealthily while traveling at a normal pace (see chapter 8 for rules on travel pace)." uniqueness="unique">
-    <tag group="SpecType" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="AbilType" tag="Extra"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
@@ -141,9 +147,10 @@
     <tag group="Helper" tag="Secondary"/>
     <tag group="AllowRCust" tag="cfg5CTotWa"/>
     <tag group="abCategory" tag="BbnAspBeas" name="Barbarian Aspect of the Beast"/>
+    <tag group="SpecType" tag="Attack"/>
     </thing>
   <thing id="c5CBbnTAWo" name="Wolf" description="While you’re raging, you can use a bonus action on your turn to knock a Large or smaller creature prone when you hit it with melee weapon attack." compset="CustomSpec" summary="While you’re raging, you can use a bonus action on your turn to knock a Large or smaller creature prone when you hit it with melee weapon attack." uniqueness="unique">
-    <tag group="SpecType" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="AbilType" tag="Extra"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
@@ -151,9 +158,10 @@
     <tag group="Helper" tag="Tertiary"/>
     <tag group="AllowRCust" tag="cfg5CTotWa"/>
     <tag group="abCategory" tag="BbnTotAttn" name="Barbarian Totemic Attunement"/>
+    <tag group="SpecType" tag="Attack"/>
     </thing>
   <thing id="c5CBbnTABe" name="Bear" description="While you’re raging, any creature within 5 feet of you that’s hostile to you has disadvantage on attack rolls against targets other than you or another character with this feature. An enemy is immune to this effect if it can’t see or hear you or if it can’t be frightened." compset="CustomSpec" summary="While you’re raging, any creature within 5 feet of you that’s hostile to you has disadvantage on attack rolls against targets other than you or another character with this feature. An enemy is immune to this effect if it can’t see or hear you o" uniqueness="unique">
-    <tag group="SpecType" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="AbilType" tag="Extra"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
@@ -161,9 +169,10 @@
     <tag group="Helper" tag="Tertiary"/>
     <tag group="AllowRCust" tag="cfg5CTotWa"/>
     <tag group="abCategory" tag="BbnTotAttn" name="Barbarian Totemic Attunement"/>
+    <tag group="SpecType" tag="Attack"/>
     </thing>
   <thing id="c5CBbnTAEa" name="Eagle" description="While raging, you have a flying speed equal to your current walking speed. This benefit works only in short bursts; you fall if you end your turn in the air and nothing else is holding you aloft." compset="CustomSpec" summary="While raging, you have a flying speed equal to your current walking speed. This benefit works only in short bursts; you fall if you end your turn in the air and nothing else is holding you aloft." uniqueness="unique">
-    <tag group="SpecType" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="AbilType" tag="Extra"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
@@ -171,6 +180,7 @@
     <tag group="Helper" tag="Tertiary"/>
     <tag group="AllowRCust" tag="cfg5CTotWa"/>
     <tag group="abCategory" tag="BbnTotAttn" name="Barbarian Totemic Attunement"/>
+    <tag group="SpecType" tag="Attack"/>
     <eval phase="Final" priority="10000"><![CDATA[doneif (hero.tagis[Hero.Raging] = 0)
 doneif (tagis[Helper.Disable] <> 0)
 doneif (#levelcount[Barbarian] < 14)
@@ -183,20 +193,21 @@ myspeed = hero.child[Speed].field[tSpeed].value
 hero.child[xFly].field[abValue].value = myspeed]]></eval>
     </thing>
   <thing id="c5CBrdColV" name="College of Valor" description="The College of Valor is composed of daring bards whose ballads sustain the memory of the legendary heroes of yore, inspiring a new generation to achieve such lofty heights. These bards gather in great halls or in the light of camp fires to recite the tales and legends. They travel across the realms to witness and record fantastic events and ensure that the memories of those deeds are not lost to the world. With their tales, they embolden others to strive for the same status as the heroes that came before." compset="CustomSpec" summary="The College of Valor is composed of daring bards whose ballads sustain the memory of the legendary heroes of yore, inspiring a new generation to achieve such lofty heights." uniqueness="unique">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="Primary"/>
     <tag group="SpecSource" tag="cHelpBrd"/>
     <tag group="abCategory" tag="BrdCollege" name="Bardic College"/>
-    <tag group="Helper" tag="Primary"/>
-    <bootstrap thing="c5CBrdBoPV">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
-    <bootstrap thing="c5CBrdComI">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
     <bootstrap thing="cClr5CExAt">
       <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
     <bootstrap thing="c5CBrdBatM">
       <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CBrdBoPV">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CBrdComI">
+      <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
     </thing>
   <thing id="c5CBrdBoPV" name="Bonus Proficiencies" description="When you join the College of Valor at 3rd level, you gain proficiency with medium armor, shields, and martial weapons." compset="ClSpecial" summary="When you join the College of Valor at 3rd level, you gain proficiency with medium armor, shields, and martial weapons.">
@@ -223,14 +234,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abDuration" tag="Instant"/>
     </thing>
   <thing id="c5CClrKnow" name="Knowledge" description="The deities of knowledge value erudition and comprehension above all else. Some instruct that knowledge must be gathered and shared in institutions of learning or repositories of knowledge. Some encourage the pragmatic knowledge of engineering, crafting and invention. Some divinities carefully guard knowledge and keep its secret. And some gods promise their devotees that they will gain immense power if they puzzle out the mysteries of the multiverse. Followers of these gods study obscure lore, collect ancient texts, descend into the mysterious places of the world, and capture all the knowledge they can." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
     <tag group="SpecSource" tag="cHelpClr"/>
     <tag group="abCategory" tag="ClrDomain" name="Cleric Domain"/>
-    <bootstrap thing="c5CClrBleK">
-      <autotag group="ClSpecWhen" tag="1"/>
-      </bootstrap>
-    <bootstrap thing="c5CClrKnoA">
-      <autotag group="ClSpecWhen" tag="2"/>
-      </bootstrap>
     <bootstrap thing="c5CClrReaT">
       <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
@@ -299,6 +305,12 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       <autotag group="BonusSplAt" tag="9"/>
       <autotag group="Helper" tag="Memorized"/>
       <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrBleK">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrKnoA">
+      <autotag group="ClSpecWhen" tag="2"/>
       </bootstrap>
     </thing>
   <thing id="c5CClrBleK" name="Blessings of Knowledge" description="You learn two languages of your choice at 1st level. You are proficient in your choice of two of the following skills: Arcana, History, Nature, or Religion. Your proficiency bonus is doubled for any ability check you make that uses either of the skills you choose." compset="ClSpecial">
@@ -380,14 +392,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="Usage" tag="LongRest"/>
     </thing>
   <thing id="c5CClrLig" name="Light" description="Gods of light champion the ideals of rebirth, rejuvenation, truth, vigilance, and beauty. These gods often using the symbol of the sun or are are portrayed as the sun itself. Sometimes gods of light act as a charioteer who leads the sun across the sky. Others are tireless guardians whose eyes penetrate every shadow and pierce every deceit.\n\nA few are divinities of beauty and artistry, who instruct that art is a means for the soul&apos;s enlightenment. Clerics of a god of light are enlightened souls filled with radiance and the power of their gods’ discerning vision, charged with driving away deception and blasting away darkness." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
     <tag group="SpecSource" tag="cHelpClr"/>
     <tag group="abCategory" tag="ClrDomain"/>
-    <bootstrap thing="c5CClrBonC">
-      <autotag group="ClSpecWhen" tag="1"/>
-      </bootstrap>
-    <bootstrap thing="c5CClrWarF">
-      <autotag group="ClSpecWhen" tag="1"/>
-      </bootstrap>
     <bootstrap thing="c5CClrRadD">
       <autotag group="ClSpecWhen" tag="2"/>
       </bootstrap>
@@ -460,6 +467,12 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       <autotag group="Helper" tag="Memorized"/>
       <autotag group="Helper" tag="Free"/>
       </bootstrap>
+    <bootstrap thing="c5CClrBonC">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrWarF">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
     </thing>
   <thing id="c5CClrBonC" name="Bonus Cantrip" description="When you choose the light domain, you gain the light cantrip at 1st level, if you don’t already know this cantrip." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
@@ -520,14 +533,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="User" tag="Activation"/>
     </thing>
   <thing id="c5CClrNatu" name="Nature" description="While many priests who served nature deities like Silvanus or Eldath are druids, clerics were also numbered among their servants. Many clerics who did venerate the gods of the wilderness made use of the Nature domain, which granted them some semblance of control over wild animals and plants alike. Whereas their druid compatriots were secretive and reclusive by inclination, clerics in the service of nature took a more active role, championing the cause of their gods by hunting evil monsters, blessing harvests, or bringing a famine upon their enemies.\n\nClerics specializing in the Nature domain had a number of abilities to claim as their own. One such ability was their ability to calm animals or plants, reducing their hostility for a period of up to a minute or so. With additional training, Nature domain clerics could learn even to control such creatures, commanding them to do as they wish." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
     <tag group="SpecSource" tag="cHelpClr"/>
     <tag group="abCategory" tag="ClrDomain"/>
-    <bootstrap thing="c5CClrAcoN">
-      <autotag group="ClSpecWhen" tag="1"/>
-      </bootstrap>
-    <bootstrap thing="cClrLiBoPr">
-      <autotag group="ClSpecWhen" tag="1"/>
-      </bootstrap>
     <bootstrap thing="c5CClrChAP">
       <autotag group="ClSpecWhen" tag="2"/>
       </bootstrap>
@@ -603,6 +611,12 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       <autotag group="BonusSplAt" tag="9"/>
       <autotag group="Helper" tag="Memorized"/>
       <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrAcoN">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cClrLiBoPr">
+      <autotag group="ClSpecWhen" tag="1"/>
       </bootstrap>
     </thing>
   <thing id="c5CClrAcoN" name="Acolyte of Nature" description="Proficiency in one skill (Animal Handling, Nature, or Survival) and and you have access to one druid cantrip." compset="ClSpecial" summary="Skill proficiency and one druid cantrip.">
@@ -690,14 +704,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abAction" tag="Bonus"/>
     </thing>
   <thing id="c5CClrTemp" name="Tempest" description="Gods of Tempest govern fierce storms, the tumultuous sea, and the overarching sky. These are gods of lightning, thunder, earthquakes and some are even fire gods. A few are deities of violence, physical might, and bravery. In some religions, a god of Tempest rules over other deities and is known for bringing harsh justice through a sudden thunderbolt. In the religions of seafaring folk, divinities of this domain are ocean gods and the benefactors of sailors. Tempest gods send their clergy to inspire awe in the commoners, either to keep those folk on the path of morality or to encourage them to make offerings of atonement to ward off divine ire." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="ClrDomain"/>
     <tag group="SpecSource" tag="cHelpClr"/>
-    <bootstrap thing="c5CClrTeBP">
-      <autotag group="ClSpecWhen" tag="1"/>
-      </bootstrap>
-    <bootstrap thing="c5CClrDesW">
-      <autotag group="ClSpecWhen" tag="2"/>
-      </bootstrap>
     <bootstrap thing="c5CClrThuS">
       <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
@@ -774,6 +783,12 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <bootstrap thing="c5CClrWraS">
       <autotag group="ClSpecWhen" tag="1"/>
       </bootstrap>
+    <bootstrap thing="c5CClrTeBP">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrDesW">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
     </thing>
   <thing id="c5CClrTeBP" name="Bonus Proficiency" description="You gain proficiency with martial weapons and heavy armor at 1st level." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
@@ -831,11 +846,9 @@ myspeed = hero.child[Speed].field[tSpeed].value
 hero.child[xFly].field[abValue].value = myspeed]]></eval>
     </thing>
   <thing id="c5CClrTric" name="Trickery" description="Deities of trickery are makers of mischief and antagonists who act as a constant foil to the accepted social order of gods and mortals. They’re protectors of rogues, mountebanks, scoundrels, risk takers, revolutionaries, and liberators. Their clerics are a disruptive force in the world, pricking the pride, mocking lords, robbing from the wealthy, liberating captives, and flouting sacred traditions and time honored customs. They prefer deceit, pranks, misdirection, deception, and theft rather than direct confrontation." compset="CustomSpec" uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpClr"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="ClrDomain"/>
-    <bootstrap thing="c5CClrBleT">
-      <autotag group="ClSpecWhen" tag="1"/>
-      </bootstrap>
+    <tag group="SpecSource" tag="cHelpClr"/>
     <bootstrap thing="c5CClrInvD">
       <autotag group="ClSpecWhen" tag="2"/>
       </bootstrap>
@@ -912,6 +925,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       <autotag group="Helper" tag="Memorized"/>
       <autotag group="Helper" tag="Free"/>
       </bootstrap>
+    <bootstrap thing="c5CClrBleT">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
     </thing>
   <thing id="c5CClrBleT" name="Blessing of the Trickster" description="Starting when you choose this domain at 1st level, you can use your action to touch a willing creature other than yourself to give it advantage on Dexterity (Stealth) checks. This blessing lasts for 1 hour or until you use this feature again." compset="ClSpecial">
     <fieldval field="abDuration" value="1"/>
@@ -941,11 +957,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abAction" tag="Bonus"/>
     </thing>
   <thing id="c5CClrWar" name="War" description="War can make heroes of simple farmers. It can be distressing and awful, with deeds of debased cruelty and cowardice overshadowing moments of arête and bravery. The gods of war gaze over combatants and reward them for their mighty acts. The clerics of such gods are experts in combat, encouraging others to fight fiercely or offering acts of bloody violence as prayers. Gods of war include champions of chivalry and honorable combat as well as gods of devastation, reaving, conquest and domination. Other war deities assume a more tempered position, promoting war in all its aspects and supporting warriors in any situation." compset="CustomSpec" uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpClr"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="ClrDomain"/>
-    <bootstrap thing="c5CClrTeBP">
-      <autotag group="ClSpecWhen" tag="1"/>
-      </bootstrap>
+    <tag group="SpecSource" tag="cHelpClr"/>
     <bootstrap thing="c5CClrWarP">
       <autotag group="ClSpecWhen" tag="1"/>
       </bootstrap>
@@ -1025,6 +1039,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       <autotag group="Helper" tag="Memorized"/>
       <autotag group="Helper" tag="Free"/>
       </bootstrap>
+    <bootstrap thing="c5CClrTeBP">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
     </thing>
   <thing id="c5CClrWarP" name="War Priest" description="Beginning at 1st level, your deity provides bolts of genius to you while you are participating in combat. When you use the Attack action, you can make one weapon attack as a bonus action.\n\nYou can use this feature a number of times equal to your Wisdom modifier (a minimum of once). You regain all expended uses when you finish a long rest." compset="ClSpecial">
     <tag group="abDuration" tag="Instant"/>
@@ -1068,11 +1085,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abAction" tag="None"/>
     </thing>
   <thing id="c5CDrdCirM" name="Circle of the Moon" description="Circle of the Moon druids are potent protectors of the wilderness. Their order meets under the full moon to share information and exchange cautionary tales. They lurk in the deepest parts of the wild, where they might exist for months before meeting with another humanoid, let alone another druid. Mutable as the moon in the night sky, a druid of this circle might stalk as a great cat one night, fly over the forest canopy as a falcon the next day, and plow through the underbrush in bear shape to drive off an intruding monster. The wild is in the druid&apos;s soul." compset="CustomSpec" uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpDrd"/>
+    <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="Primary"/>
-    <bootstrap thing="c5CDrdCirF">
-      <autotag group="ClSpecWhen" tag="2"/>
-      </bootstrap>
+    <tag group="SpecSource" tag="cHelpDrd"/>
     <bootstrap thing="c5CDrdPriS">
       <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
@@ -1083,6 +1098,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       <autotag group="ClSpecWhen" tag="14"/>
       </bootstrap>
     <bootstrap thing="c5CDrdCoWS">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdCirF">
       <autotag group="ClSpecWhen" tag="2"/>
       </bootstrap>
     </thing>
@@ -1125,16 +1143,11 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     </thing>
   <thing id="c5CFtrBatM" name="Battle Master" description="Fighters adopting the archetype of Battle Master use martial methods taught by previous generations of warriors. Conflict is an academic discipline, oftentimes, including subjects beyond the battlefield such as crafting weapons and calligraphy. Not every fighter acquires the instructions of history, suppositions, and creativity cast in the Battle Master archetype, but those who do are balanced fighters of immense expertise and understanding.\n\n{b}Combat Superiority{/b}\nUpon selecting this archetype at 3rd level, you learn maneuvers that are powered by dice called superiority dice.\n\n{b}Maneuvers.{/b} You learn three maneuvers of your choice, which are detailed under “Maneuvers” below.\nManeuvers enhance an attack in some way. You can use only one maneuver per attack.\nYou learn two additional maneuvers of your choice at 7th, 10th, and 15th level. Each time you learn new maneuvers, you can also replace one maneuver you know with a different one.\n\n{b}Superiority Dice.{/b} The Battlemaster has four superiority dice, which are d8s. A superiority die is expended when used. You regain all of your expended superiority dice when you finish a short or long rest.\n\nYou gain another superiority die at 7th level and one more at 15th level.\n\n{b}Saving Throws.{/b} Some of your maneuvers require your target to make a saving throw to resist the\nmaneuver’s effects. The saving throw DC is calculated as follows:\n\nManeuver save DC = 8 + your proficiency bonus + your Strength or Dexterity modifier (your choice)" compset="CustomSpec" uniqueness="unique">
     <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aSTR | IsAttr.aDEX)"/>
-    <tag group="abCategory" tag="FtrMarArch" name="Fighter Martial Archetype"/>
-    <tag group="SpecSource" tag="cHelpFtr"/>
+    <usesource source="5ePHBCP"/>
     <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="Helper" tag="Secondary"/>
-    <bootstrap thing="c5CFtrStuW">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
-    <bootstrap thing="c5CFtrKnYE">
-      <autotag group="ClSpecWhen" tag="7"/>
-      </bootstrap>
+    <tag group="abCategory" tag="FtrMarArch" name="Fighter Martial Archetype"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
     <bootstrap thing="c5CFtrRele">
       <autotag group="ClSpecWhen" tag="15"/>
       </bootstrap>
@@ -1146,6 +1159,12 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       </bootstrap>
     <bootstrap thing="c5CFtrSupD">
       <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrStuW">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrKnYE">
+      <autotag group="ClSpecWhen" tag="7"/>
       </bootstrap>
     <eval phase="PostLevel" priority="9000"><![CDATA[
        if (field[usrChosen1].ischosen <> 0) then
@@ -1231,161 +1250,172 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abAction" tag="None"/>
     </thing>
   <thing id="c5CFtrComS" name="Commander&apos;s Strike" description="When you take the Attack action on your turn, you can forgo one of your attacks and use a bonus action to direct one of your companions to strike. When you do so, choose a friendly creature who can see or hear you and expend one superiority die. That creature can immediately use its reaction to make one weapon attack, adding the superiority die to the\nattack’s damage roll." compset="CustomSpec" uniqueness="unique">
-    <tag group="Helper" tag="Tertiary"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abRange" tag="Hearing"/>
     <tag group="abDuration" tag="Instant"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="Tertiary"/>
     </thing>
   <thing id="c5CFtrDisA" name="Disarming Attack" description="When you hit a creature with a weapon attack, you can expend one superiority die to attempt to disarm the target, forcing it to drop one item\nof your choice that it’s holding. You add the superiority die to the attack’s damage roll, and the target must make a Strength saving throw. On a failed save, it drops the object you choose. The object lands at its feet." compset="CustomSpec" uniqueness="unique">
-    <tag group="Helper" tag="Tertiary"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abRange" tag="Attack"/>
     <tag group="abDuration" tag="Instant"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abSave" tag="aSTR"/>
     <tag group="abAction" tag="Free"/>
+    <tag group="Helper" tag="Tertiary"/>
     <eval phase="PreAttr" priority="10000">perform hero.childfound[c5CFtrBatM].pulltags[StandardDC.?]</eval>
     </thing>
   <thing id="c5CFtrDisS" name="Distracting Strike" description="When you hit a creature with a weapon attack, you can expend one superiority die to distract the creature, giving your allies an opening. You add the superiority die to the attack’s damage roll. The next attack roll against the target by an attacker other than you has advantage if the attack is made before the start of your next turn." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abDuration" value="1"/>
-    <tag group="abRange" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abDuration" tag="Round"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Free"/>
     <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Attack"/>
     </thing>
   <thing id="c5CFtrEvaF" name="Evasive Footwork" description="When you move, you can expend one superiority die, rolling the die and adding the number rolled to your AC until you stop moving." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abDuration" value="1"/>
-    <tag group="abRange" tag="Personal"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abDuration" tag="Round"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Free"/>
     <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Personal"/>
     </thing>
   <thing id="c5CFtrFeiA" name="Feinting Attack" description="You can expend one superiority die and use a bonus action on your turn to feint, choosing one creature within 5 feet o f you as your target. You have advantage on your next attack roll against that creature. If that attack hits, add the superiority die to the attack’s damage roll." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abDuration" value="1"/>
     <fieldval field="abRange" value="5"/>
-    <tag group="abDuration" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="Helper" tag="Tertiary"/>
     <tag group="abAction" tag="Bonus"/>
     <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Attack"/>
     </thing>
   <thing id="c5CFtrLunA" name="Lunging Attack" description="When you make a melee weapon attack on your turn, you can expend one superiority die to increase your reach for that attack by 5 feet. If you hit, you add the superiority die to the attack’s damage roll." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abDuration" value="1"/>
-    <tag group="abRange" tag="Personal"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abDuration" tag="Attack"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="Helper" tag="Tertiary"/>
     <tag group="abAction" tag="Free"/>
+    <tag group="abRange" tag="Personal"/>
     </thing>
   <thing id="c5CFtrGoaA" name="Goading Attack" description="When you hit a creature with a weapon attack, you can expend one superiority die to attempt to goad the target into attacking you. You add the superiority die to the attack’s damage roll, and the target must make a Wisdom saving throw. On a failed save, the target has disadvantage on all attack rolls against targets other than you until the end of your next turn." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abDuration" value="1"/>
-    <tag group="abRange" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abDuration" tag="Round"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Free"/>
     <tag group="abSave" tag="aWIS"/>
     <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Attack"/>
     <eval phase="PreAttr" priority="10000">perform hero.childfound[c5CFtrBatM].pulltags[StandardDC.?]</eval>
     </thing>
   <thing id="c5CFtrManA" name="Maneuvering Attack" description="When you hit a creature with a weapon attack, you can expend one superiority die to maneuver one o f your comrades into a more advantageous position. You add the superiority die to the attack’s damage roll, and you choose a friendly creature who can see or hear you. That creature can use its reaction to move up to half its speed without provoking opportunity attacks from the target o f your attack." compset="CustomSpec" uniqueness="unique">
-    <tag group="Helper" tag="Tertiary"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abRange" tag="Hearing"/>
     <tag group="abDuration" tag="Instant"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Free"/>
+    <tag group="Helper" tag="Tertiary"/>
     </thing>
   <thing id="c5CFtrMenA" name="Menacing Attack" description="When you hit a creature with a weapon attack, you can expend one superiority die to attempt to frighten the target. You add the superiority die to the attack’s damage roll, and the target must make a Wisdom saving throw. On a failed save, it is frightened of you until the end of your next turn." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abDuration" value="1"/>
-    <tag group="abRange" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abDuration" tag="Round"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Free"/>
     <tag group="abSave" tag="aWIS"/>
     <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Attack"/>
     <eval phase="PreAttr" priority="10000">perform hero.childfound[c5CFtrBatM].pulltags[StandardDC.?]</eval>
     </thing>
   <thing id="c5CFtrPar" name="Parry" description="When another creature damages you with a melee attack, you can use your reaction and expend one superiority die to reduce the damage by the number you roll on your superiority die + your Dexterity modifier." compset="CustomSpec" uniqueness="unique">
-    <tag group="Helper" tag="Tertiary"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Instant"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Reaction"/>
+    <tag group="Helper" tag="Tertiary"/>
     </thing>
   <thing id="c5CFtrPreA" name="Precision Attack" description="When you make a weapon attack roll against a creature, you can expend one superiority die to add it to the roll. You can use this maneuver before or after making the attack roll, but before any effects o f the attack are applied." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abDuration" value="1"/>
-    <tag group="abRange" tag="Personal"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abDuration" tag="Attack"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Free"/>
     <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Personal"/>
     </thing>
   <thing id="c5cPusAtt" name="Pushing Attack" description="When you hit a creature with a weapon attack, you can expend one superiority die to attempt to drive the target back. You add the superiority die to the attack&apos;s damage roll, and if the target is Large or smaller, it must make a Strength saving throw. On a failed save, you push the target up to 15 feet away from you." compset="CustomSpec" uniqueness="unique">
-    <tag group="Helper" tag="Tertiary"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abRange" tag="Attack"/>
     <tag group="abDuration" tag="Instant"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Free"/>
     <tag group="abSave" tag="aSTR"/>
+    <tag group="Helper" tag="Tertiary"/>
     <eval phase="PreAttr" priority="10000">perform hero.childfound[c5CFtrBatM].pulltags[StandardDC.?]</eval>
     </thing>
   <thing id="c5CFtrRal" name="Rally" description="On your turn, you can use a bonus action and expend one superiority die to bolster the resolve of one of your companions. When you do so, choose a friendly creature w ho can see or hear you. That creature gains temporary hit points equal to the superiority die roll + your Charisma modifier." compset="CustomSpec" uniqueness="unique">
-    <tag group="Helper" tag="Tertiary"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abRange" tag="Hearing"/>
     <tag group="abDuration" tag="Instant"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="Tertiary"/>
     </thing>
   <thing id="c5CFtrRipo" name="Riposte" description="When a creature misses you with a melee attack, you can use your reaction and expend one superiority die to make a melee weapon attack against the creature. If you hit, you add the superiority die to the attack&apos;s damage roll." compset="CustomSpec" uniqueness="unique">
-    <tag group="Helper" tag="Tertiary"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abRange" tag="Touch"/>
     <tag group="abDuration" tag="Instant"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Reaction"/>
+    <tag group="Helper" tag="Tertiary"/>
     </thing>
   <thing id="c5CFtrSweA" name="Sweeping Attack" description="When you hit a creature with a melee weapon attack, you can expend one superiority die to attempt to damage another creature with the same attack. Choose another creature within 5 feet of the original target and within your reach. If the original attack roll would hit the second creature, it takes damage equal to the number you roll on your superiority die. The damage is o f the same type dealt by the original attack." compset="CustomSpec" uniqueness="unique">
-    <tag group="Helper" tag="Tertiary"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abRange" tag="Touch"/>
     <tag group="abDuration" tag="Instant"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Free"/>
+    <tag group="Helper" tag="Tertiary"/>
     </thing>
   <thing id="c5CFtrTriA" name="Trip Attack" description="When you hit a creature with a weapon attack, you can expend one superiority die to attempt to knock the target down. You add the superiority die to the attack’s damage roll, and if the target is Large or smaller, it must make a Strength saving throw. On a failed save, you knock the target prone." compset="CustomSpec" uniqueness="unique">
-    <tag group="abRange" tag="Attack"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abDuration" tag="Instant"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
     <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver"/>
     <tag group="abAction" tag="Free"/>
     <tag group="abSave" tag="aSTR"/>
     <tag group="Helper" tag="Tertiary"/>
+    <tag group="abRange" tag="Attack"/>
     <eval phase="PreAttr" priority="10000">perform hero.childfound[c5CFtrBatM].pulltags[StandardDC.?]</eval>
     </thing>
   <thing id="c5CFtrEldK" name="Eldritch Knight" description="The Eldritch Knight combines the martial skill ubiquitous to all fighters with a heedful study of the arcane. Eldritch Knights use magical methodologies like those employed by wizards. They concentrate their magical studies on two of the eight arcane schools of magic: abjuration and evocation. Abjuration spells provide an Eldritch Knight more protection in combat, and evocation spells deal damage to several enemies at once, extending the Eldritch Knight’s reach in battle. They learn a small number of spells, committing their spells to memory instead of enscribing them in a spellbook.\n\n{b}Spellcasting{/b}\nUpon obtaining 3rd level, you supplement your martial might with spellcasting. \n\n{b}Cantrips.{/b} You learn two cantrips of your choice from the wizard spell list. You learn an additional wizard cantrip of your choice at 10th level.\n\n{b}Spell Slots.{/b} The Eldritch Knight Spellcasting table shows how many spell slots you have to cast your spells of 1st level and higher. To cast one of these spells, expend a slot of the spell’s level or higher. You regain all expended spell slots when you finish a long rest.\n\n{b}Spells Known of 1st-Level and Higher.{/b} You know three 1st-level w izard spells of your choice, two of which you must choose from the abjuration and evocation spells on the wizard spell list.\n\nThe Spells Known column of the Eldritch Knight Spellcasting table shows when you learn more  wizard spells of 1st level or higher. Each of these spells must be an abjuration or evocation spell of your choice, and must be of a level for which you have spell slots. For instance, when you reach 7th level in this class, you can learn one new spell o f 1st or 2nd level.\n\nThe spells you learn at 8th, 14th, and 20th level can come from any school of magic. \nWhenever you gain a level in this class, you can replace one of the wizard spells you know with another spell of your choice from the wizard spell list. The new spell must be of a level for which you have spell slots, and it must be an abjuration or evocation spell, unless you’re replacing the spell you gained at 8th, 14th, or 20th level." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="Secondary"/>
     <tag group="abCategory" tag="FtrMarArch" name="Fighter Martial Archetype"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
-    <tag group="Helper" tag="Secondary"/>
-    <bootstrap thing="c5CFtrWarM">
-      <autotag group="ClSpecWhen" tag="7"/>
-      </bootstrap>
-    <bootstrap thing="c5CFtrEldS">
-      <autotag group="ClSpecWhen" tag="10"/>
-      </bootstrap>
     <bootstrap thing="c5CFtrArcC">
       <autotag group="ClSpecWhen" tag="15"/>
       </bootstrap>
@@ -1394,6 +1424,12 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       </bootstrap>
     <bootstrap thing="c5CFtrWeaB">
       <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrWarM">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrEldS">
+      <autotag group="ClSpecWhen" tag="10"/>
       </bootstrap>
     <eval phase="First" priority="10000"><![CDATA[
         perform linkage[table].setfocus
@@ -1460,12 +1496,10 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abRange" tag="Feet"/>
     </thing>
   <thing id="c5CMnkWayS" name="Way of Shadow" description="Monks of the Way of Shadow obey an ancient tradition that teaches stealth and subterfuge. These monks might be called ninjas or shadowdancers, and they conduct espionage and act as assassins. Sometimes the members of a ninja monastery are family members, forming an extended family that is oath bound to confidentiality about their abilities and activities. Other monasteries are similar to thieves’ guilds, contracting their services to the wealthy. The masters of these monasteries expect the unflinching obedience and loyalty of their disciples." compset="CustomSpec" uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition"/>
     <tag group="Helper" tag="Primary"/>
-    <bootstrap thing="c5CMnkShaS">
-      <autotag group="ClSpecWhen" tag="6"/>
-      </bootstrap>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="c5CMnkCloS">
       <autotag group="ClSpecWhen" tag="11"/>
       </bootstrap>
@@ -1474,6 +1508,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       </bootstrap>
     <bootstrap thing="c5CMnkShaA">
       <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkShaS">
+      <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
     </thing>
   <thing id="c5CMnkShaA" name="Shadow Arts" description="Starting when you choose this tradition at 3rd level, you can use your ki to duplicate the effects of certain spells. As an action, you can spend 2 ki points to cast darkness, darkvision, pass without trace, or silence, without providing material components. Additionally, you gain the minor illusion cantrip if you don’t already know it." compset="ClSpecial">
@@ -1518,9 +1555,10 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abRange" tag="Feet"/>
     </thing>
   <thing id="c5CMnkWaFE" name="Way of the Four Elements" description="This monastic tradition teaches you to master the elements. When you concentrate your ki, you can align yourself with the forces of the universe and turn the elements to your will, using the element as an extension of your being. Some members of the Way of Four Elements devote themselves to a single element, but others combine the elements.\n\nMonks of this tradition sometimes tattoo their bodies with images representing their ki powers, often envisioned as coiled dragons, rising phoenixes, fish, plants, mountains, and cresting waves.\n\nDisciple of the Elements\n\nWhen you choose this tradition at 3rd level, you learn magical disciplines that harness the power of the four elements. A discipline requires you to spend ki points each time you use it.\n\nYou know the Elemental Attunement discipline and one other elemental discipline of your choice, which are detailed in the “Elemental Disciplines” section below.\n\nYou learn one additional elemental discipline of your choice at 6th, 11th, and 17th level.\n\nWhenever you learn a new elemental discipline, you can also replace one elemental discipline that you already know with a different discipline.\n\nCasting Elemental Spells. Some elemental disciplines allow you to cast spells. \nTo cast one of these spells, you use its casting time and other rules, but you don’t need to provide material components for it.\n\nOnce you reach 5th level, you can spend additional ki points to increase the level of an elemental discipline spell that you cast, provided that the spell has an enhanced effect at a higher level. \n\nThe spell&apos;s level increases by 1 for each additional ki point you spend. \n\nThe maximum number of ki points you can spend to cast a spell in this way (including its base ki point cost and any additional ki points you spend to increase its level) is determined by your monk level, as shown in the Spells and Ki Points table.\nSpells and Ki Points\nMonk Levels Maximum Ki Points for a Spell\n5th—8th 3\n9th—12th 4\n13th—16th 5\n17th—20th 6" compset="CustomSpec" uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition"/>
     <tag group="Helper" tag="Primary"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="c5CMnkEleA">
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
@@ -1543,12 +1581,13 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abCategory" tag="MnkEleDisc" name="Monk Elemental Discipline"/>
     </thing>
   <thing id="c5CMnkBreW" name="Breath of Winter" description="You can spend 6 ki points to cast cone of cold." compset="CustomSpec" summary="You can spend 6 ki points to cast cone of cold." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="spConeCold">
       <autotag group="Helper" tag="SpellLike"/>
       <assignval field="livename" value="Cone of Cold (6 ki)"/>
@@ -1556,12 +1595,13 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <exprreq message="17th Level required."><![CDATA[#levelcount[Monk] >= 17]]></exprreq>
     </thing>
   <thing id="c5CMnkClNW" name="Clench of the North Wind" description="You can spend 3 ki points to cast hold person." compset="CustomSpec" summary="You can spend 3 ki points to cast hold person." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="spHoldPers">
       <autotag group="Helper" tag="SpellLike"/>
       <assignval field="livename" value="Hold Person (3 ki)"/>
@@ -1569,12 +1609,13 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <exprreq message="6th Level required."><![CDATA[#levelcount[Monk] >= 6]]></exprreq>
     </thing>
   <thing id="c5CMnkEtMD" name="Eternal Mountain Defense" description="You can spend 5 ki points to cast stoneskin, targeting yourself." compset="CustomSpec" summary="You can spend 5 ki points to cast stoneskin, targeting yourself." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="spStoneski">
       <autotag group="Helper" tag="SpellLike"/>
       <assignval field="livename" value="Stoneskin (5 ki)"/>
@@ -1584,20 +1625,22 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
   <thing id="c5CMnkFaFS" name="Fangs of the Fire Snake" description="When you use the Attack action on your turn, you can spend 1 ki point to cause tendrils o f flame to stretch out from your fists and feet. Your reach with your unarmed strikes increases by 10 feet for that action, as well as the rest of the turn. A hit with such an attack deals fire damage instead of bludgeoning damage, and if you spend 1 ki point when the attack hits, it also deals an extra 1d10 fire damage." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abRange" value="10"/>
     <fieldval field="abDuration" value="1"/>
-    <tag group="abRange" tag="Feet"/>
-    <tag group="abDuration" tag="Round"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abAction" tag="Free"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="SpecSource" tag="cHelpMnk"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Round"/>
     </thing>
   <thing id="c5CMnkFiFT" name="Fist of Four Thunders" description="You can spend 2 ki points to cast thunderwave." compset="CustomSpec" summary="You can spend 2 ki points to cast thunderwave." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="spThunderw">
       <autotag group="Helper" tag="SpellLike"/>
       <assignval field="livename" value="Thunderwave (2 ki)"/>
@@ -1605,7 +1648,7 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     </thing>
   <thing id="c5CMnkFiUA" name="Fist of Unbroken Air" description="You can create a blast of compressed air that strikes like a mighty fist. As an action, you can spend 2 ki points and choose a creature within 30 feet o f you. That creature must make a Strength saving throw. On a failed save, the creature takes 3 d 10 bludgeoning damage, plus an extra 1d10 bludgeoning damage for each additional ki point you spend, and you can push the creature up to 20 feet away from you and knock it prone. On a successful save, the creature takes half as much damage, and you don’t push it or knock it prone." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abRange" value="30"/>
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="abRange" tag="Feet"/>
     <tag group="abDuration" tag="Instant"/>
@@ -1614,14 +1657,16 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abSave" tag="HalfEffect"/>
     <tag group="abSave" tag="aSTR"/>
     <tag group="StandardDC" tag="aWIS"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     </thing>
   <thing id="c5CMnkFlaP" name="Flames of the Phoenix" description="You can spend 4 ki points to cast fireball." compset="CustomSpec" summary="You can spend 4 ki points to cast fireball." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="spFireball">
       <autotag group="Helper" tag="SpellLike"/>
       <assignval field="livename" value="Fireball (4 ki)"/>
@@ -1629,12 +1674,13 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <exprreq message="11th Level required."><![CDATA[#levelcount[Monk] >= 11]]></exprreq>
     </thing>
   <thing id="c5CMnkGonS" name="Gong of the Summit" description="You can spend 3 ki points to cast shatter." compset="CustomSpec" summary="You can spend 3 ki points to cast shatter." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="spShatter">
       <autotag group="Helper" tag="SpellLike"/>
       <assignval field="livename" value="Shatter (3 ki)"/>
@@ -1642,12 +1688,13 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <exprreq message="6th Level required."><![CDATA[#levelcount[Monk] >= 6]]></exprreq>
     </thing>
   <thing id="c5CMnkMisS" name="Mist Stance" description="You can spend 4 ki points to cast gaseous form, targeting yourself." compset="CustomSpec" summary="You can spend 4 ki points to cast gaseous form, targeting yourself." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="spGaseForm">
       <autotag group="Helper" tag="SpellLike"/>
       <assignval field="livename" value="Gaseous Form (4 ki, self only)"/>
@@ -1655,12 +1702,13 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <exprreq message="11th Level required."><![CDATA[#levelcount[Monk] >= 11]]></exprreq>
     </thing>
   <thing id="c5CMnkRidW" name="Ride the Wind" description="You can spend 4 ki points to cast fly, targeting yourself." compset="CustomSpec" summary="You can spend 4 ki points to cast fly, targeting yourself." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="spFly">
       <autotag group="Helper" tag="SpellLike"/>
       <assignval field="livename" value="Fly (4 ki, self only)"/>
@@ -1668,12 +1716,13 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <exprreq message="11th Level required."><![CDATA[#levelcount[Monk] >= 11]]></exprreq>
     </thing>
   <thing id="c5CMnkRiHF" name="River of Hungry Flame" description="You can spend 5 ki points to cast wall of fire." compset="CustomSpec" summary="You can spend 5 ki points to cast wall of fire." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="spWallFire">
       <autotag group="Helper" tag="SpellLike"/>
       <assignval field="livename" value="Wall of Fire (5 ki)"/>
@@ -1681,24 +1730,26 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <exprreq message="17th Level required."><![CDATA[#levelcount[Monk] >= 17]]></exprreq>
     </thing>
   <thing id="c5CMnkRuGS" name="Rush of the Gale Spirits" description="You can spend 2 ki points to cast gust of wind." compset="CustomSpec" summary="You can spend 2 ki points to cast gust of wind." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="spGustWind">
       <autotag group="Helper" tag="SpellLike"/>
       <assignval field="livename" value="Gust of Wind (2 ki)"/>
       </bootstrap>
     </thing>
   <thing id="c5CMnkSwCS" name="Sweeping Cinder Strike" description="You can spend 2 ki points to cast burning hands." compset="CustomSpec" summary="You can spend 2 ki points to cast burning hands." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="spBurnHand">
       <autotag group="Helper" tag="SpellLike"/>
       <assignval field="livename" value="Burning Hands (2 ki)"/>
@@ -1706,7 +1757,7 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     </thing>
   <thing id="c5CMnkWatW" name="Water Whip" description="You can spend 2 ki points as a bonus action to create a whip o f water that shoves and pulls a creature to unbalance it. A creature that you can see that is within 30 feet o f you must make a Dexterity saving throw. On a failed save, the creature takes 3d10 bludgeoning damage, plus an extra 1d 10 bludgeoning damage for each additional ki point you spend, and you\ncan either knock it prone or pull it up to 25 feet closer to you. On a successful save, the creature takes half as much damage, and you don’t pull it or knock it prone." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abRange" value="30"/>
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="abRange" tag="Feet"/>
     <tag group="abDuration" tag="Instant"/>
@@ -1715,14 +1766,16 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="StandardDC" tag="aWIS"/>
     <tag group="abAction" tag="Bonus"/>
     <tag group="abSave" tag="aDEX"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     </thing>
   <thing id="c5CMnkWaRE" name="Wave of Rolling Earth" description="You can spend 6 ki points to cast wall of stone." compset="CustomSpec" summary="You can spend 6 ki points to cast wall of stone." uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpMnk"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
     <bootstrap thing="spWallSton">
       <autotag group="Helper" tag="SpellLike"/>
       <assignval field="livename" value="Wall of Stone (6 ki)"/>
@@ -1732,20 +1785,19 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
   <thing id="c5CMnkShFR" name="Shape the Flowing River" description="As an action, you can spend 1 ki point to choose an area o f ice or water no larger than 30 feet on a side within 120 feet o f you. You can change water to ice within the area and vice versa, and you can reshape ice in the area in any manner you choose. You can raise or lower the ice’s elevation, create or fill in a trench, erect or flatten a wall, or form a pillar.\nThe extent o f any such changes can’t exceed half the area’s largest dimension. For example, if you affect a 30-foot square, you can create a pillar up to 15 feet high, raise or lower the square’s elevation by up to 15 feet, dig a trench up to 15 feet deep, and so on. You can’t shape the ice to trap or injure a creature in the area." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abRange" value="120"/>
     <fieldval field="abDuration" value="1"/>
-    <tag group="abRange" tag="Feet"/>
+    <usesource source="5ePHBCP"/>
     <tag group="abDuration" tag="Round"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="SpecSource" tag="cHelpMnk"/>
     <tag group="abCategory" tag="MnkEleDisc"/>
     <tag group="abAction" tag="Action"/>
+    <tag group="abRange" tag="Feet"/>
     </thing>
-  <thing id="c5CPalOatA" name="Oath of the Ancients" description="SThe Oath of the Ancients harkens to the beginning of the race of elves and when the druids first recited the rituals of the world. These paladins are variably named fey knights, green knights, or horned knights. They are paladins who promise themselves to the side of the light in the cosmic conflict against darkness. They love the beautiful and life-giving entities of the universe, not necessarily because they believe in values of honor, bravery, and justice. They decorate their armor and clothing with images of leaves, antlers, flower or other living, growing things to demonstrate their dedication to protecting life and the light in the world.\n\nTenets of the Ancients\n\nThe tenets of the Oath of the Ancients have existed for millennia. This oath focuses on the values of good above any concerns for law or chaos. Its four precepts are:\n\nKindle the Light. Through your acts of compassion and forgiveness, ignite the beacon of hope, driving back hopelessness.\n\nShelter the Light. Where there is goodness, beauty, love, and joy in the world, stand firm against the wickedness that threatens to devour it. Where life blossoms, fight the forces that would turn it desolate.\n\nPreserve Your Own Light. Delight in music and merriment, in beauty and art. If you let the light perish in your own soul, you can’t maintain it in the world.\n\nBe the Light. Be a magnificent example for all who live in hopelessness. Let the radiance of your happiness and bravery illuminate in all your deeds.\n\nOath Spells\nYou gain oath spells at the paladin levels listed.\nOath of the Ancients Spells\nPaladin Level Spells\n3rd ensnaring strike, speak with animals\n5th moonbeam, misty step\n9th plant growth, protection from energy\n13th ice storm, stoneskin\n17th commune with nature, tree stride" compset="CustomSpec" uniqueness="unique">
-    <tag group="Helper" tag="Secondary"/>
+  <thing id="c5CPalOatA" name="Oath of the Ancients" description="The Oath of the Ancients harkens to the beginning of the race of elves and when the druids first recited the rituals of the world. These paladins are variably named fey knights, green knights, or horned knights. They are paladins who promise themselves to the side of the light in the cosmic conflict against darkness. They love the beautiful and life-giving entities of the universe, not necessarily because they believe in values of honor, bravery, and justice. They decorate their armor and clothing with images of leaves, antlers, flower or other living, growing things to demonstrate their dedication to protecting life and the light in the world.\n\nTenets of the Ancients\n\nThe tenets of the Oath of the Ancients have existed for millennia. This oath focuses on the values of good above any concerns for law or chaos. Its four precepts are:\n\nKindle the Light. Through your acts of compassion and forgiveness, ignite the beacon of hope, driving back hopelessness.\n\nShelter the Light. Where there is goodness, beauty, love, and joy in the world, stand firm against the wickedness that threatens to devour it. Where life blossoms, fight the forces that would turn it desolate.\n\nPreserve Your Own Light. Delight in music and merriment, in beauty and art. If you let the light perish in your own soul, you can’t maintain it in the world.\n\nBe the Light. Be a magnificent example for all who live in hopelessness. Let the radiance of your happiness and bravery illuminate in all your deeds.\n\nOath Spells\nYou gain oath spells at the paladin levels listed.\nOath of the Ancients Spells\nPaladin Level Spells\n3rd ensnaring strike, speak with animals\n5th moonbeam, misty step\n9th plant growth, protection from energy\n13th ice storm, stoneskin\n17th commune with nature, tree stride" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
     <tag group="abCategory" tag="PalSacOath" name="Paladin Sacred Oath"/>
     <tag group="SpecSource" tag="cHelpPal"/>
-    <bootstrap thing="c5CPalNatW">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
+    <tag group="Helper" tag="Secondary"/>
     <bootstrap thing="c5CPalTurF">
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
@@ -1818,6 +1870,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       <autotag group="SpellType" tag="cHelpPal"/>
       <autotag group="BonusSplAt" tag="17"/>
       </bootstrap>
+    <bootstrap thing="c5CPalNatW">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
     </thing>
   <thing id="c5CPalNatW" name="Channel Divinity: Nature&apos;s Wrath" description="Channel Divinity to appeal to primeval energies to entangle an enemy. As an action, you can cause spectral vines to spring up and reach for a creature within 10 feet of you that you can see. The creature must succeed on a Strength or Dexterity saving throw (its choice) or be restrained. While restrained by the vines, the creature repeats the saving throw at the end of each of its turns. On a success, it frees itself and the vines vanish." compset="ClSpecial">
     <fieldval field="abRange" value="10"/>
@@ -1870,15 +1925,10 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abDuration" tag="Minute"/>
     </thing>
   <thing id="c5CPalOatV" name="Oath of Vengeance" description="The Oath of Vengeance is a formal promise to punish those who have committed a terrible transgression. When evil beings butcher helpless folk, when an entire community turns against the will of the gods, when a thieves’ guild grows too depraved and powerful, when a dragon demolishes the land—during times like these, paladins arise who take an Oath of Vengeance to right the ills of the world. To these paladins— sometimes called avengers or dark knights—their own virtue is not as essential as delivering deserving justice.\n\nTenets of Vengeance\nThe tenets of the Oath of Vengeance differ by each adherent, but the central tenets center on punishing evildoers by any means necessary. Paladins who champion these tenets sacrifice even their own purity to deliver justice upon the wicked, so the paladins are often neutral or lawful neutral in alignment. The core principles of the tenets are:\n\nFight the Greater Evil. Confronted with a choice of battling my sworn enemies or fighting a lesser evil. I select the greater evil.\n\nNo Mercy for the Wicked. Common foes might win my reprieve, but my oath sworn enemies do not.\nBy Any Means Necessary. My misgivings can’t get stop me from destroying my enemies.\n\nRestitution. If my enemies cause ruin, it is because I failed to prevent them. I must aid those hurt by their foul actions.\n\nOath Spells\nOath of Vengeance Spells\nPaladin Level Spells\n3rd bane, hunter’s mark\n5th hold person, misty step\n9th haste, protection from energy\n13th banishment, dimension door\n17th hold monster, scrying" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
+    <tag group="SpecSource" tag="cHelpPal"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="abCategory" tag="PalSacOath" name="Paladin Sacred Oath"/>
-    <tag group="SpecSource" tag="cHelpPal"/>
-    <bootstrap thing="c5CPalAbjE">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
-    <bootstrap thing="c5CPalVowE">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
     <bootstrap thing="c5CPalRelA">
       <autotag group="ClSpecWhen" tag="7"/>
       </bootstrap>
@@ -1948,6 +1998,12 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       <autotag group="SpellType" tag="cHelpPal"/>
       <autotag group="BonusSplAt" tag="17"/>
       </bootstrap>
+    <bootstrap thing="c5CPalAbjE">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalVowE">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
     </thing>
   <thing id="c5CPalAbjE" name="Channel Divinity: Abjure Enemy" description="As an action, you show your holy symbol and utter a prayer of condemnation, using Channel Divinity. Choose one creature within 60 feet of you that you can see. That creature must make a Wisdom saving throw, unless it is immune to being frightened. Fiends and undead have disadvantage on this saving throw.\n\nOn a failed save, the creature is frightened for 1 minute or until it takes any damage. While frightened, the creature’s speed is 0, and it can’t benefit from any bonus to its speed.\n\nOn a successful save, the creature’s speed is halved for 1 minute or until the creature takes any damage." compset="ClSpecial">
     <fieldval field="abRange" value="60"/>
@@ -1998,20 +2054,21 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="StandardDC" tag="aCHA"/>
     </thing>
   <thing id="c5CRgrBeaM" name="Beast Master" description="Some rangers, particularly those in primitive lands or who were raised by animals, have unusually strong bonds with animals. Unique among rangers, they can bond with multiple animals of any kind, creating a menagerie of wild yet loyal creatures, like a strange family." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
+    <tag group="abCategory" tag="RgrArchety" name="Ranger Archetype"/>
     <tag group="SpecSource" tag="cHelpRgr"/>
     <tag group="Helper" tag="Secondary"/>
-    <tag group="abCategory" tag="RgrArchety" name="Ranger Archetype"/>
-    <bootstrap thing="c5CRgrRanC">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
-    <bootstrap thing="c5CRgrExcT">
-      <autotag group="ClSpecWhen" tag="7"/>
-      </bootstrap>
     <bootstrap thing="c5CRgrBesF">
       <autotag group="ClSpecWhen" tag="11"/>
       </bootstrap>
     <bootstrap thing="c5CRgrShaS">
       <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrRanC">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrExcT">
+      <autotag group="ClSpecWhen" tag="7"/>
       </bootstrap>
     <eval phase="PostLevel" priority="10000"><![CDATA[
      doneif (tagis[Helper.Disable] <> 0)
@@ -2033,6 +2090,7 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="c5CRgrComp"></bootstrap>
     </thing>
   <thing id="c5CRgrExcT" name="Exceptional Training" description="On any of your turns when your beast companion doesn’t attack, you can use a bonus action to command the beast to take the Dash, Disengage, Dodge, or Help action on its turn." compset="ClSpecial">
     <tag group="abRange" tag="Hearing"/>
@@ -2051,23 +2109,19 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abRange" tag="Feet"/>
     </thing>
   <thing id="c5CRgrUnde" name="Underdark" description="You are particularly familiar with one type of natural environment and are adept at traveling and surviving in such regions. Choose one type of favored terrain: arctic, coast, desert, forest, grassland, mountain, or swamp. When you make an Intelligence or Wisdom check related to your favored terrain, your proficiency bonus is doubled if you are using a skill that you&apos;re proficient in.\n\nWhile traveling for an hour or more in your favored terrain, you gain the following benefits:\n\n• Difficult terrain doesn&apos;t slow your group&apos;s travel.\n\n• Your group can&apos;t become lost except by magical means.\n\n• Even when you are engaged in another activity while traveling (such as foraging, navigating, or tracking), you remain alert to danger.\n\n• If you are traveling alone, you can move stealthily at a normal pace.\n\n• When you forage, you find twice as much food as you normally would.\n\n• While tracking other creatures, you also learn their exact number, their sizes, and how long ago they passed through the area.\n\nYou choose additional favored terrain types at 6th and 10th level." compset="CustomSpec" uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpRgr"/>
+    <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="Quaternary"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
     <tag group="abCategory" tag="RgrNatExpl" name="Ranger Natural Explorer Terrain"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
     </thing>
   <thing id="c5CRogAssa" name="Assassin" description="The abilities of an assassin are skilled at being able to kill or incapacitate a target while avoiding confrontation. They are skilled at dealing critical damage from sneak attacks and can poison their weapons without the risk of accidentally poisoning themselves. With training they can deliver a sneak attack that can instantly kill their target; alternatively, if the target is wanted alive they can merely paralyze it, allowing time for them to be tied up, placed in manacles or otherwise restrained." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="Primary"/>
     <tag group="SpecSource" tag="cHelpRog"/>
     <tag group="abCategory" tag="RogArchety" name="Rogue Archetype"/>
-    <tag group="Helper" tag="Primary"/>
-    <bootstrap thing="c5CRogAss2">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
-    <bootstrap thing="c5CRogInfE">
-      <autotag group="ClSpecWhen" tag="9"/>
-      </bootstrap>
     <bootstrap thing="c5CRogImpo">
       <autotag group="ClSpecWhen" tag="13"/>
       </bootstrap>
@@ -2076,6 +2130,12 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       </bootstrap>
     <bootstrap thing="c5CRogBonP">
       <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogAss2">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogInfE">
+      <autotag group="ClSpecWhen" tag="9"/>
       </bootstrap>
     </thing>
   <thing id="c5CRogBonP" name="Bonus Proficiencies" description="You have proficiency with two kits (disguise and poisoner)." compset="ClSpecial" summary="You have proficiency with the poisoner/disguise kit.">
@@ -2116,15 +2176,10 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="StandardDC" tag="aDEX"/>
     </thing>
   <thing id="c5cRogArcT" name="Arcane Trickster" description="Arcane tricksters tended to prepare for any eventuality and then winged it, relying on their stealthiness to sneak in and use their spells to maximum advantage, then get away quickly." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
+    <tag group="abCategory" tag="RogArchety"/>
     <tag group="Helper" tag="Primary"/>
     <tag group="SpecSource" tag="cHelpRog"/>
-    <tag group="abCategory" tag="RogArchety"/>
-    <bootstrap thing="c5CRogMagA">
-      <autotag group="ClSpecWhen" tag="9"/>
-      </bootstrap>
-    <bootstrap thing="c5CRogVerT">
-      <autotag group="ClSpecWhen" tag="13"/>
-      </bootstrap>
     <bootstrap thing="c5CRogSpeT">
       <autotag group="ClSpecWhen" tag="17"/>
       </bootstrap>
@@ -2135,6 +2190,12 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       <autotag group="Helper" tag="Cantrip"/>
       <autotag group="SpellSort" tag="cHelpRog"/>
       <autotag group="SpellType" tag="cHelpRog"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogMagA">
+      <autotag group="ClSpecWhen" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogVerT">
+      <autotag group="ClSpecWhen" tag="13"/>
       </bootstrap>
     <eval phase="First" priority="10000"><![CDATA[
         perform linkage[table].setfocus
@@ -2203,14 +2264,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="Usage" tag="Day"/>
     </thing>
   <thing id="c5CSorWilM" name="Wild Magic" description="Experts in the use of wild magic, chaos sorcerers derive their power from the terrible and wondrous forces of the planes of power and Elemental Chaos. Extremely impressive founts of power, chaos sorcerers are often extremely dexterous as well, using their agility and strong reflexes to slip out of the way of their own, often unpredictable, spells. Though their magic can be dangerous uncontrolled, chaos sorcerers gain a number of important benefits, such as resistance to all forms of magical energy, though on an unreliable and ever-changing basis. On the whole, a chaos sorcerer&apos;s magic does far more good than harm to its caster. Experienced chaos sorcerers who focus on their use of wild magic might become wild mages." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
     <tag group="SpecSource" tag="cHelpSor" name="Sorcerer" abbrev="Sorcerer"/>
     <tag group="Helper" tag="Primary"/>
-    <bootstrap thing="c5CSorTidC">
-      <autotag group="ClSpecWhen" tag="1"/>
-      </bootstrap>
-    <bootstrap thing="c5CSorBenL">
-      <autotag group="ClSpecWhen" tag="6"/>
-      </bootstrap>
     <bootstrap thing="c5CSorConC">
       <autotag group="ClSpecWhen" tag="14"/>
       </bootstrap>
@@ -2220,8 +2276,14 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <bootstrap thing="c5CSorWiMS">
       <autotag group="ClSpecWhen" tag="1"/>
       </bootstrap>
+    <bootstrap thing="c5CSorTidC">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorBenL">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
     </thing>
-  <thing id="c5CSorWiMS" name="Wild Magic Surge" description="After you cast a level 1 or higher spell your DM may have you roll a d20, if it&apos;s a 1 roll on wild magic table.." compset="ClSpecial">
+  <thing id="c5CSorWiMS" name="Wild Magic Surge" description="After you cast a level 1 or higher spell your DM may have you roll a d20, if it&apos;s a 1 roll on wild magic table..\n\nA surge can only happen once per turn. If a surge effect is a spell, it&apos;s too wild to be affected by Metamagic. If it normally requires concentration, it doesn&apos;t require concentration in this case; the spell lasts for its full duration." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
@@ -2250,8 +2312,7 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abDuration" tag="Constant"/>
     </thing>
   <thing id="c5CWlkArch" name="The Archfey" description="A lord or lady of the fey is your patron, holding secrets forgotten before mortal races were born. It&apos;s motivations are inscrutable and sometimes whimsical." compset="CustomSpec" uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpWlk"/>
-    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron"/>
+    <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="Primary"/>
     <tag group="Helper" tag="SpecUp"/>
     <tag group="ClsAllowSp" tag="spFaerFire"/>
@@ -2264,17 +2325,19 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="ClsAllowSp" tag="spGreaInvi"/>
     <tag group="ClsAllowSp" tag="spDomiPers"/>
     <tag group="ClsAllowSp" tag="spSeeming"/>
-    <bootstrap thing="c5CWlkFeyP">
-      <autotag group="ClSpecWhen" tag="1"/>
-      </bootstrap>
-    <bootstrap thing="c5CWlkMisE">
-      <autotag group="ClSpecWhen" tag="6"/>
-      </bootstrap>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron"/>
     <bootstrap thing="c5CWlkBegD">
       <autotag group="ClSpecWhen" tag="10"/>
       </bootstrap>
     <bootstrap thing="c5CWlkDarD">
       <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkFeyP">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkMisE">
+      <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
     <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
 
@@ -2331,8 +2394,7 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abAction" tag="Action"/>
     </thing>
   <thing id="c5CWlkGrOO" name="The Great Old One" description="A mysterious entity from beynd reality is your patron. It&apos;s motives are incomprehensible, but it&apos;s knowledge vast." compset="CustomSpec" uniqueness="unique">
-    <tag group="SpecSource" tag="cHelpWlk"/>
-    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron"/>
+    <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="Primary"/>
     <tag group="Helper" tag="SpecUp"/>
     <tag group="ClsAllowSp" tag="sp5CDissW"/>
@@ -2345,17 +2407,19 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="ClsAllowSp" tag="spBlacTent"/>
     <tag group="ClsAllowSp" tag="spDomiPers"/>
     <tag group="ClsAllowSp" tag="spTelekine"/>
-    <bootstrap thing="c5CWlkAwaM">
-      <autotag group="ClSpecWhen" tag="1"/>
-      </bootstrap>
-    <bootstrap thing="c5CWlkEntW">
-      <autotag group="ClSpecWhen" tag="6"/>
-      </bootstrap>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron"/>
     <bootstrap thing="c5CWlkThoS">
       <autotag group="ClSpecWhen" tag="10"/>
       </bootstrap>
     <bootstrap thing="c5CWlkCreT">
       <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkAwaM">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkEntW">
+      <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
     <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
 
@@ -2366,6 +2430,9 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abRange" tag="Feet"/>
     <tag group="abDuration" tag="Constant"/>
     <tag group="abAction" tag="None"/>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
     </thing>
   <thing id="c5CWlkEntW" name="Entropic Ward" description="Use your reaction to give disadvantage to an attack roll about to be made against you. If it misses, you have advantage on your next attack roll against the attacker. Recharges on a short or long rest." compset="ClSpecial" summary="Give attacker disadvantage, get advantage if it misses. Recharge short/long rest.">
     <fieldval field="trkMax" value="1"/>
@@ -3019,11 +3086,55 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
     <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
     </thing>
   <thing id="ra5CWizTE4" name="See Invisibility" description="You can see invisible creatures and objects within 10 feet of you that are within line of sight." compset="RaceSpec">
-    <fieldval field="abDuration" value="Until you finish a short or long rest."/>
     <fieldval field="abRange" value="60-feet"/>
+    <fieldval field="abDuration" value="until you finish a short or long rest."/>
     <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
-    <tag group="FeatureTyp" tag="Sense" name="Sense" abbrev="Sense"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="FeatureTyp" tag="Sense" name="Sense" abbrev="Sense"/>
+    </thing>
+  <thing id="c5CRgrComp" name="Ranger&apos;s Companion" compset="Companion" stacking="never" uniqueness="unique">
+    <fieldval field="CompType" value="Ranger Companion"/>
+    <eval phase="PostAttr" priority="11000"><![CDATA[
+      var searchexpr as string
+      var excrace as string
+
+      excrace = "& !thingid.rApe & !thingid.rBlackBear & !thingid.rCrocodile & !thingid.rGiantGoat & !thingid.rGiantSea & !thingid.GiantWasp & !thingid.rReefShar & !thingid.rWarhorse & !thingid.r5CJaculi & !thingid.r5CALGtHGo"
+
+      searchexpr = "((hasbootstrap:tpBeast) & (RaceSize.Tiny12 | RaceSize.Small11 | RaceSize.Medium0) & !SwarmSize.?)" & excrace
+
+      minion.childfound[Totals].field[tRaceExpr].text = searchexpr
+
+~      perform minion.childfound[tpBeast].assign[Hide.Special]]]></eval>
+    <minion id="Familiar" isinherit="no">
+      <tag group="AllowRCust" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="CompIs" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="Hero" tag="NoAdvance" name="NoAdvance" abbrev="NoAdvance"/>
+      <tag group="Hero" tag="NoFamLvReq" name="No familiar Level requirements" abbrev="No familiar Level requirements"/>
+      <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+      <tag group="HideTab" tag="race" name="race" abbrev="race"/>
+      <bootstrap thing="ra5CRgrCom"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="ra5CRgrCom" name="Ranger&apos;s Companion" description="As a ranger&apos;s companion, you are granted bonuses to your AC, attack and damage rolls, saving throw (that you are proficient in).\nYour hit point maximum becomes either 4 times the ranger&apos;s level or your current maximum, whichever is greater.\n\n{b}Note:{/b}Hit points are not being calculated correctly, so manually change the hit points to what you need." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+~ Grab the master's proficiency bonus to set:
+~ AC bonus, attack roll bonus, damage roll bonus, saving throws
+~ only on saves that are proficient
+
+var iProfBon as number
+iProfBon = master.child[ProfBonus].field[tProfBonus].value
+hero.child[ProfBonus].field[tProfBonus].value += iProfBon
+foreach pick in hero from BaseWep where "wGroup.Natural"
+     eachpick.field[wDamBonus].value += iProfBon
+nexteach
+hero.child[ArmorClass].field[Bonus].value += iProfBon]]></eval>
     </thing>
   </document>
