@@ -807,4 +807,119 @@ hero.child[Totals].field[tAttunMax].value += field[pAdjust].value]]></eval>
     endif]]></eval>
     <exprreq message="Must be a minion"><![CDATA[tagis[Hero.FullMinion] >= 1]]></exprreq>
     </thing>
+  <thing id="p5CSplKnwn" name="Spells Known" description="Select this adjustment to add to the number of spells known for a spontaneous casting class (ie Sorcerer)." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.Class &amp; CasterType.SpontKnow"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <tag group="Adjustment" tag="Class"/>
+    <eval phase="First" priority="10000"><![CDATA[ ~ If we're not enabled, get out now		
+doneif (field[pIsOn].value = 0)		
+~ If nothing chosen, get out now		
+doneif (field[pChosen].ischosen = 0)		
+		
+~ Increase max spells known		
+field[pChosen].chosen.field[cMaxKnSpl].value += field[pAdjust].value]]></eval>
+    </thing>
+  <thing id="p5CSplMem" name="Spells Memorized" description="Select this adjustment to add to the number of spells memorized for spellbook classes (ie Wizard)." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.Class &amp; CasterType.MemBook"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <tag group="Adjustment" tag="Class"/>
+    <eval phase="First" priority="10000"><![CDATA[~ If we're not enabled, get out now		
+doneif (field[pIsOn].value = 0)		
+~ If nothing chosen, get out now		
+doneif (field[pChosen].ischosen = 0)		
+		
+~ Increase max spells Memorized		
+field[pChosen].chosen.field[cMaxSpMem].value += field[pAdjust].value]]></eval>
+    </thing>
+  <thing id="p5CBckSkCh" name="Background, Skill Change" description="Use this adjustment to change the Skill Proficience that your background gives. This is useful to customize a background to your specfic character.\n\n{b}Note:{/b} The first dropdown is the list of skills your background provides.  The 2nd dropdown is the new skill you want to replace the skill with." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseSkill &amp; ProfSkill.XXXXX"/>
+    <fieldval field="pCandExpr2" value="component.BaseSkill"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="OthAdjCat" tag="UserTop5th"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Adjust2nd" tag="S2Custom"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="AdjShadow" tag="Name"/>
+    <eval phase="First" priority="50"><![CDATA[perform hero.findchild[Background].setfocus		
+~ if can't find then get out now!		
+ doneif (state.isfocus = 0)		
+     		
+perform focus.pulltags[ProfSkill.?]		
+		
+if (tagis[ProfSkill.?] <> 0) then		
+     field[pCandExpr].text = "component.BaseSkill & (" & tagids[ProfSkill.?,"|"] & ")"
+endif		
+~ If we're not enabled, get out now		
+doneif (field[pIsOn].value = 0)		
+~ If nothing's been chosen, get out now		
+doneif (field[pChosen].ischosen <> 1)		
+doneif (field[pChosen2].ischosen <> 1)		
+		
+field[abText].text = field[pChosen].chosen.tagids[ProfSkill.?]
+perform focus.deletestr[field[abText].text]		
+
+field[abText2].text = field[pChosen2].chosen.tagids[ProfSkill.?]
+
+perform focus.assignstr[field[abText2].text]]]></eval>
+    </thing>
+  <thing id="p5CBackgro" name="Background" description="Adjustments in this section let you change Background values." compset="InPlay" isshowonly="yes">
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="UserTop5th"/>
+    </thing>
+  <thing id="p5CBckSkAd" name="Background, Skill Add" description="Use this adjustment to add an additional Skill Proficiency to your background. This is useful to customize a background to your specfic character." compset="InPlay">
+    <usesource source="5ePHBCP"/>
+    <tag group="AdjShadow" tag="Name"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="OthAdjCat" tag="UserTop5th"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Adjustment" tag="Skill"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <eval phase="First" priority="50"><![CDATA[~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+~ If nothing's been chosen, get out now		
+doneif (field[pChosen].ischosen <> 1)
+
+perform hero.findchild[Background].setfocus		
+~ if can't find then get out now!		
+doneif (state.isfocus = 0)
+~ Assign new skill		
+
+perform field[pChosen].chosen.pulltags[ProfSkill.?]		
+perform focus.pushtags[ProfSkill.?]]]></eval>
+    </thing>
+  <thing id="p5CBckSkRe" name="Background, Skill Remove" description="Use this adjustment to change the Skill Proficience that your background gives. This is useful to customize a background to your specfic character.\n\n{b}Note:{/b} The first dropdown is the list of skills your background provides.  The 2nd dropdown is the new skill you want to replace the skill with." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseSkill &amp; ProfSkill.XXXXX"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="OthAdjCat" tag="UserTop5th"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Adjustment" tag="S2Custom"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="AdjShadow" tag="Name"/>
+    <eval phase="First" priority="50"><![CDATA[perform hero.findchild[Background].setfocus		
+~ if can't find then get out now!		
+doneif (state.isfocus = 0)		
+	
+perform focus.pulltags[ProfSkill.?]
+	
+if (tagis[ProfSkill.?] <> 0) then		
+     field[pCandExpr].text = "component.BaseSkill & (" & tagids[ProfSkill.?,"|"] & ")"
+endif		
+	
+~ If we're not enabled, get out now		
+doneif (field[pIsOn].value = 0)		
+~ If nothing's been chosen, get out now		
+doneif (field[pChosen].ischosen <> 1)		
+  		  
+field[abText].text = field[pChosen].chosen.tagids[ProfSkill.?]
+perform focus.deletestr[field[abText].text]]]></eval>
+    </thing>
   </document>
