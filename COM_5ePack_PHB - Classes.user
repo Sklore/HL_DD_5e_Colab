@@ -2749,13 +2749,28 @@ hero.child[xFly].field[abValue].value = myspeed]]></eval>
       <autotag group="ClSpecWhen" tag="2"/>
       </bootstrap>
     </thing>
-  <thing id="c5CWizImMI" name="Improved Minor Illusion" description="You learn the minor illusion cantrip. If you already know this cantrip, you learn a different wizard cantrip of your choice. The cantrip doesn’t count against your number of cantrips known.\n\nWhen you cast minor illusion, you can create both a sound and an image with a single casting o f the spell." compset="ClSpecial">
+  <thing id="c5CWizImMI" name="Improved Minor Illusion" description="You learn the {i}minor illusion{/i} cantrip. If you already know this cantrip, you learn a different wizard cantrip of your choice. The cantrip doesn’t count against your number of cantrips known.\n\nWhen you cast {i}minor illusion{/i}, you can create both a sound and an image with a single casting of the spell." compset="ClSpecial">
     <tag group="abDuration" tag="Constant"/>
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <bootstrap thing="spMinoIllu">
       <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sNameOver" value="Minor Illusion (Improved)"/>
       </bootstrap>
+    <eval phase="PostLevel" priority="5000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+~ This ability breaks when you're a forest gnome. 
+~ The minor illusion you have needs enhanced, not a new one given.
+~ Increase the number of cantrips known by 1 to allow 
+~ a forest gnome to learn one more cantrip at the levels cantrips are
+~ earned. (from cHelpWiz).
+
+if (hero.tagis[Ability.ra5CNatIll] = 1) then
+     hero.childfound[cHelpWiz].field[cArrKnCan].arrayvalue[0] += 1
+     hero.childfound[cHelpWiz].field[cArrKnCan].arrayvalue[3] += 1
+     hero.childfound[cHelpWiz].field[cArrKnCan].arrayvalue[9] += 1
+endif]]></eval>
     </thing>
   <thing id="c5CWizMalI" name="Malleable Illusions" description="When you cast an illusion spell that has a duration of 1 minute or longer, you can use your action to change the nature of that illusion (using the spell’s normal parameters for the illusion), provided that you can see the illusion." compset="ClSpecial">
     <tag group="abRange" tag="Sight"/>
