@@ -378,7 +378,7 @@
     </thing>
   <thing id="p5CAdd1Sp" name="Add Single Spell to Class/Race" description="Use this adjustment to add a single spell from any class to any class/race on your character.  In example you could add the Hold Person spell to the Paladin spell list or to the Death Knight." compset="InPlay">
     <fieldval field="pCandExpr2" value="component.BaseSpell"/>
-    <fieldval field="pCandExpr" value="component.BaseClass|component.BaseRace"/>
+    <fieldval field="pCandExpr" value="component.Class|component.BaseRace"/>
     <usesource source="5ePHBCP"/>
     <tag group="Adjustment" tag="S2Custom"/>
     <tag group="OthAdjCat" tag="Spell"/>
@@ -921,5 +921,24 @@ doneif (field[pChosen].ischosen <> 1)
   		  
 field[abText].text = field[pChosen].chosen.tagids[ProfSkill.?]
 perform focus.deletestr[field[abText].text]]]></eval>
+    </thing>
+  <thing id="p5CAttr20p" name="Ability Score (Adjust over 20)" description="Select this adjustment to change your Strength, Dexterity, Constitution, Intelligence, Wisdom or Charisma above 20." compset="InPlay">
+    <fieldval field="pWhat" value="(Adjust over 20)"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Adjustment" tag="Attribute" name="Attributes" abbrev="Attributes"/>
+    <tag group="OthAdjCat" tag="Attributes" name="Attributes" abbrev="Attributes"/>
+    <eval phase="PreAttr" priority="10000"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+~ Add to our chosen attribute
+field[pChosen].chosen.field[aNormMod].value += field[pAdjust].value
+field[pChosen].chosen.field[aMaxValue].value += field[pAdjust].value
+
+~ hard cap at 30
+if (field[pChosen].chosen.field[aMaxValue].value > 30) then
+  field[pChosen].chosen.field[aMaxValue].value = 30
+endif]]></eval>
     </thing>
   </document>
