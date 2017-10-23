@@ -2424,4 +2424,45 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <tag group="abAction" tag="Bonus"/>
     <tag group="User" tag="Activation"/>
     </thing>
+  <thing id="rLGTortle" name="Tortle" compset="Race">
+    <fieldval field="rSTR" value="2"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rHeightMin" value="48"/>
+    <fieldval field="rWeightMin" value="450"/>
+    <usesource source="p5eToAP"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <bootstrap thing="ra5CHoBr1H"></bootstrap>
+    <bootstrap thing="ra5CNaArTo"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wDieCount" value="1"/>
+      </bootstrap>
+    <bootstrap thing="lAquan"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CSheDef"></bootstrap>
+    </thing>
+  <thing id="ra5CHoBr1H" name="Hold Breath" description="The creature can hold its breath for up to 1 hour at a time allowing them to stay underwater for some time before needing to surface for air." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CNaArTo" name="Natural Armor" description="You have a base AC of 17 (DEX mod does not affect this number). Armor provides no benefit but shield bonus does apply." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="1000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+      if (hero.tagis[Hero.EquipArmor] = 0) then
+        hero.child[ArmorClass].field[tACNatural].value = 4
+        endif]]></eval>
+    </thing>
+  <thing id="ra5CSheDef" name="Shell Defense" description="You can hide in your shell as an action. Provides +4 bonus to AC, and you have advantage on Strength and Constitution saving throws. While in the shell you are considered prone. Your speed is 0 and cannot be increased. You have disadvantage on DEX saving throws. Unable to take reactions. The only action you can take as a bonus action is to leave your shell." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
   </document>
