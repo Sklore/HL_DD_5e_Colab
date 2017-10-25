@@ -2424,7 +2424,7 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <tag group="abAction" tag="Bonus"/>
     <tag group="User" tag="Activation"/>
     </thing>
-  <thing id="rLGTortle" name="Tortle" compset="Race">
+  <thing id="r5CTortle" name="Tortle" description="Tortles were a race of intelligent turtle-like humanoids indigenous to southern Chult.\n\nTortles were reptilian-looking humanoids with large shells on their backs that were capable of containing their entire bodies and provided ample protection.\n\nMost tortles had the notion of having their houses on their backs, which meant that they rarely felt homesick or the need to lay roots in any single place. They were eager to learn new customs and found beauty in the most ordinary things. Despite spending much of their lives isolated, tortles liked to form strong friendships.\n\nBesides being able to wield weapons and shields, tortles had claws that were effective as natural weapons and could retreat into their shells for protection if necessary. The shape of their bodies made it impossible for tortles to wear armor, however.\n\nTortles only reproduced near the end of their natural lifespans. When their young hatched from their eggs, they spent the remainder of their lives sharing all their life experiences and teaching survival skills. Young tortles would become orphans after about one year, by which time they were expected to be able to fend for themselves." compset="Race">
     <fieldval field="rSTR" value="2"/>
     <fieldval field="rWIS" value="1"/>
     <fieldval field="rHeightMin" value="48"/>
@@ -2454,15 +2454,77 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="abAction" tag="None"/>
-    <eval phase="Final" priority="1000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostAttr" priority="5000" index="2"><![CDATA[~ If we're not shown, just get out now
+doneif (tagis[Helper.Disable] <> 0)
+
+var dexmod as number
+
+dexmod = #attrmod[aDEX]
+~ turn it into a penalty
+dexmod *= -1
+
+if (hero.tagis[Hero.EquipArmor] = 0) then
+     ~ we are unarmored, remove Dex bonus by adding it's negative value back
+     hero.child[ArmorClass].field[tACUnarDef].value += dexmod
+else
+     ~ we are armored, strip all armor bonuses
+     hero.child[ArmorClass].field[tACDexMod].value = 0
+     foreach pick in hero from BaseArmor where "Helper.CurrArmor"
+     ~ kill off any type of AC modifier
+          eachpick.field[arAC].value = 0 
+          eachpick.field[arBonus].value = 0
+          eachpick.field[Bonus].value = 0
+     nexteach
+endif]]></eval>
+    <eval phase="Final" priority="1000"><![CDATA[~ If we're not shown, just get out now
+doneif (tagis[Helper.Disable] <> 0)
 
       if (hero.tagis[Hero.EquipArmor] = 0) then
-        hero.child[ArmorClass].field[tACNatural].value = 4
+        hero.child[ArmorClass].field[tACNatural].value = 7
         endif]]></eval>
     </thing>
   <thing id="ra5CSheDef" name="Shell Defense" description="You can hide in your shell as an action. Provides +4 bonus to AC, and you have advantage on Strength and Constitution saving throws. While in the shell you are considered prone. Your speed is 0 and cannot be increased. You have disadvantage on DEX saving throws. Unable to take reactions. The only action you can take as a bonus action is to leave your shell." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="r5CGrung" name="Grung" description="Grungs were poisonous frog-like amphibious humanoids that lived in trees. Their society was organized in castes determined by each grung&apos;s color.\n\nGrungs preferred to live in shady areas, and needed to remain in constant proximity to water. Their tadpoles developed in ground pools, already separated by caste. All grungs continuously secreted a poisonous substance that was harmless to them.\n\nIn addition to their naturally poisonous nature, grungs also poisoned their weapons. Each color of grung poison caused a different ailment in their victims.\n\nGrung society was a rigid caste system, and each grung&apos;s place was determined by its color.\n\nGreen - Warriors, hunters, and general laborers.\nBlue - Artisans and domestic workers.\nPurple - Supervisors of the green and blue grungs.\nRed - Scholars and magic users. Also known as grung wildlings, they were superior to purple, green and blue castes, and respected even by higher castes.\nOrange - Elite warriors, with authority over all lesser grungs.\nGold - Also elite warriors, with the highest leadership positions. Every tribe leader was a gold grung.\n\nSome mobility was possible between the castes, in cases of valuable contributions and great deeds, by the use of ritual magic and herbal compounds.\n\nGrung tribes also made extensive use of slavery, and were always looking for new creatures to enslave. They kept their slaves at bay by poisoning their food in order to inflict lethargy on them. Over extended periods of time, the effects of such poisoning could only be removed by magic." compset="Race">
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rCON" value="1"/>
+    <fieldval field="rHeightMin" value="30"/>
+    <fieldval field="rWeightMin" value="30"/>
+    <fieldval field="rSpeed" value="25"/>
+    <usesource source="p5eToAP"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="Alignment" tag="Evil"/>
+    <bootstrap thing="raAmphib"></bootstrap>
+    <bootstrap thing="l5CGrung"></bootstrap>
+    <bootstrap thing="ra5CGruSki"></bootstrap>
+    <bootstrap thing="ra5CGrPoSk"></bootstrap>
+    <bootstrap thing="ra5CGrStLe"></bootstrap>
+    <bootstrap thing="ra5cWatDep"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="25"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CGrPoSk" name="Poisonous Skin" description="If another creature comes into direct contact with your skinn they must make a successful DC12 CON saving throw or be poisoned for 1 minute. \nCreatures that are poisoned and no longer touching you can re-attempt the saving throw and the end of each turn, if successful the effect will end. \n\nIf you have a piercing weapon you can apply this poison. You can do this as part of the attack with that weapon. \nIf hit by a poisoned weapon the creature must succeed on a DC 12 CON saving throw or suffer 2d4 poison damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CGrStLe" name="Standing Leap" description="You can long jump up to 25 feet. \nYou can high jump up to 15 feet. You can do this without a running start or with one." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5cWatDep" name="Water Dependency" description="Each day you must immerse yourself in water for minimum of 1 hour. \nIf you fail to do this you suffer one level of exhaustion at the end of that day. \nTo recover from this exhaustion you must use magical means or immerse yourself in water for minimum of 1 hour." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
     </thing>
   </document>
