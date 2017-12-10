@@ -30,6 +30,65 @@
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="EquipMag"/>
     <tag group="Helper" tag="Mask"/>
+    <bootstrap thing="ra5CMILeRe">
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="4"/>
+      </bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="abValue" value="30"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)    
+      field[abValue].value += #attrmod[aCHA]
+      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[~ grant resitance or immunity
+doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0) 
+if (hero.tagis[DamageRes.dtFire] = 0) then
+     perform hero.assign[DamageRes.dtFire]
+
+else
+     perform hero.assign[DamageImm.dtFire]
+     perform hero.delete[DamageRes.dtFire]
+endif
+if (hero.tagis[DamageRes.dtPoison] = 0) then
+     perform hero.assign[DamageRes.dtPoison]
+
+else
+     perform hero.assign[DamageImm.dtPoison]
+     perform hero.delete[DamageRes.dtPoison]
+endif
+if (hero.tagis[DamageRes.dtCold] = 0) then
+     perform hero.assign[DamageRes.dtCold]
+
+else
+     perform hero.assign[DamageImm.dtCold]
+     perform hero.delete[DamageRes.dtCold]
+endif
+if (hero.tagis[DamageRes.dtLightnin] = 0) then
+     perform hero.assign[DamageRes.dtLightnin]
+
+else
+     perform hero.assign[DamageImm.dtLightnin]
+     perform hero.delete[DamageRes.dtLightnin]
+endif
+if (hero.tagis[DamageRes.dtAcid] = 0) then
+     perform hero.assign[DamageRes.dtAcid]
+
+else
+     perform hero.assign[DamageImm.dtAcid]
+     perform hero.delete[DamageRes.dtAcid]
+endif
+
+~ if the hero is a dragonborn, change the recharge on the breath
+perform hero.childfound[raDraBrWea].assign[Recharge.6]
+perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
     </thing>
   <thing id="i5CRTADS" name="Arrow of Dragon Slaying" description="If a dragon takes damage from this arrow, it must make a DC 17 Constitution saving throw, taking an additional extra 6d10 piercing damage on a failed save, or half on a successful save.  After this arrow deals its extra damage its becomes a normal arror." compset="MagicWep">
     <usesource source="5eROTCP"/>
@@ -60,6 +119,33 @@
     <tag group="ItemRarity" tag="Legendary"/>
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="EquipMag"/>
+    <bootstrap thing="ra5CMILeRe"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="abValue" value="30"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)    
+      field[abValue].value += #attrmod[aCHA]
+      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[~ grant resitance or immunity
+doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0) 
+
+if (hero.tagis[DamageRes.dtLightnin] = 0) then
+     perform hero.assign[DamageRes.dtLightnin]
+else
+     perform hero.assign[DamageImm.dtLightnin]
+     perform hero.delete[DamageRes.dtLightnin]
+endif
+~ if the hero is a dragonborn, change the recharge on the breath
+perform hero.childfound[raDraBrWea].assign[Recharge.6]
+perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
     </thing>
   <thing id="io5CRTDMBl" name="Dragon Mask, Black" description="The dragon masks conforms to the wears and while you are wearing any dragon mask and attuned to it, you gain the following benefits.\n\n{b}{i}Damage Absorption.{/i}{/b} You have resistance against the mask’s damage type. If you already have resistance to that damage type from another source, you instead have immunity to that damage type. If you already have immunity to that damage type from another source, whenever you are subjected to damage of that type, you take none of that damage and regain a number of hit points equal to half the damage dealt of that type.\n{b}{i}Draconic Majesty.{/i}{/b} While you are wearing no armor, you can add your Charisma bonus to your Armor Class.\n{b}{i}Dragon Breath.{/i}{/b} If you have a breath weapon that requires rest to recharge, it gains a recharge of 6. \n{b}{i}Dragon Sight.{/i}{/b} You gain darkvision out to 60 feet, or to an additional 60 feet if you already have that sense. Once per day, you can gain blindsight out to 30 feet for 5 minutes.\n{b}{i}Dragon Tongue.{/i}{/b} You can speak and understand Draconic. You also have advantage on any Charisma check you make against dragons that share the mask’s color.\n{b}{i}Legendary Resistance (1/Day).{/i}{/b} If you fail a saving throw, you can choose to succeed instead.\n\n{b}Black Mask Special Abilities{/b}\n{b}{i}Damage Type.{/i}{/b} The mask’s damage type is acid.\n{b}{i}Water Breathing.{/i}{/b} You can breathe underwater." compset="Wondrous">
     <usesource source="5eROTCP"/>
@@ -69,6 +155,34 @@
     <tag group="ItemRarity" tag="Legendary"/>
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="EquipMag"/>
+    <bootstrap thing="ra5CMILeRe"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="abValue" value="30"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)    
+      field[abValue].value += #attrmod[aCHA]
+      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[~ grant resitance or immunity
+doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0) 
+
+if (hero.tagis[DamageRes.dtAcid] = 0) then
+     perform hero.assign[DamageRes.dtAcid]
+
+else
+     perform hero.assign[DamageImm.dtAcid]
+     perform hero.delete[DamageRes.dtAcid]
+endif
+~ if the hero is a dragonborn, change the recharge on the breath
+perform hero.childfound[raDraBrWea].assign[Recharge.6]
+perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
     </thing>
   <thing id="io5CRTDMGn" name="Dragon Mask, Green" description="The dragon masks conforms to the wears and while you are wearing any dragon mask and attuned to it, you gain the following benefits.\n\n{b}{i}Damage Absorption.{/i}{/b} You have resistance against the mask’s damage type. If you already have resistance to that damage type from another source, you instead have immunity to that damage type. If you already have immunity to that damage type from another source, whenever you are subjected to damage of that type, you take none of that damage and regain a number of hit points equal to half the damage dealt of that type.\n{b}{i}Draconic Majesty.{/i}{/b} While you are wearing no armor, you can add your Charisma bonus to your Armor Class.\n{b}{i}Dragon Breath.{/i}{/b} If you have a breath weapon that requires rest to recharge, it gains a recharge of 6. \n{b}{i}Dragon Sight.{/i}{/b} You gain darkvision out to 60 feet, or to an additional 60 feet if you already have that sense. Once per day, you can gain blindsight out to 30 feet for 5 minutes.\n{b}{i}Dragon Tongue.{/i}{/b} You can speak and understand Draconic. You also have advantage on any Charisma check you make against dragons that share the mask’s color.\n{b}{i}Legendary Resistance (1/Day).{/i}{/b} If you fail a saving throw, you can choose to succeed instead.\n\n{b}Green Mask Special Abilities{/b}\n\n{b}{i}Damage Type.{/i}{/b} The mask’s damage type is poison.\n{b}{i}Water Breathing.{/i}{/b} You can breathe underwater." compset="Wondrous">
     <usesource source="5eROTCP"/>
@@ -78,6 +192,34 @@
     <tag group="ItemRarity" tag="Legendary"/>
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="EquipMag"/>
+    <bootstrap thing="ra5CMILeRe"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="abValue" value="30"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)    
+      field[abValue].value += #attrmod[aCHA]
+      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[~ grant resitance or immunity
+doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0) 
+
+if (hero.tagis[DamageRes.dtPoison] = 0) then
+     perform hero.assign[DamageRes.dtPoison]
+
+else
+     perform hero.assign[DamageImm.dtPoison]
+     perform hero.delete[DamageRes.dtPoison]
+endif
+~ if the hero is a dragonborn, change the recharge on the breath
+perform hero.childfound[raDraBrWea].assign[Recharge.6]
+perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
     </thing>
   <thing id="io5CRTDMRd" name="Dragon Mask, Red" description="The dragon masks conforms to the wears and while you are wearing any dragon mask and attuned to it, you gain the following benefits.\n\n{b}{i}Damage Absorption.{/i}{/b} You have resistance against the mask’s damage type. If you already have resistance to that damage type from another source, you instead have immunity to that damage type. If you already have immunity to that damage type from another source, whenever you are subjected to damage of that type, you take none of that damage and regain a number of hit points equal to half the damage dealt of that type.\n{b}{i}Draconic Majesty.{/i}{/b} While you are wearing no armor, you can add your Charisma bonus to your Armor Class.\n{b}{i}Dragon Breath.{/i}{/b} If you have a breath weapon that requires rest to recharge, it gains a recharge of 6. \n{b}{i}Dragon Sight.{/i}{/b} You gain darkvision out to 60 feet, or to an additional 60 feet if you already have that sense. Once per day, you can gain blindsight out to 30 feet for 5 minutes.\n{b}{i}Dragon Tongue.{/i}{/b} You can speak and understand Draconic. You also have advantage on any Charisma check you make against dragons that share the mask’s color.\n{b}{i}Legendary Resistance (1/Day).{/i}{/b} If you fail a saving throw, you can choose to succeed instead.\n\n{b}Red Mask Special Abilities{/b}\n{b}{i}Damage Type.{/i}{/b} The mask’s damage type is fire.\n{b}{i}Dragon Fire.{/i}{/b} If you deal fire damage to a creature or flammable object, it starts burning. At the start of each of its turns, a creature burning in this way takes 1d6 fire damage. A creature that can reach the burning target can use an action to extinguish the fire" compset="Wondrous">
     <usesource source="5eROTCP"/>
@@ -87,6 +229,34 @@
     <tag group="ItemRarity" tag="Legendary"/>
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="EquipMag"/>
+    <bootstrap thing="ra5CMILeRe"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="abValue" value="30"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)    
+      field[abValue].value += #attrmod[aCHA]
+      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[~ grant resitance or immunity
+doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0) 
+
+if (hero.tagis[DamageRes.dtFire] = 0) then
+     perform hero.assign[DamageRes.dtFire]
+
+else
+     perform hero.assign[DamageImm.dtFire]
+     perform hero.delete[DamageRes.dtFire]
+endif
+~ if the hero is a dragonborn, change the recharge on the breath
+perform hero.childfound[raDraBrWea].assign[Recharge.6]
+perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
     </thing>
   <thing id="io5CRTDMWh" name="Dragon Mask, White" description="The dragon masks conforms to the wears and while you are wearing any dragon mask and attuned to it, you gain the following benefits.\n\n{b}{i}Damage Absorption.{/i}{/b} You have resistance against the mask’s damage type. If you already have resistance to that damage type from another source, you instead have immunity to that damage type. If you already have immunity to that damage type from another source, whenever you are subjected to damage of that type, you take none of that damage and regain a number of hit points equal to half the damage dealt of that type.\n{b}{i}Draconic Majesty.{/i}{/b} While you are wearing no armor, you can add your Charisma bonus to your Armor Class.\n{b}{i}Dragon Breath.{/i}{/b} If you have a breath weapon that requires rest to recharge, it gains a recharge of 6. \n{b}{i}Dragon Sight.{/i}{/b} You gain darkvision out to 60 feet, or to an additional 60 feet if you already have that sense. Once per day, you can gain blindsight out to 30 feet for 5 minutes.\n{b}{i}Dragon Tongue.{/i}{/b} You can speak and understand Draconic. You also have advantage on any Charisma check you make against dragons that share the mask’s color.\n{b}{i}Legendary Resistance (1/Day).{/i}{/b} If you fail a saving throw, you can choose to succeed instead.\n\n{b}White Mask Special Abilities{/b}\n{b}{i}Damage Type.{/i}{/b} The mask’s damage type is cold.\n{b}{i}Winter’s Fury.{/i}{/b} While your current hit points are equal to or less than half your hit point maximum, you deal an extra 1d8 cold damage with your melee attacks." compset="Wondrous">
     <usesource source="5eROTCP"/>
@@ -96,6 +266,34 @@
     <tag group="ItemRarity" tag="Legendary"/>
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="EquipMag"/>
+    <bootstrap thing="ra5CMILeRe"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="abValue" value="30"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)    
+      field[abValue].value += #attrmod[aCHA]
+      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[~ grant resitance or immunity
+doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0) 
+
+if (hero.tagis[DamageRes.dtCold] = 0) then
+     perform hero.assign[DamageRes.dtCold]
+
+else
+     perform hero.assign[DamageImm.dtCold]
+     perform hero.delete[DamageRes.dtCold]
+endif
+~ if the hero is a dragonborn, change the recharge on the breath
+perform hero.childfound[raDraBrWea].assign[Recharge.6]
+perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
     </thing>
   <thing id="r5CRTIceTo" name="Ice Toad" compset="Race">
     <fieldval field="rHitDice" value="5"/>
@@ -143,5 +341,29 @@
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="ra5CMILeRe" name="Legendary Resistance" description="If you fail a saving throw, you can choose to succeed instead." compset="RaceSpec">
+    <comment>For Magic items like the dragon masks.</comment>
+    <fieldval field="abUserVal" value="1"/>
+    <tag group="Helper" tag="UserValue" name="Ability that needs a user-set value" abbrev="Ability that needs a user-set value"/>
+    <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
+    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <eval phase="PostLevel" priority="100000" index="2"><![CDATA[
+      var cr as number
+      var hp as number
+      cr = hero.child[cmhHelper].field[cmhCR].value
+      if (cr >= 11) then
+        hp = 30
+      elseif (cr >= 5) then
+        hp = 20
+      elseif (cr >= 1) then
+        hp = 10
+        endif
+      
+      hero.child[cmhHelper].field[cmhHPEffBo].value += hp * field[abUserVal].value]]></eval>
+    <eval phase="First" priority="100000">field[trkMax].value += field[abUserVal].value</eval>
     </thing>
   </document>
