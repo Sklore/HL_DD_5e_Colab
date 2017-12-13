@@ -17,15 +17,20 @@
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     </thing>
   <thing id="bn5CDimTra" name="Boon of Dimensional Travel" description="As an action, you can cast the {i}misty step{/i} spell, without using spell slots or material compenents. Once you do so, you can&apos;t use this boon again until you finish a short rest." compset="Boon" uniqueness="useronce">
-    <fieldval field="trkMax" value="1"/>
     <usesource source="5eDMGCP" parent="p5ePack" name="5e Dungeon Master&apos;s Guide - Beta"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="abAction" tag="Action"/>
     <tag group="SpInfo" tag="spMistStep"/>
-    <tag group="User" tag="Tracker"/>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
-    <tag group="Usage" tag="ShortRest"/>
-    <bootstrap thing="spMistStep"></bootstrap>
+    <bootstrap thing="spMistStep">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="ShortRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">~ Found an issue with boons setting helper.disable on spells
+~ have to manually remove at post-level step (timing 10000)
+
+perform hero.childfound[spMistStep].delete[Helper.Disable]</eval>
     </thing>
   <thing id="bn5CFortit" name="Boon of Fortitude" description="Your hit point maximum is increased by 40." compset="Boon" uniqueness="useronce">
     <usesource source="5eDMGCP" parent="p5ePack" name="5e Dungeon Master&apos;s Guide - Beta"/>
@@ -37,7 +42,7 @@
     <usesource source="5eDMGCP" parent="p5ePack" name="5e Dungeon Master&apos;s Guide - Beta"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
-    <eval phase="Final"> hero.childfound[SlotHold9].field[MaxAllow].value += 1</eval>
+    <eval phase="Final">hero.childfound[SlotHold9].field[MaxAllow].value += 1</eval>
     </thing>
   <thing id="bn5CImmort" name="Boon of Immortality" description="You stop aging and become immune to any effect that would cause you to age. You cannot die from old age." compset="Boon" uniqueness="useronce">
     <usesource source="5eDMGCP" parent="p5ePack" name="5e Dungeon Master&apos;s Guide - Beta"/>
@@ -90,17 +95,20 @@ perform hero.assign[DamageImm.dtPoison]
 perform hero.assign[DamageImm.dtDisease]]]></eval>
     </thing>
   <thing id="bn5CPlaTra" name="Boon of Planar Travel" description="As an action, you can cast the {i}plane shift{/i} spell, without using spell slots or material compenents, targeting yourself only. When you choose this boon, you pick a plane other than the Material plane that you can travel to. When you use this boon you may travel to the plane chosen or return to the material plane. \n\nOnce you do so, you can&apos;t use this boon again until you finish a short rest." compset="Boon" uniqueness="useronce">
-    <fieldval field="trkMax" value="1"/>
     <usesource source="5eDMGCP" parent="p5ePack" name="5e Dungeon Master&apos;s Guide - Beta"/>
     <tag group="SpInfo" tag="spMistStep" name="Misty Step" abbrev="Misty Step"/>
-    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
-    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
     <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="Helper" tag="ActivMenu"/>
-    <tag group="User" tag="NeedDomain"/>
-    <bootstrap thing="spMistStep"></bootstrap>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="ShortRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">~ Found an issue with boons setting helper.disable on spells
+~ have to manually remove at post-level step (timing 10000)
+
+perform hero.childfound[spPlanShif].delete[Helper.Disable]</eval>
     </thing>
   <thing id="bn5CQuiCas" name="Boon of Quick Casting" description="Pick one of your 1st- through 3rd- level spells that has a casting time of 1 action. That spell&apos;s casting time is now 1 bonus action." compset="Boon" uniqueness="useronce">
     <fieldval field="usrCandid1" value="(sLevel.1 | sLevel.2 | sLevel.3) &amp; Helper.Memorized"/>
@@ -166,8 +174,13 @@ nexteach</eval>
     <bootstrap thing="spBurnHand">
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sNameOver" value="Burning Hands (DC 15)"/>
       </bootstrap>
     <eval phase="First" priority="10000">perform hero.assign[DamageImm.dtFire]</eval>
+    <eval phase="Final" priority="10000" index="2">~ Found an issue with boons setting helper.disable on spells
+~ have to manually remove at post-level step (timing 10000)
+
+perform hero.childfound[spBurnHand].delete[Helper.Disable]</eval>
     </thing>
   <thing id="bn5CNigSpi" name="Boon of the Night Spirit" description="While completely in an area of dim light or darkness, you can become invisible as an action. You remain invisible until you take an action or reaction." compset="Boon" uniqueness="useronce">
     <fieldval field="abDuration" value="Until another action or reaction"/>
@@ -186,9 +199,14 @@ nexteach</eval>
     <bootstrap thing="spThunderw">
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sNameOver" value="Thunderwave (DC 15)"/>
       </bootstrap>
     <eval phase="First" priority="10000">perform hero.assign[DamageImm.dtLightnin]
 perform hero.assign[DamageImm.dtThunder]</eval>
+    <eval phase="Final" priority="10000" index="2">~ Found an issue with boons setting helper.disable on spells
+~ have to manually remove at post-level step (timing 10000)
+
+perform hero.childfound[spThunderw].delete[Helper.Disable]</eval>
     </thing>
   <thing id="bn5CUnfett" name="Boon of the Unfettered" description="You have advantage on ability checks made to resist being grappled. In addition, you can use an action to automatically escape a grapple or free yourself of any kind of restraints." compset="Boon" uniqueness="useronce">
     <usesource source="5eDMGCP" parent="p5ePack" name="5e Dungeon Master&apos;s Guide - Beta"/>
@@ -200,5 +218,16 @@ perform hero.assign[DamageImm.dtThunder]</eval>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <eval phase="PostAttr" priority="10000">#applybonus[BonTrait, hero.child[skStealth], 10]</eval>
+    </thing>
+  <thing id="bn5CTruesi" name="Boon of Truesight" description="You have truesight with a range of 60 feet." compset="Boon" uniqueness="useronce">
+    <usesource source="5eDMGCP" parent="p5ePack" name="5e Dungeon Master&apos;s Guide - Beta"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="60"/>
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000">perform hero.childfound[raTruesigh].delete[Helper.Disable]</eval>
     </thing>
   </document>
