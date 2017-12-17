@@ -91,7 +91,57 @@
       </bootstrap>
     </thing>
   <thing id="c5CFierySl" name="Fiery Soul" description="At 1st level, you learn one of the following cantrips: fire bolt, produce flame, or sacred flame. \n\nWhen you cast the chosen cantrip, it ignores the target’s resistance to fire damage." compset="ClSpecial">
+    <fieldval field="usrCandid1" value="thingid.spFireBolt | thingid.spProdFlam | thingid.spSacrFlam"/>
+    <fieldval field="abValue" value="1"/>
     <usesource source="EN5_65"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[      ~ If not shown get out now!
+      doneif (tagis[Helper.ShowSpec] = 0)
+      ~ If not disabled get out now!
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ If cantrip chosen pull the "Class Allow Spell" tag
+      if (field[usrChosen1].ischosen <> 0) then
+        perform field[usrChosen1].chosen.pulltags[ClsAllowSp.?]
+      endif
+
+      ~ Push allow spell tags to class and hero
+      perform root.linkage[table].pushtags[ClsAllowSp.?]
+      ~ add 1 to number of cantrips allowed
+      root.linkage[table].field[cMaxKnCan].value += field[abValue].value]]></eval>
+    <evalrule phase="PostLevel" priority="10000" message="Must add chosen cantrip to cantrips known!" summary="Must add chosen cantrip to cantrips known!"><![CDATA[
+       validif (tagis[Helper.ShowSpec] = 0)
+
+       validif (tagis[Helper.Disable] <> 0)
+
+       var spellname2 as string
+       var searchexpr as string
+       var messnames as string
+       var foundone as number
+
+       @valid = 1
+
+       if (field[usrChosen1].ischosen <> 0) then
+         foundone = 0
+         searchexpr = "KnowSpell." & field[usrChosen1].chosen.idstring & " & SpellType.cHelpClr & Helper.Cantrip"
+
+         foreach pick in hero from BaseSpell where searchexpr
+           foundone = 1
+
+           perform eachpick.assign[Helper.Free]
+         nexteach
+
+         if (foundone = 0) then
+           spellname2 = field[usrChosen1].chosen.field[name].text
+           @valid = 0
+         endif
+       endif
+
+       if (@valid = 0) then
+         messnames = splice(messnames, spellname2, ", ")
+         @message = "You have selected the following cantrips for Fiery Soul but not added them to your Cleric cantrips known: " & messnames
+       endif]]></evalrule>
     </thing>
   <thing id="c5CEPBnsPr" name="Bonus Proficiency" description="At 1st level, you gain proficiency with martial weapons." compset="ClSpecial">
     <usesource source="EN5_65"/>
