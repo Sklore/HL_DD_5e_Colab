@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="f5CUAAcrob" name="Acrobat" description="You become more nimble, gaining the following benefits:\n* Increase your Dexterity score by 1, to a maximum of 20.\n* You gain proficiency in the Acrobatics skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* As a bonus action, you can make a DC 15 Dexterity (Acrobatics) check. If you succeed, difficult terrain doesn&apos;t cost you extra movement until the end of the current turn." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aDEX].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skAcrobat"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUAAniHa" name="Animal Handler" description="You master the techniques needed to train and handle animals. You gain the following benefits:\n* Increase your Wisdom score by 1, to a maximum of 20.\n* You gain proficiency in the Animal Handling skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* You can use a bonus action on your turn to command one friendly beast within 60 feet of you that can hear you and that isn&apos;t currently following the command of someone else. You decide now what action the bease till take and where it will move during its next turn, or you issue a general command that lasts for 1 minute, such as to guard a particular area." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aWIS].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skAnimHand"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUAArcan" name="Arcanist" description="You study the arcane arts, gaining the following benefits:\n* Increase your Intelligence score by 1, to a maximum to 20.\n* You gain proficiency in the Arcana skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* You learn the {i}prestidigitation{/i} and {i}detect magic{/i} spells. You can cast {i}detect magic{/i} once without expending a spell slot, and you regain the ability to do so when you finish a long rest." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="spPrestidi">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aINT].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skArcana"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUABrawn" name="Brawny" description="You become stronger, gaining the following benefits:\n* Increase your Strength score by 1, to a maximum of 20.\n* You gain proficiency in the Athletics skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* You count as if you were one size larger for the purpose of determining your carrying capacity." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aSTR].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skAthletic"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    <eval phase="PostLevel" priority="10000" index="3"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~ double our encumbrance
+      herofield[tEncum].value *= 2]]></eval>
+    </thing>
+  <thing id="f5CUADiplo" name="Diplomat" description="You master the arts of diplomacy, gaining the following benefits:\n* Increase your Charisma score by 1, to a maximum of 20.\n* You gain proficiency in the Persuasion skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* If you spend 1 minute talking to someone who can understand what you say, you can make a Charisma (Persuasion) check contested by the creature&apos;s Wisdom (Insight) check. If you or your companions are fighting the creature, your check automatically fails. If your check succeeds, the target is charmed by you as long as it remains within 60 feet of you and for 1 minute thereafter." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCHA].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skPersuas"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUAEmpat" name="Empathic" description="You possess keen insight into how other people think and feel. You gain the following benefits:\n* Increase your Wisdom score by 1, to a maximum of 20.\n* You gain proficiency in the Insight skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it. \n* You can use your action to try to get uncanny insight about one humanoid you can see within 30 feet of you. Make a Wisdom (Insight) check contested by the target&apos;s Charisma (Deception) check. If your check succeeds, you have advantage on attack rolls and ability checks against the target until the end of your next turn." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aWIS].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skInsight"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUAHisto" name="Historian" description="Your study of history rewards you with the following benefits:\n* Increase your Intelligence score by 1, to a maximum of 20.\n* You gain proficiency in the History skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* When you take the Help action to aid another creature&apos;s ability check, you cna make a DC 15 Intelligence (History) check. On a success, that creature&apos;s check gains a bonus equal to your proficiency bonus, as you share pertinent advice and historical examples. To receive this bonus, the creature must be able to understand what you&apos;re saying." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aINT].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skHistory"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUAInves" name="Investigator" description="You have an eye for detail and can pick out the smallest clues:\n* Increase your Intelligence score by 1, to a maximum of 20.\n* You gain proficiency in the Investigation skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* You can take the Search action as a bonus action." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aINT].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skInvestig"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUAMedic" name="Medic" description="You master the physician&apos;s arts, gaining the following benefits:\n* Increase your Wisdom score by 1, to a maximum of 20.\n* You gain proficiency in the Medicine skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* During a short rest, you can clean and bind the wounds of up to six willing beasts and humanoids. Make a DC 15 Wisdom (Medicin) check for each creature. On a success, if a creature spends a Hit Die during this rest, that creature can forgo the roll and instead regain the maximum number of hit points the die can restore. A creature can do so only once per rest, regardless of how many Hit Dice it spends." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aWIS].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skMedicine"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUAMenac" name="Menacing" description="You become fearsome to others, gaining the following benefits:\n* Increase your Charisma score by 1, to a maximum of 20.\n* You gain proficiency in the Intimidation skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* When you take the Attack action on your turn, you can replace one attack with an attempt to demoralize one humanoid you can see within 30 feet of you that can see and hear you. Make a Charisma (Intimidation) check contested by the target&apos;s Wisdom (Insight) check. If your check succeeds, the target is frightened until the end of your next turn. If your check fails, the target can&apos;t be frightened by you in this way for 1 hour." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCHA].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skIntim"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUANatur" name="Naturalist" description="Your extensive study of nature rewards you with the following benefits:\n* Increase your Intelligence score by 1, to a maximum of 20.\n* You gain proficiency in the Nature skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* You learn the {i}druidcraft{/i} and {i}detect poinson and disease{/i} spells. You can cast {i}detect poison and disease{/i} once without expending a spell slot, and you regain the ability to do so when you finish a long rest." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="spDruidcra">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDetePois">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aINT].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skNature"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUAPerce" name="Perceptive" description="You hone your senses until they become razor sharp. You gain the following benefits:\n* Increase your Wisdom score by 1, to a maximum of 20.\n* You gain proficiency in the Perception skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* Being in a lightly obscured area doesn&apos;t impose disadvantage on your Wisdom (Perception) checks if you can both see and hear." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aWIS].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skPercep"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUAPerfo" name="Performer" description="You master performance so that you can command any stage. You gain the following benefits:\n* Increase your Charisma score by 1, to a maximum of 20.\n* You gain proficiency in the Performance skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* While performing, you can try to distract one humanoid you can see who can see and hear you. Make a Charisma (Performance) check contested by the humanoid&apos;s Wisdom (Insight) check. If your check succeeds, you grab the humanoid&apos;s attention enough that it makes Wisdom (Perception) and Intelligence (Investigation) checks with disadvantage until you stop performing." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCHA].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skPerform"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUAQuick" name="Quick-Fingered" description="Your nimble fingers and agility let you perform sleight of hand. You gain the following benefits:\n* Increase your Dexterity score by 1, to a maximum of 20.\n* You gain proficiency in the Sleight of Hand skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* As a bonus action, you can make a Dexterity (Sleight of Hand) check to plant something on someone else, conceal an object on a creature, lift a purse, or take something from a pocket." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aDEX].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skSleight"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUASilve" name="Silver-Tongued" description="You develop your conversational skill to better deceive others. You gain the following benefits:\n* Increase your Charisma score by 1, to a maximum of 20.\n* You gain proficiency in the Deception skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* When you take the Attack action on your turn, you can replace one attack with an attempt to deceive one humanoid you can see with 30 feet of you that can see and hear you. Make a Charisma (Deception) check contested by the target&apos;s Wisdom (Insight) check. If your check succeeds, your movement doesn&apos;t provoke opportunity attacks from the target and your attack rolls against it have advantage; both benefits last until the end of your next turn or until you use this ability on a different target. If your check fails, the target can&apos;t be deceived by you in this way for 1 hour." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCHA].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skDecept"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUASteal" name="Stealthy" description="You know how best to hide. You gain the following benefits:\n* Increase your Dexterity score by 1, to a maximum of 20.\n* You gain proficiency in the Stealth skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* If you are hidden, you can move up to 10 feet in the open without revealing yourself if you end the move in a position where you are not clearly visible." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aDEX].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skStealth"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  <thing id="f5CUASurvi" name="Survivalist" description="You master wilderness lore, gaining the following benefits:\n* Increase your Wisdom score by 1, to a maximum of 20.\n* You gain proficiency in the Survival skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* You learn the {i}alarm{/i} spell. You can cast it once without expending a spell slot, and you regain the ability to do so when you finish a long rest." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="spAlarm">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skSurvival"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aWIS].field[aStartMod].value += 1]]></eval>
+    </thing>
+  <thing id="f5CUATheol" name="Theologian" description="Your extensive study of religion rewards you with the following benefits:\n* Increase your Intelligence score by 1, to a maximum of 20.\n* You gain proficiency in the Religion skill. If you are already proficient in the skill, you add double your proficiency bonus to checks you make with it.\n* You learn the {i}thaumaturgy{/i} and {i}detect evil and good{/i} spells. You can cast {i}detect evil and good{/i} once without spending a spell slot, and you regain the ability to do so when you finish a long rest." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFeSkUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Skills"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="spThaumatu">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDeteEvil">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aINT].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" priority="15500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "thingid.skReligion"
+     if (eachpick.tagis[Helper.Proficient] = 0) then 
+          perform eachpick.assign[Helper.Proficient]
+     elseif (eachpick.tagis[Helper.Proficient] <> 0) then
+          perform eachpick.assign[Helper.ProfDouble]
+     endif
+nexteach]]></eval>
+    </thing>
+  </document>
