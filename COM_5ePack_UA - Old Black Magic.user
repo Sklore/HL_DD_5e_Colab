@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CBMTiefl" name="Tiefling" description="Tieflings from the {i}Player&apos;s Handbook{/i} share some manner of diabolic origin. This option allows you to create a tiefling with either diabolic or demonic ties." compset="Race">
+    <comment>From UA-Old Black Magic</comment>
+    <fieldval field="rCHA" value="2"/>
+    <fieldval field="rHeightMin" value="57"/>
+    <fieldval field="rWeightMin" value="110"/>
+    <usesource source="5eOlBMUACP"/>
+    <tag group="WeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="WeightSize" tag="4" name="d4" abbrev="d4"/>
+    <tag group="HeightSize" tag="8" name="d8" abbrev="d8"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="HeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="SplAttr" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[
+      ~ We need to make this Tiefling race look just like the official
+      ~ Tiefling race from LW. So push the Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.rTiefling]
+      perform hero.assign[IsRace.rTiefling]
+      perform hero.assign[RaceEquip.rTiefling]]]></eval>
+    </thing>
+  <thing id="sr5CBMInTi" name="Infernal" description="An infernal tiefling draws upon the power of the Nine Hells and its diabolic masters. These tieflings have the following additional features (as per the PHB)." compset="SubRace" uniqueness="unique">
+    <fieldval field="rINT" value="1"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="SubRace" tag="r5CBMTiefl"/>
+    <tag group="ClVaryName" tag="Prepend"/>
+    <tag group="RaceType" tag="Normal"/>
+    <bootstrap thing="raTiResist"></bootstrap>
+    <bootstrap thing="ra5CInfLeg"></bootstrap>
+    <bootstrap thing="lInfernal"></bootstrap>
+    </thing>
+  <thing id="sr5CBMAbTi" name="Abyssal" description="All abyssal tieflings trace their bloodline to the demons of the Abyss." compset="SubRace" uniqueness="unique">
+    <fieldval field="rCON" value="1"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="SubRace" tag="r5CBMTiefl" name="Tiefling" abbrev="Tiefling"/>
+    <tag group="ClVaryName" tag="Prepend"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="ra5CAbyFor"></bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="ra5CAbyArc"></bootstrap>
+    <bootstrap thing="ra5CAbyAr1">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CAbyAr2">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CAbyArc" name="Abyssal Arcana (Cantrip)" description="Each time you finish a long rest, you gain the ability to cast cantrips and spells randomly determined from a short list. At 1st level, you can cast a cantrip. When you reach 3rd level, you can also cast a 1st-level spell. At 5th level, you can cast a 2nd-level spell. \n\nYou can cast a spell gained from this trait only once until you complete your next long rest. You can cast a cantrip gained from this trait at will as normal. For 1st-level spells whose effect changes if cast using a spell slot of 2nd level or higher, you cast the sepll as if using a 2nd-level slot. Spells of 2nd level are cast as if using a 2nd-level slot. \n\nAt the end of each long rest, you lose the cantrips and spells previously granted by this feature, even if you did not cast them. You replace those cantrips and spells by rolling for new ones on the Abyssal Arcana Spells table. Roll seperately for each cantrip and spell. If you roll the same spell or cantrip you gained at the end of your previous long rest, roll again until you get a different result.\n\n{b}Abyssal Arcana Spells{/b}\n{b}d6     1st level     3rd level     5th level{/b}\n1     {i}dancing lights    burning hands     alter self{/i}\n2     {i}true strike     charm person     darkness{/i}\n3     {i}light     magic missile     invisibility{/i}\n4     {i}message     cure wounds     levitate{/i}\n5     {i}spare the dying     hideous laughter     mirror image{/i}\n6     {i}prestidigitation     thunderwave     spider climb{/i}" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Dancing Lights"/>
+    <arrayval field="usrArray" index="1" value="True Strike"/>
+    <arrayval field="usrArray" index="2" value="Light"/>
+    <arrayval field="usrArray" index="3" value="Message"/>
+    <arrayval field="usrArray" index="4" value="Spare the Dying"/>
+    <arrayval field="usrArray" index="5" value="Prestidigitation"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="spDancLigh">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 0</containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      </bootstrap>
+    <bootstrap thing="spTrueStri">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 1</containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      </bootstrap>
+    <bootstrap thing="spLight">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 2</containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      </bootstrap>
+    <bootstrap thing="spMessage">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 3</containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      </bootstrap>
+    <bootstrap thing="spSparDyi">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 4</containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      </bootstrap>
+    <bootstrap thing="spPrestidi">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 5</containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CAbyFor" name="Abyssal Fortitude" description="Your hit point maximum increases by half your level (minimum 1)." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="PostLevel" priority="15000" index="2"><![CDATA[
+      ~if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      herofield[tBonusHP].value += field[abValue].value]]></eval>
+    <eval phase="PostLevel" priority="5000">field[abValue].value += maximum(herofield[tHitDice].value, 1)</eval>
+    </thing>
+  <thing id="sp5CBMCoBa" name="Conjure Barlgura" description="You summon a barlgura that appear in an unoccupied space you can see within range. The barlgura disappears when it drops to 0 hit points or when the spell ends.\n\nThe barlgura is hostile to all non-demons. Roll initiative for the barlgura, which has its own turns. At the start of its turn, it moves toward and attacks the nearest non-demon it can perceive. If two or more creatures are equally near, it picks one at random. If it cannot see any potential enemies, the barlgura moves in a random direction in search of foes. \n\nAs part of casting the spell, you can scribe a circle on the ground using the blood of an intelligent humanoid slain within the past 24 hours. The circle is large enough to encompass your space. The summoned barlgura cannot cross the circle or target anyone in it while the spell lasts." compset="Spell">
+    <fieldval field="sRange" value="60 feet"/>
+    <fieldval field="sDuration" value="Up to 10 minutes"/>
+    <usesource source="5eOlBMUACP"/>
+    <tag group="sSchool" tag="Conjur"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="sLevel" tag="4"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sCastTime" tag="Action1"/>
+    </thing>
+  <thing id="sp5CBMCoHe" name="Conjure Hezrou" description="You summon a hezrou that appears in an unoccupied space you can see within range. The hezrou disappears when it drops to 0 hit points or when the spell ends. \n\nThe hezrou&apos;s attitude depends on the value of the food used as a material component for this spell. Roll initiative for the hezrou, which has its own turns. At the start of the hezrou&apos;s turn, the DM makes a secret Charisma check on your behalf, with a bonus equal to the food&apos;s value divided by 20. The check DC starts at 10 and increases by 2 each round. You can issue orders to the hezrou and have it obey you as long as you succeed on the Charisma check.\n\nIf the check fails, the spell no longer requires concentration and the demon is no longer under your control. The hezrou then focuses on devouring any corpses it can see. If ther are no such meas at hand, it attacks the nearest creatures and eats anything it kills. If its hit poins are reduced to below half its hit point maximum, it returns to the Abyss.\n\nAs part of casting the spell, you can scribe a circle on the ground using the blood of an intelligent humanoid slain within the past 24 hours. The circle is large enough to encompass your space. The summoned hezrou cannot cross the circl or target anyone in it while the spell lasts." compset="Spell">
+    <fieldval field="sCompDesc" value="food worth at least 100 gp, which the spell consumes"/>
+    <fieldval field="sRange" value="60 feet"/>
+    <fieldval field="sDuration" value="Concentration, up to 1 hour"/>
+    <usesource source="5eOlBMUACP"/>
+    <tag group="sSchool" tag="Conjur"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="sLevel" tag="7"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    </thing>
+  <thing id="sp5CBMCoLD" name="Conjure Lesser Demon" description="You summon up to a total of eight manes or dretches that appear in unoccupied spaces you can see within ragne. A manes or dretch disappears when it drops to 0 hit points or when the spell ends.\n\nThe demons are hostile to all cratures. Roll initiative for the summoned demons as a group, which has its own turns. The demons attack the nearest non-demons to the best of their ability.\n\nAs part of casting the spell, you can scribe a circle on the ground with the blood used as a material component. The circle is large enough to encompass your space. The summond demons cannot cross the circle or target anyone in it while the spell lasts. Using the material component in this manner consumes it.\n\n{b}{i}At Higher Levels.{/i}{/b} When you cast this spell using a spell slot of 6th or 7th level, you summon sixteen demons. If you cast it using a spell slot of 8th or 9th level, you summon thrity-two demons." compset="Spell">
+    <fieldval field="sCompDesc" value="a vial of blood from an intelligent humanoid killed within the past 24 hours"/>
+    <fieldval field="sRange" value="60 feet"/>
+    <fieldval field="sDuration" value="Concentration, up to 1 hour"/>
+    <usesource source="5eOlBMUACP"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="sLevel" tag="3"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Conjur"/>
+    </thing>
+  <thing id="sp5CBMCoSD" name="Conjure Shadow Demon" description="You summon a shadow demon that appears in an unoccupied space you can see within range. The shadow demon disappears when it drops to 0 hit points or whern the spell ends. \n\nRoll initiative for the shadow demon, which has its own turns. You can issue orders to the shadow demon, and it obeys you as long as it can attack a creature on each of its turns and does not start its turn in an area of bright light. If either of these conditions is not met, the shadow demon immediately makes a Charisma check contested by your Charisma check. If you fail the check, the spell no longer requires concentration and the demon is no longer under your control. The demon automatically succeeds on the check if it is more than 100 feet away from you.\n\nAs part of casting the spell, you can scribe a circle on the groun using the blood of an intelligent humanoid slain within the past 24 hours. The circle is large enough to encompass your space. The summoned shadow demon cannot cross the circle or target anyone int it while the spell lasts." compset="Spell">
+    <fieldval field="sRange" value="60 feet"/>
+    <fieldval field="sDuration" value="Concentration, up to 1 hour"/>
+    <fieldval field="sCompDesc" value="a vial of blood from an intelligent humanoid killed within the past 24 hours"/>
+    <usesource source="5eOlBMUACP"/>
+    <tag group="sSchool" tag="Conjur"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="sLevel" tag="4"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="sCastTime" tag="Action1"/>
+    </thing>
+  <thing id="sp5CBMCoVr" name="Conjure Vrock" description="You summon a vrock that appears in an unoccupied space you can see within range. The vrock disappears when it drops to 0 hit points or when the spell ends. \n\nThe vrock&apos;s attitude depends on the value of the gem used as a material component for this spell. Roll initiative for the vrock, which has its own turns. At teh start of the vrock&apos;s turn, the DM makes a secret Charisma check on your behalf, with a bonus equal to the gem&apos;s value divided by 20. The check DC starts at 10 and increases by 2 each round. You can issue orders to the vrock and have it obey you as long as you succeed on the Charisma check.\n\nIf the check fails, the spell no longer requires concentration and the vrock is no longer under your control. The vrock takes no actions on its next turn and uses its telepathy to tell any creature it can see that it will fight in exchange for treasure. The creature that gives the vrock themost expensive gem can command it for the next 1d6 rounds. At the end of that time, it offers the bargain again. If no one offers the vrock treasure before its next turn begins, it attacks the nearest creatures for 1d6 rounds before returning to the Abyss.\n\nAs part of casting the spell, you can scribe a circle on the groun using the blood of an intelligent humanoid slain within the past 24 hours. The circle is large enough to encompass your space. The summoned vrock cannot cross the circle or target anyone in it while the spell lasts." compset="Spell">
+    <fieldval field="sRange" value="60 feet"/>
+    <fieldval field="sDuration" value="Concentration, up to 1 hour"/>
+    <fieldval field="sCompDesc" value="a gem worth at least 100 gp, which the spell consumes"/>
+    <usesource source="5eOlBMUACP"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="sLevel" tag="5"/>
+    <tag group="sSchool" tag="Conjur"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="sCastTime" tag="Action1"/>
+    </thing>
+  <thing id="ra5CAbyAr1" name="Abyssal Arcana (1st-level)" description="Each time you finish a long rest, you gain the ability to cast cantrips and spells randomly determined from a short list. At 1st level, you can cast a cantrip. When you reach 3rd level, you can also cast a 1st-level spell. At 5th level, you can cast a 2nd-level spell. \n\nYou can cast a spell gained from this trait only once until you complete your next long rest. You can cast a cantrip gained from this trait at will as normal. For 1st-level spells whose effect changes if cast using a spell slot of 2nd level or higher, you cast the sepll as if using a 2nd-level slot. Spells of 2nd level are cast as if using a 2nd-level slot. \n\nAt the end of each long rest, you lose the cantrips and spells previously granted by this feature, even if you did not cast them. You replace those cantrips and spells by rolling for new ones on the Abyssal Arcana Spells table. Roll seperately for each cantrip and spell. If you roll the same spell or cantrip you gained at the end of your previous long rest, roll again until you get a different result.\n\n{b}Abyssal Arcana Spells{/b}\n{b}d6     1st level     3rd level     5th level{/b}\n1     {i}dancing lights    burning hands     alter self{/i}\n2     {i}true strike     charm person     darkness{/i}\n3     {i}light     magic missile     invisibility{/i}\n4     {i}message     cure wounds     levitate{/i}\n5     {i}spare the dying     hideous laughter     mirror image{/i}\n6     {i}prestidigitation     thunderwave     spider climb{/i}" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Burning Hands"/>
+    <arrayval field="usrArray" index="1" value="Charm Person"/>
+    <arrayval field="usrArray" index="2" value="Magic Missile"/>
+    <arrayval field="usrArray" index="3" value="Cure Wounds"/>
+    <arrayval field="usrArray" index="4" value="Hideous Laughter"/>
+    <arrayval field="usrArray" index="5" value="Thunderwave"/>
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <bootstrap thing="spMagiMiss">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 2</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCureWoun">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 3</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spHideLaug">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 4</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spThunderw">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 5</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spBurnHand">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 0</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCharPers">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 1</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CAbyAr2" name="Abyssal Arcana (2nd-level)" description="Each time you finish a long rest, you gain the ability to cast cantrips and spells randomly determined from a short list. At 1st level, you can cast a cantrip. When you reach 3rd level, you can also cast a 1st-level spell. At 5th level, you can cast a 2nd-level spell. \n\nYou can cast a spell gained from this trait only once until you complete your next long rest. You can cast a cantrip gained from this trait at will as normal. For 1st-level spells whose effect changes if cast using a spell slot of 2nd level or higher, you cast the sepll as if using a 2nd-level slot. Spells of 2nd level are cast as if using a 2nd-level slot. \n\nAt the end of each long rest, you lose the cantrips and spells previously granted by this feature, even if you did not cast them. You replace those cantrips and spells by rolling for new ones on the Abyssal Arcana Spells table. Roll seperately for each cantrip and spell. If you roll the same spell or cantrip you gained at the end of your previous long rest, roll again until you get a different result.\n\n{b}Abyssal Arcana Spells{/b}\n{b}d6     1st level     3rd level     5th level{/b}\n1     {i}dancing lights    burning hands     alter self{/i}\n2     {i}true strike     charm person     darkness{/i}\n3     {i}light     magic missile     invisibility{/i}\n4     {i}message     cure wounds     levitate{/i}\n5     {i}spare the dying     hideous laughter     mirror image{/i}\n6     {i}prestidigitation     thunderwave     spider climb{/i}" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Alter Self"/>
+    <arrayval field="usrArray" index="1" value="Darkness"/>
+    <arrayval field="usrArray" index="2" value="Invisibility"/>
+    <arrayval field="usrArray" index="3" value="Levitate"/>
+    <arrayval field="usrArray" index="4" value="Mirror Image"/>
+    <arrayval field="usrArray" index="5" value="Spider Climb"/>
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <bootstrap thing="spMirrImag">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 4</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSpidClim">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 5</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spAlteSelf">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 0</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 1</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 3</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 2</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  </document>
