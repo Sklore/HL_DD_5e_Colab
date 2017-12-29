@@ -49,8 +49,7 @@
     <tag group="abAction" tag="Reaction"/>
     <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
     <tag group="LvNamePar" tag="DieSizVal2" name="Xd &quot;field[abValue2].value&quot;" abbrev="Xd &quot;field[abValue2].value&quot;"/>
-    <eval phase="PostLevel" priority="10000">
-      field[abValue].value += field[xCount].value</eval>
+    <eval phase="PostLevel" priority="10000">field[abValue].value += field[xCount].value</eval>
     <eval phase="Render" priority="10000" index="2"><![CDATA[
 field[listname].text = field[thingname].text & " (" & field[abValue].value & "d6 damage)"]]></eval>
     </thing>
@@ -141,5 +140,183 @@ endif]]></eval>
     <tag group="abRange" tag="Feet"/>
     <tag group="abDuration" tag="Instant"/>
     <tag group="StandardDC" tag="aCON"/>
+    </thing>
+  <thing id="c5CBbnZeal" name="Path of the Zealot" description="Some dieties inspire their followers to battle with ferocious zeal. These barbarians are divine warriors, channeling their rage into powerful displays of their chosen deities. \n\nGenerally, the gods who inspire zealots are deities of combat, destruction, and violence. Not all are evil, but very few are good." compset="CustomSpec" summary="Your religious zeal decimates foes." uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpBbn" name="Barbarian" abbrev="Barbarian"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="BbnPriPath" name="Barbarian Primal Path" abbrev="Barbarian Primal Path"/>
+    <tag group="abDuration" tag="ConstRage" name="Constant While Raging" abbrev="rage"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <bootstrap thing="c5CBbnDiFu">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CBbnWaGo">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CBbnFaFo">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cBbn5CZePr">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CBbnBeDe">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CBbnDiFu" name="Divine Fury" description="Starting at 3rd level, when you choose this path, you can channel divine fury into your weapon strikes. While raging, the first creature you hit on each of your turns with a weapon attack takes extra damage equal to 1d6 + half your barbarian level. You choose whether this is necrotic or radiant damage when you gain this feature." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="usrCandid1" value="(thingid.dtRadiant | thingid.dtNecrotic)"/>
+    <tag group="abRange" tag="AttackMel"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Usage" tag="Round"/>
+    <tag group="LvNamePar" tag="DieCnt1"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="SignAppVal"/>
+    <tag group="LvNamePar" tag="DieSiz6"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="LvNamePar" tag="AppValue3"/>
+    <eval phase="PostLevel" priority="10000">var LvMod as number
+
+LvMod = #levelcount[Barbarian] / 2
+
+field[abValue3].value = round(LvMod, 0, -1)
+
+field[abText].text = field[usrChosen1].chosen.field[name].text</eval>
+    </thing>
+  <thing id="c5CBbnWaGo" name="Warrior of the Gods" description="At 3rd level, your god wishes you to return to battle. If {i}raise dead{/i}, or a similar spell, is cast on you in order to restore your life (but not to make you undead), the caster doesn&apos;t need material components in order to cast the spell." compset="ClSpecial" summary="Your god wants you to keep fighting.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Permanent"/>
+    </thing>
+  <thing id="c5CBbnFaFo" name="Fanatical Focus" description="Starting at 6th level, your divine rage can protect you. If you fail a saving throw while you&apos;re raging, you can reroll it. You must use the new roll. You can use this feature only once per rage." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Usage" tag="5CperRage" name="/rage"/>
+    </thing>
+  <thing id="cBbn5CZePr" name="Zealous Presence" description="At 10th level, you learn to inspire others with your divine zealotry. As a bonus action, you utter a battle cry infused with divine energy. Up to 10 other creatures of your choice within 60 feet of you that can hear you gain adavantage on attack rolls and saving throws until the start of your next turn. \n\nOnce you use this ability, you can&apos;t use it again until you have finished a long rest." compset="ClSpecial">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="abDuration" value="Until the start of your next turn"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="c5CBbnBeDe" name="Rage Beyond Death" description="After reaching 14th level, the divine rage allows you to ignore fatal blows.\n\nWhile you&apos;re raging, having 0 hit points does not knock you unconscious. You still must make death saving throws, and you suffer the normal effects of taking damage while at 0 hit points. However, if you would die due to failing deathe saving throws, you don&apos;t die until your rage ends. When your rage ends, you die only if you still have 0 hit points." compset="ClSpecial">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    </thing>
+  <thing id="c5CBrdGlam" name="College of Glamour" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes UA - Bards</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpBrd" name="Bard" abbrev="Bard"/>
+    <tag group="abCategory" tag="BrdCollege" name="Bardic College" abbrev="Bardic College"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    </thing>
+  <thing id="c5CBrdSwor" name="College of Swords" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes kits of old.</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpBrd" name="Bard" abbrev="Bard"/>
+    <tag group="abCategory" tag="BrdCollege" name="Bardic College" abbrev="Bardic College"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    </thing>
+  <thing id="c5CBrdWhis" name="College of Whispers" compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes UA - Bards</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpBrd" name="Bard" abbrev="Bard"/>
+    <tag group="abCategory" tag="BrdCollege" name="Bardic College" abbrev="Bardic College"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    </thing>
+  <thing id="c5CClrXGFo" name="Forge" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes UA: Cleric Domains</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="abCategory" tag="ClrDomain" name="Cleric Domain" abbrev="Cleric Domain"/>
+    <tag group="SpecSource" tag="cHelpClr" name="Cleric" abbrev="Cleric"/>
+    </thing>
+  <thing id="c5CClrXGGr" name="Grave" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes UA: Cleric Domains</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="abCategory" tag="ClrDomain" name="Cleric Domain" abbrev="Cleric Domain"/>
+    <tag group="SpecSource" tag="cHelpClr" name="Cleric" abbrev="Cleric"/>
+    </thing>
+  <thing id="c5CDrdDrea" name="Circle of Dreams" compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes UA: Druid Circles</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpDrd" name="Druid" abbrev="Druid"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    </thing>
+  <thing id="c5CDrdShep" name="Circle of the Shepherd" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes UA: Druid Circles</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpDrd" name="Druid" abbrev="Druid"/>
+    </thing>
+  <thing id="c5CFtrArcA" name="Arcane Archer" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes UA: Fighter Archetypes</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="abCategory" tag="FtrMarArch" name="Fighter Martial Archetype" abbrev="Fighter Martial Archetype"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <eval phase="PostLevel" priority="9000"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+
+       linkage[table].field[cSpec4thNm].text = "Arcane Shots"
+       linkage[table].field[cSpec4thSi].text = "Arcane Shot"
+
+       linkage[table].field[cCustQuTot].arrayvalue[2] += 2
+       linkage[table].field[cCustQuTot].arrayvalue[6] += 3
+       linkage[table].field[cCustQuTot].arrayvalue[9] += 4
+       linkage[table].field[cCustQuTot].arrayvalue[14] += 5
+       linkage[table].field[cCustQuTot].arrayvalue[17] += 6]]></eval>
+    </thing>
+  <thing id="c5CFtrPieA" name="Piercing Arrow" description="Placeholder.." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abCategory" tag="FtrAAShots" name="Fighter Arcane Archer Arcane Shots" abbrev="Fighter Arcane Archer Arcane Shots"/>
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    </thing>
+  <thing id="c5CFtrCava" name="Cavalier" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <comment>New</comment>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="abCategory" tag="FtrMarArch" name="Fighter Martial Archetype" abbrev="Fighter Martial Archetype"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    </thing>
+  <thing id="c5CFtrXGSa" name="Samurai" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes UA: Fighter Archetypes</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="abCategory" tag="FtrMarArch" name="Fighter Martial Archetype" abbrev="Fighter Martial Archetype"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    </thing>
+  <thing id="c5CMnkDruM" name="Way of the Drunken Master" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes Trio of Subclasses</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpMnk" name="Monk" abbrev="Monk"/>
+    <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition" abbrev="Monk Monastic Tradition"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    </thing>
+  <thing id="c5CMnkWaKe" name="Way of the Kensei" description="Placeholder" compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes UA: Monk Traditions</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpMnk" name="Monk" abbrev="Monk"/>
+    <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition" abbrev="Monk Monastic Tradition"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
     </thing>
   </document>
