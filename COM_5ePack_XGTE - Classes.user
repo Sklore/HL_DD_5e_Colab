@@ -453,16 +453,43 @@ field[abText].text = field[usrChosen1].chosen.field[name].text</eval>
       <autotag group="ClSpecWhen" tag="17"/>
       </bootstrap>
     </thing>
-  <thing id="c5CDrdDrea" name="Circle of Dreams" compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CDrdDrea" name="Circle of Dreams" description="Druids from the Circle of Dreams hail from regions with strong ties to the Feywild and other dreamlike relms. Their guardianship of the natural world allies them with good-aligned fey. These druids seek to fill the world with a dreamy wonder. Their magic brings joy to the downtrodden, heals the wounded. The realms they protect are gleaming dreamlike places where reality and the dreamworld blur together and the inhabitants can find peace." compset="CustomSpec" uniqueness="unique">
     <comment>Supercedes UA: Druid Circles</comment>
     <usesource source="5eXGTECP"/>
     <tag group="SpecSource" tag="cHelpDrd" name="Druid" abbrev="Druid"/>
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CDrdBaSu">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdHeMS">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdHiPa">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdWaDr">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
     </thing>
-  <thing id="c5CDrdShep" name="Circle of the Shepherd" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CDrdShep" name="Circle of the Shepherd" description="Druids of Circle of the Shepherd commune with the spirits of beasts and the fey, and may call to those spirits for aid. They recognize that all living beings play a role in the world, yet the focus on protecting those creatures that cannot successfully defend themselves. Shepherds see such creatures as their charges and ward of monsters that threaten them, hunters that kill more than needed., and prevent settlement on lands encroaching sacred fey sites as well as endangered animal homes. Most Shepherds are more comfortable away from the city, enjoying the company of animals and fey.\n\nMembers of this circle usually become adventurers to oppose forces threating their charges or to learm power and knowledge to safeguard those they choose to protect." compset="CustomSpec" uniqueness="unique">
     <comment>Supercedes UA: Druid Circles</comment>
     <usesource source="5eXGTECP"/>
     <tag group="SpecSource" tag="cHelpDrd" name="Druid" abbrev="Druid"/>
+    <bootstrap thing="c5CDrdSpWo">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdSpiT">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdMigS">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdGuaS">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdFaiS">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
     </thing>
   <thing id="c5CFtrArcA" name="Arcane Archer" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
     <comment>Supercedes UA: Fighter Archetypes</comment>
@@ -835,5 +862,77 @@ endif]]></eval>
     <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
     <tag group="Usage" tag="UsPe5CTurn"/>
     <tag group="abDuration" tag="Instant"/>
+    </thing>
+  <thing id="c5CDrdBaSu" name="Balm of the Summer Court" description="At 2nd level, you become a font of energy that offers solace from injuries. You have a pool of fey energy, represented by a number d6s equal to your druid level.\n\nAs a bonus action, you can choose a creature that you can see within 120 feet of you and spend a number of these dice equal to half your druid level or less. Roll the spent dice and add them together. The target creature regains hit points equal to that total. In addition, the target gains 1 temporary hit point per die that was spent. \n\nYou regain all dice expended when you finish a long rest." compset="ClSpecial">
+    <fieldval field="abRange" value="120"/>
+    <fieldval field="abValue" value="1"/>
+    <fieldval field="abValue2" value="6"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+field[abValue].value = #levelcount[Druid]
+
+field[trkMax].value = #levelcount[Druid]]]></eval>
+    </thing>
+  <thing id="c5CDrdHeMS" name="Hearth of Moonlight and Shadow" description="At 6th level, whever you are can be called home. During a short or long rest, you can invoke a shadowy power to help guard your refuge. At the start of the rest, you touch a point in space, and an invisible, 30-foot-radius sphere of magical protection appears. The sphere cannot penetrate total cover. \n\nWhile inside the sphere, you and your allies are granted a +5 bonus to Dexterity (Stealth) and Wisdom (Perception) checks, and any light from open flames isn&apos;t visible from outside the sphere. \n\nThe sphere vanishes at the end of the rest or when you leave it." compset="ClSpecial">
+    <fieldval field="abDuration" value="for the duration of your rest or when you leave the area"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="abAction" tag="ShortRest"/>
+    </thing>
+  <thing id="c5CDrdHiPa" name="Hidden Paths" description="Beginning at 10th level, you can use the hidden fey pathways that transverse vast distances in the blink of an eye. As a bonus action on your turn, you can teleport up to 60 feet to an unoccupied space that you can see. Alternatively, you can use your action to teleport one willing creature you touch up to 30 feet in the same manner. \n\nYou can use this ability a number of times equal to your Wisdom modifier (minimum 1) and you regain all uses when you finish a long rest." compset="ClSpecial">
+    <fieldval field="abRange" value="30 or 60 feet"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="FinalMin1"/>
+    <tag group="ChargeAttr" tag="Minimum1"/>
+    <tag group="ChargeAttr" tag="aWIS"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="c5CDrdWaDr" name="Walker in Dreams" description="At 14th level, you are granted the ability to travel mentally or physically through the dreamlands.\n\nAt the end of a short rest, you can cast one of the following spells without spending a spell slot or needing material components: {i}dream{/i} (with you as the messenger), {i}scrying{/i}, or {i}teleportation circle{/i}.\n\nThis use of {i}teleportation circle{/i} can only open a portal to the last location where you finished a long rest on your current plane of existence, rather than to a permanent teleportation circle. If you haven&apos;t taken a long rest on the current plane, thespell fails but isn&apos;t wasted.\n\nOnce you use this ability, you cannot do so again until you finish a long rest." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="SpInfo" tag="spDream"/>
+    <tag group="SpInfo" tag="spScrying"/>
+    <tag group="SpInfo" tag="spTeleCirc"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="ShortRest"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="c5CDrdSpWo" name="Speech of the Woods" description="Upon reaching 2nd level, you gain the power to talk with beasts and most fey creatures.\n\nYou learn to speak, read, and write Sylvan. Additionally beasts can understand your speech, and you gain the power to decipher their noises and motions. Most creatures lack the intelligence to convey or understand advanced concepts, but a friendy beast could relay what it has seen and or heard recently. This does not grant you any special kinship with beasts although you can use this ability with gifts to curry favor to help with relations." compset="ClSpecial">
+    <bootstrap thing="lSylvan"></bootstrap>
+    </thing>
+  <thing id="c5CDrdSpiT" name="Spirit Totem" description="At 2nd level, yuo can influence the world around you by calling forth nature spirits. As a bonus action, you can magically summon an incorporeal spirit to a point you can see with 60 feet of you. The spirit emanates a 30-foot radius aura around that point. The spirit does not count as a creature or object, though it does appear as the creature selected for the totem (see below). \n\nAs a bonus action on each of your turns, you can move the spirit up to 60 feet to a point you can see. \n\nThe spirit persists for 1 minute or until you are incapacitated. Once you use this ability, you can&apos;t do so again until you finish a short of long rest. \n\nThe effect of the spirit&apos;s aura depends on the type of spirit you summon from the options below:\n\n{b}{i}Bear Spirit.{/i}{/b} Each creature of your choice in the spirit&apos;s aura gains temporary hit points equal to your druid level + 5. In addition, your allies in the aura gain advantage on saving throws and ability checks relying on Strength.\n\n{b}{i}Hawk Spirit.{/i}{/b} When any creature makes an attack roll against a target inside the spirit&apos;s aura, you may use your reaction to grant advantage to that roll. Additionally, you and your allies have advantage on Wisdom (Perception) checks while in the aura. \n\n{b}{i}Unicorn Spirit.{/i}{/b} You and your allies are granted advantage on all ability checks made to detect creatures in the spirit&apos;s aura. If you cast a spell using a spell slot that restores hit points to any creature inside or outside of the aura, each creature of your choice inside the aura also regains hit points equal to your druid level." compset="ClSpecial">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    </thing>
+  <thing id="c5CDrdGuaS" name="Guardian Spirit" description="At 10th level, your Spirit Totem safeguards the beasts and fey that you call forth with your magic. When a beast or fey that you summoned or created with a spell ends its turn in your Spirit Totem aura, that creature regains a number of hit points equal to half your druid level." compset="ClSpecial">
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="c5CDrdMigS" name="Mighty Summoner" description="At 6th level, you gain the ability to conjure forth powerful beasts and fey. Any beast or fey summoned or created by your spells gains two benefits. \n\n* The creature has 2 extra hit poitns per Hit Die. \n* The damage from its natural weapons is  considered magical for the purpose of overcoming immunity and resistance to nonmagical attacks and damage." compset="ClSpecial">
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="c5CDrdFaiS" name="Faithful Summons" description="At 14th level, when you at your most defenseless, the nature spirits commune with you. If you are reduced to 0 hit points ore are incapacitated against your will, you can immediately gain the benefits of {i}conjure animals{/i} cast with a 9th-level spell slot. It summons four beasts of CR 2 or lower that you choose. The beasts appear within 20 feet of you and if they receive no commnds from you, they protect you from harm and attack your foes. The spell lasts for 1 hour, requires no concentration to maintanin, and you may dismiss it freely (no action required). \n\nOnce you use this feature, you can’t use it again until you finish a long rest." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="SpInfo" tag="spConjAnim"/>
     </thing>
   </document>
