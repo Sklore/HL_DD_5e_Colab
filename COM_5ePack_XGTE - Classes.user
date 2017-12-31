@@ -491,12 +491,27 @@ field[abText].text = field[usrChosen1].chosen.field[name].text</eval>
       <autotag group="ClSpecWhen" tag="14"/>
       </bootstrap>
     </thing>
-  <thing id="c5CFtrArcA" name="Arcane Archer" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CFtrArcA" name="Arcane Archer" description="Using unique elven techniques an Arcane Archer weaves magic into their archery attacks to produce stunning, supernatural effects. Arcane Archers are considered the most elite warriors of elven communities. Over the centuries, these techniques have been learned by other races who also balance arcane ability with archery." compset="CustomSpec" uniqueness="unique">
     <comment>Supercedes UA: Fighter Archetypes</comment>
     <usesource source="5eXGTECP"/>
     <tag group="abCategory" tag="FtrMarArch" name="Fighter Martial Archetype" abbrev="Fighter Martial Archetype"/>
     <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
     <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <bootstrap thing="c5CFtrArAL">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrArSh">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrMagA">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrCurS">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrEveS">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
     <eval phase="PostLevel" priority="9000"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
 
        linkage[table].field[cSpec4thNm].text = "Arcane Shots"
@@ -508,11 +523,25 @@ field[abText].text = field[usrChosen1].chosen.field[name].text</eval>
        linkage[table].field[cCustQuTot].arrayvalue[14] += 5
        linkage[table].field[cCustQuTot].arrayvalue[17] += 6]]></eval>
     </thing>
-  <thing id="c5CFtrPieA" name="Piercing Arrow" description="Placeholder.." compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CFtrPieA" name="Piercing Arrow" description="Using transmutation magic you give your arrow an ethereal quality. When you use this Arcane Shot option, you don&apos;t make an attack roll for your attack. Instead the arrow shoots foward in a line, which is 1 foot wide and 30 feet long. The arrow disappears at the end of this line. The arrow passes harmlessly through any intervening objects, ingnorming cover. Each creature in the line must make a Dexterity saving throw. On a failed save, the creature takes damage as though it were hit by the arrow, plus an extra 1d6 piercing damage. On a successful save, a target takes half as much damage.\n\nAs you reach 17th level in Fighter, the piercind damage increases to 2d6." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abText" value="piercing"/>
+    <fieldval field="abValue" value="1"/>
+    <fieldval field="abValue2" value="6"/>
     <usesource source="5eXGTECP"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
     <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
     <tag group="abCategory" tag="FtrAAShots" name="Fighter Arcane Archer Arcane Shots" abbrev="Fighter Arcane Archer Arcane Shots"/>
-    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="LvNamePar" tag="DieCntVal"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="DieSizVal2"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (#levelcount[Fighter] < 18)
+
+field[abValue].value += 1]]></eval>
     </thing>
   <thing id="c5CFtrCava" name="Cavalier" description="Placeholder..." compset="CustomSpec" uniqueness="unique">
     <comment>New</comment>
@@ -934,5 +963,193 @@ field[trkMax].value = #levelcount[Druid]]]></eval>
     <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
     <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
     <tag group="SpInfo" tag="spConjAnim"/>
+    </thing>
+  <thing id="c5CFtrArAL" name="Arcane Archer&apos;s Lore" description="At 3rd level, you learn some of the magical theories or secrets of nature. You choose to gain proficiency in either the Arcana or Nature skill, and you learn either the {i}prestidigitation{/i} or {i}druidcraft{/i} cantrip." compset="ClSpecial">
+    <fieldval field="usrCandid1" value="component.BaseSkill &amp; (Reference.skArcana | Reference.skNature)"/>
+    <arrayval field="usrArray" index="0" value="Prestidigitation"/>
+    <arrayval field="usrArray" index="1" value="Druidcraft"/>
+    <bootstrap thing="spPrestidi">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 0</containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="Cantrip"/>
+      </bootstrap>
+    <bootstrap thing="spDruidcra">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 1</containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Helper" tag="Cantrip"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+      if (field[usrChosen1].ischosen <> 0) then
+        perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
+        endif
+      perform forward[ProfSkill.?]]]>
+      <before name="Calc skProfBon"/>
+      </eval>
+    </thing>
+  <thing id="c5CFtrArSh" name="Arcane Shot" description="Starting at 3rd level, you learn to enchant your shots with magical effects. When you gain this feature you learn two Arcane Shot options of your choice. \n\nOnce per turn when you fire a magic arrow from a shortbow or longbow as part of the Attack option, you can apply one of the Arcane Shot options you chose to that arrow. You decide to use the option when the arrow hits a creature, unless the option doesn&apos;t involve an attack roll. You have two uses of this ability, you regain expended uses when you finish a short or long rest. \n\nYou gain an additional Arcane Shot option at 7th, 10th, 15th, and 18th level. Each option also improves when you become an 18th level fighter.\n\nEach Arcane Shot option is associated with a particular school of magic. If an option requires a saving throw, your Arcane Shot save DC equals 8 + your proficiency bonus + your Intelligence modifier." compset="ClSpecial">
+    <fieldval field="trkMax" value="2"/>
+    <tag group="abRange" tag="AttackRan"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abSave" tag="Varies"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="c5CFtrBanA" name="Banishing Arrow" description="Using abjuration magic, you attempt to banish your target to a harmless location in the Feywild. The creature hit must succeed on a Charisma saving throw or be banished. While banished, the target&apos;s speed is 0, and it is incapacitated. At the end of its next turn, the target reappears in the space it previously vacated or in the nearest unoccupied space if that space has become occupied. \n\nAfter you reach 18th level, the target also takes 2d6 force damage when the arrow hits it." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abDuration" value="1"/>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="abCategory" tag="FtrAAShots" name="Fighter Arcane Archer Arcane Shots" abbrev="Fighter Arcane Archer Arcane Shots"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abRange" tag="AttackRan"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="abSave" tag="aCHA"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <eval phase="Render" priority="10000"><![CDATA[doneif (#levelcount[Fighter] < 18)
+
+field[livename].text &= " (2d6 force)"]]></eval>
+    </thing>
+  <thing id="c5CFtrBegA" name="Beguiling Arrow" description="Using enchantment magic, your arrow temporarily beguiles its target. The creature hit takes an extra 2d6 psychic damage, and you choose one of your allies within 30 feet of the target. The target must succeed on Wisdom saving throw, or it is charmed by the chosen ally until the start of your next turn. The effect ends early if the chosen ally damages the target, attacks it, or forces it to make a saving throw. \n\nAfter you reach 18th level of fighter, the psychic damage increases to 4d6." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abDuration" value="Until the start of your next turn"/>
+    <fieldval field="abText" value="psychic"/>
+    <fieldval field="abValue" value="2"/>
+    <fieldval field="abValue2" value="6"/>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="abRange" tag="AttackRan" name="Ranged Attack" abbrev="ran"/>
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="abCategory" tag="FtrAAShots" name="Fighter Arcane Archer Arcane Shots" abbrev="Fighter Arcane Archer Arcane Shots"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="StandardDC" tag="aINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="LvNamePar" tag="DieCntVal"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="DieSizVal2"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (#levelcount[Fighter] < 18)
+
+field[abValue].value += 2]]></eval>
+    </thing>
+  <thing id="c5CFtrBurA" name="Bursting Arrow" description="Using evocation magic, you enchant your arrow to do force damage. The energy of the attack detonates immediately after hitting the creature. The target and all other creatures within 10 feet of it take 2d6 force damage each. \n\nAfter you reach 18th level of fighter, the force damage increases to 4d6." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abValue" value="2"/>
+    <fieldval field="abValue2" value="6"/>
+    <fieldval field="abText" value="force"/>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="FtrAAShots" name="Fighter Arcane Archer Arcane Shots" abbrev="Fighter Arcane Archer Arcane Shots"/>
+    <tag group="abRange" tag="AttackRan" name="Ranged Attack" abbrev="ran"/>
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
+    <tag group="LvNamePar" tag="DieSizVal2" name="Xd &quot;field[abValue2].value&quot;" abbrev="Xd &quot;field[abValue2].value&quot;"/>
+    <tag group="abDuration" tag="Instant"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (#levelcount[Fighter] < 18)
+
+field[abValue].value += 2]]></eval>
+    </thing>
+  <thing id="c5CFtrEnfA" name="Enfeebling Arrow" description="Using necromantic magic, you enchant your arrow to do weaken your foe. The creature hit by the arrow takes an extra 2d6 necrotic damage. It must also succeed on a Constitution saving throw, or any damage dealt by its weapons attacks is halved until the start of your next turn. \n\nAfter you reach 18th level of fighter, the necrotic damage increases to 4d6." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abValue" value="2"/>
+    <fieldval field="abValue2" value="6"/>
+    <fieldval field="abText" value="necrotic"/>
+    <fieldval field="abDuration" value="Until the start of your next turn"/>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="FtrAAShots" name="Fighter Arcane Archer Arcane Shots" abbrev="Fighter Arcane Archer Arcane Shots"/>
+    <tag group="abRange" tag="AttackRan" name="Ranged Attack" abbrev="ran"/>
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="LvNamePar" tag="DieSizVal2" name="Xd &quot;field[abValue2].value&quot;" abbrev="Xd &quot;field[abValue2].value&quot;"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (#levelcount[Fighter] < 18)
+
+field[abValue].value += 2]]></eval>
+    </thing>
+  <thing id="c5CFtrGraA" name="Grasping Arrow" description="Using conjuration magic, you enchant your arrow to entangle your foe with grasping, poisonous brambles. The creature strucks takes an additional 2d6 poison damage, its speed is reduced by 10 feet, and it takes 2d6 slashing damage the first time on each turn it moves 1 foot or more without teleporting. The target or any creature that can reach it can use its action to remove the grasping brambles with a successful Strength (Athletics) check against your Arcane Shot save DC. Otherwise, the brables last for 1 minute or until you use this Arcane Shot option again. \n\nAfter you reach 18th level of fighter, the poison and slashing damage increase to 4d6 each" compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abDuration" value="Until the start of your next turn"/>
+    <fieldval field="abValue" value="2"/>
+    <fieldval field="abValue2" value="6"/>
+    <fieldval field="abText" value="poison*"/>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="FtrAAShots" name="Fighter Arcane Archer Arcane Shots" abbrev="Fighter Arcane Archer Arcane Shots"/>
+    <tag group="abRange" tag="AttackRan" name="Ranged Attack" abbrev="ran"/>
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
+    <tag group="LvNamePar" tag="DieSizVal2" name="Xd &quot;field[abValue2].value&quot;" abbrev="Xd &quot;field[abValue2].value&quot;"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (#levelcount[Fighter] < 18)
+
+field[abValue].value += 2]]></eval>
+    </thing>
+  <thing id="c5CFtrSeeA" name="Seeking Arrow" description="Using divination magic, you give your arrow the ability to seek out its target. When you use this option, you do not make an attack roll for the attack, instead choosing one creature you have seen in the past minute as a focus. The arrow flies toward that creature, turning around corners and ignoring half and three-quarters cover. If the target is within the weapon&apos;s range and there is an opening large enough for the arrow to travel to the target, the target must make a Dexterity saving throw. The arrow disappears if it cannot reach a target after travelling as far as it can. If the target fails its saving throw, it takes damage as if it were hit by the arrow, plus an additional 1d6 force damage, and you learn the target&apos;s current location. On a successful save, the target takes half as much damage, and its location remains unknown. \n\nAfter you reach 18th level of fighter, the force damage increases to 2d6." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abValue" value="1"/>
+    <fieldval field="abValue2" value="6"/>
+    <fieldval field="abText" value="force"/>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="StandardDC" tag="aINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="FtrAAShots" name="Fighter Arcane Archer Arcane Shots" abbrev="Fighter Arcane Archer Arcane Shots"/>
+    <tag group="abRange" tag="AttackRan" name="Ranged Attack" abbrev="ran"/>
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
+    <tag group="LvNamePar" tag="DieSizVal2" name="Xd &quot;field[abValue2].value&quot;" abbrev="Xd &quot;field[abValue2].value&quot;"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abSave" tag="aDEX"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (#levelcount[Fighter] < 18)
+
+field[abValue].value += 1]]></eval>
+    </thing>
+  <thing id="c5CFtrShaA" name="Shadow Arrow" description="Using illusion magic, your arrow obscures your foes vision with shadows. A creature hit by the arrow takes an extra 2d6 psychic damage, and it must succeed on a Wisdom saving throw or become unable to see farther than 5 feet until the start of your next turn. \n\nAfter you reach 18th level of fighter, the psychic damage increases to 4d6." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abDuration" value="Until the start of your next turn"/>
+    <fieldval field="abValue" value="2"/>
+    <fieldval field="abValue2" value="6"/>
+    <fieldval field="abText" value="psychic"/>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="StandardDC" tag="aINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="FtrAAShots" name="Fighter Arcane Archer Arcane Shots" abbrev="Fighter Arcane Archer Arcane Shots"/>
+    <tag group="abRange" tag="AttackRan" name="Ranged Attack" abbrev="ran"/>
+    <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wis"/>
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
+    <tag group="LvNamePar" tag="DieSizVal2" name="Xd &quot;field[abValue2].value&quot;" abbrev="Xd &quot;field[abValue2].value&quot;"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (#levelcount[Fighter] < 18)
+
+field[abValue].value += 2]]></eval>
+    </thing>
+  <thing id="c5CFtrMagA" name="Magic Arrow" description="At 7th level, you gain the ability to make your arrows magical. Whenever you fire a nonmagical arrow from a shortbow or longbow, you can make it magical. The arrow counts as magical for the purpose of overcoming immunity and resistance to nonmagical attacks and damage. The magic fades from the arrow immediately after it hits or misses the target." compset="ClSpecial">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="abDuration" tag="Attack"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] = 1)
+doneif (field[abilActive].value = 0)
+
+foreach pick in hero from BaseWep where " wProperty.Ammunition & ! wProperty.Loading "
+        eachpick.field[wDamExtra].text = "+" & field[abValue].value & "d6 Force"
+      nexteach]]></eval>
+    </thing>
+  <thing id="c5CFtrCurS" name="Curving Shot" description="Starting at 7th level, you learn ho to redirect errant arrows. When you make an attack roll with a magic arrow and miss, you can use a bonus action to reroll the attack roll against a different target. This target must be within 60 feet of the original target." compset="ClSpecial">
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="AttackRan"/>
+    <tag group="abDuration" tag="Instant"/>
+    </thing>
+  <thing id="c5CFtrEveS" name="Ever-Ready Shot" description="Starting at 15th level, your Arcane Shots regenerate expended uses whenever battle starts. If you roll initiative and have no uses of Arcane Shot remaining, you regain one use of it." compset="ClSpecial">
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="abAction" tag="None"/>
     </thing>
   </document>
