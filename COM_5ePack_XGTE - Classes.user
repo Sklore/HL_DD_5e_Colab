@@ -1811,4 +1811,117 @@ field[abValue].value = round(#levelcount[Paladin]/2, 0, -1)]]></eval>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
     </thing>
+  <thing id="c5CRgrGlSt" name="Gloom Stalker" description="Deep under the earth, in gloomey alleyway, in dark forests and wherever the light is dim is where Gloom Stalkers make their homes. Most folk are reluctant to enter such places, but a Gloom Stalker will boldly venture into the darkness, ambushing threats before they can reach beyond the darkness. Such rangers often journey into the Underdark, but are found anywhere evil lurks in the shadows." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <tag group="SpecSource" tag="cHelpRgC"/>
+    <tag group="abCategory" tag="RgrArchety"/>
+    <tag group="Helper" tag="Secondary"/>
+    <bootstrap thing="c5CRgrGSMa">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrDrAm">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrUmSi">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrIroM">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrStaF">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrShaD">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgrGSMa" name="Gloom Stalker Magic" description="When you take this Ranger archetype at 3rd level, you learn an additional spell at certain levels as shown in the Gloom Stalker Spells table. The spell counts as a ranger spell for you, but it doesn&apos;t count against the number of ranger spells known.\n\n{b}Gloom Stalker Spells{/b}\n{b}Ranger Level Spell{/b}\n3rd {i}disguise self{/i}\n5th {i}rope trick{/i}\n9th {i}fear{/i}\n13th {i}greater invisibility{/i}\n17th {i}seeming{/i}" compset="ClSpecial">
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Known"/>
+      </bootstrap>
+    <bootstrap thing="spRopeTric">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spFear">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spGreaInvi">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spSeeming">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgrDrAm" name="Dread Ambusher" description="At 3rd level, you can give yourself a bonus to your initiative rolls equal to your Wisdom modifier as you master the art of the ambush.\n\nAt the start of your first turn of each combat, your walking speed is increased by 10 feet, which lasts until the end of that turn. If you take the Attack action on that turn, you can make one additional weapon attack as part of that action. If that attack hits, the target takes an additional 1d8 damage of the weapon&apos;s damage type." compset="ClSpecial">
+    <eval phase="PostAttr" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+var InBon as number
+InBon = maximum(0, #attrmod[aWIS])
+
+#applybonus[Bonus, hero.child[Initiative], InBon]]]></eval>
+    </thing>
+  <thing id="c5CRgrUmSi" name="Umbral Sight" description="At 3rd level, you gain darkvision out to 60 feet unless you already have it. If you already have darkvision, its range increases by 30 feet.\n\nWhile in darkness, you are invisible to any creature that relies on darkvision to see you in that darkness as you are also adept at evading such creatures." compset="ClSpecial">
+    <comment><![CDATA[Error with scripting this - increasing existing darkvision doesn't work.]]></comment>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="500">Hero.HasDarkvis = 0</containerreq>
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)]]></eval>
+    </thing>
+  <thing id="c5CRgrIroM" name="Iron Mind" description="Starting at 7th level, you increase your ability to resist the mind-altering powers of your foes. \n\nYou gain proficiency in Wisdom saving throws. If you already have this proficiency, you instead gain proficiency in Intelligence or Charisma saving throws (your choice)." compset="ClSpecial">
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+if (hero.tagis[ProfSave.svWIS] = 0) then
+      ~ remove choices
+      field[usrCandid1].text = ""
+      perform hero.assign[ProfSave.svWIS]
+else
+      field[usrCandid1].text = "component.BaseSave & !Hide.Save & ( thingid.svINT | thingid.svCHA )"
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull the save proficiency tag and push to hero
+      perform field[usrChosen1].chosen.pulltags[ProfSave.?]
+      perform hero.pushtags[ProfSave.?]
+endif]]></eval>
+    </thing>
+  <thing id="c5CRgrStaF" name="Stalker&apos;s Flurry" description="At 11th level, you can turn a miss into another strike. Once on each of your turns when you miss with a weapon attack, you can make another weapon attack as part of the same action." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="Usage" tag="UsPe5CTurn"/>
+    </thing>
+  <thing id="c5CRgrShaD" name="Shadowy Dodge" description="At 1th level, you can dodge in ways that seem supernatural. Whenever a creature makes an attack roll against you and doesn&apos;t have advantage on the roll, you can use your reaction to impose disadvantage on it. You must declare to use this feature before you know the outcome of the attack roll." compset="ClSpecial">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abDuration" tag="Instant"/>
+    </thing>
   </document>
