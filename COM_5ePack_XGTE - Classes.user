@@ -619,13 +619,34 @@ field[abValue].value += 1]]></eval>
       <autotag group="ClSpecWhen" tag="17"/>
       </bootstrap>
     </thing>
-  <thing id="c5CMnkWaKe" name="Way of the Kensei" description="Placeholder" compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CMnkWaKe" name="Way of the Kensei" description="The monks of the Way of the Kensei train endlessly with their weapons in an effort make them an extension of themselves. Originally founded on mastery of sword fighting, this tradition has expanded to include many different weapons.\n\nTo a kensei, a weapon becomes much the same as a brush does to a calligrapher. Whatever wepon the kensei has chosen, it is viewed as a tool to express the beauty and precision of the martial arts. This mastery makes a kensei a warrior without peers, intense in their devotion, practice and study of their chosen weapons." compset="CustomSpec" uniqueness="unique">
     <comment>Supercedes UA: Monk Traditions</comment>
     <usesource source="5eXGTECP"/>
     <tag group="SpecSource" tag="cHelpMnk" name="Monk" abbrev="Monk"/>
     <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition" abbrev="Monk Monastic Tradition"/>
     <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CMnkPotK">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkOneB">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkKenW">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkKenW">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkKenW">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkShaB">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkUneA">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
     </thing>
   <thing id="c5CBrdMaIn" name="Mantle of Inspiration" description="Starting when you join the College of Glamour at 3rd level, you gain the ability to perform a song that imbues your allies with the vigor and speed of the fey. \n\nAs a bonus action, you can expend one use of your Bardic Inspiration to change your appearance to look more wonderful. When you do so, choose a number of creatures equal to your Charisma modifier (minimum of one) that are within 60 feet of you and can see you. Each of them gains 5 temporary hit points, and can immediately use their reaction to move up to their speed, without provoking opportunity attacks. \n\nThe number of temporary hit points increases to 8 at 5th level, 11 at 10th level, and 14 at 15th level." compset="ClSpecial">
     <fieldval field="abRange" value="60"/>
@@ -1430,6 +1451,362 @@ nexteach]]></eval>
     <tag group="abDuration" tag="Constant"/>
     </thing>
   <thing id="c5CMnkIntF" name="Intoxicated Frenzy" description="At 17th level, you gain the ability to make an astounding number of attacks against a group of enemies. When you use your Flurry of Blows as an Attack action, you can make up to three additional attacks with it (up to a total of five Flurry of Blows attacks), provided that each Flurry of Blows attack targets a different creature this turn." compset="ClSpecial">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="c5CMnkPotK" name="Path of the Kensei" description="When you choose this tradition at 3rd level, you master the use of certain weapons while furthering your training in the martial arts. This training also includes instruction in calligraphy or painting. You gain the following benefits:\n\n{b}{i}Kensei Weapons.{/i}{/b} Choose two types of weapons to be your chosen kensei weapons: one melee weapon and one ranged weapon. These weapons cannot have the heavy or special properties, but can be simple or martial. You gain proficiency with these weapons if you don&apos;t already have it and they count as monk wepons for you. Many of the kensei features only work when used with your chosen weapons. When you reach 6th, 11th and 17th levels in this class, you can choose another type of weapon - either melee or ranged- to be a kensei weapon for you following the criteria above. \n\n{b}{i}Agile Parry.{/i}{/b} If you are holding a kensei melee weapon and make an unarmed strike as part of the Attack action on your turn, you can use it to defend yourself. You gain a +2 bonus to AC until the start of your next turn, while the weapon remains in your hand and you aren&apos;t incapacitated. \n\n{b}{i}Kensei&apos;s Shot.{/i}{/b} You can use a bonus action on your turn to make your ranged kensei weapons more deadly. When you do so, any target you hit with a ranged attack using a kensei weapon takes an extra 1d4 damage of the weapon&apos;s type. You retain this benefit until the end of the current turn.\n\n{b}{i}Way of the Brush.{/i}{/b} You become proficient with your choice of calligraphers supplies or painters supplies." compset="ClSpecial">
+    <comment>The tool call for painters/calligraphy is to the cfg5CProf and may fail if tool tables are full.</comment>
+    <fieldval field="usrCandid1" value="component.BaseWep &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper &amp; wCategory.Melee &amp; !wProperty.Heavy &amp; !wProperty.Special"/>
+    <fieldval field="usrCandid2" value="(component.BaseWep &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper  &amp; wCategory.RangeProj &amp; !wProperty.Heavy &amp; !wProperty.Special) | thingid.wLongbow"/>
+    <fieldval field="abValue" value="1"/>
+    <fieldval field="actName" value="Agile Parry"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="ChooseSrc2" tag="Thing" name="All Things" abbrev="All Things"/>
+    <eval phase="PostLevel" priority="10000" index="3"><![CDATA[
+~ If we're disabled, do nothing & 
+doneif (tagis[Helper.Disable] = 1)
+
+var NumOfProf as number
+var NumOfTool as number
+~ Increase or decrease the number of proficiencies 
+NumOfTool = field[abValue].value
+perform hero.childfound[cfg5CProf].assign[AllowTool2.gSupCaligr]
+perform hero.childfound[cfg5CProf].assign[AllowTool2.gSupPainte]
+call 5CAddProf]]>
+      <before name="Calc skProfBon"/>
+      </eval>
+    <eval phase="PostLevel" priority="10000">~ Activated for Agile Parry
+doneif (tagis[Helper.Disable]  = 1)
+doneif (field[abilActive].value = 0)
+
+hero.childfound[ArmorClass].field[Bonus].value += 2</eval>
+    <eval phase="PreLevel" priority="10000" index="2">~ the weapon proficiencies are pushed here. 
+doneif (tagis[Helper.Disable] = 1)
+doneif (field[usrChosen1].ischosen = 0)
+doneif (field[usrChosen2].ischosen = 0)
+      
+~ Pull all the selected weapon proficiency tags to ourself 
+perform field[usrChosen1].chosen.pulltags[WepProf.?]
+perform field[usrChosen2].chosen.pulltags[WepProf.?]
+    
+~ Now push both tags to the hero
+perform hero.pushtags[WepProf.?]</eval>
+    </thing>
+  <thing id="c5CMnkOneB" name="One with the Blade" description="At 6th level, you extend your use of ki to your kensei weapons granting the following benefits:\n\n{b}{i}Magic Kensei Weapons.{/i}{/b} Your attacks with kensei weapons are considered magical for the purpose of overcoming resistance and immunity to nonmagical attacks. \n\n{b}{i}Deft Strike.{/i}{/b} When you successfully strike a target with a kensei weapon, you can spend 1 ki point to cause the weapon to deal extra damage equal to your Martial Arts die. You can use this feature only once on each of your turns." compset="ClSpecial">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="c5CMnkKenW" name="Path of the Kensei Weapon" description="You are granted an additional weapon to use with your kensei abilities." compset="ClSpecial">
+    <fieldval field="usrCandid1" value="(component.BaseWep &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper  &amp; !wProperty.Heavy &amp; !wProperty.Special) | thingid.wLongbow"/>
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <eval phase="PreLevel" priority="10000">doneif (tagis[Helper.Disable] = 1)
+doneif (field[usrChosen1].ischosen = 0)
+      
+~ Pull all the selected weapon proficiency tags to ourself 
+perform field[usrChosen1].chosen.pulltags[WepProf.?]
+    
+~ Now push both tags to the hero
+perform hero.pushtags[WepProf.?]</eval>
+    </thing>
+  <thing id="c5CMnkShaB" name="Sharpen the Blade" description="When you reach 11th level, you can further augment you weapons with your ki. As a bonus action you can expend up to 3 ki points to grant one kensei weapon you touch a bonus to attack and damage rolls when you attack with it. The bonus equals the number of ki points you spend. This bonus lasts for 1 minute or until you use this ability again. The feature has no effect on a magic weapon that already has a bonus to attack and damage rolls." compset="ClSpecial">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="actName" value="Sharpen the Blade"/>
+    <fieldval field="actIncrNam" value="Ki Bonus"/>
+    <fieldval field="actUserMin" value="1"/>
+    <fieldval field="actUserMax" value="3"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[doneif (field[abilActive].value = 0)
+
+~ loop through all the weapons that aren't a natural weapon
+foreach pick in hero from BaseWep where "!wGroup.Natural"
+     ~ if a weapon is equipped, check it out. 
+     if (eachpick.field[gIsEquip].value <> 0) then
+          ~ if the weapon has no bonus then grant the bonus
+          if (eachpick.field[Bonus].value = 0) then 
+               eachpick.field[Bonus].value += field[actUser].value
+          endif
+     endif
+  nexteach]]></eval>
+    </thing>
+  <thing id="c5CMnkUneA" name="Unerring Accuracy" description="At 17th level, you gain exceptional accuracy with your weapons. If you miss an attack roll using a monk weapon on your turn, you can reroll it. You can use this ability only once on each of your turns." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Touch"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Usage" tag="UsPe5CTurn"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="c5CPalOaCo" name="Oath of Conquest" description="The Oath of Conquest is taken by paladins seeking glory in battle and the subjugation of their enemies. It isn&apos;t enough for them to establish order, they must also crush the forces of chaos. Paladins of this Oath are sometimes called knight tyrants or iron mongers, and those sworn to its tenets gather into grim knightly orders that serve gods or philosophies of war and well-ordered might. \n\nSome of the Oath of Conquest paladins go as far as to consort with powers of the Nine Hells, valuing Law over mercy. These knights are called hell knights and cover their armor with trophis taken from fallen foes. Hell knights are resisted by other paladins of this oath, who believe that the hell knights have diverged too far into darkness. \n\n{b}Tenets of Conquest{/b}\n\nA paladin who takes this oath has the tenets of  conquest seared on the upper arm. \n\n{b}Douse the Flame of Hope{/b}. It is not enough to merely defeat an enemy in battle. Your victory must be so overwhelming that your enemies’ will to fight is shattered forever. A blade can end a life. Fear can end an empire.\n\n{b}Rule with an Iron Fist{/b}. Once you have conquered, tolerate no dissent. Your word is law. Those who obey it shall be favored. Those who defy it shall be punished as an example to all who might follow.\n\n{b}Strength Above All{/b}. You shall rule until a stronger one arises. Then you must grow mightier and meet the challenge, or fall to your own ruin.\n\n{b}Conquest Spells{/b}\nYou gain oath spells at the paladin levels listed.\n{b}Oath of Conquest Spells{/b}\n{i}Paladin Level Spells{/i}\n3rd {i}armor of Agathys, command{/i}\n5th {i}hold person, spiritual weapon{/i}\n9th {i}bestow curse, fear{/i}\n13th {i}dominate beast, stoneskin{/i}\n17th {i}cloudkill, dominate person{/i}" compset="CustomSpec" uniqueness="unique">
+    <comment>Supersedes UA - Paladin Oaths</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpPal" name="Paladin" abbrev="Paladin"/>
+    <tag group="abCategory" tag="PalSacOath" name="Paladin Sacred Oath" abbrev="Paladin Sacred Oath"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <bootstrap thing="spBestCurs">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spFear">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spDomiBeas">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spDomiPers">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalConP">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalGuiS">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="sp5CArmAga">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalAurC">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalInCo">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="spCommand">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spStoneski">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spCloudkil">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalScoR">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="spHoldPers">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spSpirWeap">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CPalConP" name="Channel Divinity: Conquering Presence" description="You can use your Channel Divinity to project a terrifying presence. As an action, you force each creature of your choice within 30 feet of you to make a Wisdom saving throw. On a failed save, a creature becomes frightened of you for 1 minute. The saving throw may be repeated by the creature at the end of each of its turns, ending the effect on itself with a success." compset="ClSpecial">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wis"/>
+    <tag group="StandardDC" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="abAction" tag="Free" name="Free" abbrev="Free"/>
+    </thing>
+  <thing id="c5CPalGuiS" name="Channel Divinity: Guided Strike" description="You can use your Channel Divinity to strike with divine accuracy. When youmake an attack roll, you can use your Channel Divinity to gain a +10 bonus to the roll. You make this choice after you see the roll, but before the DM says whether the attack misses or hits." compset="ClSpecial">
+    <fieldval field="abValue" value="10"/>
+    <tag group="abCategory" tag="ClrChanDiv" name="Cleric Channel Divinity Ability" abbrev="Cleric Channel Divinity Ability"/>
+    <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    </thing>
+  <thing id="c5CPalAurC" name="Aura of Conquest" description="Starting at 7th level, you emanate a menacing aura with a 10 feet radius while you are not incapacitated. This aura does not penetrate total cover. \n\nIf a creature is frightened of you, its speed is reduced to 0 while in the aura. That creature also takes psychic damage equal to half your paladin level if it starts its turn there. \n\nAt  18th level, the range of this aura increases to 30 feet." compset="ClSpecial" summary="You emanate a menacing aura while you’re not incapacitated.">
+    <fieldval field="abRange" value="10"/>
+    <fieldval field="abText" value="psychic damage"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="LvNamePar" tag="IncRange" name="Include Range text" abbrev="Include Range text"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="AppValue"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      if (field[xAllLev].value >= 18) then
+        field[abRange].value += 20
+        endif
+
+      field[abValue].value = round(#levelcount[Paladin]/2, 0, -1)]]></eval>
+    </thing>
+  <thing id="c5CPalScoR" name="Scornful Rebuke" description="Upon reaching 15th level, those who strike at you are punished for their deed. Any creature that hits you with an attack, takes psychic damage equal to your Charisma modifier (Min 1), as long as you are not incapacitated." compset="ClSpecial">
+    <fieldval field="abText" value="psychic damage"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="AppValue"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+field[abValue].value = round(#levelcount[Paladin]/2,0,-1)]]></eval>
+    </thing>
+  <thing id="c5CPalInCo" name="Invincible Conqueror" description="At 20th level, you gain the ability to harness extraordinary martial prowess. As an action, you can magically become an avatar of conquest, gaining the following benefits for 1 minute:\n\n•  You have resistance to all damage.\n•  When you take the Attack action on your turn, you can make one additional attack as part of that action. \n•  Your melee weapon attacks score a critical hit on a roll of 19 or 20. \n\nOnce you use this feature, you can’t use it again until you finish a long rest." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="DamageRes" tag="dcAll" name="All damage" abbrev="All damage"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (tagis[Helper.ShowSpec] = 0)
+doneif (field[abilActive].value = 0)
+
+perform forward[DamageRes.?]]]></eval>
+    </thing>
+  <thing id="c5CPalRede" name="Oath of Redemption" description="The Oath of Redemption is a difficult path requiring a holy warrior to use violence as a last resort. Paladins dedicated to this oath believe that any person can be redeemed and that the path of justice and benevolence is one that anyone can tread. These paladins face evil creatures with the hope of turning their foes to the light, and they will slay only when such a deed will clearly save other lives. Followers of this path are often called redeemers.\n\nIdealist, redeemers are no fools. These paladins know that undead, demons, devils and other supernatural threats are inherently evil. Against such foes, they bring the full wrath of their weapons and spells to bear. Redeemers still pray, though, that such creatures will invite their own redemption from wickedness. \n\n{b}Tenets of Redemption{/b}\n\nThe tenets of the Oath of Redemption hold a paladin to a high standard of peace and justice. \n\n{b}Peace{/b}. Violence is a weapon of last resort. Diplomacy and understanding are the paths to long-lasting peace.\n\n{b}Innocence{/b}. All people begin life in an innocent state, and it is their environment or the influence of dark forces that drives them to evil. By setting the proper example, and working to heal the wounds of a deeply flawed world, you can set anyone on a righteous path.\n\n{b}Patience{/b}. Change takes time. Those who have walked the path of the wicked must be given reminders to keep them honest and true. Once you have planted the seed of righteousness in a creature, you must work day after day to allow it to survive and then flourish.\n\n{b}Wisdom{/b}. Your heart and mind must stay clear, for eventually you will be forced to admit defeat. While every creature can be redeemed, some are so far along the path of evil that you have no choice but to end their lives for the greater good. Any such action must be carefully weighed and the consequences fully understood, but once you have made the decision, follow through with it knowing your path is just.\n\n{b}Redemption Spells{/b}\nYou gain oath spells at the paladin levels listed.\n\n{b}Oath of Redemption Spells{/b}\n{i}Paladin Level Spells{/i}\n3rd {i}sanctuary, sleep{/i}\n5th {i}calm emotions, hold person{/i}\n9th {i}counterspell, hypnotic pattern{/i}\n13th {i}resilient sphere, stoneskin{/i}\n17th {i}hold monster, wall of force{/i}" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpPal" name="Paladin" abbrev="Paladin"/>
+    <tag group="abCategory" tag="PalSacOath" name="Paladin Sacred Oath" abbrev="Paladin Sacred Oath"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <bootstrap thing="spSanctuar">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spSleep">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spHoldPers">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spCalmEmot">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="sp5CCounte">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spHypnPatt">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spResiSphe">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spStoneski">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spHoldMons">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spWallForc">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalEmiP">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalRebV">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalAurG">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalProS">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalEmiR">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CPalEmiP" name="Channel Divinity: Emissary of Peace" description="You can use your Channel Divinity to augment your presence with divine peace. As a bonus action, you grant yourself a +5 bonus to the next Charisma (Persuasion) check you make within the next 10 minutes." compset="ClSpecial">
+    <fieldval field="abDuration" value="10"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="abRange" tag="Personal"/>
+    </thing>
+  <thing id="c5CPalRebV" name="Channel Divinity: Rebuke the Violent" description="You can use your Channel Divinity to rebuke those who use violence.\nAs a reaction when an enemy within 30 feet of you deals damage with an attack against one creature other than you, you force that attacker to make a Wisdom saving throw. On a failed save, the attacker takes radiant damage equal to the damage it just dealt. On a successful save, it takes half as much damage." compset="ClSpecial">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wis"/>
+    <tag group="StandardDC" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="abDuration" tag="Instant"/>
+    </thing>
+  <thing id="c5CPalAurG" name="Aura of the Guardian" description="Starting at 7th level, you can shield your allies from harm at the cost of your own health. As a reaction when an ally within 10 feet of you takes damage, you instead magically take that damage. This feature doesn’t transfer any other effects that might accompany the damage.\n\nAt 18th level, the range of this aura increases to 30 feet." compset="ClSpecial">
+    <fieldval field="abRange" value="10"/>
+    <tag group="LvNamePar" tag="IncRange" name="Include Range text" abbrev="Include Range text"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="DamageRes" tag="dtSpells" name="Spells" abbrev="Spells"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      if (field[xAllLev].value >= 18) then
+        field[abRange].value += 20
+        endif]]></eval>
+    </thing>
+  <thing id="c5CPalProS" name="Protective Spirit" description="Starting at 15th level, a holy presence heals you while you are in combat. Each round that you end your turn in combat with fewer than half your hit points remaining and are not incapacitated, you regain 1d6 + half your paladin level in hit points." compset="ClSpecial">
+    <fieldval field="abText" value="hp"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="LvNamePar" tag="DieCnt1"/>
+    <tag group="LvNamePar" tag="AppValue"/>
+    <tag group="LvNamePar" tag="SignAppVal"/>
+    <tag group="LvNamePar" tag="DieSiz6"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+field[abValue].value = round(#levelcount[Paladin]/2, 0, -1)]]></eval>
+    </thing>
+  <thing id="c5CPalEmiR" name="Emissary of Redemption" description="At 20th level, you become an avatar of peace, which gives you two benefits:\n\n• You have resistance to all damage dealt by other creatures (their attacks, spells, and other effects).\n• Whenever a creature damages you, it takes damage equal to half the amount it dealt to you.\n\nIf you attack a creature, cast a spell on it, or deal damage to it by means other than this feature, you gain no benefit from this feature against that creature until you finish a long rest." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
