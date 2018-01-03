@@ -2147,6 +2147,18 @@ field[abValue].value += 1]]></eval>
     <bootstrap thing="c5CRogEyDe">
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
+    <bootstrap thing="c5CRogInsF">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogSteE">
+      <autotag group="ClSpecWhen" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogUneE">
+      <autotag group="ClSpecWhen" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogEyWe">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
     </thing>
   <thing id="c5CRogEaDe" name="Ear for Deceit" description="When you choose Inquisitive at 3rd level, you develop a talent for detecting lies. Whenever you make a Wisdom (Insight) check to determine whether or not a creature is lying, treat any roll of 7 or lower on the d20 as an 8." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
@@ -2157,5 +2169,658 @@ field[abValue].value += 1]]></eval>
     <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
     <tag group="abRange" tag="Personal"/>
     <tag group="abDuration" tag="Constant"/>
+    </thing>
+  <thing id="c5CRogInsF" name="Insightful Fighting" description="At 3rd level, you can develop a counter to an opponents tactics by deciphering their tactics. As a bonus action, you can make a Wisdom (Insight) check opposed by a target&apos;s Charisma (Decpetion) check. The target must not be incapacitated and you must be able to see them. If the check is successful, you can use your Sneak Attack even if you don&apos;t have advantage on the attack roll, as long as you don&apos;t have disadvantage on the roll. \n\nThis benefit lasts for 1 minute or until you successfully use Insightful Fighting against a different target." compset="ClSpecial">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abRange" tag="Sight"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="c5CRogSteE" name="Steady Eye" description="At 9th level, as long as you move no more than half your speed on your turn, you gain advantage on any Wisdom (Perception) or Intelligence (investigation) check you make." compset="ClSpecial">
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (tagis[Helper.ShowSpec] = 0)
+
+#situational[hero.child[skPercep], "Advantage on Perception checks while moving half speed or less.", field[thingname].text]
+#situational[hero.child[skInvestig], "Advantage on Investigation checks while moving half speed or less.", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="c5CRogUneE" name="Unerring Eye" description="At 13th level, your senses become impossible to fool. As an action, you sense any magic designed to deceive the senses within 30 feet of you. This includes the presence of illusion and shapechangers not in their original form. You sense the effect that is trying to trick you, but you gain no insight into what is being hidden or the true nature of the deceit.\n\nYou can use this feature a numbe of times equal to your Wisdom modifier (minimum once), and you regain all expended uses of it when you finish a long rest." compset="ClSpecial">
+    <tag group="User" tag="Tracker"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="FinalMin1"/>
+    <tag group="ChargeAttr" tag="Minimum1"/>
+    <tag group="ChargeAttr" tag="aWIS"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="c5CRogEyWe" name="Eye for Weakness" description="At 17th level, when your Insightful Fighting feature applies to a creature, your Sneak Attack damage against that creature increases by 3d6." compset="ClSpecial">
+    <tag group="Helper" tag="UseOwnLev" name="UseOwnLev" abbrev="UseOwnLev"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="10000" index="2">doneif (tagis[Helper.Disable] = 1)
+doneif (field[abilActive].value = 0)
+
+hero.childfound[cSneakAtt].field[abValue].value += 3</eval>
+    </thing>
+  <thing id="c5CSorDiSo" name="Divine Soul" description="Some sorcerers find that their power comes from a divine spark. Having a Divine Soul is often seen as a sign that the sorcerer is a servant of the gods or part of a prophecy. Other times, it is seen simply that the sorcerer must have divine blood from an ancestor. \n\nA Divine Soul has a natural magnetism, and as such is sometimes seen as a threat to some religious hierarchies. As an outsider that commands sacred power, the sorcerer is seen as an intruder that can usurp the rightful order by flexing their divine connection." compset="CustomSpec" uniqueness="unique">
+    <comment>Divine Magic has an issue - cannot replace the free spell right now.</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="SpecSource" tag="cHelpSor" name="Sorcerer" abbrev="Sorcerer"/>
+    <bootstrap thing="c5CSorEmpH">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorOthW">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorDivM">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorUneR">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorFavG">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CSorFavG" name="Favored by the Gods" description="Starting at 1st level, if you fail a saving throw or miss with an attack roll, you can roll 2d4 and add it to the total as divine power guides your destiny.\n\nOnce you use this feature, you can’t use it again until you finish a short or long rest." compset="ClSpecial">
+    <fieldval field="abValue" value="2"/>
+    <fieldval field="abValue2" value="4"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
+    <tag group="LvNamePar" tag="DieSizVal2" name="Xd &quot;field[abValue2].value&quot;" abbrev="Xd &quot;field[abValue2].value&quot;"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    </thing>
+  <thing id="c5CSorEmpH" name="Empowered Healing" description="Starting at 6th level, whenever you or an ally within 5 feet of you rolls dice to determine the number of hit points a spell restores, you can spend 1 sorcery point to reroll any number of those dice once. You cannot be incapacitated when using this feature. You can use this feature only once per turn." compset="ClSpecial">
+    <fieldval field="abRange" value="5"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="Usage" tag="UsPe5CTurn"/>
+    </thing>
+  <thing id="c5CSorOthW" name="Otherworldly Wings" description="Starting at 14th level, you can manifest a pair of spectral wings from your back as a bonus action. While the wings are active, you have a flying speed of 30 feet. The wings last until you&apos;re incapacitated, you die, or you dismiss them as a bonus action.\n\nThe wings have their appearance based on what affinty you chose for Divine Magic: eagle wings for law or good, bat wings for evil or chaos, and dragonfly wings for neutrality." compset="ClSpecial">
+    <tag group="Helper" tag="UseOwnLev"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="PostAttr"><![CDATA[doneif (#levelcount[Sorcerer] < 14)
+
+if (field[abilActive].value = 1) then
+        #value[xFly] += 30
+endif]]></eval>
+    </thing>
+  <thing id="c5CSorDivM" name="Divine Magic" description="Your divine source allows you to learn spells from the cleric class. When your Spellcasting feature lets you learn or replace a sorcerer spell or cantrip, you can choose the new spell from the cleric spell list. You must otherwise obey all other restrictions for selecting the spell. The selected spell becomes a sorcerer spell from you. \n\nIn addition, you choose an Affinty for the source of your power: good, evil, law, chaos or neutrality. You learn an additonal spell based on your choice as shown on the table. The spell is a sorcerer spell for you, but it doesn&apos;t count against your number of sorcerer spells known. If you later replace this spell, you must replace it with a spell from the cleric spell list.\n\n{b}Affinity  Spell{/b}\nGood  {i}cure wounds{/i}\nEvil  {i}inflict wounds{/i}\nLaw {i}bless{/i}\nChaos {i}bane{/i}\nNeutrality {i}protection from evil and good{/i}" compset="ClSpecial">
+    <fieldval field="usrLabelAr" value="Source"/>
+    <arrayval field="usrArray" index="1" value="Evil"/>
+    <arrayval field="usrArray" index="2" value="Law"/>
+    <arrayval field="usrArray" index="3" value="Chaos"/>
+    <arrayval field="usrArray" index="4" value="Neutrality"/>
+    <arrayval field="usrArray" index="0" value="Good"/>
+    <bootstrap thing="spInflWoun">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 1</containerreq>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spBless">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 2</containerreq>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="spBane">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 3</containerreq>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      </bootstrap>
+    <bootstrap thing="spProtGoEv">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 4</containerreq>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      </bootstrap>
+    <bootstrap thing="spCureWoun">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 0</containerreq>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <autotag group="Helper" tag="Memorized"/>
+      </bootstrap>
+    <eval phase="Final" priority="21000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+~these vars will hold the tag expressions for spells and cantrips
+~ needed to pull cleric spells into the list as well as sorceror
+
+var cantrip as string
+var spell as string
+var known as string 
+
+cantrip = hero.childfound[cHelpSor].field[cCnKnoExpr].text
+spell = hero.childfound[cHelpSor].field[cSpKnoExpr].text 
+known = hero.childfound[cHelpSor].field[cSpellExpr].text 
+
+~ debug "Cantrip: " & cantrip
+~ debug "Spell: " & spell
+~ debug "Known Spells: " & known
+
+~ now we modify the expression to also include the cleric spells
+
+cantrip = replace(cantrip, "sClass.cHelpSor", "( sClass.cHelpSor | sClass.cHelpClr )", 1)
+cantrip = replace(cantrip, "(sClassNot.cHelpSor)", "( sClassNot.cHelpSor | sClassNot.cHelpClr )", 1)
+
+spell = replace(spell, "sClass.cHelpSor", "( sClass.cHelpSor | sClass.cHelpClr )", 1)
+spell = replace(spell, "(sClassNot.cHelpSor)", "( sClassNot.cHelpSor | sClassNot.cHelpClr )", 1)
+
+known = replace(known, "sClass.cHelpSor", "( sClass.cHelpSor | sClass.cHelpClr )", 1)
+known = replace(known, "(sClassNot.cHelpSor)", "( sClassNot.cHelpSor | sClassNot.cHelpClr )", 1)
+
+~ debug "Cantrip: " & cantrip
+~ debug "Spell: " & spell
+~ debug "Known Spells: " & known
+
+~finally, we replace the expressions with the new ones
+
+hero.childfound[cHelpSor].field[cCnKnoExpr].text = cantrip
+hero.childfound[cHelpSor].field[cSpKnoExpr].text = spell
+hero.childfound[cHelpSor].field[cSpellExpr].text = known
+hero.childfound[cHelpSor].field[cSplBkExpr].text = known]]></eval>
+    </thing>
+  <thing id="c5CSorUneR" name="Unearthly Recovery" description="At 18th level, you gain the ability to recover from grievous injuries. When you have fewer than half your hit points remaining, you may take a bonus action to regain a number of hit points equal to half your hit point maximum. \n\nOnce you use thise feature, you cannot use it again until you finish a long rest." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="c5CSorXGSh" name="Shadow" description="Your innate magic comes from the Shadowfell and you are a creature of shadow. You might trace your ancestry to an entity from that place or maybe you were exposed to its fell energy and became transformed by it. \n\nThe power of of shadow magic causes changes in our appearance and presence. Your life force becomes muted as it struggles to remain apart from the dark energy coursing through you." compset="CustomSpec" uniqueness="unique">
+    <comment>Supersedes UA - Sorceror</comment>
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpSor" name="Sorcerer" abbrev="Sorcerer"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CSorEyeD">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorStrG">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorHoOm">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorShaW">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorUmFo">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CSorEyeD" name="Eyes of the Dark" description="At 1st level, you gain darkvision with a range of 120 feet. \n\nWhen you reach 3rd level in this class, you learn the {i}darkness{/i} spell, which doesn&apos;t count against the number of sorcerer spells known. Additionally, you can cast it by spending 2 sorcery points or by expnding a spell slot. If you cast it with sorcery points, you can see through the darkness created by the spell." compset="ClSpecial">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Sorcerer >= 3]]></containerreq>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CSorStrG" name="Strength of the Grave" description="Starting at 1st level, when damage reduces you to 0 hit points, you can make a Charisma saving throw (DC 5 + the damage taken). On a success, you can instead drop to 1 hit point. You cannot use this feature if you are reduced to 0 hit points by a critical hit or by radiant damage. \n\nAfter the saving throw succeeds, you can&apos;t use this feature again until you finish a long rest." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="c5CSorHoOm" name="Hound of Ill Omen" description="At 6th level, you gain the ability to call forth a hound of ill omen. As a bonus action, you can spend 3 sorcery points to summon the hound to an unoccupied space within 30 feet of the target. The target must be within 120 feet of you and you must be able to see the target.\n\nThe hound uses the dire wolf statistics found in the MM or PHB, with the following changes:\n\n* The hound size is Medium, not Large.\n* The hound&apos;s creature type is Monstrosity, not Beast.\n* It appears with a number of temporary hit points equal to 1/2 your sorcerer level.\n* It can move through other creatures and objects as if they were difficult terrain. The hound takes 5 force damage if it ends its turn inside an object.\n* At the start of its turn, the hound automatically knows its target&apos;s location. If the target was hidden, it is no longer hidden from the hound. \n\n Roll initiative for the hound. On its turn it can move only toward its target by the most direct route, and can only use its action to attack its target. The hound can make opportunity attacks, but only against its target. While the hound is within 5 feet of the target, the target has disadvantage on saving throws from spells you cast. The hound disappears if it is reduced to 0 hit points, its target is reduced to 9 hit points, or after 5 minutes has passed." compset="ClSpecial">
+    <fieldval field="abRange" value="120"/>
+    <fieldval field="abDuration" value="see description"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="c5CSorShaW" name="Shadow Walk" description="At 14th level, you gain the ability to step from one shadow into another.  As a bonus action, when you are in dim light or darkness, you can teleport up to 120 feet to an unoccupied space you can see that is also in dim light or darkness." compset="ClSpecial">
+    <fieldval field="abRange" value="120"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="c5CSorUmFo" name="Umbral Form" description="Starting at 18th level, as a bonus action you can spend 6 sorcery points to magically transform yourself into a shadowy form. In this form, you cn move through other creatures as if they were difficult terrain. You take 5 force damage is you end your turn inside an object. Additionally, you have resistance to all damage except force and radiant damage. \n\nYou can remain in this form for 1 minute. The magic ends early if you become incapacitated, die, or if you dismiss it as a bonus action." compset="ClSpecial">
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+if (field[abilActive].value <> 0) then
+     perform hero.assign[DamComRes.dc5CAtkNFR]
+endif]]></eval>
+    </thing>
+  <thing id="dc5CAtkNFR" name="All damage except force and radiant" compset="DamComType"></thing>
+  <thing id="c5CWlkCele" name="The Celestial" description="Your patron is a powerful being associated with the Upper Planes. You have bound yourself to a being such as an ancient unicor, empyrean, ki-rin or other entity existing in the planes of eternal bliss. Your pact with that being allows you to experience a slight touch of the holy light that shines through the multiverse.\n\n{b}Expanded Spell List{/b}\nThe Celestial lets you choose from an expanded list of spells when you learn a warlock spell. The following spells are added to the warlock spell list for you.\n\n{b}Celestial Expanded Spells{/b} \n{b}Spell Level Spells{/b}\n1st               {i}cure wounds, guiding bolt{/i}\n2nd              {i}flaming sphere, lesser restoration{/i}\n3rd               {i}daylight, revivify{/i}\n4th               {i}guardian of faith, wall of fire{/i}\n5th               {i}flame strike, greater restoration{/i}" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron" abbrev="Warlock Otherworldly Patron"/>
+    <tag group="ClsAllowSp" tag="spCureWoun"/>
+    <tag group="ClsAllowSp" tag="spGuidBolt"/>
+    <tag group="ClsAllowSp" tag="spFlamSphe"/>
+    <tag group="ClsAllowSp" tag="spLessRest"/>
+    <tag group="ClsAllowSp" tag="spDaylight"/>
+    <tag group="ClsAllowSp" tag="spRevivify"/>
+    <tag group="ClsAllowSp" tag="spGuarFait"/>
+    <tag group="ClsAllowSp" tag="spWallFire"/>
+    <tag group="ClsAllowSp" tag="spFlamStri"/>
+    <tag group="ClsAllowSp" tag="spGreaRest"/>
+    <bootstrap thing="c5CWlkCBoC">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkHeLi">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkRaSo">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkCeRe">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkSeVe">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    </thing>
+  <thing id="c5CWlkCBoC" name="Bonus Cantrips" description="At 1st level, you gain the {i}sacred flame{/i} and {i}light{/i} cantrips. They are counted as Warlock cantrips for you, but do not count against your number of cantrips known." compset="ClSpecial">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <bootstrap thing="spSacrFlam">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpWlk"/>
+      <autotag group="Helper" tag="Cantrip"/>
+      </bootstrap>
+    <bootstrap thing="spLight">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpWlk"/>
+      <autotag group="Helper" tag="Cantrip"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CWlkHeLi" name="Healing Light" description="At 1st level, you gain the power to channel celestial energy to heal wounds. You have a pool of dice equal to your warlock level +1 of d6s to fuel this healing.\n\nAs a bonus action you may heal a creature within 60 feet of you, spending dice from your pool. You may only spend up to your charisma modifier at one time (minimum of 1).  \n\nYou regain all expended dice from the pool when you finish a long rest." compset="ClSpecial">
+    <fieldval field="abValue" value="1"/>
+    <fieldval field="abValue2" value="6"/>
+    <fieldval field="abRange" value="60"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
+    <tag group="LvNamePar" tag="DieSizVal2" name="Xd &quot;field[abValue2].value&quot;" abbrev="Xd &quot;field[abValue2].value&quot;"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="abDuration" tag="Instant"/>
+    <eval phase="PostLevel" priority="10000">field[trkMax].value += #levelcount[Warlock]+1</eval>
+    </thing>
+  <thing id="c5CWlkRaSo" name="Radiant Soul" description="Starting at 6th level, your gain resistance to radiant damage. Additionally, when you cast a spell that deals radiant or fire damage, you can add your Charisma modifier to one radiant or fire damage roll of that spell against a single one of its targets." compset="ClSpecial">
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal"/>
+    <eval phase="PostLevel" priority="1000"><![CDATA[      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.assign[DamageRes.dtRadiant]]]></eval>
+    </thing>
+  <thing id="c5CWlkCeRe" name="Celestial Resilience" description="At 10th level, you gain temporary hit points whenever you finish a short or long rest equal to your warlock level + your Charisma modifier. Additionally, you can choose up to 5 creaures that you can see at the end of the rest. These creatures gain temporary hit poitns equal to half your warlock level + your Charisma modifier." compset="ClSpecial">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Sight"/>
+    <tag group="abDuration" tag="Instant"/>
+    <eval phase="PostAttr" priority="15000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+herofield[tBonusHP].value += #attrmod[aCHA] + #levelcount[Warlock]]]></eval>
+    </thing>
+  <thing id="c5CWlkSeVe" name="Searing Vengeance" description="Starting at 14th  level, the radiant energy from your patron allows you to resist death&apos;s call. Whenever you make a death saving throw at the start of your turn, you can instead rise back to you feet in a burst of radiant energy. You regain hit points equal to half your hit point maximum and stand up if you want to. The radiant burst affects any creatures of your choice within 30 feet of you, causing them to take 2d8 + your Charisma modifier radiant damage and becoming blinded until the end of your current turn. \n\nYou can only use this once per long rest." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CWlkHexB" name="The Hexblade" description="You have made your pact with a powerful, sentient magic weapon carved from the stuff of the Shadowfell. Many hexblade warlocks create weapons that emulate legendary weapons formed with this shadowy force. Others forgo such arms, content to weave the power of the Shadowfell into their magic. \n\n{b}Expanded Spell List{/b}\nThe Hexblade lets you choose from an expanded list of spells when you learn a warlock spell. The following spells are added to the warlock spell list for you.\n\n{b}Hexblade Expanded Spells{/b} \n{b}Spell Level Spells{/b}\n1st               {i}shield, wrathful smite{/i}\n2nd              {i}blur, branding smite{/i}\n3rd               {i}blink, elemental weapon{/i}\n4th               {i}phantasmal killer, staggering smite{/i}\n5th               {i}banishing smite, cone of cold{/i}" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="ClsAllowSp" tag="spBranSmit" name="Branding Smite" abbrev="Branding Smite"/>
+    <tag group="ClsAllowSp" tag="spConeCold" name="Cone of Cold" abbrev="Cone of Cold"/>
+    <tag group="ClsAllowSp" tag="spBlur"/>
+    <tag group="ClsAllowSp" tag="spPhanKill" name="Phantasmal Killer" abbrev="Phantasmal Killer"/>
+    <tag group="ClsAllowSp" tag="spShield" name="Shield" abbrev="Shield"/>
+    <tag group="ClsAllowSp" tag="sp5CBanSmi"/>
+    <tag group="ClsAllowSp" tag="sp5CElemWe" name="Elemental Weapon" abbrev="Elemental Weapon"/>
+    <tag group="ClsAllowSp" tag="sp5CStaggS" name="Staggering Smite" abbrev="Staggering Smite"/>
+    <tag group="ClsAllowSp" tag="sp5CWrathS" name="Wrathful Smite" abbrev="Wrathful Smite"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron" abbrev="Warlock Otherworldly Patron"/>
+    <tag group="ClsAllowSp" tag="spBlink" name="Blink" abbrev="Blink"/>
+    <bootstrap thing="c5CWlkHeCu">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkHeWa">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkAcSp">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkArHe">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkMaHe">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    </thing>
+  <thing id="c5CWlkHeCu" name="Hexblade’s Curse" description="Starting at 1st level, you gain the ability to place a baleful curse on an enemy. As a bonus action, choose one creature you can see within 30 feet of you. The target is cursed for 1 minute. Until the curse ends, you gain the following benefits:\n\n•  You gain a bonus to damage rolls against the cursed target. The bonus equals your proficiency bonus.\n•  Any attack roll you make against the cursed target is a critical hit on a roll of 19 or 20 on the d20.\n•  If the cursed target dies, you regain hit points equal to your warlock level + your Charisma modifier (minimum of 1 point).\n\nThe curse ends early if the target dies, you die, or you become incapacitated. \n\nYou can’t use this feature again until you finish a short or long rest." compset="ClSpecial">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Activation"/>
+    </thing>
+  <thing id="c5CWlkHeWa" name="Hex Warrior" description="At 1st level, you gain proficiency with medium armor, shields, and martial weapons. \n\nWhen you finish a long rest, you can touch one weapon that you are proficient with  and that lacks the two-handed property, you can use your Charisma modifier, instead of Strength or Dexterity, for the attack and damage rolls. This benefits lasts until you finish a long rest. If you later gain the Pact of the Blade feature, this benefit extends to every pact weapon you conjure with that feature, not matter the type." compset="ClSpecial">
+    <tag group="ArmProfGrp" tag="ArmorMed" name="Medium armor" abbrev="Medium armor"/>
+    <tag group="ArmProfGrp" tag="Shields" name="Shields" abbrev="Shields"/>
+    <tag group="ArmProfGrp" tag="WepMartial" name="Martial weapons" abbrev="Martial weapons"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+perform forward[ArmProfGrp.?]]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[doneif (tagis[Helper.Disable] = 1)
+doneif (field[abilActive].value = 0)
+      
+~ foreach pick in hero from BaseWep 
+foreach pick in hero from BaseWep where "(fieldval:gIsEquip <> 0) & !wProperty.TwoHanded"
+   eachpick.field[wMelAttTxt].text = "charisma"
+   eachpick.field[wMeleeAttr].value = hero.child[aCHA].field[aBonus].value
+   eachpick.field[wDamAttr].value = hero.child[aCHA].field[aBonus].value
+nexteach]]></eval>
+    </thing>
+  <thing id="c5CWlkAcSp" name="Accursed Specter" description="Starting at 6th level, you can bind the soul of a slain foe into your service, temporarily. When you slay a humanoid, you can cause its spirit to rise from the corpse as a {b}specter{/b}. When it appears, it gains temporary hit points equal to half your warlock level. Roll initiative for the specter, which will act on its own turn. It obeys your verbal commands and can apply a modifier to its attack rolls equal to your Charisma modifier (minimum of +0).\n\nThe specter remains your servant until the end of your next long rest, when it travel on to the afterlife. \n\nOnce you bind a {b}specter{/b} with this ability, you can&apos;t do so again until you finish a long rest." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Attack"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="c5CWlkArHe" name="Armor of Hexes" description="At 10th level, your hex grows more powerful. If the target cursed by your Hexblade’s Curse hits you with an attack roll, roll a d6. On a 4 or higher, the attack instead misses you, regardless of its roll." compset="ClSpecial">
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CWlkMaHe" name="Master of Hexes" description="Starting at 14th level, you can move your Hexblade&apos;s Curse from a slain creature to another creature. When a creature cursed dies, you can apply the curse to a different creature within 30 feet of you that you can see, provided you aren&apos;t incapacitated. When you apply the curse to the new target, you don&apos;t regain hit points from the death of the previously cursed creature." compset="ClSpecial">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Free"/>
+    <tag group="abDuration" tag="Instant"/>
+    </thing>
+  <thing id="c5CWlkAsMo" name="Aspect of the Moon" description="{i}Prerequisite: Pact of the Tome feature{/i}\n\nYou can no longer be forced to sleep and don&apos;t need to sleep either. To gain the benefits of a long rest, you must spend all 8 hours doing light activity, such as keeping watch or reading your Book of Shadows." compset="CustomSpec" summary="You cease needing to sleep." uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <exprreq message="Pact of the Tome required."><![CDATA[#hasability[cWlkPacTom] <> 0]]></exprreq>
+    </thing>
+  <thing id="c5CWlkClFl" name="Cloak of Flies" description="As a bonus action, you can conjure an aura that looks like buzzing flies around you. The aura includes your space and extends in a 5ft  sphere, and is blocked by total cover. Lasting until you are incapacitated or you dismiss it with a bonus action.\n\nThe aura grants you advantage on Charisma (Intimidation) checks but disadvantage on all other Charisma checks. In addition, a creature that starts its turn within 5 feet of you takes poison damage equal to your Charisma modifier. \n\nYou may only use this once per short or long rest." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <exprreq message="Prerequisite: 5th level"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CWlkElSm" name="Eldritch Smite" description="Once per turn, when you hit a creature with your pact weapon, you can expend a warlock spell slot to cause the target to suffer an additional 1d8 force damage, plus another 1d8 force damage per level of the spell slot. You can also knock the target prone if it is Huge or smaller." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <exprreq message="Prerequisite: 5th level"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    <exprreq message="Prerequisite: Pact of the Blade feature"><![CDATA[#hasability[cWlkPacBla] <> 0]]></exprreq>
+    </thing>
+  <thing id="c5CWlkGhGl" name="Ghostly Gaze" description="As an action, you gain the power to see through solid objects, to a range of 30ft. Within that range, you have darkvision if you do not already have it. This lasts for 1 minute or until your concentration ends (as if you were concentrating on a spell). The objects you perceive while using this invocation appear as ghostly and transparent.\n\nYou may only use this once per short or long rest." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <exprreq message="Prerequisite: 7th level"><![CDATA[#levelcount[Warlock] >= 7]]></exprreq>
+    </thing>
+  <thing id="c5CWlkGiDe" name="Gift of the Depths" description="You gain the ability to breath underwater, and a swiming speed equal to your walking speed. \n\nAdditionally you may cast {i}water breathing{/i} without expending a spell slot. You may only cast this spell once per long rest." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <bootstrap thing="xSwim"></bootstrap>
+    <bootstrap thing="spWateBrea">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="raAmphib"></bootstrap>
+    <eval phase="PreLevel" priority="10000">#applyvalue[xSwim, hero.child[Speed].field[tSpeed].value]</eval>
+    <exprreq message="Prerequisite: 5th level"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CWlkGELO" name="Gift of the Ever-Living Ones" description="Whenever you regain HP, as long as your familiar is within 100ft of you, treat all dice rolled as if they rolled their max." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <exprreq message="Prerequisite: Pact of the Chain feature"><![CDATA[#hasability[cWlkPacCha] <> 0]]></exprreq>
+    </thing>
+  <thing id="c5CWlkGrHa" name="Grasp of Hadar" description="On each of your turns, upon hitting a creature with your {i}eldritch blast{/i} cantrip, you may move that creature in a straight line up to 10 ft closer to yourself." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <exprreq message="Prerequisite: Eldritch Blast cantrip"><![CDATA[childlives[spEldrBlas] <> 0]]></exprreq>
+    </thing>
+  <thing id="c5CWlkImPW" name="Improved Pact Weapon" description="You can use any weapon crafted with your Pact of the Blade feature as a spellcasting focus for your spells. \n\nAdditionally, the weapon gains a +1 bonus to its attack and damage rolls, unless it is a magic weapon that already has a bonus to those rolls. \n\nThe weapon you conjure with your Pact can also take the form of a shortbow, longbow, light crossbow, or heavy crossbow." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+
+if ( hero.childfound[cWlkPacBla].field[usrChosen1].chosen.field[Bonus].value = 0 ) then 
+   if ( hero.childfound[cWlkPacBla].field[usrChosen1].chosen.tagis[portal.wMagChoose] = 0 ) then 
+      hero.childfound[cWlkPacBla].field[usrChosen1].chosen.field[Bonus].value = 1
+   endif
+endif]]></eval>
+    <exprreq message="Prerequisite: Pact of the Blade feature"><![CDATA[#hasability[cWlkPacBla] <> 0]]></exprreq>
+    </thing>
+  <thing id="c5CWlkLaLe" name="Lance of Lethargy" description="{i}Prerequisite:{/i} eldritch blast {i}cantrip{/i}\n\nOnce on each of your turns, you can reduce the speed of any creature hit with your {i}eldritch blast{/i} by 10 feet until the end of your next turn." compset="CustomSpec" summary="Your {i}eldritch blast{/i} cantrip weakens foes." uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <exprreq message="Eldritch Blast cantrip required."><![CDATA[childlives[spEldrBlas] <> 0]]></exprreq>
+    </thing>
+  <thing id="c5CWlkMadH" name="Maddening Hex" description="As a bonus action, you cause a psychic disturbance around the target cursed by your {i}hex{/i} spell, or other warlock features such as Hexblade&apos;s Curse or Sign of Ill Omen. Doing so, you deal psychic damage to the target and each creature of your choice within 5 feet of it equal to your Charisma modifier (minimum of 1 damage). You must be able to see the cursed target and it must be within 30 feet of you." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <exprreq message="Prerequisite: 5th level"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CWlkRelH" name="Relentless Hex" description="Your curse creatures a temporary bond between you and the target of your curse. As a bonus action, you may teleport up to 30 feet towards the target, into an unoccupied space within 5 feet of the target cursed by your {i}hex{/i} spell or other warlock features such as Hexblade&apos;s Curse or Sign of Ill Omen. You must be able to see the cursed target in order to use this invocation." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <exprreq message="Prerequisite: 7th level"><![CDATA[#levelcount[Warlock] >= 7]]></exprreq>
+    </thing>
+  <thing id="c5CWlkShrS" name="Shroud of Shadow" description="You can cast the  {i}Invisibility{/i} spell at will, without expending a spell slot." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <exprreq message="Prerequisite: 15th level"><![CDATA[#levelcount[Warlock] >= 15]]></exprreq>
+    </thing>
+  <thing id="c5CWlkToLe" name="Tomb of Levistus" description="You can entomb yourself in ice as a reaction to you taking damage. You gain 10 temporary hit points per warlock level, which must take as much of the triggering damge as possible. Immediately after you take the damage, you gain vulnerablility to fire damage, your speed is reduced to 0 and you become incapacitated. These effects, including any remaining hit points, all end when the ice melts away at the end of your next turn. \n\nOnce you have used this invocation, you can&apos;t do so again until you finish a short or long rest." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <bootstrap thing="PoolWlkBls">
+      <assignval field="actIncrNam" value="ToLHP"/>
+      <assignval field="livename" value="Tomb of Levistus"/>
+      </bootstrap>
+    <eval phase="Final" priority="1000" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+if ( hero.findchild[TempHpPool,"!fieldisempty:actIncrNam"].field[abilActive].value <> 0 ) then
+   perform hero.assign[DamageVuln.dtFire]
+   hero.child[Speed].field[tSpeed].value = 0
+endif]]></eval>
+    <eval phase="Final" priority="500" name="Calculate dark one&apos;s blessing temp Hp"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+      
+field[abValue].value += #levelcount[Warlock] * 10
+     
+var temphp as number
+temphp = maximum(field[abValue].value,1)
+
+hero.findchild[TempHpPool,"!fieldisempty:actIncrNam"].field[thpMinAllw].value = temphp
+hero.findchild[TempHpPool,"!fieldisempty:actIncrNam"].field[thpMaxAllw].value = temphp]]></eval>
+    <exprreq message="Prerequisite: 5th level"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CWlkTrEs" name="Trickster&apos;s Escape" description="You may cast {i}freedom of movement{/i} once on yourself without expending a spell slot. You may only do this once per long rest." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <bootstrap thing="spFreeMove">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <exprreq message="Prerequisist: 7th level"><![CDATA[#levelcount[Warlock] >= 7]]></exprreq>
+    </thing>
+  <thing id="c5CWizWaMa" name="War Magic" description="A plethora of arcane colleges turn out wizards trained for war. The tradition of War Magic blends both priciples learned from evocation and abjuration magic, rather than specializing in either of those schools. The techniques learned from War Magic empower a caster&apos;s spells for both offense and defense. \n\nFollowers of this tradition are often known as war mages." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <tag group="SpecSource" tag="cHelpWiz" name="Wizard" abbrev="Wizard"/>
+    <tag group="abCategory" tag="WizArcTrad" name="Wizard Arcane Tradition" abbrev="Wizard Arcane Tradition"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CWizArDe">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CWizTaWi">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CWizPoSu">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CWizDuMa">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CWizDeSh">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CWizArDe" name="Arcane Deflection" description="At 2nd level, you learn to prevent harm to yourself with your magic. When you fail a saving throw or are hit by an attack, you can use your reaction to gain a +2 bonus to your AC or a +4 bonus to your saving throw for that attack before resolution. \n\nWhen you use this feature, you can&apos;t cast spells more complex than cantrips until the end of your next turn." compset="ClSpecial">
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Instant"/>
+    </thing>
+  <thing id="c5CWizTaWi" name="Tactical Wit" description="Starting at 2nd level, you can give yourself a bonus to your initiative rolls equal to your Intelligence modifier." compset="ClSpecial">
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <eval phase="PostAttr" priority="10000">doneif (tagis[Helper.Disable]  = 1)
+
+hero.childfound[Initiative].field[Bonus].value += #attrmod[aINT]</eval>
+    </thing>
+  <thing id="c5CWizPoSu" name="Power Surge" description="At 6th level, you can store magical energy in order to later empower damaging spells.\n\nYou can store a maximum number of power surges equal to your Intelligence modifier (minimum of 1). Whenever you successfully counter or end a spell with {i}counterspell{/i} or {i}dispel magic{/i} you gain an additional power surge. When you end a short rest with no power surges left you gain one power surge. When you finish a long rest, your number of power surges resets to one. \n\nYou can release a stored power surge once per turn when you deal damage to a creature or object with a wizard spell. You can spen one power surge to deal extra force damage equal to half your wizard level by spending one stored power surge.\n\n{b}Note:{/b} You must manually reset the charges on the In-Play tab to 1 when you finish a short or long rest." compset="ClSpecial">
+    <comment>Can you script to reset to 1?</comment>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="FinalMin1"/>
+    <tag group="ChargeAttr" tag="aINT"/>
+    <tag group="ChargeAttr" tag="Minimum1"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CWizDuMa" name="Durable Magic" description="Starting at 10th level, when you are channeling a spell, the magic can help ward off harm. When you are maintaining concentration on a spell, you have a +2 bonus to AC and all saving throws." compset="ClSpecial">
+    <fieldval field="abDuration" value="Concentration"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="PostAttr"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+if (field[abilActive].value <> 0) then
+     #applybonus[Bonus, hero.child[ArmorClass], 2]
+     #applybonus[Bonus, hero.child[svAll], 2]
+endif]]></eval>
+    </thing>
+  <thing id="c5CWizDeSh" name="Deflecting Shroud" description="At 14th level, your Arcane Deflection can reflect some damage to your foes. When you use your Arcane Deflection, you can cause up to three creatures of your choice that you can see within 60 feet of you take force damage equal to half your wizard level." compset="ClSpecial">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="abText" value="force damage"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="AppValue"/>
+    <eval phase="PostLevel" priority="10000">field[abValue].value = round(#levelcount[Wizard]/2,0,-1)</eval>
     </thing>
   </document>
