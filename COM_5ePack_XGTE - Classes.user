@@ -1888,8 +1888,8 @@ InBon = maximum(0, #attrmod[aWIS])
     <bootstrap thing="raDarkVis">
       <containerreq phase="First" priority="500">Hero.HasDarkvis = 0</containerreq>
       <assignval field="abValue" value="60"/>
+      <assignval field="abValue2" value="30"/>
       </bootstrap>
-    <eval phase="PostAttr" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)]]></eval>
     </thing>
   <thing id="c5CRgrIroM" name="Iron Mind" description="Starting at 7th level, you increase your ability to resist the mind-altering powers of your foes. \n\nYou gain proficiency in Wisdom saving throws. If you already have this proficiency, you instead gain proficiency in Intelligence or Charisma saving throws (your choice)." compset="ClSpecial">
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
@@ -2255,11 +2255,12 @@ endif]]></eval>
     </thing>
   <thing id="c5CSorDivM" name="Divine Magic" description="Your divine source allows you to learn spells from the cleric class. When your Spellcasting feature lets you learn or replace a sorcerer spell or cantrip, you can choose the new spell from the cleric spell list. You must otherwise obey all other restrictions for selecting the spell. The selected spell becomes a sorcerer spell from you. \n\nIn addition, you choose an Affinty for the source of your power: good, evil, law, chaos or neutrality. You learn an additonal spell based on your choice as shown on the table. The spell is a sorcerer spell for you, but it doesn&apos;t count against your number of sorcerer spells known. If you later replace this spell, you must replace it with a spell from the cleric spell list.\n\n{b}Affinity  Spell{/b}\nGood  {i}cure wounds{/i}\nEvil  {i}inflict wounds{/i}\nLaw {i}bless{/i}\nChaos {i}bane{/i}\nNeutrality {i}protection from evil and good{/i}" compset="ClSpecial">
     <fieldval field="usrLabelAr" value="Source"/>
+    <arrayval field="usrArray" index="0" value="Good"/>
     <arrayval field="usrArray" index="1" value="Evil"/>
     <arrayval field="usrArray" index="2" value="Law"/>
     <arrayval field="usrArray" index="3" value="Chaos"/>
     <arrayval field="usrArray" index="4" value="Neutrality"/>
-    <arrayval field="usrArray" index="0" value="Good"/>
+    <arrayval field="usrArray" index="5" value="Relearn Divine Spell"/>
     <bootstrap thing="spInflWoun">
       <containerreq phase="First" priority="500">fieldval:usrIndex = 1</containerreq>
       <autotag group="Helper" tag="Memorized"/>
@@ -2294,6 +2295,9 @@ endif]]></eval>
       <autotag group="Helper" tag="Known"/>
       <autotag group="SpellType" tag="cHelpSor"/>
       <autotag group="Helper" tag="Memorized"/>
+      </bootstrap>
+    <bootstrap thing="cfg5CDivSp">
+      <containerreq phase="First" priority="100">fieldval:usrIndex = 5</containerreq>
       </bootstrap>
     <eval phase="Final" priority="21000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
 doneif (tagis[Helper.Disable] <> 0)
@@ -2822,5 +2826,25 @@ endif]]></eval>
     <tag group="LvNamePar" tag="AppText"/>
     <tag group="LvNamePar" tag="AppValue"/>
     <eval phase="PostLevel" priority="10000">field[abValue].value = round(#levelcount[Wizard]/2,0,-1)</eval>
+    </thing>
+  <thing id="cfg5CDivSp" name="Divine Spell" description="This helper is used to pick a Divine Spell replacement for relearning the spells learned by a Divine Soul Sorcerer." compset="Configure" uniqueness="unique">
+    <fieldval field="cfgAllwSp1" value="component.BaseSpell &amp; sClass.cHelpClr &amp; !sLevel.0"/>
+    <fieldval field="cfgMaxSp1" value="1"/>
+    <eval phase="Final" priority="50000"><![CDATA[~ Loop through all the spell picks added on the "Divine Spell" tab
+perform pulltags[sClass.?,SpellSort]
+perform pulltags[sClass.?,SpellType]
+foreach pick in hero from BaseSpell where "CfgSpell.cfg5CDivSp"
+     perform eachpick.pushtags[SpellSort.?]
+     perform eachpick.pushtags[SpellType.?]
+     ~ Pull the spell level selected and the deny tags so that 
+     ~ we can set the message and selection list corretly.
+     perform eachpick.pulltags[sLevel.?]
+     perform eachpick.pulltags[ClsDenySp.?]        
+     ~ set the tags for it to be a sorcerer spell known
+     perform eachpick.assign[Helper.Free]
+     perform eachpick.assign[Helper.Memorized]
+     perform eachpick.assign[Helper.Known]
+     perform eachpick.assign[SpellType.cHelpSor]
+nexteach]]></eval>
     </thing>
   </document>
