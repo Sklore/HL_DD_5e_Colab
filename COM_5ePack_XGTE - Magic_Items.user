@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="i5CArmoG" name="Armor of Gleaming" description="This armor is always clean; dirt will not taint it." compset="MagicArmor" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="medium or heavy"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~restrict the list of armor to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & ((ArmorClass.Medium | ArmorClass.Heavy))"
+
+      ~set our name based on the type of armor chosen
+      field[livename].text = "Gleaming "
+      perform gizmo.findchild[BaseArmor].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Armor"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text
+
+      ~show in specials list when equipped
+      doneif (field[gIsEquip].value = 0)
+      perform assign[Helper.ShowSpec]]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagArmor"></child>
+    </thing>
+  <thing id="io5CBoN" name="Bead of Nourishment" description="This soft, tasteless, gelatinous bead dissolves on your tongue and provides food equal to 1 day of rations." compset="Wondrous" stacking="merge">
+    <usesource source="5eXGTECP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="UsesQty"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="io5CBoRef" name="Bead of Refreshment" description="This soft, tasteless, gelatinous bead dissolves in liquid, changing up to a pint of the liquid into fresh, cold drinking water. The bead does not effect magical liquids or harmful substances such as poison." compset="Wondrous" stacking="merge">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="Helper" tag="UsesQty" name="UsesQty" abbrev="UsesQty"/>
+    <tag group="ItemRarity" tag="Common" name="Common" abbrev="Common"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="5CUse"/>
+    </thing>
+  <thing id="io5CBootsF" name="Boots of False Tracks" description="Only humanoids can wear this magical footwear. While wearing this footwaer, you can choose to have them leave the tracks of another type of humanoid of your size." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="Only humanoids can wear these boots."/>
+    <usesource source="5eXGTECP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="io5CCotD" name="Candle of the Deep" description="When lit, this candle is not extinguished when immersed in water. The light and heat given off is like a normal candle.\n\n{i}Candle\n  For 1 hour, a candle sheds bright light in a 5-foot radius and dim light for an additional 5 feet.{/i}" compset="Wondrous" stacking="merge">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="UsesQty"/>
+    </thing>
+  <thing id="i5CCOArmor" name="Cast-Off Armor" description="This armor can be removed as an Action." compset="MagicArmor" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="light, medium. or heavy"/>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="ItemRarity" tag="Common" name="Common" abbrev="Common"/>
+    <tag group="abAction" tag="Action"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~restrict the list of armor to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & ((ArmorClass.Light | ArmorClass.Medium | ArmorClass.Heavy))"
+
+      ~set our name based on the type of armor chosen
+      field[livename].text = "Cast-Off "
+      perform gizmo.findchild[BaseArmor].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Armor"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text
+
+      ~show in specials list when equipped
+      doneif (field[gIsEquip].value = 0)
+      perform assign[Helper.ShowSpec]]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagArmor"></child>
+    </thing>
+  <thing id="io5CChaDie" name="Charlatan&apos;s Die" description="Whenever you roll this 6-sided die, you can choose what digit it reveals." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="io5CClkBlw" name="Cloak of Billowing" description="You can use a Bonus action, while wearing this cloak, to cause it to billow." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="io5CClkFas" name="Cloak of Many Fashions" description="When worn, you can use a bonus action to change the overall appearance (style, color, and apparent quality) of this cloak. Its weight doesn’t change. It cannot appears as anything but a cloak.\nAlthough it can as a magical cloak, it doesn’t gain their magical properties." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="io5CClwAmu" name="Clockwork Amulet" description="This copper amulet is crafted of  tiny interlocking gears and is powered by magic from Mechanus; the plane of clockwork predictability. If a  creature listens to the amulet closely, it can hear faint ticking and whirring noises coming from within.\n  When the wearer make an attack roll, that individual can forgo rolling the d20 to get a 10 on the die. Once used. this property can’t be used again until the next dawn." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="io5CCloMen" name="Clothes of Mending" description="These fancy traveler’s clothes magically mends themselves of daily wear and tear. Parts of the outfit that are destroyed can’t be repaired." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="io5CDSAmul" name="Dark Shard Amulet" description="The materials of this magical amulet are drawns from the realm of your warlock patron. It takes the form of a single shard of resilient extraplanar material. While worn, and attuned, the warlock gains the following benefits:\n- The warlock can use the amulet as an arcane focus for your warlock spells.\n- The warlock can try to cast a cantrip that is currently unknown to him or her. The cantrip must be a warlock cantrip (on his or her list). The warlock must make a DC 10 Intelligence (Arcana) check. If the check succeeds, the warlock cast the cantrip. If the check fails, so does the spell, and the action used to cast the spell is wasted. In either case, this power can only be used once per long rest.\n\n{i}Arcane focus\nAn arcane focus is a special item - an orb, a crystal, a rod, a specially constructed staff, a wand-like length of wood, or some similar item - designed to channel the power of arcane spells. A sorcerer, warlock, or wizard can use such an item as a spellcasting focus.{/i}" compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a wariock"/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <pickreq thing="cWarlock"/>
+    </thing>
+  <thing id="io5CDreadH" name="Dread Helm" description="The eyes of the steel helm glow fearsomely when worn." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="io5CEHoH" name="Ear Horn of Hearing" description="When listened through, this horn suppresses the effects of the deafened condition on you; aka. you can hear normally." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="io5CEndSB" name="Enduring Spellbook" description="This magical spellbook, along with anything written on its pages, is immune to damage caused by fire or immersion in water. In addition, age causes no ill effects to such a spellbook." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="io5CErsEye" name="Ersatz Eye" description="This artificial eye replaces a real one that was lost or removed. While this artificial eye is embedded in your eye socket, it can’t be removed by anyone other than you, and fuctions as your normal eye." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="io5CHoV" name="Hat of Vermin" description="This hat has 3 charges. \n\nWhen held, this hat can be used to summon a {b}bat{/}, a {b}frog{/b}. or a {b}rat{/b} (see the Player’s Handbook or the Monster Manual for statistics). This requires an Action involving the speaking of a command word. 1 charges is used. The creature magically appears in the hat and tries to escape as quickly as possible. The creature is neither friendly nor hostile, and it isn’t under your control. It behaves as an ordinary creature. It disappears after 1 hour or when it drops to 0 hit points. \n\nThe hat regains all expended charges daily at dawn." compset="Wondrous">
+    <fieldval field="trkMax" value="3"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="io5CHoW" name="Hat of Wizardry" description="This old, cone—shaped hat is adorned with gold crescent moons and stars. While worn, a wizard gains the following benefits:\n- You can use the hat as an arcane focus for your wizard spells.\n- The wizard can try to cast a cantrip that is currently unknown to him or her. The cantrip must be a wizard cantrip (on his or her list). The wizard must make a DC 10 Intelligence (Arcana) check. If the check succeeds, the wizard cast the cantrip. If the check fails, so does the spell, and the action used to cast the spell is wasted. In either case, this power can only be used once per long rest.\n\n\n{i}Arcane focus\nAn arcane focus is a special item - an orb, a crystal, a rod, a specially constructed staff, a wand-like length of wood, or some similar item - designed to channel the power of arcane spells. A sorcerer, warlock, or wizard can use such an item as a spellcasting focus.{/i}" compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <pickreq thing="cWizard"/>
+    </thing>
+  <thing id="io5CHHSP" name="Heward&apos;s Handy Spice Pouch" description="This belt pouch appears empty and has 10 charges.\n\nWhen held, the possessor can use an action to expend 1 charges, speak the name of any nonmagical food seasoning (such as salt, pepper, saffron, or cilantro), and take a single pinch of the desired seasoning from the pouch. This pinch is enough to season a single meal. \n\nThe pouch regains 1d6 + 4 expended charges daily at dawn." compset="Wondrous">
+    <fieldval field="trkMax" value="10"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Usage" tag="Charges"/>
+    </thing>
+  <thing id="io5CHoSA" name="Horn of Silent Alarm" description="This item has 4 charges. \n\nWhen an action is used to blow it, one creature of the users choice can hear the horn, if that creature is within 600 feet and is not deafened. No other creature hears any sound from the horn.\n\nThe horn regains 1d4 expended charges daily at dawn." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Usage" tag="Charges"/>
+    </thing>
+  <thing id="io5CIntsIl" name="Instrument of Illusions" description="When played, this musical instrument can create harmless, illusory visual effects within a 5-foot radius sphere centered on the instrument. If the player is a bard, the radius increases to 15 feet. Examples include luminous musical notes, a spectral dancer, butterflies, and gently falling snow. The magical effects have neither substance nor sound, and they are obviously illusory. \n\nThe illusions cease when the instrument is no longer being played." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    </thing>
+  <thing id="io5CInstSc" name="Instrument of Scribing" description="This musical instrument has 3 charges. \n\nWhen being played, the player can use an action to use 1 charge from the instrument and write a magical message on a nonmagical object or surface that you can see (30-foot range). The message can be up to 6 words long and is written in a language you know. If the players is a bard, then the player can scribe an additional seven words and choose to make the message glow faintly (it can be seen in nonmagical darkness). Casting dispel magic on the message erases it. The message lasts 24 hours otherwise.\n\nThe instrument regains all expended charges daily at dawn.\n\n{i}{b}Note: {/b} The text box is used for the form on instument.{/i}" compset="Wondrous">
+    <fieldval field="trkMax" value="3"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="NeedDomain"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="OptDomain"/>
+    </thing>
+  <thing id="io5CLockTr" name="Lock of Trickery" description="This lock appears to be an ordinary lock (of the type described in chapter 5 of the Player’s Handbook). It comes with a single key. \nThe lock magically enchanted to thwart thieves. \n\nDexterity checks made to pick the lock have Disadvantage." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="i5CMoonTSw" name="Moon-Touched Sword" description="In darkness, the unsheathed blade of this sword. sheds moonlight, creating bright light in a 15-foot radius and dim light for an additional 15 feet." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="any sword"/>
+    <fieldval field="trkMax" value="3"/>
+    <fieldval field="actName" value="When unsheathed"/>
+    <fieldval field="miAttunTxt" value="any sword"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="ItemRarity" tag="Legendary" name="Legendary" abbrev="Legendary"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~restrict the list of weapons to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & (wGroup.Sword)"
+
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Moon-Touched "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Sword"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="io5CMysKey" name="Mystery Key" description="The head of this key is inscribed with a &apos;?&apos;.When inserted into a lock, it has a 5 percent chance of unlocking it Once it unlocks something, the key disappears." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="UsedUp"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="UsesQty"/>
+    </thing>
+  <thing id="io5COrbDir" name="Orb of Direction" description="When held, you can use an Action to cause this orb to determine which way is north. \n\nThis power only functions on the Material Plane." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="io5COrbTim" name="Orb of Time" description="When held, you can use an Action to cause this orb to determine whether it is morning, afternoon, evening, or nighttime outside. \n\nThis power only functions on the Material Plane." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="io5CPerfBe" name="Perfume of Bewitching" description="This tiny vial contains magic perfume, enough for one use.\n\nBy using an action, you can apply the perfume to yourself. Its effect lasts 1 hour. \n\nWhile in effect, you have Advantage on all Charisma checks versus humanoids of challenge rating 1 or lower.\nThose subjected to the perfume’s effect are unaware that they’ve been influenced by magic." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="io5CPoSM" name="Pipe of Smoke Monsters" description="While being smoked, you can use an Action to exhale a puff of smoke from this pipe that takes the form of a single creature, such as a dragon, a flumph, or a froghemoth. The form must be fit within a 1-foot cube and loses its shape after a few seconds, becoming nothing but a puff of smoke." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="io5CPoleAn" name="Pole of Angling" description="When held, you can speak a command word and change this 10-foot pole into a fishing pole with a hook, a line, and a reel. \n\nRepeating the command word again changes the fishing pole back into a normal 10—foot pole." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="io5CPolCol" name="Pole of Collapsing" description="When helf, you can use an Action to speak a command word and cause this 10-foot pole to collapse into a 1-foot-long rod. The poles weight doesn’t change. \n\nUsing another Action with a different command word causes the rod to revert to a pole. \n\nNote: The rod will elongate only as far as the surrounding space allows." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="io5CPotAwa" name="Pot of Awakening" description="Planting an ordinary shrub in this 10-pound clay pot causes the shrub magically transforms into an awakened shrub (requires 30 days, see the Monster Manual for statistics). \n\nWhen the shrub awakens, the pot is destroyed. The awakened shrub is friendly toward you. It does nothing unless commanded." compset="Wondrous">
+    <fieldval field="gWeight" value="10"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="io5CRopMen" name="Rope of Mending" description="This magical 50-foot coil of hempen rope can be cut into any number of smaller pieces. Using an Action to speak a command word causes the pieces to knit back together. The pieces must be contacted to each other and not otherwise in use. \n\nThe rope is forever shortened if a section of it is lost or destroyed." compset="Wondrous">
+    <fieldval field="gWeight" value="10"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="io5CRotWM" name="Ruby of the War Mage" description="A 1-inch diameter ruby etched with eldritch runes. When attached to a simple or martial weapon, by pressing the ruby against it for at least 10 minutes, that weapon becomes a spellcasting focus. \n\nThe ruby cannot be removed unless you detach it , requires an Action, or the weapon is destroyed. Not even an antimagic fieid causes it to fall off. \n\nThe ruby does fall off the weapon if your attunement to it ends.\n\n{i}Arcane focus\nAn arcane focus is a special item - an orb, a crystal, a rod, a specially constructed staff, a wand-like length of wood, or some similar item - designed to channel the power of arcane spells. A sorcerer, warlock, or wizard can use such an item as a spellcasting focus.{/i}" compset="Wondrous" summary="Turns a 1-handed or versatile melee weapon into an arcane spell focus.">
+    <comment>Custom.SOEArcFoc</comment>
+    <fieldval field="usrCandid1" value="component.BaseWep"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a speilcaster"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="NoAdvLeag" name="Not Allowed for Adventurers League Characters" abbrev="Not Allowed for Adventurers League Characters"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProductId" tag="Norm" name="Norm&apos;s Campaign" abbrev="Norm&apos;s Campaign"/>
+    <tag group="Usage" tag="Constant" name="Constant" abbrev="Constant"/>
+    <tag group="User" tag="NoAutoName" name="NoAutoName" abbrev="NoAutoName"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    <eval phase="Render" priority="10000"><![CDATA[
+    ~doneif (field[gIsEquip].value = 0)
+    doneif (field[gIsAttuned].value = 0)
+    doneif (field[usrChosen1].ischosen = 0)
+
+    field[usrChosen1].chosen.field[livename].text = field[usrChosen1].chosen.field[name].text & ", spell focus"
+
+    field[usrChosen1].chosen.field[DescAppend].text = "Ruby of the War Mage{br}A 1-inch diameter ruby etched with eldritch runes. When attached to a simple or martial weapon, by pressing the ruby against it for at least 10 minutes, that weapon becomes a spellcasting focus.{br}{br}The ruby cannot be removed unless you detach it , requires an Action, or the weapon is destroyed. Not even an antimagic fieid causes it to fall off.{br}{br}The ruby does fall off the weapon if your attunement to it ends.{br}{br}{i}Arcane focus{br}An arcane focus is a special item - an orb, a crystal, a rod, a specially constructed staff, a wand-like length of wood, or some similar item - designed to channel the power of arcane spells. A sorcerer, warlock, or wizard can use such an item as a spellcasting focus.{/i}"]]></eval>
+    </thing>
+  <thing id="i5CShldExp" name="Shield of Expression" description="The front surface of this shield is shaped like a face. While the shie;d is equpped, the wielder can use a Bonus Action to change the face&apos;s expression." compset="MagicArmor">
+    <fieldval field="miTypeDet" value="shield"/>
+    <fieldval field="Bonus" value="1"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <child entity="mSpecMagic">
+      <bootstrap thing="mShield"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CArmSmol" name="Smoldering Armor" description="While worn, wisps of harmless, odorless smoke rise fron its surfaces." compset="MagicArmor" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="any"/>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="ItemRarity" tag="Common" name="Common" abbrev="Common"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of armor chosen
+      field[livename].text = "Smoldering "
+      perform gizmo.findchild[BaseArmor].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Armor"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text
+
+      ~show in specials list when equipped
+      doneif (field[gIsEquip].value = 0)
+      perform assign[Helper.ShowSpec]]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagArmor"></child>
+    </thing>
+  <thing id="is5CStfFlw" name="Staff of Flowers" description="This wooden staff has 10 charges. \n\nWhen held, you can use an Action and expend 1 charge. Doing so causes the staff to cause a flower to sprout from a patch of earth or soil within 5 feet of you, or from the staff itself. If you don&apos;t choose a specific kind of flower, the staff creates a mildscented daisy. The flower is harmless and nonmagical. It grows or withers as a normal flower would.\n\nThe staff regains 1d6 + 4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff turns into flower petals and is lost forever." compset="Staff">
+    <fieldval field="trkMax" value="10"/>
+    <fieldval field="gWeight" value="4"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="io5CDolTlk" name="Talking Doll" description="For example, whenever someone picks up the doll, it might say, “I want a piece of candy.” The doll’s phrases are lost when your attunement to the doll ends.\n\nWhen the doll is within 5-feet of you, you can spend a short rest telling it to say up to six phrases. These phases cannot be more than 6 words long. You can set a triggering condition for each phrase. You can also replace old phrases with new ones.\n\nWhatever the condition, it must occur within 5 feet of the doll to make it speak. The triggering consition must be met within 5-feet of the doll. For example, whenever someone picks up the doll, it might say, “I want a piece of candy.” \n\nThe doll’s phrases are lost when your attunement to the doll ends.\n\n{i}Note:\nDue to the space restrictions of a text box, I recommend using a Journal Entry to keep track of your Phrases and corresponding triggers.{/i}" compset="Wondrous">
+    <fieldval field="actIncrNam" value="Current # of Phrases"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="6"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="io5CTanSob" name="Tankard of Sobriety" description="This tankard has a stern face sculpted into one side. \nYou can drink ale, wine, or any other nonmagical alcoholic beverage poured into this tankard without becoming drunk. It does not affect magical liquids or harmful substances such as poison." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="io5CCaneVe" name="Veteran&apos;s Cane" description="Using a Bonus Action to say a command word changes this cane into a non-magical longsword." compset="Wondrous">
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="iw5CWndCon" name="Wand of Conducting" description="This wand has 3 charges. \n\nWhen held you can, by using an Action and expending 1 of its charge, create orchestral music by waving it around. The music is audible out to a range of 60 feet. The music ends when you stop waving the wand.\n\nThe wand regains all its charges daily at dawn. If you use the wand’s last charge, roll a d20. On a 1, a sad tuba sound plays as the wand is destroyed." compset="Wand">
+    <fieldval field="trkMax" value="3"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges"/>
+    </thing>
+  <thing id="iw5CWndPyr" name="Wand of Pyrotechnics" description="This wand has 7 charges. \n\nWhen held you can, by using an Action and expending 1 of its charge, create a harmless burst of multicolored light at a point in line-of-sight to 60 feet away. This burst of light is accompanied by a loud crackling noise that can be heard up to 300 feet away. The light is equal in brightness to a torch flame but lasts only a second.\n\nThe wand regains 1d6+1  charges daily at dawn. If you use the wand’s last charge, roll a d20. On a 1, the wand erupts in a harmless pyrotechnic display and is destroyed." compset="Wand">
+    <fieldval field="trkMax" value="7"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges"/>
+    </thing>
+  <thing id="iw5CWndScw" name="Wand of Scowls" description="This wand has 3 charges. \n\nWhen held you can, by using an Action and expending 1 of its charge,  target a humanoid you can see within 30 feet of you. If the target fails on a DC 10 Charisma saving throw, he or she is forced to scowl for 1 minute.\n\nThe wand regains all its charges daily at dawn. If you use the wand’s last charge, roll a d20. On a 1, the wand transforms into a {i}wand of smiles{/i}." compset="Wand">
+    <fieldval field="trkMax" value="3"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Usage" tag="Charges"/>
+    </thing>
+  <thing id="iw5CWndSmi" name="Wand of Smiles" description="This wand has 3 charges. \n\nWhen held you can, by using an Action and expending 1 of its charge,  target a humanoid you can see within 30 feet of you. If the target fails on a DC 10 Charisma saving throw, he or she is forced to smile for 1 minute.\n\nThe wand regains all its charges daily at dawn. If you use the wand’s last charge, roll a d20. On a 1, the wand transforms into a {i}wand of scowls{/i}." compset="Wand"></thing>
+  <thing id="is5CStfAdo" name="Staff of Adornment" description="If an object, weighing no more than 1 pound (such as a shard of crystal, an egg, or a stone), is placed above the top of the staff while holding it, the object floats an inch from the staff’s top and remains there until it is removed or until the staff is no longer in your possession. Three such objects can be placed above the top of the staff and float at any given time. While the staff is held, the holder can make one or more of the objects slowly spin or turn in place." compset="Staff">
+    <usesource source="5eXGTECP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="NoCharge"/>
+    </thing>
+  <thing id="is5CStfBir" name="Staff of Birdcalls" description="This wooden staff is decorated with bird carvings. \n\nThe staff has 10 charges. \n\nWhen held you can, by using an Action and expending 1 of its charge, to cause it to create one of the following sounds: a finch’s chirp, a raven&apos;s caw, a duck’s quack, a chicken’s cluck, a goose‘s book, a loon’s call, a turkey’s gobble, a seagull’s cry, an owl’s hoot, or an eagle’s shriek. This sound can  be heard out to a range of 60 feet.\n\nThe staff regains 1d6+4  charges daily at dawn. If you use the staff’s last charge, roll a d20. On a 1, the staff explodes in a harmless cloud of bird feathers and is lost forever." compset="Staff">
+    <fieldval field="trkMax" value="10"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="io5CArwUnb" name="Unbreakable Arrow" description="Unless in an antimagic field, this arrow cannot be broken." compset="Wondrous">
+    <fieldval field="gWeight" value=".05"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="UsesQty"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="i5CAmmWal" name="Walloping Ammunition" description=" A creature hit by a piece of this magical ammo must succeed on a Strength saving throw  (DC 10) or be knocked prone." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2" stacking="new">
+    <fieldval field="miTypeDet" value="any ammunition"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="Ammo" name="Ammunition" abbrev="Ammunition"/>
+    <tag group="Helper" tag="UsesQty" name="UsesQty" abbrev="UsesQty"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Walloping "
+      perform gizmo.findchild[BaseEquip,"GearType.gtAmmo"].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Ammunition"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon">
+      <tag group="Helper" tag="ChooseAmmo" name="ChooseAmmo" abbrev="ChooseAmmo"/>
+      </child>
+    </thing>
+  <thing id="i5CArwUnb" name="Unbreakable Arrow" description="Unless in an antimagic field, this arrow cannot be broken." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2" stacking="new">
+    <fieldval field="miTypeDet" value="arrows"/>
+    <tag group="Helper" tag="UsesQty" name="UsesQty" abbrev="UsesQty"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
+    <tag group="Helper" tag="Ammo" name="Ammunition" abbrev="Ammunition"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Unbreakable "
+      perform gizmo.findchild[BaseEquip,"GearType.gtAmmo & thingid.gArrows"].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Ammunition"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon">
+      <tag group="Helper" tag="ChooseAmmo" name="ChooseAmmo" abbrev="ChooseAmmo"/>
+      </child>
+    </thing>
+  </document>
