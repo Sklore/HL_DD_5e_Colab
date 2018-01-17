@@ -2847,4 +2847,66 @@ foreach pick in hero from BaseSpell where "CfgSpell.cfg5CDivSp"
      perform eachpick.assign[SpellType.cHelpSor]
 nexteach]]></eval>
     </thing>
+  <thing id="c5CRogXGSc" name="Scout" description="Skilled at stealth and survival, you range far ahead of your companions. Many scouts are the eyes and ears of whatever unit they are attached to and serve well in the roles of spy, ambusher and bounty hunter." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpRog" name="Rogue" abbrev="Rogue"/>
+    <tag group="abCategory" tag="RogArchety" name="Rogue Archetype" abbrev="Rogue Archetype"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CRogXGSk">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogXGSu">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogXGSM">
+      <autotag group="ClSpecWhen" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogXGAM">
+      <autotag group="ClSpecWhen" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogXGSS">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRogXGSk" name="Skirmisher" description="Starting at 3rd level, you can move up to half your speed as a reaction when an enemy ends its turn within 5 feet of you. Your movement doesn’t provoke opportunity attacks." compset="ClSpecial">
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="c5CRogXGSu" name="Survivalist" description="At 3rd level, you gain proficiency in the Nature and Survival skills. Your proficiency bonus is doubled for any ability check you make for both of those proficiencies." compset="ClSpecial">
+    <tag group="ProfDouble" tag="skNature" name="Nature" abbrev="Nature"/>
+    <tag group="ProfDouble" tag="skSurvival" name="Survival" abbrev="Survival"/>
+    <tag group="ProfSkill" tag="skNature" name="Nature" abbrev="Nature"/>
+    <tag group="ProfSkill" tag="skSurvival" name="Survival" abbrev="Survival"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+perform forward[ProfSkill.?]
+perform forward[ProfDouble.?]]]></eval>
+    </thing>
+  <thing id="c5CRogXGSM" name="Superior Mobility" description="At 9th level, your walking speed increases by 10 feet. If you have a climbing or swimming speed, it increases by 10 feet as well." compset="ClSpecial">
+    <fieldval field="abValue" value="10"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+hero.child[Speed].field[tSpeed].value += field[abValue].value
+if ( hero.child[xClimb].field[abValue].value > 0 ) then
+     hero.child[xClimb].field[abValue].value += field[abValue].value
+endif
+if ( hero.child[xSwim].field[abValue].value > 0 ) then
+     hero.child[xSwim].field[abValue].value += field[abValue].value
+endif]]></eval>
+    </thing>
+  <thing id="c5CRogXGAM" name="Ambush Master" description="Starting at 13th level, you have advantage on initiative rolls. Additionally, the first creature you strike during the first round of combat becomes easier to hit. Attack rolls against this target by you or your allies have advantage until the start of your next turn." compset="ClSpecial">
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+~ If not disabled get out now!
+doneif (tagis[Helper.Disable] = 1)
+#situational[hero.child[Initiative], "You have advantage on Initiative rolls.", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="c5CRogXGSS" name="Sudden Strike" description="Starting at 17th level, if you take the Attack action on your turn, you can make one additional attack as a bonus action. This attack can benefit from your Sneak Attack even if you have already used it this turn, but you can&apos;t use your Sneak attack against the same target more than once in a turn." compset="ClSpecial">
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    </thing>
   </document>
