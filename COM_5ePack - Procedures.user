@@ -2,11 +2,9 @@
 <document signature="Hero Lab Data">
   <loadonce key="COM_5ePack - Procedures"/>
   <fileinfo>
-    <info_author>
-      Tim Shadow
+    <info_author>Tim Shadow
       Email: ShadowChemosh@yahoo.com</info_author>
-    <info_history>
-      January 14, 2016
+    <info_history>January 14, 2016
       -Created new to hold procedures for the new 5e Pack.</info_history>
     </fileinfo>
   <procedure id="5CAddProf" context="pick"><![CDATA[
@@ -137,7 +135,6 @@
         field[pChosen].chosen.field[sbName].text &= field[pDuration].text      
       Endif
     Endif]]></procedure>
-
   <procedure id="5CSplSchSF" context="pick"><![CDATA[
     ~ This procedure is for "Spell School - Spell Focus" logic.
     ~ We are called from every spell school pick to give a 1/2 
@@ -148,10 +145,7 @@
 
     ~ We need to apply "half" our proficiency bonus to this
     ~ school of magic.
-    field[schDC].value += round(hero.child[ProfBonus].field[tProfBonus].value/2,0,-1)
-    ]]>
-    </procedure>
-
+    field[schDC].value += round(hero.child[ProfBonus].field[tProfBonus].value/2,0,-1)]]></procedure>
   <procedure id="5CSizeChg" context="pick"><![CDATA[
     ~ This procedure tries to centralize all the logic of changing
     ~ a characters size for the 5e Community. So far the best timing
@@ -213,10 +207,7 @@
     ~ Gargantuan
     ElseIf (herofield[tSize].value = 3) then
       focus.field[rHDSides].value = 20
-    Endif
-    ]]>
-    </procedure>
-
+    Endif]]></procedure>
   <procedure id="5CSetSize" context="pick"><![CDATA[
     ~ This procedure forces a charcter to be a specific size no matter the
     ~ starting size of the character. In example force the character
@@ -252,6 +243,29 @@
     sizemod = sizetarget - herofield[tSize].value
 
     ~ call the Size Change procedure
-    Call 5CSizeChg
-    ]]></procedure>
+    Call 5CSizeChg]]></procedure>
+  <procedure id="5CSkProfDo" context="pick"><![CDATA[~ procedure to grant proficiency or double if already proficient
+~ Must run at Post-Levels/15500
+~ called by declaring variable and then procedure
+~ var v_SkillID as string
+~ v_SkillID = "skPerform"  
+~ call 5CSkProfDo
+
+  var v_SkillID as string
+
+  ~ Make a Target.? skill id to be used in the find chile
+  v_SkillID = "Target." & v_SkillID
+
+  ~ Set focus to the skill id passed in
+  perform hero.findchild[BaseSkill,v_SkillID].setfocus
+  doneif (state.isfocus = 0)
+  
+  ~ If not proficient then make skill proficient
+  if (focus.tagis[Helper.Proficient] = 0) then 
+    perform focus.assign[Helper.Proficient]
+        
+  ~..Else if already proficient make double proficient
+  elseif (focus.tagis[Helper.Proficient] <> 0) then
+    perform focus.assign[Helper.ProfDouble]
+  endif]]></procedure>
   </document>
