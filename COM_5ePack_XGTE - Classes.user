@@ -2875,19 +2875,13 @@ nexteach]]></eval>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     </thing>
   <thing id="c5CRogXGSu" name="Survivalist" description="At 3rd level, you gain proficiency in the Nature and Survival skills. Your proficiency bonus is doubled for any ability check you make for both of those proficiencies." compset="ClSpecial">
-    <eval phase="PostLevel" priority="15500"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
 doneif (tagis[Helper.Disable] <> 0)
 
-~ perform forward[ProfSkill.?]
-~ perform forward[ProfDouble.?]
-
-var v_SkillID as string
-
-v_SkillID = "skNature" 
-call 5CSkProfDo
-
-v_SkillID = "skSurvival"
-call 5CSkProfDo]]></eval>
+perform hero.assign[ProfDouble.skNature]
+perform hero.assign[ProfDouble.skSurvival]]]>
+      <before name="Calc skProfBon"/>
+      </eval>
     </thing>
   <thing id="c5CRogXGSM" name="Superior Mobility" description="At 9th level, your walking speed increases by 10 feet. If you have a climbing or swimming speed, it increases by 10 feet as well." compset="ClSpecial">
     <fieldval field="abValue" value="10"/>
