@@ -536,4 +536,59 @@
       <tag group="Helper" tag="ChooseAmmo" name="ChooseAmmo" abbrev="ChooseAmmo"/>
       </child>
     </thing>
+  <thing id="i5CAdamWea" name="Adamantine Weapon" description="Melee weapons and ammunition made of or coated with adamantine are unusually effective when used to break objects. Whenever an adamantine weapon or piece of ammunition hits an object, the hit is a critical hit. \n\nThe adamantine version of a melee weapon or of ten pieces of ammunition costs 500 gp more than the normal version, whether the weapon or ammunition is made of the metal or coated with it." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="gSizeCost" value="500"/>
+    <usesource source="5eXGTECP"/>
+    <eval phase="Final" priority="20000" index="3"><![CDATA[
+      ~restrict the list of weapons to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & (component.MyGear & component.BaseWep)"
+
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Adamantine "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Weapon"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <eval phase="First" priority="110">~ Pass our info up to the gizmo
+      gizmo.child[gCustMagic].field[gCustCost].value += field[gCost].value
+      gizmo.child[gCustMagic].field[gCustSCost].value += field[gSizeCost].value
+      <after name="Forward Weapon/Armor tags to Custom Item"/>
+      </eval>
+    <eval phase="PreLevel" priority="5000" name="Custom Item Description">~ Inherit our details from the gizmo, less the info we passed up before
+      field[gCost].value += gizmo.child[gCustMagic].field[gCustCost].value - field[gCost].value
+      field[gSizeCost].value += gizmo.child[gCustMagic].field[gCustSCost].value - field[gSizeCost].value</eval>
+    <child entity="gMagWeapon">
+      <tag group="Helper" tag="AddBaseCst" name="AddBaseCst" abbrev="AddBaseCst"/>
+      </child>
+    </thing>
+  <thing id="iA2ZAdaArr" name="Ammunition, adamantine" description="Melee weapons and ammunition made of or coated with adamantine are unusually effective when used to break objects. Whenever an adamantine weapon or piece of ammunition hits an object, the hit is a critical hit. \n\n{b}Note:{/b} This special weapon allows you to turn any ammunition into a adamantine ammunition" compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="gCost" value="500"/>
+    <fieldval field="miTypeDet" value="any ammunition"/>
+    <fieldval field="trkMax" value="10"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="Ammo" name="Ammunition" abbrev="Ammunition"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Silver "
+      perform gizmo.findchild[BaseEquip,"GearType.gtAmmo"].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Ammunition"
+        endif
+      field[shortname].text = field[livename].text
+field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon">
+      <tag group="Helper" tag="ChooseAmmo" name="ChooseAmmo" abbrev="ChooseAmmo"/>
+      </child>
+    </thing>
   </document>
