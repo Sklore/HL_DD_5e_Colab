@@ -2553,9 +2553,9 @@ herofield[tBonusHP].value += #attrmod[aCHA] + #levelcount[Warlock]]]></eval>
     <tag group="abAction" tag="Bonus"/>
     <tag group="User" tag="Activation"/>
     </thing>
-  <thing id="c5CWlkHeWa" name="Hex Warrior" description="At 1st level, you gain proficiency with medium armor, shields, and martial weapons. \n\nWhen you finish a long rest, you can touch one weapon that you are proficient with  and that lacks the two-handed property, you can use your Charisma modifier, instead of Strength or Dexterity, for the attack and damage rolls. This benefits lasts until you finish a long rest. If you later gain the Pact of the Blade feature, this benefit extends to every pact weapon you conjure with that feature, no matter the type.\n\n{b}Note:{/b} To use this ability, first add the weapon on the weapons tab, then select it from Hex Warrior." compset="ClSpecial">
+  <thing id="c5CWlkHeWa" name="Hex Warrior" description="At 1st level, you gain proficiency with medium armor, shields, and martial weapons. \n\nWhen you finish a long rest, you can touch one weapon that you are proficient with  and that lacks the two-handed property, you can use your Charisma modifier, instead of Strength or Dexterity, for the attack and damage rolls. This benefits lasts until you finish a long rest. If you later gain the Pact of the Blade feature, this benefit extends to every pact weapon you conjure with that feature, no matter the type.\n\n{b}Note:{/b} To use this ability, first add the weapon on the weapons tab, then select it from Hex Warrior. This overrides DEX/STR, so you must deactivate the ability on the Activated Abilities tab if your CHA bonus would be a lower score." compset="ClSpecial">
     <fieldval field="trkMax" value="1"/>
-    <tag group="ArmProfGrp" tag="Shields" name="Shields" abbrev="Shields"/>
+    <fieldval field="actName" value="Remove CHA bonus"/>
     <tag group="ArmProfGrp" tag="WepMartial" name="Martial weapons" abbrev="Martial weapons"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="abAction" tag="LongRest"/>
@@ -2563,14 +2563,14 @@ herofield[tBonusHP].value += #attrmod[aCHA] + #levelcount[Warlock]]]></eval>
     <tag group="Usage" tag="LongRest"/>
     <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="ArmProfGrp" tag="ArmorMed" name="Medium armor" abbrev="Medium armor"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="ArmProfGrp" tag="Shields" name="Shields" abbrev="Shields"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+perform forward[ArmProfGrp.?]]]></eval>
     <eval phase="Final" priority="10000" index="2"><![CDATA[doneif (tagis[Helper.Disable] = 1)
 doneif (field[usrChosen1].ischosen = 0)
-
-~ foreach pick in hero from BaseWep
-~   eachpick.field[wMelAttTxt].text = "charisma"
-~   eachpick.field[wMeleeAttr].value = hero.child[aCHA].field[aBonus].value
-~   eachpick.field[wDamAttr].value = hero.child[aCHA].field[aBonus].value
-~ nexteach
+doneif (field[abilActive].value = 1)
 
 field[usrChosen1].chosen.field[wMelAttTxt].text = "charisma"
 field[usrChosen1].chosen.field[wRanAttTxt].text = "charisma"
@@ -2592,9 +2592,6 @@ if ( hero.childfound[cWlkPacBla].field[usrChosen1].chosen.tagis[wProperty.TwoHan
 endif
 
 field[usrCandid1].text = searchexp]]></eval>
-    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
-
-perform forward[ArmProfGrp.?]]]></eval>
     </thing>
   <thing id="c5CWlkAcSp" name="Accursed Specter" description="Starting at 6th level, you can bind the soul of a slain foe into your service, temporarily. When you slay a humanoid, you can cause its spirit to rise from the corpse as a {b}specter{/b}. When it appears, it gains temporary hit points equal to half your warlock level. Roll initiative for the specter, which will act on its own turn. It obeys your verbal commands and can apply a modifier to its attack rolls equal to your Charisma modifier (minimum of +0).\n\nThe specter remains your servant until the end of your next long rest, when it travel on to the afterlife. \n\nOnce you bind a {b}specter{/b} with this ability, you can&apos;t do so again until you finish a long rest." compset="ClSpecial">
     <fieldval field="trkMax" value="1"/>

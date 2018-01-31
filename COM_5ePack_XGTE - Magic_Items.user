@@ -567,7 +567,7 @@
       <tag group="Helper" tag="AddBaseCst" name="AddBaseCst" abbrev="AddBaseCst"/>
       </child>
     </thing>
-  <thing id="iA2ZAdaArr" name="Ammunition, adamantine" description="Melee weapons and ammunition made of or coated with adamantine are unusually effective when used to break objects. Whenever an adamantine weapon or piece of ammunition hits an object, the hit is a critical hit. \n\n{b}Note:{/b} This special weapon allows you to turn any ammunition into a adamantine ammunition" compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+  <thing id="i5CAdamArr" name="Ammunition, adamantine" description="Melee weapons and ammunition made of or coated with adamantine are unusually effective when used to break objects. Whenever an adamantine weapon or piece of ammunition hits an object, the hit is a critical hit. \n\n{b}Note:{/b} This special weapon allows you to turn any ammunition into a adamantine ammunition" compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
     <fieldval field="gCost" value="500"/>
     <fieldval field="miTypeDet" value="any ammunition"/>
     <fieldval field="trkMax" value="10"/>
@@ -583,6 +583,56 @@
       else
         field[livename].text &= "Ammunition"
         endif
+      field[shortname].text = field[livename].text
+field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon">
+      <tag group="Helper" tag="ChooseAmmo" name="ChooseAmmo" abbrev="ChooseAmmo"/>
+      </child>
+    </thing>
+  <thing id="i5CAdamAr1" name="Ammunition, adamantine + 1" description="Melee weapons and ammunition made of or coated with adamantine are unusually effective when used to break objects. Whenever an adamantine weapon or piece of ammunition hits an object, the hit is a critical hit. \n\n{b}Note:{/b} This special weapon allows you to turn any ammunition into a adamantine ammunition" compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="any ammunition"/>
+    <fieldval field="trkMax" value="10"/>
+    <fieldval field="Bonus" value="1"/>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="Helper" tag="Ammo" name="Ammunition" abbrev="Ammunition"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Silver "
+      perform gizmo.findchild[BaseEquip,"GearType.gtAmmo"].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Ammunition"
+        endif
+      field[livename].text &= " +1"
+      field[shortname].text = field[livename].text
+field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon">
+      <tag group="Helper" tag="ChooseAmmo" name="ChooseAmmo" abbrev="ChooseAmmo"/>
+      </child>
+    </thing>
+  <thing id="i5CAdamAr2" name="Ammunition, adamantine + 2" description="Melee weapons and ammunition made of or coated with adamantine are unusually effective when used to break objects. Whenever an adamantine weapon or piece of ammunition hits an object, the hit is a critical hit. \n\n{b}Note:{/b} This special weapon allows you to turn any ammunition into a adamantine ammunition" compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="any ammunition"/>
+    <fieldval field="trkMax" value="10"/>
+    <fieldval field="Bonus" value="2"/>
+    <usesource source="5eXGTECP" parent="p5eBooks" name="Xanathar&apos;s Guide To Everything"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="Helper" tag="Ammo" name="Ammunition" abbrev="Ammunition"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Silver "
+      perform gizmo.findchild[BaseEquip,"GearType.gtAmmo"].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Ammunition"
+        endif
+      field[livename].text &= " +2"
       field[shortname].text = field[livename].text
 field[sbName].text = field[livename].text]]>
       <after name="gItemExpr Set"/>
