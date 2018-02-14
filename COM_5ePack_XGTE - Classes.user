@@ -866,6 +866,7 @@ endif]]></eval>
   <thing id="c5CClrSoFo" name="Soul of the Forge" description="Starting at 6th level, your mastery of the forge grants you a number of special abilities: \n•  You gain a +1 bonus to AC while you are wearing heavy armor.\n•  You gain resistance to fire damage." compset="ClSpecial">
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
     <eval phase="Final" priority="10000"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+     doneif (#levelcount[Cleric] < 6)
 
      field[abValue].value = 0
      foreach pick in hero from BaseArmor where "( ArmorClass.Heavy ) & ( Helper.CurrArmor )"
@@ -873,6 +874,7 @@ endif]]></eval>
      nexteach
      hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
     <eval phase="PostLevel" priority="10000" index="2"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+     doneif (#levelcount[Cleric] < 6)
      perform hero.assign[DamageRes.dtFire]]]></eval>
     </thing>
   <thing id="c5CClrDSFo" name="Divine Strike" description="At 8th level, you gain the ability to infuse your weapon strikes with divine energy. Once on each of your turns when you hit a creature with a weapon attack, you can cause the attack to deal an extra 1d8 fire damage (your choice) to the target. When you reach 14th level, the extra damage increases to 2d8." compset="ClSpecial">
@@ -904,6 +906,7 @@ endif]]></eval>
     <tag group="DamageRes" tag="dt5CBPSNon"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
       doneif (tagis[Helper.Disable] <> 0)
+     doneif (#levelcount[Cleric] < 17)
 
       perform hero.assign[DamageImm.dtFire]
       var res as number
