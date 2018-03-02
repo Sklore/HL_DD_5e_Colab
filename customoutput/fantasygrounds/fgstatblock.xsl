@@ -349,6 +349,11 @@
                </xsl:otherwise>
             </xsl:choose>
             <locked type="number">1</locked><xsl:text>&#13;</xsl:text>
+            <xsl:if test='description != ""'>
+            <description type="formattedtext">
+					<p><xsl:value-of select='description' /></p>
+				</description>
+            </xsl:if>
             <xsl:variable name="thisitemname" select="@name" />
                <xsl:choose>
                   <xsl:when test='contains(@name, ")")' >
