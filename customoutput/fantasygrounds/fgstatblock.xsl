@@ -268,7 +268,7 @@
          
          <!-- Start SPELLS -->
          <powers>
-         <xsl:for-each select="document/public/character/cantrips/spell | document/public/character/spellsknown/spell | document/public/character/spellbook/spell | document/public/character/racespells/spellability">
+         <xsl:for-each select="document/public/character/cantrips/spell | document/public/character/spellsknown/spell | document/public/character/spellsmemorized/spell | document/public/character/racespells/spellability">
             <xsl:choose>
                <xsl:when test="number(position()) &lt; 10">
                   <xsl:text disable-output-escaping="yes">&lt;id-0000</xsl:text><xsl:value-of select="position()" /><xsl:text disable-output-escaping="yes">&gt;&#13;</xsl:text>
