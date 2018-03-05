@@ -314,7 +314,7 @@
             </xsl:choose>
 				<locked type="number">1</locked><xsl:text>&#13;</xsl:text>
 				<name type="string"><xsl:value-of select='translate(@name, "&#8217;", "&#39;")' /></name><xsl:text>&#13;</xsl:text>
-            translate(., "&#8217;", "&#39;")
+            <!--  HOW DID THIS GET HERE? translate(., "&#8217;", "&#39;") -->
             <parse type="number">1</parse><xsl:text>&#13;</xsl:text>
             <description type="formattedtext"><xsl:text>&#13;</xsl:text>
 				   <p><xsl:value-of select='translate(description, "&#8217;&#8212;", "&#39;-")' /></p><xsl:text>&#13;</xsl:text>
