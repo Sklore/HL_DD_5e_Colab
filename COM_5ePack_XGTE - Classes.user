@@ -1485,7 +1485,7 @@ doneif (tagis[Helper.Disable]  = 1)
 doneif (field[abilActive].value = 0)
 
 hero.childfound[ArmorClass].field[Bonus].value += 2</eval>
-    <eval phase="PreLevel" priority="10000" index="2">~ the weapon proficiencies are pushed here. 
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[~ the weapon proficiencies are pushed here. 
 doneif (tagis[Helper.Disable] = 1)
 doneif (field[usrChosen1].ischosen = 0)
 doneif (field[usrChosen2].ischosen = 0)
@@ -1495,7 +1495,18 @@ perform field[usrChosen1].chosen.pulltags[WepProf.?]
 perform field[usrChosen2].chosen.pulltags[WepProf.?]
     
 ~ Now push both tags to the hero
-perform hero.pushtags[WepProf.?]</eval>
+perform hero.pushtags[WepProf.?]
+
+~ Now mark the weapon as martial arts so it grabs the proper
+~ damage and attribute tags
+var searchexpr as string
+searchexpr = "(" & field[usrChosen1].chosen.tagids[IsWeapon.?,"|"] 
+searchexpr &= "|" & field[usrChosen2].chosen.tagids[IsWeapon.?, "|"] & ")"
+
+~ push the martial arts tag to any weapons chosen
+foreach pick in hero from BaseWep where searchexpr
+  perform eachpick.assign[Special.MartArts]
+nexteach]]></eval>
     </thing>
   <thing id="c5CMnkOneB" name="One with the Blade" description="At 6th level, you extend your use of ki to your kensei weapons granting the following benefits:\n\n{b}{i}Magic Kensei Weapons.{/i}{/b} Your attacks with kensei weapons are considered magical for the purpose of overcoming resistance and immunity to nonmagical attacks. \n\n{b}{i}Deft Strike.{/i}{/b} When you successfully strike a target with a kensei weapon, you can spend 1 ki point to cause the weapon to deal extra damage equal to your Martial Arts die. You can use this feature only once on each of your turns." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
@@ -1505,14 +1516,24 @@ perform hero.pushtags[WepProf.?]</eval>
   <thing id="c5CMnkKenW" name="Path of the Kensei Weapon" description="You are granted an additional weapon to use with your kensei abilities." compset="ClSpecial">
     <fieldval field="usrCandid1" value="(component.BaseWep &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper  &amp; !wProperty.Heavy &amp; !wProperty.Special) | thingid.wLongbow"/>
     <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
-    <eval phase="PreLevel" priority="10000">doneif (tagis[Helper.Disable] = 1)
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] = 1)
 doneif (field[usrChosen1].ischosen = 0)
       
 ~ Pull all the selected weapon proficiency tags to ourself 
 perform field[usrChosen1].chosen.pulltags[WepProf.?]
     
 ~ Now push both tags to the hero
-perform hero.pushtags[WepProf.?]</eval>
+perform hero.pushtags[WepProf.?]
+
+~ Now mark the weapon as martial arts so it grabs the proper
+~ damage and attribute tags
+var searchexpr as string
+searchexpr = "(" & field[usrChosen1].chosen.tagids[IsWeapon.?,"|"]  & ")"
+
+~ push the martial arts tag to any weapons chosen
+foreach pick in hero from BaseWep where searchexpr
+  perform eachpick.assign[Special.MartArts]
+nexteach]]></eval>
     </thing>
   <thing id="c5CMnkShaB" name="Sharpen the Blade" description="When you reach 11th level, you can further augment you weapons with your ki. As a bonus action you can expend up to 3 ki points to grant one kensei weapon you touch a bonus to attack and damage rolls when you attack with it. The bonus equals the number of ki points you spend. This bonus lasts for 1 minute or until you use this ability again. The feature has no effect on a magic weapon that already has a bonus to attack and damage rolls." compset="ClSpecial">
     <fieldval field="abDuration" value="1"/>
