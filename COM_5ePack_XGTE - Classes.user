@@ -1485,7 +1485,7 @@ doneif (tagis[Helper.Disable]  = 1)
 doneif (field[abilActive].value = 0)
 
 hero.childfound[ArmorClass].field[Bonus].value += 2</eval>
-    <eval phase="PreLevel" priority="10000" index="2">~ the weapon proficiencies are pushed here. 
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[~ the weapon proficiencies are pushed here. 
 doneif (tagis[Helper.Disable] = 1)
 doneif (field[usrChosen1].ischosen = 0)
 doneif (field[usrChosen2].ischosen = 0)
@@ -1495,7 +1495,18 @@ perform field[usrChosen1].chosen.pulltags[WepProf.?]
 perform field[usrChosen2].chosen.pulltags[WepProf.?]
     
 ~ Now push both tags to the hero
-perform hero.pushtags[WepProf.?]</eval>
+perform hero.pushtags[WepProf.?]
+
+~ Now mark the weapon as martial arts so it grabs the proper
+~ damage and attribute tags
+var searchexpr as string
+searchexpr = "(" & field[usrChosen1].chosen.tagids[IsWeapon.?,"|"] 
+searchexpr &= "|" & field[usrChosen2].chosen.tagids[IsWeapon.?, "|"] & ")"
+
+~ push the martial arts tag to any weapons chosen
+foreach pick in hero from BaseWep where searchexpr
+  perform eachpick.assign[Special.MartArts]
+nexteach]]></eval>
     </thing>
   <thing id="c5CMnkOneB" name="One with the Blade" description="At 6th level, you extend your use of ki to your kensei weapons granting the following benefits:\n\n{b}{i}Magic Kensei Weapons.{/i}{/b} Your attacks with kensei weapons are considered magical for the purpose of overcoming resistance and immunity to nonmagical attacks. \n\n{b}{i}Deft Strike.{/i}{/b} When you successfully strike a target with a kensei weapon, you can spend 1 ki point to cause the weapon to deal extra damage equal to your Martial Arts die. You can use this feature only once on each of your turns." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
@@ -1505,14 +1516,24 @@ perform hero.pushtags[WepProf.?]</eval>
   <thing id="c5CMnkKenW" name="Path of the Kensei Weapon" description="You are granted an additional weapon to use with your kensei abilities." compset="ClSpecial">
     <fieldval field="usrCandid1" value="(component.BaseWep &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !Helper.Helper  &amp; !wProperty.Heavy &amp; !wProperty.Special) | thingid.wLongbow"/>
     <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
-    <eval phase="PreLevel" priority="10000">doneif (tagis[Helper.Disable] = 1)
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] = 1)
 doneif (field[usrChosen1].ischosen = 0)
       
 ~ Pull all the selected weapon proficiency tags to ourself 
 perform field[usrChosen1].chosen.pulltags[WepProf.?]
     
 ~ Now push both tags to the hero
-perform hero.pushtags[WepProf.?]</eval>
+perform hero.pushtags[WepProf.?]
+
+~ Now mark the weapon as martial arts so it grabs the proper
+~ damage and attribute tags
+var searchexpr as string
+searchexpr = "(" & field[usrChosen1].chosen.tagids[IsWeapon.?,"|"]  & ")"
+
+~ push the martial arts tag to any weapons chosen
+foreach pick in hero from BaseWep where searchexpr
+  perform eachpick.assign[Special.MartArts]
+nexteach]]></eval>
     </thing>
   <thing id="c5CMnkShaB" name="Sharpen the Blade" description="When you reach 11th level, you can further augment you weapons with your ki. As a bonus action you can expend up to 3 ki points to grant one kensei weapon you touch a bonus to attack and damage rolls when you attack with it. The bonus equals the number of ki points you spend. This bonus lasts for 1 minute or until you use this ability again. The feature has no effect on a magic weapon that already has a bonus to attack and damage rolls." compset="ClSpecial">
     <fieldval field="abDuration" value="1"/>
@@ -2494,13 +2515,19 @@ endif]]></eval>
 
       perform hero.assign[DamageRes.dtRadiant]]]></eval>
     </thing>
-  <thing id="c5CWlkCeRe" name="Celestial Resilience" description="At 10th level, you gain temporary hit points whenever you finish a short or long rest equal to your warlock level + your Charisma modifier. Additionally, you can choose up to 5 creaures that you can see at the end of the rest. These creatures gain temporary hit poitns equal to half your warlock level + your Charisma modifier." compset="ClSpecial">
+  <thing id="c5CWlkCeRe" name="Celestial Resilience" description="At 10th level, you gain temporary hit points whenever you finish a short or long rest equal to your warlock level + your Charisma modifier. Additionally, you can choose up to 5 creaures that you can see at the end of the rest. These creatures gain temporary hit points equal to half your warlock level + your Charisma modifier.\n\n{b}Note:{/b} You will need to manually activate this temporary hit point pool on the In-Play tab in order for it to take effect." compset="ClSpecial">
     <tag group="abAction" tag="None"/>
     <tag group="abRange" tag="Sight"/>
     <tag group="abDuration" tag="Instant"/>
+    <bootstrap thing="thp5CCelRa"></bootstrap>
     <eval phase="PostAttr" priority="15000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[xTotalLev].value <= 10)
 
-herofield[tBonusHP].value += #attrmod[aCHA] + #levelcount[Warlock]]]></eval>
+var BonusHP as number
+BonusHP = #attrmod[aCHA] + field[xTotalLev].value
+
+hero.childfound[thp5CCelRa].field[thpMinAllw].value = BonusHP
+hero.childfound[thp5CCelRa].field[thpMaxAllw].value = BonusHP]]></eval>
     </thing>
   <thing id="c5CWlkSeVe" name="Searing Vengeance" description="Starting at 14th  level, the radiant energy from your patron allows you to resist death&apos;s call. Whenever you make a death saving throw at the start of your turn, you can instead rise back to you feet in a burst of radiant energy. You regain hit points equal to half your hit point maximum and stand up if you want to. The radiant burst affects any creatures of your choice within 30 feet of you, causing them to take 2d8 + your Charisma modifier radiant damage and becoming blinded until the end of your current turn. \n\nYou can only use this once per long rest." compset="ClSpecial">
     <fieldval field="trkMax" value="1"/>
@@ -2693,9 +2720,11 @@ field[usrCandid1].text = searchexp]]></eval>
 
 
 if ( hero.childfound[cWlkPacBla].field[usrChosen1].chosen.field[Bonus].value = 0 ) then 
-   if ( hero.childfound[cWlkPacBla].field[usrChosen1].chosen.tagis[portal.wMagChoose] = 0 ) then 
+~ the if statement was commented out since this creates a problem with 
+~ flame tongue and other weapons that don't have a +1
+~   if ( hero.childfound[cWlkPacBla].field[usrChosen1].chosen.tagis[portal.wMagChoose] = 0 ) then 
       hero.childfound[cWlkPacBla].field[usrChosen1].chosen.field[Bonus].value = 1
-   endif
+~   endif
 endif]]></eval>
     <eval phase="First" priority="10000" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
 ~ Need to grant additional pact weapon choices
@@ -2937,5 +2966,23 @@ doneif (tagis[Helper.Disable] = 1)
     </thing>
   <thing id="c5CRogXGSS" name="Sudden Strike" description="Starting at 17th level, if you take the Attack action on your turn, you can make one additional attack as a bonus action. This attack can benefit from your Sneak Attack even if you have already used it this turn, but you can&apos;t use your Sneak attack against the same target more than once in a turn." compset="ClSpecial">
     <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    </thing>
+  <thing id="thp5CCelRa" name="Celestial Resilience Temporary HP Pool" compset="TempHpPool">
+    <tag group="Helper" tag="IndepPool" name="Independant Temporary Hp Pool" abbrev="Independant Temporary Hp Pool"/>
+    </thing>
+  <thing id="p5CCeRethp" name="Celestial Resilience Temporary Hit Point Pool" description="Choosing this adjustment allows you to show that you are under the effect of a warlock&apos;s Celestial Resilience feature. You will have to ask the player or DM how many points are available for this pool.\n\nOnce activated and the counter is moved, you must change to the In-Play tab to activate the granted pool." compset="InPlay">
+    <usesource source="5eXGTECP"/>
+    <tag group="OthAdjCat" tag="SpecAbil"/>
+    <bootstrap thing="thp5CCelRa">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="PostAttr" priority="15000"><![CDATA[      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+var BonusHP as number
+BonusHP = field[pAdjust].value
+
+hero.childfound[thp5CCelRa].field[thpMinAllw].value = BonusHP
+hero.childfound[thp5CCelRa].field[thpMaxAllw].value = BonusHP]]></eval>
     </thing>
   </document>
