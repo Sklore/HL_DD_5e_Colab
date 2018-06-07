@@ -786,4 +786,59 @@
       doneif (tagis[Helper.Disable] <> 0)
       #situational[hero.child[svAll],"Advantage vs. being charmed or frightened",field[thingname].text]]]></eval>
     </thing>
+  <thing id="sr5CToFDGn" name="Deep Gnome" description="Deep gnomes have the gnome traits in the Player&apos;s Handbook, plus the subrace traits below. Unlike other gnomes, svirfneblin tend to weigh 8 0 to 120 pounds.\n Short-lived compared to other gnomes, deep gnomes mature at the same rate humans do a nd are considered full-grown adu lts by age 25. T hey live 200 to 250 years, although toi l and the dangers of the Underdark often cla im them before their time.\n Svirfneblin believe that survival depends on avoiding entanglements with other creatures and not making enemies, so they favor neutral alignments. They rarely wish others ill, and they are unlikely to take risks on behalf of others, except those dearest to them.\n\n{i}{b}Deep Gnome Feat{/b}\nIf your DM allows the use of feats, your deep gnome character has the option of taking the Svirfneblin Magic feat.{/i}" compset="SubRace" summary="Deep gnomes, called svirfneblin in their own language, are a gnome subrace that live in the Underdark." uniqueness="unique">
+    <fieldval field="rDEX" value="1"/>
+    <fieldval field="rWeightMin" value="80"/>
+    <usesource source="5eMTOFCP"/>
+    <tag group="SubRace" tag="rGnome" name="Gnome" abbrev="Gnome"/>
+    <tag group="Alignment" tag="NeutralGE" name="Neutral" abbrev="N"/>
+    <tag group="Alignment" tag="NeutralLC" name="Neutral" abbrev="N"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CStonCa"></bootstrap>
+    </thing>
+  <thing id="f5CToFSvM" name="Svirfneblin Magic" description="{i}Prerequisite: Gnome (deep gnome){/i}\n\nYou have inherited the innate spellcasting ability of your ancestors. This ability allows you to cast nondetection on yourself at will, without needing a material component. You can also cast each of the following spells once with this ability: blindness/deafness, blur, and disguise self. You regain the ability to cast these spells when you finish a long rest." compset="Feat" uniqueness="useronce">
+    <comment><![CDATA[
+    ~ If we're disabled, do nothing & 
+    doneif (tagis[Helper.Disable] = 1)
+
+
+    if (hero.child[spNondetec].field[sCL].value = 0) then
+      hero.child[spNondetec].field[sCL].value = #totallevelcount[]
+    endif
+    if (hero.child[spBlinDeaf].field[sCL].value = 0) then
+      hero.child[spBlinDeaf].field[sCL].value = #totallevelcount[]
+    endif
+    if (hero.child[spBlur].field[sCL].value = 0) then
+      hero.child[spBlur].field[sCL].value = #totallevelcount[]
+    endif
+    if (hero.child[spDisgSelf].field[sCL].value = 0) then
+      hero.child[spDisgSelf].field[sCL].value = #totallevelcount[]
+    endif]]></comment>
+    <usesource source="5eMTOFCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="spBlinDeaf">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spBlur">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spNondetec">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <pickreq thing="sr5CToFDGn"/>
+    </thing>
   </document>
