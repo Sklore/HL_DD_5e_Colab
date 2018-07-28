@@ -179,8 +179,7 @@
       endif
 
       field[abValue].value = iDamage]]></eval>
-    <eval phase="PostAttr" priority="10000" index="2">
-        hero.child[c5CMyPP].field[abValue3].value = hero.child[aINT].field[aModBonus].value
+    <eval phase="PostAttr" priority="10000" index="2">hero.child[c5CMyPP].field[abValue3].value = hero.child[aINT].field[aModBonus].value
         field[abValue3].value = hero.child[c5CMyPP].field[abValue3].value</eval>
     <eval phase="PostLevel" priority="11000" index="3"><![CDATA[
       var iLevel as number
@@ -210,20 +209,19 @@
     <tag group="User" tag="Tracker"/>
     <tag group="StandardDC" tag="aINT"/>
     <tag group="Helper" tag="SpecUp"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      ~ If we're not shown, just get out now
+    <eval phase="PostLevel" priority="10000"><![CDATA[      ~ If we're not shown, just get out now
 ~      doneif (tagis[Helper.ShowSpec] = 0)
 
       ~ If we're disabled, do nothing
 ~      doneif (tagis[Helper.Disable] <> 0)
       if (#levelcount[Mystic] >= 1) then
-        field[trkMax].value += 2
+        field[trkMax].value += 4
       endif
       if (#levelcount[Mystic] >= 2) then
         field[trkMax].value += 2
       endif
       if (#levelcount[Mystic] >= 3) then
-        field[trkMax].value += 10
+        field[trkMax].value += 8
       endif
       if (#levelcount[Mystic] >= 4) then
         field[trkMax].value += 3
@@ -1671,7 +1669,7 @@ endif]]></eval>
     <tag group="Usage" tag="Constant" name="Constant" abbrev="Constant"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
-    <eval phase="Final" priority="10000">      hero.child[c5CMyPP].field[abValue3].value += 2</eval>
+    <eval phase="Final" priority="10000">hero.child[c5CMyPP].field[abValue3].value += 2</eval>
     </thing>
   <thing id="po5cPsiBlt" name="Psionic Blast (1-7 PSI)" description="As an action, choose one creature you can see within 60 feet of you.\nThe target takes {b}1d8 psychic damage per psi point{/b} spent on this ability." compset="Spell" summary="You blast a creatures mind with your thoughts" uniqueness="unique">
     <fieldval field="sRange" value="60 ft"/>
@@ -4561,8 +4559,7 @@ endif]]></eval>
   <thing id="th5CPsiRes" name="Psionic Resilience" description="At 3rd level, your psionic ability gives you temporary hit points equal to your Intelligence modifier (min 0) as long as you have 1 or more hit points." compset="TempHpPool">
     <usesource source="Mystic_v3"/>
     <tag group="Helper" tag="IndepPool"/>
-    <eval phase="PostAttr" priority="10000">     
-      var temphp as number
+    <eval phase="PostAttr" priority="10000">var temphp as number
       temphp = #attrmod[aINT]
 
       hero.childfound[th5CPsiRes].field[thpMinAllw].value = temphp
