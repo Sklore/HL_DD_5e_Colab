@@ -1,36 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
-  <thing id="c5CFtrArAr" name="Arcane Archer (UA - 12/2016)" description="An Arcane Archer studies a unique elven method of archery that weaves magic into attacks to produce supernatural effects. Among elves, Arcane Archers are some of their most elite warriors. These archers stand watch over the fringes of elven domains, keeping a keen eye out for trespassers and using magic-infused arrows to defeat monsters and invaders before they can reach elven settlements. Over the centuries, the methods of these elf archers have been learned  by members of other races who can also balance arcane aptitude with archery." compset="CustomSpec" uniqueness="unique">
-    <usesource source="p5eFMAUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Fighter Martial Archetypes"/>
-    <tag group="Helper" tag="Secondary"/>
-    <tag group="abCategory" tag="FtrMarArch"/>
-    <tag group="SpecSource" tag="cHelpFtr"/>
-    <bootstrap thing="c5CFtrAAAA">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
-    <bootstrap thing="c5CFtrAAAL">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
-    <bootstrap thing="c5CFtrAACA">
-      <autotag group="ClSpecWhen" tag="7"/>
-      </bootstrap>
-    <bootstrap thing="c5CFtrAAEA">
-      <autotag group="ClSpecWhen" tag="15"/>
-      </bootstrap>
-    <bootstrap thing="c5CFtrAADA">
-      <autotag group="ClSpecWhen" tag="18"/>
-      </bootstrap>
-    <eval phase="PostLevel" priority="9000"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+  <procedure id="5CAddSctProf" context="pick"><![CDATA[
+    ~ This procedure allows for giving a central Tab to add
+    ~ proficiencies for skills, tools, or Skill/Tool combo.
+    ~ This is useful for allowing the Tools to display correctly
+    ~ on the "Skills" tab.
+    
+    ~ Timing: Post-Level/10000
+    ~ Parms In:
+    ~     NumOfProf - Use this for adding additional Skills & Tools
+    ~     NumOfTool - Use this for adding ONLY Tool choices.
+    ~     NumOfSkill - Use this for adding ONLY Skill choices.
+    
+    ~ Example Use for allowing both a Skill/Tool choice
+    ~ var NumOfProf as number
+    ~ NumOfProf = 1
+    ~ call 5CAddSctProf
 
-       linkage[table].field[cSpec4thNm].text = "Arcane Shots"
-       linkage[table].field[cSpec4thSi].text = "Arcane Shot"
+    ~ Example Use for allowing only Skill choices
+    ~ var NumOfProf as number
+    ~ NumOfSkill = 1
+    ~ call 5CAddSctProf
 
-       linkage[table].field[cCustQuTot].arrayvalue[2] += 2
-       linkage[table].field[cCustQuTot].arrayvalue[6] += 3
-       linkage[table].field[cCustQuTot].arrayvalue[9] += 4
-       linkage[table].field[cCustQuTot].arrayvalue[14] += 5
-       linkage[table].field[cCustQuTot].arrayvalue[17] += 6]]></eval>
-    </thing>
+    ~ Example Use for allowing only Tool choices
+    ~ var NumOfProf as number
+    ~ NumOfTool = 1
+    ~ call 5CAddSctProf
+
+    var NumOfProf as number
+    var NumOfSkill as number
+    var NumOfTool as number
+
+    ~ If a combination of Tools/Skills is allowed add here
+    if (NumOfProf <> 0) then
+      hero.childfound[cfg5CUAScoutProf].field[cToolMax].value += NumOfProf
+      hero.childfound[cfg5CUAScoutProf].field[cSkillMax].value += NumOfProf
+    endif
+
+    ~ If only skills are allowed add here
+    if (NumOfSkill <> 0) then
+      hero.childfound[cfg5CUAScoutProf].field[cSkillMax2].value += NumOfSkill
+    endif
+
+    ~ If only tools are allowed add here
+    if (NumOfTool <> 0) then
+      hero.childfound[cfg5CUAScoutProf].field[cToolMax2].value += NumOfTool
+    endif]]></procedure>
   <thing id="c5CFtrKnig" name="Knight" description="The Knight is a colossus on the battlefield who can shrug off attacks and protect allies from harm. Knights fight from the saddle when they can, and in combat they are expected to seek out and lock down the mightiest of the enemy’s forces. On adventures, they are the armored bulwark that strives to keep the rest of the party safe." compset="CustomSpec" uniqueness="unique">
     <usesource source="p5eFMAUACP"/>
     <tag group="SpecSource" tag="cHelpFtr"/>
@@ -412,5 +427,211 @@ foreach pick in hero from BaseWep where " wProperty.Ammunition & ! wProperty.Loa
     <fieldval field="abDuration" value="1st"/>
     <tag group="abDuration" tag="Round"/>
     <tag group="abRange" tag="Personal"/>
+    </thing>
+  <thing id="c5CFtrUAScout" name="Scout" description="The archetypal Scout excels at finding safe passage through dangerous regions. Scouts usually favor light armor and ranged weapons, but they are comfortable using heavier gear when faced with intense fighting." compset="CustomSpec" uniqueness="unique">
+    <comment>From 2015 Kits of Old</comment>
+    <usesource source="5eKiOlUACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="FtrMarArch"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <bootstrap thing="cFtr5CUAScoBP">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrSupD">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrImCS">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrImCS">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrRele">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="cFtr5CUAScoCS">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgCNatE">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="9000"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+
+       linkage[table].field[cSpec4thNm].text = "Favored Terrains"
+       linkage[table].field[cSpec4thSi].text = "Favored Terrain"
+
+       linkage[table].field[cCustQuTot].arrayvalue[2] += 1
+       linkage[table].field[cCustQuTot].arrayvalue[6] += 2
+       linkage[table].field[cCustQuTot].arrayvalue[14] += 3]]></eval>
+    </thing>
+  <thing id="cFtr5CUAScoBP" name="Bonus Proficiencies" description="When you choose this archetype at 3rd level, you gain proficiency in three of the following skills of your choice: Acrobatics, Athletics, Investigation, Medicine, Nature, Perception, Stealth, or Survival. You can choose to gain proficiency with thieves&apos; tools in place of one skill choice." compset="ClSpecial">
+    <fieldval field="abValue" value="3"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="AllowTool1" tag="gTooThieve"/>
+    <bootstrap thing="cfg5CUAScoutProf"></bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      var NumOfProf as number
+      ~ Increase or decrease the number of proficiencies 
+      NumOfProf = field[abValue].value
+      call 5CAddSctProf]]>
+      <before name="Calc skProfBon"/>
+      </eval>
+    </thing>
+  <thing id="cfg5CUAScoutProf" name="Scout Proficiencies" description="This allows for having a single central place to add additional scout proficiencies to a character." compset="Configure" uniqueness="unique">
+    <fieldval field="cSkCandExp" value="component.BaseSkill &amp; !Helper.Obsolete"/>
+    <fieldval field="cSkCandEx2" value="component.BaseSkill &amp; !Helper.Obsolete"/>
+    <fieldval field="cTlCandExp" value="component.Tool &amp; !Helper.Obsolete"/>
+    <fieldval field="cTlCandEx2" value="component.Tool &amp; !Helper.Obsolete"/>
+    <tag group="AllowSkl1" tag="skAcrobat"/>
+    <tag group="AllowSkl1" tag="skAthletic"/>
+    <tag group="AllowSkl1" tag="skInvestig"/>
+    <tag group="AllowSkl1" tag="skMedicine"/>
+    <tag group="AllowSkl1" tag="skNature"/>
+    <tag group="AllowSkl1" tag="skPercep"/>
+    <tag group="AllowSkl1" tag="skStealth"/>
+    <tag group="AllowSkl1" tag="skSurvival"/>
+    <tag group="AllowSkl2" tag="skAcrobat"/>
+    <tag group="AllowSkl2" tag="skAthletic"/>
+    <tag group="AllowSkl2" tag="skInvestig"/>
+    <tag group="AllowSkl2" tag="skMedicine"/>
+    <tag group="AllowSkl2" tag="skNature"/>
+    <tag group="AllowSkl2" tag="skPercep"/>
+    <tag group="AllowSkl2" tag="skStealth"/>
+    <tag group="AllowSkl2" tag="skSurvival"/>
+    <tag group="AllowTool2" tag="gTooThieve"/>
+    <tag group="AllowTool3" tag="gTooThieve"/>
+    <eval phase="Attr" priority="10000"><![CDATA[
+      ~ The below logic is needed because we have two seperate lists
+      ~ for tools & skills. But we need to allow for a combination
+      ~ of tools/skills to be chosen.
+    
+      ~ Total up all the skills and tools that have been chosen
+      field[cPhaStart].value += field[cSkillCur].value + field[cToolCur].value
+
+      ~ Set the Used values for both Tools/Skills to be the same
+      field[cToolCur].value = field[cPhaStart].value
+      field[cSkillCur].value = field[cPhaStart].value]]></eval>
+    </thing>
+  <thing id="c5CFtrArAr" name="Arcane Archer (UA - 12/2016)" description="An Arcane Archer studies a unique elven method of archery that weaves magic into attacks to produce supernatural effects. Among elves, Arcane Archers are some of their most elite warriors. These archers stand watch over the fringes of elven domains, keeping a keen eye out for trespassers and using magic-infused arrows to defeat monsters and invaders before they can reach elven settlements. Over the centuries, the methods of these elf archers have been learned  by members of other races who can also balance arcane aptitude with archery." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eFMAUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Fighter Martial Archetypes"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="FtrMarArch"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <bootstrap thing="c5CFtrAAAA">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrAAAL">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrAACA">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrAAEA">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrAADA">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="9000"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+
+       linkage[table].field[cSpec4thNm].text = "Arcane Shots"
+       linkage[table].field[cSpec4thSi].text = "Arcane Shot"
+
+       linkage[table].field[cCustQuTot].arrayvalue[2] += 2
+       linkage[table].field[cCustQuTot].arrayvalue[6] += 3
+       linkage[table].field[cCustQuTot].arrayvalue[9] += 4
+       linkage[table].field[cCustQuTot].arrayvalue[14] += 5
+       linkage[table].field[cCustQuTot].arrayvalue[17] += 6]]></eval>
+    </thing>
+  <thing id="cFtr5CUAScoCS" name="Combat Superiority" description="At 3rd level, you gain a set of abilities that are fueled by special dice called superiority dice. \n\n{b}Superiority Dice.{/b} You have four superiority dice, which are d8s. A superiority die is expended when you use it. You regain all of your expended superiority dice when you finish a long or short rest. \n\nYou gain another superiority die at 7th level and one more at 15th level.\n{b}{i}Using Superiority Dice.{/i}{/b} You can expend superiority dice to gain a number of different benefits: \n• When you make a check that allows you to apply your proficiency in Athletics, Nature, Perception, Stealth, or Survival, you can expend one superiority die to bolster the check. Add half the number rolled on the superiority die (rounding up) to your check. You apply this bonus after making the check but before learning if it was successful. \n• When you make a weapon attack against a creature, you can expend one superiority die to add it to the attack roll. You can use this ability before or after making the attack roll, but before any of the effects of the attack are applied. \n• If you are hit by an attack while wearing light or medium armor, you can expend one superiority die as a reaction, adding the number rolled to your AC. If the attack still hits, you take half damage from it" compset="ClSpecial">
+    <fieldval field="abValue" value="1"/>
+    <fieldval field="abValue2" value="8"/>
+    <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
+    <tag group="LvNamePar" tag="DieSizVal2" name="Xd &quot;field[abValue2].value&quot;" abbrev="Xd &quot;field[abValue2].value&quot;"/>
+    <tag group="LvNamePar" tag="SignAppVal" name="Sign appended value" abbrev="Sign appended value"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="LvNamePar" tag="AppValue3" name="Append &quot;field[abValue3].value&quot;" abbrev="Append &quot;field[abValue3].value&quot;"/>
+    <eval phase="PostLevel" priority="9000"><![CDATA[       if (field[usrChosen1].ischosen <> 0) then
+         perform field[usrChosen1].chosen.pulltags[StandardDC.?]
+         endif]]></eval>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[
+      ~ Increase the number of dice at level 9 and again at 17
+      if (field[xAllLev].value >= 17) then
+        field[trkMax].value += 2
+      elseif (field[xAllLev].value >= 9) then
+        field[trkMax].value += 1
+      endif]]></eval>
+    </thing>
+  <thing id="cFtr5CForest" name="Forest" description="You are particularly familiar with one type of natural environment and are adept at traveling and surviving in such regions. Choose one type of favored terrain: arctic, coast, desert, forest, grassland, mountain, or swamp. When you make an Intelligence or Wisdom check related to your favored terrain, your proficiency bonus is doubled if you are using a skill that you&apos;re proficient in.{br}{br}While traveling for an hour or more in your favored terrain, you gain the following benefits:{br}{br}• Difficult terrain doesn&apos;t slow your group&apos;s travel.{br}{br}• Your group can&apos;t become lost except by magical means.{br}{br}• Even when you are engaged in another activity while traveling (such as foraging, navigating, or tracking), you remain alert to danger.{br}{br}• If you are traveling alone, you can move stealthily at a normal pace.{br}{br}• When you forage, you find twice as much food as you normally would.{br}{br}• While tracking other creatures, you also learn their exact number, their sizes, and how long ago they passed through the area.{br}{br}You choose additional favored terrain types at 6th and 10th level." compset="CustomSpec" summary="You gain a variety of benefits in the selected terrain." uniqueness="unique">
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="abCategory" tag="5CFtrFavTer" name="Fighter Favored Terrain"/>
+    </thing>
+  <thing id="cFtr5CArctic" name="Arctic" description="You are particularly familiar with one type of natural environment and are adept at traveling and surviving in such regions. Choose one type of favored terrain: arctic, coast, desert, forest, grassland, mountain, or swamp. When you make an Intelligence or Wisdom check related to your favored terrain, your proficiency bonus is doubled if you are using a skill that you&apos;re proficient in.{br}{br}While traveling for an hour or more in your favored terrain, you gain the following benefits:{br}{br}• Difficult terrain doesn&apos;t slow your group&apos;s travel.{br}{br}• Your group can&apos;t become lost except by magical means.{br}{br}• Even when you are engaged in another activity while traveling (such as foraging, navigating, or tracking), you remain alert to danger.{br}{br}• If you are traveling alone, you can move stealthily at a normal pace.{br}{br}• When you forage, you find twice as much food as you normally would.{br}{br}• While tracking other creatures, you also learn their exact number, their sizes, and how long ago they passed through the area.{br}{br}You choose additional favored terrain types at 6th and 10th level." compset="CustomSpec" summary="You gain a variety of benefits in the selected terrain." uniqueness="unique">
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="5CFtrFavTer" name="Fighter Favored Terrain" abbrev="Fighter Favored Terrain"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="cFtr5CCoast" name="Coast" description="You are particularly familiar with one type of natural environment and are adept at traveling and surviving in such regions. Choose one type of favored terrain: arctic, coast, desert, forest, grassland, mountain, or swamp. When you make an Intelligence or Wisdom check related to your favored terrain, your proficiency bonus is doubled if you are using a skill that you&apos;re proficient in.{br}{br}While traveling for an hour or more in your favored terrain, you gain the following benefits:{br}{br}• Difficult terrain doesn&apos;t slow your group&apos;s travel.{br}{br}• Your group can&apos;t become lost except by magical means.{br}{br}• Even when you are engaged in another activity while traveling (such as foraging, navigating, or tracking), you remain alert to danger.{br}{br}• If you are traveling alone, you can move stealthily at a normal pace.{br}{br}• When you forage, you find twice as much food as you normally would.{br}{br}• While tracking other creatures, you also learn their exact number, their sizes, and how long ago they passed through the area.{br}{br}You choose additional favored terrain types at 6th and 10th level." compset="CustomSpec" summary="You gain a variety of benefits in the selected terrain." uniqueness="unique">
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="5CFtrFavTer" name="Fighter Favored Terrain" abbrev="Fighter Favored Terrain"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="cFtr5CDesert" name="Desert" description="You are particularly familiar with one type of natural environment and are adept at traveling and surviving in such regions. Choose one type of favored terrain: arctic, coast, desert, forest, grassland, mountain, or swamp. When you make an Intelligence or Wisdom check related to your favored terrain, your proficiency bonus is doubled if you are using a skill that you&apos;re proficient in.{br}{br}While traveling for an hour or more in your favored terrain, you gain the following benefits:{br}{br}• Difficult terrain doesn&apos;t slow your group&apos;s travel.{br}{br}• Your group can&apos;t become lost except by magical means.{br}{br}• Even when you are engaged in another activity while traveling (such as foraging, navigating, or tracking), you remain alert to danger.{br}{br}• If you are traveling alone, you can move stealthily at a normal pace.{br}{br}• When you forage, you find twice as much food as you normally would.{br}{br}• While tracking other creatures, you also learn their exact number, their sizes, and how long ago they passed through the area.{br}{br}You choose additional favored terrain types at 6th and 10th level." compset="CustomSpec" summary="You gain a variety of benefits in the selected terrain." uniqueness="unique">
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="5CFtrFavTer" name="Fighter Favored Terrain" abbrev="Fighter Favored Terrain"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="cFtr5CGrass" name="Grassland" description="You are particularly familiar with one type of natural environment and are adept at traveling and surviving in such regions. Choose one type of favored terrain: arctic, coast, desert, forest, grassland, mountain, or swamp. When you make an Intelligence or Wisdom check related to your favored terrain, your proficiency bonus is doubled if you are using a skill that you&apos;re proficient in.{br}{br}While traveling for an hour or more in your favored terrain, you gain the following benefits:{br}{br}• Difficult terrain doesn&apos;t slow your group&apos;s travel.{br}{br}• Your group can&apos;t become lost except by magical means.{br}{br}• Even when you are engaged in another activity while traveling (such as foraging, navigating, or tracking), you remain alert to danger.{br}{br}• If you are traveling alone, you can move stealthily at a normal pace.{br}{br}• When you forage, you find twice as much food as you normally would.{br}{br}• While tracking other creatures, you also learn their exact number, their sizes, and how long ago they passed through the area.{br}{br}You choose additional favored terrain types at 6th and 10th level." compset="CustomSpec" summary="You gain a variety of benefits in the selected terrain." uniqueness="unique">
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="5CFtrFavTer" name="Fighter Favored Terrain" abbrev="Fighter Favored Terrain"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="cFtr5CMount" name="Mountain" description="You are particularly familiar with one type of natural environment and are adept at traveling and surviving in such regions. Choose one type of favored terrain: arctic, coast, desert, forest, grassland, mountain, or swamp. When you make an Intelligence or Wisdom check related to your favored terrain, your proficiency bonus is doubled if you are using a skill that you&apos;re proficient in.{br}{br}While traveling for an hour or more in your favored terrain, you gain the following benefits:{br}{br}• Difficult terrain doesn&apos;t slow your group&apos;s travel.{br}{br}• Your group can&apos;t become lost except by magical means.{br}{br}• Even when you are engaged in another activity while traveling (such as foraging, navigating, or tracking), you remain alert to danger.{br}{br}• If you are traveling alone, you can move stealthily at a normal pace.{br}{br}• When you forage, you find twice as much food as you normally would.{br}{br}• While tracking other creatures, you also learn their exact number, their sizes, and how long ago they passed through the area.{br}{br}You choose additional favored terrain types at 6th and 10th level." compset="CustomSpec" summary="You gain a variety of benefits in the selected terrain." uniqueness="unique">
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="5CFtrFavTer" name="Fighter Favored Terrain" abbrev="Fighter Favored Terrain"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="cFtr5CSwamp" name="Swamp" description="You are particularly familiar with one type of natural environment and are adept at traveling and surviving in such regions. Choose one type of favored terrain: arctic, coast, desert, forest, grassland, mountain, or swamp. When you make an Intelligence or Wisdom check related to your favored terrain, your proficiency bonus is doubled if you are using a skill that you&apos;re proficient in.{br}{br}While traveling for an hour or more in your favored terrain, you gain the following benefits:{br}{br}• Difficult terrain doesn&apos;t slow your group&apos;s travel.{br}{br}• Your group can&apos;t become lost except by magical means.{br}{br}• Even when you are engaged in another activity while traveling (such as foraging, navigating, or tracking), you remain alert to danger.{br}{br}• If you are traveling alone, you can move stealthily at a normal pace.{br}{br}• When you forage, you find twice as much food as you normally would.{br}{br}• While tracking other creatures, you also learn their exact number, their sizes, and how long ago they passed through the area.{br}{br}You choose additional favored terrain types at 6th and 10th level." compset="CustomSpec" summary="You gain a variety of benefits in the selected terrain." uniqueness="unique">
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="5CFtrFavTer" name="Fighter Favored Terrain" abbrev="Fighter Favored Terrain"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="cFtr5CUnder" name="Underdark" description="You are particularly familiar with one type of natural environment and are adept at traveling and surviving in such regions. Choose one type of favored terrain: arctic, coast, desert, forest, grassland, mountain, or swamp. When you make an Intelligence or Wisdom check related to your favored terrain, your proficiency bonus is doubled if you are using a skill that you&apos;re proficient in.{br}{br}While traveling for an hour or more in your favored terrain, you gain the following benefits:{br}{br}• Difficult terrain doesn&apos;t slow your group&apos;s travel.{br}{br}• Your group can&apos;t become lost except by magical means.{br}{br}• Even when you are engaged in another activity while traveling (such as foraging, navigating, or tracking), you remain alert to danger.{br}{br}• If you are traveling alone, you can move stealthily at a normal pace.{br}{br}• When you forage, you find twice as much food as you normally would.{br}{br}• While tracking other creatures, you also learn their exact number, their sizes, and how long ago they passed through the area.{br}{br}You choose additional favored terrain types at 6th and 10th level." compset="CustomSpec" summary="You gain a variety of benefits in the selected terrain." uniqueness="unique">
+    <tag group="Helper" tag="Quaternary" name="Quaternary" abbrev="Quaternary"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="5CFtrFavTer" name="Fighter Favored Terrain" abbrev="Fighter Favored Terrain"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     </thing>
   </document>
