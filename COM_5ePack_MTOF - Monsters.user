@@ -3234,47 +3234,6 @@ Needs clockwork enhancements.]]></comment>
   perform eachpick.assign[Helper.CantSpeak]
   nexteach</eval>
     </thing>
-  <thing id="r5CJuibl" name="Juiblex" description="&lt;place-holder&gt;" compset="Race">
-    <fieldval field="rAC" value="8"/>
-    <fieldval field="rHitDice" value="28"/>
-    <fieldval field="rHDSides" value="12"/>
-    <fieldval field="rHPStart" value="350"/>
-    <fieldval field="rSTR" value="14"/>
-    <fieldval field="rDEX" value="0"/>
-    <fieldval field="rCON" value="13"/>
-    <fieldval field="rINT" value="10"/>
-    <fieldval field="rWIS" value="10"/>
-    <fieldval field="rCHA" value="6"/>
-    <fieldval field="rSpeed" value="30"/>
-    <fieldval field="rCR" value="23"/>
-    <usesource source="5eMTOFCP"/>
-    <tag group="ProfSave" tag="svDEX"/>
-    <tag group="ProfSave" tag="svCON"/>
-    <tag group="ProfSave" tag="svWIS"/>
-    <tag group="ProfSkill" tag="skPercep"/>
-    <tag group="RaceSize" tag="Huge2"/>
-    <tag group="DamageRes" tag="dtCold"/>
-    <tag group="DamageRes" tag="dtLightnin"/>
-    <tag group="DamageRes" tag="dtFire"/>
-    <tag group="DamComImm" tag="dcAtkNonMa"/>
-    <tag group="DamageImm" tag="dtPoison"/>
-    <tag group="CondImm" tag="pcnBlind"/>
-    <tag group="CondImm" tag="pcnCharmed"/>
-    <tag group="CondImm" tag="pcnDeaf"/>
-    <tag group="CondImm" tag="pcnExhaust"/>
-    <tag group="CondImm" tag="pcnFright"/>
-    <tag group="CondImm" tag="pcnGrapple"/>
-    <tag group="CondImm" tag="pcnParaly"/>
-    <tag group="CondImm" tag="pcnPetri"/>
-    <tag group="CondImm" tag="pcnPoison"/>
-    <tag group="CondImm" tag="pcnProne"/>
-    <tag group="CondImm" tag="pcnRestr"/>
-    <tag group="CondImm" tag="pcnStunned"/>
-    <tag group="CondImm" tag="pcnUnconc"/>
-    <tag group="RaceType" tag="NPC"/>
-    <tag group="Alignment" tag="Chaotic"/>
-    <tag group="Alignment" tag="Evil"/>
-    </thing>
   <thing id="r5CLevia" name="Leviathan" description="&lt;place-holder&gt;" compset="Race">
     <fieldval field="rHitDice" value="16"/>
     <fieldval field="rHDSides" value="20"/>
@@ -6001,8 +5960,7 @@ Needs clockwork enhancements.]]></comment>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
-    <eval phase="PostLevel" priority="100000">
-      hero.childfound[cmhHelper].field[cmhAtkEffB].value += 1</eval>
+    <eval phase="PostLevel" priority="100000">hero.childfound[cmhHelper].field[cmhAtkEffB].value += 1</eval>
     </thing>
   <thing id="ra5CMinBreHow" name="Mind-Breaking Howl" description="The howler emits a keening howl in a 60-foot cone. Each creature in that area that isn&apos;t deafened must succeed on a DC #StandardDC# Wisdom saving throw or be frightened until the end of the howler&apos;s next turn. When a creature is frightened in this way, its speed is halved, and it is incapacitated. A target that successfully saves is immune to the Mind-Breaking Howl of all howlers for the next 24 hours." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
@@ -6102,5 +6060,175 @@ Needs clockwork enhancements.]]></comment>
   <thing id="ra5CHydTel" name="Teleport" description="The hydroloth magically teleports, along with any equipment it is wearing or carrying, up to 60 feet to an unoccupied space it can see." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="ra5CIroCobEn" name="Clockwork Enhancement" description="A clockwork can be customized by adding one of the following enhancments, which are optional. You can select an enhancement that reflects the creator, or roll randomly using a d10" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Nothing"/>
+    <arrayval field="usrArray" index="1" value="Camouflaged"/>
+    <arrayval field="usrArray" index="2" value="Sensors"/>
+    <arrayval field="usrArray" index="3" value="Improved Armor"/>
+    <arrayval field="usrArray" index="4" value="Increased Speed"/>
+    <arrayval field="usrArray" index="5" value="Reinforced Construction"/>
+    <arrayval field="usrArray" index="6" value="Self-Repairing"/>
+    <arrayval field="usrArray" index="7" value="Sturdy Frame"/>
+    <arrayval field="usrArray" index="8" value="Suction"/>
+    <arrayval field="usrArray" index="9" value="Vocal Resonator"/>
+    <arrayval field="usrArray" index="10" value="Water Propulsion"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="ra5CIroCam">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 1</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CIroSen">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 2</containerreq>
+      <assignval field="abValue" value="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CIroAC">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 2</containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CIroCobMa" name="Clockwork Malfunction" description="A clockwork can be customized by adding one of the following enhancments, which are optional. You can select an enhancement that reflects the creator, or roll randomly using a d10" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Nothing"/>
+    <arrayval field="usrArray" index="1" value="Faulty Sensors"/>
+    <arrayval field="usrArray" index="2" value="Flawed Targeting"/>
+    <arrayval field="usrArray" index="3" value="Ground Fault"/>
+    <arrayval field="usrArray" index="4" value="Imprinting Loop"/>
+    <arrayval field="usrArray" index="5" value="Leaking Lubricant"/>
+    <arrayval field="usrArray" index="6" value="Limited Steering"/>
+    <arrayval field="usrArray" index="7" value="Self-Preservation"/>
+    <arrayval field="usrArray" index="8" value="Overheats"/>
+    <arrayval field="usrArray" index="9" value="Rusty Gears"/>
+    <arrayval field="usrArray" index="10" value="Weak Armor"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="ra5CIroCam" name="Camouflaged" description="The clockwork gains proficiency in Stealth if it doesn&apos;t already have it. While motionless, it is indistinguishable froma stopped machine." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+      foreach pick in hero from BaseSkill where "ProfSkill.skStealth"
+          perform eachpick.assign[Helper.Proficient]
+      nexteach]]>
+      <before name="Calc skProfBon"/>
+      </eval>
+    </thing>
+  <thing id="ra5CIroSen" name="Sensors" description="The range of the clockwork&apos;s darkvision becomes 120 feet, unless it is higher, and it gains proficiency in Perception if it doesn&apos;t already have it." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <bootstrap thing="raDarkVis">
+      <assignval field="abValue" value="120"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+      foreach pick in hero from BaseSkill where "ProfSkill.skPercep"
+          perform eachpick.assign[Helper.Proficient]
+      nexteach]]>
+      <before name="Calc skProfBon"/>
+      </eval>
+    </thing>
+  <thing id="ra5CIroAC" name="Improved Armor" description="The clockwork&apos;s AC increases by 2." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <eval phase="Final" priority="10000">hero.childfound[ArmorClass].field[Bonus].value += 2</eval>
+    </thing>
+  <thing id="r5CJuibl" name="Juiblex" description="Jubilex is the demon lord of slime an ooze." compset="Race">
+    <fieldval field="rHitDice" value="28"/>
+    <fieldval field="rHPStart" value="350"/>
+    <fieldval field="rCR" value="23"/>
+    <fieldval field="rMultiatt" value="Juiblex makes three acid lash attacks."/>
+    <fieldval field="rSTR" value="14"/>
+    <fieldval field="rCON" value="13"/>
+    <fieldval field="rINT" value="10"/>
+    <fieldval field="rWIS" value="10"/>
+    <fieldval field="rCHA" value="6"/>
+    <fieldval field="rAC" value="8"/>
+    <usesource source="5eMTOFCP"/>
+    <tag group="CondImm" tag="pcnProne" name="Prone" abbrev="Prone"/>
+    <tag group="CondImm" tag="pcnStunned" name="Stunned" abbrev="Stunned"/>
+    <tag group="CondImm" tag="pcnUnconc" name="Unconscious" abbrev="Unconscious"/>
+    <tag group="DamComImm" tag="dcAtkNonMa" name="Bludgeoning, piercing, and slashing from nonmagical attacks" abbrev="Bludgeoning, piercing, and slashing from nonmagical attacks"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <tag group="DamageRes" tag="dtCold" name="Cold" abbrev="Cold"/>
+    <tag group="DamageRes" tag="dtFire" name="Fire" abbrev="Fire"/>
+    <tag group="DamageRes" tag="dtLightnin" name="Lightning" abbrev="Lightning"/>
+    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="ProfSave" tag="svDEX" name="Dexterity" abbrev="Dexterity"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="RaceSize" tag="Huge2" name="Huge" abbrev="Huge"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Chaotic" name="Chaotic" abbrev="C"/>
+    <tag group="Alignment" tag="Evil" name="Evil" abbrev="E"/>
+    <tag group="CondImm" tag="pcnBlind" name="Blinded" abbrev="Blinded"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnDeaf" name="Deafened" abbrev="Deafened"/>
+    <tag group="CondImm" tag="pcnExhaust" name="Exhaustion" abbrev="Exhaustion"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="CondImm" tag="pcnGrapple" name="Grappled" abbrev="Grappled"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPetri" name="Petrified" abbrev="Petrified"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <bootstrap thing="lAll"></bootstrap>
+    <bootstrap thing="tpFiend"></bootstrap>
+    <bootstrap thing="xInnatSpel">
+      <assignval field="CustDesc" value="Juiblex’s spellcasting ability is Charisma (spell save DC 18, +10 to hit with spell attacks). Juiblex can innately cast the following spells, requiring no material components:"/>
+      </bootstrap>
+    <bootstrap thing="spAcidSpla">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sNameOver" value="Acid Splash (17th level)"/>
+      </bootstrap>
+    <bootstrap thing="spBlight">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spContagio">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spGaseForm">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtAcid"/>
+      <assignval field="livename" value="Acid Lash"/>
+      <assignval field="sbName" value="Acid Lash"/>
+      <assignval field="wAttackEff" value="Any creature killed by this attack is drawn into Juiblex&apos;s body, and the corpse is obliterated after 1 minute."/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wReach" value="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CJuibAS"></bootstrap>
+    <bootstrap thing="ra5CJuibAt"></bootstrap>
+    <bootstrap thing="ra5CJuibCT"></bootstrap>
+    <bootstrap thing="ra5CJuibES"></bootstrap>
+    <bootstrap thing="ra5CJuibFo"></bootstrap>
+    <bootstrap thing="ra5CJuibLR"></bootstrap>
+    <bootstrap thing="ra5CJuibMR"></bootstrap>
+    <bootstrap thing="ra5CJuibMW"></bootstrap>
+    <bootstrap thing="ra5CJuibRe"></bootstrap>
+    <bootstrap thing="ra5CJuibSC"></bootstrap>
+    <bootstrap thing="ra5CJuibLA"></bootstrap>
+    <bootstrap thing="ttDemon"></bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
     </thing>
   </document>
