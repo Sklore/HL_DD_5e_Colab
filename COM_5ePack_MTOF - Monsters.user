@@ -6102,9 +6102,11 @@ Needs clockwork enhancements.]]></comment>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     </thing>
   <thing id="ra5CIroCam" name="Camouflaged" description="The clockwork gains proficiency in Stealth if it doesn&apos;t already have it. While motionless, it is indistinguishable froma stopped machine." compset="RaceSpec">
-    <tag group="Helper" tag="ShowSpec"/>
+    <fieldval field="abValue" value="1"/>
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="Adjustment" tag="5CCloEnh"/>
+    <tag group="Helper" tag="ShowSpec"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
       doneif (tagis[Helper.Disable] <> 0)
       foreach pick in hero from BaseSkill where "ProfSkill.skStealth"
@@ -6114,9 +6116,11 @@ Needs clockwork enhancements.]]></comment>
       </eval>
     </thing>
   <thing id="ra5CIroSen" name="Sensors" description="The range of the clockwork&apos;s darkvision becomes 120 feet, unless it is higher, and it gains proficiency in Perception if it doesn&apos;t already have it." compset="RaceSpec">
-    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <fieldval field="abValue" value="2"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="Adjustment" tag="5CCloEnh"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <bootstrap thing="raDarkVis">
       <assignval field="abValue" value="120"/>
       </bootstrap>
@@ -6230,5 +6234,254 @@ Needs clockwork enhancements.]]></comment>
       <autotag group="Value" tag="120"/>
       </bootstrap>
     <link linkage="castattr" thing="aCHA"/>
+    </thing>
+  <thing id="p5CCloEnh" name="Clockwork Enhancement" description="Clockwork creators often customize their constructions, granting them an enhancement and often creating a malfunction. If you add an enhancment, it is suggested you also add a malfunction." compset="InPlay">
+    <fieldval field="pCandExpr" value="Adjustment.5CCloEnh"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="Race"/>
+    <bootstrap thing="ra5CIroSen">
+      <containerreq phase="First" priority="500">fieldval:abValue = 2</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloArm">
+      <containerreq phase="First" priority="500">fieldval:abValue = 3</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloSpd">
+      <containerreq phase="First" priority="500">fieldval:abValue = 4</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloRein">
+      <containerreq phase="First" priority="500">fieldval:abValue = 5</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloRep">
+      <containerreq phase="First" priority="500">fieldval:abValue = 6</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloFra">
+      <containerreq phase="First" priority="500">fieldval:abValue = 7</containerreq>
+      </bootstrap>
+    <bootstrap thing="xClimb">
+      <containerreq phase="First" priority="500">fieldval:abValue = 8</containerreq>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="ra5CCloVoc">
+      <containerreq phase="First" priority="500">fieldval:abValue = 9</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloSwm">
+      <containerreq phase="First" priority="500">fieldval:abValue = 10</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CIroCam">
+      <containerreq phase="First" priority="500">fieldval:abValue = 1</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloSuc">
+      <containerreq phase="First" priority="500">fieldval:abValue = 8</containerreq>
+      </bootstrap>
+    <bootstrap thing="xSwim">
+      <containerreq phase="First" priority="500">fieldval:abValue = 10</containerreq>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <eval phase="First">doneif (field[pChosen].ischosen = 0)
+field[abValue].value = field[pChosen].chosen.field[abValue].value</eval>
+    </thing>
+  <thing id="p5CCloMal" name="Clockwork Malfunction" description="Clockwork creators often customize their constructions, granting them an enhancement and often creating a malfunction. If you add an enhancment, it is suggested you also add a malfunction." compset="InPlay">
+    <fieldval field="pCandExpr" value="Adjustment.5CCloMal"/>
+    <tag group="Helper" tag="AdjNoPlus" name="AdjNoPlus" abbrev="AdjNoPlus"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="OthAdjCat" tag="Race"/>
+    <bootstrap thing="ra5CCloFlaTar">
+      <containerreq phase="First" priority="500">fieldval:abValue = 2</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloGroFau">
+      <containerreq phase="First" priority="500">fieldval:abValue = 3</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloImp">
+      <containerreq phase="First" priority="500">fieldval:abValue = 4</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloLub">
+      <containerreq phase="First" priority="500">fieldval:abValue = 5</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloSte">
+      <containerreq phase="First" priority="500">fieldval:abValue = 6</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloOSS">
+      <containerreq phase="First" priority="500">fieldval:abValue = 7</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloHeat">
+      <containerreq phase="First" priority="500">fieldval:abValue = 8</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloRust">
+      <containerreq phase="First" priority="500">fieldval:abValue = 9</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloWeak">
+      <containerreq phase="First" priority="500">fieldval:abValue = 10</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CCloFaSe">
+      <containerreq phase="First" priority="500">fieldval:abValue = 1</containerreq>
+      </bootstrap>
+    <eval phase="First">doneif (field[pChosen].ischosen = 0)
+field[abValue].value = field[pChosen].chosen.field[abValue].value</eval>
+    </thing>
+  <thing id="ra5CCloFaSe" name="Faulty Sensors" description="Roll a d6 at the start of the clockwork&apos;s turn. If you roll a 1, the clockwork is blinded until the end of its turn." compset="RaceSpec">
+    <fieldval field="abValue" value="1"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="Adjustment" tag="5CCloMal" name="Clockwork Malfunction" abbrev="Clockwork Malfunction"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="ra5CCloFlaTar" name="Flawed Targeting" description="Roll a d6 at the start of the clockwork&apos;s turn. If you roll a 1, the clockwork makes attack rolls with disadvantage until the end of its turn." compset="RaceSpec">
+    <comment>abValue is used in adjustment</comment>
+    <fieldval field="abValue" value="2"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Adjustment" tag="5CCloMal" name="Clockwork Malfunction" abbrev="Clockwork Malfunction"/>
+    </thing>
+  <thing id="ra5CCloGroFau" name="Ground Fault" description="The clockwork has vulnerability to lightning damage." compset="RaceSpec">
+    <fieldval field="abValue" value="3"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="Adjustment" tag="5CCloMal" name="Clockwork Malfunction" abbrev="Clockwork Malfunction"/>
+    <eval phase="PreLevel" priority="10000">perform hero.assign[DamageVuln.dtLightnin]</eval>
+    </thing>
+  <thing id="ra5CCloArm" name="Improved Armor" description="The clockwork&apos;s AC increases by 2." compset="RaceSpec">
+    <comment>abvalue is used by adjustment</comment>
+    <fieldval field="abValue" value="3"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Adjustment" tag="5CCloEnh" name="5CCloEnh" abbrev="5CCloEnh"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.childfound[ArmorClass].field[Bonus].value += 2]]></eval>
+    </thing>
+  <thing id="ra5CCloSpd" name="Increased Speed" description="The clockwork&apos;s speed increases by 10 feet." compset="RaceSpec">
+    <fieldval field="abValue" value="4"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="Adjustment" tag="5CCloEnh" name="5CCloEnh" abbrev="5CCloEnh"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[Speed].field[tSpeed].value += 10]]></eval>
+    </thing>
+  <thing id="ra5CCloRein" name="Reinforced Construction" description="The clockwork has resistance to force, lightning, and thunder damage." compset="RaceSpec">
+    <fieldval field="abValue" value="5"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="Adjustment" tag="5CCloEnh" name="5CCloEnh" abbrev="5CCloEnh"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      perform hero.assign[DamageRes.dtForce]
+      perform hero.assign[DamageRes.dtLightnin]
+      perform hero.assign[DamageRes.dtThunder]]]></eval>
+    </thing>
+  <thing id="ra5CCloRep" name="Self-Repairing" description="If the clockwork starts its turn with at least 1 hit point, it regains 5 hit points. If it takes lightning damage, this ability doesn&apos;t function at the start of its next turn." compset="RaceSpec">
+    <fieldval field="abValue" value="6"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="Adjustment" tag="5CCloEnh" name="5CCloEnh" abbrev="5CCloEnh"/>
+    </thing>
+  <thing id="ra5CCloFra" name="Sturdy Frame" description="The clockwork&apos;s hit point maximum increases by an amount equal to its number of Hit Dice.\n\n{b}Note:{/b} this adjustment doesn&apos;t change the number of hit points the creature has, this must be done manually on the Race tab as normal." compset="RaceSpec">
+    <fieldval field="abValue" value="7"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="Adjustment" tag="5CCloEnh" name="5CCloEnh" abbrev="5CCloEnh"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)]]></eval>
+    </thing>
+  <thing id="ra5CCloSuc" name="Suction" description="The clockwork gains a climbing speed of 30 feet." compset="RaceSpec">
+    <fieldval field="abValue" value="8"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="Adjustment" tag="5CCloEnh" name="5CCloEnh" abbrev="5CCloEnh"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      perform hero.childfound[xClimb].assign[Value.30]]]></eval>
+    </thing>
+  <thing id="ra5CCloVoc" name="Vocal Resonator" description="The clockwork gains the ability to speak rudimentary Common or Gnomish (creator&apos;s choice)." compset="RaceSpec">
+    <fieldval field="abValue" value="9"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="Adjustment" tag="5CCloEnh" name="5CCloEnh" abbrev="5CCloEnh"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)]]></eval>
+    </thing>
+  <thing id="ra5CCloSwm" name="Water Propulsion" description="The clockwork gains a swimming speed of 30 feet." compset="RaceSpec">
+    <fieldval field="abValue" value="10"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="Adjustment" tag="5CCloEnh" name="5CCloEnh" abbrev="5CCloEnh"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      perform hero.childfound[xSwim].assign[Value.30]]]></eval>
+    </thing>
+  <thing id="ra5CCloImp" name="Imprinting Loop" description="Roll a d6 at the start of the clockwork&apos;s turn. If you roll a 1, the clockwork mistakes one creature it can see within 30 feet for its creator. The clockwork won&apos;t willingly harm that creature for 1 minute or until that creature attacks it or deals damage to it." compset="RaceSpec">
+    <comment>abValue is used in adjustment</comment>
+    <fieldval field="abValue" value="4"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="Adjustment" tag="5CCloMal" name="Clockwork Malfunction" abbrev="Clockwork Malfunction"/>
+    </thing>
+  <thing id="ra5CCloLub" name="Leaking Lubricant" description="Roll a d6 at the start of the clockwork&apos;s turn. If you roll a 1, the clockwork gains 1 level of exhaustion that it isn&apos;t immune to." compset="RaceSpec">
+    <fieldval field="abValue" value="5"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="Adjustment" tag="5CCloMal" name="Clockwork Malfunction" abbrev="Clockwork Malfunction"/>
+    </thing>
+  <thing id="ra5CCloSte" name="Limited Steering" description="The clockwork must move in a straight line. It can turn up to 90 degrees before moving again at the midpoint of its movement. It can rotate freely if it doesn&apos;t use any of its speeds on its turn." compset="RaceSpec">
+    <fieldval field="abValue" value="6"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="Adjustment" tag="5CCloMal" name="Clockwork Malfunction" abbrev="Clockwork Malfunction"/>
+    </thing>
+  <thing id="ra5CCloOSS" name="Overactive Sense of Self-Preservation" description="If the clockwork has half its hit points or fewer at the start of its turn in combat roll a d6. If you roll a 1, it retreats from combat. If retreat isn&apos;t possible, it continues fighting." compset="RaceSpec">
+    <fieldval field="abValue" value="7"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="Adjustment" tag="5CCloMal" name="Clockwork Malfunction" abbrev="Clockwork Malfunction"/>
+    </thing>
+  <thing id="ra5CCloHeat" name="Overheats" description="Roll a d6 at the start of the clockwork&apos;s turn. If you roll a 1, the clockwork is incapacitated until the end of its turn." compset="RaceSpec">
+    <fieldval field="abValue" value="8"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="Adjustment" tag="5CCloMal" name="Clockwork Malfunction" abbrev="Clockwork Malfunction"/>
+    </thing>
+  <thing id="ra5CCloRust" name="Rusty Gears" description="The clockwork has disadvantage on initiative rolls, and its speed decreases by 10 feet." compset="RaceSpec">
+    <fieldval field="abValue" value="9"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="Adjustment" tag="5CCloMal" name="Clockwork Malfunction" abbrev="Clockwork Malfunction"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[Speed].field[tSpeed].value -= 10]]></eval>
+    </thing>
+  <thing id="ra5CCloWeak" name="Weak Armor" description="The clockwork isn&apos;t immune to bludgeoning, piercing, and slashing damage from nonmagical attacks that aren&apos;t adamantine." compset="RaceSpec">
+    <fieldval field="abValue" value="10"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="Adjustment" tag="5CCloMal" name="Clockwork Malfunction" abbrev="Clockwork Malfunction"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      perform hero.delete[DamComImm.dcAtkNonAd]]]></eval>
     </thing>
   </document>
