@@ -22,19 +22,10 @@ hero.childfound[cSneakAtt].field[abValue].value += 2</eval>
     </thing>
   <thing id="c5CFtrMoHu" name="Monster Hunter" description="As an archetipal Monster Hunter, you are an expert at defeating supernatural threats. Typically mentored by an older, experienced Monster Hunter, you learn to overcome a variety of unnatural defenses and attacks, including those of undead, lycanthropes, and other creatures of horror.\n\n{b}Combat Superiority{/b}\nUpon selecting this archetype at 3rd level, you gain a set of abilities that are fueled by special dice called superiority dice.\n\n{b}Superiority Dice.{/b} You have four superiority dice, which are d8s. A superiority die is expended when used. You regain all of your expended superiority dice when you finish a short or long rest.\n\nYou gain another superiority die at 7th level and one more at 15th level.\n\n{b}Using Superiority Dice{/b}. You can expend superiority dice to gain a number of different benefits:\n\n• When you make a weapon attack against a creature, you can expend one superiority die to add it to the attack roll. You can use this ability before or after making the attack roll, but before any of the effects of the attack are applied.\n• When you damage a creature with a weapon attack, you can expend one superiority die to add it to the damage roll. You can use this ability after rolling damage. If the attack causes the target to maintain concentration, it has disadvantage on that save.\n• When you make a Charisma, a Wisdom or a Intelligence saving throw, you can expend one superiority die and add it to the roll. You can use this feature only before you learn if the save succeeded or failed.\n• When you make a Wisdom (Perception) check to detect a hidden creature or object, or a Wisdom (Insight) check to determine if someone is lying to you, you can expend one superiority die and add it to the roll. You can use this feature after seeing the total but before learning if you succeeded or failed." compset="CustomSpec" uniqueness="unique">
     <usesource source="p5eGoHUACP"/>
-    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
     <tag group="abCategory" tag="FtrMarArch" name="Fighter Martial Archetype" abbrev="Fighter Martial Archetype"/>
     <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
     <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
-    <bootstrap thing="c5CFtrImCS">
-      <autotag group="ClSpecWhen" tag="10"/>
-      </bootstrap>
-    <bootstrap thing="c5CFtrImCS">
-      <autotag group="ClSpecWhen" tag="18"/>
-      </bootstrap>
-    <bootstrap thing="c5CFtrBoPo">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
     <bootstrap thing="c5CFtrHuMy">
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
@@ -44,18 +35,47 @@ hero.childfound[cSneakAtt].field[abValue].value += 2</eval>
     <bootstrap thing="c5CFtrRele">
       <autotag group="ClSpecWhen" tag="15"/>
       </bootstrap>
+    <bootstrap thing="c5CFtrImCS">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrImCS">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrBoPo">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
     </thing>
   <thing id="c5CFtrBoPo" name="Bonus Proficiencies" description="When you choose this archetype at 3rd level, you gain proficiency with two of the following skills of your choice: Arcana, History, Insight, Investigation, Nature or Perception. You can gain proficiency with a tool of your choice in place of one skill choice." compset="ClSpecial">
+    <fieldval field="usrCandid1" value="component.BaseSkill &amp; (Reference.skArcana | Reference.skHistory | Reference.skInsight | Reference.skInvestig | Reference.skNature | Reference.skPercep | Reference.skTools) &amp; !Helper.Proficient"/>
     <fieldval field="abValue" value="2"/>
-    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <fieldval field="usrCandid2" value="component.BaseSkill &amp; (Reference.skArcana | Reference.skHistory | Reference.skInsight | Reference.skInvestig | Reference.skNature | Reference.skPercep) &amp; !Helper.Proficient"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="ChooseSrc2" tag="Hero"/>
+    <tag group="AllowTool1" tag="All"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
-    <bootstrap thing="cfg5CProf">
-      <autotag group="AllowTool1" tag="Any"/>
-      <assignval field="cSkillMax" value="2"/>
-      <assignval field="cToolMax" value="2"/>
-      <assignval field="cSkCandExp" value="component.BaseSkill &amp; (Reference.skArcana | Reference.skHistory | Reference.skInsight | Reference.skInvestig | Reference.skNature | Reference.skPercep)"/>
-      </bootstrap>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var NumOfProf as number
+      var NumOfTool as number
+
+      if (field[usrChosen1].ischosen <> 0) then
+        if (field[usrChosen1].chosen.tagis[ProfSkill.?] <> field[usrChosen1].chosen.tagis[ProfSkill.skTools]) then
+          perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
+          perform forward[ProfSkill.?]
+        else
+          NumOfTool = 1
+          perform hero.childfound[cfg5CProf].assign[AllowTool2.Any]
+          call 5CAddProf
+        endif
+      endif
+
+      if (field[usrChosen2].ischosen <> 0) then
+        perform field[usrChosen2].chosen.pulltags[ProfSkill.?]
+        perform forward[ProfSkill.?]
+      endif]]></eval>
     </thing>
   <thing id="c5CFtrHuMy" name="Hunter&apos;s Mysticism" description="At 3rd level, your study of the supernatural gives you a limited ability to use magic. You can cast {i}detect magic{/i} as a ritual. You can cast {i}protection from evil and good{/i}, but you cannot cast it again with this feature until you finish a long rest. Wisdom is your spellcasting ability for these spells.\nIn addition, you gain the ability to speak one of the following languages of your choices:  Abyssal, Celestial or Infernal." compset="ClSpecial">
     <fieldval field="abValue" value="1"/>
@@ -455,7 +475,7 @@ perform hero.assign[Size.Small]</eval>
      else
           hero.childfound[raDraBrWea].field[abText].text = "15-foot cone"
      endif]]></eval>
-    <eval phase="First" index="2">      doneif (tagis[Helper.Disable] = 1)
+    <eval phase="First" index="2">doneif (tagis[Helper.Disable] = 1)
 
       hero.child[aCON].field[aStartMod].value += 1
       hero.child[aSTR].field[aStartMod].value += -1</eval>
@@ -468,5 +488,9 @@ perform hero.assign[Size.Small]</eval>
     <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
     <tag group="SubRace" tag="r5CBMTiefl"/>
     <bootstrap thing="ra5CRelNat"></bootstrap>
+    </thing>
+  <thing id="skTools" name="Tools" description="Placeholder" compset="Skill" uniqueness="useronce">
+    <fieldval field="skAbbrev" value="Tool"/>
+    <link linkage="skillattr" thing="aWIS"/>
     </thing>
   </document>
