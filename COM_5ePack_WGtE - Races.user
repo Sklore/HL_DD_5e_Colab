@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CEbChang" name="Changeling" description="A changeling can shift its face and form with a thought. Many changelings use this gift as a form of artistic and emotional expression, but it’s an invaluable tool for grifters, spies, and others who wish to deceive. This leads many people to treat known changelings with fear and suspicion.\n\n{b}Ability Score Increase.{/b} Your Charisma score increases by 2, and either your Dexterity or your Intelligence increases by 1 (your choice).\n\n{b}Age.{/b} Changelings mature slightly faster than humans but share a similar lifespan — typically a century or less. While a changeling can shapeshift to conceal their age, the effects of aging still catch up to them.\n\n{b}Alignment.{/b} Changelings hate to be bound in any way, and those who follow the path of the Traveler believe that chaos and change are important aspects of life. Most tend toward pragmatic neutrality as opposed to being concerned with lofty ideals. Despite common fears, few changelings embrace evil.\n\n{b}Size.{/b} In their natural forms, changelings average between 5 to 6 feet in height, with a slender build. Your size is Medium.\n\n{b}Speed.{/b} Your base walking speed is 30 feet." compset="Race" summary="Changelings are subtle shapeshifters capable of disguising their appearance.">
+    <fieldval field="rCHA" value="2"/>
+    <fieldval field="rLanguages" value="2"/>
+    <fieldval field="rHeightMin" value="58"/>
+    <fieldval field="rWeightMin" value="140"/>
+    <usesource source="p5eWGtE"/>
+    <tag group="HeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="HeightSize" tag="10" name="d10" abbrev="d10"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="WeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="WeightSize" tag="6" name="d6" abbrev="d6"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <bootstrap thing="ra5CEbASIChg"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CEbChgAp"></bootstrap>
+    <bootstrap thing="ra5CEbChgIns"></bootstrap>
+    <bootstrap thing="ra5CEbUnsVis"></bootstrap>
+    <bootstrap thing="ra5CEbDivPer"></bootstrap>
+    </thing>
+  <thing id="ra5CEbASIChg" name="Ability Score Increase" description="Your Dexterity or your Intelligence increases by 1 (your choice)." compset="RaceSpec" uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aDEX | IsAttr.aINT)"/>
+    <tag group="Custom" tag="AttrUp" name="AttrUp" abbrev="AttrUp"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="RaceSort" tag="Attribute" name="Attribute" abbrev="Attribute"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <eval phase="PreAttr" priority="5000"><![CDATA[
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        field[usrChosen1].chosen.field[aStartMod].value += 1
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif]]></eval>
+    </thing>
+  <thing id="ra5CEbChgAp" name="Change Appearance" description="As an action, you can transform your appearance or revert to your natural form. You can’t duplicate the appearance of a creature you’ve never seen, and you revert to your natural form if you die.\n\nYou decide what you look like, including your height, weight, facial features, the sound of your voice, coloration, hair length, sex, and any other distinguishing characteristics. You can make yourself appear as a member of another race, though none of your game statistics change. You also can’t appear as a creature of a different size than you, and your basic shape stays the same; if you’re bipedal, you can’t use this trait to become quadrupedal, for instance. Your clothing and other equipment don’t change in appearance, size, or shape to match your new form, requiring you to keep a few extra outfits on hand to make the most compelling disguise possible.\n\nEven to the most astute observers, your ruse is usually indiscernible. If you rouse suspicion, or if a wary creature suspects something is amiss, you have advantage on any Charisma (Deception) check you make to avoid detection." compset="RaceSpec">
+    <fieldval field="usrChkText" value="Active"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NeedDomain"/>
+    <tag group="User" tag="OptDomain"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Render" priority="11000"><![CDATA[      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~ If we're not enabled, get out now
+      doneif (field[usrIsCheck].value = 0)
+
+      herofield[tRace].text = "Changeling (" & field[domDomain].text & ")"
+
+      ~#situational[hero.child[skDecept],"Advantage while using your Change Appearance ability.",field[thingname].text]
+
+      #situational[hero.child[skDecept],"Advantage while using your Change Appearance ability.",field[thingname].text]]]></eval>
+    <eval phase="First" index="2"><![CDATA[      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~ If we're not enabled, get out now
+      doneif (field[usrIsCheck].value = 0)
+
+      #situational[hero.child[skDecept],"Advantage while using your Change Appearance ability.",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CEbChgIns" name="Changeling Instincts" description="You gain proficiency with two of the following skills of your choice: Deception, Intimidation, Insight, and Persuasion." compset="RaceSpec">
+    <comment><![CDATA[(thingid.skDecept | thingid.skIntimid | thingid.skInsight | thingid.skPersuas) & !Helper.Proficient]]></comment>
+    <fieldval field="usrCandid1" value="(thingid.skDecept | thingid.skIntim | thingid.skInsight | thingid.skPersuas)"/>
+    <fieldval field="usrCandid2" value="(thingid.skDecept | thingid.skIntim | thingid.skInsight | thingid.skPersuas)"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="ChooseSrc2" tag="Hero"/>
+    <eval phase="PostLevel" priority="15500"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        perform field[usrChosen1].chosen.assign[Helper.Proficient]
+      endif
+
+      if (field[usrChosen2].ischosen <> 0) then
+        perform field[usrChosen2].chosen.assign[Helper.Proficient]
+      endif]]></eval>
+    </thing>
+  <thing id="ra5CEbUnsVis" name="Unsettling Visage" description="When a creature you can see makes an attack roll against you, you can use your reaction to impose disadvantage on the roll. You must use this feature before knowing whether the attack hits or misses.\n\nUsing this trait reveals your shapeshifting nature to any creature within 30 feet that can see you. Once you use this trait, you can’t use it again until you finish a short or long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="1 creature you can see"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Sight"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CEbDivPer" name="Divergent Persona" description="You gain proficiency with one tool of your choice. Define a unique identity associated with that proficiency; establish the name, race, gender, age, and other details. While you are in the form of this persona, the related proficiency bonus is doubled for any ability check you make that uses that proficiency." compset="RaceSpec">
+    <fieldval field="usrChkText" value="Active"/>
+    <fieldval field="usrCandid1" value="component.Tool "/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="NeedDomain"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="PostLevel" priority="15500"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+      ~doneif (field[usrIsCheck].value <> 1)
+
+
+      var NumOfTool as number
+      NumOfTool = 1
+      call 5CAddProf
+
+      if (field[usrChosen1].ischosen <> 0) then
+        if (field[usrIsCheck].value = 1) then
+          perform field[usrChosen1].chosen.pulltags[ProfTooDbl.?]
+          perform hero.pushtags[ProfTooDbl.?]
+        endif
+      endif]]></eval>
+    </thing>
+  <thing id="r5CEbKalas" name="Kalashtar" description="The kalashtar are a compound race created from the union of humanity and renegade spirits from the plane of dreams — spirits called quori. Kalashtar are often seen as wise, spiritual people with great compassion for others. But there is an unmistakable alien quality to the kalashtar, as they are haunted by the conflicts of their otherworldly spirits.\n\n{b}Ability Score Increase.{/b} Your Wisdom and Charisma scores both increase by 1. In addition, one ability score of your choice increases by 1.\n\n{b}Age.{/b} Kalashtar develop physically at the same rate as humans do and have similar lifespans.\n\n{b}Alignment.{/b} The noble spirit tied to a kalashtar drives it toward lawful and good behavior. Most kalashtar combine strong self-discipline with compassion for all sentient beings, but some kalashtar resist the virtuous influence of their spirit.\n\n{b}Size.{/b} Kalashtar are similar in build to humans, though they are typically a few inches taller. Your size is Medium.\n\n{b}Speed.{/b} Your base walking speed is 30 feet." compset="Race">
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="p5eWGtE"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="ra5CEbASIKal"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="l5CEbQuori"></bootstrap>
+    <bootstrap thing="ra5CEbDuaMin"></bootstrap>
+    <bootstrap thing="ra5CEbMenDis"></bootstrap>
+    <bootstrap thing="ra5CEbMinLin"></bootstrap>
+    <bootstrap thing="ra5CEbPsyCla"></bootstrap>
+    <bootstrap thing="ra5CEbSevFrDr"></bootstrap>
+    </thing>
+  <thing id="ra5CEbASIKal" name="Ability Score Increase" description="Any one ability score, except Charisma, increases by 1 (your choice)." compset="RaceSpec" uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.BaseAttr"/>
+    <tag group="Custom" tag="AttrUp" name="AttrUp" abbrev="AttrUp"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="RaceSort" tag="Attribute" name="Attribute" abbrev="Attribute"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <eval phase="PreAttr" priority="5000"><![CDATA[
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        field[usrChosen1].chosen.field[aStartMod].value += 1
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif]]></eval>
+    </thing>
+  <thing id="l5CEbQuori" name="Quori" compset="Language" uniqueness="useronce">
+    <usesource source="p5eWGtE"/>
+    <tag group="LangPreval" tag="Exotic"/>
+    <tag group="Helper" tag="Obsolete" name="Obsolete" abbrev="Obsolete"/>
+    </thing>
+  <thing id="ra5CEbDuaMin" name="Dual Mind" description="When you make a Wisdom saving throw, you can use your reaction to gain advantage on the roll. You can use this trait immediately before or after you roll, but before any of the roll’s effects occur." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="Reaction"/>
+    <eval phase="First"><![CDATA[      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      #situational[hero.child[svWIS],"You can use your reaction to gain advantage on the roll.",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CEbMenDis" name="Mental Discipline" description=" You have resistance to psychic damage." compset="RaceSpec">
+    <tag group="DamageRes" tag="dtPsychic" name="Psychic" abbrev="Psychic"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.pushtags[DamageRes.?]]]></eval>
+    </thing>
+  <thing id="ra5CEbMinLin" name="Mind Link" description="You can communicate telepathically with any creature you can see within 60 feet of you.  You don’t need to share a language, but it must be able to understand at least one language or be telepathic itself.\n\nAs a bonus action, when you’re communicating telepathically with the creature, you can grant the creature the ability to communicate back telepathically to you until the start of your next turn. The creature mustremain within 60 feet of you, and be able to see you, to do so." compset="RaceSpec">
+    <fieldval field="abRange" value="60-feet"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CEbPsyCla" name="Psychic Glamour" description="You gain Advantage on all ability checks you make with one of the following skill:  Insight, Intimidation, Performance, or Persuasion." compset="RaceSpec">
+    <comment><![CDATA[ & !Helper.Proficient]]></comment>
+    <fieldval field="usrCandid1" value="(thingid.skInsight | thingid.skIntimid | thingid.skPerform | thingid.skPersuas)"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <eval phase="PostLevel" priority="15500"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        ~perform field[usrChosen1].chosen.assign[Helper.ProfDouble]
+        #situational[field[usrChosen1].chosen,"Advantage on skill checks.",field[thingname].text]
+      endif]]></eval>
+    </thing>
+  <thing id="ra5CEbSevFrDr" name="Severed from Dreams" description="When you  sleep, you don’t connect to the plane of dreams as other creatures do. Instead, your mind draw from the memories of your bonded spirit while it sleeps. This makes you immune to magical spells and effects that affect your dream, like the {i}dream{/i} spell, but not to spells and effects that put you to sleep, like the {i}sleep{/i} spell." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="r5CEbShift" name="Shifter" description="Shifters are sometimes called the weretouched, as many believe that they are the descendants of humans and lycanthropes. They are humanoids with a bestial aspect; while they cannot fully change shape they can temporarily enhance their animalistic features — a state they call shifting. Whatever their origins, shifters have evolved into a unique race. A shifter walks on the knife’s edge between the wilds and the world around them. Do they embrace their primal instincts or the path of civilization?\n\nThere are four main shifter subraces are especially common:\n\n    Beasthide often signifies the bear or boar: stoic, stubborn and thick-skinned.\n    Longtooth shifters typically have lupine traits and prefer to run with a pack.\n    Swiftstride are often predatory and feline, but a swiftstride could also be a cunning rat who darts through the shadows.\n    Wildhunt shifters are born from any creature that tracks its prey.\n\n{b}Ability Score Increase.{/b} Your Dexterity score increases by 1.\n\n{b}Age.{/b} Shifters are quick to mature both physically and emotionally, reaching young adulthood at age 10. They rarely live to be more than 70 years old.\n\n{b}Alignment.{/b} Shifters tend toward neutrality, being more focused on survival than concepts of good and evil. A love of personal freedom can drive shifters toward chaotic alignments.\n\n{b}Size.{/b} Shifters range from 5 to almost 7 feet tall, depending on their subrace. Your size is Medium.\n\n{b}Speed.{/b} Your base walking speed is 30 feet.\n\n{b}Languages.{/b} You can speak, read, and write Common." compset="Race">
+    <fieldval field="rDEX" value="1"/>
+    <usesource source="p5eWGtE"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CKeeSen"></bootstrap>
+    <bootstrap thing="ra5CEbShift"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CEbShift" name="Shifting" description="As a bonus action, you canshift into a more bestial form. This shift lasts for 1 minute, until you die, or until you revert to your change back as a bonus action. \n\nWhen you shift, you gain temporary hit points equal to your level + your Constitution modifier (minimum of 1 temporary hit point). \n\nYou also gain additional benefits that depend on your shifter subrace, described below.\n\nOnce you shift, you can’t do so again until you finish a short or long rest." compset="RaceSpec">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Active"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abDuration" tag="Minute"/>
+    <bootstrap thing="thp5CEbShtTmpHP"></bootstrap>
+    <eval phase="Final" priority="500"><![CDATA[
+
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abValue].value += #totallevelcount[] + hero.child[aCON].field[aModBonus].value
+
+      var temphp as number
+      temphp = maximum(field[abValue].value,1)
+
+      hero.childfound[thp5CEbShtTmpHP].field[thpMinAllw].value = temphp
+      hero.childfound[thp5CEbShtTmpHP].field[thpMaxAllw].value = temphp
+      ~hero.childfound[thp5CEbShtTmpHP].field[thpCurr].value = temphp]]></eval>
+    </thing>
+  <thing id="thp5CEbShtTmpHP" name="Shifting (Temporary Hit Points)" compset="TempHpPool">
+    <eval phase="Final" priority="10000"></eval>
+    </thing>
+  <thing id="sr5CEbBeast" name="Beasthide" description="Stoic and solid, a beasthide shifter draws strength and stability from the beast within. Beasthide shifters are typically tied to the bear or the boar, but any creature known for its toughness could apply." compset="SubRace" uniqueness="unique">
+    <fieldval field="rCON" value="2"/>
+    <usesource source="p5eWGtE"/>
+    <tag group="SubRace" tag="r5CEbShift"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal"/>
+    <bootstrap thing="ra5CEbTough"></bootstrap>
+    <bootstrap thing="ra5CEbSFBea"></bootstrap>
+    </thing>
+  <thing id="ra5CEbTough" name="Tough" description="  You have proficiency in the Athletics skill." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First" priority="10000"><![CDATA[
+    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    perform hero.assign[ProfSkill.skAthletic]]]></eval>
+    </thing>
+  <thing id="ra5CEbSFBea" name="Shifting Feature (Beasthide)" description="Whenever you shift, you gain 1d6 additional temporary hit points, and while shifted, you have a +1 bonus to your AC." compset="RaceSpec">
+    <fieldval field="actUserMin" value="1"/>
+    <fieldval field="actUserMax" value="6"/>
+    <fieldval field="actIncrNam" value="+1d6 temporary hit points"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <eval phase="PreAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      doneif (hero.child[ra5CEbShift].field[abilActive].value = 0)
+
+      hero.childfound[ArmorClass].field[Bonus].value += 1]]></eval>
+    <eval phase="Final" priority="600" index="2"><![CDATA[      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.childfound[thp5CEbShtTmpHP].field[thpMinAllw].value += field[actUser].value
+      hero.childfound[thp5CEbShtTmpHP].field[thpMaxAllw].value += field[actUser].value]]></eval>
+    </thing>
+  <thing id="sr5CEbLongt" name="Longtooth" description="Longtooth shifters are fierce and aggressive, but they form deep bonds with their friends. \n\nMany longtooth shifters have canine traits that become more pronounced as they shift, but they might instead draw on tigers, hyenas, or other predators." compset="SubRace" uniqueness="unique">
+    <fieldval field="rSTR" value="2"/>
+    <usesource source="p5eWGtE" parent="p5eBooks" name="Wayfarer&apos;s Guide to Eberron"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="SubRace" tag="r5CEbShift" name="Shifter" abbrev="Shifter"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="ClVaryName" tag="AppParen" name="Append (in Parentheses)" abbrev="Append (in Parentheses)"/>
+    <bootstrap thing="ra5CEbFierc"></bootstrap>
+    <bootstrap thing="ra5CEbSFLng"></bootstrap>
+    </thing>
+  <thing id="ra5CEbFierc" name="Fierce" description="You have proficiency with the Intimidation skill." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First" priority="10000"><![CDATA[
+    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    perform hero.assign[ProfSkill.skIntim]]]></eval>
+    </thing>
+  <thing id="ra5CEbSFLng" name="Shifting Feature (Longtooth)" description="Whenever you shift, you can use your elongated fangs to make an unarmed strike as a bonus action. If you hit with your fangs, you can deal piercing damage equal to 1d6 + your Strength modifier, instead of the bludgeoning damage normal for an unarmed strike." compset="RaceSpec">
+    <comment><![CDATA[fieldval:abValue <> 0]]></comment>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="wBite">
+      <containerreq phase="First" priority="495"><![CDATA[fieldval:abValue <> 0]]></containerreq>
+      <autotag group="wCategory" tag="Unarmed"/>
+      <autotag group="Special" tag="MartArts"/>
+      <autotag group="abAction" tag="Bonus"/>
+      <assignval field="livename" value="Elongated fangs"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="CustDesc" value="Whenever you shift, you can use your elongated fangs to make an unarmed strike as a bonus action. If you hit with your fangs, you can deal piercing damage equal to 1d6 + your Strength modifier, instead of the bludgeoning damage normal for an unarmed strike."/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      doneif (hero.child[ra5CEbShift].field[abilActive].value = 0)
+
+      field[abValue].value += 1]]></eval>
+    </thing>
+  <thing id="sr5CEbSwift" name="Swiftstride" description="Swiftstride shifters are graceful and quick.\n\nTypically feline in nature, swiftstride shifters are often aloof and difficult to pin down physically or socially." compset="SubRace" uniqueness="unique">
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rDEX" value="1"/>
+    <usesource source="p5eWGtE" parent="p5eBooks" name="Wayfarer&apos;s Guide to Eberron"/>
+    <tag group="SubRace" tag="r5CEbShift" name="Shifter" abbrev="Shifter"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="ClVaryName" tag="AppParen" name="Append (in Parentheses)" abbrev="Append (in Parentheses)"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="ra5CEbSFSwf"></bootstrap>
+    <bootstrap thing="ra5CEbGrace"></bootstrap>
+    <bootstrap thing="ra5CEbSwift"></bootstrap>
+    </thing>
+  <thing id="ra5CEbGrace" name="Graceful" description="You have proficiency with the Acrobatics skill." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First" priority="10000"><![CDATA[
+    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    perform hero.assign[ProfSkill.skAcrobat]]]></eval>
+    </thing>
+  <thing id="ra5CEbSwift" name="Swift Stride" description="Swift Stride. Your walking speed increases by 5 feet." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[Speed].field[tSpeed].value += 5]]></eval>
+    </thing>
+  <thing id="ra5CEbSFSwf" name="Shifting Feature (Swiftstrider)" description="Whenever you shift, your walking speed increases by an additional 5 feet. \n\nAdditionally, you can move up to 10 feet as a reaction when an enemy ends its turn within 5 feet of you. This movement doesn’t provoke opportunity attacks." compset="RaceSpec">
+    <comment><![CDATA[fieldval:abValue <> 0]]></comment>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="Reaction"/>
+    <bootstrap thing="wBite">
+      <containerreq phase="First" priority="495"><![CDATA[fieldval:abValue <> 0]]></containerreq>
+      <autotag group="Special" tag="MartArts"/>
+      <autotag group="abAction" tag="Bonus"/>
+      <autotag group="wCategory" tag="Unarmed"/>
+      <assignval field="CustDesc" value="Whenever you shift, you can use your elongated fangs to make an unarmed strike as a bonus action. If you hit with your fangs, you can deal piercing damage equal to 1d6 + your Strength modifier, instead of the bludgeoning damage normal for an unarmed strike."/>
+      <assignval field="livename" value="Elongated fangs"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      doneif (hero.child[ra5CEbShift].field[abilActive].value = 0)
+
+      hero.child[Speed].field[tSpeed].value += 5]]></eval>
+    </thing>
+  <thing id="sr5CEbWildh" name="Wildhunt" description="Wildhunt shifters are sharp and insightful. \n\nAlert and wary of threats or insightful. Shifters of the Wildhunt are excellent hunters. They tend to be the spiritual leaders of shifter communities." compset="SubRace" uniqueness="unique">
+    <fieldval field="rWIS" value="2"/>
+    <usesource source="p5eWGtE"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="SubRace" tag="r5CEbShift"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <bootstrap thing="ra5CEbNatTra"></bootstrap>
+    <bootstrap thing="ra5CEbMarSce"></bootstrap>
+    <bootstrap thing="ra5CEbSFWuldh"></bootstrap>
+    </thing>
+  <thing id="ra5CEbNatTra" name="Natural Tracker" description="You have proficiency with the Survival skill." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First" priority="10000"><![CDATA[
+    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    perform hero.assign[ProfSkill.skSurvival]]]></eval>
+    </thing>
+  <thing id="ra5CEbMarSce" name="Mark the Scent" description="As a bonus action, you can mark one creature you can see within 10 feet of you. Until the end of your next long rest, your proficiency bonus is doubled for any ability check you make to find the marked creature, and you always know the location of that creature if it is within 60 feet of you. You can’t use this trait again until you finish a short or long rest." compset="RaceSpec">
+    <fieldval field="abRange" value="10"/>
+    <fieldval field="abDuration" value="End of next Long Rest"/>
+    <fieldval field="usrChkText" value="Target"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="NeedDomain"/>
+    <tag group="User" tag="OptDomain"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CEbSFWuldh" name="Shifting Feature (Wildhunt)" description="While shifted, you have advantage on Wisdom checks." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PreAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      doneif (hero.child[ra5CEbShift].field[abilActive].value = 0)
+
+        #situational[hero.child[svWIS],"Advantage on Wisdom checks.",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="r5CEbWarfo" name="Warforged" description="The warforged were built by House Cannith  to fight in the Last War.\n\nThe first such creations were mindless automatons, but vast resources were devoted to improving these steel soldiers. \n\nWarforged, though made from wood and metal, can feel pain and emotion. Built as weapons, they must now find a purpose beyond the war.\n\nYour warforged character has the following traits.\n\n{b}Ability Score Increase.{/b} Your Constitution score increases by 1.\n\n{b}Age.{/b} A typical warforged is between two and thirty years old. The maximum lifespan of the warforged remains a mystery; so far, warforged have shown no signs of deterioration due to age.\n\n{b}Alignment.{/b} Most warforged take comfort in order and discipline, tending toward law and neutrality. But some have absorbed the morality — or lack thereof — of the beings with which they served.\n\n{b}Languages.{/b} You can speak, read, and write Common.\n\n{b}Size.{/b} Your size is Medium. Most warforged stand between 5 and 6 1/2 feet tall. Weight and build are affected by subrace.\n\n{b}Speed.{/b} Your base walking speed is 30 feet." compset="Race">
+    <fieldval field="rCON" value="1"/>
+    <usesource source="p5eWGtE"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CEbWarRes"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CEbSenRes"></bootstrap>
+    <bootstrap thing="ra5CEbIntPro"></bootstrap>
+    </thing>
+  <thing id="ra5CEbWarRes" name="Warforged Resilience" description="You were created to have remarkable fortitude, represented by the following benefits.\n\n- You have advantage on saving throws against being poisoned, and you have resistance to poison damage.\n- You are immune to disease.\n- You don’t need to eat, drink, or breathe.\n- You don’t need to sleep and don’t suffer the effects of exhaustion due to lack of rest, and magic can’t put you to sleep." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="DamageImm" tag="dtDisease" name="Disease" abbrev="Disease"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.pushtags[DamageRes.?]
+
+      #situational[hero.child[svAll],"Advantage vs. poison",field[thingname].text]]]></eval>
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.pushtags[DamageImm.?]]]></eval>
+    </thing>
+  <thing id="ra5CEbSenRes" name="Sentry’s Rest" description="When taking a long rest, you must spend at least six hours in an inactive, motionless state, rather than sleeping.While doing so, you appear inert, but it doesn’t render you unconscious, and you can see and hear as normal." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CEbIntPro" name="Integrated Protection" description="Your body has built-in defensive layers, which determine your armor class. You gain no benefit from wearing armor, but if you are using a shield, you apply its bonus as normal.\n\nYou can alter your body to enter different defensive modes; each time you finish a long rest, choose one mode to adopt from the Integrated Protection table, provided you meet the mode’s prerequisite.\n\nMode                                                Prerequisite     Effect\nDarkwood Core (unarmored)    None                  11 + your Dexterity modifier (add proficiency bonus if proficient with light armor)\nComposite Plating (armor)         Medium            13 + your Dexterity modifier (maximum of 2) + your proficiency bonus.\nHeavy Plating (armor)                  Heavy                16 + your proficiency bonus; disadvantage on Dexterity (Stealth) checks." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Darkwood Core (unarmored)"/>
+    <arrayval field="usrArray" index="1" value="Composite Plating (armor)"/>
+    <arrayval field="usrArray" index="2" value="Heavy Plating (armor)"/>
+    <tag group="Usage" tag="LongRestd"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="LongRest"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="CalcAC" tag="DexMod"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <bootstrap thing="ab5CEbComPla">
+      <containerreq phase="First" priority="5000">fieldval:usrIndex = 1</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CEbDarCor">
+      <containerreq phase="First" priority="5000">fieldval:usrIndex = 0</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CEbHeaPla">
+      <containerreq phase="First" priority="5000">fieldval:usrIndex = 2</containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ab5CEbDarCor" name="Darkwood Core" description="{i}{b}Prerequiste:{/b} Light armor to gain proficiency bonus on armor class{/i}\n\n11 + your Dexterity modifier (add proficiency bonus if proficient with light armor)" compset="Ability" summary="(unarmored)">
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First" priority="5000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.childfound[ArmorClass].field[tACBase].value = 11]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      var iDex as number
+      iDex = hero.child[aDEX].field[aModBonus].value
+      hero.childfound[ArmorClass].field[tACDexMod].value = iDex
+
+      doneif (tagis[ArmProfGrp.ArmorLight] <> 0)
+
+      hero.childfound[ArmorClass].field[tACMisc].value += hero.child[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="ab5CEbComPla" name="Composite Plating" description="{i}{b}Prerequiste:{/b} Medium armor{/i}\n\n13 + your Dexterity modifier (maximum of 2) + your proficiency bonus." compset="Ability" summary="armor">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="First" priority="5000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.childfound[ArmorClass].field[tACBase].value = 13]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      var iDex as number
+      iDex = minimum(hero.child[aDEX].field[aModBonus].value,2)
+      hero.childfound[ArmorClass].field[tACDexMod].value = iDex
+
+      hero.childfound[ArmorClass].field[tACMisc].value += hero.child[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="ab5CEbHeaPla" name="Heavy Plating" description="{i}{b}Prerequiste:{/b} Medium armor{/i}\n\n13 + your Dexterity modifier (maximum of 2) + your proficiency bonus." compset="Ability" summary="armor">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PreAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.childfound[ArmorClass].field[tACBase].value = 16]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      var iDex as number
+      iDex = 0
+      hero.childfound[ArmorClass].field[tACDexMod].value = iDex
+
+      hero.childfound[ArmorClass].field[tACMisc].value += hero.child[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="sr5CEbEnvoy" name="Envoy" description="You were designed, as an envoy,  with a certain specialized function in mind. You might have been designed as an assassin, a healer, or an entertainer, to name a few possibilities. Envoys are the rarest of the warforged subraces, and you could be a unique design.\n\n{b}Ability Score Increase.{/b} Two different ability scores of your choice increase by 1.\n\n{b}Specialized Design.{/b} You gain one skill proficiency of your choice, one tool proficiency of your choice, and fluency in one language of your choice.\n\n{b}Integrated Tool.{/b} Choose one tool you’re proficient with. This tool is integrated into your body, and you double your proficiency bonus for any ability checks you make with it. You must have your hands free to use this integrated tool." compset="SubRace" uniqueness="unique">
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="SubRace" tag="r5CEbWarfo"/>
+    <bootstrap thing="ra5CEbASIEnv"></bootstrap>
+    <bootstrap thing="ra5CEbSpeDes"></bootstrap>
+    <bootstrap thing="ra5CEbDivToo"></bootstrap>
+    </thing>
+  <thing id="ra5CEbASIEnv" name="Ability Score Increase" description="Choose two ability scores to receive a +1 bonus." compset="RaceSpec" uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.BaseAttr"/>
+    <fieldval field="usrCandid2" value="component.BaseAttr"/>
+    <tag group="Custom" tag="AttrUp" name="AttrUp" abbrev="AttrUp"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="RaceSort" tag="Attribute" name="Attribute" abbrev="Attribute"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="ChooseSrc2" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <eval phase="PreAttr" priority="5000"><![CDATA[
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        field[usrChosen1].chosen.field[aStartMod].value += 1
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif
+
+      if (field[usrChosen2].ischosen <> 0) then
+        field[usrChosen2].chosen.field[aStartMod].value += 1
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif]]></eval>
+    <evalrule phase="Validation" priority="10000" message="You must choose two different ability scores!" summary="You must choose two different ability scores!"><![CDATA[
+      validif (field[usrChosen1].ischosen + field[usrChosen2].ischosen < 2)
+      validif (field[usrChosen1].chosen.tagcount[Custom.AttrUp] < 2)
+      validif (field[usrChosen2].chosen.tagcount[Custom.AttrUp] < 2)]]></evalrule>
+    </thing>
+  <thing id="ra5CEbSpeDes" name="Specialized Design" description="You gain one skill proficiency of your choice, one tool proficiency of your choice, and fluency in one language of your choice.\n\n{i}{b}Note:{/b} \n1) Add your chosen tool on the Skills tab under Tool Proficiencies.\n2) Add your chosen Language on the Skills tab under Languages.{/i}" compset="RaceSpec">
+    <comment><![CDATA[Does not check if you're selecting a skill you're already proficient with.]]></comment>
+    <fieldval field="usrCandid1" value="component.BaseSkill &amp; !Helper.Proficient"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="Helper" name="Helper" abbrev="Helper"/>
+    <eval phase="First"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var tagexpr as string
+
+      if (field[usrChosen1].ischosen <> 0) then
+        tagexpr = field[usrChosen1].chosen.tagids[ProfSkill.?," | "]
+        ~debug tagexpr
+        if (empty(tagexpr) <> 0) then
+          ~proficient with tool code
+        else
+          foreach pick in hero from BaseSkill where tagexpr
+            perform eachpick.assign[Helper.Proficient]
+          nexteach
+        endif
+      endif]]></eval>
+    </thing>
+  <thing id="ra5CEbDivToo" name="Integrated Tool" description="Choose one tool you’re proficient with. This tool is integrated into your body, and you double your proficiency bonus for any ability checks you make with it. You must have your hands free to use this integrated tool." compset="RaceSpec">
+    <fieldval field="usrCandid1" value="component.Tool &amp; Proficienc.Tool"/>
+    <fieldval field="usrChkText" value="Active"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostLevel" priority="15500"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrIsCheck].value <> 1)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        perform field[usrChosen1].chosen.pulltags[ProfTooDbl.?]
+        perform hero.pushtags[ProfTooDbl.?]
+      endif]]></eval>
+    </thing>
+  <thing id="sr5CEbSkirm" name="Skirmisher" description="You were built to scout the edges of battle and outmaneuver your enemies. You are lean and designed for speed.\n\n{b}Ability Score Increase.{/b} Your Dexterity score increases by 2.\n\n{b}Swift.{/b} Your walking speed is increased by 5 feet.\n\n{b}Light Step.{/b} When you are traveling alone for an extended period of time (one hour or more), you can move stealthily at a normal pace. (See chapter 8 of the Player’s Handbook for more information about travel pace.)" compset="SubRace" uniqueness="unique">
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rSpeed" value="35"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="SubRace" tag="r5CEbWarfo"/>
+    <bootstrap thing="ra5CEbLigSte"></bootstrap>
+    </thing>
+  <thing id="sr5CEbJugg" name="Juggernaut" description="As a war machine, You are of an imposing design built for close combat and raw might. You tower over your comrades; standing between 6 and 7 feet in height and weighing up to 450 pounds.\n\n{b}Ability Score Increase.{/b} Your Strength score increases by 2.\n\n{b}Iron Fists.{/b} When you make an unarmed strike, you can deal 1d4 + your Strength modifier bludgeoning damage instead of the normal damage.\n\n{b}Powerful Build.{/b} You count as one size larger when determining your carrying capacity and the weight you can push, drag, or lift." compset="SubRace" uniqueness="unique">
+    <fieldval field="rSTR" value="2"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="SubRace" tag="r5CEbWarfo"/>
+    <tag group="RaceType" tag="Normal"/>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="livename" value="Iron Fists"/>
+      <assignval field="CustDesc" value="When you make an unarmed strike, you can deal 1d4 + your Strength modifier bludgeoning damage instead of the normal damage."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CEbPowBui"></bootstrap>
+    </thing>
+  <thing id="ra5CEbPowBui" name="Powerful Build" description="You count as one size larger when determining your carrying capacity and the weight you can push, drag, or lift." compset="RaceSpec">
+    <usesource source="p5eWGtE"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <eval phase="Final"><![CDATA[    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    herofield[tEncumLgt].value = herofield[tEncumLgt].value * 2
+    herofield[tEncumHvy].value = herofield[tEncumHvy].value * 2
+    herofield[tEncumMax].value = herofield[tEncumMax].value * 2]]></eval>
+    </thing>
+  <thing id="ra5CEbLigSte" name="Light Step" description="When you are traveling alone for an extended period of time (one hour or more), you can move stealthily at a normal pace. \n\n(See chapter 8 of the Player’s Handbook for more information about travel pace.)\n\n{i}{b}Travel Pace{/b}\nWhile traveling, a group of adventurers can move at a normal, fast, or slow pace, as shown on the Travel Pace table. The table states how far the party can move in a period of time and whether the pace has any effect. A fast pace makes characters less perceptive, while a slow pace makes it possible to sneak around and to search an area more carefully (see the “Activity While Traveling” section later in this chapter for more information).\n\nNormal: 300-feet/minute, 3-miles/hour, 24-miles/day{/i}" compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CEbMoFind" name="Mark of Finding" description="{b}House:{/b} Tharashk\n\nTraditionally licenses inquisitives and bounty hunters. Recently the Finder’s Guild has expanded into dragonshard prospecting. A talent for finding this resource has given the house new wealth and influence.\n\nTharashk is the youngest of the Dragonmarked Houses and hasn’t embraced all of the customs of the Twelve. Heirs often use family names instead of the house surname.\n\nThe Mark of Finding can appear on either humans or half-orcs.\n\n{b}Guild Specialties:{/b} Half-Orc Bounty Hunting, Investigation, Prospecting" compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="p5eWGtE"/>
+    <tag group="AllowRCust" tag="rHuman" name="Human" abbrev="Human"/>
+    <bootstrap thing="ra5CEbMoFindHu"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CEbMoFHI"></bootstrap>
+    <bootstrap thing="ra5CEbMoFNV"></bootstrap>
+    <bootstrap thing="ra5CEbMoFIP"></bootstrap>
+    <eval phase="First" priority="500"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.child[rHuman].field[cSkillMax].value += 1
+      perform hero.child[rHuman].assign[AllowSkl1.Any]
+
+      ~overwrite the human's default +1 to everything
+      hero.child[rHuman].field[rAttrAll].value = 0]]>
+      <before name="Base Race Racial Stats"/>
+      </eval>
+    </thing>
+  <thing id="ra5CEbMoFindHu" name="Ability Score Increase (Human)" description="As a human, your Dexterity and Wisdom scores both increase by 1. In addition, one ability score of your choice increases by 1" compset="RaceSpec" uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.BaseAttr"/>
+    <tag group="Custom" tag="AttrUp" name="AttrUp" abbrev="AttrUp"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="RaceSort" tag="Attribute" name="Attribute" abbrev="Attribute"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <eval phase="PreAttr" priority="5000"><![CDATA[
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.child[aDEX].field[aStartMod].value += 1
+      hero.child[aWIS].field[aStartMod].value += 1
+
+      if (field[usrChosen1].ischosen <> 0) then
+        field[usrChosen1].chosen.field[aStartMod].value += 1
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif]]></eval>
+    </thing>
+  <thing id="ra5CEbMoFindHo" name="Ability Score Increase (Half-Orc)" description="As a half-orc, your Strength and Wisdom scores both increase by 1. In addition, one ability score of your choice increases by 1." compset="RaceSpec" uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.BaseAttr"/>
+    <tag group="Custom" tag="AttrUp" name="AttrUp" abbrev="AttrUp"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="RaceSort" tag="Attribute" name="Attribute" abbrev="Attribute"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <eval phase="PreAttr" priority="5000"><![CDATA[
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.child[aCON].field[aStartMod].value -= 1
+      hero.child[aDEX].field[aStartMod].value += 1
+      hero.child[aWIS].field[aStartMod].value += 1
+
+      if (field[usrChosen1].ischosen <> 0) then
+        field[usrChosen1].chosen.field[aStartMod].value += 1
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif]]></eval>
+    </thing>
+  <thing id="ra5CEbMoFHI" name="Hunter’s Intuition" description="Your mark sharpens your senses and helps you find your prey. When you make a Wisdom (Perception) or Wisdom (Survival) check, you can roll one Intuition die, a d4, and add the number rolled to the ability check." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="lGoblin"></bootstrap>
+    </thing>
+  <thing id="ra5CEbMoFNV" name="Nature’s Voice" description="When you reach 3rd level you gain the ability to cast the {i}locate animal or plant{/i} spell, but only as a ritual." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="5CRitual" name=" (Ritual only)"/>
+    <bootstrap thing="spLocaAnim">
+      <containerreq phase="First" priority="2500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="livename" value="Locate animal or plant, (Ritual only)"/>
+      <assignval field="sCL" value="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CEbMoFIP" name="Imprint Prey" description="As a bonus action, choose one creature you can see within 30 feet of you. The target is imprinted in your mind until it dies or you use this trait again. Alternatively, you can imprint a creature as your quarry whenever you succeed on a Wisdom (Survival) check to track it.\n\nWhen tracking your target, double the result of your Intuition die. When your quarry is within 60 feet of you, you have a sense of its location: it can’t be hidden from you, gains no benefit from invisibility, and your attacks against it ignore half cover. Once you use this trait, you cannot use it again until you finish a short or long rest." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abDuration" value="Until target it dies or you use this trait again."/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="ra5CEbMoFHo" name="Mark of Finding" description="{b}House:{/b} Tharashk\n\nTraditionally licenses inquisitives and bounty hunters. Recently the Finder’s Guild has expanded into dragonshard prospecting. A talent for finding this resource has given the house new wealth and influence.\n\nTharashk is the youngest of the Dragonmarked Houses and hasn’t embraced all of the customs of the Twelve. Heirs often use family names instead of the house surname.\n\nThe Mark of Finding can appear on either humans or half-orcs.\n\n{b}Guild Specialties:{/b} Half-Orc Bounty Hunting, Investigation, Prospecting" compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="p5eWGtE" parent="p5eBooks" name="Wayfarer&apos;s Guide to Eberron"/>
+    <tag group="AllowRCust" tag="rHalfOrc"/>
+    <bootstrap thing="ra5CEbMoFNV"></bootstrap>
+    <bootstrap thing="ra5CEbMoFIP"></bootstrap>
+    <bootstrap thing="ra5CEbMoFindHo"></bootstrap>
+    <bootstrap thing="ra5CEbMoFHI"></bootstrap>
+    <eval phase="First" priority="500"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~overwrite the half-orc's default ability score bonuses
+      hero.child[rHalfOrc].field[rAttrAll].value = 0]]>
+      <before name="Base Race Racial Stats"/>
+      </eval>
+    </thing>
+  <thing id="ra5CEbMoDHe" name="Mark of Detection" description="{b}House:{/b} Medani\n\nThe members of House Medani are half-elves with deep roots in Breland. Medani has little interest in the power struggles that sometimes break out between the other Dragonmarked houses. Many Medani heirs are more interested in helping their communities than in raw profit. House Medani heirs often work with local law enforcement or help those who can’t afford their services.\n\n{b}Guild Specialties:{/b} Bodyguards, Investigation, Risk Management" compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="p5eWGtE"/>
+    <tag group="AllowRCust" tag="rHalfElf"/>
+    <tag group="RaReplace" tag="ra5CSkiVe"/>
+    <bootstrap thing="ra5CEbMoDHE"></bootstrap>
+    <eval phase="First" priority="500"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~overwrite the half-orc's default ability score bonuses
+      hero.child[rHalfElf].field[rAttrAll].value = 0]]></eval>
+    </thing>
+  <thing id="ra5CEbMoDHE" name="Ability Score Increase" description="Any one ability score, except Charisma, increases by 1 (your choice)." compset="RaceSpec" uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; !IsAttr.aCHA"/>
+    <tag group="Custom" tag="AttrUp" name="AttrUp" abbrev="AttrUp"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="RaceSort" tag="Attribute" name="Attribute" abbrev="Attribute"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="RaReplace" tag="raHElfAbil"/>
+    <eval phase="PreAttr" priority="5000"><![CDATA[
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.child[aCON].field[aStartMod].value -= 1
+      hero.child[aINT].field[aStartMod].value += 1
+      hero.child[aCHA].field[aStartMod].value += 1
+
+      if (field[usrChosen1].ischosen <> 0) then
+        field[usrChosen1].chosen.field[aStartMod].value += 1
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif]]></eval>
+    </thing>
+  <thing id="cfg5CEbDivPer" name="Divergent Persona" compset="Configure" uniqueness="unique">
+    <fieldval field="cToolMax" value="1"/>
+    <tag group="AllowTool1" tag="Any"/>
+    </thing>
+  </document>
