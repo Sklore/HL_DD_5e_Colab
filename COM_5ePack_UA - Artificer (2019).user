@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
-  <thing id="cHelpArR" name="Artificer (Revisited)" description="{i}{b}Playtest Material\nThis character class is presented for playtesting and to spark your imagination. These game mechanics are in draft form, usable in your campaign but not refinedby full game development. This class is not officially part of the game. For these reasons, itis not legal in D&amp;D Adventurers League events.{/b}{/i}\n\nMasters of unlocking magic in everyday objects, artificers are supreme inventors. They see magic as a complex system waiting to be decoded and controlled. Artificers use tools to channel arcane power, crafting temporary and permanent magical objects. To cast a spell, an artificer could use alchemist’s supplies to create a potent elixir, calligrapher’s supplies to inscribe a sigil of power on an ally’s armor, or tinker’s tools to craft a temporary charm. The magic of artificers is tied to their tools and their talents." compset="Class" maxlimit="" uniqueness="unique">
+  <thing id="cHelpArR" name="Artificer (2019)" description="{i}{b}Playtest Material\nThis character class is presented for playtesting and to spark your imagination. These game mechanics are in draft form, usable in your campaign but not refinedby full game development. This class is not officially part of the game. For these reasons, itis not legal in D&amp;D Adventurers League events.{/b}{/i}\n\nMasters of unlocking magic in everyday objects, artificers are supreme inventors. They see magic as a complex system waiting to be decoded and controlled. Artificers use tools to channel arcane power, crafting temporary and permanent magical objects. To cast a spell, an artificer could use alchemist’s supplies to create a potent elixir, calligrapher’s supplies to inscribe a sigil of power on an ally’s armor, or tinker’s tools to craft a temporary charm. The magic of artificers is tied to their tools and their talents." compset="Class" maxlimit="" uniqueness="unique">
     <fieldval field="cToolMax" value="1"/>
     <fieldval field="srcPageNum" value="UA-Artificer-2019.pdf"/>
     <fieldval field="shortname" value="Artificer"/>
@@ -49,8 +49,7 @@
     <arrayval field="cAttrArray" index="11" value="6"/>
     <arrayval field="cCustTot" index="2" value="1"/>
     <arrayval field="cAttrArray" index="15" value="8"/>
-    <usesource source="p5eArRUACP"/>
-    <tag group="AllowSkl3" tag="skNature"/>
+    <usesource source="p5eArtV2UACP"/>
     <tag group="AllowSkl3" tag="skPercep"/>
     <tag group="AllowSkl3" tag="skSleight"/>
     <tag group="Classes" tag="Artifcer3" name="Artificer (Revised)"/>
@@ -72,9 +71,7 @@
     <tag group="AllowSkl3" tag="skHistory"/>
     <tag group="sClass" tag="cHelpArR"/>
     <tag group="AllowSkl3" tag="skArcana"/>
-    <bootstrap thing="cArR5CMagTink">
-      <autotag group="ClSpecWhen" tag="1"/>
-      </bootstrap>
+    <tag group="AllowSkl3" tag="skNature"/>
     <bootstrap thing="gTooThieve">
       <autotag group="Proficienc" tag="Tool"/>
       </bootstrap>
@@ -99,6 +96,9 @@
     <bootstrap thing="cArR5CTRCftJ">
       <autotag group="ClSpecWhen" tag="10"/>
       </bootstrap>
+    <bootstrap thing="cArR5CMagTink">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
     <link linkage="castattr" thing="aINT"/>
     <eval phase="Level" priority="6000"><![CDATA[
       ~ Don't reduce our capabilities for multiclassing if this is the first
@@ -117,10 +117,10 @@
       <after name="Declare First Level"/>
       </eval>
     </thing>
-  <thing id="cArtifcer3" name="Artificer (Revised)" compset="ClassLevel" maxlimit="20">
-    <usesource source="p5eArRUACP"/>
-    <tag group="ClassType" tag="Normal"/>
+  <thing id="cArtifcer3" name="Artificer (2019)" compset="ClassLevel" maxlimit="20">
+    <usesource source="p5eArtV2UACP"/>
     <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="ClassType" tag="Normal"/>
     <bootstrap thing="cHelpArR"></bootstrap>
     <link linkage="helper" thing="cHelpArR"/>
     </thing>
@@ -129,11 +129,11 @@
     <fieldval field="pMinimum" value="1"/>
     <fieldval field="pMaximum" value="4"/>
     <fieldval field="pSource" value="Tiny nonmagical object"/>
-    <usesource source="p5eArRUACP"/>
-    <tag group="Helper" tag="AdjInfo"/>
+    <usesource source="p5eArtV2UACP"/>
     <tag group="Helper" tag="AdjNoPlus"/>
     <tag group="OthAdjCat" tag="Class"/>
     <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="AdjInfo"/>
     <eval phase="Render" priority="999999999">~ If we&apos;re not enabled, get out now
      doneif (field[pIsOn].value = 0)
      ~ If nothing&apos;s been chosen, get out now
@@ -182,11 +182,21 @@
     <fieldval field="pCandExpr" value="component.BaseArmor &amp; !Helper.EquipMag &amp; !Helper.Natural"/>
     <fieldval field="pMinimum" value="1"/>
     <fieldval field="pMaximum" value="2"/>
-    <usesource source="p5eArRUACP"/>
-    <tag group="OthAdjCat" tag="Class"/>
+    <usesource source="p5eArtV2UACP"/>
     <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="Helper" tag="AdjNoPlus"/>
     <tag group="Helper" tag="AdjInfo"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <eval phase="Render" priority="999999999" index="2"><![CDATA[
+     ~ If we're not enabled, get out now
+     doneif (field[pIsOn].value = 0)
+     ~ If nothing's been chosen, get out now
+     doneif (field[pChosen].ischosen = 0)
+
+     var iVar as number
+     iVar = field[pAdjust].value
+
+     field[pChosen].chosen.field[livename].text = field[pChosen].chosen.field[name].text & " +" & iVar]]></eval>
     <eval phase="PostLevel" priority="11000"><![CDATA[
      ~ If we're not enabled, get out now
      doneif (field[pIsOn].value = 0)
@@ -198,26 +208,16 @@
 
      field[pChosen].chosen.field[Bonus].value += iVar
       perform field[pChosen].chosen.assign[Helper.EquipMag]]]></eval>
-    <eval phase="Render" priority="999999999" index="2"><![CDATA[
-     ~ If we're not enabled, get out now
-     doneif (field[pIsOn].value = 0)
-     ~ If nothing's been chosen, get out now
-     doneif (field[pChosen].ischosen = 0)
-
-     var iVar as number
-     iVar = field[pAdjust].value
-
-     field[pChosen].chosen.field[livename].text = field[pChosen].chosen.field[name].text & " +" & iVar]]></eval>
     </thing>
   <thing id="p5CAaREnhWep" name="Infusion: Enhanced Weapon" description="{i}{b}Item:{/b} A simple or martial weapon{/i}\n\nThis magic weapon grants a +1 bonus to attack and damage rolls made with it.\n\nThe bonus increases to +2 when you reach 12th level in this class.\n\n\n{i}Note: Use the Enhnace Weapon adjustment tp apply this infusion to a weapon{/i}" compset="InPlay">
     <fieldval field="pMinimum" value="1"/>
     <fieldval field="pMaximum" value="2"/>
     <fieldval field="pCandExpr" value="component.BaseWep &amp; !Helper.EquipMag &amp; !component.BaseNatWep"/>
-    <usesource source="p5eArRUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Artificer Revised"/>
-    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <usesource source="p5eArtV2UACP"/>
     <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
     <tag group="Helper" tag="AdjNoPlus" name="AdjNoPlus" abbrev="AdjNoPlus"/>
     <tag group="OthAdjCat" tag="Class" name="Class" abbrev="Class"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
     <eval phase="PostLevel" priority="11000"><![CDATA[
      ~ If we're not enabled, get out now
      doneif (field[pIsOn].value = 0)
@@ -266,13 +266,13 @@
   <thing id="sp5CUAArRArcWea" name="Arcane Weapon" description="You channel arcane energy into one simple or martial weapon you’re holding, and choose one damage type: acid, cold, fire, lightning, poison, or thunder. Until the spell ends, you deal an extra 1d6 damage of the chosen type to any target you hit with the weapon. If the weapon isn’t magical, it becomes a magic weapon for the spell’s duration.\n\nAs a bonus action, you can change the damage type, choosing from the options above.\n\n{b}At Higher Levels.{/b} When you cast this spell using a spell slot of 3rd level or higher, you can maintain your concentration on the spell for up to 8 hours." compset="Spell">
     <fieldval field="sRange" value="Self"/>
     <fieldval field="sDuration" value="Concentration, up to 1 hour"/>
-    <usesource source="p5eArRUACP"/>
-    <tag group="sClass" tag="cHelpArR"/>
+    <usesource source="p5eArtV2UACP"/>
     <tag group="sComp" tag="V"/>
     <tag group="sComp" tag="S"/>
     <tag group="sLevel" tag="1"/>
     <tag group="sCastTime" tag="BonusAct1"/>
     <tag group="sSchool" tag="Transmutat"/>
+    <tag group="sClass" tag="cHelpArR"/>
     </thing>
   <thing id="r5CArRAlchHom" name="Alchemical Homunculus" description="At 3rd level, you learn ancient methods for magically creating a special homunculus that is formed by alchemical substances.\n\n{i}{b}Note:{/b} You will need to add a {u}Alchemical Homunculus{/u} either as a Hireling or as a party member. Under its InPlay tab, you can set its Artificer master&apos;s level.{/i}\n\nWhenever you finish a long rest and your alchemist’s supplies are with you, you can form this homunculus in an unoccupied space within 5 feet of you. If you already have a homunculus from this feature, the first one immediately dies.\n\nThe homunculus is friendly to you and your companions, and it obeys your commands. See this creature’s game statistics in the Alchemical Homunculus stat block. You determine the homunculus’s appearance, which includes wings and bits of alchemical equipment. Some alchemists prefer mechanical-looking birds, whereas others like winged vials or miniature cauldrons.\nIn combat, the homunculus shares your initiative count, but it takes its turn immediately after yours. The only action it takes on its turn is the Dodge action, unless you take a bonus action on your turn to command it to take one of the actions in its stat block or to take the Dash, Disengage, or Help action.\n\nIf the mending spell is cast on it, it regains 2d6 hit points. If it has died within the last hour, you can use your alchemist’s supplies as an action to revive it, provided you are within 5 feet of it and you expend a spell slot of 1st level or higher. The homunculus returns to life with all its hit points restored." compset="Race">
     <fieldval field="rHitDice" value="2"/>
@@ -363,14 +363,14 @@
     <exprreq message="Must be a 4th level Artificer"><![CDATA[hero.child[cHelpArR].field[cTotalLev].value >= 4]]></exprreq>
     </thing>
   <thing id="io5CArRBotWP" name="Boots of the Winding Path" description="While wearing these boots, a creature can teleport up to 15 feet as a bonus action to an unoccupied space the creature can see. The creature must have occupied that space at some point during the current turn." compset="Wondrous">
-    <usesource source="p5eArRUACP"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <usesource source="p5eArtV2UACP"/>
     <tag group="ItemRarity" tag="Varies"/>
     <tag group="Helper" tag="EquipMag" name="EquipMag" abbrev="EquipMag"/>
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="abAction" tag="Bonus"/>
     <tag group="GearType" tag="gtWondrous"/>
     <tag group="SpInfo" tag="spTeleport" name="Teleport" abbrev="Teleport"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <eval phase="PreLevel" priority="10000"><![CDATA[
       doneif (field[gIsEquip].value = 0)
 
@@ -383,8 +383,7 @@
     </thing>
   <thing id="io5CArRMHPouch" name="Many-Handed Pouch" description="The infused pouches all share one interdimensional space of the same capacity as a single pouch. Thus, reaching into any of the pouches allows access to the same storage space. A pouch operates as long as it is within 100 miles of another one of the pouches; the pouch is otherwise empty and won’t accept any contents.\n\nIf this infusion ends, the items stored in the shared space move into one of the pouches, determined at random. The rest of the pouches become empty." compset="Wondrous">
     <fieldval field="gHeldMaxWt" value="6"/>
-    <usesource source="p5eArRUACP"/>
-    <tag group="GearType" tag="gtWondrous"/>
+    <usesource source="p5eArtV2UACP"/>
     <tag group="Helper" tag="EquipAvail"/>
     <tag group="thing" tag="holder"/>
     <tag group="Helper" tag="EquipMag"/>
@@ -393,6 +392,7 @@
     <tag group="User" tag="OptDomain"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="ItemRarity" tag="Varies"/>
+    <tag group="GearType" tag="gtWondrous"/>
     </thing>
   <thing id="cArR5CAlchemist" name="Alchemist" description="An Alchemist is an expert at combining exotic reagents to produce mystical effects. Among artificers, members of this subclass are the greatest healers, as well as the ones most adept at wielding dangerous chemicals.\n\n{b}Proficiencies.{/b} You gain proficiency with alchemist’s supplies and the herbalism kit, assuming you don’t already have them. You also gain alchemist’s supplies and an herbalism kit for free—the result of tinkering you’ve done as you’ve prepared for this specialization.\n\n{i}{b}Variant: Crafting{/b}\nIf you craft a magic item in the potion category using the crafting rules in the {b}Player’s Handbook, Dungeon Master’s Guide, or Xanathar’s Guide to Everything{/b}, it takes you a quarter of the normal time, and it costs you half as much of the usual gold.{/b}{/i}" compset="CustomSpec" uniqueness="unique">
     <tag group="Helper" tag="Primary"/>
@@ -497,13 +497,13 @@
     <fieldval field="pMinimum" value="1"/>
     <fieldval field="pMaximum" value="2"/>
     <fieldval field="pCandExpr" value="component.BaseWep &amp; !Helper.EquipMag &amp; !component.BaseNatWep"/>
-    <usesource source="p5eArRUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Artificer Revised"/>
-    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <usesource source="p5eArtV2UACP"/>
     <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
     <tag group="Helper" tag="AdjNoPlus" name="AdjNoPlus" abbrev="AdjNoPlus"/>
     <tag group="OthAdjCat" tag="Class" name="Class" abbrev="Class"/>
     <tag group="DescInfo" tag="cArR5CRadWep" name="Radiant Weapon" abbrev="Radiant Weapon"/>
     <tag group="Helper" tag="NoIncr"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
     <eval phase="PostLevel" priority="11000"><![CDATA[
      ~ If we're not enabled, get out now
      doneif (field[pIsOn].value = 0)
@@ -647,12 +647,22 @@
     <fieldval field="pMaximum" value="2"/>
     <fieldval field="pCandExpr2" value="component.DamageType &amp; (DamageRes.dtAcid | DamageRes.dtCold | DamageRes.dtFire | DamageRes.dtForce | DamageRes.dtLightnin | DamageRes.dtNecrotic | DamageRes.dtPoison | DamageRes.dtPsychic | DamageRes.dtRadiant | DamageRes.dtThunder)"/>
     <fieldval field="pCandExpr" value="component.BaseArmor &amp; !EquipType.Shield&amp; !Helper.EquipMag &amp; !Helper.Natural"/>
-    <usesource source="p5eArRUACP"/>
-    <tag group="Helper" tag="AdjNoPlus"/>
+    <usesource source="p5eArtV2UACP"/>
     <tag group="Helper" tag="AdjInfo"/>
     <tag group="Helper" tag="NoIncr"/>
     <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="OthAdjCat" tag="Class"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <eval phase="Final" priority="5000" index="2"><![CDATA[
+     ~ If we're not enabled, get out now
+     doneif (field[pIsOn].value = 0)
+     ~ If nothing's been chosen, get out now
+     doneif (field[pChosen].ischosen = 0)
+     doneif (field[pChosen2].ischosen = 0)
+      
+      perform field[pChosen2].chosen.pulltags[DamageRes.?]
+      perform field[pChosen].chosen.assign[Helper.EquipMag]
+      perform hero.pushtags[DamageRes.?]]]></eval>
     <eval phase="Render" priority="999999999999"><![CDATA[
      ~ If we're not enabled, get out now
      doneif (field[pIsOn].value = 0)
@@ -664,27 +674,17 @@
 
      sName = field[pChosen2].chosen.field[name].text
      field[pChosen].chosen.field[livename].text = field[pChosen].chosen.field[name].text & " of " & sName & " Resistance"]]></eval>
-    <eval phase="Final" priority="5000" index="2"><![CDATA[
-     ~ If we're not enabled, get out now
-     doneif (field[pIsOn].value = 0)
-     ~ If nothing's been chosen, get out now
-     doneif (field[pChosen].ischosen = 0)
-     doneif (field[pChosen2].ischosen = 0)
-      
-      perform field[pChosen2].chosen.pulltags[DamageRes.?]
-      perform field[pChosen].chosen.assign[Helper.EquipMag]
-      perform hero.pushtags[DamageRes.?]]]></eval>
     </thing>
   <thing id="p5CArRRetWep" name="Infusion: Returning Weapon" description="{i}{b}Item:{/b} A simple or martial weapon with the thrown property{/i}\n\nThis magic weapon grants a +1 bonus to attack and damage rolls made with it, and it returns to the wielder’s hand immediately after it is used to make a ranged attack.\n\n{i}Note: Use the Enhnace Weapon adjustment tp apply this infusion to a weapon{/i}" compset="InPlay">
     <fieldval field="pMinimum" value="1"/>
     <fieldval field="pMaximum" value="2"/>
     <fieldval field="pCandExpr" value="component.BaseWep &amp; !Helper.EquipMag &amp; !component.BaseNatWep &amp; wProperty.Thrown"/>
-    <usesource source="p5eArRUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Artificer Revised"/>
-    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <usesource source="p5eArtV2UACP"/>
     <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
     <tag group="Helper" tag="AdjNoPlus" name="AdjNoPlus" abbrev="AdjNoPlus"/>
     <tag group="OthAdjCat" tag="Class" name="Class" abbrev="Class"/>
     <tag group="Helper" tag="NoIncr"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
     <eval phase="PostLevel" priority="11000">~ If we&apos;re not enabled, get out now
      doneif (field[pIsOn].value = 0)
      ~ If nothing&apos;s been chosen, get out now
@@ -852,7 +852,7 @@
     <fieldval field="usrCandid2" value="component.BaseSpell &amp; sClass.cHelpArR &amp; sLevel.0"/>
     <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="Helper" tag="ActivMenu"/>
-    <tag group="ChooseSrc2" tag="Hero"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
     <eval phase="Final" priority="11000"><![CDATA[
      doneif (tagis[Helper.ShowSpec] = 0)
      doneif (tagis[Helper.Disable] <> 0)
@@ -1034,11 +1034,11 @@
     <fieldval field="pCandExpr" value="component.BaseWep &amp; wProfReq.Simple | wProfReq.Martial"/>
     <fieldval field="pCandExpr2" value="component.DamageType &amp; (DamageRes.dtAcid | DamageRes.dtCold|DamageRes.dtFire|DamageRes.dtLightnin|DamageRes.dtThunder)"/>
     <fieldval field="pSource" value="Artificer spell"/>
-    <usesource source="p5eArRUACP"/>
-    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <usesource source="p5eArtV2UACP"/>
     <tag group="OthAdjCat" tag="Spell" name="Spells" abbrev="Spells"/>
     <tag group="ProductId" tag="SoE" name="Shadows of Endore" abbrev="Shadows of Endore"/>
     <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
     <eval phase="Render" priority="10000"><![CDATA[    ~ If we're not enabled, get out now
       doneif (field[pIsOn].value = 0)
     ~ If nothing's been chosen, get out now
