@@ -110,4 +110,33 @@
         field[cfgAllwSp1].text &= " & !(" & tagids[ClsDenySp.?,"|"] & ")"
       endif]]></eval>
     </thing>
+  <thing id="f5CEbRevBla" name="Revenant Blade" description="You are descended from a master of the double blade and their skills have passed on to you. You gain the following benefits:\n\n. Increase your Dexterity or Strength score by 1, to a maximum of 20.\n. While wielding a double-bladed weapon with two hands, the weapon has the finesse trait for your attacks with it, and you gain +1 AC.\n. On your turn, when you use a bonus action to make a melee attack with the blade at the opposite end of the weapon, the weapon’s damage die for this attack increases to 2d4, instead of 1d4." compset="Feat" uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Dexterity"/>
+    <arrayval field="usrArray" index="1" value="Strength"/>
+    <usesource source="5eWGtECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First" priority="101" index="2"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      endif]]></eval>
+    <eval phase="PreAttr" priority="10000">
+     ~ If we&apos;re disabled, do nothing &amp; 
+     doneif (tagis[Helper.Disable] = 1)
+
+     foreach pick in hero from BaseWep where &quot;thingid.w5CEbSBScim&quot;
+       ~ If not wielded in both hands, do nothing
+       if (eachpick.tagis[Hero.MainHand] = 1) then
+         if (eachpick.tagis[Hero.OffHand] = 1) then
+           hero.child[ArmorClass].field[tACShield].value += 1
+           perform eachpick.assign[wProperty.Finesse]
+           eachpick.field[DescAppend].text = &quot;Revenant Blade: When you use a bonus action to make a melee attack with the blade at the opposite end of the weapon, the weapon’s damage die for this attack is now 2d4, instead of 1d4.&quot;
+         endif
+       endif
+     nexteach</eval>
+    <pickreq thing="rElf"/>
+    </thing>
   </document>
