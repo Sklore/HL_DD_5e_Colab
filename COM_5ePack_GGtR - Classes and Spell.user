@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CClrVoAu" name="Voice of Authority" description="If you cast a spell with a spell slot of 1st level or higher and target an ally with the spell, that ally can use their reaction immediately after the spell to make one weapon attack against a creature of their choice that they can see. If your spell targets more than one ally, you choose which ally gets to make this attack." compset="ClSpecial" summary="You may grant an ally an extra attack when casting a spell upon them">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CClrOrBP" name="Bonus Proficiencies" description="You gain proficiency with heavy armor and either in the Intimidation or Persuasion skill." compset="ClSpecial">
+    <fieldval field="usrCandid1" value="(component.BaseSkill &amp; ( Reference.skIntim | Reference.skPersuas )) "/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+      perform root.linkage[table].assign[ArmProfGrp.ArmorHeavy]
+      if (field[usrChosen1].ischosen <> 0) then
+      perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
+      endif
+      perform forward[ProfSkill.?]]]>
+      <before name="Calc skProfBon"/>
+      </eval>
+    </thing>
+  <thing id="c5CClrOrDe" name="Channel Divinity: Order&apos;s Demand" description="As an action, you present your holy symbol. Each creature of your choice that can see or hear you within 30 feet of you must make a Wisdom saving throw. If a creature fails its saving throw, it is charmed by you until the end of your next turn or until it takes any damage. You can also cause any such charmed creatures to drop what they are holding when they fail the saving throw." compset="ClSpecial" summary="Creatures within 30 feet of your must make a Wisdom save or be charmed.">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abCategory" tag="ClrChanDiv" name="Cleric Channel Divinity Ability" abbrev="Cleric Channel Divinity Ability"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wis"/>
+    <tag group="StandardDC" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="Helper" tag="ClExLose"/>
+    </thing>
+  <thing id="c5CClrEotL" name="Embodiment of the Law" description="If you cast a spell of the enchantment school using a spell slot of 1st level or higher, you can change it&apos;s casting time to 1 bonus action for that casting, if its normal casting time is 1 action. \n\nYou can use this feature a number of times equal to your Wisdom modifier (minimum of once), regaining all expended uses of it at the end of a long rest." compset="ClSpecial" summary="You may change the casting time of an enchantment spell to a bonus action.">
+    <fieldval field="abRange" value="30"/>
+    <tag group="ChargeAttr" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ChargeCalc" tag="AttrOnly" name="AttrOnly" abbrev="AttrOnly"/>
+    <tag group="ChargeCalc" tag="FinalMin1" name="Minimum 1 (final)" abbrev="Minimum 1 (final)"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="ChargeAttr" tag="Minimum1" name="Minimum 1 (from attributes)" abbrev="Minimum 1 (from attributes)"/>
+    </thing>
+  <thing id="sp5CEncTho" name="Encode Thoughts" description="With a finger, you pull an idea, memory, message, or other thought from your head as a tangible, glowing string of energy. The thought strand appears in an unoccupied space within 5 feet of you that lasts the duration or until you cast this spell again. It is a Tiny, weightless, quasi-solid ribbon that is stationary unless carried. \n\nIf you cast this spell while concentrating on another spell that allows you to read or manipulate another&apos;s thoughts, you can transform those thoughts into a strand instead.\n\nCasting this spell while holding a thought strand allows you to instantly learn whatever the thought strand contains. The spell [i]detect thoughts[/i] has the same affect when cast on the strand." compset="Spell">
+    <fieldval field="sRange" value="Self"/>
+    <fieldval field="sDuration" value="Up to 8 hours"/>
+    <usesource source="5eGGtRCP"/>
+    <tag group="sCastTime" tag="Action1" name="1 action" abbrev="1 action"/>
+    <tag group="sComp" tag="S" name="Somatic" abbrev="{ref s_S}S{ref}"/>
+    <tag group="sSchool" tag="Enchant"/>
+    <tag group="sLevel" tag="0" name="0" abbrev="0"/>
+    </thing>
+  <thing id="c5CClrDSOr" name="Divine Strike" description="At 8th level, you gain the ability to infuse your weapon strikes with divine energy. Once on each of your turns when you hit a creature with a weapon attack, you can cause the attack to deal an extra 1d8 psychic damage (your choice) to the target. When you reach 14th level, the extra damage increases to 2d8." compset="ClSpecial" summary="Your weapon attacks can be infused with psychic damage.">
+    <fieldval field="abValue2" value="8"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
+    <tag group="LvNamePar" tag="DieSizVal2" name="Xd &quot;field[abValue2].value&quot;" abbrev="Xd &quot;field[abValue2].value&quot;"/>
+    <tag group="LvNamePar" tag="SignAppVal" name="Sign appended value" abbrev="Sign appended value"/>
+    <tag group="Usage" tag="Round" name="/round" abbrev="/round"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
+    <tag group="abRange" tag="Touch" name="Touch" abbrev="tch"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="LvNamePar" tag="AppValue3" name="Append &quot;field[abValue3].value&quot;" abbrev="Append &quot;field[abValue3].value&quot;"/>
+    <tag group="User" tag="Tracker"/>
+    <eval phase="PostLevel" priority="10000">field[abValue].value += field[xCount].value</eval>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[
+      if (field[xIndex].value >= 2) then
+        field[listname].text = field[thingname].text & " (2d8 psychic damage)"
+      else
+        field[listname].text = field[thingname].text & " (1d8 psychic damage)"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CClrOrWr" name="Order&apos;s Wrath" description="Starting at 17th level, if you deal your Divine Strike damage to a creature on your turn, you can curse that creature until the start of your next turn. The next time one of your allies hits the cursed creature with an attack, the target also takes 2d8 psychic damage, and the curse ends. You can curse a creature in this way only once per turn." compset="ClSpecial" summary="You can curse the target of your Divine Strike to take extra damage from your allies.">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Touch" name="Touch" abbrev="tch"/>
+    <tag group="Usage" tag="Round"/>
+    <tag group="abAction" tag="5CNORound"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="c5CClrOrdr" name="Order" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eGGtRCP"/>
+    <tag group="abCategory" tag="ClrDomain" name="Cleric Domain" abbrev="Cleric Domain"/>
+    <tag group="SpecSource" tag="cHelpClr" name="Cleric" abbrev="Cleric"/>
+    <bootstrap thing="spHoldPers">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpClr"/>
+      </bootstrap>
+    <bootstrap thing="spZoneTrut">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpClr"/>
+      </bootstrap>
+    <bootstrap thing="spMsHealWd">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpClr"/>
+      </bootstrap>
+    <bootstrap thing="spSlow">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpClr"/>
+      </bootstrap>
+    <bootstrap thing="sp5CCompul">
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpClr"/>
+      </bootstrap>
+    <bootstrap thing="spLocaCrea">
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpClr"/>
+      </bootstrap>
+    <bootstrap thing="spCommune">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpClr"/>
+      </bootstrap>
+    <bootstrap thing="spDomiPers">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpClr"/>
+      </bootstrap>
+    <bootstrap thing="spCommand">
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpClr"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrOrBP">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrVoAu">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrOrDe">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrEotL">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrDSOr">
+      <autotag group="ClSpecWhen" tag="8"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrDSOr">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CClrOrWr">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="spHeroism">
+      <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpClr"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CDrdFuBo" name="Fungal Body" description="At 14th level, the fungal spores have altered your body enough that you can no longer be blinded, deafened, frightened, or poisoned. Any critical hits against you count as normal instead, unless you are incapacitated." compset="ClSpecial" summary="You gain condition immunities and halt critical effects">
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="CondImm" tag="pcnBlind"/>
+    <tag group="CondImm" tag="pcnDeaf"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    </thing>
+  <thing id="c5CDrdSpSp" name="Spreading Spores" description="At 10th level, you gain the ability to seed an area with deadly spores. While your Symbiotic Entity feature is active, you can use a bonus action to throw spores up to 30 feet away from you, where they form a swirling 10-foot cube for 1 minute. If you use this feature again or your Symbiotic Entity is feature is no longer active, the spores disappear. You may also use a bonus action to dismiss them.\n\nWhenever a creature moves into the cube or starts its turn inside of it, that creature takes your Halo of Spores damage unless they succeed on a Constitution saving throw against your spell save DC. A creature can only take this damage once per turn.\n\nWhile this cube persists, you are unable to use your Halo of Spores reaction." compset="ClSpecial" summary="Make a small area uninhabitable by seeding it with your spores">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    </thing>
+  <thing id="c5CDrdSpCi" name="Circle Spells" description="Your symbiotic link to fungus grants you abilities outside the range of a normal druid; spells that tap into the cycle of life and death. You gain the chill touch cantrip at level 2. At 3rd, 5th, 7th, and 9th levels you gain access to the spells in the below table. They are always prepared and do not count against the total number you can prepare daily. They are all druid spells for you.\n\n{b}Circle of Spores Spells{/b}\n{b}Druid Level Spells{/b}\n3rd               {i}blindness/deafness{/i}, {i}gentle repose{/i}\n5th               {i}animate dead{/i}, {i}gaseous form{/i}\n7th               {i}blight{/i}, {i}confusion{/i}\n9th               {i}cloudkill{/i}, {i}contagion{/i}" compset="ClSpecial" summary="You gain additional spells that tap into the cycle of life and death">
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <bootstrap thing="spBlinDeaf">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spGentRepo">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spAnimDead">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="sp5CGasFor">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spBlight">
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spConfusio">
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spCloudkil">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spContagio">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spChilTouc">
+      <autotag group="BonusSplAt" tag="2"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      <autotag group="Helper" tag="Cantrip"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CDrdSpre" name="Circle of Spores" compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes UA: Druid Circles</comment>
+    <usesource source="5eGGtRCP"/>
+    <tag group="SpecSource" tag="cHelpDrd" name="Druid" abbrev="Druid"/>
+    <bootstrap thing="c5CDrdSymE">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdSpSp">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdFuBo">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdSpCi">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdHaOS">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdHaOS">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdHaOS">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdHaOS">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdFuIn">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CDrdSymE" name="Symbiotic Entity" description="At 2nd level, you are able to channel magic into your spores. You may use an action to awaken the spores, expending a use of your Wild Shape feature. You gain 4 temporary hit points for every druid level you have taken. While in this form, you gain these benefits:\n\n* Your Halo of Spores damage does an extra damage dice\n* Your melee weapon atacks deal an additional 1d6 poison damage to any hit targets\n\nThese benefits and form last for 10 minutes, until you lose the temporary hit points, or until you use your Wild Shape again, whichever comes first." compset="ClSpecial" summary="You infuse magic into your spores to transform into a fungal form">
+    <fieldval field="abDuration" value="10"/>
+    <fieldval field="actName" value="Symbiotic Entity"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <bootstrap thing="PoolWlkBls">
+      <autotag group="Value" tag="8"/>
+      <assignval field="livename" value="Symbiotic Entity Temporary HP Pool"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000" name="Apply rage effects"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+      doneif (hero.tagis[Hero.Raging] = 0)
+
+      ~ Add temp HP
+      var temphp as number
+      temphp = 4 * #levelcount[Druid]
+      hero.findchild[TempHpPool,"Value.8"].field[thpMinAllw].value = temphp
+      hero.findchild[TempHpPool,"Value.8"].field[thpMaxAllw].value = temphp
+
+      ~ Add the appropriate damage die to all melee weapons
+foreach pick in hero from BaseWep where "wCategory.Melee"
+      #extradamage[eachpick, " plus 1d6 poison", field[thingname].text]
+nexteach]]></eval>
+    <eval phase="First" priority="450"><![CDATA[
+      ~if we're curently raging, forward a tag to the hero.
+      ~note the timing is just before First/500, which is when the containerreqs on the rage powers will look for this tag
+      if (field[abilActive].value <> 0) then
+        perform hero.assign[Hero.Raging]
+        endif]]></eval>
+    </thing>
+  <thing id="c5CDrdHaOS" name="Halo of Spores" description="Beginning at 2nd level, invisible, necrotic spores surround you, normally harmless. When a creature you can see moves within 10 feet of you or starts its turn there, you can use a reaction to send the spores at them. The spires deal 1d4 necrotic damage to the creature unless they succeed on a Constitution saving thrown against your spell save DC. \n\nThe damage increases to 1d6 at 6th level, 1d8 at 10th level , and 1d10 at 14th level." compset="ClSpecial" summary="Use your reaction to deal necrotic damage to a nearby enemy.">
+    <fieldval field="abRange" value="10"/>
+    <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[      if (hero.tagis[Hero.Raging] <> 0) then
+      field[abText2].text = "2"
+      endif
+
+      field[abValue].value += 2 + (field[xCount].value * 2)
+      field[abText].text = field[abText2].text & "d" & field[abValue].value]]></eval>
+    <eval phase="Render" priority="10050" index="2"><![CDATA[
+      var diesize as number
+      diesize  += 2 + (field[xIndex].value * 2)
+
+      ~generate our listname
+      field[listname].text = field[thingname].text &" (d" & diesize & ")"]]></eval>
+    </thing>
+  <thing id="c5CDrdFuIn" name="Fungal Infestation" description="At 6th level, you can use your spores to animate a fresh corpse. If a Small or Medium beast or humanoid dies within 10 feet of you, you may use a reaction to animate it. It stands up immediately with 1 hit point, using the zombie stat block from the Monster Manual. It remains animated for an hour, then collapses back into death. \n\nIn combat, the zombie&apos;s turn is immediately after yours. It will obey mental commands from you, but the only action it can take is a single melee attack via the Attack action.\n\nYou can use this feature a number of times equalling your Wisdom modifier, with a minimum of one use. All expended uses are regained at the end of a long rest." compset="ClSpecial" summary="You can animate a fresh corpse to fight for you">
+    <fieldval field="abRange" value="10"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="FinalMin1"/>
+    <tag group="ChargeAttr" tag="aWIS"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  </document>
