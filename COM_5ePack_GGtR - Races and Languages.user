@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="l5CLangKraul" name="Kraul" compset="Language" uniqueness="useronce">
+    <usesource source="5eGGtRCP"/>
+    <tag group="LangPreval" tag="Exotic"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="LangCat" tag="Monster" name="Monster Languages" abbrev="Monster"/>
+    </thing>
+  <thing id="l5CLandVeld" name="Vedalken" compset="Language" uniqueness="useronce">
+    <usesource source="5eGGtRCP"/>
+    <tag group="LangPreval" tag="Standard" name="Standard Languages" abbrev="Standard"/>
+    </thing>
+  <thing id="l5CLangLoxo" name="Loxodon" compset="Language" uniqueness="useronce">
+    <usesource source="5eGGtRCP"/>
+    <tag group="LangPreval" tag="Standard" name="Standard Languages" abbrev="Standard"/>
+    <tag group="HideLang" tag="l5CLandVeld" name="Vedalken" abbrev="Vedalken"/>
+    </thing>
+  <thing id="r5CGGRCent" name="Centaur" compset="Race">
+    <fieldval field="rSTR" value="2"/>
+    <fieldval field="rHeightMin" value="72"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="cSkillMax" value="1"/>
+    <usesource source="5eGGtRCP"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="AllowSkl1" tag="skAnimHand"/>
+    <tag group="AllowSkl1" tag="skMedicine"/>
+    <tag group="AllowSkl1" tag="skNature"/>
+    <tag group="AllowSkl1" tag="skSurvival"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="wHooves">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wDieCount" value="1"/>
+      </bootstrap>
+    <bootstrap thing="tpFey"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lSylvan"></bootstrap>
+    <bootstrap thing="ra5CEquiBui"></bootstrap>
+    <bootstrap thing="ra5CCenChar"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CCenChar" name="Charge" description="If you hit a target with a melee attack after moving 30 feet straight towards it on the same turn, you can immediately take a bonus action to attack once with your hooves." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CEquiBui" name="Equine Build" description="You count as one size larger when determining your carrying capacity and the weight you can push, drag, or lift.\n\nAlso, climbing that requires feet and hands is difficult for you due to your hooves. When making such a climb, it costs 4 extra feet per foot of movement, not the regular 1 extra foot." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+    herofield[tEncumLgt].value = herofield[tEncumLgt].value * 2
+    herofield[tEncumHvy].value = herofield[tEncumHvy].value * 2
+    herofield[tEncumMax].value = herofield[tEncumMax].value * 2]]></eval>
+    </thing>
+  <thing id="r5CGGRLoxo" name="Loxodon" compset="Race">
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rWeightMin" value="300"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rHeightMin" value="84"/>
+    <usesource source="5eGGtRCP"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Good"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CEEMoBo"></bootstrap>
+    <bootstrap thing="ra5CLoxSer"></bootstrap>
+    <bootstrap thing="l5CLangLoxo"></bootstrap>
+    <bootstrap thing="ra5CLoxKeSm"></bootstrap>
+    <bootstrap thing="ra5CLoxTrun"></bootstrap>
+    <bootstrap thing="ra5CLoxNatAr"></bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="1"/>
+      <assignval field="sbName" value="Trunk"/>
+      <assignval field="livename" value="Trunk"/>
+      </bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CLoxNatAr" name="Natural Armor" compset="RaceSpec">
+    <fieldval field="abBaseAC" value="12"/>
+    <tag group="Helper" tag="ArmorClass"/>
+    <tag group="CalcAC" tag="ConMod"/>
+    <tag group="CalcAC" tag="Shield"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="ra5CLoxSer" name="Loxodon Serenity" description="You have advantage on saving throws versus the charmed and frightened conditions." compset="RaceSpec">
+    <usesource source="5eMTOFCP" parent="p5eBooks" name="Mordenkainen&apos;s Tome of Foes"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svAll],"Advantage vs. being charmed or frightened",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CLoxKeSm" name="Keen Smell" description="The creature has advantage on Wisdom (Perception) checks that rely on certain senses." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
+    <eval phase="Final" priority="20000"><![CDATA[Field[CustDesc].text = " Your trunk gives you advantage on Wisdom (Perception) Wisdom (Survival), and Intelligence (Investigation) checks that use smell."
+#situational[hero.child[skPercep], "You have advantage on checks using smell.", field[thingname].text]
+#situational[hero.child[skSurvival], "You have advantage on checks using smell.", field[thingname].text]
+#situational[hero.child[skInvestig], "You have advantage on checks using smell.", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CLoxTrun" name="Trunk" description="You can use your trunk as an extra appendage. It has a reach of 5 feet and can lift a weight (in pounds) equal to your Strength score times five. It can do a few simple tasks: lift, drop, hold, push, or pull a creature or object; be used as a snorkel; close or open containers or doors; grapple a creature; or to make an unarmed strike. Additional uses are at the discretion of your DM.\n\nIt cannot do anything precise, such as using weapons, shields, magic items, or tools. Likewise it cannot be used for the somatic components of spells." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="r5CGGRMinot" name="Minotaur" compset="Race">
+    <fieldval field="rSTR" value="2"/>
+    <fieldval field="rHeightMin" value="72"/>
+    <fieldval field="rCON" value="1"/>
+    <fieldval field="cSkillMax" value="1"/>
+    <usesource source="5eGGtRCP"/>
+    <tag group="AllowSkl1" tag="skIntim"/>
+    <tag group="AllowSkl1" tag="skPersuas"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="l5CMinotau"></bootstrap>
+    <bootstrap thing="wHeadButt">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <assignval field="sbName" value="Horns"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="livename" value="Horns"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CMinGorRus"></bootstrap>
+    <bootstrap thing="ra5CMinHamHor"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CMinHamHor" name="Hammering Horns" description="When you successfully hit with a melee attack during your turn, you can attempt to shove a creature with your horns as a bonus action. The target must succeed on a Strength saving throw of DC 8 + your Strength modifier + your proficiency bonus or they will be pushed up to 10 feet from you. They must be within 5 feet of you and no larger than one size larger than you." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="ra5CMinGorRus" name="Goring Rush" description="When you use the Dash action during your turn to move 20 feet, you can make a melee attack with your horns as a bonus action." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="r5CGGRSimi" name="Simic Hybrid" compset="Race">
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rHeightMin" value="84"/>
+    <fieldval field="rWeightMin" value="300"/>
+    <fieldval field="rSpecSing" value="Animal Enhancement"/>
+    <fieldval field="rSpecName" value="Animal Enhancements"/>
+    <fieldval field="rGiveSpec" value="1"/>
+    <usesource source="5eGGtRCP"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CGGRSimAb"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGGRSiLa"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[~ IF we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+
+if (#totallevelcount[] >= 5) then
+field[rGiveSpec].value = 2
+endif]]></eval>
+    </thing>
+  <thing id="ra5CGGRSimAb" name="Ability Score Increase" description="Choose one ability score to receive a +1 bonus." compset="RaceSpec" uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.BaseAttr"/>
+    <tag group="Custom" tag="AttrUp" name="AttrUp" abbrev="AttrUp"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="RaceSort" tag="Attribute" name="Attribute" abbrev="Attribute"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <eval phase="PreAttr" priority="5000"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+      if (field[usrChosen1].ischosen <> 0) then
+        field[usrChosen1].chosen.field[aStartMod].value += 1
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif]]></eval>
+    </thing>
+  <thing id="r5CGGRVedal" name="Vedalken" compset="Race">
+    <fieldval field="rHeightMin" value="84"/>
+    <fieldval field="rWeightMin" value="300"/>
+    <fieldval field="rINT" value="2"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eGGtRCP"/>
+    <tag group="Alignment" tag="Lawful" name="Lawful" abbrev="L"/>
+    <tag group="Language" tag="lAll"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <bootstrap thing="l5CLandVeld"></bootstrap>
+    <bootstrap thing="ra5CVedDis"></bootstrap>
+    <bootstrap thing="ra5CGGRParA"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGGRTiPr"></bootstrap>
+    </thing>
+  <thing id="ra5CVedDis" name="Vedalken Dispassion" description="When making a Wisdom, Intelligence, or Charisma savings throw, you have advantage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svINT],"Advantage",field[thingname].text]
+      #situational[hero.child[svWIS],"Advantage",field[thingname].text]
+      #situational[hero.child[svCHA],"Advantage",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CGGRParA" name="Partially Amphibious" description="You can breathe underwater for up to 1 hour per long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="rc5CGGRSAM" name="Manta Glide" description="The fins growing out of your body can be used to glide when falling. When calculating the damage from falling distance, you can subtract 100 feet from the total if you&apos;re not incapacitated. You can also move 2 horizontal feet for every 1 foot fallen." compset="RaceCustom">
+    <tag group="AllowRCust" tag="r5CGGRSimi"/>
+    </thing>
+  <thing id="rc5CGGRSAN" name="Nimble Climber" description="You can climb as fast as your normal speed." compset="RaceCustom">
+    <fieldval field="abValue" value="1"/>
+    <tag group="AllowRCust" tag="r5CGGRSimi" name="Simic Hybrid" abbrev="Simic Hybrid"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+     var myspeed as number
+     myspeed = hero.child[Speed].field[tSpeed].value
+     field[abValue].value = 1
+     hero.child[xClimb].field[abValue].value = myspeed]]></eval>
+    </thing>
+  <thing id="rc5CGGRSAU" name="Underwater Adaptation" description="You are able to swim as fast as you walk, and become amphibious." compset="RaceCustom">
+    <fieldval field="abValue" value="1"/>
+    <tag group="AllowRCust" tag="r5CGGRSimi" name="Simic Hybrid" abbrev="Simic Hybrid"/>
+    <bootstrap thing="raAmphib"></bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+     var myspeed as number
+     myspeed = hero.child[Speed].field[tSpeed].value
+     field[abValue].value = 1
+     hero.child[xSwim].field[abValue].value = myspeed]]></eval>
+    </thing>
+  <thing id="rc5CGGRSAL" name="Grappling Appendages" description="These extra appendages can be used to make a melee attack. On a hit, they deal 1d6 damage plus your Strength modifier. Also on a hit, you can use a bonus action to attempt to grapple the target. These appendages cannot be used for any other purposes." compset="RaceCustom" summary="Extra appendages to attack and grapple enemies.">
+    <arrayval field="usrArray" index="0" value="Claws"/>
+    <arrayval field="usrArray" index="1" value="Tentacles"/>
+    <tag group="AllowRCust" tag="r5CGGRSimi" name="Simic Hybrid" abbrev="Simic Hybrid"/>
+    <bootstrap thing="wClaw">
+      <containerreq phase="First" priority="500">fieldval:usrIndex=0</containerreq>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wAttackEff" value="On a hit, you can use a bonus action to attempt to grapple the attack&apos;s target."/>
+      </bootstrap>
+    <bootstrap thing="wTentacle">
+      <containerreq phase="First" priority="500">fieldval:usrIndex=1</containerreq>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wAttackEff" value="On a hit, you can use a bonus action to attempt to grapple the attack&apos;s target."/>
+      </bootstrap>
+    <exprreq message="Allowed at 5th level"><![CDATA[#totallevelcount[] >= 5]]></exprreq>
+    </thing>
+  <thing id="rc5CGGRSAC" name="Carapace" description="When not wearing heavy armor, gain +1 AC." compset="RaceCustom">
+    <fieldval field="abValue" value="1"/>
+    <tag group="AllowRCust" tag="r5CGGRSimi" name="Simic Hybrid" abbrev="Simic Hybrid"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+     foreach pick in hero from BaseArmor where "( ArmorClass.Heavy ) & ( Helper.CurrArmor )"
+          field[abValue].value = 0
+     nexteach
+     hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
+    <exprreq message="Allowed at 5th level"><![CDATA[#totallevelcount[] >=5]]></exprreq>
+    </thing>
+  <thing id="rc5CGGRSAA" name="Acid Spit" compset="RaceCustom">
+    <tag group="AllowRCust" tag="r5CGGRSimi" name="Simic Hybrid" abbrev="Simic Hybrid"/>
+    <bootstrap thing="ra5CGGRSiAc"></bootstrap>
+    <eval phase="Final" priority="1000"><![CDATA[
+      field[livename].text = "Animal Enhancement: " & field[thingname].text]]></eval>
+    <exprreq message="Allowed at 5th level"><![CDATA[#totallevelcount[] >=5]]></exprreq>
+    </thing>
+  <thing id="ra5CGGRSiAc" name="Acid Spit" compset="RaceSpec">
+    <fieldval field="abValue2" value="10"/>
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abText" value="acid"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="ChargeAttr" tag="aCON"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="FinalMin1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="StandardDC" tag="aCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[
+      if (#totallevelcount[] >= 17) then
+        field[abValue].value += 4
+      elseif (#totallevelcount[] >= 11) then
+        field[abValue].value += 3
+      else
+        field[abValue].value += 2
+        endif]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[
+      ~need to put the damage up front
+      field[abText].text = field[abValue].value & "d" & field[abValue2].value & " " & field[abText].text & ", 30ft "]]></eval>
+    </thing>
+  <thing id="ra5CGGRSiLa" name="Starting Languages" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Elvish"/>
+    <arrayval field="usrArray" index="1" value="Vedalken"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <bootstrap thing="l5CLandVeld">
+      <containerreq phase="First" priority="500">fieldval:usrIndex=1</containerreq>
+      </bootstrap>
+    <bootstrap thing="lElvish">
+      <containerreq phase="First" priority="500">fieldval:usrIndex=0</containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CGGRTiPr" name="Tireless Precision" description="You are proficient in one of the following skills of your choice: Arcana, History, Investigation, Medicine, Performance, or Sleight of Hand. You&apos;re also proficient in one tool of your choice.\n\nWhenever you make an ability check with the chosen skill or tool, roll a d4 and add the number rolled to the check&apos;s total." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      var NumOfProf as number
+      var NumOfTool as number
+      var NumOfSkill as number
+      ~ Increase or decrease the number of proficiencies 
+      ~ NumOfProf = field[abValue].value
+      ~ Increase or decrease the number of Tools 
+      NumOfTool = 1
+      ~ Increase or decrease the number of Skills 
+      NumOfSkill = 1
+
+      hero.childfound[cfg5CProf].field[livename].text = "Tireless Precision"
+      hero.childfound[cfg5CProf].field[cSkCandExp].text = "component.BaseSkill & thingid.skArcana | thingid.skHistory | thingid.skInvestig |  thingid.skMedicine | thingid.skPerform | thingid.skSleight & !Helper.Obsolete"
+      hero.childfound[cfg5CProf].field[cSkCandEx2].text = "component.BaseSkill & thingid.skArcana | thingid.skHistory | thingid.skInvestig |  thingid.skMedicine | thingid.skPerform | thingid.skSleight & !Helper.Obsolete"
+
+      call 5CAddProf]]></eval>
+    <eval phase="Final" priority="10001" index="2"><![CDATA[     ~ If we're disabled, do nothing & 
+     doneif (tagis[Helper.Disable] = 1)
+
+     hero.childfound[cfg5CProf].field[livename].text = "Tireless Precision"
+
+     var sText as string
+     var sText2 as string
+     sText = "+1d4 added to the check's total."
+
+     foreach pick in hero from BaseSkill where "hasagent.cfg5CProf"
+       sText2 = eachpick.tagids[thingid.?]
+       foreach pick in hero from BaseSkill where sText2
+         #situational[eachpick,sText,field[thingname].text]
+         nexteach
+       nexteach
+
+     foreach pick in hero from Tool where "hasagent.cfg5CProf"
+       sText2 = eachpick.tagids[thingid.?]
+       foreach pick in hero from Tool where sText2
+         #situational[eachpick,sText,field[thingname].text]
+         nexteach
+       nexteach]]></eval>
+    </thing>
+  </document>
