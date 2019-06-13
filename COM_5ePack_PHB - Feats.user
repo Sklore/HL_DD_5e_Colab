@@ -277,7 +277,7 @@ hero.findchild[TempHpPool,"Value.2"].field[thpMaxAllw].value = temphp]]></eval>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
-  <thing id="ft5CMagIni" name="Magic Initiate" description="You gain two cantrips and one 1st-level spell from the selected full caster class. Your spellcasting ability is the same as the class you selected.\n\n{b}Note:{/b} Once you select the class a new tab {b}Magic Initiate{/b} will appear allowing you to select your two cantrips and one 1st-level spell." compset="Feat" uniqueness="useronce">
+  <thing id="ft5CMagIni" name="Magic Initiate" description="You gain two cantrips and one 1st-level spell from the selected full caster class. Your spellcasting ability is the same as the class you selected.\n\n{b}Note:{/b} Once you select the class a new tab {b}Magic Initiate{/b} will appear allowing you to select your two cantrips and one 1st-level spell.\n\nDue to how {i}find familiar{/i} scripts work, if you choose this spell, the &quot;Add a Familiar&quot; link will appear either on the Class tab or on the Spells tab depending on whether or not the base class can cast spells." compset="Feat" uniqueness="useronce">
     <fieldval field="usrCandid1" value="component.Class &amp; CasterSrc.? &amp; (Helper.FullCaster|Helper.WarlocCast)"/>
     <fieldval field="abValue5" value="2"/>
     <usesource source="5ePHBCP"/>
@@ -307,6 +307,18 @@ hero.findchild[TempHpPool,"Value.2"].field[thpMaxAllw].value = temphp]]></eval>
       
       ~ Remove the Staandard DC tag from this feat
       perform delete[StandardDC.?]]]></eval>
+    <eval phase="Final" priority="51000" index="2"><![CDATA[foreach pick in hero from BaseSpell where "CfgSpell.cfg5CMagIn"
+~ loop through all the spells added by the configurable for Magic Initiate
+     if (eachpick.tagis[thingid.spFindFami] <> 0) then
+     ~ if one of those spells is Find Familiar then 
+           foreach pick in hero from Class where "Helper.FirstLevel"
+           ~ loop through the class helpers until we find the one chosen at first level
+           ~ assign it this tag, which grants the Add a Familiar link on the correct page
+                perform eachpick.assign[CompAvail.Familiar]
+           nexteach
+     endif
+nexteach]]></eval>
+    <exprreq message="Must have at least one class level to select this feat. "><![CDATA[tagcount[FirstClass.?] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CMartiA" name="Martial Adept" description="You learn two maneuvers of your choice from among those available to the Battle Master archetype in the fighter class. If a maneuver you use requires your target to make a saving throw to resist the maneuver’s effects, the saving throw DC equals 8 + your proficiency bonus + your Strength or Dexterity modifier (your choice).\n• If you already have superiority dice, you gain one more; otherwise, you have one superiority die, which is a d6. This die is used to fuel your maneuvers. A superiority die is expended when you use it. You regain your expended superiority d ice when you finish a short or long rest." compset="Feat" summary="Gain 2 maneuvers from the Battle Master archetype." uniqueness="useronce">
     <fieldval field="abValue" value="1"/>
@@ -426,7 +438,7 @@ hero.findchild[TempHpPool,"Value.2"].field[thpMaxAllw].value = temphp]]></eval>
       ~ Find the associated ability score and increase it by 1
       hero.findchild[BaseAttr,field[usrChosen1].chosen.tagids[SaveAbil.?]].field[aStartMod].value += 1]]></eval>
     </thing>
-  <thing id="ft5CRituaC" name="Ritual Caster" description="Prerequisite: Intelligence or Wisdom 13 or higher\n\nYou have learned a number of spells that you can cast as rituals. These spells are written in a ritual book, which you must have in hand while casting one of them.\n\nWhen you choose this feat, you acquire a ritual book holding two 1st-level spells of your choice. Choose one of the following classes: bard, cleric, druid, sorcerer, warlock, or wizard. You must choose your spells from that class’s spell list, and the spells you choose must have the ritual tag. The class you choose also determines your spellcasting ability for these spells: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard. \n\nIf you come across a spell in written form, such as a magical spell scroll or a wizard’s spellbook, you might be able to add it to your ritual book. The spell must be on the spell list for the class you chose, the spell’s level can be no higher than half your level (rounded up), and it must have the ritual tag. The process of copying the spell into your ritual book takes 2 hours per level of the spell, and costs 50 gp per level. The cost represents material components you expend as you experiment with the spell to master it, as well as the fine inks you need to record it.\n\n{b}Note:{/b} When adding rituals the new Ritual Caster tab will not restrict the number of spells you add. This is because like a wizards spellbook you can add an unlimited number." compset="Feat" summary="You have learned a number of spells that you can cast as rituals." uniqueness="useronce">
+  <thing id="ft5CRituaC" name="Ritual Caster" description="Prerequisite: Intelligence or Wisdom 13 or higher\n\nYou have learned a number of spells that you can cast as rituals. These spells are written in a ritual book, which you must have in hand while casting one of them.\n\nWhen you choose this feat, you acquire a ritual book holding two 1st-level spells of your choice. Choose one of the following classes: bard, cleric, druid, sorcerer, warlock, or wizard. You must choose your spells from that class’s spell list, and the spells you choose must have the ritual tag. The class you choose also determines your spellcasting ability for these spells: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard. \n\nIf you come across a spell in written form, such as a magical spell scroll or a wizard’s spellbook, you might be able to add it to your ritual book. The spell must be on the spell list for the class you chose, the spell’s level can be no higher than half your level (rounded up), and it must have the ritual tag. The process of copying the spell into your ritual book takes 2 hours per level of the spell, and costs 50 gp per level. The cost represents material components you expend as you experiment with the spell to master it, as well as the fine inks you need to record it.\n\n{b}Note:{/b} When adding rituals the new Ritual Caster tab will not restrict the number of spells you add. This is because like a wizards spellbook you can add an unlimited number.\n\nDue to how {i}find familiar{/i} scripts work, if you choose this spell, the &quot;Add a Familiar&quot; link will appear either on the Class tab or on the Spells tab depending on whether or not the base class can cast spells." compset="Feat" summary="You have learned a number of spells that you can cast as rituals." uniqueness="useronce">
     <fieldval field="usrCandid1" value="component.Class &amp; CasterSrc.? &amp; Helper.FullCaster"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
@@ -451,6 +463,18 @@ hero.findchild[TempHpPool,"Value.2"].field[thpMaxAllw].value = temphp]]></eval>
       
       ~ Remove the Standard DC tag from this feat
       perform delete[StandardDC.?]]]></eval>
+    <eval phase="Final" priority="51000" index="2"><![CDATA[foreach pick in hero from BaseSpell where "CfgSpell.cfg5CMagIn"
+~ loop through all the spells added by the configurable for Magic Initiate
+     if (eachpick.tagis[thingid.spFindFami] <> 0) then
+     ~ if one of those spells is Find Familiar then 
+           foreach pick in hero from Class where "Helper.FirstLevel"
+           ~ loop through the class helpers until we find the one chosen at first level
+           ~ assign it this tag, which grants the Add a Familiar link on the correct page
+                perform eachpick.assign[CompAvail.Familiar]
+           nexteach
+     endif
+nexteach]]></eval>
+    <exprreq message="Must have at least one class level to select this feat. "><![CDATA[tagcount[FirstClass.?] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CSavagA" name="Savage Attacker" description="Once per turn when you roll damage for a melee weapon attack, you can reroll the weapon’s damage dice and use either total." compset="Feat" summary="Once per turn when you roll damage for a melee weapon attack, you can reroll the weapon’s damage dice and use either total." uniqueness="useronce">
     <usesource source="5ePHBCP"/>

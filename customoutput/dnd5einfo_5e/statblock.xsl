@@ -386,8 +386,8 @@
 						<td colspan="2" style="padding-top: 28px;" class="borderbottomblack">Proficiencies</td>
 					</tr>
 					<tr>
-						<td width="50%"><strong>Armour:</strong><xsl:call-template name="space"/><xsl:value-of select="armorproficiencies/@text"/></td>
-						<td width="50%"><strong>Tools:</strong><xsl:call-template name="space"/><xsl:value-of select="toolproficiencies/@text"/></td>
+						<td width="50%" valign="top"><strong>Armour:</strong><xsl:call-template name="space"/><xsl:value-of select="armorproficiencies/@text"/></td>
+						<td width="50%" valign="top"><strong>Tools:</strong><xsl:call-template name="space"/><xsl:value-of select="toolproficiencies/@text"/></td>
 					</tr>
 					<tr>
 						<td><strong>Weapons:</strong><xsl:call-template name="space"/><xsl:value-of select="weaponproficiencies/@text"/></td>
@@ -512,10 +512,11 @@
 						<td colspan="3" style="padding-top: 28px;" class="borderbottomblack">Spellbook</td>
 					</tr>
 				</table>
-				<div style="-webkit-column-count: 2; -moz-column-count: 2; column-count: 2; padding-top:28px;">
+				<div style="-webkit-column-count: 2; -moz-column-count: 2; column-count: 2;">
+				<xsl:if test="count(cantrips/spell) != 0">
 				<table width="100%">
 					<tr>
-						<td class="spellslot">Cantrips</td>
+						<td style="padding-top:28px;" class="spellslot">Cantrips</td>
 					</tr>
 					<xsl:for-each select="cantrips/spell"> 
 					<tr> 
@@ -523,13 +524,17 @@
 					</tr> 
 					</xsl:for-each>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellbook/spell[@level='1st']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">1st-Level <xsl:apply-templates select="spellslots/spellslot[position() &lt;= 1]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellbook/spell[@level='1st']">
-							<xsl:apply-templates select="spellbook/spell[@level='1st']" />
+							<xsl:apply-templates select="spellbook/spell[@level='1st']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -550,13 +555,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellbook/spell[@level='2nd']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">2nd-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 2 and (position() &lt; 3)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellbook/spell[@level='2nd']">
-							<xsl:apply-templates select="spellbook/spell[@level='2nd']" />
+							<xsl:apply-templates select="spellbook/spell[@level='2nd']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -577,13 +586,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellbook/spell[@level='3rd']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">3rd-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 3 and (position() &lt; 4)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellbook/spell[@level='3rd']">
-							<xsl:apply-templates select="spellbook/spell[@level='3rd']" />
+							<xsl:apply-templates select="spellbook/spell[@level='3rd']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -604,13 +617,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellbook/spell[@level='4th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">4th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 4 and (position() &lt; 5)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellbook/spell[@level='4th']">
-							<xsl:apply-templates select="spellbook/spell[@level='4th']" />
+							<xsl:apply-templates select="spellbook/spell[@level='4th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -631,13 +648,18 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				
+				</xsl:if>
+				<xsl:if test="count(spellbook/spell[@level='5th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">5th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 5 and (position() &lt; 6)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellbook/spell[@level='5th']">
-							<xsl:apply-templates select="spellbook/spell[@level='5th']" />
+							<xsl:apply-templates select="spellbook/spell[@level='5th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -657,14 +679,18 @@
 					</tr>
 						</xsl:otherwise>
 					</xsl:choose>
-				</table>
+				</table>				
+				</xsl:if>
+				<xsl:if test="count(spellbook/spell[@level='6th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">6th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 6 and (position() &lt; 7)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellbook/spell[@level='6th']">
-							<xsl:apply-templates select="spellbook/spell[@level='6th']" />
+							<xsl:apply-templates select="spellbook/spell[@level='6th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -685,13 +711,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellbook/spell[@level='7th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">7th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 7 and (position() &lt; 8)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellbook/spell[@level='7th']">
-							<xsl:apply-templates select="spellbook/spell[@level='7th']" />
+							<xsl:apply-templates select="spellbook/spell[@level='7th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -712,13 +742,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellbook/spell[@level='8th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">8th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 8 and (position() &lt; 9)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellbook/spell[@level='8th']">
-							<xsl:apply-templates select="spellbook/spell[@level='8th']" />
+							<xsl:apply-templates select="spellbook/spell[@level='8th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -739,13 +773,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellbook/spell[@level='9th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">9th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 9 and (position() &lt; 10)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellbook/spell[@level='9th']">
-							<xsl:apply-templates select="spellbook/spell[@level='9th']" />
+							<xsl:apply-templates select="spellbook/spell[@level='9th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -766,11 +804,11 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
 				</div>
 			</section>
 			</xsl:if>
 			<xsl:if test="count(spellbook/spell) != 0">
-			<div style="page-break-before: always;"></div>
 			<section>
 				<table width="100%">
 					<tr>
@@ -841,10 +879,11 @@
 				</table>
 			</section>
 			<section>
-				<div style="-webkit-column-count: 2; -moz-column-count: 2; column-count: 2; padding-top:28px;">
+				<div style="-webkit-column-count: 2; -moz-column-count: 2; column-count: 2;">
+				<xsl:if test="count(cantrips/spell) != 0">
 				<table width="100%">
 					<tr>
-						<td class="spellslot">Cantrips</td>
+						<td style="padding-top:28px;" class="spellslot">Cantrips</td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="cantrips">
@@ -869,13 +908,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsknown/spell[@level='1st']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">1st-Level <xsl:apply-templates select="spellslots/spellslot[position() &lt;= 1]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsknown/spell[@level='1st']">
-							<xsl:apply-templates select="spellsknown/spell[@level='1st']" />
+							<xsl:apply-templates select="spellsknown/spell[@level='1st']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -896,13 +939,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsknown/spell[@level='2nd']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">2nd-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 2 and (position() &lt; 3)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsknown/spell[@level='2nd']">
-							<xsl:apply-templates select="spellsknown/spell[@level='2nd']" />
+							<xsl:apply-templates select="spellsknown/spell[@level='2nd']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -923,13 +970,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsknown/spell[@level='3rd']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">3rd-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 3 and (position() &lt; 4)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsknown/spell[@level='3rd']">
-							<xsl:apply-templates select="spellsknown/spell[@level='3rd']" />
+							<xsl:apply-templates select="spellsknown/spell[@level='3rd']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -950,13 +1001,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsknown/spell[@level='4th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">4th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 4 and (position() &lt; 5)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsknown/spell[@level='4th']">
-							<xsl:apply-templates select="spellsknown/spell[@level='4th']" />
+							<xsl:apply-templates select="spellsknown/spell[@level='4th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -977,13 +1032,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsknown/spell[@level='5th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">5th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 5 and (position() &lt; 6)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsknown/spell[@level='5th']">
-							<xsl:apply-templates select="spellsknown/spell[@level='5th']" />
+							<xsl:apply-templates select="spellsknown/spell[@level='5th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1004,13 +1063,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsknown/spell[@level='6th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">6th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 6 and (position() &lt; 7)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsknown/spell[@level='6th']">
-							<xsl:apply-templates select="spellsknown/spell[@level='6th']" />
+							<xsl:apply-templates select="spellsknown/spell[@level='6th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1031,13 +1094,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsknown/spell[@level='7th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">7th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 7 and (position() &lt; 8)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsknown/spell[@level='7th']">
-							<xsl:apply-templates select="spellsknown/spell[@level='7th']" />
+							<xsl:apply-templates select="spellsknown/spell[@level='7th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1058,13 +1125,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsknown/spell[@level='8th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">8th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 8 and (position() &lt; 9)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsknown/spell[@level='8th']">
-							<xsl:apply-templates select="spellsknown/spell[@level='8th']" />
+							<xsl:apply-templates select="spellsknown/spell[@level='8th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1085,13 +1156,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsknown/spell[@level='9th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">9th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 9 and (position() &lt; 10)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsknown/spell[@level='9th']">
-							<xsl:apply-templates select="spellsknown/spell[@level='9th']" />
+							<xsl:apply-templates select="spellsknown/spell[@level='9th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1112,11 +1187,11 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
 				</div>
 			</section>
 			</xsl:if>
 			<xsl:if test="count(spellsknown/spell) != 0">
-			<div style="page-break-before: always;"></div>
 			<section>
 				<table width="100%">
 					<tr>
@@ -1187,14 +1262,15 @@
 				</table>
 			</section>
 			<section>
-				<div style="-webkit-column-count: 2; -moz-column-count: 2; column-count: 2; padding-top:28px;">
+				<div style="-webkit-column-count: 2; -moz-column-count: 2; column-count: 2;">
+				<xsl:if test="count(cantrips/spell) != 0">
 				<table width="100%">
 					<tr>
-						<td class="spellslot">1st-Level <xsl:apply-templates select="spellslots/spellslot[position() &lt;= 1]"/></td>
+						<td style="padding-top: 28px;" class="spellslot">Cantrips</td>
 					</tr>
 					<xsl:choose>
-						<xsl:when test="spellsmemorized/spell[@level='1st']">
-							<xsl:apply-templates select="spellsmemorized/spell[@level='1st']" />
+						<xsl:when test="cantrips">
+							<xsl:apply-templates select="cantrips" />
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1215,13 +1291,48 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsmemorized/spell[@level='1st']) != 0">
+				<table width="100%">
+					<tr>
+						<td style="padding-top: 28px;" class="spellslot">1st-Level <xsl:apply-templates select="spellslots/spellslot[position() &lt;= 1]"/></td>
+					</tr>
+					<xsl:choose>
+						<xsl:when test="spellsmemorized/spell[@level='1st']">
+							<xsl:apply-templates select="spellsmemorized/spell[@level='1st']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
+						</xsl:when>
+						<xsl:otherwise>
+					<tr>
+						<td height="16px;" class="borderbottom"></td>
+					</tr>
+					<tr>
+						<td height="16px;" class="borderbottom"></td>
+					</tr>
+					<tr>
+						<td height="16px;" class="borderbottom"></td>
+					</tr>
+					<tr>
+						<td height="16px;" class="borderbottom"></td>
+					</tr>
+					<tr>
+						<td height="16px;" class="borderbottom"></td>
+					</tr>
+						</xsl:otherwise>
+					</xsl:choose>
+				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsmemorized/spell[@level='2nd']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">2nd-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 2 and (position() &lt; 3)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsmemorized/spell[@level='2nd']">
-							<xsl:apply-templates select="spellsmemorized/spell[@level='2nd']" />
+							<xsl:apply-templates select="spellsmemorized/spell[@level='2nd']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1242,13 +1353,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsmemorized/spell[@level='3rd']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">3rd-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 3 and (position() &lt; 4)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsmemorized/spell[@level='3rd']">
-							<xsl:apply-templates select="spellsmemorized/spell[@level='3rd']" />
+							<xsl:apply-templates select="spellsmemorized/spell[@level='3rd']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1269,13 +1384,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsmemorized/spell[@level='4th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">4th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 4 and (position() &lt; 5)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsmemorized/spell[@level='4th']">
-							<xsl:apply-templates select="spellsmemorized/spell[@level='4th']" />
+							<xsl:apply-templates select="spellsmemorized/spell[@level='4th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1296,13 +1415,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsmemorized/spell[@level='5th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">5th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 5 and (position() &lt; 6)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsmemorized/spell[@level='5th']">
-							<xsl:apply-templates select="spellsmemorized/spell[@level='5th']" />
+							<xsl:apply-templates select="spellsmemorized/spell[@level='5th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1323,13 +1446,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsmemorized/spell[@level='6th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">6th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 6 and (position() &lt; 7)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsmemorized/spell[@level='6th']">
-							<xsl:apply-templates select="spellsmemorized/spell[@level='6th']" />
+							<xsl:apply-templates select="spellsmemorized/spell[@level='6th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1350,13 +1477,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsmemorized/spell[@level='7th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">7th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 7 and (position() &lt; 8)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsmemorized/spell[@level='7th']">
-							<xsl:apply-templates select="spellsmemorized/spell[@level='7th']" />
+							<xsl:apply-templates select="spellsmemorized/spell[@level='7th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1377,13 +1508,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsmemorized/spell[@level='8th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">8th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 8 and (position() &lt; 9)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsmemorized/spell[@level='8th']">
-							<xsl:apply-templates select="spellsmemorized/spell[@level='8th']" />
+							<xsl:apply-templates select="spellsmemorized/spell[@level='8th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1404,13 +1539,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
+				<xsl:if test="count(spellsmemorized/spell[@level='9th']) != 0">
 				<table width="100%">
 					<tr>
 						<td style="padding-top: 28px;" class="spellslot">9th-Level <xsl:apply-templates select="spellslots/spellslot[position() &gt;= 9 and (position() &lt; 10)]"/></td>
 					</tr>
 					<xsl:choose>
 						<xsl:when test="spellsmemorized/spell[@level='9th']">
-							<xsl:apply-templates select="spellsmemorized/spell[@level='9th']" />
+							<xsl:apply-templates select="spellsmemorized/spell[@level='9th']">
+								<xsl:sort select="@class" />
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 					<tr>
@@ -1431,11 +1570,11 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</table>
+				</xsl:if>
 				</div>
 			</section>
 			</xsl:if>
 			<xsl:if test="count(spellsmemorized/spell) != 0">
-			<div style="page-break-before: always;"></div>
 			<section>
 				<table width="100%">
 					<tr>
@@ -1444,6 +1583,26 @@
 				</table>
 				<div style="-webkit-column-count: 2; -moz-column-count: 2; column-count: 2; padding-top:28px;">
 				<table width="100%">
+					<xsl:for-each select="cantrips/spell">
+					<tr>
+						<td class="borderbottom"><strong><xsl:value-of select="@name"/></strong></td>
+					</tr>
+					<tr>
+						<td><strong>Casting Time:</strong><xsl:call-template name="space"/><xsl:value-of select="@casttime"/></td>
+					</tr>
+					<tr>
+						<td><strong>Range:</strong><xsl:call-template name="space"/><xsl:value-of select="@range"/></td>
+					</tr>
+					<tr>
+						<td><strong>Components:</strong><xsl:call-template name="space"/><xsl:value-of select="@componenttext"/></td>
+					</tr>
+					<tr>
+						<td><strong>Duration:</strong><xsl:call-template name="space"/><xsl:value-of select="@duration"/></td>
+					</tr>
+					<tr>
+						<td style="padding-bottom:28px;"><pre><xsl:value-of select="description"/></pre></td>
+					</tr>
+					</xsl:for-each>
 					<xsl:for-each select="spellsmemorized/spell">
 					<tr>
 						<td class="borderbottom"><strong><xsl:value-of select="@name"/></strong></td>
@@ -1504,10 +1663,14 @@
 	<xsl:template match="spellslot">
 		<span style="float: right;"><xsl:value-of select="@count"/></span>
 	</xsl:template>
-
+	
 	<xsl:template match="spell">
 					<tr>
-						<td class="borderbottom"><xsl:value-of select="@name"/></td>
+						<td class="borderbottom script"><xsl:value-of select="@name"/>
+							<xsl:if test="count(../../spellclasses/spellclass) &gt;= 2">
+							<xsl:call-template name="space"/>(<xsl:value-of select="@class"/>)
+							</xsl:if>
+						</td>
 					</tr>
 	</xsl:template>
 

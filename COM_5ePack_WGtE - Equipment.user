@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="w5CEbSBScim" name="Double-Bladed Scimitar" description="The double scimitar is the signature weapon of Valenar elves. A haft of fine wood supports a long blade on either end. Forged with techniques honed over tens of thousands of years, these blades are strong, sharp, and remarkably light. Each scimitar is a masterpiece, and as a result the double scimitar is an expensive weapon, but few people ever have an opportunity to purchase one. If you’re an elf, your blade could have a long and storied history. If you’re not an elf, you might have stolen the weapon from a fallen foe or received it from a dying Valenar ally. If you work with your DM to create the story behind your double scimitar, you can start with the weapon at 1st level in place of a martial weapon normally granted by your class. However, it can be dangerous for a non-elf to carry a double scimitar. Valenar may demand its return or challenge you to prove that you’re worthy to wield it.\n\n{b}Special.{/b} When you take the attack action and make a two-handed attack with a double-bladed scimitar, you can use a bonus action to make a melee attack with the blade at the opposite end of the weapon. This attack uses the same ability modifier as the primary attack. The weapon’s damage die for this attack is a d4, and it deals slashing damage." compset="Weapon">
+    <fieldval field="gSizeCost" value="100"/>
+    <fieldval field="gWeight" value="6"/>
+    <fieldval field="wDieCount" value="2"/>
+    <fieldval field="wDieSize" value="4"/>
+    <usesource source="5eWGtECP"/>
+    <tag group="DamageType" tag="dtSlashing"/>
+    <tag group="wProfReq" tag="Martial"/>
+    <tag group="RaceEquip" tag="rElf"/>
+    <tag group="wProperty" tag="Special"/>
+    <tag group="wProperty" tag="TwoHanded"/>
+    <tag group="wCategory" tag="Melee"/>
+    <tag group="EquipType" tag="Metal"/>
+    </thing>
+  <thing id="io5CEbWandSh" name="Wand Sheath" description="A wand sheath is designed to integrate with the forearm of a warforged. If you’re a warforged, you can attach a wand sheath by attuning to it. While the wand sheath is attached, it cannot be removed from you against your will. You can spend one minute to end the attunement and remove the wand sheath.\n\nYou can insert a wand into the sheath as an action. While the wand is sheathed, you gain the following benefits\n\nYou can retract the wand into your forearm or extend it from your forearm as a bonus action. While it is retracted, it cannot be damaged or removed.\n\nWhile the wand is extended, you can use it as if you were holding it, but your hand remains free for other actions.\n\nIf the sheathed wand requires attunement, you must attune to the wand before you can use it. However, the wand sheath and the attached wand only count as a single item for purposes of the maximum number of items you can be attuned to. If you remove the wand from the sheath, you immediately lose your attunement to the wand." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a warforged"/>
+    <fieldval field="actName" value="Extended"/>
+    <usesource source="5eWGtECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="thing" tag="holder"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <eval phase="PostLevel" priority="20000">doneif (field[gIsEquip].value = 0)
+     doneif (field[gIsAttuned].value = 0)
+
+     var iName as string
+
+     hero.child[Totals].field[tAttunMax].value += 1</eval>
+    <pickreq thing="r5CEbWarfo"/>
+    </thing>
+  <thing id="i5CWGtEArmbl" name="Armblade" description="An armblade is a weapon designed to integrate with the forearm of a warforged. If you’re a warforged, you can attach an armblade by attuning to it. An attached armblade cannot be disarmed or removed from you against your will, but while the weapon is attached you cannot use that hand for other actions. Y\n\nou can spend one minute to end the attunement and remove the armblade. An armblade isn’t inherently considered to be a magic weapon for purposes of overcoming damage resistance. However, any sort of magical melee weapon could be created as an armblade, so you could acquire a vicious armblade or a vorpal armblade.\n\ncomponent.BaseWep &amp; wCategory.Melee &amp; !wCategory.Versatile |  !wCategory.Heavy" compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <comment><![CDATA[      ~set our name based on the type of weapon chosen
+      field[livename].text = "Armblade "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Armblade"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]></comment>
+    <fieldval field="usrCandid1" value="component.BaseWep &amp; wCategory.Melee &amp; !wCategory.Versatile |  !wCategory.Heavy"/>
+    <fieldval field="miTypeDet" value="any one-handed melee weapon"/>
+    <usesource source="5eWGtECP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <eval phase="Final" priority="20000"><![CDATA[     doneif (field[gIsEquip].value = 0)
+     doneif (field[gIsAttuned].value = 0)
+     doneif (field[usrChosen1].ischosen = 0)  
+
+     ~field[usrChosen1].chosen.field[livename].text = field[usrChosen1].chosen.field[name].text & ", spell focus"]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  </document>
