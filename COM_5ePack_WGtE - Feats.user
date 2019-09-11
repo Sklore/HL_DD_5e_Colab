@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="f5CEbAbDrgMk" name="Aberrant Dragonmark" description="{i}Prerequisite: No existing dragonmark.{/i}\n\nYou have manifested an aberrant dragonmark. Determine its appearance and the flaw associated with it. You gain the following benefits:\n\n.  Increase your Constitution score by 1, to a maximum of 20.\n. You learn a cantrip from the sorcerer spell list. In addition, choose a 1st-level spell from the sorcerer spell list. You learn that spell and can cast it at its lowest level. Once you cast it, you must finish a long rest before you can cast it again. Constitution is your spellcasting ability for these spells.\n. You can increase the power of your aberrant spells at the risk of your own vitality. When you cast a spell with your aberrant mark, you can use one of your Hit Dice to increase the spell’s level by 1. Immediately after you cast the spell, roll the Hit Die. You take damage equal to the number rolled.\n\ncomponent.Class &amp; Classes.Sorcerer" compset="Feat" uniqueness="useronce">
+    <fieldval field="abValue5" value="1"/>
+    <fieldval field="usrCandid1" value="component.Class &amp; Classes.Sorcerer"/>
+    <usesource source="5eWGtECP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <bootstrap thing="cfg5CAberDrm"></bootstrap>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aCON].field[aStartMod].value += 1]]></eval>
+    <eval phase="First" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]
+      
+      ~ Get the ability score and the Spell Class tags
+      perform field[usrChosen1].chosen.pulltags[PrimeAbil.?,StandardDC]
+      perform field[usrChosen1].chosen.pulltags[sClass.?]
+
+      ~ Set the ability score and spell tags onto the configurable
+      perform hero.childfound[cfg5CAberDrm].pushtags[StandardDC.?]
+      perform hero.childfound[cfg5CAberDrm].pushtags[sClass.?]
+
+      ~ Set the total number of spells allowed (ie 2 which is .5 for each
+      ~ cantrip and 1 for 1st level spell).
+      hero.childfound[cfg5CAberDrm].field[cfgMaxSp1].value += field[abValue5].value
+      
+      ~ Remove the Staandard DC tag from this feat
+      perform delete[StandardDC.?]]]></eval>
+    </thing>
+  <thing id="cfg5CAberDrm" name="Aberrant Dragonmark" description="Helper Thing for the feat Aberrant Dragonmark." compset="Configure" uniqueness="unique">
+    <tag group="Helper" tag="SpCountLev" name="SpCountLev" abbrev="SpCountLev"/>
+    <tag group="Helper" tag="ClsCastLev" name="Class Level" abbrev="Class Level"/>
+    <eval phase="Render" priority="2147483648" index="2"><![CDATA[
+      var nLevel0 as number
+      var nLevel1 as number
+
+      ~ Calculate the number of spells selected
+      nLevel0 = 2 - tagcount[sLevel.0]
+      nLevel1 = 1 - tagcount[sLevel.1]
+
+      ~ Set the correct message
+      If (nLevel0 + nLevel1 > 0) then
+        field[cfgAdTxSp1].text = "Add " & nLevel0 & " Cantrips and " & nLevel1 & " 1st-level spell"
+
+      ElseIf (nLevel0 + nLevel1 = 0) then
+        field[cfgAdTxSp1].text = "No more spells to add."
+
+      ElseIf (nLevel0 < 0) then
+        field[cfgAdTxSp1].text = "You have " & tagcount[sLevel.0] & " of 2 cantrips allowed."
+
+      ElseIf (nLevel1 < 0) then
+        field[cfgAdTxSp1].text = "You have " & tagcount[sLevel.1] & " of one 1st-level spell allowed."
+      Endif]]></eval>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ If no spell class tags, do nothing &
+      doneif (tagcount[sClass.?] = 0)
+
+      ~ NOTE: I am thinking I found more bugs in 5e game system as
+      ~       I shouldn't have to do this to get spells to appear
+      ~       on the "Spells" tab.
+
+      ~ Generate SpellSort and SpellType tags
+      perform pulltags[sClass.?,SpellSort]
+      perform pulltags[sClass.?,SpellType]
+
+      ~ Loop through all the spell picks added on the "Aberrant Dragonmark"
+      ~ Configurable tab.
+      foreach pick in hero from BaseSpell where "CfgSpell.cfg5CAberDrm"
+
+        ~ Set the SpellSort and SpellType tags which are needed
+        ~ to get spells to display correctly on the Spells tab
+        perform eachpick.pushtags[SpellSort.?]
+        perform eachpick.pushtags[SpellType.?]
+
+        ~ Pull the spell level selected and the deny tags so that
+        ~ we can set the message and selection list corretly.
+        perform eachpick.pulltags[sLevel.?]
+        perform eachpick.pulltags[ClsDenySp.?]
+
+        ~ If we are a cantrip add the helper cantrip tag
+        if (eachpick.tagis[sLevel.0] = 1) then
+          perform eachpick.assign[Helper.Cantrip]
+
+        ~.. otherwise we are level 1+ spell so make us a
+        ~   racial spell so we can limit its use to 1/longrest
+        else
+          perform eachpick.assign[Helper.SpellLike]
+          perform eachpick.assign[Usage.LongRest]
+          eachpick.field[trkMax].value += 1
+        endif
+      nexteach
+
+      ~ Set the spell selection expression to only be the selected class
+      field[cfgAllwSp1].text &= " & (sLevel.0|sLevel.1) & (" & tagids[sClass.?,"|"] & ") & !Helper.Helper"
+
+      ~ If we have Class Deny Spells then remove those from the list. This
+      ~ prevents the same spell from being added twice. This way we act
+      ~ like the normal spell portal does.
+      if (tagcount[ClsDenySp.?] <> 0) then
+        field[cfgAllwSp1].text &= " & !(" & tagids[ClsDenySp.?,"|"] & ")"
+      endif]]></eval>
+    </thing>
+  </document>
