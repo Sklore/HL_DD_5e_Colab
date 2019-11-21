@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="io5CDiABSoIP" name="Battle Standard of Infernal Power" description="A hell-forged battle standard that is made of infernal iron and fitted with a small, unopenable cage that imprisons a quasit. \nThe imprisoned quasit is incapacitated, and its cage has AC 19, 10 hit points, and immunity to all types of damage except force damage. \nIf killed or somehow released, the quasit disappears in a cloud of smoke, and a new one appears in the cage if the cage is intact.\n\nWhile holding the banner, your weapon attacks and those of all allied creatures within 300 feet of you count as magical for the purposes of overcoming damage immunities and resistances." compset="Wondrous">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="io5CDiVGoFF" name="Gauntlets of Flaming Fury" description="While wearing these steel gauntlets, any nonmagical weapon you grasp with either gauntlet is treated as a magic weapon. \n\nAs a bonus action, you can use the gauntlets to cause magical flames to envelop one or two melee weapons in your grasp. Each flaming weapon deals an extra 1d6 fire damage on a hit. The flames last until you sheath or let go of either weapon. \n\nOnce used, this property can’t be used again until the next dawn." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="usrCandid1" value="component.NormalWep &amp; !Helper.EquipMag &amp; !wGroup.Natural"/>
+    <fieldval field="usrCandid2" value="component.NormalWep &amp; !Helper.EquipMag &amp; !wGroup.Natural"/>
+    <fieldval field="actName" value="Active"/>
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="ChooseSrc2" tag="Hero"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <eval phase="Final" priority="10000"><![CDATA[     doneif (field[gIsEquip].value = 0)
+     doneif (field[gIsAttuned].value = 0)
+     doneif (field[abilActive].value = 0)
+
+     if (field[usrChosen1].ischosen <> 0) then
+       if (field[usrChosen1].chosen.field[gIsEquip].value = 1) then
+         field[usrChosen1].chosen.field[livename].text = "Magic " & field[usrChosen1].chosen.field[name].text
+         field[usrChosen1].chosen.field[wDamExtra].text = "+1d6 fire"
+         perform field[usrChosen1].chosen.assign[Helper.EquipMag]
+       endif
+     endif
+
+     if (field[usrChosen2].ischosen <> 0) then
+       if (field[usrChosen2].chosen.field[wIs2nd].value = 1) then
+         field[usrChosen2].chosen.field[livename].text = "Magic " & field[usrChosen2].chosen.field[name].text
+         field[usrChosen2].chosen.field[wDamExtra].text = "+1d6 fire"
+         perform field[usrChosen2].chosen.assign[Helper.EquipMag]
+       endif
+     endif]]></eval>
+    </thing>
+  <thing id="i5CDiAFaneEater" name="Fane-Eater" description="{i}Fane-Eater{/i} is a battleaxe belonging to {b}Arkhan the Cruel.{/b}\n\nThis weapon grants you gain a +3 bonus to attack and damage rolls with Fane-Eater.\n\nWhen you attack a creature with this weapon, and roll a 20 on the attack roll, the creature takes an extra 2d8 necrotic damage. You regain a number of hit points equal to the necrotic damage you do." compset="MagicWep">
+    <fieldval field="miTypeDet" value="requires attunement by an evil cleric or paladin)"/>
+    <fieldval field="Bonus" value="3"/>
+    <fieldval field="wDamExtra" value="(on 20; +2d8 necrotic)"/>
+    <usesource source="p5eBGDiAP"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Helper" tag="EquipMag" name="EquipMag" abbrev="EquipMag"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wBattleaxe"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CDiAHellfireWep" name="Hellfire Weapon" description="This weapon is fashioned from infernal iron and traced with veins of hellfire that shed dim light in a 5-foot-radius.\n\nAny humanoid killed by an attack made with this weapon has its soul funneled into the River Styx, where it’s reborn instantly as a {b}lemure devil{/b} (described in the Monster Manual)." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="any"/>
+    <fieldval field="Bonus" value="1"/>
+    <usesource source="p5eBGDiAP"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Hellfire "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Weapon"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="io5CDiAHoDC" name="Helm of Devil Command" description="This bulky, eyeless helm is designed for a pit fiend but magically refits iteself to the heads of other wearers.\n\nWhen worn, you can see out of it as though you weren’t wearing it. In addition, you know the exact location and type of all devils within 1,000 feet of you. You can telepathically speak with a devil within range, or you can broadcast your thoughts to all devils within range. The devils receiving your thoughts have no special means of replying to them.\n\nThis helm has 3 charges. As an action, you can expend 1 charge to cast {i}dominate monster{/i} (save DC 21), which affects devils only. (The spell fails and the charge is wasted if you target any creature that’s not a devil.) If a devil can see you when you cast this spell on it, the devil knows you tried to charm it.\n\nThe helm regains all its charges 24 hours after its last charge is expended.\n\nIf you are not a devil, using the helm’s dominate monster property in the Nine Hells has a 20 percent chance of attracting a {b}narzugon{/b}, which arrives on the back of a {b}nightmare{/b} mount in 1d4 hours. The narzugon tries to recover the helm, killing you if necessary to obtain it. If it gets the helm, the narzugon tries to deliver it to its infernal master." compset="Wondrous">
+    <fieldval field="miTypeDet" value="requires attunement by a creature that can speak Infernal"/>
+    <fieldval field="trkMax" value="3"/>
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="Charges"/>
+    <bootstrap thing="spDomiMons">
+      <containerreq phase="First" priority="2500"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="livename" value="Dominate Monster (Devils only)"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <pickreq thing="lInfernal"/>
+    </thing>
+  <thing id="io5CDiAIPBox" name="Infernal Puzzle Box" description="An infernal puzzle box is a cube-shaped container 5 to 6 inches on a side. It is composed of airtight, interlocking parts made from materials found in the Nine Hells. Most such boxes are made of infernal iron, though some are carved from bone or horn. Infernal puzzle boxes are used to safeguard diabolical contracts signed between devils and mortals, even after the terms of such contracts are completed. An empty infernal puzzle box weighs 3 pounds regardless of the materials used to fashion it.\n\nWhen an object small enough to fit inside the box is placed in it, the container magically seals shut around the object, and no magic can force the box open. The sealed box becomes immune to all damage as well. Every such box is constructed with a unique means of opening it. The trick to solving the puzzle is always mundane, never magical. Once a creature figures out the method needed to open a particular infernal puzzle box, that creature can open the box as an action, allowing access to the box’s contents.\n\nA creature that spends 1 hour holding an infernal puzzle box while trying to open it can make a DC 30 Intelligence ({b}Investigation{/b}) check. If the check succeeds, the creature figures out the trick or sequence of steps needed to open the box. If the check fails by 5 or more, the creature must make a DC 18 Wisdom saving throw, taking 42 (12d6) psychic damage on a failed save, or half as much damage on a successful one." compset="Wondrous">
+    <fieldval field="gWeight" value="3"/>
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="thing" tag="holder"/>
+    </thing>
+  <thing id="io5CDiAInfTack" name="Infernal Tack" description="A {b}narzugon devil{/b} binds a {b}nightmare{/b} (described in the {i}Monster Manual{/i}) to its service with infernal tack. Infernal tack consists of a bridle, bit, reins, saddle, stirrups, and spurs. A {b}nightmare{/b} equipped with such tack must serve whoever wears the spurs until the wearer dies or the tack is removed.\n\nThe wearer of the spurs can use an action to call the {b}nightmare{/b} equipped with infernal tack by clashing the spurs together or having them make contact with blood. The {b}nightmare{/b}appears at the start of your next turn, within 20 feet of you. It acts as your ally and takes its turn on your initiative count. It remains for 1 day, until you or it dies, or until you dismiss it as an action. If the {b}nightmare{/b} dies, it reforms in the Nine Hells within 24 hours, after which you can summon it again.\n\nThe tack doesn’t conjure a nightmare from thin air; one must first be subdued so the tack can be placed on it. No nightmare accepts this forced servitude willingly, but some eventually form strong loyalties to their masters and become partners in evil." compset="Wondrous">
+    <fieldval field="miTypeDet" value="requires attunement by a creature of evil alignment"/>
+    <usesource source="p5eBGDiAP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="i5CDiAMatal" name="Matalotok" description="Matalotok, the Frost Father, is an ancient hammer fashioned by Thrym, the god of frost giants. It is the favored weapon of the demon lord Kostchtchie, Matalotok is cold to the touch and shrouded in mist.\n\nTheattuned  wielder is immune to cold damage. Whenever it deals damage to a creature, the hammer radiates a burst of cold damage in a 30-foot-radius sphere. Each creature in that area takes 10 (3d6) cold damage." compset="MagicWep">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <eval phase="PreLevel" priority="5000">doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      perform hero.assign[DamageImm.dtCold]</eval>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wWarhammer"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CDiAOFDP" name="Obsidian Flint Dragon Plate" description="While wearing this armor, you gain a +2 bonus to AC and resistance to poison damage\n\nIn addition, you gain advantage on ability checks and saving throws made to avoid or end the grappled condition on yourself." compset="MagicArmor">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <eval phase="PreLevel" priority="5000">doneif (field[gIsEquip].value = 0)
+
+      perform hero.assign[DamageRes.dtPoison]</eval>
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[    doneif (field[gIsEquip].value = 0)
+
+    #situational[hero.child[svAll],"Advantage to avoid or end the grappled condition.",field[thingname].text]]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="mPlate"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CDiASotHL" name="Shield of the Hidden Lord" description="The {i}Shield of the Hidden Lord{/i} is of celestial  prison for the pit fiend Gargauth, whose mortal followers revere it as a god. Since his imprisonment, Gargauth’s evil has warped the shield’s appearance, so that its celestial appearance has become twisted into a fiendish face that subtly moves in disturbing ways.\n\nWhile holding this shield, you gain a +2 bonus to AC and resistance to fire damage.\n\nSentience. The Shield of the Hidden Lord is sentient as long as it imprisons Gargauth. While sentient, the shield has the following properties:\n\n    The {iShield of the Hidden Lord{/i}  has an Intelligence of 22, a Wisdom of 18, and a Charisma of 24, as well as hearing and truesight out to a range of 120 feet.\n    It can speak, read, and understand Common and Infernal, and it can communicate telepathically with any creature it can sense within 120 feet of it. Its voice is a deep, hollow whisper.\n    It has 3 charges that it regains  at dawn. You can use an action to expend 1 charge to cast fireball or 2 charges to cast wall of fire from the shield (save DC 21 for each). The wall of fire spell lasts for 1 minute (no concentration required). The shield regains all expended charges daily at dawn.\n    Anytime during your turn, the {iShield of the Hidden Lord{/i} can choose to radiate an aura of dread for 1 minute. (The shield controls this, not the wirlder.) Any creature hostile to you that starts its turn within 20 feet of the shield must make a DC 18 Wisdom saving throw. On a failed save, the creature is frightened until the start of its next turn. On a successful save, the creature is immune to this power of the shield for the next 24 hours. Once the shield uses this power, it can’t use it again until the next dawn.\n\n{b}Gargauth’s Personality.{/b} Gargauth desperately seeks freedom but can’t escape on its own. The pit fiend won’t reveal its true nature, referring to itself only as the Hidden Lord. It drops hints and subtle suggestions that it is an angel trapped in an unholy prison. If released from the shield, the pit fiend honors the terms of whatever bargain it struck to facilitate its escape.\n\nWhile trapped in the shield, Gargauth carefully steers the shield’s current owner toward committing acts of cruelty and domination, hoping to condemn the individual’s soul to the Nine Hells. Conflict occurs if the shield’s owner does anything that would make it more difficult for Gargauth to escape its prison, such as leaving the shield in a place where others are unlikely to find it.\n\nGargauth doesn’t know how to escape from the shield. The pit fiend believes (incorrectly) that it can break free of the shield if it’s brought to the Nine Hells, for it’s convinced that the shield’s powers are weaker there.\n\n{b}Freeing Gargauth.{/b} Casting dispel evil and good on the shield has a 1 percent chance of freeing the pit fiend, or automatically succeeds if the spell is cast by a solar, a planetar, or an archdevil. A god can release the pit fiend by touching the shield and speaking Gargauth’s name. When released, Gargauth appears in a random, unoccupied space as close to the shield as possible." compset="MagicArmor">
+    <fieldval field="Bonus" value="2"/>
+    <fieldval field="trkMax" value="3"/>
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="User" tag="Tracker"/>
+    <bootstrap thing="spFireball">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="ChargeUse" tag="1"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <assignval field="sCL" value="5"/>
+      <assignval field="livename" value="Fireball (DC 21)"/>
+      </bootstrap>
+    <bootstrap thing="spWallFire">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="ChargeUse" tag="2"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <assignval field="sCL" value="7"/>
+      <assignval field="livename" value="Wall of Fire (DC 21)"/>
+      </bootstrap>
+    <bootstrap thing="ab5CDiASofHL">
+      <containerreq phase="First" priority="5000"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="5000">doneif (field[gIsEquip].value = 0)
+     doneif (field[gIsAttuned].value = 0)
+
+     perform hero.assign[DamageRes.dtFire]</eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="mShield"></bootstrap>
+      </child>
+    </thing>
+  <thing id="ab5CDiASofHL" name="Aura of Dread (DC 18)" description="{i}{b}Note:{/b} The shield controls this, not the wielder{/i}\n\nAny creature hostile to you that starts its turn within 20 feet of the shield must make a DC 18 Wisdom saving throw. On a failed save, the creature is {i}frightened{/i} until the start of its next turn. On a successful save, the creature is immune to this power of the shield for the next 24 hours. \n\nOnce the shield uses this power, it can’t use it again until the next dawn." compset="Ability">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="20-foot radius"/>
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="io5CDiASoulCoin" name="Soul Coin" description="{i}Soul coins are about 5 inches across and about an inch thick. They are minted from infernal iron. Each such coin weighs one-third of a pound, and is inscribed with Infernal writing and a spell that magically binds a single soul to the coin. Because each soul coin contains a unique soul, each has a story. \n\n{b}Carrying Soul Coins.{/b} To hold a soul coin is to feel the soul bound within it\n\nAn evil creature can carry as many soul coins as it wishes (up to its maximum weight allowance). A non-evil creature can carry a number of soul coins equal to or less than its Constitution modifier without penalty. A non-evil creature carrying a number of soul coins greater than its Constitution modifier has disadvantage on its attack rolls, ability checks, and saving throws.\n\n{b}Using a Soul Coin.{/b} A soul coin has 3 charges. A creature carrying the coin can use its action to expend 1 charge from a soul coin and use it to do one of the following:\n\n{b}1) Drain Life.{/b} You siphon away some of the soul’s essence and gain 1d10 temporary hit points.\n\n{b}2) Query.{/b} You telepathically ask the soul a question and receive a brief telepathic response, which you can understand. The soul knows only what it knew in life, but it must answer you truthfully and to the best of its ability. The answer is no more than a sentence or two and might be cryptic.\n\n{b}Freeing a Soul.{/b} Casting {i}remove curse{/i} or a similar spell on a soul coin frees the soul trapped within it, as does expending all of the coin’s charges. The coin itself rusts from within and is destroyed once the soul is released. A freed soul travels to the realm of its god or the outer plane most closely tied to its alignment (DM’s choice). The souls of lawful evil creatures released from soul coins typically emerge from the River Styx as lemure devils.\n\nA soul can also be freed by destroying the coin that contains it. A soul coin has AC 19, 1 hit point for each charge it has remaining, and immunity to all damage except that which is dealt by a hellfire weapon or an infernal war machine’s furnace (see &quot;Soul Fuel&quot;).\n\nFreeing a soul from a soul coin is considered a good act, even if the soul belongs to an evil creature.\n\n{b}Hellish Currency.{/b} Soul coins are a currency of the Nine Hells and are highly valued by devils. The coins are used among the infernal hierarchy to barter for favors, bribe the unwilling, and reward the faithful for services rendered.\n\nSoul coins are created by Mammon and his greater devils on Minauros, the third layer of the Nine Hells, in a vast chamber where the captured souls of evil mortals are bound into the coins. These coins are then distributed throughout the Nine Hells to be used for goods and services, infernal deals, dark bargains, and bribes." compset="Wondrous" stacking="merge">
+    <fieldval field="gWeight" value=".533"/>
+    <fieldval field="trkMax" value="3"/>
+    <usesource source="p5eBGDiAP"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="UsesQty"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    </thing>
+  <thing id="i5CDiASoZ" name="Sword of Zariel" description="This longsword, fashioned from celestial steel,, belonged to the angel Zariel before her fall from grace. It gives off a faint glow and hum. The weapon itself chooses who can attune to it and who can’t. It desires a wielder who embodies bravery and heroism.\n\n{b}Attunement.{/b} The {b}Sword of Zariel{/b} allows you to attune to it immediately, without having to take a short rest. The first time you attune to the sword, you are transformed into a heavenly, idealized version of yourself, blessed with otherworldly beauty and a touch of the celestial in your heart. Neither magic nor divine intervention can reverse this transformation. Your alignment becomes lawful good, and you gain the following traits:\n{b}Angelic Language.{/b} You can speak, read, and write Celestial.\n{b}Celestial Resistance.{/b} You have resistance to necrotic and radiant damage.\n{b}Divine Presence.{/b} Your Charisma score becomes 20, unless it is already 20 or higher.\n\n{b}Feathered Wings.{/b} You sprout a beautiful pair of feathered wings. These wings grant you a flying speed of 90 feet and you can hover. If you already possess a different kind of wings, these new wings replace the old ones, which fall off.\n\n{b}Truesight.{/b} Your eyes become luminous pools of silver. Your vision can see in normal and magical darkness, see invisible creatures and objects, automatically penetrates visual illusions and succeeds on saving throws against them. In addition you can perceive the original form of a shapechanger or a creature that is transformed by magic, and see into the Ethereal Plane. The range of all these abilities is 60 feet.\n\n{b}New Personality.{/b} You gain new personality traits, determined by rolling once on each of the following tables. These traits override any conflicting personality trait, ideal, bond, or flaw. {i}(see Sword of Zariel in the magic items appendix of the Baldur&apos;s Gate: Descent into Avernus module){/i}\n\n{b}Holy Light.{/b} The {b}Sword of Zariel{/b} sheds bright light in a 5-foot radius and dim light for another 5 feet beyond that. Fiends find this light disconcerting and painful, even if they can’t see it. Fiends have disadvantage on attack rolls made within the weapon’s radius of bright light.\n\nAs a bonus action, you can intensify the sword’s light, causing it to shed bright light in a 15-foot radius and dim light for an additional 15 feet, or reduce its glow to its normal intensity.\n\n(b}Random Properties.{/b} The {b}Sword of Zariel{/b} has 2 minor beneficial properties, each determined by rolling on the {i}Minor Beneficial Properties{/i} table in chapter 7 of the {i}Dungeon Master’s Guide{/i}.\n\n{b}Searing Radiance.{/b} The {b}Sword of Zariel{/b}  deals an extra 9 (2d8) radiant damage to any creature it hits, or 16 (3d10) radiant damage if you’re wielding the weapon with two hands. Evil creatures that takes the radiant damage must make a DC 17 Constitution save or be blinded until the end of its next turn.\n\n{b}Sentience.{/b} The {b}Sword of Zariel{/b} is a sentient with a  lawful good alignment. It possesses an Intelligence of 10, a Wisdom of 20, and a Charisma of 18. It has hearing and normal vision out to a range of 30 feet. The sword communicates by transmitting emotion to the creature carrying or wielding it.\n\n{b}Truth Seer.{/b} While holding the sword, you gain advantage on all Wisdom (Insight) checks.\n\n{i}{/b}Destroying the Sword.{/b} Zariel can destroy the sword simply by grasping it. She couldn’t bring herself to do so when she was an angel, but as an archdevil she has no compunction about ridding the multiverse of the weapon. The sword is also destroyed if it’s used to shatter the Companion (see “Shattering the Companion”), unless the blade is wielded by an angel of challenge rating 15 or higher, or a good-aligned cleric or paladin of at least 10th level.\n\nIf Zariel is killed for good (that is, if she dies in the Nine Hells), the sword becomes no harder to destroy than a normal longsword.{/i}" compset="MagicWep">
+    <fieldval field="miTypeDet" value="requires attunement by a creature the sword deems worthy"/>
+    <usesource source="p5eBGDiAP"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <bootstrap thing="lCelestial">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CDiAFeaWings">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CDiATruesight">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CDiAHolyLight">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CDiARandProp">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CDiARandProp2">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000" index="2">doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      hero.child[aCHA].field[Minimum].value = maximum(20,hero.child[aCHA].field[aNormal].value)</eval>
+    <eval phase="First" index="3"><![CDATA[     doneif (field[gIsEquip].value = 0)
+     doneif (field[gIsAttuned].value = 0)
+
+     var sText as string
+     sText = "+2d8 radiant"
+     if (field[wIs2nd].value = 1) then
+       sText = "+3d10 radiant"
+     endif
+
+     field[wDamExtra].text = sText]]></eval>
+    <eval phase="PreLevel" priority="5000">doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      perform hero.assign[DamageRes.dtRadiant]
+      perform hero.assign[DamageRes.dtNecrotic]</eval>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wLongsword"></bootstrap>
+      </child>
+    </thing>
+  <thing id="ab5CDiAFeaWings" name="Feathered Wings" description="You sprout a beautiful pair of feathered wings. These wings grant you a flying speed of 90 feet and you can hover. If you already possess a different kind of wings, these new wings replace the old ones, which fall off." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="90"/>
+      </bootstrap>
+    </thing>
+  <thing id="ab5CDiATruesight" name="Truesight" description="Your eyes become luminous pools of silver. Your vision can see in normal and magical darkness, see invisible creatures and objects, automatically penetrates visual illusions and succeeds on saving throws against them. In addition you can perceive the original form of a shapechanger or a creature that is transformed by magic, and see into the Ethereal Plane\n\nThe range of all these abilities is 60 feet." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    </thing>
+  <thing id="ab5CDiAHolyLight" name="Holy Light" description="The {b}Sword of Zariel{/b} sheds bright light in a 5-foot radius and dim light for another 5 feet beyond that. Fiends find this light disconcerting and painful, even if they can’t see it. Fiends have disadvantage on attack rolls made within the weapon’s radius of bright light.\n\nAs a bonus action, you can intensify the sword’s light, causing it to shed bright light in a 15-foot radius and dim light for an additional 15 feet, or reduce its glow to its normal intensity." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="ab5CDiARandProp" name="Random Properties" description="The {b}Sword of Zariel{/b} has 2 minor beneficial properties, each determined by rolling on the {i}Minor Beneficial Properties{/i} table in chapter 7 of the {i}Dungeon Master’s Guide{/i}." compset="Ability">
+    <fieldval field="gIsEquip" value="1"/>
+    <tag group="User" tag="NeedDomain"/>
+    <tag group="User" tag="OptDomain"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ab5CDiARandProp2" name="Random Properties" description="The {b}Sword of Zariel{/b} has 2 minor beneficial properties, each determined by rolling on the {i}Minor Beneficial Properties{/i} table in chapter 7 of the {i}Dungeon Master’s Guide{/i}." compset="Ability">
+    <fieldval field="gIsEquip" value="1"/>
+    <tag group="User" tag="NeedDomain" name="NeedDomain" abbrev="NeedDomain"/>
+    <tag group="User" tag="OptDomain" name="OptDomain" abbrev="OptDomain"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  </document>
