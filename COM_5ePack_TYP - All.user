@@ -357,12 +357,11 @@ doneif (field[gIsAttuned].value = 0)
     <fieldval field="rCHA" value="-3"/>
     <fieldval field="rMultiatt" value="The choker makes two tentacle attacks. "/>
     <usesource source="p5eTYPP"/>
-    <tag group="Alignment" tag="Chaotic"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="ProfDouble" tag="skStealth"/>
     <tag group="RaceType" tag="NPC"/>
     <tag group="RaceSize" tag="Small11"/>
-    <bootstrap thing="lDeepSpeec"></bootstrap>
+    <tag group="Alignment" tag="Chaotic"/>
     <bootstrap thing="ra5CAbQui"></bootstrap>
     <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="tpAberr"></bootstrap>
@@ -381,6 +380,7 @@ doneif (field[gIsAttuned].value = 0)
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="ra5CChSpCl"></bootstrap>
+    <bootstrap thing="lDeepSpeec"></bootstrap>
     </thing>
   <thing id="ra5CAbQui" name="Aberrant Quickness" description="The choker can take an extra action on its turn." compset="RaceSpec">
     <fieldval field="trkMax" value="1"/>
@@ -404,7 +404,7 @@ doneif (field[gIsAttuned].value = 0)
     <fieldval field="rLangPromp" value="the languages it knew in life"/>
     <fieldval field="rINT" value="2"/>
     <usesource source="p5eTYPP"/>
-    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <usesource source="5eMTOFCP"/>
     <tag group="DamageRes" tag="dtNecrotic" name="Necrotic" abbrev="Necrotic"/>
     <tag group="Helper" tag="UndLifLang" name="The languages it knew in life" abbrev="The languages it knew in life"/>
     <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
@@ -417,7 +417,7 @@ doneif (field[gIsAttuned].value = 0)
     <tag group="Alignment" tag="Evil" name="Evil" abbrev="E"/>
     <tag group="DamComRes" tag="dcAtkNonMa"/>
     <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
-    <bootstrap thing="tpUndead"></bootstrap>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
     <bootstrap thing="wOtherMel">
       <autotag group="AttackTarg" tag="1Creature"/>
       <autotag group="DamageType" tag="dtNecrotic"/>
@@ -473,6 +473,7 @@ doneif (field[gIsAttuned].value = 0)
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="raWigSuSen"></bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
     <link linkage="castattr" thing="aCHA"/>
     <eval phase="Final" priority="10000"><![CDATA[foreach pick in hero from BaseWep where "thingid.wOtherRng"
    eachpick.field[wMelAttTxt].text = "charisma"
@@ -1949,7 +1950,7 @@ endif]]></eval>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
     <eval phase="Render" priority="100000" index="2"><![CDATA[
-      ~By default, we use the tRace herofield. If we want something else, we
+      ~By default, we use the tRace herofield. If we want something else, we 
       ~ set it in abText
       var name as string
       if (field[abText].isempty = 0) then
@@ -1957,7 +1958,7 @@ endif]]></eval>
       else
         name = herofield[tRace].text
         endif
-
+        
       field[CustDesc].text = "The #name# can move through a space as narrow as 1 inch wide without squeezing."
       field[CustDesc].text = replace(field[CustDesc].text,"#name#",name,0)]]></eval>
     </thing>
