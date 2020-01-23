@@ -112,12 +112,13 @@
   <thing id="io5CDiAInfTack" name="Infernal Tack" description="A {b}narzugon devil{/b} binds a {b}nightmare{/b} (described in the {i}Monster Manual{/i}) to its service with infernal tack. Infernal tack consists of a bridle, bit, reins, saddle, stirrups, and spurs. A {b}nightmare{/b} equipped with such tack must serve whoever wears the spurs until the wearer dies or the tack is removed.\n\nThe wearer of the spurs can use an action to call the {b}nightmare{/b} equipped with infernal tack by clashing the spurs together or having them make contact with blood. The {b}nightmare{/b}appears at the start of your next turn, within 20 feet of you. It acts as your ally and takes its turn on your initiative count. It remains for 1 day, until you or it dies, or until you dismiss it as an action. If the {b}nightmare{/b} dies, it reforms in the Nine Hells within 24 hours, after which you can summon it again.\n\nThe tack doesn’t conjure a nightmare from thin air; one must first be subdued so the tack can be placed on it. No nightmare accepts this forced servitude willingly, but some eventually form strong loyalties to their masters and become partners in evil." compset="Wondrous">
     <fieldval field="miTypeDet" value="requires attunement by a creature of evil alignment"/>
     <usesource source="p5eBGDiAP"/>
-    <tag group="GearType" tag="gtWondrous"/>
+    <usesource source="5eMTOFCP"/>
     <tag group="Helper" tag="EquipAvail"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="ItemRarity" tag="Legendary"/>
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="EquipMag"/>
+    <tag group="GearType" tag="gtWondrous"/>
     </thing>
   <thing id="i5CDiAMatal" name="Matalotok" description="Matalotok, the Frost Father, is an ancient hammer fashioned by Thrym, the god of frost giants. It is the favored weapon of the demon lord Kostchtchie, Matalotok is cold to the touch and shrouded in mist.\n\nTheattuned  wielder is immune to cold damage. Whenever it deals damage to a creature, the hammer radiates a burst of cold damage in a 30-foot-radius sphere. Each creature in that area takes 10 (3d6) cold damage." compset="MagicWep">
     <usesource source="p5eBGDiAP"/>
@@ -132,14 +133,15 @@
       </child>
     </thing>
   <thing id="i5CDiAOFDP" name="Obsidian Flint Dragon Plate" description="While wearing this armor, you gain a +2 bonus to AC and resistance to poison damage\n\nIn addition, you gain advantage on ability checks and saving throws made to avoid or end the grappled condition on yourself." compset="MagicArmor">
+    <fieldval field="Bonus" value="2"/>
     <usesource source="p5eBGDiAP"/>
     <tag group="ItemRarity" tag="Legendary"/>
-    <eval phase="PreLevel" priority="5000">doneif (field[gIsEquip].value = 0)
-
-      perform hero.assign[DamageRes.dtPoison]</eval>
     <eval phase="PreLevel" priority="10000" index="2"><![CDATA[    doneif (field[gIsEquip].value = 0)
 
     #situational[hero.child[svAll],"Advantage to avoid or end the grappled condition.",field[thingname].text]]]></eval>
+    <eval phase="PreLevel" priority="5000">doneif (field[gIsEquip].value = 0)
+
+      perform hero.assign[DamageRes.dtPoison]</eval>
     <child entity="mSpecMagic">
       <bootstrap thing="mPlate"></bootstrap>
       </child>
@@ -267,18 +269,118 @@
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="abAction" tag="Bonus"/>
     </thing>
-  <thing id="ab5CDiARandProp" name="Random Properties" description="The {b}Sword of Zariel{/b} has 2 minor beneficial properties, each determined by rolling on the {i}Minor Beneficial Properties{/i} table in chapter 7 of the {i}Dungeon Master’s Guide{/i}." compset="Ability">
+  <thing id="ab5CDiARandProp" name="Random Properties" description="The weapon has 2 minor beneficial properties, each determined by rolling on the {i}Minor Beneficial Properties{/i} table in chapter 7 of the {i}Dungeon Master’s Guide{/i}." compset="Ability">
     <fieldval field="gIsEquip" value="1"/>
     <tag group="User" tag="NeedDomain"/>
     <tag group="User" tag="OptDomain"/>
     <tag group="User" tag="Activation"/>
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
-  <thing id="ab5CDiARandProp2" name="Random Properties" description="The {b}Sword of Zariel{/b} has 2 minor beneficial properties, each determined by rolling on the {i}Minor Beneficial Properties{/i} table in chapter 7 of the {i}Dungeon Master’s Guide{/i}." compset="Ability">
+  <thing id="ab5CDiARandProp2" name="Random Properties" description="The weapon has 2 minor beneficial properties, each determined by rolling on the {i}Minor Beneficial Properties{/i} table in chapter 7 of the {i}Dungeon Master’s Guide{/i}." compset="Ability">
     <fieldval field="gIsEquip" value="1"/>
     <tag group="User" tag="NeedDomain" name="NeedDomain" abbrev="NeedDomain"/>
     <tag group="User" tag="OptDomain" name="OptDomain" abbrev="OptDomain"/>
     <tag group="User" tag="Activation"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="i5CMTFGSilvSw" name="Greater Silver Sword" description="While holding this +3 greatsword, you have advantage on Intelligence, Wisdom, and Charisma saves, are immune to being charmed, and have resistance to psychic damage. Also, scoring a critical hit against a creature&apos;s astral body allows you to cut its silvery cord, destroying its link to its material body instead of dealing standard damage." compset="MagicWep">
+    <fieldval field="miAttunTxt" value="Requires attunement by a creature with psionic ability"/>
+    <fieldval field="Bonus" value="3"/>
+    <fieldval field="gWeight" value="6"/>
+    <usesource source="5eMTOFCP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="GearType" tag="gtWeapon"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="wProfReq" tag="Martial"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <eval phase="Final" priority="10000"><![CDATA[      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svINT],"Advantage",field[thingname].text]
+      #situational[hero.child[svWIS],"Advantage",field[thingname].text]
+      #situational[hero.child[svCHA],"Advantage",field[thingname].text]]]></eval>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wGreatswrd"></bootstrap>
+      </child>
+    </thing>
+  <thing id="g5CShttrStk" name="Shatterstick" description="A shatterstick is a mundane, foot-long, 4-pound stake made of blue-tinged fiendish iron from the eighth layer of the hells. When stuck in the ground or pounded into rock, it emits a seismic vibration that shakes the ground in a 20-foot radius for 1 minute. When the effect ends, the shatterstick shatters, and all structures within the radius of the shaking take 35 (10d6) bludgeoning damage." compset="Gear" stacking="merge">
+    <fieldval field="gWeight" value="4"/>
+    <usesource source="p5eBGDiAP"/>
+    <tag group="GearType" tag="gtAdventGe"/>
+    <tag group="Helper" tag="GearNoSize"/>
+    <tag group="Helper" tag="UsesQty" name="UsesQty" abbrev="UsesQty"/>
+    </thing>
+  <thing id="i5CCndlMc" name="Candle Mace" description="The mace&apos;s head shines bright light for 5 feet around it and dim light for another 5 feet. While wielding the mace, you can use an action to extinguish or ignite this light." compset="MagicWep">
+    <child entity="wSpecMagic">
+      <bootstrap thing="wMace"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CBldAvrns" name="Blade of Avernus" description="SUUUPER NOT FINISHED\n\n\n\nThis longsword, fashioned from celestial steel,, belonged to the angel Zariel before her fall from grace. It gives off a faint glow and hum. The weapon itself chooses who can attune to it and who can’t. It desires a wielder who embodies bravery and \n\nheroism.\n\n{b}Attunement.{/b} The {b}Sword of Zariel{/b} allows you to attune to it immediately, without having to take a short rest. The first time you attune to the sword, you are transformed into a heavenly, idealized version of yourself, blessed with otherworldly beauty and a touch of the celestial in your heart. Neither magic nor divine intervention can reverse this transformation. Your alignment becomes lawful good, and you gain the following traits:\n{b}Angelic Language.{/b} You can speak, read, and write Celestial.\n{b}Celestial Resistance.{/b} You have resistance to necrotic and radiant damage.\n{b}Divine Presence.{/b} Your Charisma score becomes 20, unless it is already 20 or higher.\n\n{b}Feathered Wings.{/b} You sprout a beautiful pair of feathered wings. These wings grant you a flying speed of 90 feet and you can hover. If you already possess a different kind of wings, these new wings replace the old ones, which fall off.\n\n{b}Truesight.{/b} Your eyes become luminous pools of silver. Your vision can see in normal and magical darkness, see invisible creatures and objects, automatically penetrates visual illusions and succeeds on saving throws against them. In addition you can perceive the original form of a shapechanger or a creature that is transformed by magic, and see into the Ethereal Plane. The range of all these abilities is 60 feet.\n\n{b}New Personality.{/b} You gain new personality traits, determined by rolling once on each of the following tables. These traits override any conflicting personality trait, ideal, bond, or flaw. {i}(see Sword of Zariel in the magic items appendix of the Baldur&apos;s Gate: Descent into Avernus module){/i}\n\n{b}Holy Light.{/b} The {b}Sword of Zariel{/b} sheds bright light in a 5-foot radius and dim light for another 5 feet beyond that. Fiends find this light disconcerting and painful, even if they can’t see it. Fiends have disadvantage on attack rolls made within the weapon’s radius of bright light.\n\nAs a bonus action, you can intensify the sword’s light, causing it to shed bright light in a 15-foot radius and dim light for an additional 15 feet, or reduce its glow to its normal intensity.\n\n(b}Random Properties.{/b} The {b}Sword of Zariel{/b} has 2 minor beneficial properties, each determined by rolling on the {i}Minor Beneficial Properties{/i} table in chapter 7 of the {i}Dungeon Master’s Guide{/i}.\n\n{b}Searing Radiance.{/b} The {b}Sword of Zariel{/b}  deals an extra 9 (2d8) radiant damage to any creature it hits, or 16 (3d10) radiant damage if you’re wielding the weapon with two hands. Evil creatures that takes the radiant damage must make a DC 17 Constitution save or be blinded until the end of its next turn.\n\n{b}Sentience.{/b} The {b}Sword of Zariel{/b} is a sentient with a  lawful good alignment. It possesses an Intelligence of 10, a Wisdom of 20, and a Charisma of 18. It has hearing and normal vision out to a range of 30 feet. The sword communicates by transmitting emotion to the creature carrying or wielding it.\n\n{b}Truth Seer.{/b} While holding the sword, you gain advantage on all Wisdom (Insight) checks.\n\n{i}{/b}Destroying the Sword.{/b} Zariel can destroy the sword simply by grasping it. She couldn’t bring herself to do so when she was an angel, but as an archdevil she has no compunction about ridding the multiverse of the weapon. The sword is also destroyed if it’s used to shatter the Companion (see “Shattering the Companion”), unless the blade is wielded by an angel of challenge rating 15 or higher, or a good-aligned cleric or paladin of at least 10th level.\n\nIf Zariel is killed for good (that is, if she dies in the Nine Hells), the sword becomes no harder to destroy than a normal longsword.{/i}" compset="MagicWep">
+    <fieldval field="miTypeDet" value="requires attunement by a creature the sword deems worthy"/>
+    <usesource source="p5eBGDiAP"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <bootstrap thing="ab5CDiARandProp">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CDiARandProp2">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CDiARndPrpMaj">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="First" index="3"><![CDATA[     doneif (field[gIsEquip].value = 0)
+     doneif (field[gIsAttuned].value = 0)
+
+     var sText as string
+     sText = "+2d8 radiant"
+     if (field[wIs2nd].value = 1) then
+       sText = "+3d10 radiant"
+     endif
+
+     field[wDamExtra].text = sText]]></eval>
+    <eval phase="PreLevel" priority="5000">doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      perform hero.assign[DamageRes.dtRadiant]
+      perform hero.assign[DamageRes.dtNecrotic]</eval>
+    <eval phase="PreLevel" priority="10000" index="2">doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      hero.child[aCHA].field[Minimum].value = maximum(20,hero.child[aCHA].field[aNormal].value)</eval>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wLongsword"></bootstrap>
+      </child>
+    </thing>
+  <thing id="ab5CDiARndPrpMaj" name="Random Properties" description="The weapons has 1 miajor beneficial properties, each determined by rolling on the {i}Minor Beneficial Properties{/i} table in chapter 7 of the {i}Dungeon Master’s Guide{/i}." compset="Ability">
+    <fieldval field="gIsEquip" value="1"/>
+    <tag group="User" tag="NeedDomain" name="NeedDomain" abbrev="NeedDomain"/>
+    <tag group="User" tag="OptDomain" name="OptDomain" abbrev="OptDomain"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="tr5CElvTrnk1" name="Elven Trinket (Notebook)" description="A little notebook that erases anything written in it after an hour" compset="Trinket">
+    <usesource source="5eMTOFCP"/>
+    </thing>
+  <thing id="tr5CElvTrnk2" name="Elven Trinket (Lens)" description="A ivory and gold-framed crystal lens. Anything viewed through it appears to be surrounded by multicolored lights" compset="Trinket">
+    <usesource source="5eMTOFCP"/>
+    </thing>
+  <thing id="tr5CElvTrnk3" name="Elven Trinket (Pyramid)" description="A walnut-sized gold pyramid with elve symbols etched into it" compset="Trinket">
+    <usesource source="5eMTOFCP"/>
+    </thing>
+  <thing id="tr5CElvTrnk4" name="Elven Trinket (Butterfly)" description="An enamal cloak pin shaped like a butterfly. When you remove the pin, it turns into a real butterfly that flies around until you&apos;re ready to put the cloak back on." compset="Trinket" summary="Butterfly">
+    <usesource source="5eMTOFCP"/>
+    </thing>
+  <thing id="tr5CElvTrnk5" name="Elven Trinket (Compass)" description="A golden compass. If a portal to the Feywild is within 10 miles, the compass points to it." compset="Trinket">
+    <usesource source="5eMTOFCP"/>
+    </thing>
+  <thing id="tr5CElvTrnk6" name="Elven Trinket (Top)" description="A silver top that spins until it is stopped." compset="Trinket">
+    <usesource source="5eMTOFCP"/>
+    </thing>
+  <thing id="tr5CElvTrnk7" name="Elven Trinket (Songbird)" description="A small songbired made of golden wire, gemstones, and enamel. Saying the bird&apos;s name in Elvish causes it to sing" compset="Trinket">
+    <usesource source="5eMTOFCP"/>
+    </thing>
+  <thing id="tr5CElvTrnk8" name="Elven Trinket (Flower)" description="A small enamel flower. When placed in hair, it becomes alive and ties back the hair with a vine and flowers. If any are plucked, it reverts to its enamel form" compset="Trinket">
+    <usesource source="5eMTOFCP"/>
     </thing>
   </document>
