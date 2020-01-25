@@ -227,10 +227,10 @@ endif]]></eval>
     <tag group="Usage" tag="LongRest"/>
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     </thing>
-  <thing id="rc5CGGRSAM" name="Manta Glide" description="The fins growing out of your body can be used to glide when falling. When calculating the damage from falling distance, you can subtract 100 feet from the total if you&apos;re not incapacitated. You can also move 2 horizontal feet for every 1 foot fallen." compset="RaceCustom">
+  <thing id="rc5CGGRSAM" name="Manta Glide" description="The fins growing out of your body can be used to glide when falling. When calculating the damage from falling distance, you can subtract 100 feet from the total if you&apos;re not incapacitated. You can also move 2 horizontal feet for every 1 foot fallen." compset="RaceCustom" uniqueness="useronce">
     <tag group="AllowRCust" tag="r5CGGRSimi"/>
     </thing>
-  <thing id="rc5CGGRSAN" name="Nimble Climber" description="You can climb as fast as your normal speed." compset="RaceCustom">
+  <thing id="rc5CGGRSAN" name="Nimble Climber" description="You can climb as fast as your normal speed." compset="RaceCustom" uniqueness="useronce">
     <fieldval field="abValue" value="1"/>
     <tag group="AllowRCust" tag="r5CGGRSimi" name="Simic Hybrid" abbrev="Simic Hybrid"/>
     <eval phase="Final" priority="10000"><![CDATA[
@@ -240,7 +240,7 @@ endif]]></eval>
      field[abValue].value = 1
      hero.child[xClimb].field[abValue].value = myspeed]]></eval>
     </thing>
-  <thing id="rc5CGGRSAU" name="Underwater Adaptation" description="You are able to swim as fast as you walk, and become amphibious." compset="RaceCustom">
+  <thing id="rc5CGGRSAU" name="Underwater Adaptation" description="You are able to swim as fast as you walk, and become amphibious." compset="RaceCustom" uniqueness="useronce">
     <fieldval field="abValue" value="1"/>
     <tag group="AllowRCust" tag="r5CGGRSimi" name="Simic Hybrid" abbrev="Simic Hybrid"/>
     <bootstrap thing="raAmphib"></bootstrap>
@@ -251,7 +251,7 @@ endif]]></eval>
      field[abValue].value = 1
      hero.child[xSwim].field[abValue].value = myspeed]]></eval>
     </thing>
-  <thing id="rc5CGGRSAL" name="Grappling Appendages" description="These extra appendages can be used to make a melee attack. On a hit, they deal 1d6 damage plus your Strength modifier. Also on a hit, you can use a bonus action to attempt to grapple the target. These appendages cannot be used for any other purposes." compset="RaceCustom" summary="Extra appendages to attack and grapple enemies.">
+  <thing id="rc5CGGRSAL" name="Grappling Appendages" description="These extra appendages can be used to make a melee attack. On a hit, they deal 1d6 damage plus your Strength modifier. Also on a hit, you can use a bonus action to attempt to grapple the target. These appendages cannot be used for any other purposes." compset="RaceCustom" summary="Extra appendages to attack and grapple enemies." uniqueness="useronce">
     <arrayval field="usrArray" index="0" value="Claws"/>
     <arrayval field="usrArray" index="1" value="Tentacles"/>
     <tag group="AllowRCust" tag="r5CGGRSimi" name="Simic Hybrid" abbrev="Simic Hybrid"/>
@@ -273,9 +273,11 @@ endif]]></eval>
       <assignval field="wDieCount" value="1"/>
       <assignval field="wAttackEff" value="On a hit, you can use a bonus action to attempt to grapple the attack&apos;s target."/>
       </bootstrap>
+    <pickreq thing="rc5CGGRSAC" ispreclude="yes"/>
+    <pickreq thing="rc5CGGRSAA" ispreclude="yes"/>
     <exprreq message="Allowed at 5th level"><![CDATA[#totallevelcount[] >= 5]]></exprreq>
     </thing>
-  <thing id="rc5CGGRSAC" name="Carapace" description="When not wearing heavy armor, gain +1 AC." compset="RaceCustom">
+  <thing id="rc5CGGRSAC" name="Carapace" description="When not wearing heavy armor, gain +1 AC." compset="RaceCustom" uniqueness="useronce">
     <fieldval field="abValue" value="1"/>
     <tag group="AllowRCust" tag="r5CGGRSimi" name="Simic Hybrid" abbrev="Simic Hybrid"/>
     <eval phase="Final" priority="10000"><![CDATA[
@@ -284,13 +286,17 @@ endif]]></eval>
           field[abValue].value = 0
      nexteach
      hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
+    <pickreq thing="rc5CGGRSAA" ispreclude="yes"/>
+    <pickreq thing="rc5CGGRSAL" ispreclude="yes"/>
     <exprreq message="Allowed at 5th level"><![CDATA[#totallevelcount[] >=5]]></exprreq>
     </thing>
-  <thing id="rc5CGGRSAA" name="Acid Spit" compset="RaceCustom">
+  <thing id="rc5CGGRSAA" name="Acid Spit" compset="RaceCustom" uniqueness="useronce">
     <tag group="AllowRCust" tag="r5CGGRSimi" name="Simic Hybrid" abbrev="Simic Hybrid"/>
     <bootstrap thing="ra5CGGRSiAc"></bootstrap>
     <eval phase="Final" priority="1000"><![CDATA[
       field[livename].text = "Animal Enhancement: " & field[thingname].text]]></eval>
+    <pickreq thing="rc5CGGRSAC" ispreclude="yes"/>
+    <pickreq thing="rc5CGGRSAL" ispreclude="yes"/>
     <exprreq message="Allowed at 5th level"><![CDATA[#totallevelcount[] >=5]]></exprreq>
     </thing>
   <thing id="ra5CGGRSiAc" name="Acid Spit" compset="RaceSpec">

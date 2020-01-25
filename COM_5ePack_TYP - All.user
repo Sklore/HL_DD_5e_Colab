@@ -357,12 +357,11 @@ doneif (field[gIsAttuned].value = 0)
     <fieldval field="rCHA" value="-3"/>
     <fieldval field="rMultiatt" value="The choker makes two tentacle attacks. "/>
     <usesource source="p5eTYPP"/>
-    <tag group="Alignment" tag="Chaotic"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="ProfDouble" tag="skStealth"/>
     <tag group="RaceType" tag="NPC"/>
     <tag group="RaceSize" tag="Small11"/>
-    <bootstrap thing="lDeepSpeec"></bootstrap>
+    <tag group="Alignment" tag="Chaotic"/>
     <bootstrap thing="ra5CAbQui"></bootstrap>
     <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="tpAberr"></bootstrap>
@@ -381,6 +380,7 @@ doneif (field[gIsAttuned].value = 0)
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="ra5CChSpCl"></bootstrap>
+    <bootstrap thing="lDeepSpeec"></bootstrap>
     </thing>
   <thing id="ra5CAbQui" name="Aberrant Quickness" description="The choker can take an extra action on its turn." compset="RaceSpec">
     <fieldval field="trkMax" value="1"/>
@@ -404,7 +404,7 @@ doneif (field[gIsAttuned].value = 0)
     <fieldval field="rLangPromp" value="the languages it knew in life"/>
     <fieldval field="rINT" value="2"/>
     <usesource source="p5eTYPP"/>
-    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <usesource source="5eMTOFCP"/>
     <tag group="DamageRes" tag="dtNecrotic" name="Necrotic" abbrev="Necrotic"/>
     <tag group="Helper" tag="UndLifLang" name="The languages it knew in life" abbrev="The languages it knew in life"/>
     <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
@@ -417,7 +417,7 @@ doneif (field[gIsAttuned].value = 0)
     <tag group="Alignment" tag="Evil" name="Evil" abbrev="E"/>
     <tag group="DamComRes" tag="dcAtkNonMa"/>
     <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
-    <bootstrap thing="tpUndead"></bootstrap>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
     <bootstrap thing="wOtherMel">
       <autotag group="AttackTarg" tag="1Creature"/>
       <autotag group="DamageType" tag="dtNecrotic"/>
@@ -473,6 +473,7 @@ doneif (field[gIsAttuned].value = 0)
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="raWigSuSen"></bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
     <link linkage="castattr" thing="aCHA"/>
     <eval phase="Final" priority="10000"><![CDATA[foreach pick in hero from BaseWep where "thingid.wOtherRng"
    eachpick.field[wMelAttTxt].text = "charisma"
@@ -681,7 +682,7 @@ field[CustDesc].text = "The " & field[abText].text & " can breathe only underwat
     <fieldval field="rCR" value="7"/>
     <fieldval field="rMultiatt" value="The skeleton makes three scimitar attacks. "/>
     <usesource source="p5eTYPP"/>
-    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <usesource source="5CEKSDW"/>
     <tag group="ArmProfGrp" tag="WepSimple"/>
     <tag group="RaceSize" tag="Huge2"/>
     <tag group="DamageVuln" tag="dtBludgeon"/>
@@ -691,9 +692,7 @@ field[CustDesc].text = "The " & field[abText].text & " can breathe only underwat
     <tag group="Alignment" tag="NeutralLC"/>
     <tag group="Alignment" tag="Evil"/>
     <tag group="RaceType" tag="NPC"/>
-    <bootstrap thing="lGiant">
-      <autotag group="Helper" tag="CantSpeak"/>
-      </bootstrap>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
@@ -706,6 +705,9 @@ field[CustDesc].text = "The " & field[abText].text & " can breathe only underwat
     <bootstrap thing="tpUndead"></bootstrap>
     <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="ra5CGiSkEv"></bootstrap>
+    <bootstrap thing="lGiant">
+      <autotag group="Helper" tag="CantSpeak"/>
+      </bootstrap>
     <eval phase="PostLevel" priority="10000"><![CDATA[      foreach pick in hero from BaseWep where "wCategory.Melee"
         eachpick.field[wReach].value = maximum(eachpick.field[wReach].value,10)
         nexteach]]></eval>
@@ -814,7 +816,7 @@ field[CustDesc].text = "The " & field[abText].text & " can breathe only underwat
     <fieldval field="rCR" value="5"/>
     <fieldval field="rMultiatt" value="The zombie makes two melee attacks."/>
     <usesource source="p5eTYPP"/>
-    <tag group="RaceType" tag="NPC"/>
+    <usesource source="5CEKSDW"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="ProfSave" tag="svWIS"/>
     <tag group="DamageRes" tag="dtCold"/>
@@ -827,7 +829,7 @@ field[CustDesc].text = "The " & field[abText].text & " can breathe only underwat
     <tag group="CondImm" tag="pcnPoison"/>
     <tag group="Alignment" tag="NeutralLC"/>
     <tag group="Alignment" tag="Evil"/>
-    <bootstrap thing="raTurnRes"></bootstrap>
+    <tag group="RaceType" tag="NPC"/>
     <bootstrap thing="raZomUnFor">
       <assignval field="abText" value="zombie"/>
       </bootstrap>
@@ -842,6 +844,7 @@ field[CustDesc].text = "The " & field[abText].text & " can breathe only underwat
       <assignval field="wDamExtra" value=" plus 7 (2d6) necrotic"/>
       </bootstrap>
     <bootstrap thing="raDarkVis"></bootstrap>
+    <bootstrap thing="raTurnRes"></bootstrap>
     </thing>
   <thing id="r5CKalkaK" name="Kalka-Kylla" compset="Race">
     <fieldval field="rHitDice" value="10"/>
@@ -1266,15 +1269,13 @@ endif]]></eval>
     <fieldval field="rCR" value="5"/>
     <fieldval field="rMultiatt" value="The sea lion makes three attacks: one bite attack and two claw attacks. "/>
     <usesource source="p5eTYPP"/>
-    <tag group="ProfSkill" tag="skPercep"/>
-    <tag group="ProfSkill" tag="skStealth"/>
+    <usesource source="p5eLocRP"/>
+    <usesource source="p5eGoSP"/>
     <tag group="RaceSize" tag="Large1"/>
     <tag group="Alignment" tag="Unaligned"/>
     <tag group="RaceType" tag="NPC"/>
-    <bootstrap thing="xMultiatt"></bootstrap>
-    <bootstrap thing="xSwim">
-      <autotag group="Value" tag="40"/>
-      </bootstrap>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skStealth"/>
     <bootstrap thing="raAmphib">
       <assignval field="abText" value="sea lion"/>
       </bootstrap>
@@ -1301,6 +1302,10 @@ endif]]></eval>
       <assignval field="wReach" value="5"/>
       <assignval field="wDieCount" value="2"/>
       <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="40"/>
       </bootstrap>
     </thing>
   <thing id="ra5CSwiLe" name="Swimming Leap" description="With a 10-foot swimming start, the creature can jump out of or across the water up to 25 feet." compset="RaceSpec">
@@ -1949,7 +1954,7 @@ endif]]></eval>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
     <eval phase="Render" priority="100000" index="2"><![CDATA[
-      ~By default, we use the tRace herofield. If we want something else, we
+      ~By default, we use the tRace herofield. If we want something else, we 
       ~ set it in abText
       var name as string
       if (field[abText].isempty = 0) then
@@ -1957,7 +1962,7 @@ endif]]></eval>
       else
         name = herofield[tRace].text
         endif
-
+        
       field[CustDesc].text = "The #name# can move through a space as narrow as 1 inch wide without squeezing."
       field[CustDesc].text = replace(field[CustDesc].text,"#name#",name,0)]]></eval>
     </thing>
@@ -2009,6 +2014,7 @@ endif]]></eval>
     <link linkage="castattr" thing="aCHA"/>
     </thing>
   <thing id="l5COlman" name="Olman" compset="Language" uniqueness="useronce">
+    <usesource source="p5eTYPP"/>
     <tag group="LangPreval" tag="Standard"/>
     </thing>
   <thing id="ra5CChSpCl" name="Spider Climb" description="The choker can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check." compset="RaceSpec">

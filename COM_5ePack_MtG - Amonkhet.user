@@ -105,16 +105,17 @@
   <thing id="r5CMGAvePC" name="Aven" description="Aven have humanlike bodies, arms, and legs, along with birdlike wings and heads. Two distinct varieties of aven are found in Naktamun. One has the head of a hawk or similar bird of prey, with short wings allowing fast flight. The other variety has the head of an ibis atop a long neck, with wide, angular wings better suited to soaring. All aven have lean bodies with feathers extending from their heads down to their shoulders.\n\nAven delight in flying above their foes, using their superior mobility to confound and outpace their opponents. They love soaring through the sky as well, though the Hekma limits their altitude. Like all people of Naktamun, they are grateful for the Hekma’s protective magic, of course. But they keenly anticipate the hour when the God-Pharaoh will return and dissolve the veil, letting them fly without limit in the afterlife." compset="Race">
     <fieldval field="rDEX" value="2"/>
     <fieldval field="rSpeed" value="25"/>
-    <tag group="RaceType" tag="Normal"/>
+    <usesource source="5CPSACP"/>
     <tag group="RaceSize" tag="Medium0"/>
-    <bootstrap thing="xFly">
-      <autotag group="Value" tag="30"/>
-      </bootstrap>
+    <tag group="RaceType" tag="Normal"/>
     <bootstrap thing="tpHumanoid"></bootstrap>
     <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="l5CAven"></bootstrap>
     <bootstrap thing="wUnarmed">
       <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
       </bootstrap>
     </thing>
   <thing id="l5CAven" name="Aven" compset="Language" uniqueness="useronce">
@@ -869,8 +870,7 @@ foreach pick in hero from BaseSkill where "SkillAbil.aINT & !Helper.Proficient"
     <tag group="abRange" tag="Touch" name="Touch" abbrev="tch"/>
     <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
     <tag group="LvNamePar" tag="AppValue3" name="Append &quot;field[abValue3].value&quot;" abbrev="Append &quot;field[abValue3].value&quot;"/>
-    <eval phase="PostLevel" priority="10000">
-      field[abValue].value += field[xCount].value</eval>
+    <eval phase="PostLevel" priority="10000">field[abValue].value += field[xCount].value</eval>
     <eval phase="Render" priority="10000" index="2"><![CDATA[
       if (field[xIndex].value >= 2) then
         field[listname].text = field[thingname].text & " (2d8 damage)"
