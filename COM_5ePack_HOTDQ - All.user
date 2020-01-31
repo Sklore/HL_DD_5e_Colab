@@ -63,10 +63,11 @@
     <tag group="AbilFunc" tag="Background"/>
     </thing>
   <thing id="i5CHDQBDM" name="Black Dragon Mask (HotDQ version)" description="This horned mask of glossy ebony has horns and a skull like mien. The mask reshapes to fit a wearer attuned to it. While you are wearing the mask and attuned to it, you can access the following properties.\n\n {b}{i}Damage Absorption.{/i}{/b} You have damage resistance to acid. If you already have damage resistance to acid from another source, you gain immunity to acid damage. If you already have immunity to acid damage from another source, you regain hit points equal to half of any acid damage you are dealt.\n\n {b}{i}Draconic Majesty.{/i}{/b} While you are wearing no armor, you can add your Charisma bonus to your Armor Class. \n\n {b}{i}Dragon Breath.{/i}{/b} If you have a breath weapon that requires rest to recharge, it gains are charge of 6.\n\n {b}{i}Dragon Sight.{/i}{/b} You gain dark vision with a radius of 60 feet, or an additional 60 feet of dark vision if you already have that sense. Once per day, you can gain blind sight out to a range of 30 feet for 5 minutes.\n\n {b}{i}Dragon Tongue.{/i}{/b} You can speak and understand Draconic. You also have advantage on any Charisma check you make against black dragons. \n\n {b}{i}Legendary Resistance (1/Day).{/i}{/b} If you fail a saving throw, you can choose to succeed instead.\n\n {b}{i}Water Breathing.{/i}{/b} You can breathe underwater." compset="MagicArmor" summary="This horned mask of glossy ebony has horns and a skull like mien.">
+    <fieldval field="sbName" value="Black Dragon Mask"/>
     <usesource source="5eHOTDQCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
     <tag group="ItemRarity" tag="Legendary"/>
     <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
       doneif (tagis[Helper.Disable] <> 0)    
       field[abValue].value += #attrmod[aCHA]
@@ -137,16 +138,11 @@ foreach pick in hero from BaseWep where "component.BaseNatWep"
     <fieldval field="Bonus" value="1"/>
     <fieldval field="trkMax" value="4"/>
     <fieldval field="miTypeDet" value="Greatsword"/>
+    <fieldval field="wAttackEff" value="A targeted creature can&apos;t regain hit points for 1 minute. It can make a DC15 Constitution save at the end of each of its turns, ending this effect early on a success."/>
     <usesource source="5eHOTDQCP"/>
-    <tag group="ItemRarity" tag="Legendary"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="Helper" tag="NeedAttune"/>
-    <bootstrap thing="spDeteEvil">
-      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
-      <autotag group="Helper" tag="ItemSpell"/>
-      <autotag group="Helper" tag="StaffSpell"/>
-      <autotag group="ChargeUse" tag="1"/>
-      </bootstrap>
+    <tag group="ItemRarity" tag="Legendary"/>
     <bootstrap thing="spDeteThou">
       <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
       <autotag group="Helper" tag="ItemSpell"/>
@@ -154,6 +150,12 @@ foreach pick in hero from BaseWep where "component.BaseNatWep"
       <autotag group="ChargeUse" tag="2"/>
       </bootstrap>
     <bootstrap thing="spDeteMagi">
+      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="spDeteEvil">
       <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
       <autotag group="Helper" tag="ItemSpell"/>
       <autotag group="Helper" tag="StaffSpell"/>
@@ -589,31 +591,6 @@ foreach pick in hero from BaseWep where "component.BaseNatWep"
       </bootstrap>
     <bootstrap thing="ttHuman"></bootstrap>
     </thing>
-  <thing id="r5CDragWng" name="Dragonwing" description="&lt;place-holder&gt;" compset="Race">
-    <fieldval field="rHitDice" value="6"/>
-    <fieldval field="rHDSides" value="8"/>
-    <fieldval field="rHPStart" value="33"/>
-    <fieldval field="rSTR" value="1"/>
-    <fieldval field="rDEX" value="6"/>
-    <fieldval field="rCON" value="3"/>
-    <fieldval field="rINT" value="1"/>
-    <fieldval field="rWIS" value="1"/>
-    <fieldval field="rCHA" value="3"/>
-    <fieldval field="rCR" value="2"/>
-    <fieldval field="rGiveSpec" value="1"/>
-    <usesource source="5eHOTDQCP"/>
-    <tag group="ProfSkill" tag="skStealth"/>
-    <tag group="RaceType" tag="NPC"/>
-    <tag group="Alignment" tag="Lawful"/>
-    <tag group="Alignment" tag="Evil"/>
-    <tag group="RaceSize" tag="Medium0"/>
-    <tag group="ProfSave" tag="svWIS"/>
-    <bootstrap thing="ttHuman"></bootstrap>
-    <bootstrap thing="xMultiatt"></bootstrap>
-    <bootstrap thing="lCommon"></bootstrap>
-    <bootstrap thing="lDraconic"></bootstrap>
-    <bootstrap thing="tpHumanoid"></bootstrap>
-    </thing>
   <thing id="r5CDraBo" name="Dralmorrer Borngray" compset="Race">
     <fieldval field="rHitDice" value="7"/>
     <fieldval field="rHDSides" value="10"/>
@@ -927,7 +904,7 @@ foreach pick in hero from BaseWep where "component.BaseNatWep"
     <bootstrap thing="ra5CRthIllSlf"></bootstrap>
     <link linkage="castattr" thing="aINT"/>
     </thing>
-  <thing id="r5CRezmi" name="Rezmir" description="&lt;place-holder&gt;" compset="Race">
+  <thing id="r5CRezmi" name="Rezmir" compset="Race">
     <fieldval field="rHitDice" value="12"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="90"/>
@@ -951,9 +928,7 @@ foreach pick in hero from BaseWep where "component.BaseNatWep"
     <tag group="CondImm" tag="pcnCharmed"/>
     <tag group="CondImm" tag="pcnFright"/>
     <tag group="ProfSave" tag="svDEX"/>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="120"/>
-      </bootstrap>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
     <bootstrap thing="tpHumanoid"></bootstrap>
     <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="lDraconic"></bootstrap>
@@ -962,6 +937,40 @@ foreach pick in hero from BaseWep where "component.BaseNatWep"
     <bootstrap thing="l5CNether"></bootstrap>
     <bootstrap thing="raBlindSi">
       <autotag group="Value" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMMAmphN">
+      <assignval field="abText" value="Rezmir"/>
+      </bootstrap>
+    <bootstrap thing="raLegResis">
+      <assignval field="abUserVal" value="1"/>
+      </bootstrap>
+    <bootstrap thing="ra5CaRezDraMaj"></bootstrap>
+    <bootstrap thing="ra5CRezmiSpEq"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CRezLegDrk"></bootstrap>
+    <bootstrap thing="ra5CLegAttack">
+      <assignval field="abText" value="Rezmir"/>
+      <assignval field="abText2" value="melee"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLegHideN">
+      <assignval field="abText" value="Rezmir"/>
+      </bootstrap>
+    <bootstrap thing="ra5CRezAcdBrt"></bootstrap>
+    <bootstrap thing="ra5CRezDrkAdv"></bootstrap>
+    <bootstrap thing="ra5CRezImmol"></bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtAcid"/>
+      <autotag group="wProperty" tag="Spell"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="sbName" value="Caustic Bolt"/>
+      <assignval field="wShortName" value="Caustic Bolt"/>
+      <assignval field="wRangeNorm" value="90"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wAttRanged" value="1"/>
+      <assignval field="wDamBonus" value="-4"/>
       </bootstrap>
     </thing>
   <thing id="r5CTalth" name="Talis the White" compset="Race">
@@ -1013,31 +1022,6 @@ foreach pick in hero from BaseWep where "component.BaseNatWep"
     <bootstrap thing="lInfernal"></bootstrap>
     <bootstrap thing="ra5CTaWhSp"></bootstrap>
     <link linkage="castattr" thing="aWIS"/>
-    </thing>
-  <thing id="r5CTreps" name="Trepsin" description="&lt;place-holder&gt;" compset="Race">
-    <fieldval field="rHitDice" value="8"/>
-    <fieldval field="rHDSides" value="10"/>
-    <fieldval field="rHPStart" value="84"/>
-    <fieldval field="rSTR" value="8"/>
-    <fieldval field="rDEX" value="3"/>
-    <fieldval field="rCON" value="10"/>
-    <fieldval field="rINT" value="-3"/>
-    <fieldval field="rWIS" value="-1"/>
-    <fieldval field="rCHA" value="-3"/>
-    <fieldval field="rSpeed" value="30"/>
-    <fieldval field="rAC" value="4"/>
-    <fieldval field="rCR" value="6"/>
-    <usesource source="5eHOTDQCP"/>
-    <tag group="RaceType" tag="NPC"/>
-    <tag group="Alignment" tag="Chaotic"/>
-    <tag group="Alignment" tag="Evil"/>
-    <tag group="RaceSize" tag="Large1"/>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="60"/>
-      </bootstrap>
-    <bootstrap thing="tpGiant"></bootstrap>
-    <bootstrap thing="xMultiatt"></bootstrap>
-    <bootstrap thing="lGiant"></bootstrap>
     </thing>
   <thing id="l5CNether" name="Netherese" compset="Language" uniqueness="useronce">
     <usesource source="5eHOTDQCP"/>
@@ -1154,5 +1138,128 @@ foreach pick in hero from BaseWep where "component.BaseNatWep"
     <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="lGiant"></bootstrap>
     <bootstrap thing="tpGiant"></bootstrap>
+    </thing>
+  <thing id="r5CDragWng" name="Dragonwing" compset="Race">
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="33"/>
+    <fieldval field="rSTR" value="1"/>
+    <fieldval field="rDEX" value="6"/>
+    <fieldval field="rCON" value="3"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rCHA" value="3"/>
+    <fieldval field="rCR" value="2"/>
+    <fieldval field="rMultiatt" value="The dragonwing makes two scimitar attacks."/>
+    <fieldval field="rHitDice" value="6"/>
+    <fieldval field="rWIS" value="1"/>
+    <usesource source="5eHOTDQCP"/>
+    <usesource source="5eROTCP"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ra5CDraFan">
+      <assignval field="abText" value="dragonwing"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFanAdv">
+      <assignval field="abText" value="dragonwing"/>
+      <assignval field="abValue" value="7"/>
+      <assignval field="abValue2" value="2"/>
+      <assignval field="abValue3" value="6"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPackTa">
+      <assignval field="abText" value="dragonwing"/>
+      </bootstrap>
+    <bootstrap thing="ttHuman"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CLimFly">
+      <assignval field="abText" value="dragonwing"/>
+      <assignval field="abValue" value="30"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <autotag group="wProperty" tag="Finesse"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="sbName" value="Scimitar"/>
+      <assignval field="wShortName" value="Scimitar"/>
+      <assignval field="wAttackEff" value="Plus 3 (1d6) of the damage type this cultist is resistant to."/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDrgCltRes"></bootstrap>
+    </thing>
+  <thing id="ra5CRezmiSpEq" name="Special Equipment" description="Rezmir has the {i}Black Dragon Mask{/i}, the sword {i}Hazirawn{/i}, and an {i}insignia of claws{/i}." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="ra5CaRezDraMaj" name="Draconic Majesty" description="While wearing the Black Dragon Mask and no armor, Rezmir can add her Charisma bonus to her AC." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="PostAttr" priority="10000" index="2">hero.childfound[ArmorClass].field[Bonus].value += #attrmod[aCHA]</eval>
+    </thing>
+  <thing id="ra5CRezLegDrk" name="Darkness" description="While wearing the Black Dragon Mask, Rezmir can take up to two Legendary actions between each of her turns, and can do them at the same time or spread out the round. She can only take a legendary action at the beginning or end of a turn.\n\nMagical darkness spreads in a 15-foot radius from a point Rezmir can see within 60 feet of her. The darkness can spread around corners, and lasts as long as she maintains concentration for a maximum of 1 minute. Darkvision cannot see through the darkness. No natural light can illuminate it, and areas of light created by magic of 2nd level or lower are dispelled." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LegenAct" tag="2"/>
+    </thing>
+  <thing id="ra5CLegHideN" name="Hide" description="[abText] uses the Hide action." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Legendary" name="Legendary" abbrev="Legendary"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="LegenAct" tag="1" name="1" abbrev="1"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text = field[abText].text & " uses the Hide action."]]></eval>
+    </thing>
+  <thing id="ra5CRezAcdBrt" name="Acid Breath" description="Rezmir exhales acid in a 30-foot by 5-foot line. Each creature in that area must make a DC 14 Dexterity saving throw, taking 22 (5d8) acid damage on a failed save, or half as much on a success." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Recharge" tag="5" name="5-6" abbrev="5-6"/>
+    <tag group="StandardDC" tag="aSTR" name="Strength" abbrev="Strength"/>
+    <tag group="abSave" tag="aDEX" name="Dexterity" abbrev="Dex"/>
+    </thing>
+  <thing id="ra5CRezImmol" name="Immolation" description="When she is reduced to 0 hit points, Rezmir&apos;s body immolates and is reduced to a pile of ash." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CRezDrkAdv" name="Dark Advantage" description="Whe Rezmir has advantage on an attack roll that hits with a weapon, she can deal an additional 10 (3d6) damage. This can only happen once per turn." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="UsPe5CTurn"/>
+    </thing>
+  <thing id="io5CHDQTnkPl" name="Tankard of Plenty" description="This gold stein can be commanded to refill itself with three pints of dwarven ale up to three times per day. The bearer must say the word &quot;Illefarn&quot; while holding its handle." compset="Wondrous">
+    <fieldval field="trkMax" value="3"/>
+    <usesource source="5eHOTDQCP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="i5CHDQDrglm" name="Dragongleam" description="This enchanted spear holds 10 charges of {i}daylight{/i}, to be used in twilight or deep woods, requiring the command words &quot;Tiamat&apos;s eyes shine,&quot; which is written in Draconic runes upon its crossguard." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="Spear"/>
+    <usesource source="5eHOTDQCP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="NoOutGear"/>
+    <bootstrap thing="spDaylight">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="0"/>
+      <assignval field="trkMax" value="10"/>
+      </bootstrap>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wSpear"></bootstrap>
+      </child>
     </thing>
   </document>
