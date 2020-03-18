@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="cFtr5CEchoKn" name="Echo Knight" description="The Echo Knight summons fading shadows of his or herself from unlived timelines to aide them in battle." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eEGtWCP"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abCategory" tag="FtrMarArch" name="Fighter Martial Archetype" abbrev="Fighter Martial Archetype"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="cFtr5CLegOOn">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="cFtr5CMnfEch">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cFtr5CUnlInc">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="cFtr5CEchAvt">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="cFtr5CRclmPt">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="cFtr5CShdMrt">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    </thing>
+  <thing id="cFtr5CMnfEch" name="Manifest Echo" description="You can use a bonus action to create an echo of yourself in an open space visible to and within 15 feet of you. The magical, gray, translucent image lasts until it is destroyed, until you use another bonus action to dismiss it, until you create another echo, or until you become incapacitated.\n\nThe manifestation has AC 14 + your proficiency bonus, 1 hit point, and is immune to all conditions. It uses your saving throw bonus for its saves, is the same size as you, and it occupies its space. On your turn, you can freely  command it to move with your mind. It can move up to 30 feet in any direction, but is destroyed if it is ever more than 30 feet from you.\n\nYou can use the echo in these ways:\n\n• You can use a bonus action to magically teleport, swapping places with the echo. This costs 15 feet of your movement, no matter the distance between you and it.\n\n• Any attacks you make by using the Attack action on your turn can come from either your or the echo&apos;s space. You can make this choice for each attack.\n\n• Creatures visible to you within 5 feet of your echo provoke opportunity attacks when they move at least 5 feet away from it; you can use your reaction to have the echo attack it as if you were in the echo&apos;s space." compset="ClSpecial">
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr"><![CDATA[var prof as number
+
+prof = hero.childfound[ProfBonus].field[tProfBonus].value
+
+prof += 14
+
+field[abText].text = "1 HP, AC" & prof]]></eval>
+    </thing>
+  <thing id="cFtr5CUnlInc" name="Unleash Incarnation" description="When taking the Attack action, you can make an additional melee attack from the echo&apos;s space. You can use this feature a number of times equaling your Constitution modifier (minimum once) and regain all spent uses at the end of a long rest." compset="ClSpecial">
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="FinalMin1"/>
+    <tag group="ChargeAttr" tag="aCON"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="cFtr5CEchAvt" name="Echo Avatar" description="You can use an action to transfer your mind into your echo for up to 10 minutes. You are deafened and blinded, but are instead able to see through the echo&apos;s eyes and hear through its ears. You can end this transference at any time with no action needed. While you are inhabiting the echo in this way, it can be as far as 1,000 feet away from you without being destroyed." compset="ClSpecial">
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="cFtr5CShdMrt" name="Shadow Martyr" description="When a creature you can see is about to be attacked, you can use your reaction to teleport your echo to an open space within 5 feet of that creature. The attack is then rolled against your echo instead of the original target. Once you&apos;ve used this feature, you must complete a short or long rest before you use it again." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="cFtr5CRclmPt" name="Reclaim Potential" description="When your echo is destroyed by taking damage, you gain temporary hit points equaling 2d6 + your Constitution modifier, unless you already have temporary hit points.\n\nYou can use the feature a number of times equaling your Constitution modifier (minimum once) and regain all spent uses when you complete a long rest." compset="ClSpecial">
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="FinalMin1"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="ChargeAttr" tag="aCON"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[var con as number
+
+con = hero.childfound[aCON].field[aBonus].value
+
+field[abText].text = "2d6+" & con]]></eval>
+    </thing>
+  <thing id="cFtr5CLegOOn" name="Legion of One" description="You can use a bonus action to manifest two echoes instead of one with your Manifest Echo feature, which can coexist. Both echoes are destroyed if you try to create a third. Anything you can do from one echo&apos;s space can be done from the other&apos;s instead.\n\nAlso, if you roll initiative and have expended all uses of Unleash Incarnation, you regain one use of it." compset="ClSpecial">
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="cWiz5CChrnMgc" name="Chronurgy Magic" description="Chronurgists manipulate time." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWiz" name="Wizard" abbrev="Wizard"/>
+    <tag group="abCategory" tag="WizArcTrad" name="Wizard Arcane Tradition" abbrev="Wizard Arcane Tradition"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="ClsAllowSp" tag="sp5CWldDaS"/>
+    <tag group="ClsAllowSp" tag="sp5CWldWri"/>
+    <tag group="ClsAllowSp" tag="sp5CWldTiR"/>
+    <tag group="ClsAllowSp" tag="sp5CWldTeS"/>
+    <tag group="ClsAllowSp" tag="sp5CWldTeE"/>
+    <tag group="ClsAllowSp" tag="sp5CWldReB"/>
+    <tag group="ClsAllowSp" tag="sp5CWldRaV"/>
+    <tag group="ClsAllowSp" tag="sp5CWldPuW"/>
+    <tag group="ClsAllowSp" tag="sp5CWldMaG"/>
+    <tag group="ClsAllowSp" tag="sp5CWldImO"/>
+    <tag group="ClsAllowSp" tag="sp5CWldGrS"/>
+    <tag group="ClsAllowSp" tag="sp5CWldGrF"/>
+    <tag group="ClsAllowSp" tag="sp5CWldGio"/>
+    <tag group="ClsAllowSp" tag="sp5CWldFoF"/>
+    <bootstrap thing="cWiz5CTmpAwr">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="cWiz5CMmtSts">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cWiz5CArcAby">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cWiz5CCnvFtr">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cWiz5CChrShf">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Wizard"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <eval phase="Final" priority="21000" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+~these vars will hold the tag expressions for spells and cantrips
+
+var cantrip as string
+
+~ these receive the extra spells for each circle
+cantrip = " | thingid.sp5CWldSaS "
+
+hero.childfound[cHelpWiz].field[cCnKnoExpr].text &= cantrip]]></eval>
+    </thing>
+  <thing id="cWiz5CChrShf" name="Chronal Shift" description="As a reaction, you magically control time around a creature. After you or a creature visible to and within 30 feet of you makes an attack roll, ability check, or saving throw, you can force them to reroll it. You can force this reroll after finding out whether the original roll succeeded or failed. The creature must use the second roll.\n\nYou can use this feature twice, regaining all spent uses when you complete a long rest." compset="ClSpecial">
+    <fieldval field="trkMax" value="2"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="cWiz5CTmpAwr" name="Temporal Awareness" description="Add your Intelligence modifier to your initiative rolls." compset="ClSpecial">
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[ ~ If we're disabled, do nothing & 
+ doneif (tagis[Helper.Disable] = 1)
+   
+ hero.child[Initiative].field[Bonus].value += #attrmod[aINT]]]></eval>
+    </thing>
+  <thing id="cWiz5CMmtSts" name="Momentary Stasis" description="You can use an action to magically force a Large or smaller creature visible to and within 60 feet of you to make a Constitution saving throw versus your spell save DC. On a failure, the creature is trapped within a magical energy field until the end of your next turn or until it takes damage, whichever comes first. While encased this way, the creature&apos;s speed is 0 and it is incapacitated.\n\nYou can use this ability a number of times equal to your Intelligence modifier (minimum once) and regain all spent uses when you complete a long rest." compset="ClSpecial">
+    <fieldval field="abRange" value="60"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="FinalMin1"/>
+    <tag group="ChargeAttr" tag="aINT"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="cWiz5CArcAby" name="Arcane Abeyance" description="When you cast a spell with a 4th level or lower spell slot, you can condense the magic into a grey bead, where it remains frozen in time for 1 hour. The mote is a Tiny object with 1 hit point and AC 15, and is immune to poison and psychic damage. The bead and its spell are lost in a flash of light if the time expires or if it&apos;s destroyed.\n\nA creature holding the mote can use an action to release the spell, causing the bead itself to disappear. It still uses your spell attack bonus and spell save DC, but otherwise the releasing creature is treated as the caster. \n\nOnce you create such a mote, you must complete a short or long rest before doing so again." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="cWiz5CCnvFtr" name="Convergent Future" description="After you or a creature visible to and within 60 feet of you makes an attack roll, ability check, or saving throw, you can use a reaction to alter the outcome. You ignore the die roll, and instead replace it with either the minimum number needed for it to succeed, or one less than that number; the choice is yours.\n\nUsing this ability causes you to gain a level of exhaustion. Only the completion of a long rest can remove this level of exhaustion." compset="ClSpecial">
+    <fieldval field="abRange" value="60"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="cWiz5CGrvMgc" name="Graviturgy Magic" description="Graviturgists control the forces of gravity." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWiz" name="Wizard" abbrev="Wizard"/>
+    <tag group="abCategory" tag="WizArcTrad" name="Wizard Arcane Tradition" abbrev="Wizard Arcane Tradition"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="ClsAllowSp" tag="sp5CWldDaS"/>
+    <tag group="ClsAllowSp" tag="sp5CWldWri"/>
+    <tag group="ClsAllowSp" tag="sp5CWldTiR"/>
+    <tag group="ClsAllowSp" tag="sp5CWldTeS"/>
+    <tag group="ClsAllowSp" tag="sp5CWldTeE"/>
+    <tag group="ClsAllowSp" tag="sp5CWldReB"/>
+    <tag group="ClsAllowSp" tag="sp5CWldRaV"/>
+    <tag group="ClsAllowSp" tag="sp5CWldPuW"/>
+    <tag group="ClsAllowSp" tag="sp5CWldMaG"/>
+    <tag group="ClsAllowSp" tag="sp5CWldImO"/>
+    <tag group="ClsAllowSp" tag="sp5CWldGrS"/>
+    <tag group="ClsAllowSp" tag="sp5CWldGrF"/>
+    <tag group="ClsAllowSp" tag="sp5CWldGio"/>
+    <tag group="ClsAllowSp" tag="sp5CWldFoF"/>
+    <bootstrap thing="cWiz5CGrvtWl">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="cWiz5CVlnAtt">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="cWiz5CEvnHrz">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cWiz5CAdjDns">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Wizard"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <eval phase="Final" priority="21000" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+~these vars will hold the tag expressions for spells and cantrips
+
+var cantrip as string
+
+~ these receive the extra spells for each circle
+cantrip = " | thingid.sp5CWldSaS "
+
+hero.childfound[cHelpWiz].field[cCnKnoExpr].text &= cantrip]]></eval>
+    </thing>
+  <thing id="cWiz5CAdjDns" name="Adjust Density" description="You can use an action to magically alter the weight of one object or creature visible to and within 30 feet of you. It must be Large or smaller. Its weight is either halved or doubled, lasting for up to 1 minute or until your concentration ends (as if concentrating on a spell). A creature whose weight is so halved has their speed increased by 10 feet, its jump distance doubled, and has disadvantage on Strength checks and Strength saves for as long as the effect lasts. A creature whose weight is doubled has their speed reduced by 10 feet and has advantage on their Strength checks and Strength saves, again for the duration of the effect.\n\nOnce you reach 10th level in this class, you can target a Huge or smaller creature or object." compset="ClSpecial">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="cWiz5CGrvtWl" name="Gravity Well" description="Whenever you cast a spell on a creature, you can move it 5 feet to an open space of your choice. Either the spell must have been an attack that hit, an effect against which it failed to save, or it must be willing to move." compset="ClSpecial">
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="cWiz5CVlnAtt" name="Violent Attraction" description="When another creature visible to and within 60 feet of you hits with a weapon attack, you can make a reaction to speed up the attack. The attack&apos;s target suffers an additional 1d10 damage of the weapon&apos;s type.\n\nAlternatively, you can use your reaction to decrease by 2d10 the damage taken from a fall by a creature within 60 feet of you.\n\nYou can use this feature a number of times equaling your Intelligence modifier (minimum once), regaining all spent uses when you complete a long rest." compset="ClSpecial">
+    <fieldval field="abRange" value="60"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="FinalMin1"/>
+    <tag group="ChargeAttr" tag="aINT"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="cWiz5CEvnHrz" name="Event Horizon" description="You can use an action to emit a field of gravity for up to 1 minute or until your concentration ends (as if concentrating on a spell). Fur the duration, any hostile creature starting its turn within 30 feet of you must make a Strength save versus your spell save DC. On a failure, it suffers 2d10 force damage and has its speed reduced to 0 until the start of its next turn. On a success, it suffers half that damage and every foot of movement it makes this turn costs 2 extra feet. \n\nOnce used, this ability cannot be used again until you either complete a long rest or until you spend a 3rd level or higher spell slot on it." compset="ClSpecial">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="StandardDC" tag="aINT"/>
+    </thing>
+  <thing id="sp5CWldDaS" name="Dark Star" description="Choose a point within range to create a sphere with a radius of up to 40 feet. The area within it is filled with magical darkness and crushing gravity, and the area within it is difficult terrain for the duration of the spell. Darkvision and nonmagical light can&apos;t penetrate the darkness, nor can sound be created inside or pass through it. Creatures and objects fully inside the sphere are deafened and immune to thunder damage, and spells with verbal components cannot be cast within it. \n\nAny creatures entering the area for the first time on a turn or starting their turn there must make a Constitution save, suffering 8d10 force damage on a failure or half that on a success. Creatures reduced to 0 hit points by this damage are disintegrated. They and every non-magic item they&apos;re wearing or carrying are reduced to a dusty gray pile." compset="Spell">
+    <fieldval field="sCompDesc" value="a shard of onyx and a drop of the caster’s blood, both of which the spell consumes"/>
+    <fieldval field="sRange" value="150 feet"/>
+    <fieldval field="sDuration" value="Concentration, up to 1 minute"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sLevel" tag="8"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Evocation"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CWldFoF" name="Fortune’s Favor" description="You target yourself or a willing creature visible to you within range. When the target makes an attack roll, ability check, or saving throw before the spell ends, it can dismiss the spell to roll another d20 and choose which d20 to use. Alternatively, it can dismiss this spell when an attack roll is made against it to roll a d20 and use whichever d20 it wants between that and the one the attacker rolled. The additional d20 is rolled after disadvantage or advantage have already been applied to the original roll.\n\n{b}{i}At Higher Levels.{/i}{/b} You can target an additional creature for each slot above 2nd level used to cast this spell." compset="Spell">
+    <fieldval field="sCompDesc" value="consumes a white pearl"/>
+    <fieldval field="sRange" value="60 feet"/>
+    <fieldval field="sDuration" value="1 hour"/>
+    <fieldval field="sCompCost" value="100"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sCastTime" tag="Minute1"/>
+    <tag group="sSchool" tag="Divination"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="sLevel" tag="2"/>
+    <tag group="Helper" tag="SplMatAtLe"/>
+    </thing>
+  <thing id="sp5CWldGio" name="Gift of Alacrity" description="You touch a willing creature, granting it 1d8 to its initiative rolls for the duration of the spell." compset="Spell">
+    <fieldval field="sRange" value="Touch"/>
+    <fieldval field="sDuration" value="8 hours"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sLevel" tag="1"/>
+    <tag group="sCastTime" tag="Minute1"/>
+    <tag group="sSchool" tag="Divination"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    </thing>
+  <thing id="sp5CWldGrF" name="Gravity Fissure" description="You create a line of gravitational energy from yourself that&apos;s 100 feet long and 5 feet wide. Every creature in the line must make a Constitution save, suffering 8d8 force damage on a failure or half that on a success. Every creature within 10 feet of the line but not in it must also make a Constitution save, suffering 8d8 force damage and being pulled toward into the line.\n\n{b}{i}At Higher Levels.{/i}{/b} When casting this spell with a slot of 7th level or higher, the damage increases by 1d8 for every slot above 6th." compset="Spell">
+    <fieldval field="sCompDesc" value="a fistful of iron filings"/>
+    <fieldval field="sRange" value="Self (100-foot line)"/>
+    <fieldval field="sDuration" value="Instantaneous"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sLevel" tag="6"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Evocation"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CWldGrS" name="Gravity Sinkhole" description="You create a 20-foot-radius sphere at a point visible to you within range. Every creature within the sphere must make a Constitution save. On a failure, a creature suffers 5d10 force damage and is pulled directly towards the center of the sphere, ending in an open space as close to that center as possible (even if that&apos;s in the air). On a successful save, the creature takes half the damage and is not pulled.\n\n{b}{i}At Higher Levels.{/i}{/b} The damage of the spell increases by 1d10 for each slot above 4th level used to cast it." compset="Spell">
+    <fieldval field="sCompDesc" value="a black marble"/>
+    <fieldval field="sRange" value="120 feet"/>
+    <fieldval field="sDuration" value="Instantaneous"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sLevel" tag="4"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Evocation"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CWldImO" name="Immovable Object" description="You touch an object with a weight no more than 10 points. It becomes magically fixed in place. You and any creatures you designate when casting the spell can move the object normally. You can also set a password. When within 5 feet of the object, speaking the password suppressed the spell for 1 minute. If the object was fixed in the air, it can hold up to 4,000 pounds of weight before falling. Otherwise it takes a successful Strength check against your spell save DC to move the object up to 10 feet.\n\n{b}{i}At Higher Levels.{/i}{/b} If cast using a 4th or 5th level slot, the DC to move the object increases by 5, it can hold twice the weight, and its duration extends to 24 hours. If a slot of 6th level or higher is used, the move DC increases by 10, it can hold up to 20,000 points, and the effect is permanent until is dispelled." compset="Spell">
+    <fieldval field="sCompDesc" value="consumes gold dust"/>
+    <fieldval field="sRange" value="Touch"/>
+    <fieldval field="sDuration" value="1 hour"/>
+    <fieldval field="sCompCost" value="25"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Transmutat"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="Helper" tag="SplMatAtLe"/>
+    <tag group="sLevel" tag="2"/>
+    </thing>
+  <thing id="sp5CWldMaG" name="Magnify Gravity" description="You momentarily increase the gravity in a 10-foot-radius sphere centered on a point chosen by and visible to you within range. Every creature in the sphere on the turn when you cast this spell must make a Constitution save. On a failure, a creature suffers 2d8 force damage and has its speed halved until the end of its next turn. On a success, the creature takes half the damage and no speed reduction. Until the beginning of your next turn, any objects not being worn or carried in the sphere require a successful Strength check versus your spell save DC to pick up or move.\n\n\n{b}{i}At Higher Levels.{/i}{/b} The damage of the spell increases by 1d8 for each slot above 1st level used to cast it." compset="Spell">
+    <fieldval field="sRange" value="60 feet"/>
+    <fieldval field="sDuration" value="1 round"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sLevel" tag="1"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Transmutat"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CWldPuW" name="Pulse Wave" description="You unleash intense pressure in a 30-foot-cone, which you can choose to either push or pull creatures and objects. Loose objects within the cone are pushed or pulled 15 feet, based on your choice for the spell. Every creature in the cone must make a Constitution save. On failure, a creature suffers 6d6 force damage and is pushed or pulled 15 feet, again depending on what you chose. On a success, a creature suffers half the damage and is not pushed or pulled.\n\n{b}{i}At Higher Levels.{/i}{/b} The damage of the spell increases by 1d6 and the distance pulled or pushed increased by 5 feet for each slot above 3rd level used to cast it." compset="Spell">
+    <fieldval field="sRange" value="Self (30-foot cone)"/>
+    <fieldval field="sDuration" value="Instantaneous"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sLevel" tag="3"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Evocation"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CWldRaV" name="Ravenous Void" description="You create a 20-foot-radius sphere centered on a point visible to you within range. For the duration of the spell, the sphere and the area within 100 feet of it are difficult terrain, and nonmagical objects that aren&apos;t being worn or carried are destroyed when fully inside the sphere. \n\nWhen the sphere is created and at the beginning of each of your turns until the spell ends, loose objects within 100 feet of the sphere are pulled towards it, ending in an open space as close to the center of the sphere as possible.\n\nA creature beginning its turn within 100 feet of the sphere must make a Strength save. On a failure, its pulled straight toward the center of the sphere, ending as close as possible in an open space. Creatures entering the sphere for the first time or starting their turn there suffer 5d10 force damage, and are restrained until they&apos;re not in the sphere any more. If the sphere is in the air, the creature hovers within it. A creature can use an action to make a Strength check versus your spell save DC. On a success, it ends the restrained condition for itself or another creature it can reach within the sphere. Creatures reduced to 0 hit points by this spell are utterly destroyed, alongside all nonmagical items they&apos;re carrying or wearing." compset="Spell">
+    <fieldval field="sCompDesc" value="a small, nine-pointed star made of iron"/>
+    <fieldval field="sRange" value="1,000 feet"/>
+    <fieldval field="sDuration" value="Concentration, up to 1 minute"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sLevel" tag="9"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Evocation"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CWldReB" name="Reality Break" description="You break the barriers between reality and time, forcing a creature to make a Wisdom save. On a failure, it can&apos;t take reactions until the spell ends. It must also roll a d10 at the beginning of each of its turns, with the resulting effect from the Reality Breaks Effects table occurring to it. At the end of each of its turns, an affected target can repeat the save, ending the effect on a success.\n\n• 1-2   Vision of the Far Realm. The target suffers 6d12 psychic damage and is stunned until the end of the turn.\n• 3-5   Rending Rift. The target must make a Dexterity save, suffering 8d12 force damage on a failure or half that on a success.\n• 6-8   Wormhole. The target and everything its wearing or carrying is teleported up to 30 feet to an open space you pick that you can see. It also suffers 10d12 force damage and is knocked prone.\n• 9-10  Chill of the Dark Void. The target suffers 10d12 cold damage and is blinded until the end of the turn." compset="Spell">
+    <fieldval field="sCompDesc" value="a crystal prism"/>
+    <fieldval field="sRange" value="60 feet"/>
+    <fieldval field="sDuration" value="Concentration, up to 1 minute"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sLevel" tag="8"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Conjur"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CWldSaS" name="Sapping Sting" description="A target you can see within range must succeed on a Constitution save or suffer 1d4 necrotic damage and fall prone.\n\nThe spell&apos;s damage increased by 1d4 when you reach level 5 (2d4), level 11 (3d4), and level 17 (4d4)." compset="Spell">
+    <fieldval field="sRange" value="30 feet"/>
+    <fieldval field="sDuration" value="Instantaneous"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sLevel" tag="0" name="0" abbrev="0"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Necromancy"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CWldTeS" name="Temporal Shunt" description="You target the triggering creature, which must make a Wisdom save. On a failure, it vanishes as it&apos;s thrown into another point in time. The attack misses and/or the spell is wasted. At the beginning of its next turn, the target reappears as close as possible to where it was, without any memory of you casting the spell nor being affected by it.\n\n{b}{i}At Higher Levels.{/i}{/b} You can target an additional creature for every slot level above 5th. All targets must be within 30 feet of each other." compset="Spell">
+    <fieldval field="sRange" value="120 feet"/>
+    <fieldval field="sDuration" value="1 round"/>
+    <fieldval field="sCastDesc" value="taken when a creature you can see starts casting a spell or making an attack roll"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sSchool" tag="Transmutat"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="sCastTime" tag="Reaction1"/>
+    <tag group="sLevel" tag="5"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CWldTeE" name="Tether Essence" description="Two creatures visible to you within range must make Constitution saves. They make the saving throws with disadvantage if they are within 30 feet of each other, and either creature can willingly fail it. If either one succeeds, the spell has no effect. If they both fail, a magical link is formed between them for the duration, regardless of any distance put between them. Any damage dealt to one is also dealt to the other. Likewise, any hit points restored to one are also restored to the other. If either creature is reduced to 0 hit points, or if the spell ends on either one, the spell ends for both of them." compset="Spell">
+    <fieldval field="sCompDesc" value="a spool of platinum cord worth at least 250 gp, which the spell consumes"/>
+    <fieldval field="sRange" value="60 feet"/>
+    <fieldval field="sDuration" value="Concentration, up to 1 hour"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sLevel" tag="7"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Necromancy"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CWldTiR" name="Time Ravage" description="You target a creature visible to you within range, rapidly aging it. It must make a Constitution save, suffering 10d12 necrotic damage on a failure or half that on a success. Also on a failure, it ages to the point where it has only 30 days left before it dies from old age. While so aged, it has disadvantage on attack rolls, ability checks, and saving throws, and its walking speed is halved. Only {i}wish{/i} or a {i}greater restoration{/i} spell cast at 9th-level can end the aging effect and return the target to its proper age." compset="Spell">
+    <fieldval field="sCompDesc" value="an hourglass filled with diamond dust worth at least 5,000 gp, which the spell consumes"/>
+    <fieldval field="sRange" value="90 feet"/>
+    <fieldval field="sDuration" value="Instantaneous"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="sLevel" tag="9"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Necromancy"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CWldWri" name="Wristpocket" description="With a flick of the wrist, you vanish one object from your hand. Only you can be holding it, and it cannot weigh more than 5 pounds. It is send to an extradimensional space and stays there for the duration. Until the spell ends, you can use an action to summon the object to your free hand, and you can use another action to return it to the extradimensional space. If the spell ends while the object is still in that space, it reappears at your feet." compset="Spell">
+    <fieldval field="sRange" value="Self"/>
+    <fieldval field="sDuration" value="Concentration, up to 1 hour"/>
+    <usesource source="5eEGtWCP" parent="UserParent"/>
+    <tag group="Helper" tag="RitualSpel"/>
+    <tag group="sLevel" tag="2"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Conjur"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    </thing>
+  </document>

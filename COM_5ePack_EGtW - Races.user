@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="sr5CPldElf" name="Pallid Elf" compset="SubRace" uniqueness="unique">
+    <fieldval field="rWIS" value="1"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="SubRace" tag="rElf" name="Elf" abbrev="Elf"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="ra5CPldInSn"></bootstrap>
+    <bootstrap thing="ra5CPldBMW"></bootstrap>
+    </thing>
+  <thing id="ra5CPldBMW" name="Blessing of the Moon Weaver" description="You know the {i}light{/i} cantrip. At 3rd level, you can cast the {i}sleep{/i} spell once regaining its use when you finish a long rest. At 5th level, you can cast the {i}invisibility{/i} spell, targeting only yourself, once regaining its use when you finish a long rest. Wisdom is your spellcasting ability for these spells which don&apos;t require material components when cast using this trait." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spLight">
+      <containerreq phase="First" priority="2500">count:AbReplace.ra5CPldBMW = 0</containerreq>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:AbReplace.ra5CPldBMW = 0) & (count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="self only"/>
+      </bootstrap>
+    <bootstrap thing="spSleep">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:AbReplace.ra5CPldBMW = 0) & (count:Classes.? >= 3)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CPldInSn" name="Incisive Sense" description="Your Intelligence (Investigation) and Wisdom (Insight) checks are normally made with advantage." compset="RaceSpec">
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      #situational[hero.child[skInvestig],"Advantage",field[thingname].text]
+      #situational[hero.child[skInsight],"Advantage",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CLtsChWd" name="Child of the Wood" description="You know the {i}druidcraft{/i} cantrip. At 3rd level, you can cast the {i}entangle{/i} spell once regaining its use when you finish a long rest. At 5th level, you can cast the {i}spike growth{/i} spell, targeting only yourself, once regaining its use when you finish a long rest. Wisdom is your spellcasting ability for these spells which don&apos;t require material components when cast using this trait." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="spDruidcra">
+      <containerreq phase="First" priority="2500">count:AbReplace.ra5CPldBMW = 0</containerreq>
+      </bootstrap>
+    <bootstrap thing="spSpikGrow">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:AbReplace.ra5CPldBMW = 0) & (count:Classes.? >= 5)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="self only"/>
+      </bootstrap>
+    <bootstrap thing="spEntangle">
+      <containerreq phase="First" priority="2500"><![CDATA[(count:AbReplace.ra5CPldBMW = 0) & (count:Classes.? >= 3)]]></containerreq>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CLtsTmbwk" name="Timberwalk" description="Ability checks made to track you are made with disadvantage. Terrain that is difficult from non-magical plants and undergrowth does not cost you extra movement to move through." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="sr5CLtsHlf" name="Lotusden Halfling" compset="SubRace" uniqueness="unique">
+    <fieldval field="rWIS" value="1"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <tag group="SubRace" tag="rHalfling" name="Halfling" abbrev="Halfling"/>
+    <bootstrap thing="ra5CLtsChWd"></bootstrap>
+    <bootstrap thing="ra5CLtsTmbwk"></bootstrap>
+    </thing>
+  <thing id="ra5CDgbDrbld" name="Draconblood" description="{b}Ability Score Increase.{/b} Your Intelligence increases by 2 and your Charisma increases by 1.\n{b}Darkvision.{/b} You have darkvision out to 60 feet.\n{b}Forceful Presence.{/b} When you make a Charisma (Intimidation) or Charisma (Persuasion) check, you can grant yourself advantage on the roll. Once you&apos;ve used this trait, you cannot do so again until you&apos;ve completed a short or long rest." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eEGtWCP"/>
+    <tag group="ClVaryName" tag="Prepend"/>
+    <tag group="AllowRCust" tag="rDragonbor"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDgbFrP"></bootstrap>
+    <eval phase="First" priority="500"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+
+~overwrite the dragonborn's default +2 to strength
+hero.child[rDragonbor].field[rSTR].value -= 2
+
+~give this variant's +2 to intelligence 
+hero.child[rDragonbor].field[rINT].value += 2
+
+~remove the Dragonborn's Draconic Resistance
+perform hero.childfound[raDraResis].tagreplace[Helper.ShowSpec,Helper.Disable]]]></eval>
+    </thing>
+  <thing id="ra5CDgbFrP" name="Forceful Presence" description="When you make a Charisma (Intimidation) or Charisma (Persuasion) check, you can grant yourself advantage on the roll. Once you&apos;ve used this trait, you cannot do so again until you&apos;ve completed a short or long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="ra5CDgbRvnt" name="Ravenite" description="{b}Ability Score Increase.{/b} Your Strength increases by 2 and your Constitution increases by 1.\n{b}Darkvision.{/b} You have darkvision out to 60 feet.\n{b}Vengeful Assault.{/b} When you take damage from a creature that is within range of a weapon you&apos;re wielding, you can use a reaction to make an attack that creature with the weapon. Once you&apos;ve used this trait, you cannot do so again until you&apos;ve completed a short or long rest." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5eEGtWCP"/>
+    <tag group="ClVaryName" tag="Prepend"/>
+    <tag group="AllowRCust" tag="rDragonbor"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDgbVngA"></bootstrap>
+    <eval phase="First" priority="500"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+
+~overwrite the dragonborn's default +1 to charisma
+hero.child[rDragonbor].field[rCHA].value -= 1
+
+~give this variant's +1 to constitution 
+hero.child[rDragonbor].field[rCON].value += 1
+
+~remove the Dragonborn's Draconic Resistance
+perform hero.childfound[raDraResis].tagreplace[Helper.ShowSpec,Helper.Disable]]]></eval>
+    </thing>
+  <thing id="ra5CDgbVngA" name="Vengeful Assault" description="When you take damage from a creature that is within range of a weapon you&apos;re wielding, you can use a reaction to make an attack that creature with the weapon. Once you&apos;ve used this trait, you cannot do so again until you&apos;ve completed a short or long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  </document>
