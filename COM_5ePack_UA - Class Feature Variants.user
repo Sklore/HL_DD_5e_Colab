@@ -12,7 +12,7 @@
     <fieldval field="cfgObject1" value="Variant Features"/>
     <tag group="Helper" tag="Allow1Abil"/>
     </thing>
-  <thing id="cBrd5CMgInsp" name="Magical Inspiration" description="&lt;just needs text&gt;" compset="CustomSpec" uniqueness="unique">
+  <thing id="cBrd5CMgInsp" name="Magical Inspiration" description="A creature with one of you Bardic Inspiration dice can roll it and add the number rolled to one damage or healing roll of a spell they cast. This expends that die." compset="CustomSpec" uniqueness="unique">
     <tag group="AllowRCust" tag="cfg5CCFVBrd"/>
     <exprreq message="Requires Bard level 1"><![CDATA[#levelcount[Bard] >= 1]]></exprreq>
     </thing>
@@ -58,12 +58,6 @@ endif]]></validate>
     <tag group="AllowRCust" tag="cfg5CCFVSor"/>
     <tag group="AllowRCust" tag="cfg5CCFVWlk"/>
     <tag group="AllowRCust" tag="cfg5CCFVWiz"/>
-    </thing>
-  <thing id="cBrd5CXSplLst" name="Expanded Spell List" description="&lt;Specific to the Bard, needs coding&gt;" compset="CustomSpec" uniqueness="unique">
-    <tag group="AllowRCust" tag="cfg5CCFVBrd"/>
-    <tag group="Helper" tag="Primary"/>
-    <tag group="Helper" tag="SpecUp"/>
-    <exprreq message="Requires Bard level 1"><![CDATA[#levelcount[Bard] >= 1]]></exprreq>
     </thing>
   <thing id="p5CCFVBbn" name="Class Feature Variants - Barbarian" description="This adjustment enables the Barbarian Variant Features tab." compset="InPlay">
     <usesource source="p5eCFVUACP"/>
@@ -742,7 +736,7 @@ perform eachpick.pushtags[ClsAllowSp.?]
     nexteach]]></eval>
     <exprreq message="Requires Ranger level 2"><![CDATA[#levelcount[Ranger] >= 2]]></exprreq>
     </thing>
-  <thing id="abFtr5CXSpLst" name="WIP Expanded Fighter Spell List" description="This feature adds the {i}Augury{/i}, {i}Divination{/i}, {i}Enhance Ability{/i}, and {i}Speak with Dead{/i} spells to the Wizard&apos;s spell list." compset="Ability">
+  <thing id="abFtr5CXSpLst" name="Expanded Eldritch Knight Spell List" description="This feature adds the {i}Augury{/i}, {i}Divination{/i}, {i}Enhance Ability{/i}, and {i}Speak with Dead{/i} spells to the Eldritch Knight&apos;s spell list." compset="Ability">
     <tag group="Helper" tag="Primary"/>
     <tag group="Helper" tag="SpecUp"/>
     <tag group="ClsAllowSp" tag="spAugury"/>
@@ -755,6 +749,7 @@ doneif (tagis[Helper.Disable] <> 0)
 foreach pick in hero from Class where "Classes.Fighter"
 perform eachpick.pushtags[ClsAllowSp.?]
     nexteach]]></eval>
+    <pickreq thing="c5CFtrEldK"/>
     </thing>
   <thing id="cMnk5CWeap" name="Monk Weapon" compset="CustomSpec">
     <fieldval field="usrCandid1" value="(component.BaseWep &amp; (wProfReq.Martial|wProfReq.Simple) &amp; Helper.Proficient &amp; !Helper.Helper  &amp; !wProperty.Heavy &amp; !wProperty.Special &amp; !wProperty.TwoHanded)"/>
@@ -1021,7 +1016,7 @@ field[abText].text = "1d10+" & prof]]></eval>
         eachpick.field[dmrBonus].value += field[abValue].value
         nexteach]]></eval>
     </thing>
-  <thing id="cFtr5CUnaFig" name="Unarmed Fighting" compset="CustomSpec" uniqueness="unique">
+  <thing id="cFtr5CUnaFig" name="xxxx Unarmed Fighting" description="&lt;needs testing and text&gt;" compset="CustomSpec" uniqueness="unique">
     <usesource source="p5eCFVUACP"/>
     <tag group="SpecSource" tag="cHelpRgC"/>
     <tag group="SpecSource" tag="cHelpSRg"/>
@@ -1111,23 +1106,25 @@ endif]]></eval>
       perform field[usrChosen1].chosen.assign[Helper.Proficient]]]></eval>
     <exprreq message="Pact of the Blade required"><![CDATA[#hasability[cWlkPacBla] <> 0]]></exprreq>
     </thing>
-  <thing id="cWlk5CFrScrb" name="XXXX Far Scribe" description="&lt;placeholder&gt;" compset="CustomSpec" uniqueness="unique">
+  <thing id="cWlk5CFrScrb" name="Far Scribe" description="An additional page appears in your Book of Shadows. You can allow a creature to use an action to write its name on the page. The number of names that can be written there is equal to your Charisma modifier (minimum 1 name). You can use an action to touch a name, magically erasing it.\n\nYou can cast {i}spending{/i}, targeting a creature whose name is on the page and without using a spell slot or material components. To cast it, you write the message on the page. The target hears what you&apos;ve written in their mind. If they reply, the reply appears on the page instead of in your own mind. After one minute, the messages disappear from the page." compset="CustomSpec" uniqueness="unique">
     <usesource source="p5eCFVUACP"/>
     <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
     <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
     <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
     <tag group="abAction" tag="Action"/>
-    <tag group="ChargeCalc" tag="AttrOnly"/>
-    <tag group="ChargeCalc" tag="FinalMin1"/>
     <tag group="LvNamePar" tag="AppText"/>
-    <tag group="ChargeAttr" tag="aCHA"/>
+    <bootstrap thing="spSending">
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
     <eval phase="Final"><![CDATA[var num as number
 
-num = field[trkMax].value
+num = hero.childfound[aCON].field[aBonus].value
+
+num = maximum(1,num)
 
 field[abText].text = num & " names"]]></eval>
-    <exprreq message="Pact of the Tome required"><![CDATA[#hasability[cWlkPacTom] <> 0]]></exprreq>
     <exprreq message="Warlock level 5 required"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    <exprreq message="Pact of the Tome required"><![CDATA[#hasability[cWlkPacTom] <> 0]]></exprreq>
     </thing>
   <thing id="cWlk5CEldMnd" name="Eldritch Mind" description="The Constitution saving throws you make to maintain concentration on a spell are made with advantage." compset="CustomSpec" uniqueness="unique">
     <usesource source="p5eCFVUACP"/>
@@ -1139,7 +1136,7 @@ field[abText].text = num & " names"]]></eval>
 #situational[hero.child[svCON], "Advantage to maintain concentration on spells", field[thingname].text]]]></eval>
     <exprreq message="Pact of the Tome required"><![CDATA[#hasability[cWlkPacTom] <> 0]]></exprreq>
     </thing>
-  <thing id="cWlk5CGftPrt" name="XXXX Gift of the Protectors" description="&lt;placeholder&gt;" compset="CustomSpec" uniqueness="unique">
+  <thing id="cWlk5CGftPrt" name="Gift of the Protectors" description="An additional page appears in your Book of Shadows. You can allow a creature to use an action to write its name on the page. The number of names that can be written there is equal to your Charisma modifier (minimum 1 name). You can use an action to touch a name, magically erasing it.\n\nWhen any creature whose name is on the page is reduced to 0 hit points without being outright killed, it instead magically drops to 1 hit point. Once that effect has occurred for any of the named creatures, it cannot happen again until you complete a long rest." compset="CustomSpec" uniqueness="unique">
     <fieldval field="trkMax" value="1"/>
     <usesource source="p5eCFVUACP"/>
     <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
@@ -1157,7 +1154,7 @@ field[abText].text = num & " names"]]></eval>
     <exprreq message="Warlock level 9 required"><![CDATA[#levelcount[Warlock] >= 9]]></exprreq>
     <exprreq message="Pact of the Tome required"><![CDATA[#hasability[cWlkPacTom] <> 0]]></exprreq>
     </thing>
-  <thing id="cWlk5CPrtTal" name="xxxxx Protection of the Talisman" description="&lt;placeholder&gt; INCORRECTLY ADDING TO ALL SAVES" compset="CustomSpec" uniqueness="unique">
+  <thing id="cWlk5CPrtTal" name="Protection of the Talisman" description="The wearer of your talisman can add 1d4 to the roll of a saving throw in which they lack proficiency." compset="CustomSpec" uniqueness="unique">
     <usesource source="p5eCFVUACP"/>
     <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
     <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
@@ -1166,14 +1163,14 @@ field[abText].text = num & " names"]]></eval>
     <eval phase="Final" priority="101"><![CDATA[
      ~ If we're disabled, do nothing & 
      doneif (tagis[Helper.Disable] <> 0 )
-   
+
       doneif (hero.childfound[cWlk5CPacTal].field[abilActive].value = 0)    
 
      var sText as string
      sText = "+1d4"
 
-     foreach pick in hero from BaseSave where "!Helper.ProfDouble & !Helper.Proficient"
-   #situational[eachpick,sText,field[thingname].text]
+     foreach pick in hero from BaseSave where "!Helper.ProfDouble & !Helper.Proficient & !ProfSave.svAll"
+         #situational[eachpick,sText,field[thingname].text]
          nexteach]]></eval>
     <exprreq message="Warlock level 9 required"><![CDATA[#levelcount[Warlock] >= 9]]></exprreq>
     <exprreq message="Pact of the Talisman required"><![CDATA[#hasability[cWlk5CPacTal] <> 0]]></exprreq>
@@ -1185,7 +1182,7 @@ field[abText].text = num & " names"]]></eval>
     <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
     <exprreq message="Pact of the Chain required"><![CDATA[#hasability[cWlkPacCha] <> 0]]></exprreq>
     </thing>
-  <thing id="cWlk5CRebTal" name="xxxxx Rebuke of the Talisman" description="&lt;placeholder&gt;" compset="CustomSpec" uniqueness="unique">
+  <thing id="cWlk5CRebTal" name="Rebuke of the Talisman" description="When someone wearing your talisman is hit by an attacker visible to and within 30 feet of you, you can make a reaction to deal psychic damage equalling your Charisma modifier (minimum 1 damage) and push it up to 10 feet away from the creature wearing the talisman." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abRange" value="30"/>
     <usesource source="p5eCFVUACP"/>
     <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
@@ -1194,13 +1191,29 @@ field[abText].text = num & " names"]]></eval>
     <tag group="abAction" tag="Reaction"/>
     <tag group="FeatureTyp" tag="Reaction"/>
     <tag group="LvNamePar" tag="AppText"/>
+    <tag group="abRange" tag="Feet"/>
     <eval phase="Final"><![CDATA[var num as number
 
 num = hero.childfound[aCON].field[aBonus].value
 
 num = maximum(1,num)
 
-field[abText].text = num & " psychic damage"]]></eval>
+field[abText].text = num & " psychic"]]></eval>
     <exprreq message="Pact of the Talisman required"><![CDATA[#hasability[cWlk5CPacTal] <> 0]]></exprreq>
+    </thing>
+  <thing id="abRog5CXSpLst" name="Expanded Arcane Trickster Spell List" description="This feature adds the {i}Augury{/i}, {i}Divination{/i}, {i}Enhance Ability{/i}, and {i}Speak with Dead{/i} spells to the Arcane Trickster&apos;s spell list." compset="Ability">
+    <tag group="Helper" tag="Primary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="spAugury"/>
+    <tag group="ClsAllowSp" tag="spDivinati"/>
+    <tag group="ClsAllowSp" tag="spEnhaAbil"/>
+    <tag group="ClsAllowSp" tag="spSpeaDead"/>
+    <tag group="AllowRCust" tag="cfg5CCFVFtr"/>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Rogue"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <pickreq thing="c5cRogArcT"/>
     </thing>
   </document>
