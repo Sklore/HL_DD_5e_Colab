@@ -736,7 +736,7 @@ perform eachpick.pushtags[ClsAllowSp.?]
     nexteach]]></eval>
     <exprreq message="Requires Ranger level 2"><![CDATA[#levelcount[Ranger] >= 2]]></exprreq>
     </thing>
-  <thing id="abFtr5CXSpLst" name="Expanded Eldritch Knight Spell List" description="This feature adds the {i}Augury{/i}, {i}Divination{/i}, {i}Enhance Ability{/i}, and {i}Speak with Dead{/i} spells to the Eldritch Knight&apos;s spell list." compset="Ability">
+  <thing id="abFtr5CXSpLst" name="Expanded Eldritch Knight Spell List" description="This feature adds the {i}Augury{/i}, {i}Divination{/i}, {i}Enhance Ability{/i}, and {i}Speak with Dead{/i} spells to the Wizard/Eldritch Knight&apos;s spell list." compset="Ability">
     <tag group="Helper" tag="Primary"/>
     <tag group="Helper" tag="SpecUp"/>
     <tag group="ClsAllowSp" tag="spAugury"/>
@@ -1201,19 +1201,74 @@ num = maximum(1,num)
 field[abText].text = num & " psychic"]]></eval>
     <exprreq message="Pact of the Talisman required"><![CDATA[#hasability[cWlk5CPacTal] <> 0]]></exprreq>
     </thing>
-  <thing id="abRog5CXSpLst" name="Expanded Arcane Trickster Spell List" description="This feature adds the {i}Augury{/i}, {i}Divination{/i}, {i}Enhance Ability{/i}, and {i}Speak with Dead{/i} spells to the Arcane Trickster&apos;s spell list." compset="Ability">
+  <thing id="abRog5CXSpLst" name="Expanded Arcane Trickster Spell List" description="This feature adds the {i}Augury{/i}, {i}Divination{/i}, {i}Enhance Ability{/i}, and {i}Speak with Dead{/i} spells to the Wizard/Arcane Trickster&apos;s spell list." compset="Ability">
     <tag group="Helper" tag="Primary"/>
     <tag group="Helper" tag="SpecUp"/>
     <tag group="ClsAllowSp" tag="spAugury"/>
     <tag group="ClsAllowSp" tag="spDivinati"/>
     <tag group="ClsAllowSp" tag="spEnhaAbil"/>
     <tag group="ClsAllowSp" tag="spSpeaDead"/>
-    <tag group="AllowRCust" tag="cfg5CCFVFtr"/>
+    <tag group="AllowRCust" tag="cfg5CCFVRog"/>
     <eval phase="First"><![CDATA[
 doneif (tagis[Helper.Disable] <> 0)
 foreach pick in hero from Class where "Classes.Rogue"
 perform eachpick.pushtags[ClsAllowSp.?]
     nexteach]]></eval>
     <pickreq thing="c5cRogArcT"/>
+    </thing>
+  <thing id="abSor5CXSpLDv" name="Expanded Divine Soul Sorcerer Spell List" description="This feature adds the {i}Aura of Life{/i}, {i}Aura of Purity{/i}, {i}Aura of Vitality{/i}, {i}Branding Smite{/i}, {i}Cause Fear{/i}, {i}Power Word Heal{/i}, {i}Skill Empowerment{/i}, {i}Wall of Light{/i}, and {i}Wrathful Smite{/i} spells to the Cleric/Divine Soul Sorcerer&apos;s spell list." compset="Ability">
+    <tag group="AllowRCust" tag="cfg5CCFVSor"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="21000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+~these vars will hold the tag expressions for spells and cantrips
+
+var spell as string
+var known as string 
+var first as string
+var second as string
+var third as string
+var fourth as string
+var fifth as string
+var ninth as string
+
+~ fetch spell expressions
+spell = hero.childfound[cHelpSor].field[cSpKnoExpr].text 
+known = hero.childfound[cHelpSor].field[cSpellExpr].text 
+
+~ these receive the extra spells for each circle
+
+first = " | thingid.sp5CXGECaF | thingid.sp5CWrathS "
+second = " | thingid.sp5CBrandS "
+third = " | thingid.sp5CAurVit "
+fourth = " | thingid.sp5CAurLif | thingid.sp5CAurPur "
+fifth = " | thingid.sp5CXGESkE | thingid.sp5CXGEWaL "
+ninth = " | thingid.sp5CPwrWH "
+
+
+spell &= first
+known &= first
+
+spell &= second
+known &= second
+
+spell &= third
+known &= third
+
+spell &= fourth
+known &= fourth
+
+spell &= fifth
+known &= fifth
+
+spell &= ninth
+known &= ninth
+
+
+hero.childfound[cHelpSor].field[cSpKnoExpr].text = spell
+hero.childfound[cHelpSor].field[cSpellExpr].text = known
+hero.childfound[cHelpSor].field[cSplBkExpr].text = known]]></eval>
+    <pickreq thing="c5CSorDiSo"/>
     </thing>
   </document>
