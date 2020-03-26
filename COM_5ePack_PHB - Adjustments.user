@@ -805,7 +805,12 @@ hero.child[Totals].field[tAttunMax].value += field[pAdjust].value]]></eval>
     else
       hero.child[svCHA].field[svAttr].value = iBonus
     endif]]></eval>
-    <exprreq message="Must be a minion"><![CDATA[tagis[Hero.FullMinion] >= 1]]></exprreq>
+    <exprreq message="Must be a minion"><![CDATA[tagis[system_tag.minion] <> 0]]></exprreq>
+    <prereq message="Requires Wild Shape">
+      <validate><![CDATA[if (master.childlives[cDrdWilSha] <>0) then
+@valid = 1
+endif]]></validate>
+      </prereq>
     </thing>
   <thing id="p5CSplKnwn" name="Spells Known" description="Select this adjustment to add to the number of spells known for a spontaneous casting class (ie Sorcerer)." compset="InPlay">
     <fieldval field="pCandExpr" value="component.Class &amp; CasterType.SpontKnow"/>
