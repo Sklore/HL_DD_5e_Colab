@@ -752,12 +752,11 @@ perform eachpick.pushtags[ClsAllowSp.?]
     <pickreq thing="c5CFtrEldK"/>
     </thing>
   <thing id="cMnk5CWeap" name="Monk Weapon" compset="CustomSpec">
-    <fieldval field="usrCandid1" value="(component.BaseWep &amp; (wProfReq.Martial|wProfReq.Simple) &amp; Helper.Proficient &amp; !Helper.Helper  &amp; !wProperty.Heavy &amp; !wProperty.Special &amp; !wProperty.TwoHanded)"/>
     <tag group="ChooseSrc1" tag="Thing"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="AllowRCust" tag="cfg5CCFVMnk"/>
     <tag group="Helper" tag="SpecUp"/>
-    <eval phase="PreLevel" priority="15501"><![CDATA[doneif (tagis[Helper.Disable] = 1)
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] = 1)
 doneif (field[usrChosen1].ischosen = 0)
       
 ~ Now mark the weapon as martial arts so it grabs the proper
@@ -769,11 +768,13 @@ searchexpr = "(" & field[usrChosen1].chosen.tagids[IsWeapon.?,"|"]  & ")"
 foreach pick in hero from BaseWep where searchexpr
   perform eachpick.assign[Special.MartArts]
 nexteach]]></eval>
-    <eval phase="Validation" index="2"><![CDATA[var pewp as string
+    <eval phase="Final" priority="10000" index="2"><![CDATA[var pewp as string
 
-pewp = hero.tagids[WepProf.?,":"]
+pewp = hero.tagids[WepProf.?," | "]
 
-field[abText].text = replace(pewp,"WepProf","thing",0)]]></eval>
+pewp = replace(pewp,"WepProf","thingid",0)
+
+field[usrCandid1].text = "component.BaseWep & (wProfReq.Martial|wProfReq.Simple) & !Helper.Helper  & !thingid.w5CSpellAt & !wProperty.Heavy & !wProperty.Special & !wProperty.TwoHanded & (" & pewp & " | wProfReq.Simple)"]]></eval>
     </thing>
   <thing id="cMnk5CMnkWp" name="Monk Weapons" description="&lt;needs text&gt;" compset="CustomSpec" uniqueness="unique">
     <tag group="ChooseSrc1" tag="Thing"/>
@@ -793,6 +794,94 @@ weapons += 5
 weapons = maximum (5,weapons)
 
 hero.childfound[cfg5CCFVMnk].field[cfgMax2].value = weapons]]></eval>
+    <eval phase="PostLevel" priority="4999" index="2"><![CDATA[
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+
+perform hero.childfound[cMnkMarArt].assign[Helper.Disable]]]></eval>
+    <eval phase="PostLevel" priority="9501" index="3"><![CDATA[perform hero.childfound[cMnkMarArt].delete[Helper.Disable]
+
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~ Now foreach through and carry out calculations to replace the wMain tag if the average
+      ~ damage of our current tag is higher than the current one.
+      var curdicenum as number
+      var curdicesiz as number
+      var curwepavg as number
+      var dotpos as number
+      var tagstring as string
+
+      var searchexpr as string
+      searchexpr = "IsWeapon.wUnarmed | Special.MartArts"
+
+      foreach pick in hero from BaseWep where searchexpr
+
+        ~We have the option of using Dex instead of Str for attack and damage
+        perform eachpick.assign[MelAttOpt.aDEX]
+        perform eachpick.assign[DamageOpt.aDEX]
+
+        ~See if our replacement damage would offer a better average damage than what the weapon can currently deal
+
+~debug "We're active. This is " & eachpick.idstring
+
+        curdicenum = eachpick.field[wDieCount].value
+        curdicesiz = eachpick.field[wDieSize].value
+
+~debug "curdicenum is " & curdicenum
+~debug "curdicesiz is " & curdicesiz
+
+        curwepavg = (curdicesiz + 1)/2
+        curwepavg *= curdicenum
+
+~debug "After calculations, curwepavg is " & curwepavg & " and our threshold is " & field[abValue].value
+
+        if (field[abValue].value > curwepavg) then
+~debug "Ability is pushing the higher tag."
+          eachpick.field[wDieCount].value = field[wDieCount].value
+          eachpick.field[wDieSize].value = field[wDieSize].value
+          endif
+        nexteach]]></eval>
+    <eval phase="PostLevel" priority="5000" index="4"><![CDATA[      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~first we have to establish our benchmark, based on our level
+      ~all comparisons are made assuming that the wielder is medium, because
+      ~that is what wMain tags assume. Damage dice are then adjusted up or down
+      ~appropriately based on size.
+      if (hero.tagcount[Classes.Monk] >= 17) then
+        ~ Medium folks get 1d10 at this level. Avg = 5.5
+        field[wDieCount].value = 1
+        field[wDieSize].value = 10
+        field[abValue].value += 5.5
+      elseif (hero.tagcount[Classes.Monk] >= 11) then
+        ~ Medium folks get 1d8 at this level. Avg = 4.5
+        field[wDieCount].value = 1
+        field[wDieSize].value = 8
+        field[abValue].value += 4.5
+      elseif (hero.tagcount[Classes.Monk] >= 5) then
+        ~ Medium folks get 1d6 at this level. Avg = 3.5
+        field[wDieCount].value = 1
+        field[wDieSize].value = 6
+        field[abValue].value += 3.5
+      else
+        ~ Medium folks get 1d4 at this level. Avg = 2.5
+        field[wDieCount].value = 1
+        field[wDieSize].value = 4
+        field[abValue].value += 2.5
+        endif
+
+      var v_text as string
+
+      call wMainText
+
+      field[abText].text = v_text]]></eval>
     </thing>
   <thing id="cFtr5CSupTch" name="Superior Technique" description="You learn a maneuver of your choice from the options available to the Fighter&apos;s Battle Master archetype. If the maneuver requires your target to make a saving throw, that save&apos;s DC equals 8 + your proficiency bonus + your choice of either your Strength or Dexterity modifer. You gain 1d6 as a superiority die, which is added to any such dice you have from another source. This die is used to fuel the learned maneuver, and is expended when you use it. You regain it when you finish a short or long rest." compset="CustomSpec" uniqueness="unique">
     <fieldval field="abValue2" value="6"/>
