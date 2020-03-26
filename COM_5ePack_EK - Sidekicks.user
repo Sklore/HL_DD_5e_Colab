@@ -710,6 +710,7 @@ endif]]></eval>
     <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="LvNameApp" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="FeatureTyp" tag="Special"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[
       doneif (tagis[Helper.ShowSpec] = 0)
 
@@ -723,12 +724,14 @@ endif]]></eval>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="FeatureTyp" tag="Special"/>
     </thing>
   <thing id="cSkE5CXAtk" name="Extra Attack" description="The expert can make two attacks, instead of one, when using the Attack action on its turn." compset="ClSpecial" summary="The expert can make an extra attack when it takes the Attack action.">
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="UseOwnLev"/>
+    <tag group="FeatureTyp" tag="Special"/>
     <eval phase="PostLevel" priority="600" name="Extra Attack"><![CDATA[
       doneif (tagis[Helper.ShowSpec] = 0)
 
@@ -744,10 +747,7 @@ endif]]></eval>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
-    <eval phase="Render" priority="10000" index="2"><![CDATA[
-      if (field[xIndex].value >= 2) then
-        field[listname].text = field[thingname].text & " (" & field[xIndex].value & ")"
-        endif]]></eval>
+    <tag group="FeatureTyp" tag="Special"/>
     <eval phase="PostLevel" priority="500" name="Fighter extra attacks"><![CDATA[
 
       ~These calculations should only happen for the first copy
@@ -770,11 +770,16 @@ endif]]></eval>
       for i = 1 to field[abValue].value
         perform hero.assign[Hero.ExtraAtt]
         next]]></eval>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[
+      if (field[xIndex].value >= 2) then
+        field[listname].text = field[thingname].text & " (" & field[xIndex].value & ")"
+        endif]]></eval>
     </thing>
   <thing id="cSkW5CBtRdy" name="Battle Readiness" description="The warrior has advantage on its initiative rolls." compset="ClSpecial" summary="The warrior has advantage on its initiative rolls.">
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="FeatureTyp" tag="Special"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[
       doneif (tagis[Helper.ShowSpec] = 0)
 
@@ -789,6 +794,8 @@ endif]]></eval>
     <tag group="abAction" tag="Free" name="Free" abbrev="Free"/>
     <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="PostLevel" priority="10000">field[trkMax].value += field[xCount].value</eval>
     <eval phase="Render" priority="10000" index="2"><![CDATA[
        if (field[xIndex].value >= 5) then
          field[listname].text = field[thingname].text & " (five uses)"
@@ -801,7 +808,6 @@ endif]]></eval>
        else
          field[listname].text = field[thingname].text & " (one use)"
          endif]]></eval>
-    <eval phase="PostLevel" priority="10000">field[trkMax].value += field[xCount].value</eval>
     </thing>
   <thing id="cSkW5CImpDf" name="Improved Defense" description="The warrior&apos;s gains a +1 bonus to its AC." compset="ClSpecial" summary="+1 AC.">
     <eval phase="PreLevel" priority="5000"><![CDATA[~ If we're disabled, do nothing
@@ -815,6 +821,7 @@ endif]]></eval>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="FeatureTyp" tag="Special"/>
     </thing>
   <thing id="cSkE5CExpts" name="Expertise" description="The proficiency bonus of two of the expert&apos;s skill proficiencies is doubled for any ability check the expert makes with them." compset="ClSpecial" summary="Double proficiency bonus with selected skills.">
     <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
@@ -864,11 +871,13 @@ endif]]></eval>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="FeatureTyp" tag="Special"/>
     </thing>
   <thing id="cSkE5CRlbTl" name="Reliable Talent" description="When the expert makes an ability check that benefits from its full proficiency bonus, any d20 rolls for the check lower than a 10 can be treated as a 10." compset="ClSpecial" summary="When making proficient ability check, treats roll of 9 or lower as 10.">
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="FeatureTyp" tag="Special"/>
     </thing>
   <thing id="r5CSdkMage" name="Sidekick" description="This is the base stat block for the Spellcaster Sidekick. It should only be used in conjunction with the Mage sidekick class." compset="Race">
     <fieldval field="rHitDice" value="1"/>
@@ -891,66 +900,5 @@ endif]]></eval>
     <bootstrap thing="tpHumanoid"></bootstrap>
     <bootstrap thing="lCommon"></bootstrap>
     <pickreq thing="cHelpSkM" onlyonce="yes"/>
-    </thing>
-  <thing id="XXXXXXXX8" name="Expertise" description="The proficiency bonus of two of the expert&apos;s skill proficiencies is doubled for any ability check the expert makes with them." compset="ClSpecial" summary="Double proficiency bonus with selected skills.">
-    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
-    <tag group="ChooseSrc2" tag="Thing" name="All Things" abbrev="All Things"/>
-    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
-    <tag group="User" tag="NoAutoName" name="NoAutoName" abbrev="NoAutoName"/>
-    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
-    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
-    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[
-      doneif (tagis[Helper.ShowSpec] = 0)
-
-      doneif (tagis[Helper.Disable] <> 0)
-
-      var tagexpr as string
-
-      if (field[usrChosen1].ischosen <> 0) then
-        tagexpr = field[usrChosen1].chosen.tagids[ProfSkill.?," | "]
-        foreach pick in hero from BaseSkill where tagexpr
-          perform eachpick.assign[Helper.ProfDouble]
-          nexteach
-
-        ~If we've got proficiency with our thieves' tools, we need to display
-        ~ on the characer sheet/special tab
-        if (field[usrChosen1].chosen.tagis[thingid.gTooThieve] <> 0) then
-          perform delete[Helper.SpecUp]
-          field[livename].text = field[thingname].text & " (Thieves's tools)"
-          perform hero.assign[ProfTooDbl.gTooThieve]
-          endif
-        endif
-
-      if (field[usrChosen2].ischosen <> 0) then
-        tagexpr = field[usrChosen2].chosen.tagids[ProfSkill.?," | "]
-        foreach pick in hero from BaseSkill where tagexpr
-          perform eachpick.assign[Helper.ProfDouble]
-          nexteach
-
-        ~If we've got proficiency with our thieves' tools, we need to display
-        ~ on the characer sheet/special tab
-        if (field[usrChosen2].chosen.tagis[thingid.gTooThieve] <> 0) then
-          perform delete[Helper.SpecUp]
-          field[livename].text = field[thingname].text & " (Thieves's tools)"
-          perform hero.assign[ProfTooDbl.gTooThieve]
-          endif
-        endif]]>
-      <before name="Calc skProfBon"/>
-      </eval>
-    <eval phase="Final" priority="999999" index="2"><![CDATA[
-      var tagexpr as string
-      foreach pick in hero from BaseSkill where "Helper.Proficient"
-        perform eachpick.pulltags[ProfSkill.?]
-        nexteach
-
-      if (tagis[ProfSkill.?] <> 0) then
-        tagexpr = "(component.BaseSkill & (" & tagids[ProfSkill.?, " | "] & ")) | thingid.gTooThieve"
-      else
-        tagexpr = "thingid.gTooThieve"
-        endif
-
-      field[usrCandid1].text = tagexpr
-      field[usrCandid2].text = tagexpr]]></eval>
     </thing>
   </document>
