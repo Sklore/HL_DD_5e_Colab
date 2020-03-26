@@ -769,6 +769,11 @@ searchexpr = "(" & field[usrChosen1].chosen.tagids[IsWeapon.?,"|"]  & ")"
 foreach pick in hero from BaseWep where searchexpr
   perform eachpick.assign[Special.MartArts]
 nexteach]]></eval>
+    <eval phase="Validation" index="2"><![CDATA[var pewp as string
+
+pewp = hero.tagids[WepProf.?,":"]
+
+field[abText].text = replace(pewp,"WepProf","thing",0)]]></eval>
     </thing>
   <thing id="cMnk5CMnkWp" name="Monk Weapons" description="&lt;needs text&gt;" compset="CustomSpec" uniqueness="unique">
     <tag group="ChooseSrc1" tag="Thing"/>
@@ -1175,11 +1180,15 @@ field[abText].text = num & " names"]]></eval>
     <exprreq message="Warlock level 9 required"><![CDATA[#levelcount[Warlock] >= 9]]></exprreq>
     <exprreq message="Pact of the Talisman required"><![CDATA[#hasability[cWlk5CPacTal] <> 0]]></exprreq>
     </thing>
-  <thing id="cWlk5CInChMs" name="xxx Investment of the Chain Master" description="&lt;placeholder, need programming&gt;" compset="CustomSpec" uniqueness="unique">
+  <thing id="cWlk5CInChMs" name="Investment of the Chain Master" description="{b}{i}Note{/b}{/i}: You must add the  Investment of the Chain Master adjustment to your minion for this invocation to fully function.\n\nThe familiar summoned by your {i}find familiar{/i} spell gains these benefits:\n\n• A swim or flight (your choice) speed of 40 feet.\n\n• It no longer needs to breathe.\n\n• Its weapon attacks are now considered to be magical for the purpose of overcoming immunity and resistance to nonmagical attacks.\n\n• Any saving throws the familiar forces another creature to make are made against your spell save DC." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="usrLabelAr" value="Speed Gained"/>
+    <arrayval field="usrArray" index="0" value="Flying"/>
+    <arrayval field="usrArray" index="1" value="Swimming"/>
     <usesource source="p5eCFVUACP"/>
     <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
     <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
     <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="User" tag="NoAutoName"/>
     <exprreq message="Pact of the Chain required"><![CDATA[#hasability[cWlkPacCha] <> 0]]></exprreq>
     </thing>
   <thing id="cWlk5CRebTal" name="Rebuke of the Talisman" description="When someone wearing your talisman is hit by an attacker visible to and within 30 feet of you, you can make a reaction to deal psychic damage equalling your Charisma modifier (minimum 1 damage) and push it up to 10 feet away from the creature wearing the talisman." compset="CustomSpec" uniqueness="unique">
@@ -1270,5 +1279,138 @@ hero.childfound[cHelpSor].field[cSpKnoExpr].text = spell
 hero.childfound[cHelpSor].field[cSpellExpr].text = known
 hero.childfound[cHelpSor].field[cSplBkExpr].text = known]]></eval>
     <pickreq thing="c5CSorDiSo"/>
+    </thing>
+  <thing id="p5CInvChnMst" name="Investment of the Chain Master" compset="InPlay">
+    <usesource source="p5eCFVUACP"/>
+    <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <tag group="OthAdjCat" tag="Class" name="Class" abbrev="Class"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="5000">fieldval:abValue = 0</containerreq>
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="xSwim">
+      <containerreq phase="First" priority="5000">fieldval:abValue = 1</containerreq>
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMinInChMs">
+      <containerreq phase="First" priority="5000"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000" index="3"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+
+    var searchexpr as string
+    ~ Get list of Proficient Skills from master
+    searchexpr = master.hero.tagids[ProfSkill.?,"|"]
+
+    ~ Loop through those same skills on the hero and
+    ~ apply the proficient tag.
+    foreach pick in hero from BaseSkill where searchexpr
+      perform eachpick.assign[Helper.Proficient]
+      nexteach]]></eval>
+    <eval phase="First" index="5"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+
+field[abValue].value = master.childfound[cWlk5CInChMs].field[usrIndex].value]]></eval>
+    <eval phase="PostAttr" priority="10000"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+
+   ~ Set Wild Shape creature's Intelligence
+    var iINT as number
+    iINT = master.child[aINT].field[aFinalVal].value
+    hero.child[aINT].field[aFinalVal].value = iINT
+    iINT = master.child[aINT].field[aModBonus].value
+    hero.child[aINT].field[aModBonus].value = iINT
+
+    ~ Set Wild Shape creature's Wisdom
+    var iWIS as number
+    iWIS = master.child[aWIS].field[aFinalVal].value
+    hero.child[aWIS].field[aFinalVal].value = iWIS
+    iWIS = master.child[aWIS].field[aModBonus].value
+    hero.child[aWIS].field[aModBonus].value = iWIS
+
+    ~ Set Wild Shape creature's Charisma
+    var iCHA as number
+    iCHA = master.child[aCHA].field[aFinalVal].value
+    hero.child[aCHA].field[aFinalVal].value = iCHA
+    iCHA = master.child[aCHA].field[aModBonus].value
+    hero.child[aCHA].field[aModBonus].value = iCHA]]></eval>
+    <eval phase="PostLevel" priority="10000" index="4"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+
+    var iProfBon as number
+    iProfBon = master.child[ProfBonus].field[tProfBonus].value
+
+    hero.child[ProfBonus].field[tProfBonus].value = iProfBon]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+
+    if (master.child[svSTR].tagis[Helper.Proficient] <> 0) then
+      perform hero.child[svSTR].assign[Helper.Proficient]
+    endif
+    if (master.child[svDEX].tagis[Helper.Proficient] <> 0) then
+      perform hero.child[svDEX].assign[Helper.Proficient]
+    endif
+    if (master.child[svCON].tagis[Helper.Proficient] <> 0) then
+      perform hero.child[svCON].assign[Helper.Proficient]
+    endif
+    if (master.child[svINT].tagis[Helper.Proficient] <> 0) then
+      perform hero.child[svINT].assign[Helper.Proficient]
+    endif
+    if (master.child[svWIS].tagis[Helper.Proficient] <> 0) then
+      perform hero.child[svWIS].assign[Helper.Proficient]
+    endif
+    if (master.child[svCHA].tagis[Helper.Proficient] <> 0) then
+      perform hero.child[svCHA].assign[Helper.Proficient]
+    endif
+
+    var iValue as number
+    var iBonus as number
+    var iProf as number
+    iProf = #profbonus[]
+
+    ~ Intelligence saves
+    iBonus = master.child[aINT].field[aModBonus].value
+    if (hero.child[svINT].tagis[Helper.Proficient] <> 0) then
+      hero.child[svINT].field[svAttr].value = iBonus
+      hero.child[svINT].field[svProfBon].value = iProf
+    else
+      hero.child[svINT].field[svAttr].value = iBonus
+    endif
+      
+    ~ Wisdom saves
+    iBonus = master.child[aWIS].field[aModBonus].value
+    if (hero.child[svWIS].tagis[Helper.Proficient] <> 0) then
+      hero.child[svWIS].field[svAttr].value = iBonus
+      hero.child[svWIS].field[svProfBon].value = iProf
+    else
+      hero.child[svWIS].field[svAttr].value = iBonus
+    endif
+
+    ~ Charisma saves
+    iBonus = master.child[aCHA].field[aModBonus].value
+    if (hero.child[svCHA].tagis[Helper.Proficient] <> 0) then
+      hero.child[svCHA].field[svAttr].value = iBonus
+      hero.child[svCHA].field[svProfBon].value = iProf
+    else
+      hero.child[svCHA].field[svAttr].value = iBonus
+    endif]]></eval>
+    <exprreq message="Must be a Familiar"><![CDATA[tagis[CompIs.Familiar] > 0]]></exprreq>
+    <prereq message="Requires Investment of the Chain Master">
+      <validate><![CDATA[if (master.childlives[cWlk5CInChMs] <>0) then
+@valid = 1
+endif]]></validate>
+      </prereq>
+    </thing>
+  <thing id="ra5CMinInChMs" name="Investment of the Chain Master" description="The familiar summoned by your {i}find familiar{/i} spell gains these benefits:\n\n• A swim or flight (your choice) speed of 40 feet.\n\n• It no longer needs to breathe.\n\n• Its weapon attacks are now considered to be magical for the purpose of overcoming immunity and resistance to nonmagical attacks.\n\n• Any saving throws the familiar forces another creature to make are made against your spell save DC." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final" priority="10001"><![CDATA[var SVDC as number
+
+SVDC = master.hero.childfound[cHelpWlk].field[cSplSaveDC].value
+
+field[abText].text = "Save DC " & SVDC]]></eval>
     </thing>
   </document>
