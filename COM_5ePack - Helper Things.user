@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
   <loadonce key="COM_5ePack - Helper Things"/>
-  <thing id="meh5C" name="5eCommunity Mechanic" description="This mechanic holds special bootstraps called Configurable&apos;s that allow for adding &quot;new&quot; tabs into Hero Lab.  Note that a Mechanic once made is ALWAYS live on the Hero allow one to bootsrap other Things or run a script always on every character." compset="Mechanics">
+  <thing id="meh5C" name="5e Community Mechanic" description="This mechanic holds special bootstraps called Configurable&apos;s that allow for adding &quot;new&quot; tabs into Hero Lab.  Note that a Mechanic once made is ALWAYS live on the Hero allow one to bootsrap other Things or run a script always on every character." compset="Mechanics">
     <tag group="DeityCat" tag="5CDrow" name="Drow Pantheon" abbrev="Drow"/>
     <tag group="DeityCat" tag="5CForRealm" name="Forgotten Realms Pantheon" abbrev="For Realms"/>
     <tag group="DeityCat" tag="5CGreyhawk" name="Greyhawk Pantheon" abbrev="Greyhawk"/>
@@ -12,22 +12,14 @@
     <tag group="DeityCat" tag="5CGnomish" name="Gnomish Pantheon" abbrev="Gnomish"/>
     <tag group="DeityCat" tag="5COrc" name="Orc Pantheon" abbrev="Orc"/>
     <tag group="abCategory" tag="5COrdKnife" name="Mystic Order of the Knife"/>
-
-    <!-- Simple Helper Things -->
     <bootstrap thing="5CJournal"></bootstrap>
-
-    <!-- Configurable Tabs -->
     <bootstrap thing="cfg5CFeatB"></bootstrap>
     <bootstrap thing="cfg5CProf"></bootstrap>
-
-    <!-- Selection Choices -->
     <bootstrap thing="sel5CEleAc"></bootstrap>
     <bootstrap thing="sel5CEleCo"></bootstrap>
     <bootstrap thing="sel5CEleLi"></bootstrap>
     <bootstrap thing="sel5CEleFi"></bootstrap>
     <bootstrap thing="sel5CEleTh"></bootstrap>
-
-    <!-- Schools of Magic -->
     <bootstrap thing="ss5CAbjura"></bootstrap>
     <bootstrap thing="ss5CConjur"></bootstrap>
     <bootstrap thing="ss5CDivi"></bootstrap>
@@ -46,38 +38,22 @@
     <bootstrap thing="ss5CWood"></bootstrap>
     <bootstrap thing="ss5CElemen"></bootstrap>
     </thing>
-
-  <!-- ======================================================================================= -->
-  <!-- Always Show Journal Tab                                                                 -->
-  <!-- ======================================================================================= -->
-  <thing id="5CJournal" name="Always Show Journal Tab"
-    description="This simple thing forces the {b}Journal{/b} tab to appear which is useful on NPC&apos;s which has the tab hidden."
-    compset="Simple"
-    uniqueness="useronce">
+  <thing id="5CJournal" name="Always Show Journal Tab" description="This simple thing forces the {b}Journal{/b} tab to appear which is useful on NPC&apos;s which has the tab hidden." compset="Simple" uniqueness="useronce">
     <usesource source="5eJournal"/>
-    <eval phase="PostAttr" priority="10000" index="1"><![CDATA[
+    <eval phase="PostAttr" priority="10000">
       ~ If not a NPC get out now!
       doneif (hero.tagis[CharType.typNPC] = 0)
 
       ~ Prevent the Journal Tab from being hidden for NPCs
       perform hero.delete[HideTab.journal]
       perform hero.delete[Hero.NoAdvance]
-      ~perform hero.delete[Hero.ClsErLev?]
-      ]]></eval>
-
-    <eval phase="PostAttr" priority="50000" index="2"><![CDATA[
+      ~perform hero.delete[Hero.ClsErLev?]</eval>
+    <eval phase="PostAttr" priority="50000" index="2">
       ~ If not a NPC get out now!
       doneif (hero.tagis[CharType.typNPC] = 0)
 
-      perform hero.delete[Hero.ClsErLev?]
-      ]]></eval>
+      perform hero.delete[Hero.ClsErLev?]</eval>
     </thing>
-
-  <!-- ======================================================================================= -->
-  <!-- Selection Helpers                                                                       -->
-  <!-- ======================================================================================= -->
-
-  <!-- Elemental Selection Helpers -->
   <thing id="sel5CEleAc" name="Acid" description="Base Elemental Type" compset="SelectHelp" uniqueness="unique">
     <tag group="Selection" tag="Energy" name="Energy Type (All)"/>
     <tag group="Selection" tag="EnergyBase" name="Energy Type (Base 4)"/>
@@ -102,8 +78,6 @@
     <tag group="Selection" tag="Energy" name="Energy Type (All)"/>
     <tag group="5CElemType" tag="Thunder"/>
     </thing>
-
-  <!-- Adjustment Helpers -->
   <thing id="sel5CTxtAp" name="Append" description="Adjustment text action" compset="SelectHelp" uniqueness="unique">
     <tag group="Selection" tag="5CTextAct" name="Text Action"/>
     <tag group="5CTextAct" tag="Append"/>
@@ -112,8 +86,6 @@
     <tag group="Selection" tag="5CTextAct" name="Text Action"/>
     <tag group="5CTextAct" tag="OverWrite"/>
     </thing>
-
-  <!-- Value Bonus Helpers -->
   <thing id="sel5CValueBonus0" name="+0" description="Value Bonus Helper" compset="SelectHelp" uniqueness="unique">
     <tag group="Selection" tag="5CValueBonus" name="Value Bonus"/>
     <tag group="Value" tag="0"/>
@@ -154,146 +126,124 @@
     <tag group="Selection" tag="5CValueBonus"/>
     <tag group="Value" tag="9"/>
     </thing>
-
-
-
   <thing id="ss5CAbjura" name="Abjuration" compset="SplSchool">
     <tag group="MagSch5C" tag="CORE"/>
     <tag group="sSchool" tag="Abjur"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CConjur" name="Conjuration" compset="SplSchool">
     <tag group="MagSch5C" tag="CORE"/>
     <tag group="sSchool" tag="Conjur"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CDivi" name="Divination" compset="SplSchool">
     <tag group="MagSch5C" tag="CORE"/>
     <tag group="sSchool" tag="Divination"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CEnchan" name="Enchantment" compset="SplSchool">
     <tag group="MagSch5C" tag="CORE"/>
     <tag group="sSchool" tag="Enchant"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CEvocat" name="Evocation" compset="SplSchool">
     <tag group="MagSch5C" tag="CORE"/>
     <tag group="sSchool" tag="Evocation"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CIllusi" name="Illusion" compset="SplSchool">
     <tag group="MagSch5C" tag="CORE"/>
     <tag group="sSchool" tag="Illusion"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CNecrom" name="Necromancy" compset="SplSchool">
     <tag group="MagSch5C" tag="CORE"/>
     <tag group="sSchool" tag="Necromancy"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CTransm" name="Transmutat" compset="SplSchool">
     <tag group="MagSch5C" tag="CORE"/>
     <tag group="sSchool" tag="Transmutat"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CUniver" name="Universal" compset="SplSchool">
     <tag group="sSchool" tag="Universal"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CAir" name="Air" compset="SplSchool">
     <tag group="MagSch5C" tag="Element"/>
     <tag group="sSchool" tag="Air"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CEarth" name="Earth" compset="SplSchool">
     <tag group="MagSch5C" tag="Element"/>
     <tag group="sSchool" tag="Earth"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CFire" name="Fire" compset="SplSchool">
     <tag group="MagSch5C" tag="Element"/>
     <tag group="sSchool" tag="Fire"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CWater" name="Water" compset="SplSchool">
     <tag group="MagSch5C" tag="Element"/>
     <tag group="sSchool" tag="Water"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CMetal" name="Metal" compset="SplSchool">
     <tag group="MagSch5C" tag="ExpElement"/>
     <tag group="sSchool" tag="Abjur"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CVoid" name="Void" compset="SplSchool">
     <tag group="MagSch5C" tag="ExpElement"/>
     <tag group="sSchool" tag="Abjur"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CWood" name="Wood" compset="SplSchool">
     <tag group="MagSch5C" tag="ExpElement"/>
     <tag group="sSchool" tag="Wood"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
   <thing id="ss5CElemen" name="Elemental" compset="SplSchool">
     <tag group="MagSch5C" tag="ExpElement"/>
     <tag group="sSchool" tag="Elemental"/>
     <eval phase="PostLevel" priority="20000"><![CDATA[
       ~ Check for Spell Focus for this specific school &
-      call 5CSplSchSF
-      ]]></eval>
+      call 5CSplSchSF]]></eval>
     </thing>
-
-
   <thing id="cfg5CFeatB" name="Feats, Bonus" description="This allows for the new tab &quot;Feats, Bonus&quot; to appear in HL once the field cfgMaxF1 is greater than zero.  In addition this only works because I have bootstrapped this &quot;Thing&quot; to a new &quot;Mechanics&quot; that I created." compset="Configure" uniqueness="unique">
     <tag group="fExclude" tag="fChaInc1"/>
     <tag group="fExclude" tag="fChaInc2"/>
@@ -453,8 +403,7 @@
       field[cfgMaxSp1].value += tagcount[sLevel.?]
       field[cfgLeftSp1].value = 0]]></eval>
     </thing>
-  <thing id="cfg5CMarAd" name="Martial Adept" description="This is a helper Thing for the feat Martial Adept." compset="Configure" uniqueness="unique">
-    <fieldval field="cfgMax3" value="2"/>
+  <thing id="cfg5CMarAd" name="Maneuvers" description="This is a helper Thing for the Martial Adept feat and the Superior Technique Fighting Style." compset="Configure" uniqueness="unique">
     <fieldval field="cfgAllow3" value="abCategory.FtrBMasMan"/>
     <fieldval field="cfgObject3" value="Battle Master Maneuvers"/>
     </thing>
@@ -531,12 +480,12 @@
       Endif]]></eval>
     </thing>
   <thing id="gt5CHerbs" name="Herbs" compset="GearType" isshowonly="yes"></thing>
-  <thing id="g5CHerbs" name="Herbs" description="Herbs and other ingredients found in the wild have long been a staple part of the healer&apos;s toolkit. Indeed, herbalism is linked not just with healing, but also with protection, witchcraft, and  of course  poison. Whether applied as a poultice, infused as a incense, drank as a soup or tea, nature&apos;s power over the world is undeniable, especially when applied by those skilled in its use. \n\nHerbalism is covered by three skills  Medicine (for healing herbs), Nature (for most other herbs), and Religion (for herbs dealing with the undead and the like). Preparation of an herb is an Intelligence (Nature), Wisdom (Medicine), or Wisdom (Religion) check, and requires proficiency with a herbalism kit, which contains the necessary tools and implements. \n\nHerbs are divided into three types: healing, endowment, and warding. Healing herbs restore hit points, and help deal with poison and illness. Endowment herbs grant abilities, including enhanced senses and adrenalin-like &apos;buffs&apos;. Warding herbs protect the user from things, including the undead." compset="Gear" isshowonly="yes">
+  <thing id="g5CHerbs" name="Herbs" description="Herbs and other ingredients found in the wild have long been a staple part of the healer&apos;s toolkit. Indeed, herbalism is linked not just with healing, but also with protection, witchcraft, and – of course – poison. Whether applied as a poultice, infused as a incense, drank as a soup or tea, nature&apos;s power over the world is undeniable, especially when applied by those skilled in its use. \n\nHerbalism is covered by three skills – Medicine (for healing herbs), Nature (for most other herbs), and Religion (for herbs dealing with the undead and the like). Preparation of an herb is an Intelligence (Nature), Wisdom (Medicine), or Wisdom (Religion) check, and requires proficiency with a herbalism kit, which contains the necessary tools and implements. \n\nHerbs are divided into three types: healing, endowment, and warding. Healing herbs restore hit points, and help deal with poison and illness. Endowment herbs grant abilities, including enhanced senses and adrenalin-like &apos;buffs&apos;. Warding herbs protect the user from things, including the undead." compset="Gear" isshowonly="yes">
     <tag group="explicit" tag="10"/>
     <tag group="GearType" tag="gt5CHerbs" name="Herbs" abbrev="Herbs"/>
     </thing>
   <thing id="gt5CAlcItm" name="Alchemical Items" compset="GearType" summary="Alchemical Items" isshowonly="yes"></thing>
-  <thing id="g5CAlchItm" name="Alchemical Items" description="Alchemists are masters of haphazard mprovisation and calculated improvement. Even lacking the right tool, the alchemist is almost always working up a new concoction. Here youll find a few new items to add to the alchemists arsenal, and a new variant rule for crafting them.\n\nOn an average day, a craftsman produces about 5 gp worth of marketable goods. Alchemy is no differentbut oftentimes, alchemists lack\nthe required downtime. To quickly produce alchemical items, you may make a DC 10 Intelligence (Alchemists Tools) check. Your daily progress is doubled for every 5 points by which you exceed this DC. If you fail by 5 or more, you ruin the days ingredients, losing the days\nraw materials and 5 gp of progress. You may attempt to craft during an adventuring day, but doing so imposes disadvantage on your crafting\ncheck to represent various complications and interruptions" compset="Gear" isshowonly="yes">
+  <thing id="g5CAlchItm" name="Alchemical Items" description="Alchemists are masters of haphazard mprovisation and calculated improvement. Even lacking the right tool, the alchemist is almost always working up a new concoction. Here you’ll find a few new items to add to the alchemist’s arsenal, and a new variant rule for crafting them.\n\nOn an average day, a craftsman produces about 5 gp worth of marketable goods. Alchemy is no different—but oftentimes, alchemists lack\nthe required downtime. To quickly produce alchemical items, you may make a DC 10 Intelligence (Alchemist’s Tools) check. Your daily progress is doubled for every 5 points by which you exceed this DC. If you fail by 5 or more, you ruin the day’s ingredients, losing the day’s\nraw materials and 5 gp of progress. You may attempt to craft during an adventuring day, but doing so imposes disadvantage on your crafting\ncheck to represent various complications and interruptions" compset="Gear" isshowonly="yes">
     <tag group="GearType" tag="gt5CAlcItm" name="Alchemical Items"/>
     <tag group="explicit" tag="50"/>
     </thing>
