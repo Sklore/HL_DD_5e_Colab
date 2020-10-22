@@ -1458,4 +1458,23 @@ SVDC = master.hero.childfound[cHelpWlk].field[cSplSaveDC].value
 
 field[abText].text = "Save DC " & SVDC]]></eval>
     </thing>
+  <thing id="cClr5CBlsStr" name="Blessed Strikes" description="When you damage a creature with one of your spells or weapon attacks, you can also deal 1d8 radiant damage to that creature. Once you&apos;ve dealt this damage, you cannot do so again until the beginning of your next turn." compset="CustomSpec" summary="Deal an extra 1d8 radiant damage once per round." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="8"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="AllowRCust" tag="cfg5CCFVClr"/>
+    <tag group="Usage" tag="Round"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="DamageType" tag="dtRadiant"/>
+    <eval phase="Final" priority="5000"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+foreach  pick in hero where "(ClSpecWhen.14 | ClSpecWhen.8) & SpecSource.cHelpClr & !thingid.cClrDesUnd"
+ debug eachpick.field[shortname].text
+ perform each.tagreplace[Helper.ShowSpec,Helper.Disable]
+nexteach]]></eval>
+    <exprreq message="Requires Cleric Level 8"><![CDATA[#levelcount[Cleric] >= 8]]></exprreq>
+    </thing>
   </document>
