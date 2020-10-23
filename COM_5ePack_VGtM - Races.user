@@ -250,6 +250,9 @@
     <bootstrap thing="wUnarmed">
       <autotag group="AttackTarg" tag="1Target"/>
       </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
     </thing>
   <thing id="ra5CTrtAmp" name="Amphibious" description="You can breathe air and water." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
@@ -262,23 +265,23 @@
   <thing id="ra5CGuaDep" name="Guardian of the Depths" description="You have resistance to cold damage, and you ignore any of the drawbacks caused by a deep, underwater environment." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
     </thing>
-  <thing id="ra5CCAnW" name="Control Air and Water" description="You can cast fog cloud with this trait. Starting at 3rd level, you can cast gust of wind with it, and starting at 5th level, you can also cast wall of water with it (see the spell in the sidebar). Once you cast a spell with this trait, you can&apos;t do so again until you finish a long rest. Charisma is your spellcasting ability for these spells." compset="RaceSpec">
+  <thing id="ra5CCAnW" name="Control Air and Water" description="You can cast fog cloud with this trait. Starting at 3rd level, you can cast gust of wind with it, and starting at 5th level, you can also cast wall of water with it (see the spell in the sidebar). Once you cast a spell with this trait, you can&apos;t cast that spell with it again until you complete a long rest. Charisma is your spellcasting ability for these spells." compset="RaceSpec">
     <bootstrap thing="spGustWind">
       <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
       <autotag group="Helper" tag="RaceSpell"/>
-      <autotag group="Usage" tag="Day"/>
+      <autotag group="Usage" tag="LongRest"/>
       <assignval field="trkMax" value="1"/>
       </bootstrap>
     <bootstrap thing="sp5CEPCWaW">
       <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
       <autotag group="Helper" tag="RaceSpell"/>
-      <autotag group="Usage" tag="Day"/>
+      <autotag group="Usage" tag="LongRest"/>
       <assignval field="trkMax" value="1"/>
       </bootstrap>
     <bootstrap thing="spFogClou">
       <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 1]]></containerreq>
       <autotag group="Helper" tag="RaceSpell"/>
-      <autotag group="Usage" tag="Day"/>
+      <autotag group="Usage" tag="LongRest"/>
       <assignval field="trkMax" value="1"/>
       </bootstrap>
     </thing>
@@ -406,7 +409,6 @@ nexteach]]></eval>
     <fieldval field="rHeightMin" value="24"/>
     <fieldval field="rWeightMin" value="25"/>
     <fieldval field="rDEX" value="2"/>
-    <fieldval field="rSTR" value="-2"/>
     <usesource source="5eVGtMCP"/>
     <tag group="RaceType" tag="Normal"/>
     <tag group="Alignment" tag="Lawful"/>
@@ -446,21 +448,29 @@ nexteach]]></eval>
     <fieldval field="rHeightMin" value="72"/>
     <fieldval field="rWeightMin" value="230"/>
     <fieldval field="rCON" value="1"/>
-    <fieldval field="rINT" value="-2"/>
     <fieldval field="rSTR" value="2"/>
+    <fieldval field="cSkillMax" value="2"/>
     <usesource source="5eVGtMCP"/>
+    <usesource source="5eRftLWCP"/>
+    <usesource source="5eEGtWCP"/>
     <tag group="RaceSize" tag="Medium0"/>
-    <tag group="Alignment" tag="Evil"/>
     <tag group="RaceType" tag="Normal"/>
     <tag group="Alignment" tag="Chaotic"/>
+    <tag group="AllowSkl1" tag="skInsight"/>
+    <tag group="AllowSkl1" tag="skIntim"/>
+    <tag group="AllowSkl1" tag="skMedicine"/>
+    <tag group="AllowSkl1" tag="skNature"/>
+    <tag group="AllowSkl1" tag="skPercep"/>
+    <tag group="AllowSkl1" tag="skSurvival"/>
+    <tag group="AllowSkl1" tag="skAnimHand"/>
     <bootstrap thing="lCommon"></bootstrap>
     <bootstrap thing="lOrc"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
-    <bootstrap thing="raHOMenace"></bootstrap>
     <bootstrap thing="ra5COrcAgg"></bootstrap>
     <bootstrap thing="ra5CEEMoBo"></bootstrap>
+    <bootstrap thing="ra5CEbOrPrInt"></bootstrap>
     <bootstrap thing="wUnarmed">
       <autotag group="AttackTarg" tag="1Target"/>
       </bootstrap>
@@ -698,5 +708,21 @@ doneif (hero.tagis[Size.Gargantuan] = 1)
      endif
      nexteach]]></eval>
     <exprreq message="Cannot be Tiny or Gargantuan">hero.tagis[Size.Tiny] + hero.tagis[Size.Gargantuan] = 0</exprreq>
+    </thing>
+  <thing id="ra5CErrOrcAdj" name="Use Old Orc" description="Select this option if you&apos;d like to use the pre-2020 version of the Orc. This will disable the &quot;Primal Intuition&quot; trait and instead only allow you to pick a single proficiency with Intimidation, mirroring the &quot;Menacing&quot; trait previously granted to the Orc. It will also restore the -2 modifer to Intelligence." compset="RaceSpec">
+    <fieldval field="usrChkText" value="Menacing and -2 Int"/>
+    <eval phase="First" priority="450"><![CDATA[      ~if currently active, replace stuff with other stuff
+
+      if (field[usrIsCheck].value <> 0) then
+       perform hero.childfound[ra5CEbOrPrInt].tagreplace[Helper.ShowSpec,Helper.Disable]
+perform hero.child[r5CVGMOrc].delete[AllowSkl1.skInsight]
+perform hero.child[r5CVGMOrc].delete[AllowSkl1.skMedicine]
+perform hero.child[r5CVGMOrc].delete[AllowSkl1.skNature]
+perform hero.child[r5CVGMOrc].delete[AllowSkl1.skPercep]
+perform hero.child[r5CVGMOrc].delete[AllowSkl1.skSurvival]
+perform hero.child[r5CVGMOrc].delete[AllowSkl1.skAnimHand]
+       hero.child[r5CVGMOrc].field[rINT].value -= 2
+       hero.child[r5CVGMOrc].field[cSkillMax].value -= 1
+        endif]]></eval>
     </thing>
   </document>
