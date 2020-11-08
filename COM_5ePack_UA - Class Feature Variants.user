@@ -221,7 +221,7 @@ hero.child[Speed].field[tSpeed].value += 5]]></eval>
   <thing id="cRgr5CPrmlAw" name="Primal Awareness" description="You can learn additional spells when you reach certain levels with this class. These spells don&apos;t count against the number of ranger spells you know, and can each be cast once without expending a spell slot. Each spell recharges at the end of a long rest.\n\n3rd          {i}detect magic{/i}, {i}speak with animals{/i}\n5th          {i}beast sense{/i}, {i}locate animals or plants{/i}\n9th          {i}speak with plants{/i}\n13th        {i}locate creature{/i}\n17th        {i}commune with nature{/i}\n\n{i}Replaces Primeval Awareness{/i}" compset="CustomSpec" summary="Gain additional spells at certain levels." uniqueness="unique">
     <tag group="AllowRCust" tag="cfg5CCFVRgr"/>
     <tag group="Helper" tag="Primary"/>
-    <bootstrap thing="spDeteMagC">
+    <bootstrap thing="spDeteMagi">
       <autotag group="Helper" tag="SpellLike"/>
       <autotag group="Usage" tag="LongRest"/>
       <assignval field="trkMax" value="1"/>
@@ -1457,5 +1457,24 @@ endif]]></validate>
 SVDC = master.hero.childfound[cHelpWlk].field[cSplSaveDC].value
 
 field[abText].text = "Save DC " & SVDC]]></eval>
+    </thing>
+  <thing id="cClr5CBlsStr" name="Blessed Strikes" description="When you damage a creature with one of your spells or weapon attacks, you can also deal 1d8 radiant damage to that creature. Once you&apos;ve dealt this damage, you cannot do so again until the beginning of your next turn." compset="CustomSpec" summary="Deal an extra 1d8 radiant damage once per round." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="8"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="AllowRCust" tag="cfg5CCFVClr"/>
+    <tag group="Usage" tag="Round"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="DamageType" tag="dtRadiant"/>
+    <eval phase="Final" priority="5000"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+foreach  pick in hero where "(ClSpecWhen.14 | ClSpecWhen.8) & SpecSource.cHelpClr & !thingid.cClrDesUnd"
+ debug eachpick.field[shortname].text
+ perform each.tagreplace[Helper.ShowSpec,Helper.Disable]
+nexteach]]></eval>
+    <exprreq message="Requires Cleric Level 8"><![CDATA[#levelcount[Cleric] >= 8]]></exprreq>
     </thing>
   </document>

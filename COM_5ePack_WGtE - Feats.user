@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
-  <thing id="f5CEbAbDrgMk" name="Aberrant Dragonmark" description="{i}Prerequisite: No existing dragonmark.{/i}\n\nYou have manifested an aberrant dragonmark. Determine its appearance and the flaw associated with it. You gain the following benefits:\n\n.  Increase your Constitution score by 1, to a maximum of 20.\n. You learn a cantrip from the sorcerer spell list. In addition, choose a 1st-level spell from the sorcerer spell list. You learn that spell and can cast it at its lowest level. Once you cast it, you must finish a long rest before you can cast it again. Constitution is your spellcasting ability for these spells.\n. You can increase the power of your aberrant spells at the risk of your own vitality. When you cast a spell with your aberrant mark, you can use one of your Hit Dice to increase the spell’s level by 1. Immediately after you cast the spell, roll the Hit Die. You take damage equal to the number rolled." compset="Feat" uniqueness="useronce">
+  <thing id="f5CEbAbDrgMk" name="Aberrant Dragonmark (Deprecated)" description="This early release version of the Aberrant Dragonmark feat has been replaced with a proper one. If you&apos;re seeing this, replace this version of the feat with the newer one from the feats list." compset="Feat" uniqueness="useronce">
     <fieldval field="abValue5" value="1"/>
     <fieldval field="usrCandid1" value="component.Class &amp; Classes.Sorcerer"/>
     <usesource source="5eWGtECP"/>
@@ -35,7 +35,7 @@
       doneif (tagis[Helper.Disable] = 1)
       hero.child[aCON].field[aStartMod].value += 1]]></eval>
     <pickreq thing="sr5CEbMoFHo" ispreclude="yes"/>
-	<pickreq thing="sr5CEbHElfMoD" ispreclude="yes"/>
+    <pickreq thing="sr5CEbHElfMoD" ispreclude="yes"/>
     <pickreq thing="sr5CEbMoFind" ispreclude="yes"/>
     <pickreq thing="sr5CEbMoHndl" ispreclude="yes"/>
     <pickreq thing="sr5CEbHalfMoH" ispreclude="yes"/>
@@ -134,5 +134,176 @@
        endif
      nexteach]]></eval>
     <pickreq thing="rElf"/>
+    </thing>
+  <thing id="f5CADM3" name="Aberrant Dragonmark" description="{i}Prerequisite: No existing dragonmark.{/i}\n\nYou have manifested an aberrant dragonmark. Determine its appearance and the flaw associated with it. You gain the following benefits:\n\n.  Increase your Constitution score by 1, to a maximum of 20.\n. You learn a cantrip from the sorcerer spell list. In addition, choose a 1st-level spell from the sorcerer spell list. You learn that spell and can cast it at its lowest level. Once you cast it, you must finish a long rest before you can cast it again. Constitution is your spellcasting ability for these spells.\n. You can increase the power of your aberrant spells at the risk of your own vitality. When you cast a spell with your aberrant mark, you can use one of your Hit Dice to increase the spell’s level by 1. Immediately after you cast the spell, roll the Hit Die. You take damage equal to the number rolled.\n\nNote: You can use the counter in the In-Play tab to decrement your used Hit Dice, but you will have to reduce the counter manually to add them back to your hero on a long rest. The inability to automate this is due to a programming limitation with Hero Lab itself." compset="Feat" replaces="f5CEbAbDrgMk" uniqueness="useronce">
+    <fieldval field="abValue5" value="1.5"/>
+    <fieldval field="actIncrNam" value="Hit Dice Used"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="usrCandid1" value="component.HitDie &amp; Helper.HitDieShow"/>
+    <usesource source="5eWGtECP" parent="p5eBooks" name="Wayfinder&apos;s Guide to Eberron "/>
+    <usesource source="5eRftLWCP" parent="p5eBooks" name="Eberron - Rising from the Last War"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ChargeCalc" tag="HitDieHalf"/>
+    <bootstrap thing="cfg5CADM3"></bootstrap>
+    <bootstrap thing="c5CGrtrAbDmk">
+      <containerreq phase="First" priority="1449"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="First" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]
+      
+      ~ Set the ability score and spell tags onto the configurable
+      perform hero.childfound[cfg5CADM3].assign[StandardDC.aCON]
+      perform hero.childfound[cfg5CADM3].assign[sClass.cHelpSor]
+      ~ Set the total number of spells allowed (ie 1.5 which is .5 for each
+      ~ cantrip and 1 for 1st level spell).
+      hero.childfound[cfg5CADM3].field[cfgMaxSp1].value += field[abValue5].value
+      
+      ~ Remove the Standard DC tag from this feat
+      perform delete[StandardDC.?]]]></eval>
+    <eval phase="Final" priority="10002" index="3"><![CDATA[    doneif (tagis[Helper.ShowSpec] = 0)
+    doneif (tagis[Helper.Disable] <> 0)
+
+    var num as number
+
+    num = field[actUser].value
+
+     if (field[usrChosen1].ischosen <> 0) then
+     field[usrChosen1].chosen.field[trkLeft].value -= num
+     endif]]></eval>
+    <eval phase="First" priority="300" index="4"><![CDATA[    doneif (tagis[Helper.ShowSpec] = 0)
+    doneif (tagis[Helper.Disable] <> 0)
+
+     if (field[usrChosen1].ischosen <> 0) then
+     field[actUserMax].value = field[usrChosen1].chosen.field[trkMax].value
+     endif]]></eval>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      hero.child[aCON].field[aStartMod].value += 1]]></eval>
+    <eval phase="PostLevel" index="5"><![CDATA[    doneif (tagis[Helper.Disable] <> 0)
+    doneif (#totallevelcount[] < 10)
+
+
+    perform assign[User.Activation]
+    field[actName].text= "Greater"]]></eval>
+    <pickreq thing="sr5CEbMoPass" ispreclude="yes"/>
+    <pickreq thing="sr5CEbMoFHo" ispreclude="yes"/>
+    <pickreq thing="ra5CEbMoMake" ispreclude="yes"/>
+    <pickreq thing="sr5CEbGnomMoS" ispreclude="yes"/>
+    <pickreq thing="sr5CEbMoSent" ispreclude="yes"/>
+    <pickreq thing="sr5CEbHElfMoD" ispreclude="yes"/>
+    <pickreq thing="sr5CEbMoFind" ispreclude="yes"/>
+    <pickreq thing="sr5CEbMoHndl" ispreclude="yes"/>
+    <pickreq thing="sr5CEbElfMoS" ispreclude="yes"/>
+    <pickreq thing="sr5CEbHalfMoH" ispreclude="yes"/>
+    <pickreq thing="sr5CEbHlfMoHo" ispreclude="yes"/>
+    <pickreq thing="sr5CEbHElfMoS" ispreclude="yes"/>
+    <pickreq thing="sr5CEbMoWard" ispreclude="yes"/>
+    </thing>
+  <thing id="cfg5CADM3" name="Aberrant Dragonmark" description="Helper Thing for the feat Aberrant Dragonmark." compset="Configure" uniqueness="unique">
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="Helper" tag="SpCountLev" name="SpCountLev" abbrev="SpCountLev"/>
+    <eval phase="Render" priority="2147483647" index="2"><![CDATA[      var nLevel0 as number
+      var nLevel1 as number
+      var 0Text as string
+      var 1Text as string
+      ~ Calculate the number of spells selected
+      nLevel0 = tagcount[sLevel.0]
+      nLevel1 = tagcount[sLevel.1]
+      ~ Set default messages
+      0Text = "No more cantrips"
+      1Text = "no more 1st-level spells"
+      ~ Set cantrip error messages
+      If (nLevel0 < 1) then
+      0Text = "1 more cantrip"
+      ElseIf (nLevel0 > 1) then
+      nLevel0 -= 1
+      0Text = nLevel0 & " fewer cantrip(s)"
+      Endif
+      ~ Set 1st level error messages
+      If (nLevel1 < 1) then
+      1Text = "1 more 1st-level spell"
+      ElseIf (nLevel1 > 1) then
+      nLevel1 -= 1
+      1Text = nLevel1 & " fewer 1st-level spell(s)"
+      Endif
+
+      field[cfgAdTxSp1].text = 0Text & ", " & 1Text & " needed."]]></eval>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ If no spell class tags, do nothing &
+      doneif (tagcount[sClass.?] = 0)
+      ~ NOTE: I am thinking I found more bugs in 5e game system as
+      ~       I shouldn't have to do this to get spells to appear
+      ~       on the "Spells" tab.
+      ~ Generate SpellSort and SpellType tags
+      perform pulltags[sClass.?,SpellSort]
+      perform pulltags[sClass.?,SpellType]
+      ~ Loop through all the spell picks added on the "Aberrant Dragonmark"
+      ~ Configurable tab.
+      foreach pick in hero from BaseSpell where "CfgSpell.cfg5CADM3"
+        ~ Set the SpellSort and SpellType tags which are needed
+        ~ to get spells to display correctly on the Spells tab
+        perform eachpick.pushtags[SpellSort.?]
+        perform eachpick.pushtags[SpellType.?]
+        ~ Pull the spell level selected and the deny tags so that
+        ~ we can set the message and selection list corretly.
+        perform eachpick.pulltags[sLevel.?]
+        perform eachpick.pulltags[ClsDenySp.?]
+        ~ If we are a cantrip add the helper cantrip tag
+        if (eachpick.tagis[sLevel.0] = 1) then
+          perform eachpick.assign[Helper.Cantrip]
+        ~.. otherwise we are level 1+ spell so make us a
+        ~   racial spell so we can limit its use to 1/shortrest
+        else
+          perform eachpick.assign[Helper.SpellLike]
+          perform eachpick.assign[Usage.ShortRest]
+          eachpick.field[trkMax].value += 1
+        endif
+      nexteach
+      ~ Set the spell selection expression to only be the selected class
+      field[cfgAllwSp1].text &= " & (sLevel.0|sLevel.1) & (" & tagids[sClass.?,"|"] & ") & !Helper.Helper"
+      ~ If we have Class Deny Spells then remove those from the list. This
+      ~ prevents the same spell from being added twice. This way we act
+      ~ like the normal spell portal does.
+      if (tagcount[ClsDenySp.?] <> 0) then
+        field[cfgAllwSp1].text &= " & !(" & tagids[ClsDenySp.?,"|"] & ")"
+      endif]]></eval>
+    </thing>
+  <thing id="c5CGrtrAbDmk" name="Greater Aberrant Dragonmark" description="If the DM chooses, a character with the Aberrant Dragonmark feat has a 10 percent chance of gaining greater power every time they level, starting at level 10. If they do receive this power, they are granted an epic boon chosen either by the DM or randomly. The character permanently loses one of their Hit Dice, and their hit point maximum is reduced by an amount equal to a roll of that lost hit die plus their Constitution modifier (a minimum reduction of 1 HP). Nothing can reverse this reduction." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.HitDie &amp; Helper.HitDieShow"/>
+    <fieldval field="actUserMax" value="20"/>
+    <fieldval field="actUserMin" value="1"/>
+    <fieldval field="actIncrNam" value="HP Reduction"/>
+    <fieldval field="actName" value="Boon"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="First" priority="10000" index="2"><![CDATA[if (field[abilActive].value <> 0) then
+
+perform hero.assign[Dependant.UseBoons]
+endif]]></eval>
+    <eval phase="First" priority="10000"><![CDATA[    doneif (tagis[Helper.ShowSpec] = 0)
+    doneif (tagis[Helper.Disable] <> 0)
+
+var num as number
+
+num = field[actUser].value
+
+if (field[abilActive].value <> 0) then
+     if (field[usrChosen1].ischosen <> 0) then
+     field[usrChosen1].chosen.field[trkMax].value -= 1
+     herofield[tHP].value -= num
+         endif
+endif]]></eval>
     </thing>
   </document>

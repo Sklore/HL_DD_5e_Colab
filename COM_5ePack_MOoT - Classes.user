@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CBrdEloq" name="College of Eloquence" description="Your ability to use words and logic surpasses most others, empowering your allies even further." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eMOoTCP"/>
+    <tag group="SpecSource" tag="cHelpBrd" name="Bard" abbrev="Bard"/>
+    <tag group="abCategory" tag="BrdCollege" name="Bardic College" abbrev="Bardic College"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="c5CBrdInfInsp">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5cBrdSilvTng">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CBrdUnsWrds">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CBrdUnivSpc">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CBrdUnfInsp">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5cBrdSilvTng" name="Silver Tongue" description="When making a Charisma (Persuasion or Deception) check, any roll of 9 or lower counts as a roll of 10." compset="ClSpecial" summary="You can treat a roll of 9 or lower to persuade or deceive as a 10.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CBrdUnsWrds" name="Unsettling Words" description="You can use a bonus action to expend and roll one of your Bardic Inspiration dice, choosing a creature visible to and within 60 feet of you. The creature must subtract that number rolled from the next saving throw it makes before the beginning of your next turn." compset="ClSpecial" summary="You can use a bardic inspiration to reduce an enemy&apos;s saving throw.">
+    <fieldval field="abRange" value="60"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="c5CBrdUnfInsp" name="Unfailing Inspiration" description="When a creature adds one of your Bardic Inspiration dice to an ability check, attack roll, or saving throw and fails, it can keep that die." compset="ClSpecial" summary="Allies may keep your Bardic Inspiration dice if the die fails to help them.">
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="c5CBrdUnivSpc" name="Universal Speech" description="As an action, you may choose one or more creatures within 60 feet of you, up to a number equaling your Charisma modifier (a minimum of 1). The creatures chosen are able to magically understand you for the next hour, regardless of what language you use.\n\nOnce used, you must either long rest or spend a spell slot to use it again." compset="ClSpecial" summary="You can make yourself understandable to others regardless of their language.">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abText" value="people"/>
+    <tag group="ChargeAttr" tag="Minimum1"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abDuration" tag="Hour"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ChargeAttr" tag="aCHA"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="AppValue"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="Final"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+var num as number
+
+num = hero.childfound[aCHA].field[aBonus].value
+
+num = maximum(1,num)
+
+field[abValue].value = num
+
+if (num = 1) then
+field[abText].text = "person"
+endif]]></eval>
+    </thing>
+  <thing id="c5CBrdInfInsp" name="Infectious Inspiration" description="When a creature within 60 feet of you adds a Bardic Inspiration die from you to one of its ability checks, attack rolls, or saving throws  and succeeds, you can use a reaction to give another creature a Bardic Inspiration die. This die does not expend any of your pool of Bardic Inspiration dice. The chosen second creature cannot be you, and must be visible to you and within 60 feet of you. \n\nYou can use this reaction a number equaling your Charisma modifier (a minimum of 1 use), and you regain all spent uses of this ability at the end of your next long rest." compset="ClSpecial" summary="Your Bardic Inspiration die used by one ally can cause another ally to receive a free die.">
+    <fieldval field="abRange" value="60"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ChargeAttr" tag="aCHA"/>
+    <tag group="ChargeAttr" tag="Minimum1"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="c5CPalGlory" name="Oath of Glory" description="Paladins who take the Oath of Glory believe that they and their companions have a grand, heroic destiny.\n\n{b}Tenets of Devotion{/b}\nOath of Glory paladins seek to become legend.\n\n{b}{i}Actions over Words.{/b} {/i}Let your deeds speak for themselves.\n\n{b}{i}Challenges Are Tests.{/b} {/i} Hardships should be met by courage, from both you and your allies.\n\n{b}{i}Hone the Body.{/b} {/i}You must chisel your body, as like a statue from stone.\n\n{b}{i}Discipline the Soul.{/b} {/i}You must overcome the failings of your self, so that you may achieve the glory of your future." compset="CustomSpec" summary="Your oath binds you to the loftiest ideals of justice, virtue, and order." uniqueness="unique">
+    <usesource source="5eMOoTCP"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpPal" name="Paladin" abbrev="Paladin"/>
+    <tag group="abCategory" tag="PalSacOath" name="Paladin Sacred Oath" abbrev="Paladin Sacred Oath"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <bootstrap thing="c5CPalPeerAth">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalAurAla">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalGlrDef">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalLivLeg">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="spGuidBolt">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spHeroism">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spEnhaAbil">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spMagiWeap">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spHaste">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spProtEner">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spFreeMove">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spCompulsi">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spCommune">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spFlamStri">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalInsSmi">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CPalPeerAth" name="Channel Divinity: Peerless Athlete" description="You can use a bonus action to augment your physical abilities for 10 minutes through your Channel Divinity feature. For the duration, you have advantage on all Strength (Athletics) and Dexterity (Acrobatics) checks. You can carry, push, drag, and lift twice as much as normal. And your long and high jumps can cover an extra 10 feet (though these extra distances require the use of movement as normal for jumps)." compset="ClSpecial" summary="Your Channel Divinity briefly makes you an incredible athlete.">
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="c5CPalInsSmi" name="Channel Divinity: Inspiring Smite" description="Immediately after dealing damage to a creature by using Divine Smite, you can use a bonus action to use Channel Divinity. You distribute temporary hit points to creatures of your choice within 30 feet of you, including yourself if you choose. You can freely divide a total number of hit points equal to 2d8 + your Paladin level." compset="ClSpecial" summary="Use Channel Divinity after Divine Smite to grant your party temporary HP.">
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNameApp" tag="AppText"/>
+    <eval phase="Final" priority="1000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abValue].value += hero.tagcount[Classes.Paladin]
+
+debug field[abValue].value
+      field[abText].text = "(2d8" & signed(field[abValue].value) & " temp HP)"]]></eval>
+    </thing>
+  <thing id="c5CPalAurAla" name="Aura of Alacrity" description="You emanate an aura that bolsters your and your companion&apos;s speed when moving in formation. Your walking speed increases by 10 feet. If you are not incapacitated, the walking speed of allies starting their turns within 5 feet of you increases by 10 feet until the end of that turn. \n\nWhen you reach 18th level with this class, the range of the aura increases to 10 feet." compset="ClSpecial" summary="Your and your adjacent allies&apos; speed increases by 10 feet.">
+    <fieldval field="abRange" value="5"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="LvNamePar" tag="IncRange" name="Include Range text" abbrev="Include Range text"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      if (field[xAllLev].value >= 18) then
+        field[abRange].value += 5
+        endif]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2">hero.child[Speed].field[tSpeed].value += 10</eval>
+    </thing>
+  <thing id="c5CPalGlrDef" name="Glorious Defense" description="When you or another creature visible to and within 10 feet of you is hit by an attack roll, you can use a reaction to grant a bonus to the target&apos;s AC versus that attack. The bonus is equal to your Charisma modifier (a minimum of +1). If this added AC causes the attack to miss, you can then make a single weapon attack against the attacker if they are within your range.\n\nThe number of times you can use this feature is equal to your Charisma modifier (a minimum of one time), and you gain all spent uses of it at the end of your next long rest." compset="ClSpecial" summary="Reaction to add to ally&apos;s AC and potentially strike attacker back.">
+    <fieldval field="abRange" value="10"/>
+    <tag group="ChargeCalc" tag="AttrOnly"/>
+    <tag group="ChargeCalc" tag="FinalMin1"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="ChargeAttr" tag="aCHA"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="User" tag="Tracker"/>
+    <eval phase="Final" priority="1000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abValue].value += maximum(1,#attrmod[aCHA])
+
+      field[abText].text = "+" & field[abValue].value & "AC"]]></eval>
+    </thing>
+  <thing id="c5CPalLivLeg" name="Living Legend" description="You can use a bonus action to grant yourself these benefits for 1 minute: \n• You gain advantage on all Charisma checks. \n• Once per turn, when you miss with a weapon attack, you can cause it to instead hit. \n• You can reroll a failed saving throw, but must use the new roll.\n\nOnce you&apos;ve used this feature, you must either complete a long rest or spend a 5th-level spell slot to use it again." compset="ClSpecial" summary="You grant yourself legendary abilities in combat.">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  </document>
