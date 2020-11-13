@@ -3,6 +3,7 @@
   <thing id="c5CSGBoH" name="Blessing of Health" description="Your Constitution score increases by 2. It&apos;s new maximum is 22." compset="CustomSpec" uniqueness="useronce">
     <usesource source="5eDMGCP"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <tag group="Helper" tag="SpecUp"/>
     <eval phase="PreAttr" priority="10000"><![CDATA[
       ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
@@ -15,6 +16,7 @@
   <thing id="c5CSGBoP" name="Blessing of Protection" description="You are granted a +1 bonus to your AC and saving throws." compset="CustomSpec" uniqueness="useronce">
     <usesource source="5eDMGCP"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <tag group="Helper" tag="SpecUp"/>
     <eval phase="PreLevel" priority="5000"><![CDATA[
       ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
@@ -31,16 +33,19 @@
     <tag group="SpInfo" tag="spGreaRest"/>
     <tag group="SpInfo" tag="spLessRest"/>
     </thing>
-  <thing id="c5CSGBoMR" name="Blessing of Magic Resistance" description="Your saving throws versus  spells and other magical effects are made with advantage." compset="CustomSpec" uniqueness="useronce">
+  <thing id="c5CSGBoMR" name="Blessing of Magic Resistance" description="Your saving throws versus spells and other magical effects are made with advantage." compset="CustomSpec" uniqueness="useronce">
     <usesource source="5eDMGCP"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
-    <bootstrap thing="ra5CMagRes">
-      <assignval field="CustDesc" value="You have advantage on saving throws against spells and other magical effects."/>
-      </bootstrap>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svAll],"Advantage vs. spells and other magical efffects",field[thingname].text]]]></eval>
     </thing>
   <thing id="c5CSGBoU" name="Blessing of Understanding" description="Your Wisdom score increases by 2. It&apos;s new maximum is 22." compset="CustomSpec" uniqueness="useronce">
     <usesource source="5eDMGCP" parent="p5ePack" name="5e Dungeon Master&apos;s Guide"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <tag group="Helper" tag="SpecUp"/>
     <eval phase="PreAttr" priority="10000"><![CDATA[
       ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
@@ -61,7 +66,7 @@
     <tag group="FeatureTyp" tag="Action"/>
     <tag group="abDuration" tag="Hour"/>
     </thing>
-  <thing id="c5CSGBoWE" name="Blessing of Weapon Enhancement" description="One nonmagical weapon in you have becomes a +1 weapon when you wield it." compset="CustomSpec" uniqueness="useronce">
+  <thing id="c5CSGBoWE" name="Blessing of Weapon Enhancement" description="One nonmagical weapon you have becomes a +1 weapon when you wield it." compset="CustomSpec" uniqueness="useronce">
     <comment><![CDATA[~set our name based on the type of weapon chosen
       field[livename].text = "+1 "
       perform gizmo.findchild[BaseWep].setfocus
