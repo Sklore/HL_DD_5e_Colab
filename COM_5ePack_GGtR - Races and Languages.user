@@ -333,11 +333,17 @@ endif]]></eval>
     <tag group="ChooseSrc1" tag="Thing"/>
     <tag group="Helper" tag="ActivMenu"/>
     <bootstrap thing="l5CLandVeld">
-      <containerreq phase="First" priority="500">fieldval:usrIndex=1</containerreq>
+      <containerreq phase="First" priority="500">fieldval:abValue=1</containerreq>
       </bootstrap>
     <bootstrap thing="lElvish">
-      <containerreq phase="First" priority="500">fieldval:usrIndex=0</containerreq>
+      <containerreq phase="First" priority="500">fieldval:abValue=0</containerreq>
       </bootstrap>
+    <eval phase="Final" priority="5000"><![CDATA[
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abValue].value = field[usrIndex].value]]></eval>
     </thing>
   <thing id="ra5CGGRTiPr" name="Tireless Precision" description="You are proficient in one of the following skills of your choice: Arcana, History, Investigation, Medicine, Performance, or Sleight of Hand. You&apos;re also proficient in one tool of your choice.\n\nWhenever you make an ability check with the chosen skill or tool, roll a d4 and add the number rolled to the check&apos;s total." compset="RaceSpec">
     <bootstrap thing="cfg5CVedTiPrec"></bootstrap>
