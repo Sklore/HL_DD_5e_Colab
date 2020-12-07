@@ -1388,7 +1388,7 @@ perform eachpick.pushtags[ClsAllowSp.?]
     nexteach]]></eval>
     <exprreq message="Requires Sorcerer level 1"><![CDATA[#levelcount[Sorcerer] >= 1]]></exprreq>
     </thing>
-  <thing id="c5CWizXSpLst" name="Expanded Wizard Spell List" description="This feature adds these spells to the Wizard spell list:\n\n{b}Cantrips{/b}\nBooming Blade\nGreen-Flame Blade\nLightning Lure\nMind Sliver\nSword Burst\n\n{b}1st Level{/b}\nCaustic Brew\n\n{b}2nd Level{/b}\nAugury\nEnhance Ability\nMind Whip\n\n{b}3rd Level{/b}\nIntellect Fortress\nSpeak with Dead\nSpirit Shroud\nSummon Fey\nSummon Shadowspawn\nSummon Undead\n\n{b}4th Level{/b}\nDivination\nSummon Aberration\nSummon Construct\nSummon Elemental\n\n{b}6th Level{/b}\nOtherworldly Guise\nSummon Fiend\n\n{b}7th Level{/b}\nDream of the Blue Veil\n\n{b}9th Level{/b}\nBlade of Disaster\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CWizXSpLst" name="Expanded Wizard Spell List" description="This feature adds these spells to the Wizard spell list:\n\n{b}Cantrips{/b}\nMind Sliver\n\n{b}1st Level{/b}\nCaustic Brew\n\n{b}2nd Level{/b}\nAugury\nEnhance Ability\nMind Whip\n\n{b}3rd Level{/b}\nIntellect Fortress\nSpeak with Dead\nSpirit Shroud\nSummon Fey\nSummon Shadowspawn\nSummon Undead\n\n{b}4th Level{/b}\nDivination\nSummon Aberration\nSummon Construct\nSummon Elemental\n\n{b}6th Level{/b}\nOtherworldly Guise\nSummon Fiend\n\n{b}7th Level{/b}\nDream of the Blue Veil\n\n{b}9th Level{/b}\nBlade of Disaster\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
     <tag group="abCategory" tag="5CCFVWiz" name="Wizard Variant Features"/>
     <tag group="Helper" tag="Secondary"/>
     <tag group="Helper" tag="SpecUp"/>
@@ -1411,15 +1411,15 @@ perform eachpick.pushtags[ClsAllowSp.?]
     <tag group="ClsAllowSp" tag="sp5CCstBrw"/>
     <tag group="ClsAllowSp" tag="sp5CMndWhp"/>
     <tag group="ClsAllowSp" tag="sp5COthGui"/>
-    <tag group="ClsAllowSp" tag="sp5CGreeFB"/>
-    <tag group="ClsAllowSp" tag="sp5CBoomBl"/>
-    <tag group="ClsAllowSp" tag="sp5CLightL"/>
-    <tag group="ClsAllowSp" tag="sp5CSwordB"/>
     <eval phase="First"><![CDATA[
 doneif (tagis[Helper.Disable] <> 0)
 foreach pick in hero from Class where "Classes.Wizard"
 perform eachpick.pushtags[ClsAllowSp.?]
     nexteach]]></eval>
+    <eval phase="PostLevel" priority="11000" index="2"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+
+    hero.childfound[cHelpWiz].field[cSplBkExpr].text &= " & !sLevel.0"]]></eval>
     <exprreq message="Requires Wizard level 1"><![CDATA[#levelcount[Wizard] >= 1]]></exprreq>
     </thing>
   <thing id="c5CWlkXSpLst" name="Expanded Warlock Spell List" description="This feature adds these spells to the Warlock spell list:\n\n{b}Cantrips{/b}\nBooming Blade\nGreen-Flame Blade\nLightning Lure\nMind Sliver\nSword Burst\n\n{b}3rd Level{/b}\nIntellect Fortress\nSpirit Shroud\nSummon Fey\nSummon Shadowspawn\nSummon Undead\n\n{b}4th Level{/b}\nSummon Aberration\n\n{b}5th Level{/b}\nMislead\nPlanar Binding\nTeleportation Circle\n\n{b}6th Level{/b}\nOtherworldly Guise\nSummon Fiend\n\n{b}7th Level{/b}\nDream of the Blue Veil\n\n{b}9th Level{/b}\nBlade of Disaster\nGate\nWeird\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
