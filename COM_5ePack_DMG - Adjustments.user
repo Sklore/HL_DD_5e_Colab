@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="p5CTraining" name="Training" description="Spending downtime to train grants you several benefits:\n\n• You gain inspiration daily at dawn for 1d4 + 6 days.\n• You gain proficiency in a skill.\n• You gain a feat." compset="InPlay" summary="Gain one skill proficiency and one feat.">
+    <fieldval field="pWhat" value="Proficient Skill"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="OthAdjCat" tag="SkillProf" name="Skills and Proficiencies" abbrev="Skills and Proficiencies"/>
+    <tag group="Adjustment" tag="Skill" name="Skills" abbrev="Skills"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <eval phase="First" priority="1000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      ~ Mark our chosen skill as proficient
+      perform field[pChosen].chosen.assign[Helper.Proficient]]]></eval>
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+ 
+      ~ Increase or decrease the Max Feat One field on the new
+      ~ Configurable "cfg5CFeatB".
+      hero.childfound[cfg5CFeatB].field[cfgMaxF1].value += 1]]></eval>
+    </thing>
+  <thing id="p5CFiArPro" name="Firearm Proficiency" description="Grants the hero proficiency with all firearms when added to the character." compset="InPlay">
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <eval phase="First"><![CDATA[     ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      foreach thing in BaseWep where "wCategory.Firearm"
+        perform eachthing.pulltags[WepProf.?]
+       nexteach
+
+      ~ push all weapon proficiency tags to hero
+      perform hero.pushtags[WepProf.?]]]></eval>
+    </thing>
+  </document>
