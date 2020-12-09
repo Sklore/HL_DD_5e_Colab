@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
-  <thing id="sp5CModArcHa" name="Arcane Ha cking" description="You grant yourself advantage on Intelligence checks while trying to break through, circumvent, or countermand digital security online or on computerised devices while using hacking tools. You will also be able to bypass the effects of spells that have been used to secure systems and devices, such as arcane lock, against your own Spell Save DC. \n\n{b}{i}At Higher Levels.{/b}{/i} This spell can be used against protective spells of the same level of spell slot used or lower." compset="Spell">
+  <thing id="sp5CModArcHa" name="Arcane Hacking" description="You grant yourself advantage on Intelligence checks while trying to break through, circumvent, or countermand digital security online or on computerised devices while using hacking tools. You will also be able to bypass the effects of spells that have been used to secure systems and devices, such as arcane lock, against your own Spell Save DC. \n\n{b}{i}At Higher Levels.{/b}{/i} This spell can be used against protective spells of the same level of spell slot used or lower." compset="Spell">
     <fieldval field="sCompDesc" value="hacking tools"/>
     <fieldval field="sRange" value="Self"/>
     <fieldval field="sDuration" value="Concentration, up to 1 hour"/>
@@ -317,13 +317,20 @@
     <eval phase="PostLevel" priority="10000"><![CDATA[
       doneif (tagis[Helper.Disable] <> 0)
 
-
-~ there doesn't exist a Sidearms weapon prof group. if there was one, it would be here as: perform hero.pushtags[WepProf.Sidearm]
-
       perform hero.assign[ProfTool.gVehLand]
       perform hero.child[gVehLand].assign[Helper.TrainTool]
       perform hero.child[gVehLand].assign[Hide.Tool]
       perform hero.child[gVehLand].assign[Proficienc.Tool]]]></eval>
+    <eval phase="First" index="2"><![CDATA[     ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+
+      foreach thing in BaseWep where "wCategory.Firearm"
+        perform eachthing.pulltags[WepProf.?]
+       nexteach
+
+      ~ push all weapon proficiency tags to hero
+      perform hero.pushtags[WepProf.?]]]></eval>
     </thing>
   <thing id="c5CClrCHotC" name="Heart of the City" description="Also from level 1, when you used this ability you are considered proficient in one of the following skills; Deception, Intimidation, or Persuasion, and have advantage on a check. This can be used X number of times before completing a long rest, where X is equivalent to your Wisdom modifier, unless it is 0 or lower; in which case it may be used once.\n\nThe number of uses of this ability is refreshed after your PC finishes a long rest, and you are free to choose another one of those abilities (Deception, Intimidation, or Persuasion) for that day when next you use it." compset="ClSpecial">
     <tag group="User" tag="Tracker"/>
@@ -480,6 +487,18 @@ situ = "+" & bonus & " (total) in urban environments."
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
     <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <eval phase="First" priority="10001"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+~ Need to grant additional pact weapon choices
+
+~ check to see if improved Pact Weapon is around so we can add that too
+if (hero.childlives[c5CWlkImPW] <> 0) then
+  hero.childfound[cWlkPacBla].field[usrCandid1].text = "((component.BaseWep & wCategory.Melee) | thingid.wLongbow | thingid.wShortbow | thingid.wCrossbowL | thingid.wCrssbwHvy | (component.BaseWep & wCategory.Firearm))"
+  else
+  hero.childfound[cWlkPacBla].field[usrCandid1].text = "((component.BaseWep & wCategory.Melee)|(component.BaseWep & wCategory.Firearm))"
+  endif
+
+perform hero.childfound[cWlkPacBla].delete[fShowWhat.WeaponsMel]]]></eval>
     <pickreq thing="cWlkPacBla"/>
     </thing>
   <thing id="g5CSplStrg" name="Spell Storage Device" description="This device can be used by technomancy wizards to store their spells." compset="Gear">
@@ -546,13 +565,19 @@ situ = "+" & bonus & " (total) in urban environments."
     <eval phase="PostLevel" priority="10000"><![CDATA[
       doneif (tagis[Helper.Disable] <> 0)
 
-
-~ there doesn't exist a Sidearms weapon prof group. if there was one, it would be here as: perform hero.pushtags[WepProf.Sidearm]
-
       perform hero.assign[ProfTool.g5CHacking]
       perform hero.child[g5CHacking].assign[Helper.TrainTool]
       perform hero.child[g5CHacking].assign[Hide.Tool]
       perform hero.child[g5CHacking].assign[Proficienc.Tool]]]></eval>
+    <eval phase="First" index="2"><![CDATA[     ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      foreach thing in BaseWep where "wCategory.Firearm"
+        perform eachthing.pulltags[WepProf.?]
+       nexteach
+
+      ~ push all weapon proficiency tags to hero
+      perform hero.pushtags[WepProf.?]]]></eval>
     </thing>
   <thing id="c5CWizTcSav" name="Technological Savant" description="Level 2 Wizards of this tradition can upgrade their old fashioned paper spell books for a device such as a laptop, smartphone, tablet, etc., but may not have processing power or graphics display that is inferior to such devices. It is specifically synchronised with the wizard and any spells downloaded to it requires only 50% of the time that would be needed to add them to a ‘traditional’ spellbook. \n\n{i}Note{/i}: You can add a Spell Storage Device in the gear tab." compset="ClSpecial"></thing>
   <thing id="c5CWizTcPrg" name="Program Spell" description="Level 6; your understanding of the source code of reality has developed to the point where you can encode spells onto an electronic device that can be triggered however you choose and can only be activated by you. (The method of the trigger must be within the device’s limitations. On a computer it can be with a mouse click, or keyboard command, but you can’t trigger with a voice command unless the device has VO functionality and a mic).\n\nThe device may not have processing power or graphics display inferior to that of a basic (non-‘smart’) mobile phone.\n\nThe spell is neutralized with the device if it is damaged beyond repair. Your coding can only hold the spell in place for up to 48 hours. You can program no more than one spell on a device until the last spell you programmed has been triggered (and the spell’s duration, if any, ends), dismissed, removed by magical means, or if the device is destroyed. If the spell requires concentration then you may not use another spell that requires it without cancelling the spell, and you cannot Program a spell more than once before you have completed a long rest." compset="ClSpecial">
