@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="f5CArtIni" name="Artificer Initiate" description="You have some level of experience in artifice, gaining these benefits:\n\n. You learn a cantrip and a 1st-level spell from the Artificer spell list. Intelligence is your spellcasting trait for these spells.\n. You can cast the 1st-level spell using any spell slots you already have. You can also cast it once per long rest without using a spell slot.\n. You become proficient in your choice of one type of artisan&apos;s tools. You can use those tools as your spellcasting focus for any spells you cast that use Intelligence as their spellcasting ability." compset="Feat" uniqueness="useronce">
+    <fieldval field="abValue5" value="1.5"/>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="cfg5CArtIni"></bootstrap>
+    <eval phase="First" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]
+      
+      ~ Set the ability score and spell tags onto the configurable
+      perform hero.childfound[cfg5CArtIni].assign[sClass.cHelpAtf]
+      ~ Set the total number of spells allowed (ie 1.5 which is .5 for each
+      ~ cantrip and 1 for 1st level spell).
+      hero.childfound[cfg5CArtIni].field[cfgMaxSp1].value += field[abValue5].value]]></eval>
+    </thing>
+  <thing id="cfg5CArtIni" name="Artificer Initiate" description="Helper Thing for the feat Artificer Initiate." compset="Configure" uniqueness="unique">
+    <fieldval field="cToolMax" value="1"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="Helper" tag="SpCountLev" name="SpCountLev" abbrev="SpCountLev"/>
+    <tag group="AllowTool1" tag="Artisan"/>
+    <eval phase="Render" priority="2147483647" index="2"><![CDATA[      var nLevel0 as number
+      var nLevel1 as number
+      var 0Text as string
+      var 1Text as string
+      ~ Calculate the number of spells selected
+      nLevel0 = tagcount[sLevel.0]
+      nLevel1 = tagcount[sLevel.1]
+      ~ Set default messages
+      0Text = "No more cantrips"
+      1Text = "no more 1st-level spells"
+      ~ Set cantrip error messages
+      If (nLevel0 < 1) then
+      0Text = "1 more cantrip"
+      ElseIf (nLevel0 > 1) then
+      nLevel0 -= 1
+      0Text = nLevel0 & " fewer cantrip(s)"
+      Endif
+      ~ Set 1st level error messages
+      If (nLevel1 < 1) then
+      1Text = "1 more 1st-level spell"
+      ElseIf (nLevel1 > 1) then
+      nLevel1 -= 1
+      1Text = nLevel1 & " fewer 1st-level spell(s)"
+      Endif
+
+      field[cfgAdTxSp1].text = 0Text & ", " & 1Text & " needed."]]></eval>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ If no spell class tags, do nothing &
+      doneif (tagcount[sClass.?] = 0)
+      ~ NOTE: I am thinking I found more bugs in 5e game system as
+      ~       I shouldn't have to do this to get spells to appear
+      ~       on the "Spells" tab.
+      ~ Generate SpellSort and SpellType tags
+      perform pulltags[sClass.?,SpellSort]
+      perform pulltags[sClass.?,SpellType]
+      ~ Loop through all the spell picks added on the "Artificer Initate"
+      ~ Configurable tab.
+      foreach pick in hero from BaseSpell where "CfgSpell.cfg5CArtIni"
+        ~ Set the SpellSort and SpellType tags which are needed
+        ~ to get spells to display correctly on the Spells tab
+        perform eachpick.pushtags[SpellSort.?]
+        perform eachpick.pushtags[SpellType.?]
+        ~ Pull the spell level selected and the deny tags so that
+        ~ we can set the message and selection list corretly.
+        perform eachpick.pulltags[sLevel.?]
+        perform eachpick.pulltags[ClsDenySp.?]
+        ~ If we are a cantrip add the helper cantrip tag
+        if (eachpick.tagis[sLevel.0] = 1) then
+          perform eachpick.assign[Helper.Cantrip]
+        ~.. otherwise we are level 1+ spell so make us a
+        ~   racial spell so we can limit its use to 1/longrest
+        else
+          perform eachpick.assign[Helper.SpellLike]
+          perform eachpick.assign[Usage.LongRest]
+          eachpick.field[sNameMod].text = "Spell slot plus"
+          eachpick.field[trkMax].value += 1
+        endif
+      nexteach
+      ~ Set the spell selection expression to only be the selected class
+      field[cfgAllwSp1].text &= " & (sLevel.0|sLevel.1) & (" & tagids[sClass.?,"|"] & ") & !Helper.Helper"
+      ~ If we have Class Deny Spells then remove those from the list. This
+      ~ prevents the same spell from being added twice. This way we act
+      ~ like the normal spell portal does.
+      if (tagcount[ClsDenySp.?] <> 0) then
+        field[cfgAllwSp1].text &= " & !(" & tagids[ClsDenySp.?,"|"] & ")"
+      endif]]></eval>
+    </thing>
+  <thing id="f5CChef" name="Chef" description="You&apos;re an accomplished chef, gaining these benefits:\n\n• Your Constitution or Wisdom score increases by 1, to a maximum of 20.\n• If you are not already proficient with them, you become proficient with cook&apos;s utensils.\n• During a short rest, you can cook special food if you have cook&apos;s utensils and the ingredients on hand. You can prepare enough food for 4 + your proficiency bonus creatures. At the end of the short rest, any creatures that eat the food and spend at least one Hit Die to regain hit points can add an additional 1d8 hit points to their total amount recovered.\n• By spending an hour of work, or upon completing a long rest, you can cook a number of goodies equal to your proficiency bonus, which last for 8 hours. A creature can eat such a treat as a bonus action. Doing so grants them temporary hit points equal to your proficiency bonus." compset="Feat" uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Constitution"/>
+    <arrayval field="usrArray" index="1" value="Wisdom"/>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="NoAutoName"/>
+    <bootstrap thing="gUtenCook"></bootstrap>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[    ~ If we're disabled, do nothing & 
+    doneif (tagis[Helper.Disable] = 1)
+
+    perform hero.assign[ProfTool.gUtenCook]
+    perform hero.child[gUtenCook].assign[Helper.TrainTool]
+    perform hero.child[gUtenCook].assign[Hide.Tool]
+    perform hero.child[gUtenCook].assign[Proficienc.Tool]]]></eval>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aCON].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aWIS].field[aStartMod].value += 1
+      endif]]></eval>
+    </thing>
+  <thing id="f5CCrusher" name="Crusher" description="You have experience in crushing your foes, gaining these benefits:\n\n• Your Strength or Constitution score increases by 1, to a maximum of 20.\n• Once per turn, when an attack of yours that deals bludgeoning damage hits a creature, you can move it 5 feet to an open space. The target cannot be more than one size larger than you.\n• When critically hit a creature with an attack that deals bludgeoning damage, attack rolls against that creature then have advantage until the beginning of your next turn." compset="Feat" uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Constitution"/>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aCON].field[aStartMod].value += 1
+      endif]]></eval>
+    </thing>
+  <thing id="f5CPiercer" name="Piercer" description="You have experience with piercing attacks, gaining these benefits:\n\n• Your  Strength or Dexterity score increases by 1, to a maximum of 20.\n• Once per turn, when an attack of yours that deals piercing damage hits a creature, you can reroll one of that attack&apos;s damage dice. You have to use the new roll.\n• When critically hit a creature with an attack that deals piercing damage, you can roll one additional die of piercing damage to add to the attack." compset="Feat" uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Dexterity"/>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      endif]]></eval>
+    </thing>
+  <thing id="f5CSlasher" name="Slasher" description="You have experience with slashing attacks, gaining these benefits:\n\n• Your  Strength or Dexterity score increases by 1, to a maximum of 20.\n• Once per turn, when an attack of yours that deals slashing damage hits a creature, you can reduce the speed of that creature by 10 feet until the beginning of your next turn.\n• When critically hit a creature with an attack that deals slashing damage, you wound it. The target has disadvantage on its attack rolls until the beginning of your next turn." compset="Feat" uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Dexterity"/>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      endif]]></eval>
+    </thing>
+  <thing id="f5CPoisoner" name="Poisoner" description="You are intimately familiar with poisons, gaining these benefits:\n\n• Your damage rolls that deal poison damage ignore any resistance to poison damage.\n• You can use a bonus action, instead of an action, to apply poison to a weapon or piece of ammo.\n• If you&apos;re not already proficient with it, you gain proficiency with a poisoner&apos;s kit.\n• You can spend 1 hour and 50 gp of materials to work with a poisoner&apos;s kit to create a number of doses of poison. The amount of doses equals your proficiency bonus. Once you apply this poison to a weapon or ammunition, the poison remains potent for one minute or until that weapon or ammo hits an enemy, whichever comes first. A creature hit with the poison must make a DC 14 Constitution save. On a failure, it takes 2d8 poison damage and is poisoned until the end of your next turn." compset="Feat" uniqueness="useronce">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="UsedUp"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="User" tag="Tracker"/>
+    <bootstrap thing="gKitPoison"></bootstrap>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[    ~ If we're disabled, do nothing & 
+    doneif (tagis[Helper.Disable] = 1)
+
+    perform hero.assign[ProfTool.gKitPoison]
+    perform hero.child[gKitPoison].assign[Helper.TrainTool]
+    perform hero.child[gKitPoison].assign[Hide.Tool]
+    perform hero.child[gKitPoison].assign[Proficienc.Tool]]]></eval>
+    <eval phase="PostAttr" index="3"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+     field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+     field[abText].text = "2d8 poison, DC 14 CON"]]></eval>
+    </thing>
+  <thing id="f5CSklExp" name="Skill Expert" description="You have a particular set of skills, gaining these benefits:\n\n• One ability score of your choice increases by 1, to a maximum of 20.\n• You gain proficiency with one skill.\n• You gain expertise in one skill that you&apos;re already proficient with. You add your proficiency bonus twice, isntead of once, to checks you make with that skill. The chosen skill can&apos;t be one already benefiting from such a double-proficiency feature, like Expertise." compset="Feat" uniqueness="useronce">
+    <fieldval field="usrCandid1" value="component.BaseSkill &amp; !Helper.Proficient"/>
+    <fieldval field="usrCandid2" value="(component.BaseSkill &amp; Helper.Proficient &amp; !Helper.ProfDouble &amp; !Hide.Skill)"/>
+    <arrayval field="usrArray" index="0" value="Strength"/>
+    <arrayval field="usrArray" index="1" value="Dexterity"/>
+    <arrayval field="usrArray" index="2" value="Constitution"/>
+    <arrayval field="usrArray" index="3" value="Intelligence"/>
+    <arrayval field="usrArray" index="4" value="Wisdom"/>
+    <arrayval field="usrArray" index="5" value="Charisma"/>
+    <usesource source="5eTCoE"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="ChooseSrc2" tag="Hero"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostLevel" priority="10000" index="3"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var tagexpr as string
+
+      if (field[usrChosen1].ischosen <> 0) then
+        tagexpr = field[usrChosen1].chosen.tagids[ProfSkill.?," | "]
+        foreach pick in hero from BaseSkill where tagexpr
+          perform eachpick.assign[Helper.Proficient]
+          nexteach
+        endif
+      
+
+      if (field[usrChosen2].ischosen <> 0) then
+        tagexpr = field[usrChosen2].chosen.tagids[ProfSkill.?," | "]
+        foreach pick in hero from BaseSkill where tagexpr
+          perform eachpick.assign[Helper.ProfDouble]
+          nexteach
+        endif]]>
+      <before name="Calc skProfBon"/>
+      </eval>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aSTR].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aDEX].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 2) then
+        hero.child[aCON].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 3) then
+        hero.child[aINT].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 4) then
+        hero.child[aWIS].field[aStartMod].value += 1
+      elseif (field[usrIndex].value = 5) then
+        hero.child[aCHA].field[aStartMod].value += 1
+      endif]]></eval>
+    </thing>
+  <thing id="f5CFeyTch" name="Fey Touched" description="You&apos;ve been exposed to fey magic, gaining these benefits:\n\n• Your Intelligence, Wisdom, or Charisma score increases by 1, to a maximum of 20.\n• You learn the {i}misty step{/i} spell and one other 1st-level spell of your choice, with the latter being from either the divination or enchantment schools of magic. You can cast each of these once per long rest without using a spell slot. You can also use regular spell slots to cast them, if you have any. The ability you chose to increase with this feat is the spellcasting ability for these spells." compset="Feat" uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Intelligence"/>
+    <arrayval field="usrArray" index="1" value="Wisdom"/>
+    <arrayval field="usrArray" index="2" value="Charisma"/>
+    <usesource source="5eTCoE"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="cfg5CFeyTch"></bootstrap>
+    <bootstrap thing="spMistStep">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Spell slot plus "/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aINT].field[aStartMod].value += 1
+        perform hero.childfound[cfg5CFeyTch].assign[StandardDC.aINT]
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aWIS].field[aStartMod].value += 1
+        perform hero.childfound[cfg5CFeyTch].assign[StandardDC.aWIS]
+      elseif (field[usrIndex].value = 2) then
+        hero.child[aCHA].field[aStartMod].value += 1
+        perform hero.childfound[cfg5CFeyTch].assign[StandardDC.aCHA]
+      endif]]></eval>
+    <eval phase="First" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]
+
+      ~ Set the total number of spells allowed (ie 1 for 1st level spell).
+      hero.childfound[cfg5CFeyTch].field[cfgMaxSp1].value += 1]]></eval>
+    </thing>
+  <thing id="cfg5CFeyTch" name="Fey Touched" description="Helper Thing for the feat Fey Touched." compset="Configure" uniqueness="unique">
+    <tag group="Helper" tag="SpCountLev" name="SpCountLev" abbrev="SpCountLev"/>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ Loop through all the spell picks added on the "Fey Touched"
+      ~ Configurable tab.
+      foreach pick in hero from BaseSpell where "CfgSpell.cfg5CFeyTch"
+
+        ~   make us a racial spell so we can limit its use to 1/longrest
+
+        perform eachpick.assign[Helper.SpellLike]
+        perform eachpick.assign[Usage.LongRest]
+        eachpick.field[sNameMod].text = "Spell slot plus"
+        eachpick.field[trkMax].value += 1
+
+      nexteach
+      ~ Set the spell selection expression to only be the selected class
+      field[cfgAllwSp1].text &= " & (sLevel.1) & (sSchool.Divination | sSchool.Enchant) & !Helper.Helper"]]></eval>
+    </thing>
+  <thing id="cfg5CShdTch" name="Shadow Touched" description="Helper Thing for the feat Shadow Touched." compset="Configure" uniqueness="unique">
+    <tag group="Helper" tag="SpCountLev" name="SpCountLev" abbrev="SpCountLev"/>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ Loop through all the spell picks added on the "Shadow Touched"
+      ~ Configurable tab.
+      foreach pick in hero from BaseSpell where "CfgSpell.cfg5CShdTch"
+
+        ~   make us a racial spell so we can limit its use to 1/longrest
+
+        perform eachpick.assign[Helper.SpellLike]
+        perform eachpick.assign[Usage.LongRest]
+        eachpick.field[sNameMod].text = "Spell slot plus"
+        eachpick.field[trkMax].value += 1
+
+      nexteach
+      ~ Set the spell selection expression to only be the selected class
+      field[cfgAllwSp1].text &= " & (sLevel.1) & (sSchool.Illusion | sSchool.Necromancy) & !Helper.Helper"]]></eval>
+    </thing>
+  <thing id="f5CShdTch" name="Shadow Touched" description="You&apos;ve been exposed to shadow magic, gaining these benefits:\n\n• Your Intelligence, Wisdom, or Charisma score increases by 1, to a maximum of 20.\n• You learn the {i}invisibility{/i} spell and one other 1st-level spell of your choice, with the latter being from either the illusion or necromancy schools of magic. You can cast each of these once per long rest without using a spell slot. You can also use regular spell slots to cast them, if you have any. The ability you chose to increase with this feat is the spellcasting ability for these spells." compset="Feat" uniqueness="useronce">
+    <arrayval field="usrArray" index="0" value="Intelligence"/>
+    <arrayval field="usrArray" index="1" value="Wisdom"/>
+    <arrayval field="usrArray" index="2" value="Charisma"/>
+    <usesource source="5eTCoE"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="cfg5CShdTch"></bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Spell slot plus "/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aINT].field[aStartMod].value += 1
+        perform hero.childfound[cfg5CShdTch].assign[StandardDC.aINT]
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aWIS].field[aStartMod].value += 1
+        perform hero.childfound[cfg5CShdTch].assign[StandardDC.aWIS]
+      elseif (field[usrIndex].value = 2) then
+        hero.child[aCHA].field[aStartMod].value += 1
+        perform hero.childfound[cfg5CShdTch].assign[StandardDC.aCHA]
+      endif]]></eval>
+    <eval phase="First" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]
+
+      ~ Set the total number of spells allowed (ie 1 for 1st level spell).
+      hero.childfound[cfg5CShdTch].field[cfgMaxSp1].value += 1]]></eval>
+    </thing>
+  <thing id="f5CTelekin" name="Telekinetic" description="You can move things with your mind, granting these benefits:\n\n• Your Intelligence, Wisdom, or Charisma score increases by 1, to a maximum of 20.\n• You learn the {i}mage hand{/i} cantrip. You can cast it without verbal or somatic components, and the spell&apos;s hand can be invisible. If you already know this cantrip, its range increases by 30 feet. The score you chose to increase for this feat is the spellcasting ability for this cantrip.\n• You can use a bonus action to attempt to telekinetically push a creature visible to and within 30 feet of you. The target must make a Strength save, the DC of which is 8 + your proficiency bonus + the modifier of the ability you chose for this feat. On a failure, it is moved 5 feet toward or away from you. Creatures can choose to deliberately fail the save." compset="Feat" uniqueness="useronce">
+    <fieldval field="abRange" value="30"/>
+    <arrayval field="usrArray" index="1" value="Wisdom"/>
+    <arrayval field="usrArray" index="2" value="Charisma"/>
+    <arrayval field="usrArray" index="0" value="Intelligence"/>
+    <usesource source="5eTCoE"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Custom" tag="5CTelMgH" name="Hide Mage Hand from Telekinetic"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="NoAutoName"/>
+    <bootstrap thing="spMageHand">
+      <containerreq phase="First" priority="500">fieldval:abValue5 = 0</containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Custom" tag="5CTelMgH"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aINT].field[aStartMod].value += 1
+        perform assign[StandardDC.aINT]
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aWIS].field[aStartMod].value += 1
+        perform assign[StandardDC.aWIS]
+      elseif (field[usrIndex].value = 2) then
+        hero.child[aCHA].field[aStartMod].value += 1
+        perform assign[StandardDC.aCHA]
+      endif]]></eval>
+    <eval phase="First" priority="450" index="3">~ If we&apos;re disabled, do nothing &amp; 
+      doneif (tagis[Helper.Disable] = 1)
+
+      field[abValue5].value = 0
+
+      if (hero.childlives[spMageHand] &lt;&gt; 0) then
+        foreach pick in hero from BaseSpell where &quot;thingid.spMageHand &amp; !Custom.5CTelMgH&quot;
+          field[abValue5].value += 1
+          hero.childfound[spMageHand].field[sRange].text = &quot;60 feet&quot;
+          hero.childfound[spMageHand].field[CustDesc].text = &quot;A spectral, floating hand appears at a point you choose within range. The hand lasts for the duration or until you dismiss it as an action. The hand vanishes if it is ever more than 60 feet away from you or if you cast this spell again. \nYou can use your action to control the hand. You can use the hand to manipulate an object, open an unlocked door or container, stow or retrieve an item from an open container, or pour the contents out of a vial. You can move the hand up to 60 feet each time you use it. \nThe hand can’t attack, activate magic items, or carry more than 10 pounds.&quot;
+        nexteach
+        endif</eval>
+    </thing>
+  <thing id="f5CTelepat" name="Telepathic" description="You can mentally contact others, gaining these benefits:\n\n• Your Intelligence, Wisdom, or Charisma score increases by 1, to a maximum of 20.\n• You can speak telepathically with any creature visible to and within 60 feet of you. Your telepathic communication uses a language you know, and the other creature only understands it only if it knows that language. It does not gain the ability to speak telepathically back.\n• You can cast the {i}detect thoughts{/i} spell without components. The ability you chose to increase with this feat is the spellcasting ability for this spells. You can do this once per long rest without expending a spell slot. You can also use a regular spell slot of 2nd or higher level to cast it, if you have any." compset="Feat" uniqueness="useronce">
+    <fieldval field="abRange" value="60"/>
+    <arrayval field="usrArray" index="1" value="Wisdom"/>
+    <arrayval field="usrArray" index="2" value="Charisma"/>
+    <arrayval field="usrArray" index="0" value="Intelligence"/>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="abRange" tag="Feet"/>
+    <bootstrap thing="cfg5CShdTch"></bootstrap>
+    <bootstrap thing="spDeteThou">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Spell slot plus "/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]
+
+      if (field[usrIndex].value = 0) then
+        hero.child[aINT].field[aStartMod].value += 1
+        perform hero.childfound[cfg5CShdTch].assign[StandardDC.aINT]
+      elseif (field[usrIndex].value = 1) then
+        hero.child[aWIS].field[aStartMod].value += 1
+        perform hero.childfound[cfg5CShdTch].assign[StandardDC.aWIS]
+      elseif (field[usrIndex].value = 2) then
+        hero.child[aCHA].field[aStartMod].value += 1
+        perform hero.childfound[cfg5CShdTch].assign[StandardDC.aCHA]
+      endif]]></eval>
+    <eval phase="First" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]
+
+      ~ Set the total number of spells allowed (ie 1 for 1st level spell).
+      hero.childfound[cfg5CShdTch].field[cfgMaxSp1].value += 1]]></eval>
+    </thing>
+  <thing id="f5CEldAdp" name="Eldritch Adept" description="You learn one warlock Eldritch Invocation of your choice. If it has any sort of pre-requisite, you can only take that Invocation if you are a warlock that meets those requirements.\n\nWhen you gain a level, you can replace the chosen invocation with another warlock invocation." compset="Feat" uniqueness="useronce">
+    <usesource source="5eTCoE"/>
+    <bootstrap thing="cfg5CEldAdp"></bootstrap>
+    <eval phase="First" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.childfound[cfg5CEldAdp].field[cfgMax3].value += 1]]></eval>
+    <prereq message="Requires Spellcasting or Pact Magic">
+      <validate><![CDATA[var total as number
+
+foreach pick in hero from Class where "(Helper.FullCaster|Helper.WarlocCast|Helper.HalfCaster|Helper.3rdCaster)"
+   total += 1
+nexteach
+
+if (total > 0) then
+@valid = 1
+endif]]></validate>
+      </prereq>
+    </thing>
+  <thing id="cfg5CEldAdp" name="Eldritch Adept" description="Helper Thing for the feat Eldritch Adept." compset="Configure" uniqueness="unique">
+    <fieldval field="cfgAllow3" value="SpecSource.cHelpWlk &amp; Helper.Tertiary &amp; !Helper.Obsolete"/>
+    <fieldval field="cfgObject3" value="Eldritch Invocations"/>
+    </thing>
+  <thing id="f5CMetAdp" name="Metamagic Adept" description="You&apos;re able to alter your spells, gaining these benefits:\n\n• You choose two Metamagic options from the sorcerer class to gain. You can only use one of these options per spell casting, unless the option specifies otherwise.\n• When you reach a level that grants you the Ability Score Improvement feature, you can choose to replace one of these Metamagic options with another sorcerer one.\n• You gain two sorcery points to use on these Metamagic options. If you already have sorcery points, these are added to your total but can only be used for Metamagic. You regain all spent sorcery points at the end of a long rest." compset="Feat" uniqueness="useronce">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="trkSorPoin">
+      <containerreq phase="First" priority="500">count:Classes.Sorcerer = 0</containerreq>
+      </bootstrap>
+    <bootstrap thing="cfg5CMetAdp"></bootstrap>
+    <eval phase="First" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.childfound[cfg5CMetAdp].field[cfgMax2].value += 2]]></eval>
+    <eval phase="PostLevel" priority="10000" index="3"><![CDATA[
+       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+       #trkmax[trkSorPoin] += 2]]></eval>
+    <prereq message="Requires Spellcasting or Pact Magic">
+      <validate><![CDATA[var total as number
+
+foreach pick in hero from Class where "(Helper.FullCaster|Helper.WarlocCast|Helper.HalfCaster|Helper.3rdCaster)"
+   total += 1
+nexteach
+
+if (total > 0) then
+@valid = 1
+endif]]></validate>
+      </prereq>
+    </thing>
+  <thing id="cfg5CMetAdp" name="Metamagic Adept" description="Helper Thing for the feat Metamagic Adept." compset="Configure" uniqueness="unique">
+    <fieldval field="cfgAllow2" value="abCategory.SorMetamag"/>
+    <fieldval field="cfgObject2" value="Metamagic Options"/>
+    </thing>
+  <thing id="f5CGunner" name="Gunner" description="You have experience with firearms, gaining these benefits:\n\n• Your Dexterity score increases by 1, to a maximum of 20.\n• You gain proficiency with firearms (see them in the DMG).\n• You ignore firearms&apos; loading property.\n• Being within 5 feet of an enemy creature does not impose disadvantage on your ranged attack rolls." compset="Feat" uniqueness="useronce">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[aDEX].field[aStartMod].value += 1
+
+
+      foreach thing in BaseWep where "wCategory.Firearm"
+        perform eachthing.pulltags[WepProf.?]
+       nexteach
+
+      ~ push all weapon proficiency tags to hero
+      perform hero.pushtags[WepProf.?]]]></eval>
+    </thing>
+  <thing id="f5CFigIni" name="Fighter Initiate" description="You learn one Fighting Style option of your choice from the fighter class. You cannot choose a style you already know.\n\nWhen you reach a level that grants you the Ability Score Improvement feature, you can choose to replace this feat&apos;s fighting style with another fighter fighting style you don&apos;t know." compset="Feat" uniqueness="useronce">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="cfg5CFigIni"></bootstrap>
+    <eval phase="First" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.childfound[cfg5CFigIni].field[cfgMax1].value += 1]]></eval>
+    <prereq message="Proficiency with a martial weapon required.">
+      <validate><![CDATA[var profs as number
+
+~Check if proficient in Martial Weapons
+    if (hero.tagcount[ArmProfGrp.WepMartial] <> 0) then
+    profs += 1
+    endif
+
+    if (profs > 0) then
+    @valid = 1
+    endif
+
+~ End this now if it's done, to save on processing.    
+    doneif (profs > 0)
+
+    var ids as string
+
+~ Loop through all simp/mart weapons and check if we're proficient
+    foreach thing in BaseWep where "(wProfReq.Martial)"
+    ids = "WepProf." & eachthing.idstring
+      debug ids
+    if (hero.tagcountstr[ids] <> 0) then
+    profs += 1
+    endif
+
+    if (profs > 0) then
+    @valid = 1
+    endif
+    
+~ End this now if we've found one, to save on processing.    
+    doneif (profs > 0)
+    nexteach]]></validate>
+      </prereq>
+    </thing>
+  <thing id="cfg5CFigIni" name="Fighter Initiate" description="Helper Thing for the feat Fighter Initiate." compset="Configure" uniqueness="unique">
+    <fieldval field="cfgAllow1" value="abCategory.FtrFigStyl &amp; !Helper.Obsolete"/>
+    <fieldval field="cfgObject1" value="Fighting Style"/>
+    </thing>
+  </document>
