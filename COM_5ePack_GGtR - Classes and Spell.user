@@ -284,6 +284,7 @@
     <tag group="abAction" tag="None"/>
     <tag group="User" tag="Tracker"/>
     <bootstrap thing="PoolWlkBls">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
       <autotag group="Value" tag="8"/>
       <assignval field="livename" value="Symbiotic Entity Temporary HP Pool"/>
       </bootstrap>
@@ -291,7 +292,7 @@
       ~ If we're not shown, just get out now
       doneif (tagis[Helper.ShowSpec] = 0)
       doneif (tagis[Helper.Disable] <> 0)
-      doneif (hero.tagis[Hero.Raging] = 0)
+      doneif (field[abilActive].value = 0)
 
       ~ Add temp HP
       var temphp as number
@@ -303,12 +304,6 @@
 foreach pick in hero from BaseWep where "wCategory.Melee"
       #extradamage[eachpick, " plus 1d6 poison", field[thingname].text]
 nexteach]]></eval>
-    <eval phase="First" priority="450"><![CDATA[
-      ~if we're curently raging, forward a tag to the hero.
-      ~note the timing is just before First/500, which is when the containerreqs on the rage powers will look for this tag
-      if (field[abilActive].value <> 0) then
-        perform hero.assign[Hero.Raging]
-        endif]]></eval>
     </thing>
   <thing id="c5CDrdHaOS" name="Halo of Spores" description="Beginning at 2nd level, invisible, necrotic spores surround you, normally harmless. When a creature you can see moves within 10 feet of you or starts its turn there, you can use a reaction to send the spores at them. The spires deal 1d4 necrotic damage to the creature unless they succeed on a Constitution saving thrown against your spell save DC. \n\nThe damage increases to 1d6 at 6th level, 1d8 at 10th level , and 1d10 at 14th level." compset="ClSpecial" summary="Use your reaction to deal necrotic damage to a nearby enemy.">
     <fieldval field="abRange" value="10"/>
