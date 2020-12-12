@@ -209,7 +209,7 @@ endif</eval>
      endif
 
      field[usrChosen1].chosen.field[livename].text &= " +" & iVar
-     field[usrChosen1].chosen.field[sbName].text &= " +" & iVar]]></eval>
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text]]></eval>
     <eval phase="PostLevel" priority="11000" index="2"><![CDATA[
      doneif (tagis[Helper.Disable] <> 0)
      ~ If we're not enabled, get out now
@@ -260,7 +260,7 @@ endif</eval>
      iVar = field[pAdjust].value
 
      field[pChosen].chosen.field[livename].text &= " +" & iVar
-     field[pChosen].chosen.field[sbName].text &= " +" & iVar]]></eval>
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text]]></eval>
     </thing>
   <thing id="p5CAtfEnhWep" name="Infusion: Enhanced Weapon" description="{i}{b}Item:{/b} A simple or martial weapon{/i}\n\nThis magic weapon grants a +1 bonus to attack and damage rolls made with it.\n\nThe bonus increases to +2 when the Artificer reaches 10th level in that class.\n\n\n{i}Note: Use this adjustment if you have received an item with the Enhnace Weapon infusion.{/i}" compset="InPlay">
     <fieldval field="pMinimum" value="1"/>
@@ -294,7 +294,7 @@ endif</eval>
      iVar = field[pAdjust].value
 
      field[pChosen].chosen.field[livename].text &= " +" & iVar
-     field[pChosen].chosen.field[sbName].text &= " +" & iVar]]></eval>
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text]]></eval>
     </thing>
   <thing id="cAtf5CInfItem" name="Infuse Item" description="You can imbue mundane objects with magical properties. The magic items you create with this feature are essentially prototypes of permanent items.\n\n{b}Infusions Known{/b}\nChoose four artificer infusions to learn. You learn additional infusions at higher levels of this class. When you gain a level in this class, you can also replace one of the artificer infusions you&apos;ve learned with a new one.\n\n{b}Infusing an Item{/b}\nWhenever you complete a long rest, you can touch a nonmagical object and imbue it with one of your artificer infusions, turning it into a magic item. The infusion&apos;s description will note what kind of object is required for that infusion.\n\nIf the infused item requires attunement, you can instantly attune yourself to it when you infuse the item, or you can forgo attunement so that someone else can attune to the item. Attuning to it later, by you or someone else, follows the standard rules for attuning to magic items.\n\nYour infusion remains in an item indefinitely, but when you die, the infusion vanishes after a number of days have passed equal to your Intelligence modifier (minimum of 1 day). The infusion also vanishes if you learn a new infusion in place of that one.\n\nYou can infuse more than one nonmagical object at the end of a long rest; the maximum number of objects appears in the Infused Items column of the Artificer table. You must touch each of the objects, and each of your infusions can be in only one object at a time. If you try to exceed your maximum number of infusions, the oldest infusion immediately ends, and then the new infusion applies." compset="ClSpecial" summary="Imbue items with magical properties.">
     <fieldval field="abDuration" value="Special; see text"/>
@@ -336,6 +336,7 @@ endif</eval>
      doneif (tagis[Helper.Disable] <> 0)
      ~ If we're not enabled, get out now
      doneif (field[abilActive].value = 1)
+     doneif (field[usrChosen1].ischosen = 0)
 
      var iVar as number
      if (hero.tagcount[Classes.ArtificerR] >= 10) then
@@ -345,13 +346,13 @@ endif</eval>
      endif
 
      field[usrChosen1].chosen.field[livename].text &= " +" & iVar
-     field[usrChosen1].chosen.field[sbName].text &= " +" & iVar]]></eval>
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text]]></eval>
     <eval phase="PostLevel" priority="11000"><![CDATA[
      doneif (tagis[Helper.Disable] <> 0)
      ~ If we're not enabled, get out now
      doneif (field[abilActive].value = 1)
 
-     field[usrCandid1].text = "component.BaseWep & !Helper.EquipMag & !component.BaseNatWep"
+     field[usrCandid1].text = "(component.BaseWep & !Helper.EquipMag & !component.BaseNatWep)"
 
      var iVar as number
      if (hero.tagcount[Classes.ArtificerR] >= 10) then
@@ -552,15 +553,16 @@ nexteach]]></eval>
      doneif (tagis[Helper.Disable] <> 0)
      ~ If we're not enabled, get out now
      doneif (field[abilActive].value = 1)
+     doneif (field[usrChosen1].ischosen = 0)
 
      field[usrChosen1].chosen.field[livename].text = "Radiant " & field[usrChosen1].chosen.field[livename].text & " +1"
-     field[usrChosen1].chosen.field[sbName].text = "Radiant " & field[usrChosen1].chosen.field[sbName].text & " +1"]]></eval>
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text]]></eval>
     <eval phase="PostLevel" priority="11000"><![CDATA[
      doneif (tagis[Helper.Disable] <> 0)
      ~ If we're not enabled, get out now
      doneif (field[abilActive].value = 1)
 
-     field[usrCandid1].text = "component.BaseWep & !Helper.EquipMag & !component.BaseNatWep"
+     field[usrCandid1].text = "(component.BaseWep & !Helper.EquipMag & !component.BaseNatWep)"
 
       perform delete[Helper.SpecUp]
       perform field[usrChosen1].chosen.assign[Helper.EquipMag]
@@ -612,7 +614,7 @@ nexteach]]></eval>
      doneif (field[pChosen].ischosen = 0)
 
      field[pChosen].chosen.field[livename].text = "Radiant " & field[pChosen].chosen.field[livename].text & " +1"
-     field[pChosen].chosen.field[sbName].text = "Radiant " & field[pChosen].chosen.field[sbName].text & " +1"]]></eval>
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text]]></eval>
     </thing>
   <thing id="cAtf5CSSItem" name="Spell-Storing Item" description="Whenever you complete a long rest, you can touch a simple or martial weapon or an item that you are able to use as a spellcasting focus. You store a spell in it, choosing one 1st- or 2nd-level spell from the artificer spell list with a casting time of 1 action. You don’t need to have the spell prepared to choose it. With the object in hand, a creature can use an action to produce the spell’s effect from it, using your spellcasting ability modifier.\n\nThe spell stays in the object until it has been used a number of times equal to twice your Intelligence modifier (minimum of twice) or until you use this feature again." compset="ClSpecial" summary="Store a 1st or 2nd level spell inside an item for multiple uses.">
     <fieldval field="actName" value="Active?"/>
@@ -641,7 +643,7 @@ nexteach]]></eval>
      doneif (field[abilActive].value = 0)
 
      field[usrCandid1].text = "component.BaseSpell & sClass.cHelpAtf & (sLevel.1 | sLevel.2) & sCastTime.Action1"
-     field[usrCandid2].text = "(wProfReq.Martial|wProfReq.Simple) | (ToolCat.Artisan & GearType.gtTools & !Hide.Tool) | (thingid.gTooThieve & !Hide.Tool) | (!component.BaseCustSp & Custom.Infus)"]]></eval>
+     field[usrCandid2].text = "(wProfReq.Martial|wProfReq.Simple) | (ToolCat.Artisan & GearType.gtTools & !Hide.Tool) | (thingid.gTooThieve & !Hide.Tool) | (!component.BaseCustSp & Custom.Infus) | (component.BaseArmor & Custom.ArcArm)"]]></eval>
     </thing>
   <thing id="cAtf5CMagIAd" name="Magic Item Adept" description="You are able to attune to up to four magic items at once.\n\nIf you craft a common or uncommon magic item, it only takes you one quarter of the usual time, and costs you only half the normal amount of gold." compset="ClSpecial" summary="Attune to up to four magic items, and your crafting time is reduced.">
     <eval phase="PostLevel" priority="10000"><![CDATA[
@@ -1021,7 +1023,7 @@ foreach pick in hero from BaseEquip where "Helper.NeedAttune"
 
      sName = field[usrChosen2].chosen.field[name].text
      field[usrChosen1].chosen.field[livename].text &= " of " & sName & " Resistance"
-     field[usrChosen1].chosen.field[sbName].text &= " of " & sName & " Resistance"]]></eval>
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text]]></eval>
     <eval phase="PostLevel" priority="11000"><![CDATA[
      doneif (tagis[Helper.Disable] <> 0)
      ~ If we're not enabled, get out now
@@ -1061,7 +1063,7 @@ foreach pick in hero from BaseEquip where "Helper.NeedAttune"
 
      perform delete[Helper.SpecUp]
      field[usrChosen1].chosen.field[livename].text &amp;= &quot; of Returning +1&quot;
-     field[usrChosen1].chosen.field[sbName].text &amp;= &quot; of Returning +1&quot;
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text
      field[usrChosen1].chosen.field[CustDesc].text = field[usrChosen1].chosen.field[CustDesc].text &amp; &quot;{br}&quot; &amp; sText</eval>
     <eval phase="PostLevel" priority="11000"><![CDATA[
      doneif (tagis[Helper.Disable] <> 0)
@@ -1101,7 +1103,7 @@ foreach pick in hero from BaseEquip where "Helper.NeedAttune"
 
      sName = field[pChosen2].chosen.field[name].text
      field[pChosen].chosen.field[livename].text = field[pChosen].chosen.field[livename].text & " of " & sName & " Resistance"
-     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[sbName].text & " of " & sName & " Resistance"]]></eval>
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text]]></eval>
     <eval phase="Final" priority="5000" index="2"><![CDATA[
      ~ If we're not enabled, get out now
      doneif (field[pIsOn].value = 0)
@@ -1137,7 +1139,7 @@ foreach pick in hero from BaseEquip where "Helper.NeedAttune"
      sText = &quot;This weapon returns to the wielder’s hand immediately after it is used to make a ranged attack.&quot;
 
      field[pChosen].chosen.field[livename].text &amp;= &quot; of Returning +1&quot;
-     field[pChosen].chosen.field[sbName].text &amp;= &quot; of Returning +1&quot;
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text
      field[pChosen].chosen.field[CustDesc].text = field[pChosen].chosen.field[CustDesc].text &amp; &quot;{br}&quot; &amp; sText</eval>
     <eval phase="PostLevel" priority="11000"><![CDATA[~ If we're not enabled, get out now
      doneif (field[pIsOn].value = 0)
@@ -1440,7 +1442,7 @@ herofield[tBonusHP].value = HPAdj</eval>
      doneif (field[abilActive].value = 1)
 
      field[usrChosen1].chosen.field[livename].text &= " +1"
-     field[usrChosen1].chosen.field[sbName].text &= " +1"]]></eval>
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text]]></eval>
     <eval phase="PostLevel" priority="11000"><![CDATA[
      doneif (tagis[Helper.Disable] <> 0)
      ~ If we're not enabled, get out now
@@ -1499,7 +1501,7 @@ herofield[tBonusHP].value = HPAdj</eval>
      doneif (field[abilActive].value = 1)
 
      field[usrChosen1].chosen.field[livename].text = "Replusion " & field[usrChosen1].chosen.field[livename].text & " +1"
-     field[usrChosen1].chosen.field[sbName].text = "Repulsion " & field[usrChosen1].chosen.field[sbName].text & " +1"]]></eval>
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text]]></eval>
     <eval phase="First" index="3"><![CDATA[
      doneif (tagis[Helper.Disable] <> 0)
      ~ If we're not enabled, get out now
@@ -1540,7 +1542,7 @@ herofield[tBonusHP].value = HPAdj</eval>
      doneif (field[pChosen].ischosen = 0)
 
      field[pChosen].chosen.field[livename].text &= " +1"
-     field[pChosen].chosen.field[sbName].text &= " +1"]]></eval>
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text]]></eval>
     </thing>
   <thing id="cAtf5CBatSmi" name="Battle Smith" description="Armies require protection, and someone has to put things back together if defenses fail. A mixture of protector and medic, a Battle Smith is an expert at defence and repairing both materiel and personnel. Battle Smiths are usually accompanied by a protective companion of their own creation called a steel defender. \n\n{b}Tool Proficiency.{/b} You gain proficiency with smith’s tools, assuming you don’t already it. If you do, you gain proficiency in another artisan&apos;s tool of your choice." compset="CustomSpec" uniqueness="unique">
     <usesource source="5eRftLWCP"/>
@@ -1682,7 +1684,7 @@ herofield[tBonusHP].value = HPAdj</eval>
 
      field[pChosen].chosen.field[CustDesc].text = sText
      field[pChosen].chosen.field[livename].text &= " +1"
-     field[pChosen].chosen.field[sbName].text &= " +1"]]></eval>
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text]]></eval>
     <eval phase="Final" priority="10000" index="3"><![CDATA[
      ~ If we're not enabled, get out now
      doneif (field[pIsOn].value = 0)
@@ -2183,7 +2185,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
 
      sName = field[usrChosen1].chosen.field[name].text
      field[usrChosen1].chosen.field[livename].text &= " of Spell-Refuelling"
-     field[usrChosen1].chosen.field[sbName].text &= " of Spell-Refuelling"]]></eval>
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text]]></eval>
     <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="trk5CAtfSpRfRn" name="Spell-Refueling Ring" compset="Tracker">
@@ -2229,7 +2231,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      sText = "While wearing this ring, the creature can use an action to regain one spent spell slot of 3rd level or lower. Once used, the ring cannot be used again until the next dawn."
 
      field[pChosen].chosen.field[livename].text &= " of Spell-Refuelling"
-     field[pChosen].chosen.field[sbName].text &= " of Spell-Refuelling"
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text
      field[pChosen].chosen.field[CustDesc].text = field[pChosen].chosen.field[CustDesc].text & "{br}" & sText]]></eval>
     </thing>
   <thing id="ir5CSimpRing" name="Simple Ring" description="A simple ring without magical properties, useful for the Artificer&apos;s Spell-Refueling Ring infusion. If you want to rename this ring, use the Custom Name: Equipment adjustment." compset="Ring">
@@ -2256,7 +2258,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
 
 
      field[usrChosen1].chosen.field[livename].text &= " +1 Focus"
-     field[usrChosen1].chosen.field[sbName].text &= " +1 Focus"]]></eval>
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text]]></eval>
     <eval phase="PostLevel" priority="11000"><![CDATA[
      doneif (tagis[Helper.Disable] <> 0)
      ~ If we're not enabled, get out now
@@ -2295,7 +2297,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      doneif (field[pChosen].ischosen = 0)
 
      field[pChosen].chosen.field[livename].text &= " +1 Focus"
-     field[pChosen].chosen.field[sbName].text &= " +1 Focus"]]></eval>
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text]]></eval>
     <eval phase="Final" priority="5000" index="2"><![CDATA[
      ~ If we're not enabled, get out now
      doneif (field[pIsOn].value = 0)
@@ -2341,7 +2343,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      sText = "Wearing this helmet grants the wearer advantage on their initiative rolls. Additionally, the wearer cannot be surprised unless they're incapacitated."
 
      field[usrChosen1].chosen.field[livename].text &= " of Awareness"
-     field[usrChosen1].chosen.field[sbName].text &= " of Awareness"
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text
      field[usrChosen1].chosen.field[CustDesc].text = field[usrChosen1].chosen.field[CustDesc].text & "{br}" & sText]]></eval>
     <eval phase="PostLevel" priority="11000"><![CDATA[
      doneif (tagis[Helper.Disable] <> 0)
@@ -2381,7 +2383,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      sText = "Wearing this helmet grants the wearer advantage on their initiative rolls. Additionally, the wearer cannot be surprised unless they're incapacitated."
 
      field[pChosen].chosen.field[livename].text &= " of Awareness"
-     field[pChosen].chosen.field[sbName].text &= " of Awareness"
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text
      field[pChosen].chosen.field[CustDesc].text = field[pChosen].chosen.field[CustDesc].text & "{br}" & sText]]></eval>
     <eval phase="Final" priority="5000" index="2"><![CDATA[
      ~ If we're not enabled, get out now
@@ -2440,7 +2442,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      doneif (field[abilActive].value = 1)
 
      field[usrChosen1].chosen.field[livename].text = "Mind Sharpener " & field[usrChosen1].chosen.field[livename].text
-     field[usrChosen1].chosen.field[sbName].text = "Mind Sharpener " & field[usrChosen1].chosen.field[sbName].text
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text
 
      var sText as string
      sText = "The infused robes have 4 charges. When the wearer fails a Constitution save to maintain their concentration on a spell, they can take a reaction to spend 1 charge, causing them to succeed to save instead. The robes regain 1d4 spent charges each dawn."
@@ -2473,7 +2475,6 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      doneif (field[pChosen].ischosen = 0)
       
       perform field[pChosen].chosen.assign[Helper.EquipMag]
-      perform field[pChosen].chosen.assign[Custom.Infus]
       perform field[pChosen].chosen.assign[Custom.Infus]]]></eval>
     <eval phase="First" index="3">doneif (field[pIsOn].value = 0)
       doneif (field[pChosen].chosen.field[gIsEquip].value = 0)
@@ -2486,7 +2487,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      doneif (field[pChosen].ischosen = 0)
 
      field[pChosen].chosen.field[livename].text = "Mind Sharpener " & field[pChosen].chosen.field[livename].text
-     field[pChosen].chosen.field[sbName].text = "Mind Sharpener " & field[pChosen].chosen.field[sbName].text
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text
 
      var sText as string
      sText = "The infused robes have 4 charges. When the wearer fails a Constitution save to maintain their concentration on a spell, they can take a reaction to spend 1 charge, causing them to succeed to save instead. The robes regain 1d4 spent charges each dawn."
@@ -2530,7 +2531,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      doneif (field[abilActive].value = 1)
 
      field[usrChosen1].chosen.field[livename].text &amp;= &quot; of Magical Strength&quot;
-     field[usrChosen1].chosen.field[sbName].text &amp;= &quot; of Magical Strength&quot;
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text
 
      var sText as string
      sText = &quot;The armor has 6 charges. The wearer can use these charges in these ways:\n\n• When they make a Strength check or Strength save, they can spend 1 charge to add their Intelligence modifier to the roll.\n• If the wearer would be knocked prone, it can take a reaction to spend 1 charge and remain up.&quot;
@@ -2575,7 +2576,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      doneif (field[pChosen].ischosen = 0)
 
      field[pChosen].chosen.field[livename].text &amp;= &quot; of Magical Strength&quot;
-     field[pChosen].chosen.field[sbName].text &amp;= &quot; of Magical Strength&quot;
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text
 
      var sText as string
      sText = &quot;The armor has 6 charges. The wearer can use these charges in these ways:\n\n• When they make a Strength check or Strength save, they can spend 1 charge to add their Intelligence modifier to the roll.\n• If the wearer would be knocked prone, it can take a reaction to spend 1 charge and remain up.&quot;
@@ -2680,7 +2681,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      doneif (field[pChosen].ischosen = 0)
 
      field[pChosen].chosen.field[livename].text = &quot;Arcane Propulsion &quot; &amp; field[pChosen].chosen.field[livename].text
-     field[pChosen].chosen.field[sbName].text = &quot;Arcane Propulsion &quot; &amp; field[pChosen].chosen.field[sbName].text
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text
 
      var sText as string
      sText = &quot;The armor has 6 charges. The wearer can use these charges in these ways:\n\n• When they make a Strength check or Strength save, they can spend 1 charge to add their Intelligence modifier to the roll.\n• If the wearer would be knocked prone, it can take a reaction to spend 1 charge and remain up.&quot;
@@ -2831,7 +2832,7 @@ minion.childfound[ra5CAtfMigM].field[abValue5].value = level]]></eval>
 
 
      field[usrChosen1].chosen.field[livename].text &= " of the Winding Path"
-     field[usrChosen1].chosen.field[sbName].text &= " of the Winding Path"
+     field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text
 
      var sText as string
      sText = "While wearing these boots, a creature can use a bonus action to teleport up to 15 feet to an open space the creature can see. The creature must have occupied that space at some point during the current turn."
@@ -2866,8 +2867,8 @@ minion.childfound[ra5CAtfMigM].field[abValue5].value = level]]></eval>
      ~ If nothing's been chosen, get out now
      doneif (field[pChosen].ischosen = 0)
 
-field[pChosen].chosen.field[livename].text &= " of the Winding Path"
-     field[pChosen].chosen.field[sbName].text &= " of the Winding Path"
+     field[pChosen].chosen.field[livename].text &= " of the Winding Path"
+     field[pChosen].chosen.field[sbName].text = field[pChosen].chosen.field[livename].text
 
      var sText as string
      sText = "While wearing these boots, a creature can use a bonus action to teleport up to 15 feet to an open space the creature can see. The creature must have occupied that space at some point during the current turn."
@@ -2883,7 +2884,6 @@ field[pChosen].chosen.field[livename].text &= " of the Winding Path"
       perform field[pChosen].chosen.assign[Helper.NeedAttune]
       perform field[pChosen].chosen.assign[Custom.Infus]]]></eval>
     </thing>
-  <extthing thing="spFabricat" group="sClass" tag="cHelpAtf"/>
   <extthing thing="spFreeMove" group="sClass" tag="cHelpAtf"/>
   <extthing thing="spSecrChes" group="sClass" tag="cHelpAtf"/>
   <extthing thing="spFaitHoun" group="sClass" tag="cHelpAtf"/>
@@ -2975,4 +2975,5 @@ field[pChosen].chosen.field[livename].text &= " of the Winding Path"
   <extthing thing="spWateBrea" group="sClass" tag="cHelpAtf"/>
   <extthing thing="spWateWalk" group="sClass" tag="cHelpAtf"/>
   <extthing thing="spArcaEye" group="sClass" tag="cHelpAtf"/>
+  <extthing thing="spFabricat" group="sClass" tag="cHelpAtf"/>
   </document>
