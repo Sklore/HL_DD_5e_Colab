@@ -393,7 +393,7 @@
     <tag group="DamageImm" tag="dtPsychic"/>
     <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
     <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
-    <bootstrap thing="xMultiatt"></bootstrap>
+    <tag group="Alignment" tag="Unaligned"/>
     <bootstrap thing="tpAberr"></bootstrap>
     <bootstrap thing="lOther">
       <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
@@ -403,12 +403,7 @@
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="lDeepSpeec"></bootstrap>
-    <eval phase="First" priority="5000" index="4"><![CDATA[
-      ~ If we're disabled, do nothing & 
-      doneif (tagis[Helper.Disable] = 1)
-
-      ~Tell the spell level thing that our minimum spell level is 4
-     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 4]]></eval>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <eval phase="Final" priority="50000" index="2"><![CDATA[~ go through each natural weapon on the hero and find what attack attribute
 ~ we've assigned to it. We MUST assign one with the MelAttOver and RanAttOver
 ~ tags for this to work. Pull that bonus, add the prof, find the master's
@@ -462,6 +457,12 @@ herofield[tBonusHP].value = HPAdj
 
 ~ Add the spell level to our AC Bonus
 hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value</eval>
+    <eval phase="First" priority="5000" index="4"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~Tell the spell level thing that our minimum spell level is 4
+     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 4]]></eval>
     </thing>
   <thing id="5CSummon" name="Summoned Creature" description="Add this to add one of these creatures to your hero, based on which Summon spell you have:\n• Aberrant Spirit\n• Bestial Spirit\n• Celestial Spirit\n• Construct Spirit\n• Elemental Spirit\n• Fey Spirit\n• Fiendish Spirit\n• Shadow Spirit\n• Undead Spirit" compset="CompClHelp" uniqueness="unique">
     <tag group="CompAvail" tag="c5CSummon" name="Summoned Creature" abbrev="Summoned Creature"/>
@@ -655,9 +656,7 @@ hero.childfound[ProfBonus].field[tProfBonus].value = field[abValue2].value]]></e
     <tag group="RaceSize" tag="Small11"/>
     <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
     <tag group="Custom" tag="InheritDC" name="InheritDC" abbrev="InheritDC"/>
-    <bootstrap thing="raDarkVis">
-      <autotag group="Value" tag="60"/>
-      </bootstrap>
+    <tag group="Alignment" tag="Unaligned"/>
     <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="lOther">
       <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
@@ -673,6 +672,29 @@ hero.childfound[ProfBonus].field[tProfBonus].value = field[abValue2].value]]></e
       <assignval field="wDieCount" value="1"/>
       <assignval field="wDieSize" value="8"/>
       </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
+~Add back in the original 5 per the stat block, then remove it all
+~Add that entire thing to our total Bonus HP
+~We remove it from the total instead of just removing the total in case
+~something else is adding to that as well.
+
+var HPAdj as number
+HPAdj = 30
+HPAdj += hero.childfound[ra5CSumSplLvl].field[actUser].value * 10 - 20 - 1
+
+herofield[tBonusHP].value = HPAdj
+
+~ Add the spell level to our AC Bonus
+hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value</eval>
+    <eval phase="First" priority="5000" index="4"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~Tell the spell level thing that our minimum spell level is 2
+     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 2]]></eval>
     <eval phase="Final" priority="50000" index="2"><![CDATA[~ go through each natural weapon on the hero and find what attack attribute
 ~ we've assigned to it. We MUST assign one with the MelAttOver and RanAttOver
 ~ tags for this to work. Pull that bonus, add the prof, find the master's
@@ -712,26 +734,6 @@ Mlt = hero.childfound[ra5CSumSplLvl].field[actUser].value
 Mlt /= 2
 Mlt = round(Mlt,0,-1)
 hero.childfound[xMultiatt].field[CustDesc].text = "The beast can make " & Mlt & " attack(s)."]]></eval>
-    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
-~Add back in the original 5 per the stat block, then remove it all
-~Add that entire thing to our total Bonus HP
-~We remove it from the total instead of just removing the total in case
-~something else is adding to that as well.
-
-var HPAdj as number
-HPAdj = 30
-HPAdj += hero.childfound[ra5CSumSplLvl].field[actUser].value * 10 - 20 - 1
-
-herofield[tBonusHP].value = HPAdj
-
-~ Add the spell level to our AC Bonus
-hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value</eval>
-    <eval phase="First" priority="5000" index="4"><![CDATA[
-      ~ If we're disabled, do nothing & 
-      doneif (tagis[Helper.Disable] = 1)
-
-      ~Tell the spell level thing that our minimum spell level is 2
-     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 2]]></eval>
     </thing>
   <thing id="r5CSumCel" name="Celestial Spirit" compset="Race">
     <fieldval field="rSTR" value="6"/>
@@ -747,7 +749,7 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
     <tag group="DamageRes" tag="dtRadiant"/>
     <tag group="CondImm" tag="pcnCharmed"/>
     <tag group="CondImm" tag="pcnFright"/>
-    <bootstrap thing="xMultiatt"></bootstrap>
+    <tag group="Alignment" tag="Unaligned"/>
     <bootstrap thing="lOther">
       <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
       <assignval field="sbName" value="Understands its summoner&apos;s languages"/>
@@ -761,12 +763,7 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="ra5CCelHea"></bootstrap>
-    <eval phase="First" priority="5000" index="4"><![CDATA[
-      ~ If we're disabled, do nothing & 
-      doneif (tagis[Helper.Disable] = 1)
-
-      ~Tell the spell level thing that our minimum spell level is 5
-     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 5]]></eval>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <eval phase="Final" priority="50000" index="2"><![CDATA[~ go through each natural weapon on the hero and find what attack attribute
 ~ we've assigned to it. We MUST assign one with the MelAttOver and RanAttOver
 ~ tags for this to work. Pull that bonus, add the prof, find the master's
@@ -820,6 +817,12 @@ herofield[tBonusHP].value = HPAdj
 
 ~ Add the spell level to our AC Bonus
 hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value - 1</eval>
+    <eval phase="First" priority="5000" index="4"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~Tell the spell level thing that our minimum spell level is 5
+     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 5]]></eval>
     </thing>
   <thing id="sr5CBstAir" name="Air" compset="SubRace" uniqueness="unique">
     <tag group="RaceSize" tag="Medium0"/>
@@ -931,7 +934,7 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
     <tag group="CondImm" tag="pcnPetri"/>
     <tag group="CondImm" tag="pcnPoison"/>
     <tag group="CondImm" tag="pcnFright"/>
-    <bootstrap thing="xMultiatt"></bootstrap>
+    <tag group="Alignment" tag="Unaligned"/>
     <bootstrap thing="lOther">
       <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
       <assignval field="sbName" value="Understands its summoner&apos;s languages"/>
@@ -950,20 +953,7 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
       <assignval field="wDieCount" value="1"/>
       </bootstrap>
     <bootstrap thing="tpConst"></bootstrap>
-    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
-~Add back in the original 5 per the stat block, then remove it all
-~Add that entire thing to our total Bonus HP
-~We remove it from the total instead of just removing the total in case
-~something else is adding to that as well.
-
-var HPAdj as number
-HPAdj = 40
-HPAdj += hero.childfound[ra5CSumSplLvl].field[actUser].value * 15 - 45 - 1
-
-herofield[tBonusHP].value = HPAdj
-
-~ Add the spell level to our AC Bonus
-hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value</eval>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <eval phase="First" priority="5000" index="4"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
@@ -1009,6 +999,20 @@ Mlt = hero.childfound[ra5CSumSplLvl].field[actUser].value
 Mlt /= 2
 Mlt = round(Mlt,0,-1)
 hero.childfound[xMultiatt].field[CustDesc].text = "The construct can make " & Mlt & " attack(s)."]]></eval>
+    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
+~Add back in the original 5 per the stat block, then remove it all
+~Add that entire thing to our total Bonus HP
+~We remove it from the total instead of just removing the total in case
+~something else is adding to that as well.
+
+var HPAdj as number
+HPAdj = 40
+HPAdj += hero.childfound[ra5CSumSplLvl].field[actUser].value * 15 - 45 - 1
+
+herofield[tBonusHP].value = HPAdj
+
+~ Add the spell level to our AC Bonus
+hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value</eval>
     </thing>
   <thing id="sr5CConMet" name="Metal" compset="SubRace" uniqueness="unique">
     <tag group="RaceType" tag="Normal"/>
@@ -1077,7 +1081,7 @@ hero.childfound[xMultiatt].field[CustDesc].text = "The construct can make " & Ml
     <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
     <tag group="DamageImm" tag="dtPoison"/>
     <tag group="CondImm" tag="pcnUnconc"/>
-    <bootstrap thing="xMultiatt"></bootstrap>
+    <tag group="Alignment" tag="Unaligned"/>
     <bootstrap thing="lOther">
       <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
       <assignval field="sbName" value="Understands its summoner&apos;s languages"/>
@@ -1087,6 +1091,27 @@ hero.childfound[xMultiatt].field[CustDesc].text = "The construct can make " & Ml
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="lPrimord"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
+~Add back in the original 5 per the stat block, then remove it all
+~Add that entire thing to our total Bonus HP
+~We remove it from the total instead of just removing the total in case
+~something else is adding to that as well.
+
+var HPAdj as number
+HPAdj = 50
+HPAdj += hero.childfound[ra5CSumSplLvl].field[actUser].value * 10 - 40 - 1
+
+herofield[tBonusHP].value = HPAdj
+
+~ Add the spell level to our AC Bonus
+hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value - 1</eval>
+    <eval phase="First" priority="5000" index="4"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~Tell the spell level thing that our minimum spell level is 4
+     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 4]]></eval>
     <eval phase="Final" priority="50000" index="2"><![CDATA[~ go through each natural weapon on the hero and find what attack attribute
 ~ we've assigned to it. We MUST assign one with the MelAttOver and RanAttOver
 ~ tags for this to work. Pull that bonus, add the prof, find the master's
@@ -1126,26 +1151,6 @@ Mlt = hero.childfound[ra5CSumSplLvl].field[actUser].value
 Mlt /= 2
 Mlt = round(Mlt,0,-1)
 hero.childfound[xMultiatt].field[CustDesc].text = "The elemental can make " & Mlt & " attack(s)."]]></eval>
-    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
-~Add back in the original 5 per the stat block, then remove it all
-~Add that entire thing to our total Bonus HP
-~We remove it from the total instead of just removing the total in case
-~something else is adding to that as well.
-
-var HPAdj as number
-HPAdj = 50
-HPAdj += hero.childfound[ra5CSumSplLvl].field[actUser].value * 10 - 40 - 1
-
-herofield[tBonusHP].value = HPAdj
-
-~ Add the spell level to our AC Bonus
-hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value - 1</eval>
-    <eval phase="First" priority="5000" index="4"><![CDATA[
-      ~ If we're disabled, do nothing & 
-      doneif (tagis[Helper.Disable] = 1)
-
-      ~Tell the spell level thing that our minimum spell level is 4
-     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 4]]></eval>
     </thing>
   <thing id="sr5CEleEar" name="Earth" compset="SubRace" uniqueness="unique">
     <tag group="RaceSize" tag="Medium0"/>
@@ -1256,16 +1261,7 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
     <tag group="RaceSize" tag="Small11"/>
     <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
     <tag group="CondImm" tag="pcnCharmed"/>
-    <bootstrap thing="wOtherMel">
-      <autotag group="AttackTarg" tag="1Target"/>
-      <autotag group="DamTypeOvr" tag="dtPiercing"/>
-      <autotag group="MelAttOver" tag="aSTR"/>
-      <assignval field="sbName" value="Shortsword"/>
-      <assignval field="livename" value="Shortsword"/>
-      <assignval field="wDieCount" value="1"/>
-      <assignval field="wDieSize" value="8"/>
-      <assignval field="wDamExtra" value=" and 1d6 force "/>
-      </bootstrap>
+    <tag group="Alignment" tag="Unaligned"/>
     <bootstrap thing="tpFey"></bootstrap>
     <bootstrap thing="lSylvan"></bootstrap>
     <bootstrap thing="raDarkVis">
@@ -1277,6 +1273,36 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
       <assignval field="sbName" value="Understands its summoner&apos;s languages"/>
       </bootstrap>
     <bootstrap thing="ra5CFeyFey"></bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="MelAttOver" tag="aSTR"/>
+      <assignval field="sbName" value="Shortsword"/>
+      <assignval field="livename" value="Shortsword"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wDamExtra" value=" and 1d6 force "/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
+~Add back in the original 5 per the stat block, then remove it all
+~Add that entire thing to our total Bonus HP
+~We remove it from the total instead of just removing the total in case
+~something else is adding to that as well.
+
+var HPAdj as number
+HPAdj = 30
+HPAdj += hero.childfound[ra5CSumSplLvl].field[actUser].value * 10 - 30 - 1
+
+herofield[tBonusHP].value = HPAdj
+
+~ Add the spell level to our AC Bonus
+hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value - 1</eval>
+    <eval phase="First" priority="5000" index="4"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~Tell the spell level thing that our minimum spell level is 3
+     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 3]]></eval>
     <eval phase="Final" priority="50000" index="2"><![CDATA[~ go through each natural weapon on the hero and find what attack attribute
 ~ we've assigned to it. We MUST assign one with the MelAttOver and RanAttOver
 ~ tags for this to work. Pull that bonus, add the prof, find the master's
@@ -1316,26 +1342,6 @@ Mlt = hero.childfound[ra5CSumSplLvl].field[actUser].value
 Mlt /= 2
 Mlt = round(Mlt,0,-1)
 hero.childfound[xMultiatt].field[CustDesc].text = "The fey can make " & Mlt & " attack(s)."]]></eval>
-    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
-~Add back in the original 5 per the stat block, then remove it all
-~Add that entire thing to our total Bonus HP
-~We remove it from the total instead of just removing the total in case
-~something else is adding to that as well.
-
-var HPAdj as number
-HPAdj = 30
-HPAdj += hero.childfound[ra5CSumSplLvl].field[actUser].value * 10 - 30 - 1
-
-herofield[tBonusHP].value = HPAdj
-
-~ Add the spell level to our AC Bonus
-hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value - 1</eval>
-    <eval phase="First" priority="5000" index="4"><![CDATA[
-      ~ If we're disabled, do nothing & 
-      doneif (tagis[Helper.Disable] = 1)
-
-      ~Tell the spell level thing that our minimum spell level is 3
-     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 3]]></eval>
     </thing>
   <thing id="ra5CFeyFey" name="Fey Step" description="The fey uses a bonus action to magically teleport up to 30 feet to an open space that it can see. Depending on the fey&apos;s chosen mood, another effect then occurs." compset="RaceSpec">
     <arrayval field="usrArray" index="0" value="Fuming"/>
@@ -1381,7 +1387,7 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
     <tag group="Custom" tag="InheritDC" name="InheritDC" abbrev="InheritDC"/>
     <tag group="DamageRes" tag="dtFire"/>
     <tag group="DamageImm" tag="dtPoison"/>
-    <bootstrap thing="xMultiatt"></bootstrap>
+    <tag group="Alignment" tag="Unaligned"/>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
@@ -1394,12 +1400,7 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
     <bootstrap thing="ra5CMagResN">
       <assignval field="abText" value="The fiend"/>
       </bootstrap>
-    <eval phase="First" priority="5000" index="4"><![CDATA[
-      ~ If we're disabled, do nothing & 
-      doneif (tagis[Helper.Disable] = 1)
-
-      ~Tell the spell level thing that our minimum spell level is 6
-     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 6]]></eval>
+    <bootstrap thing="xMultiatt"></bootstrap>
     <eval phase="Final" priority="50000" index="2"><![CDATA[~ go through each natural weapon on the hero and find what attack attribute
 ~ we've assigned to it. We MUST assign one with the MelAttOver and RanAttOver
 ~ tags for this to work. Pull that bonus, add the prof, find the master's
@@ -1453,6 +1454,12 @@ herofield[tBonusHP].value = HPAdj
 
 ~ Add the spell level to our AC Bonus
 hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value - 1</eval>
+    <eval phase="First" priority="5000" index="4"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~Tell the spell level thing that our minimum spell level is 6
+     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 6]]></eval>
     </thing>
   <thing id="sr5CFndDem" name="Demon" compset="SubRace" uniqueness="unique">
     <tag group="RaceSize" tag="Medium0"/>
@@ -1559,10 +1566,7 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
     <tag group="Custom" tag="InheritDC" name="InheritDC" abbrev="InheritDC"/>
     <tag group="CondImm" tag="pcnFright"/>
     <tag group="DamageRes" tag="dtNecrotic"/>
-    <bootstrap thing="lOther">
-      <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
-      <assignval field="sbName" value="Understands its summoner&apos;s languages"/>
-      </bootstrap>
+    <tag group="Alignment" tag="Unaligned"/>
     <bootstrap thing="wOtherMel">
       <autotag group="AttackTarg" tag="1Target"/>
       <autotag group="DamTypeOvr" tag="dtCold"/>
@@ -1580,12 +1584,10 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
       </bootstrap>
     <bootstrap thing="xMultiatt"></bootstrap>
     <bootstrap thing="ra5CShdDre"></bootstrap>
-    <eval phase="First" priority="5000" index="4"><![CDATA[
-      ~ If we're disabled, do nothing & 
-      doneif (tagis[Helper.Disable] = 1)
-
-      ~Tell the spell level thing that our minimum spell level is 3
-     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 3]]></eval>
+    <bootstrap thing="lOther">
+      <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
+      <assignval field="sbName" value="Understands its summoner&apos;s languages"/>
+      </bootstrap>
     <eval phase="Final" priority="50000" index="2"><![CDATA[~ go through each natural weapon on the hero and find what attack attribute
 ~ we've assigned to it. We MUST assign one with the MelAttOver and RanAttOver
 ~ tags for this to work. Pull that bonus, add the prof, find the master's
@@ -1639,6 +1641,12 @@ herofield[tBonusHP].value = HPAdj
 
 ~ Add the spell level to our AC Bonus
 hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value - 2</eval>
+    <eval phase="First" priority="5000" index="4"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~Tell the spell level thing that our minimum spell level is 3
+     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 3]]></eval>
     </thing>
   <thing id="ra5CShdDre" name="Dreadful Scream" description="The spirit screams, forcing every creature within 30 feet of it to make a WIsdom save versus the spirit&apos;s summoner&apos;s spell save DC. A creature failing the save is frightened for 1 minute. It can repeat the save at the end of each of its turns, ending the effect on itself with a success." compset="RaceSpec">
     <fieldval field="trkMax" value="1"/>
@@ -1705,7 +1713,7 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnParaly"/>
     <tag group="CondImm" tag="pcnPoison"/>
-    <bootstrap thing="tpUndead"></bootstrap>
+    <tag group="Alignment" tag="Unaligned"/>
     <bootstrap thing="lOther">
       <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
       <assignval field="sbName" value="Understands its summoner&apos;s languages"/>
@@ -1714,20 +1722,7 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
       <autotag group="Value" tag="60"/>
       </bootstrap>
     <bootstrap thing="xMultiatt"></bootstrap>
-    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
-~Add back in the original 5 per the stat block, then remove it all
-~Add that entire thing to our total Bonus HP
-~We remove it from the total instead of just removing the total in case
-~something else is adding to that as well.
-
-var HPAdj as number
-HPAdj = 30
-HPAdj += hero.childfound[ra5CSumSplLvl].field[actUser].value * 10 - 30 - 1
-
-herofield[tBonusHP].value = HPAdj
-
-~ Add the spell level to our AC Bonus
-hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value - 2</eval>
+    <bootstrap thing="tpUndead"></bootstrap>
     <eval phase="First" priority="5000" index="4"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
@@ -1768,6 +1763,20 @@ Mlt = hero.childfound[ra5CSumSplLvl].field[actUser].value
 Mlt /= 2
 Mlt = round(Mlt,0,-1)
 hero.childfound[xMultiatt].field[CustDesc].text = "The spirit can make " & Mlt & " attack(s)."]]></eval>
+    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
+~Add back in the original 5 per the stat block, then remove it all
+~Add that entire thing to our total Bonus HP
+~We remove it from the total instead of just removing the total in case
+~something else is adding to that as well.
+
+var HPAdj as number
+HPAdj = 30
+HPAdj += hero.childfound[ra5CSumSplLvl].field[actUser].value * 10 - 30 - 1
+
+herofield[tBonusHP].value = HPAdj
+
+~ Add the spell level to our AC Bonus
+hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value - 2</eval>
     </thing>
   <thing id="sr5CUndGho" name="Ghostly" compset="SubRace" uniqueness="unique">
     <tag group="RaceSize" tag="Medium0"/>
