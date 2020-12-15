@@ -567,6 +567,7 @@
   <thing id="mw5CDMGWhe" name="Whelm" description="{i}Weapon (warhammer), legendary (requires attunement by a dwarf){/i}\n\n{i}Whelm{/i} is a powerful warhammer forged by dwarves and lost in the dungeon of White Plume Mountain. \n\nYou gain a +3 bonus to attack and damage rolls made with this magic weapon. At dawn the day after you first make an attack roll with {i}Whelm{/i}, you develop a fear of being outdoors that persists as long as you remain attuned to the weapon. This causes you to have disadvantage on attack rolls, saving throws, and ability checks while you can see the daytime sky.\n\n{b}Thrown Weapon{/b}. {i}Whelm{/i} has the thrown property, with a normal range of 20 feet and a long range of 60 feet. When you hit with a ranged weapon attack using it, the target takes an extra 1d8 bludgeoning damage, or an extra 2d8 bludgeoning damage if the target is a giant. Each time you throw the weapon, it flies back to your hand after the attack. If you don&apos;t have a hand free, the weapon lands at your feet.\n\n{b}Shock Wave{/b}. You can use an action to strike the ground with {i}Whelm{/i} and send a shock wave out from the point of impact. Each creature of your choice on the ground within 60 feet of that point must succeed on a DC 15 Constitution saving throw or become stunned for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. Once used, this property can&apos;t be used again until the next dawn. \n\n{b}Supernatural Awareness{/b}. While you are holding the weapon, it alerts you to the location of any secret or concealed doors within 30 feet of you. In addition, you can use an action to cast detect evil and good or locate object from the weapon. Once you cast either spell, you can&apos;t cast it from the weapon again until the next dawn. \n\n{b}Sentience{/b}. {i}Whelm{/i} is a sentient lawful neutral weapon with an Intelligence of 15, a Wisdom of 12, and a Charisma of 15. It has hearing and darkvision out to a range of 120 feet. \n\nThe weapon communicates telepathically with its wielder and can speak, read, and understand Dwarvish, Giant, and Goblin. It shouts battle cries in Dwarvish when used in combat.\n\n{b}Personality{/b}. Whelm&apos;s purpose is to slaughter giants and goblinoids. It also seeks to protect dwarves against all enemies. Conflict arises if the wielder fails to destroy goblins and giants or to protect dwarves.\n\nWhelm has ties to the dwarf clan that created it, variously called the Dankil or the Mightyhammer clan. It longs to be returned to that clan. It would do anything to protect those dwarves from harm. \n\nThe hammer also carries a secret shame. Centuries ago, a dwarf named Ctenmiir wielded it valiantly for a time. But Ctenmiir was turned into a vampire. His will was strong enough that he bent Whelm to his evil purposes, even killing members of his own clan." compset="MagicWep">
     <fieldval field="Bonus" value="3"/>
     <tag group="IsWeapon" tag="wWarhammer"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <pickreq thing="rDwarf"/>
     <child entity="wSpecMagic"></child>
     </thing>
@@ -882,5 +883,98 @@
   <thing id="wHdrSpecM" name="Special Melee Weapons" compset="Weapon" isshowonly="yes">
     <tag group="wProfReq" tag="Special"/>
     <tag group="wCategory" tag="Melee"/>
+    </thing>
+  <thing id="cfg5CNckPryr" name="Necklace of Prayer Beads" compset="Configure" uniqueness="unique">
+    <fieldval field="cfgObject1" value="Prayer Beads"/>
+    <tag group="AllowRCust" tag="cfg5CNckPryr"/>
+    <eval phase="Final">perform hero.childfound[io5CNeckPray].setfocus
+
+    if (focus.field[usrIndex].value = 0) then
+       field[cfgMax1].value = 3
+    elseif (focus.field[usrIndex].value = 1) then
+       field[cfgMax1].value = 4
+    elseif (focus.field[usrIndex].value = 2) then
+       field[cfgMax1].value = 5
+    elseif (focus.field[usrIndex].value = 4) then
+       field[cfgMax1].value = 6
+    endif</eval>
+    </thing>
+  <thing id="io5CNeckPray" name="Necklace of Prayer Beads" description="This necklace has 1d4 + 2 magic beads made from aquamarine, black pearl, or topaz. It also has many nonmagical beads made from stones such as amber, bloodstone, citrine, coral, jade, pearl, or quartz. If a magic bead is removed from the necklace, that bead loses its magic.\nSix types of magic beads exist. The GM decides the type of each bead on the necklace or determines it randomly. A necklace can have more than one bead of the same type. To use one, you must be wearing the necklace. Each bead contains a spell that you can cast from it as a bonus action (using your spell save DC if a save is necessary). Once a magic bead’s spell is cast, that bead can’t be used again until the next dawn.\n\n{b}d20        Bead of....{/b}\n1-6         Blessing - Bless\n7-12       Curing  - Cure wounds (2nd level) or lesser restoration\n13-16     Favor - Greater restoration\n17-18     Smiting - Branding smite\n19          Summons - Planar ally\n20          Wind walking - Wind walk" compset="Wondrous" replaces="miNeckPray">
+    <fieldval field="miAttunTxt" value="requires attunement by a cleric, druid, or paladin"/>
+    <arrayval field="usrArray" index="0" value="3 Beads"/>
+    <arrayval field="usrArray" index="1" value="4 Beads"/>
+    <arrayval field="usrArray" index="2" value="5 Beads"/>
+    <arrayval field="usrArray" index="3" value="6 Beads"/>
+    <tag group="ItemRarity" tag="Rare" name="Rare" abbrev="Rare"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="EquipMag" name="Magic Armor" abbrev="Magic Armor"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="cfg5CNckPryr">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="c5CBeadBls" name="Prayer Bead" compset="CustomSpec">
+    <fieldval field="usrLabelAr" value="Bead of"/>
+    <arrayval field="usrArray" index="0" value="Blessing (bless)"/>
+    <arrayval field="usrArray" index="1" value="Curing (cure wounds)"/>
+    <arrayval field="usrArray" index="2" value="Curing (lesser restoration)"/>
+    <arrayval field="usrArray" index="3" value="Favor (greater restoration)"/>
+    <arrayval field="usrArray" index="4" value="Smiting (branding smite)"/>
+    <arrayval field="usrArray" index="5" value="Summons (planar ally)"/>
+    <arrayval field="usrArray" index="6" value="Wind walking (wind walk)"/>
+    <tag group="AllowRCust" tag="cfg5CNckPryr"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="User" tag="NoAutoName"/>
+    <bootstrap thing="spBless">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 0</containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Prayer Bead"/>
+      </bootstrap>
+    <bootstrap thing="spCureWoun">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 1</containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Prayer Bead"/>
+      </bootstrap>
+    <bootstrap thing="spLessRest">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 2</containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Prayer Bead"/>
+      </bootstrap>
+    <bootstrap thing="spGreaRest">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 3</containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Prayer Bead"/>
+      </bootstrap>
+    <bootstrap thing="sp5CBrandS">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 4</containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Prayer Bead"/>
+      </bootstrap>
+    <bootstrap thing="spPlanAlly">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 5</containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Prayer Bead"/>
+      </bootstrap>
+    <bootstrap thing="spWindWalk">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 6</containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Prayer Bead"/>
+      </bootstrap>
     </thing>
   </document>
