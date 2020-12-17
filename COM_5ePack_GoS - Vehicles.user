@@ -15,7 +15,7 @@
     <fieldval field="rSpeed" value="0"/>
     <fieldval field="rArmText" value="Damage Threshold 20"/>
     <fieldval field="rMultiatt" value="The galley can take 3 actions on its turn. The number of actions it can take drops to 2 if it has less than 40 crew, 1 at less than 20 crew, and 0 at less than 3 crew. It can fire its ballistas, fire its mangonels, and move, each an action. The movement can also include the use of its naval ram."/>
-    <tag group="CondImm" tag="pcnCharmed"/>
+    <fieldval field="rDescript" value="{b}Dimensions:{/b} 130 ft. by 20 ft.\n{b}Creature Capacity:{/b} 80 crew, 40 passengers\n{b}Cargo Capacity:{/b} 150 tons\n{b}Travel Pace:{/b} 4 miles per hour (96 miles per day)"/>
     <tag group="CondImm" tag="pcnDeaf"/>
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnFright"/>
@@ -36,15 +36,7 @@
     <tag group="CondImm" tag="pcnBlind"/>
     <tag group="HideTab" tag="journal"/>
     <tag group="Alignment" tag="Unaligned"/>
-    <bootstrap thing="ra5CVehSails">
-      <assignval field="abValue" value="35"/>
-      <assignval field="abValue2" value="15"/>
-      <assignval field="abValue3" value="50"/>
-      <assignval field="abValue4" value="10"/>
-      <assignval field="abValue5" value="25"/>
-      <assignval field="abText" value="12"/>
-      <assignval field="actUserMax" value="100"/>
-      </bootstrap>
+    <tag group="CondImm" tag="pcnCharmed"/>
     <bootstrap thing="tp5CVehicle"></bootstrap>
     <bootstrap thing="ra5CGallBall"></bootstrap>
     <bootstrap thing="ra5CGallBall"></bootstrap>
@@ -98,6 +90,15 @@
       </bootstrap>
     <bootstrap thing="ra5CGallMang"></bootstrap>
     <bootstrap thing="ra5CGallMang"></bootstrap>
+    <bootstrap thing="ra5CVehSails">
+      <assignval field="abValue" value="35"/>
+      <assignval field="abValue2" value="15"/>
+      <assignval field="abValue3" value="50"/>
+      <assignval field="abValue4" value="10"/>
+      <assignval field="abValue5" value="25"/>
+      <assignval field="abText" value="12"/>
+      <assignval field="actUserMax" value="100"/>
+      </bootstrap>
     <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
 
 ~Subtract out the CON bonus 
@@ -180,13 +181,14 @@ endif]]></eval>
       <containerreq phase="First" priority="450"><![CDATA[fieldval:actUser < 50]]></containerreq>
       <autotag group="DamageType" tag="dtPiercing"/>
       <autotag group="wCategory" tag="RangeProj"/>
-      <assignval field="wDieCount" value="3"/>
+      <autotag group="Helper" tag="NoAttrDam"/>
       <assignval field="wDieSize" value="10"/>
       <assignval field="wRangeNorm" value="120"/>
       <assignval field="wRangeLong" value="480"/>
       <assignval field="atrBonus" value="7"/>
       <assignval field="livename" value="Ballista"/>
       <assignval field="sbName" value="Ballista"/>
+      <assignval field="wDieCount" value="3"/>
       </bootstrap>
     <eval phase="First"><![CDATA[var thresh as string
 var sep as string
@@ -211,7 +213,7 @@ field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMa
       <containerreq phase="First" priority="450"><![CDATA[fieldval:actUser < 100]]></containerreq>
       <autotag group="DamageType" tag="dtBludgeon"/>
       <autotag group="wCategory" tag="RangeProj"/>
-      <assignval field="wDieCount" value="5"/>
+      <autotag group="Helper" tag="NoAttrDam"/>
       <assignval field="wDieSize" value="10"/>
       <assignval field="wRangeNorm" value="200"/>
       <assignval field="wRangeLong" value="800"/>
@@ -219,6 +221,7 @@ field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMa
       <assignval field="livename" value="Mangonel"/>
       <assignval field="sbName" value="Mangonel"/>
       <assignval field="wTarget" value="(cannot hit within 60 ft.), one target"/>
+      <assignval field="wDieCount" value="5"/>
       </bootstrap>
     <eval phase="First"><![CDATA[var thresh as string
 var sep as string
@@ -236,7 +239,6 @@ field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMa
   <thing id="w5CVehAttk" name="Vehicle Attack" compset="Weapon" holdable="no">
     <tag group="Helper" tag="NoOutGear"/>
     <tag group="Helper" tag="NoSelect"/>
-    <tag group="Helper" tag="NoAttrDam"/>
     <tag group="Helper" tag="Proficient"/>
     <tag group="Helper" tag="FixSizeDmg"/>
     <tag group="Helper" tag="AlwaysAvl"/>
@@ -343,7 +345,7 @@ thresh = " (damage threshold " & field[abText2].text & ")"
 sep = " | Dmg Thresh " & field[abText2].text
 endif
 
-field[CustDesc].text = "\n{b}Armor Class{/b}: " & field[abText].text & ", {b}Hit Points{/b}: " & field[actUserMax].value & thresh & "\n\nMove up to its speed with its chosen movement method. It can make a 90-degree turn with this movement. The ship cannot turn if the helm is destroyed."
+field[CustDesc].text = "\n{b}Armor Class{/b}: " & field[abText].text & "\n{b}Hit Points{/b}: " & field[actUserMax].value & thresh & "\n\nMove up to its speed with its chosen movement method. It can make a 90-degree turn with this movement. The ship cannot turn if the helm is destroyed."
 
 field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMax].value & sep & " | Damage Taken: "]]></eval>
     </thing>
@@ -367,37 +369,30 @@ field[shortname].text &= thresh]]></eval>
     </thing>
   <thing id="ra5CVehCrtCap" name="Capacity - Creature" compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
-    <tag group="abAction" tag="None"/>
-    <tag group="FeatureTyp" tag="Special"/>
     <eval phase="Render"><![CDATA[var thresh as string
 var sep as string
 thresh = field[abText2].text
 
 if (empty(thresh)=0) then
-sep = ": "
+sep = "\n{b}" & field[abText2].text & "{/b}: " & field[abValue2].value
 endif
 
 
-field[CustDesc].text = "\n{b}" & field[abText].text & "{/b}: " & field[abValue].value & "\n{b}" & field[abText2].text & "{/b}" & sep & field[abValue2].value]]></eval>
+
+field[CustDesc].text = "\n{b}" & field[abText].text & "{/b}: " & field[abValue].value & sep]]></eval>
     </thing>
   <thing id="ra5CVehCrgCap" name="Capacity - Cargo" compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
-    <tag group="abAction" tag="None"/>
-    <tag group="FeatureTyp" tag="Special"/>
     <eval phase="Render"><![CDATA[
 field[CustDesc].text = "\n{b}Cargo{/b}: " & field[abText].text & "{/b}"]]></eval>
     </thing>
   <thing id="ra5CVehTrvlPc" name="Travel Pace" compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
-    <tag group="abAction" tag="None"/>
-    <tag group="FeatureTyp" tag="Special"/>
     <eval phase="Render"><![CDATA[
 field[CustDesc].text = "\n{b}Miles per hour{/b}: " & field[abValue].value & "{/b}\n{b}Miles per day{/b}: " & field[abValue2].value]]></eval>
     </thing>
   <thing id="ra5CVehDimen" name="Dimensions" compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
-    <tag group="abAction" tag="None"/>
-    <tag group="FeatureTyp" tag="Special"/>
     <eval phase="Render"><![CDATA[
 field[CustDesc].text = "{b}Vehicle Dimensions{/b}: " & field[abValue].value & " ft. by " & field[abValue2].value & " ft."]]></eval>
     </thing>
@@ -415,7 +410,7 @@ field[CustDesc].text = "{b}Vehicle Dimensions{/b}: " & field[abValue].value & " 
     <fieldval field="rSpeed" value="0"/>
     <fieldval field="rArmText" value="Damage Threshold 10"/>
     <fieldval field="rMultiatt" value="The keelboat can take 2 actions on its turn. The number of actions it can take drops to 1 if it has one crewmember and 0 without a crew. It can fire its ballista and/or move, each an action."/>
-    <tag group="CondImm" tag="pcnBlind"/>
+    <fieldval field="rDescript" value="{b}Dimensions:{/b} 60 ft. by 20 ft.\n{b}Creature Capacity:{/b} 3 crew, 4 passengers\n{b}Cargo Capacity:{/b} 0.5 tons\n{b}Travel Pace:{/b} 3 miles per hour (72 miles per day)"/>
     <tag group="CondImm" tag="pcnCharmed"/>
     <tag group="CondImm" tag="pcnDeaf"/>
     <tag group="CondImm" tag="pcnExhaust"/>
@@ -436,15 +431,7 @@ field[CustDesc].text = "{b}Vehicle Dimensions{/b}: " & field[abValue].value & " 
     <tag group="DamageImm" tag="dtPsychic"/>
     <tag group="HideTab" tag="journal"/>
     <tag group="Alignment" tag="Unaligned"/>
-    <bootstrap thing="ra5CVehSails">
-      <assignval field="abValue" value="25"/>
-      <assignval field="abValue2" value="15"/>
-      <assignval field="abValue3" value="35"/>
-      <assignval field="abValue4" value="5"/>
-      <assignval field="abValue5" value="20"/>
-      <assignval field="abText" value="12"/>
-      <assignval field="actUserMax" value="100"/>
-      </bootstrap>
+    <tag group="CondImm" tag="pcnBlind"/>
     <bootstrap thing="tp5CVehicle"></bootstrap>
     <bootstrap thing="ra5CVehHull">
       <assignval field="abValue" value="15"/>
@@ -486,6 +473,15 @@ field[CustDesc].text = "{b}Vehicle Dimensions{/b}: " & field[abValue].value & " 
       <assignval field="abText" value="12"/>
       <assignval field="actUserMax" value="50"/>
       </bootstrap>
+    <bootstrap thing="ra5CVehSails">
+      <assignval field="abValue" value="25"/>
+      <assignval field="abValue2" value="15"/>
+      <assignval field="abValue3" value="35"/>
+      <assignval field="abValue4" value="5"/>
+      <assignval field="abValue5" value="20"/>
+      <assignval field="abText" value="12"/>
+      <assignval field="actUserMax" value="100"/>
+      </bootstrap>
     <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
 
 ~Subtract out the CON bonus 
@@ -510,13 +506,14 @@ perform hero.pushtags[HideTab.?]</eval>
       <containerreq phase="First" priority="450"><![CDATA[fieldval:actUser < 50]]></containerreq>
       <autotag group="DamageType" tag="dtPiercing"/>
       <autotag group="wCategory" tag="RangeProj"/>
-      <assignval field="wDieCount" value="3"/>
+      <autotag group="Helper" tag="NoAttrDam"/>
       <assignval field="wDieSize" value="10"/>
       <assignval field="wRangeNorm" value="120"/>
       <assignval field="wRangeLong" value="480"/>
       <assignval field="atrBonus" value="7"/>
       <assignval field="livename" value="Ballista"/>
       <assignval field="sbName" value="Ballista"/>
+      <assignval field="wDieCount" value="3"/>
       </bootstrap>
     <eval phase="First"><![CDATA[var thresh as string
 var sep as string
@@ -1054,17 +1051,17 @@ hero.childfound[svCON].field[svTotal].value += 2]]></eval>
     <bootstrap thing="c5CGalley"></bootstrap>
     </thing>
   <thing id="c5CGalley" name="Galley" compset="Companion">
-    <fieldval field="CompType" value="Galley"/>
+    <fieldval field="CompType" value="Ship"/>
     <usesource source="p5eGoSP"/>
-    <minion id="Galley">
+    <minion id="Ship" isinherit="no">
       <tag group="Hero" tag="FixedRace"/>
       <bootstrap thing="r5CGalley"></bootstrap>
       </minion>
     </thing>
   <thing id="c5CKeelboat" name="Keelboat" compset="Companion">
-    <fieldval field="CompType" value="Galley"/>
+    <fieldval field="CompType" value="Ship"/>
     <usesource source="p5eGoSP"/>
-    <minion id="Keelboat">
+    <minion id="Ship" isinherit="no">
       <tag group="Hero" tag="FixedRace"/>
       <bootstrap thing="r5CVehKeel"></bootstrap>
       </minion>
@@ -1090,7 +1087,7 @@ hero.childfound[svCON].field[svTotal].value += 2]]></eval>
     <fieldval field="rSpeed" value="0"/>
     <fieldval field="rArmText" value="Damage Threshold 15"/>
     <fieldval field="rMultiatt" value="The longship can take an action to move with its oars or sails. It cannot do so if it has no crew."/>
-    <tag group="CondImm" tag="pcnCharmed"/>
+    <fieldval field="rDescript" value="{b}Dimensions:{/b} 70 ft. by 20 ft.\n{b}Creature Capacity:{/b} 40 crew, 100 passengers\n{b}Cargo Capacity:{/b} 10 tons\n{b}Travel Pace:{/b} 5 miles per hour (120 miles per day)"/>
     <tag group="CondImm" tag="pcnDeaf"/>
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnFright"/>
@@ -1111,15 +1108,7 @@ hero.childfound[svCON].field[svTotal].value += 2]]></eval>
     <tag group="CondImm" tag="pcnBlind"/>
     <tag group="HideTab" tag="journal"/>
     <tag group="Alignment" tag="Unaligned"/>
-    <bootstrap thing="ra5CVehSails">
-      <assignval field="abValue" value="45"/>
-      <assignval field="abValue2" value="15"/>
-      <assignval field="abValue3" value="60"/>
-      <assignval field="abValue4" value="10"/>
-      <assignval field="abValue5" value="25"/>
-      <assignval field="abText" value="12"/>
-      <assignval field="actUserMax" value="100"/>
-      </bootstrap>
+    <tag group="CondImm" tag="pcnCharmed"/>
     <bootstrap thing="tp5CVehicle"></bootstrap>
     <bootstrap thing="ra5CVehHull">
       <assignval field="abValue" value="15"/>
@@ -1161,6 +1150,15 @@ hero.childfound[svCON].field[svTotal].value += 2]]></eval>
       <assignval field="abText" value="16"/>
       <assignval field="actUserMax" value="50"/>
       </bootstrap>
+    <bootstrap thing="ra5CVehSails">
+      <assignval field="abValue" value="45"/>
+      <assignval field="abValue2" value="15"/>
+      <assignval field="abValue3" value="60"/>
+      <assignval field="abValue4" value="10"/>
+      <assignval field="abValue5" value="25"/>
+      <assignval field="abText" value="12"/>
+      <assignval field="actUserMax" value="100"/>
+      </bootstrap>
     <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
 
 ~Subtract out the CON bonus 
@@ -1176,9 +1174,9 @@ herofield[tBonusHP].value += HPAdj
 perform hero.pushtags[HideTab.?]</eval>
     </thing>
   <thing id="c5CLongship" name="Longship" compset="Companion">
-    <fieldval field="CompType" value="Galley"/>
+    <fieldval field="CompType" value="Ship"/>
     <usesource source="p5eGoSP"/>
-    <minion id="Longship">
+    <minion id="Ship" isinherit="no">
       <tag group="Hero" tag="FixedRace"/>
       <bootstrap thing="r5CLongship"></bootstrap>
       </minion>
@@ -1204,7 +1202,7 @@ perform hero.pushtags[HideTab.?]</eval>
     <fieldval field="rSpeed" value="0"/>
     <fieldval field="rArmText" value="Damage Threshold 15"/>
     <fieldval field="rMultiatt" value="The ship can take 3 actions on its turn. The number of actions it can take drops to 2 if it has less than 20 crew, 1 at less than 10 crew, and 0 at less than 3 crew. It can fire its ballista, fire its mangonel, and move, each an action."/>
-    <tag group="CondImm" tag="pcnCharmed"/>
+    <fieldval field="rDescript" value="{b}Dimensions:{/b} 100 ft. by 20 ft.\n{b}Creature Capacity:{/b} 30 crew, 20 passengers\n{b}Cargo Capacity:{/b} 100 tons\n{b}Travel Pace:{/b} 5 miles per hour (120 miles per day)"/>
     <tag group="CondImm" tag="pcnDeaf"/>
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnFright"/>
@@ -1225,15 +1223,7 @@ perform hero.pushtags[HideTab.?]</eval>
     <tag group="CondImm" tag="pcnBlind"/>
     <tag group="HideTab" tag="journal"/>
     <tag group="Alignment" tag="Unaligned"/>
-    <bootstrap thing="ra5CVehSails">
-      <assignval field="abValue" value="45"/>
-      <assignval field="abValue2" value="15"/>
-      <assignval field="abValue3" value="60"/>
-      <assignval field="abValue4" value="5"/>
-      <assignval field="abValue5" value="25"/>
-      <assignval field="abText" value="12"/>
-      <assignval field="actUserMax" value="100"/>
-      </bootstrap>
+    <tag group="CondImm" tag="pcnCharmed"/>
     <bootstrap thing="tp5CVehicle"></bootstrap>
     <bootstrap thing="ra5CVehHull">
       <assignval field="abValue" value="15"/>
@@ -1269,6 +1259,18 @@ perform hero.pushtags[HideTab.?]</eval>
       <assignval field="actUserMax" value="50"/>
       </bootstrap>
     <bootstrap thing="ra5CGallMang"></bootstrap>
+    <bootstrap thing="ra5CVehSails">
+      <assignval field="abValue" value="45"/>
+      <assignval field="abValue2" value="15"/>
+      <assignval field="abValue3" value="60"/>
+      <assignval field="abValue4" value="5"/>
+      <assignval field="abValue5" value="25"/>
+      <assignval field="abText" value="12"/>
+      <assignval field="actUserMax" value="100"/>
+      </bootstrap>
+    <eval phase="Final" index="3"><![CDATA[foreach pick in hero where "thingid.w5CVehAttk"
+   eachpick.field[atrBonus].value -= 1
+   nexteach]]></eval>
     <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
 
 ~Subtract out the CON bonus 
@@ -1282,14 +1284,11 @@ herofield[tBonusHP].value += HPAdj
 
 ~push our hidetabs to the hero
 perform hero.pushtags[HideTab.?]</eval>
-    <eval phase="Final" index="3"><![CDATA[foreach pick in hero where "thingid.w5CVehAttk"
-   eachpick.field[atrBonus].value -= 1
-   nexteach]]></eval>
     </thing>
   <thing id="c5CSailShip" name="Sailing Ship" compset="Companion">
-    <fieldval field="CompType" value="Galley"/>
+    <fieldval field="CompType" value="Ship"/>
     <usesource source="p5eGoSP"/>
-    <minion id="SailingShip">
+    <minion id="Ship">
       <tag group="Hero" tag="FixedRace"/>
       <bootstrap thing="r5CSailShip"></bootstrap>
       </minion>
@@ -1317,7 +1316,7 @@ thresh = " (damage threshold " & field[abText2].text & ")"
 sep = " | Dmg Thresh " & field[abText2].text
 endif
 
-field[CustDesc].text = "\n{b}Armor Class{/b}: " & field[abText].text & ", {b}Hit Points{/b}: " & field[actUserMax].value & thresh & "\n\nMove up to its speed with its chosen movement method. It can make a 90-degree turn with this movement. The ship cannot turn if the helm is destroyed."
+field[CustDesc].text = "\n{b}Armor Class{/b}: " & field[abText].text & "\n{b}Hit Points{/b}: " & field[actUserMax].value & thresh & "\n\nMove up to its speed with its chosen movement method. It can make a 90-degree turn with this movement. The ship cannot turn if the helm is destroyed."
 
 field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMax].value & sep & " | Damage Taken: "]]></eval>
     </thing>
@@ -1335,7 +1334,7 @@ field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMa
     <fieldval field="rSpeed" value="0"/>
     <fieldval field="rArmText" value="Damage Threshold 20"/>
     <fieldval field="rMultiatt" value="The warship can take 3 actions on its turn. The number of actions it can take drops to 2 if it has less than 20 crew, 1 at less than 10 crew, and 0 at less than 3 crew. It can fire its ballistas, fire its mangonels, and move, each an action. The movement can also include the use of its naval ram."/>
-    <tag group="CondImm" tag="pcnCharmed"/>
+    <fieldval field="rDescript" value="{b}Dimensions:{/b} 100 ft. by 20 ft.\n{b}Creature Capacity:{/b} 40 crew, 60 passengers\n{b}Cargo Capacity:{/b} 200 tons\n{b}Travel Pace:{/b} 4 miles per hour (96 miles per day)"/>
     <tag group="CondImm" tag="pcnDeaf"/>
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnFright"/>
@@ -1356,15 +1355,7 @@ field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMa
     <tag group="CondImm" tag="pcnBlind"/>
     <tag group="HideTab" tag="journal"/>
     <tag group="Alignment" tag="Unaligned"/>
-    <bootstrap thing="ra5CVehSails">
-      <assignval field="abValue" value="35"/>
-      <assignval field="abValue2" value="15"/>
-      <assignval field="abValue3" value="50"/>
-      <assignval field="abValue4" value="10"/>
-      <assignval field="abValue5" value="25"/>
-      <assignval field="abText" value="12"/>
-      <assignval field="actUserMax" value="100"/>
-      </bootstrap>
+    <tag group="CondImm" tag="pcnCharmed"/>
     <bootstrap thing="tp5CVehicle"></bootstrap>
     <bootstrap thing="ra5CGallBall"></bootstrap>
     <bootstrap thing="ra5CGallBall"></bootstrap>
@@ -1416,6 +1407,15 @@ field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMa
       </bootstrap>
     <bootstrap thing="ra5CGallMang"></bootstrap>
     <bootstrap thing="ra5CGallMang"></bootstrap>
+    <bootstrap thing="ra5CVehSails">
+      <assignval field="abValue" value="35"/>
+      <assignval field="abValue2" value="15"/>
+      <assignval field="abValue3" value="50"/>
+      <assignval field="abValue4" value="10"/>
+      <assignval field="abValue5" value="25"/>
+      <assignval field="abText" value="12"/>
+      <assignval field="actUserMax" value="100"/>
+      </bootstrap>
     <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
 
 ~Subtract out the CON bonus 
@@ -1431,9 +1431,9 @@ herofield[tBonusHP].value += HPAdj
 perform hero.pushtags[HideTab.?]</eval>
     </thing>
   <thing id="c5CWarship" name="Warship" compset="Companion">
-    <fieldval field="CompType" value="Galley"/>
+    <fieldval field="CompType" value="Ship"/>
     <usesource source="p5eGoSP"/>
-    <minion id="Warship">
+    <minion id="Ship" isinherit="no">
       <tag group="Hero" tag="FixedRace"/>
       <bootstrap thing="r5CWarship"></bootstrap>
       </minion>
@@ -1453,9 +1453,9 @@ perform hero.pushtags[HideTab.?]</eval>
     <bootstrap thing="c5CRowboat"></bootstrap>
     </thing>
   <thing id="c5CRowboat" name="Rowboat" compset="Companion">
-    <fieldval field="CompType" value="Galley"/>
+    <fieldval field="CompType" value="Ship"/>
     <usesource source="p5eGoSP"/>
-    <minion id="Rowboat">
+    <minion id="Ship" isinherit="no">
       <tag group="Hero" tag="FixedRace"/>
       <bootstrap thing="r5CRowboat"></bootstrap>
       </minion>
@@ -1473,8 +1473,8 @@ perform hero.pushtags[HideTab.?]</eval>
     <fieldval field="rAC" value="2"/>
     <fieldval field="rSpeed" value="0"/>
     <fieldval field="rMultiatt" value="The rowboat can take an action to move with its oars or sails. It cannot do so if it has no crew."/>
-    <tag group="CondImm" tag="pcnCharmed"/>
-    <tag group="CondImm" tag="pcnDeaf"/>
+    <fieldval field="rArmText" value="Hull"/>
+    <fieldval field="rDescript" value="{b}Dimensions:{/b} 10 ft. by 5 ft.\n{b}Creature Capacity:{/b} 2 crew, 2 passengers\n{b}Cargo Capacity:{/b} 0.25 tons\n{b}Travel Pace:{/b} 3 miles per hour (72 miles per day)"/>
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnFright"/>
     <tag group="CondImm" tag="pcnIncapa"/>
@@ -1494,11 +1494,8 @@ perform hero.pushtags[HideTab.?]</eval>
     <tag group="CondImm" tag="pcnBlind"/>
     <tag group="HideTab" tag="journal"/>
     <tag group="Alignment" tag="Unaligned"/>
-    <bootstrap thing="tp5CVehicle"></bootstrap>
-    <bootstrap thing="ra5CVehHull">
-      <assignval field="abValue" value="11"/>
-      <assignval field="abValue3" value="50"/>
-      </bootstrap>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnDeaf"/>
     <bootstrap thing="ra5CVehCrtCap">
       <assignval field="abText" value="Crew"/>
       <assignval field="abValue" value="2"/>
@@ -1528,6 +1525,11 @@ perform hero.pushtags[HideTab.?]</eval>
       <assignval field="abText" value="12"/>
       <assignval field="abValue2" value="1"/>
       </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CVehHull">
+      <assignval field="abValue" value="11"/>
+      <assignval field="abValue3" value="50"/>
+      </bootstrap>
     <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
 
 ~Subtract out the CON bonus 
@@ -1555,8 +1557,8 @@ perform hero.pushtags[HideTab.?]</eval>
     <fieldval field="rAC" value="2"/>
     <fieldval field="rSpeed" value="0"/>
     <fieldval field="rMultiatt" value="The canoe can take an action to move with its oars or sails. It cannot do so if it has no crew."/>
-    <tag group="CondImm" tag="pcnCharmed"/>
-    <tag group="CondImm" tag="pcnDeaf"/>
+    <fieldval field="rArmText" value="Hull"/>
+    <fieldval field="rDescript" value="{b}Dimensions:{/b} 10 ft. by 5 ft.\n{b}Creature Capacity:{/b} 2 crew, 2 passengers\n{b}Cargo Capacity:{/b} 0.25 tons\n{b}Travel Pace:{/b} 3 miles per hour (72 miles per day)"/>
     <tag group="CondImm" tag="pcnExhaust"/>
     <tag group="CondImm" tag="pcnFright"/>
     <tag group="CondImm" tag="pcnIncapa"/>
@@ -1576,11 +1578,8 @@ perform hero.pushtags[HideTab.?]</eval>
     <tag group="CondImm" tag="pcnBlind"/>
     <tag group="HideTab" tag="journal"/>
     <tag group="Alignment" tag="Unaligned"/>
-    <bootstrap thing="tp5CVehicle"></bootstrap>
-    <bootstrap thing="ra5CVehHull">
-      <assignval field="abValue" value="11"/>
-      <assignval field="abValue3" value="50"/>
-      </bootstrap>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnDeaf"/>
     <bootstrap thing="ra5CVehCrtCap">
       <assignval field="abText" value="Crew"/>
       <assignval field="abValue" value="2"/>
@@ -1610,6 +1609,11 @@ perform hero.pushtags[HideTab.?]</eval>
       <assignval field="abText" value="12"/>
       <assignval field="abValue2" value="1"/>
       </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CVehHull">
+      <assignval field="abValue" value="11"/>
+      <assignval field="abValue3" value="50"/>
+      </bootstrap>
     <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
 
 ~Subtract out the CON bonus 
@@ -1625,9 +1629,9 @@ herofield[tBonusHP].value += HPAdj
 perform hero.pushtags[HideTab.?]</eval>
     </thing>
   <thing id="c5CCanoe" name="Canoe" compset="Companion">
-    <fieldval field="CompType" value="Galley"/>
+    <fieldval field="CompType" value="Ship"/>
     <usesource source="p5eToAP"/>
-    <minion id="Canoe">
+    <minion id="Ship" isinherit="no">
       <tag group="Hero" tag="FixedRace"/>
       <bootstrap thing="r5CCanoe"></bootstrap>
       </minion>
