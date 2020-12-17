@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CDemGrnd" name="Demon Grinder" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rMultiatt" value="Each action in the war machine&apos;s stat block is an action station."/>
+    <fieldval field="rDescript" value="{b}Weight:{/b} 12,000 lb.\n{b}Creature Capacity:{/b} 8 Medium creatures\n{b}Cargo Capacity:{/b} 1 ton\n{b}Damage Threshold:{/b} 10\n{b}Mishap Threshold:{/b} 20\n{b}Travel Pace:{/b} 10 miles per hour (240 miles per day)"/>
+    <fieldval field="rSpeed" value="100"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="-10"/>
+    <fieldval field="rWIS" value="-10"/>
+    <fieldval field="rCHA" value="-10"/>
+    <fieldval field="rAC" value="9"/>
+    <fieldval field="rHPStart" value="200"/>
+    <fieldval field="rArmText" value="Armored"/>
+    <fieldval field="rWeightMin" value="12000"/>
+    <tag group="HideTab" tag="journal" name="journal" abbrev="journal"/>
+    <tag group="HideTab" tag="personal" name="personal" abbrev="personal"/>
+    <tag group="RaceSize" tag="Gargant3" name="Gargantuan" abbrev="Gargantuan"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="CondImm" tag="pcnBlind" name="Blinded" abbrev="Blinded"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnDeaf" name="Deafened" abbrev="Deafened"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPetri" name="Petrified" abbrev="Petrified"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="CondImm" tag="pcnStunned" name="Stunned" abbrev="Stunned"/>
+    <tag group="CondImm" tag="pcnUnconc" name="Unconscious" abbrev="Unconscious"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <tag group="DamageImm" tag="dtPsychic" name="Psychic" abbrev="Psychic"/>
+    <tag group="DamageImm" tag="dtFire"/>
+    <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <bootstrap thing="ra5CVehTrvlPc">
+      <assignval field="abValue" value="10"/>
+      <assignval field="abValue2" value="240"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <assignval field="livename" value="Action Stations"/>
+      <assignval field="sbName" value="Action Stations"/>
+      <assignval field="shortname" value="Action Stations"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CWrMThr">
+      <assignval field="abValue" value="10"/>
+      <assignval field="abValue2" value="20"/>
+      </bootstrap>
+    <bootstrap thing="ra5CWrMHelm">
+      <assignval field="abText2" value="Three-Quarters"/>
+      </bootstrap>
+    <bootstrap thing="ra5CCrshWhl">
+      <assignval field="abValue" value="22"/>
+      <assignval field="abValue2" value="4"/>
+      <assignval field="abDC" value="11"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMagWeaN">
+      <assignval field="abText" value="The war machine"/>
+      </bootstrap>
+    <bootstrap thing="ra5CWrMPrn"></bootstrap>
+    <bootstrap thing="ra5CWrMHrp"></bootstrap>
+    <bootstrap thing="ra5CWrMHrp"></bootstrap>
+    <bootstrap thing="ra5CWrMChmp"></bootstrap>
+    <bootstrap thing="ra5CWrMWrk"></bootstrap>
+    <bootstrap thing="ra5CVehCrtCap">
+      <assignval field="abText" value="Medium creatures"/>
+      <assignval field="abValue" value="8"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehCrgCap">
+      <assignval field="abText" value="1 ton"/>
+      </bootstrap>
+    <bootstrap thing="cfg5CWrMUpg"></bootstrap>
+    <eval phase="PostLevel" index="3">hero.childfound[ProfBonus].field[tProfBonus].value = 5</eval>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+HPAdj -= hero.childfound[aCON].field[aModBonus].value
+
+~then add in the total of the vehicle (minus since it has 1d1 HD)
+
+HPAdj += 199
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    </thing>
+  <thing id="ra5CWrMHelm" name="Helm" description="Drive and steer the war machine." compset="RaceSpec">
+    <fieldval field="abText" value="1 Crew, "/>
+    <fieldval field="actName" value="Parked"/>
+    <tag group="LvNamePar" tag="AppText2"/>
+    <tag group="SbNamePar" tag="AppText2"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <eval phase="PostLevel" index="2"><![CDATA[if (field[abilActive].value <> 0) then
+   hero.childfound[ArmorClass].field[Bonus].value -= field[abValue].value
+   endif]]></eval>
+    <eval phase="Render" priority="1"><![CDATA[field[abText2].text = "1 Crew, " & field[abText2].text & " Cover"]]></eval>
+    </thing>
+  <thing id="ra5CWrMThr" name="Thresholds" compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Render"><![CDATA[
+
+field[CustDesc].text = "\n{b}Damage threshold{/b}: " & field[abValue].value & "\n{b}Mishap threshold{/b}: " & field[abValue2].value]]></eval>
+    </thing>
+  <thing id="g5CDemGrn" name="Demon Grinder" compset="Gear">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="thing" tag="holder_top"/>
+    <tag group="Helper" tag="GearNoSize"/>
+    <tag group="GearType" tag="gtVehLand"/>
+    <bootstrap thing="c5CDemGrnd"></bootstrap>
+    </thing>
+  <thing id="c5CDemGrnd" name="Demon Grinder" compset="Companion" stacking="never">
+    <fieldval field="CompType" value="War Machine"/>
+    <usesource source="p5eBGDiAP"/>
+    <minion id="DemonGrinder" isinherit="no">
+      <tag group="Hero" tag="FixedRace" name="FixedRace" abbrev="FixedRace"/>
+      <bootstrap thing="r5CDemGrnd"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="ra5CCrshWhl" name="Crushing Wheels" description="The war machine can move through any  (abText) or smaller creature&apos;s space. When it does, the creature must make a (abDC) Dexterity save. On a failure, it suffers (abValue) ((abValue2)d10) bludgeoning damage and is knocked prone. If the creature was already prone, it takes an additional (abValue) ((abValue2)d10) bludgeoning damage. This trait can&apos;t be used against a particular creature more than once per turn." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[field[CustDesc].text = "The war machine can move through any " & field[abText].text & " or smaller creature's space. When it does, the creature must make a " & field[abDC].value & " Dexterity save. On a failure, it suffers " & field[abValue].value &  " (" & field[abValue2].value & "d10) bludgeoning damage and is knocked prone. If the creature was already prone, it takes an additional " & field[abValue].value & " (" & field[abValue2].value & "d10) bludgeoning damage. This trait can't be used against a particular creature more than once per turn."
+
+field[abText].text = field[abValue2].value & "d10 bludgeoning"]]></eval>
+    </thing>
+  <thing id="ra5CWrMPrn" name="Prone Deficiency" description="If the war machine rolls over and falls prone, it cannot right itself. It is incapacitated until it is flipped upright." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="wSULDEL" name="!!!!!Vehicle Attack" compset="Weapon">
+    <fieldval field="wDieCount" value="2"/>
+    <fieldval field="wDieSize" value="8"/>
+    <fieldval field="wRangeNorm" value="120"/>
+    <fieldval field="wAttackEff" value="dfas"/>
+    <fieldval field="wReach" value="15"/>
+    <fieldval field="atrBonus" value="5"/>
+    <tag group="Helper" tag="NoSelect" name="NoSelect" abbrev="NoSelect"/>
+    <tag group="Helper" tag="Proficient" name="Proficient" abbrev="Proficient"/>
+    <tag group="wProperty" tag="Natural" name="Natural" abbrev="Natural"/>
+    <tag group="Custom" tag="ShipWep" name="Ship Weapon" abbrev="Ship Weapon"/>
+    <tag group="Helper" tag="AlwaysAvl" name="AlwaysAvl" abbrev="AlwaysAvl"/>
+    <tag group="Helper" tag="FixSizeDmg" name="FixSizeDmg" abbrev="FixSizeDmg"/>
+    <tag group="wCategory" tag="Melee"/>
+    <tag group="Helper" tag="Helper" name="Helper" abbrev="Helper"/>
+    <tag group="Helper" tag="NoAttrDam" name="NoAttrDam" abbrev="NoAttrDam"/>
+    <tag group="DamageType" tag="dtBludgeon"/>
+    <tag group="Helper" tag="NoOutGear" name="NoOutGear" abbrev="NoOutGear"/>
+    </thing>
+  <thing id="ra5CWrMHrp" name="Harpoon Flinger" compset="RaceSpec">
+    <fieldval field="abText" value="15"/>
+    <tag group="Custom" tag="WrMWpD"/>
+    <bootstrap thing="w5CVehAttk">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      <autotag group="DamageType" tag="dtPiercing"/>
+      <autotag group="wCategory" tag="RangeProj"/>
+      <assignval field="livename" value="Harpoon Flinger (1 Crew, Half Cover)"/>
+      <assignval field="sbName" value="Harpoon Flinger (1 Crew, Half Cover)"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wRangeNorm" value="120"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CWrMChmp" name="Chomper" compset="RaceSpec">
+    <fieldval field="abText" value="15"/>
+    <tag group="Custom" tag="WrMWpD" name="War Machine Default Weapon"/>
+    <bootstrap thing="w5CVehAttk">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      <autotag group="DamageType" tag="dtPiercing"/>
+      <autotag group="wCategory" tag="Melee"/>
+      <assignval field="livename" value="Chomper (1 Crew, Half Cover)"/>
+      <assignval field="sbName" value="Chomper (1 Crew, Half Cover)"/>
+      <assignval field="wDieCount" value="6"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wRangeNorm" value="120"/>
+      <assignval field="wAttackEff" value="A target reduced to 0 hit points by this is ground up and spit out through pipes on the sides of the war machine. Any nonmagical items the target was holding or carrying are destroyed."/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CWrMWrk" name="Wrecking Ball" compset="RaceSpec">
+    <fieldval field="abText" value="15"/>
+    <tag group="Custom" tag="WrMWpD"/>
+    <bootstrap thing="w5CVehAttk">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      <autotag group="DamageType" tag="dtBludgeon"/>
+      <autotag group="wCategory" tag="Melee"/>
+      <assignval field="livename" value="Wrecking Ball (1 Crew, Half Cover)"/>
+      <assignval field="sbName" value="Wrecking Ball (1 Crew, Half Cover)"/>
+      <assignval field="wDieCount" value="8"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wAttackEff" value="If the target is an object or structure, double the damage."/>
+      <assignval field="wReach" value="15"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CTormen" name="Tormentor" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rMultiatt" value="Each action in the war machine&apos;s stat block is an action station."/>
+    <fieldval field="rSpeed" value="100"/>
+    <fieldval field="rSTR" value="6"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="-10"/>
+    <fieldval field="rWIS" value="-10"/>
+    <fieldval field="rCHA" value="-10"/>
+    <fieldval field="rAC" value="9"/>
+    <fieldval field="rHPStart" value="60"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rArmText" value="-2 while motionless"/>
+    <fieldval field="rWeightMin" value="3000"/>
+    <fieldval field="rDescript" value="{b}Weight:{/b} 3,000 lb.\n{b}Creature Capacity:{/b} 4 Medium creatures\n{b}Cargo Capacity:{/b} 500 lb.\n{b}Damage Threshold:{/b} 10\n{b}Mishap Threshold:{/b} 20\n{b}Travel Pace:{/b} 10 miles per hour (240 miles per day)"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="CondImm" tag="pcnBlind" name="Blinded" abbrev="Blinded"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnDeaf" name="Deafened" abbrev="Deafened"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPetri" name="Petrified" abbrev="Petrified"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="CondImm" tag="pcnStunned" name="Stunned" abbrev="Stunned"/>
+    <tag group="CondImm" tag="pcnUnconc" name="Unconscious" abbrev="Unconscious"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <tag group="DamageImm" tag="dtPsychic" name="Psychic" abbrev="Psychic"/>
+    <tag group="DamageImm" tag="dtFire"/>
+    <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal" name="journal" abbrev="journal"/>
+    <tag group="HideTab" tag="personal" name="personal" abbrev="personal"/>
+    <tag group="RaceSize" tag="Huge2"/>
+    <bootstrap thing="ra5CWrMThr">
+      <assignval field="abValue" value="10"/>
+      <assignval field="abValue2" value="20"/>
+      </bootstrap>
+    <bootstrap thing="ra5CWrMHelm">
+      <assignval field="abText2" value="Three-Quarters"/>
+      <assignval field="abValue" value="2"/>
+      </bootstrap>
+    <bootstrap thing="ra5CCrshWhl">
+      <assignval field="abValue" value="11"/>
+      <assignval field="abValue2" value="2"/>
+      <assignval field="abDC" value="13"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMagWeaN">
+      <assignval field="abText" value="The war machine"/>
+      </bootstrap>
+    <bootstrap thing="ra5CWrMPrn"></bootstrap>
+    <bootstrap thing="ra5CVehCrtCap">
+      <assignval field="abText" value="Medium creatures"/>
+      <assignval field="abValue" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehCrgCap">
+      <assignval field="abText" value="500 lb."/>
+      </bootstrap>
+    <bootstrap thing="ra5CWrMHrp"></bootstrap>
+    <bootstrap thing="ra5CWrMRake"></bootstrap>
+    <bootstrap thing="ra5CWrMJuke"></bootstrap>
+    <bootstrap thing="ra5CVehTrvlPc">
+      <assignval field="abValue" value="10"/>
+      <assignval field="abValue2" value="240"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <assignval field="livename" value="Action Stations"/>
+      <assignval field="sbName" value="Action Stations"/>
+      <assignval field="shortname" value="Action Stations"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="cfg5CWrMUpg"></bootstrap>
+    <eval phase="PostLevel" index="3">hero.childfound[ProfBonus].field[tProfBonus].value = 5</eval>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+HPAdj -= hero.childfound[aCON].field[aModBonus].value
+
+~then add in the total of the vehicle (minus since it has 1d1 HD)
+
+HPAdj += 59
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    </thing>
+  <thing id="ra5CWrMRake" name="Raking Scythes" description="When the war machine moves within 5 feet of a non-prone creature or another vehicle for the first time on a turn, its protruding blades rake the target for 13 (2d10 + 2) slashing damage. A creature can attempt a DC 13 Dexterity save to move out of the way, taking no damage on a success. A vehicle can also do this, with its driver making the saving throw." compset="RaceSpec">
+    <fieldval field="abDC" value="13"/>
+    <fieldval field="abText" value="2d10+2 slashing"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    </thing>
+  <thing id="ra5CWrMJuke" name="Juke" description="If the war machine can move, the driver can use a reaction to give the war machine advantage on a Dexterity save." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    </thing>
+  <thing id="c5CTorment" name="Tormentor" compset="Companion" stacking="never">
+    <fieldval field="CompType" value="War Machine"/>
+    <usesource source="p5eBGDiAP"/>
+    <eval phase="Final" priority="10000"><![CDATA[hero.childfound[ArmorClass].field[Situation].text = "bloopendoop"]]></eval>
+    <minion id="WarMachine" isinherit="no">
+      <tag group="Hero" tag="FixedRace" name="FixedRace" abbrev="FixedRace"/>
+      <bootstrap thing="r5CTormen"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="g5CTorment" name="Tormentor" compset="Gear">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="thing" tag="holder_top"/>
+    <tag group="Helper" tag="GearNoSize"/>
+    <tag group="GearType" tag="gtVehLand"/>
+    <bootstrap thing="c5CTorment"></bootstrap>
+    </thing>
+  <thing id="r5CScaven" name="Scavenger" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rMultiatt" value="Each action in the war machine&apos;s stat block is an action station."/>
+    <fieldval field="rSpeed" value="100"/>
+    <fieldval field="rSTR" value="10"/>
+    <fieldval field="rCON" value="10"/>
+    <fieldval field="rINT" value="-10"/>
+    <fieldval field="rWIS" value="-10"/>
+    <fieldval field="rCHA" value="-10"/>
+    <fieldval field="rAC" value="9"/>
+    <fieldval field="rHPStart" value="150"/>
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rArmText" value="-1 while motionless"/>
+    <fieldval field="rWeightMin" value="9000"/>
+    <fieldval field="rDescript" value="{b}Weight:{/b} 9,000 lb.\n{b}Creature Capacity:{/b} 8 Medium creatures\n{b}Cargo Capacity:{/b} 2 tons\n{b}Damage Threshold:{/b} 10\n{b}Mishap Threshold:{/b} 20\n{b}Travel Pace:{/b} 10 miles per hour (240 miles per day)"/>
+    <tag group="HideTab" tag="personal" name="personal" abbrev="personal"/>
+    <tag group="RaceSize" tag="Huge2"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="CondImm" tag="pcnBlind" name="Blinded" abbrev="Blinded"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnDeaf" name="Deafened" abbrev="Deafened"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPetri" name="Petrified" abbrev="Petrified"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="CondImm" tag="pcnStunned" name="Stunned" abbrev="Stunned"/>
+    <tag group="CondImm" tag="pcnUnconc" name="Unconscious" abbrev="Unconscious"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <tag group="DamageImm" tag="dtPsychic" name="Psychic" abbrev="Psychic"/>
+    <tag group="DamageImm" tag="dtFire"/>
+    <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal" name="journal" abbrev="journal"/>
+    <bootstrap thing="xMultiatt">
+      <assignval field="livename" value="Action Stations"/>
+      <assignval field="sbName" value="Action Stations"/>
+      <assignval field="shortname" value="Action Stations"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CWrMThr">
+      <assignval field="abValue" value="10"/>
+      <assignval field="abValue2" value="20"/>
+      </bootstrap>
+    <bootstrap thing="ra5CWrMHelm">
+      <assignval field="abText2" value="Three-Quarters"/>
+      <assignval field="abValue" value="1"/>
+      </bootstrap>
+    <bootstrap thing="ra5CCrshWhl">
+      <assignval field="abValue" value="16"/>
+      <assignval field="abValue2" value="3"/>
+      <assignval field="abDC" value="12"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMagWeaN">
+      <assignval field="abText" value="The war machine"/>
+      </bootstrap>
+    <bootstrap thing="ra5CWrMPrn"></bootstrap>
+    <bootstrap thing="ra5CWrMHrp"></bootstrap>
+    <bootstrap thing="ra5CWrMHrp"></bootstrap>
+    <bootstrap thing="ra5CVehCrtCap">
+      <assignval field="abText" value="Medium creatures"/>
+      <assignval field="abValue" value="8"/>
+      </bootstrap>
+    <bootstrap thing="ra5CWrMGrpCl"></bootstrap>
+    <bootstrap thing="ra5CVehCrgCap">
+      <assignval field="abText" value="2 tons"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehTrvlPc">
+      <assignval field="abValue" value="10"/>
+      <assignval field="abValue2" value="240"/>
+      </bootstrap>
+    <bootstrap thing="cfg5CWrMUpg"></bootstrap>
+    <eval phase="PostLevel" index="3">hero.childfound[ProfBonus].field[tProfBonus].value = 5</eval>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+HPAdj -= hero.childfound[aCON].field[aModBonus].value
+
+~then add in the total of the vehicle (minus since it has 1d1 HD)
+
+HPAdj += 149
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    </thing>
+  <thing id="ra5CWrMGrpCl" name="Grappling Claw" compset="RaceSpec">
+    <fieldval field="abText" value="15"/>
+    <tag group="Custom" tag="WrMWpD"/>
+    <bootstrap thing="w5CVehAttk">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      <autotag group="wCategory" tag="Melee"/>
+      <assignval field="livename" value="Grappling Claw (1 Crew, Half Cover)"/>
+      <assignval field="sbName" value="Grappling Claw (1 Crew, Half Cover)"/>
+      <assignval field="wAttackEff" value="The target is grappled with an escape DC of 12. If the target is a creature, it is restrained for the duration of the grapple. The claw can grapple only one target at a time. The crew member operating the claw can use a bonus action to release the grappled target."/>
+      <assignval field="wReach" value="15"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CScaven" name="Scavenger" compset="Companion" stacking="never">
+    <fieldval field="CompType" value="War Machine"/>
+    <usesource source="p5eBGDiAP"/>
+    <eval phase="Final" priority="10000"><![CDATA[hero.childfound[ArmorClass].field[Situation].text = "bloopendoop"]]></eval>
+    <minion id="WarMachine" isinherit="no">
+      <tag group="Hero" tag="FixedRace" name="FixedRace" abbrev="FixedRace"/>
+      <bootstrap thing="r5CScaven"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="g5CScaven" name="Scavenger" compset="Gear">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="thing" tag="holder_top"/>
+    <tag group="Helper" tag="GearNoSize"/>
+    <tag group="GearType" tag="gtVehLand"/>
+    <bootstrap thing="c5CScaven"></bootstrap>
+    </thing>
+  <thing id="r5CWrMDevR" name="Devil&apos;s Ride" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rMultiatt" value="Each action in the war machine&apos;s stat block is an action station."/>
+    <fieldval field="rSpeed" value="120"/>
+    <fieldval field="rSTR" value="4"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="-10"/>
+    <fieldval field="rWIS" value="-10"/>
+    <fieldval field="rCHA" value="-10"/>
+    <fieldval field="rAC" value="9"/>
+    <fieldval field="rHPStart" value="30"/>
+    <fieldval field="rArmText" value="-4 while motionless"/>
+    <fieldval field="rWeightMin" value="500"/>
+    <fieldval field="rDEX" value="8"/>
+    <fieldval field="rDescript" value="{b}Weight:{/b} 500 lb.\n{b}Creature Capacity:{/b} 1 Medium creature\n{b}Cargo Capacity:{/b} 100 lb.\n{b}Damage Threshold:{/b} 5\n{b}Mishap Threshold:{/b} 10\n{b}Travel Pace:{/b} 12 miles per hour (288 miles per day)"/>
+    <tag group="HideTab" tag="personal" name="personal" abbrev="personal"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="CondImm" tag="pcnBlind" name="Blinded" abbrev="Blinded"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnDeaf" name="Deafened" abbrev="Deafened"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPetri" name="Petrified" abbrev="Petrified"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="CondImm" tag="pcnStunned" name="Stunned" abbrev="Stunned"/>
+    <tag group="CondImm" tag="pcnUnconc" name="Unconscious" abbrev="Unconscious"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <tag group="DamageImm" tag="dtPsychic" name="Psychic" abbrev="Psychic"/>
+    <tag group="DamageImm" tag="dtFire"/>
+    <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal" name="journal" abbrev="journal"/>
+    <bootstrap thing="xMultiatt">
+      <assignval field="livename" value="Action Stations"/>
+      <assignval field="sbName" value="Action Stations"/>
+      <assignval field="shortname" value="Action Stations"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CWrMThr">
+      <assignval field="abValue" value="5"/>
+      <assignval field="abValue2" value="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CWrMHelm">
+      <assignval field="abText2" value="Half"/>
+      <assignval field="abValue" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CWrMPrn"></bootstrap>
+    <bootstrap thing="ra5CVehCrtCap">
+      <assignval field="abText" value="Medium creature"/>
+      <assignval field="abValue" value="1"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehCrgCap">
+      <assignval field="abText" value="100 lb."/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehTrvlPc">
+      <assignval field="abValue" value="12"/>
+      <assignval field="abValue2" value="288"/>
+      </bootstrap>
+    <bootstrap thing="ra5CWrMJuke"></bootstrap>
+    <bootstrap thing="ra5CWrMJump"></bootstrap>
+    <bootstrap thing="ra5CStunt"></bootstrap>
+    <bootstrap thing="cfg5CWrMUpg"></bootstrap>
+    <eval phase="PostLevel" index="3">hero.childfound[ProfBonus].field[tProfBonus].value = 5</eval>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+HPAdj -= hero.childfound[aCON].field[aModBonus].value
+
+~then add in the total of the vehicle (minus since it has 1d1 HD)
+
+HPAdj += 29
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    </thing>
+  <thing id="ra5CWrMJump" name="Jump" description="If this war machine moves at least 30 feet in a straight line, it can jump a gap of up to 60 feet. Every foot it clears on the jump costs it a foot of movement." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CStunt" name="Stunt" description="The driver of the war machine can spend 10 feet of movement on its turn to perform one free stunt, such as a wheelie or a burnout. To do so, the war machine must move at least 10 feet in a straight line. If the driver succeeds on a DC 10 Dexterity check using the war machine&apos;s Dexterity, the stunt succeeds. On a failure of this check, the driver cannot attempt another stunt until the beginning of its next turn. If the check fails by 5 or more, all creatures riding the machine and the machine itself fall prone and come to a stop." compset="RaceSpec">
+    <fieldval field="abDC" value="10"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="c5CDevRid" name="Devil&apos;s Ride" compset="Companion" stacking="never">
+    <fieldval field="CompType" value="War Machine"/>
+    <usesource source="p5eBGDiAP"/>
+    <eval phase="Final" priority="10000"><![CDATA[hero.childfound[ArmorClass].field[Situation].text = "bloopendoop"]]></eval>
+    <minion id="WarMachine" isinherit="no">
+      <tag group="Hero" tag="FixedRace" name="FixedRace" abbrev="FixedRace"/>
+      <bootstrap thing="r5CWrMDevR"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="g5CDevRide" name="Devil&apos;s Ride" compset="Gear">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="thing" tag="holder_top"/>
+    <tag group="Helper" tag="GearNoSize"/>
+    <tag group="GearType" tag="gtVehLand"/>
+    <bootstrap thing="c5CDevRid"></bootstrap>
+    </thing>
+  <thing id="cfg5CWrMUpg" name="War Machine Upgrades" compset="Configure" uniqueness="unique">
+    <fieldval field="cfgObject1" value="Alternative Weapon Stations"/>
+    <fieldval field="cfgObject2" value="Armor Upgrades"/>
+    <fieldval field="cfgObject3" value="Magical Gadgets"/>
+    <fieldval field="cfgMax2" value="1"/>
+    <fieldval field="cfgAllow1" value="AllowRCust.cfg5CWrMUpg &amp; Helper.Primary"/>
+    <tag group="Helper" tag="Allow2Abil" name="Allow2Abil" abbrev="Allow2Abil"/>
+    <tag group="Helper" tag="Allow3Abil" name="Allow3Abil" abbrev="Allow3Abil"/>
+    <tag group="Helper" tag="Allow1Abil" name="Allow1Abil" abbrev="Allow1Abil"/>
+    <eval phase="Final"><![CDATA[
+   if (field[cfgSpent2].value > 0) then
+      perform delete[Helper.Allow2Abil]
+      endif]]></eval>
+    <eval phase="Final" index="2"><![CDATA[~we're going to check to see how many attacks have and upgrade
+~and separately how many have arcane artillery upgrades
+
+   var Weps as number
+   var UpWp as number
+
+~roll through each attack, add to our variables if they have each upgrade
+ foreach pick in hero where "Custom.WrMWpD"
+    Weps += 1
+    if (eachpick.tagis[Custom.WrMWpR] <> 0) then
+       UpWp += 1
+       endif
+    nexteach
+
+~if we've upgraded everything completely, close us out so we can't add more
+
+if (Weps <= UpWp) then
+  perform delete[Helper.Allow1Abil]
+  field[cfgMax1].value = UpWp
+  field[cfgAllow1].text &= " & !Custom.WrMWpR"
+  endif]]></eval>
+    <eval phase="Final" index="3"><![CDATA[~we're going to check to see how many oars and sails have upgrades
+
+   var Ups as number
+
+   if (hero.childfound[ra5CVehSails].tagis[Custom.ShpMvS] <> 0) then
+     field[cfgAllow2].text &= " & !Custom.ShpMvS"
+     Ups += 1
+     endif
+   if (hero.childfound[ra5CVehOars].tagis[Custom.ShpMvO] <> 0) then
+     field[cfgAllow2].text &= " & !Custom.ShpMvO"
+     Ups += 1
+     endif
+
+   if (Ups >= 2) then
+    perform delete[Helper.Allow2Abil]
+    field[cfgMax2].value = Ups
+    endif]]></eval>
+    </thing>
+  <thing id="c5CWrMAcid" name="Acidic Bile Sprayer" description="Acidic bile sprays from a nozzle. Each creature in a 30-foot cone must make a DC 12 Dexterity save. It takes 40 (9d8) acid damage on a failure, or half that on a success. A creature reduced to 0 hit points by this damage is dissolved, leaving behind anything it was wearing or carrying." compset="CustomSpec">
+    <fieldval field="abText" value="1 Crew, Half Cover"/>
+    <fieldval field="usrCandid1" value="Custom.WrMWpD &amp; !Custom.WrMWpR"/>
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abDC" value="12"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="Recharge" tag="5"/>
+    <tag group="AllowRCust" tag="cfg5CWrMUpg"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="AppText2"/>
+    <tag group="Custom" tag="WrMWpR" name="War Machine Replaced Weapon"/>
+    <eval phase="First" priority="1"><![CDATA[
+     ~ If we're disabled, do nothing 
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[usrChosen1].ischosen = 0)
+
+     perform field[usrChosen1].chosen.setfocus
+
+     perform focus.assign[Custom.WrMWpR]
+     perform focus.assign[Helper.Disable]
+     perform focus.delete[Helper.ShowSpec]
+
+    field[abText].text = "1 Crew, Half Cover"
+    field[abText2].text = "9d8 acid"
+    field[sbName].text = field[name].text & " (" & field[abText].text & ")"]]></eval>
+    </thing>
+  <thing id="c5CWrMFlame" name="Flamethrower" description="Fire blasts in a 60-foot by 5-foot line ffrom a nozzle. Every creature in the line must make a DC 15 Dexterity save. It takes 18 (4d8) fire damage on a failure, or half that on a success. Any fflammable objects not being worn or carried are ignited by the flames." compset="CustomSpec">
+    <fieldval field="usrCandid1" value="Custom.WrMWpD &amp; !Custom.WrMWpR"/>
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="abDC" value="15"/>
+    <fieldval field="abText" value="1 Crew, Half Cover"/>
+    <fieldval field="abText2" value="4d8 fire"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="AllowRCust" tag="cfg5CWrMUpg"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="AppText2"/>
+    <tag group="Custom" tag="WrMWpR" name="War Machine Replaced Weapon"/>
+    <eval phase="First" priority="1"><![CDATA[
+     ~ If we're disabled, do nothing 
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[usrChosen1].ischosen = 0)
+
+     perform field[usrChosen1].chosen.setfocus
+
+     perform focus.assign[Custom.WrMWpR]
+     perform focus.assign[Helper.Disable]
+     perform focus.delete[Helper.ShowSpec]
+
+    field[sbName].text = field[name].text & " (" & field[abText].text & ")"]]></eval>
+    </thing>
+  <thing id="c5CWrMInfSc" name="Infernal Screamer" description="The operator of this station chooses one target it can see within 120 feet of the screamer. That target must make a DC 15 wisdom save. The target suffers 26 (4d12) psychic damage on a failure, or half that on a success." compset="CustomSpec">
+    <fieldval field="usrCandid1" value="Custom.WrMWpD &amp; !Custom.WrMWpR"/>
+    <fieldval field="abRange" value="120"/>
+    <fieldval field="abDC" value="15"/>
+    <fieldval field="abText" value="1 Crew, Half Cover"/>
+    <fieldval field="abText2" value="4d12 psychic"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="AllowRCust" tag="cfg5CWrMUpg"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="AppText2"/>
+    <tag group="Custom" tag="WrMWpR" name="War Machine Replaced Weapon"/>
+    <tag group="abSave" tag="aWIS"/>
+    <eval phase="First" priority="1"><![CDATA[
+     ~ If we're disabled, do nothing 
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[usrChosen1].ischosen = 0)
+
+     perform field[usrChosen1].chosen.setfocus
+
+     perform focus.assign[Custom.WrMWpR]
+     perform focus.assign[Helper.Disable]
+     perform focus.delete[Helper.ShowSpec]
+
+    field[sbName].text = field[name].text & " (" & field[abText].text & ")"]]></eval>
+    </thing>
+  <thing id="c5CWrMStyxS" name="Styx Sprayer" compset="CustomSpec">
+    <fieldval field="usrCandid1" value="Custom.WrMWpD &amp; !Custom.WrMWpR"/>
+    <fieldval field="trkMax" value="3"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="AllowRCust" tag="cfg5CWrMUpg"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="AppText2"/>
+    <tag group="Custom" tag="WrMWpR" name="War Machine Replaced Weapon"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Usage" tag="UsedUp"/>
+    <tag group="Custom" tag="WrMWpS"/>
+    <bootstrap thing="w5CVehAttk">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      <autotag group="wCategory" tag="RangeProj"/>
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="Custom" tag="WrMWpS"/>
+      <assignval field="livename" value="Styx Sprayer (1 Crew, Half Cover, 3 uses)"/>
+      <assignval field="wAttackEff" value="The creature is struck by 10 gallons of hellish waters. The weapon can store 30 gallons total. A struck creature is targeted by the {i}feeblemind{/i} spell, with a save DC of 20. A creature that is already feebleminded is immune to this effect. If the target fails its save and the spell effect is not ended within 30 days, that effect becomes permanent; the creature loses its memories and becomes a nearly mindless shell of its former self. Nothing short of divine intervention can then fix it."/>
+      <assignval field="sbName" value="Styx Sprayer (1 Crew, Half Cover, 3 uses)"/>
+      <assignval field="wRangeNorm" value="30"/>
+      <assignval field="wTarget" value="one creature"/>
+      </bootstrap>
+    <eval phase="First" priority="1"><![CDATA[
+     ~ If we're disabled, do nothing 
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[usrChosen1].ischosen = 0)
+
+     perform field[usrChosen1].chosen.setfocus
+
+     perform focus.assign[Custom.WrMWpR]
+     perform focus.assign[Helper.Disable]
+     perform focus.delete[Helper.ShowSpec]
+
+    field[sbName].text = field[name].text & " (" & field[abText].text & ")"]]></eval>
+    <eval phase="Final" priority="50000" index="2"><![CDATA[     ~ If we're disabled, do nothing 
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[usrChosen1].ischosen = 0)
+
+foreach pick in hero from BaseWep where "thingid.w5CVehAttk & Custom.WrMWpS"
+   eachpick.field[wRanAtk].value = 5
+    nexteach]]></eval>
+    </thing>
+  <thing id="c5CWrMCanAr" name="Canian Armor" description="An infernal war machine with with this armor has an Armor Class of 22 + its Dexterity modifier. When the vehicle is motionless, attack rolls against it are made with advantage. The war machine gains immunity to cold damage, and is also immune to the effects of extreme cold." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abBaseAC" value="22"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="CalcAC" tag="DexMod"/>
+    <tag group="AllowRCust" tag="cfg5CWrMUpg"/>
+    <tag group="Helper" tag="ArmorClass"/>
+    <eval phase="First" priority="1"><![CDATA[
+     ~ If we're disabled, do nothing 
+     doneif (tagis[Helper.Disable] <> 0)
+
+    perform hero.assign[DamageImm.dtCold]
+    hero.childfound[ra5CWrMHelm].field[abValue].value = 0
+    
+    foreach pick in hero from BaseRace
+       eachpick.field[rArmText].text = "canian armor"
+       nexteach]]></eval>
+    </thing>
+  <thing id="c5CWrMGldAr" name="Gilded Death Armor" description="Gold plates the vehicle&apos;s exterior. The gold cannot be removed without destroying the war machine, and it turns to dust if the war machine drops to 0 hit points. The armor grants the war machine resistance to bludgeoning, piercing, and slashing damage." compset="CustomSpec" uniqueness="unique">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="AllowRCust" tag="cfg5CWrMUpg"/>
+    <eval phase="First" priority="1"><![CDATA[
+     ~ If we're disabled, do nothing 
+     doneif (tagis[Helper.Disable] <> 0)
+
+    perform hero.assign[DamComRes.dcBluPiSla]
+    
+    foreach pick in hero from BaseRace
+       eachpick.field[rArmText].text = "gilded death armor"
+       nexteach]]></eval>
+    </thing>
+  <thing id="c5CWrMSlSpk" name="Soul Spike Armor" description="The vehicle is covered in horrific spikes. If a non-devil creature dies within 30 feet of the war machine, whatever soul it has is ripped from its body and impaled on the spikes. So long as the soul is trapped this way, the creature cannot be raised from the dead by any means. The destruction of the vehicle, the destruction of the spike, or the casting of a remove curse or similar magic on its spike frees a trapped soul. Each spike is a Small object with AC 19, 15 hit points, and resistance to all damage except radiant." compset="CustomSpec" uniqueness="unique">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="AllowRCust" tag="cfg5CWrMUpg"/>
+    <eval phase="First" priority="1"><![CDATA[
+     ~ If we're disabled, do nothing 
+     doneif (tagis[Helper.Disable] <> 0)
+    
+    foreach pick in hero from BaseRace
+       eachpick.field[rArmText].text = "soul spike armor"
+       nexteach]]></eval>
+    </thing>
+  <thing id="c5CWrMTelep" name="Teleporter" description="The war machine&apos;s driver can use a bonus action to activate this magic device. It causes the vehicle to teleport to an open space visible to that driver and up to 300 feet away from the vehicle&apos;s current location. All creatures and objects in contact with the war machine are teleported with it. The device then needs 24 hours to recharge before it can be used again." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="AllowRCust" tag="cfg5CWrMUpg"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <eval phase="First" priority="1"></eval>
+    </thing>
+  <thing id="c5CWrMNcSmk" name="Necrotic Smoke Screen" description="The war machine&apos;s driver can use a bonus action to activate this magic device. It causes the vehicle to expel a 30-foot cube of heavy smoke directly in front of or behind the war machine. The cloud is stationary and lasts for 1 minute, and the area within it is heavily obscured. Any creature that enters the cloud for the first time on a turn or begins its turn there suffers 21 (6d6) necrotic damage. A strong wind can disperse the cloud. The device then needs 24 hours to recharge before it can be used again." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abText" value="6d6 necrotic"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="AllowRCust" tag="cfg5CWrMUpg"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    </thing>
+  </document>
