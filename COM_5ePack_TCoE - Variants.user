@@ -1051,13 +1051,14 @@ perform hero.childfound[cHelpDrd].assign[CompAvail.Familiar]]]></eval>
     perform assign[User.Tracker]
     perform assign[Usage.LongRest]]]></eval>
     </thing>
-  <thing id="p5CPctTalis" name="Pact of the Talisman" description="A Warlock&apos;s patron has granted them a special talisman, which you are wearing. You can add 1d4 to a failed ability check, potentially turning the roll into a success. This feature can be used a number of time equal to the warlock&apos;s proficiency bonus. All spent uses of it are restored when they finish a long rest.\n\n{i}Note: Change the number on this adjustment to match the proficiency bonus of the warlock who provided this talisman to you.{/i}" compset="InPlay" summary="Add 1d4 to a failed ability check to potentially turn it into a success.">
+  <thing id="p5CPctTalis" name="Warlock: Pact of the Talisman" description="A Warlock&apos;s patron has granted them a special talisman, which you are wearing. You can add 1d4 to a failed ability check, potentially turning the roll into a success. This feature can be used a number of time equal to the warlock&apos;s proficiency bonus. All spent uses of it are restored when they finish a long rest.\n\n{i}Note: Change the number on this adjustment to match the proficiency bonus of the warlock who provided this talisman to you.{/i}" compset="InPlay" summary="Add 1d4 to a failed ability check to potentially turn it into a success.">
     <fieldval field="pMinimum" value="2"/>
     <fieldval field="pMaximum" value="6"/>
     <fieldval field="pDuration" value="Warlock Prof Bonus"/>
     <usesource source="5eTCoE"/>
     <tag group="Helper" tag="AdjNoPlus"/>
     <tag group="Helper" tag="AdjInfo"/>
+    <tag group="OthAdjCat" tag="Class"/>
     <bootstrap thing="ab5CWlkTalis"></bootstrap>
     </thing>
   <thing id="ab5CWlkTalis" name="Pact Talisman" description="A Warlock&apos;s patron has granted them a special talisman, which you are wearing. You can add 1d4 to a failed ability check, potentially turning the roll into a success. This feature can be used a number of time equal to the warlock&apos;s proficiency bonus. All spent uses of it are restored when they finish a long rest.\n\n{i}Note: Change the number on the adjustment to match the proficiency bonus of the warlock who provided this talisman to you.{/i}" compset="Ability">
@@ -1156,9 +1157,10 @@ field[abText].text = num & " names"]]></eval>
     <tag group="Usage" tag="LongRest"/>
     <eval phase="Final">field[trkMax].value = hero.childfound[p5CPctTalis].field[pAdjust].value</eval>
     </thing>
-  <thing id="p5CPrtTalis" name="Protection of the Talisman" description="While wearing the talisman given to you by the warlock, you can add 1d4 to the roll of a saving throw that you failed, potentially making it a successful save. This feature can be use a number of times equal to the warlock&apos;s proficiency bonus, and you regain all uses when they complete a long rest." compset="InPlay" summary="Add 1d4 to a failed saving throw to potentially turn it into a success.">
+  <thing id="p5CPrtTalis" name="Warlock: Protection of the Talisman" description="While wearing the talisman given to you by the warlock, you can add 1d4 to the roll of a saving throw that you failed, potentially making it a successful save. This feature can be use a number of times equal to the warlock&apos;s proficiency bonus, and you regain all uses when they complete a long rest." compset="InPlay" summary="Add 1d4 to a failed saving throw to potentially turn it into a success.">
     <usesource source="5eTCoE"/>
     <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="Class"/>
     <bootstrap thing="ab5CWlkPrtT"></bootstrap>
     <pickreq thing="p5CPctTalis"/>
     </thing>
@@ -1205,7 +1207,7 @@ field[abText].text = num & " psychic"]]></eval>
     <tag group="Helper" tag="NoAdvLeag"/>
     <exprreq message="Pact of the Chain required"><![CDATA[#hasability[cWlkPacCha] <> 0]]></exprreq>
     </thing>
-  <thing id="p5CInChMs" name="Investment of the Chain Master" compset="InPlay">
+  <thing id="p5CInChMs" name="Warlock: Investment of the Chain Master" compset="InPlay">
     <usesource source="5eTCoE"/>
     <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
     <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
@@ -1216,7 +1218,7 @@ field[abText].text = num & " psychic"]]></eval>
       <autotag group="Value" tag="40"/>
       </bootstrap>
     <bootstrap thing="ra5CMinInvChn">
-      <containerreq phase="First" priority="5000"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      <containerreq phase="First" priority="5000"><![CDATA[fieldval:pIsOn <> 0 & fieldval:abValue2 = 1]]></containerreq>
       </bootstrap>
     <bootstrap thing="xFly">
       <containerreq phase="First" priority="5000">fieldval:abValue = 0</containerreq>
@@ -1224,11 +1226,16 @@ field[abText].text = num & " psychic"]]></eval>
       </bootstrap>
     <eval phase="First"><![CDATA[    ~ If we're not enabled, get out now
     doneif (field[pIsOn].value = 0)
+    doneif (tagis[CompIs.Familiar] = 0)
 
-field[abValue].value = master.childfound[c5CWlkInChMs].field[usrIndex].value]]></eval>
+field[abValue].value = master.childfound[c5CWlkInChMs].field[usrIndex].value
+field[abValue2].value = 1]]></eval>
     <exprreq message="Must be a Familiar"><![CDATA[tagis[CompIs.Familiar] > 0]]></exprreq>
     <prereq message="Requires Investment of the Chain Master">
-      <validate><![CDATA[if (master.childlives[c5CWlkInChMs] <>0) then
+      <validate><![CDATA[@valid = 0
+doneif (tagis[CompIs.Familiar] = 0)
+
+if (master.childlives[c5CWlkInChMs] <>0) then
 @valid = 1
 endif]]></validate>
       </prereq>
@@ -1622,17 +1629,6 @@ hero.childfound[cHelpSor].field[cSplBkExpr].text = known]]></eval>
   <thing id="rc5CRFVASI" name="Ability Score Increases" description="You can re-assign the Ability Score bonuses awared to you by your race to another ability. As an example, if your race (and subrace or variant race, where applicable) grants you +2 Constitution and +1 Dexterity, you can reassign +2 to a different score and +1 to another one, other than what you chose for the +2. In effect, you can&apos;t use this to gain +3 in a single score.\n\nDue to the way variable ability score increases are handled in Hero Lab, it&apos;s not possible to automatically pull all the various possible racial bonus abiltiy scores. Please use the &quot;Ability Score (Starting)&quot; adjustment to remove the old bonuses and assign the new ones." compset="RaceCustom" summary="Change the ability score increases from your race." uniqueness="unique">
     <tag group="abCategory" tag="5CRFV" name="Racial Variant Features"/>
     <tag group="Helper" tag="SpecUp"/>
-    </thing>
-  <thing id="pSULDosLa" name="Test Disable Langs" compset="InPlay">
-    <eval phase="PostLevel" priority="9000"><![CDATA[
-var Langs as number
-
-foreach pick in hero where "Helper.RaceLang"
-debug eachpick.idstring
-perform eachpick.delete[SpeakLang.?]
-perform eachpick.assign[Hide.Language]
-Langs += 1
-nexteach]]></eval>
     </thing>
   <thing id="rc5CRFVLang" name="Replace Language" description="You may select a language that you learned in your race&apos;s Languages trait to replace with one from this list: Abyssal, Celestial, Common, Deep Speech, Draconic, Dwarvish, Elvish, Giant, Gnomish, Goblin, Halfling, Infernal, Orc, Primordial, Sylvan, or Undercommon. \n\nSelect this feature for each langauge you&apos;d like to replace, then select your new language from the table below." compset="RaceCustom" summary="Replace a racial language with a new one.">
     <fieldval field="usrCandid1" value="component.BaseLang &amp; Helper.RaceLang &amp; !Hide.Language"/>
