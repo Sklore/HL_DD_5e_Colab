@@ -303,7 +303,7 @@ endif</eval>
      doneif (field[abilActive].value = 0)
 
      field[usrCandid1].text = "component.BaseSpell & sClass.cHelpAtf & (sLevel.1 | sLevel.2) & sCastTime.Action1"
-     field[usrCandid2].text = "(wProfReq.Martial|wProfReq.Simple) | (ToolCat.Artisan & GearType.gtTools & !Hide.Tool) | (thingid.gTooThieve & !Hide.Tool) | (!component.BaseCustSp & Custom.Infus) | (component.BaseArmor & Custom.ArcArm)"]]></eval>
+     field[usrCandid2].text = "(wProfReq.Martial|wProfReq.Simple) | (ToolCat.Artisan & GearType.gtTools & !Hide.Tool) | (thingid.gTooThieve & !Hide.Tool) | (!component.BaseCustSp & Custom.Infus) | (component.BaseArmor & Custom.ArcArm) | Custom.5CEbArcFoc"]]></eval>
     </thing>
   <thing id="cAtf5CMagIAd" name="Magic Item Adept" description="You are able to attune to up to four magic items at once.\n\nIf you craft a common or uncommon magic item, it only takes you one quarter of the usual time, and costs you only half the normal amount of gold." compset="ClSpecial" summary="Attune to up to four magic items, and your crafting time is reduced.">
     <eval phase="PostLevel" priority="10000"><![CDATA[
@@ -1119,9 +1119,13 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
     <eval phase="Render" priority="99999"><![CDATA[
      doneif (tagis[Helper.ShowSpec] = 0)
      doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[usrChosen1].ischosen = 0)
 
-     field[usrChosen1].chosen.field[livename].text &= " (Arcane Firearm)"
-     field[usrChosen1].chosen.field[sbName].text &= " (Arcane Firearm)"]]></eval>
+     perform field[usrChosen1].chosen.setfocus
+
+     focus.field[livename].text &= " (Arcane Firearm)"
+     focus.field[sbName].text &= " (Arcane Firearm)"
+     perform focus.assign[Custom.5CEbArcFoc]]]></eval>
     </thing>
   <thing id="c5CAtfExpCan" name="Explosive Cannon" description="Your eldritch cannon&apos;s damage rolls all increase by 1d8.\n\nAdditionally, you can use an action to detonate the cannon when you&apos;re within 60 feet of it. The cannon is destroyed in the process, and every creature within 20 feet of it must make a Dexterity saving throw versus your spell save DC. Such a creature takes 3d8 force damage on a failure, or half that on a success." compset="ClSpecial" summary="Eldritch cannon&apos;s damage increases by 1d8 and can explode.">
     <tag group="abSave" tag="aDEX"/>
@@ -1251,10 +1255,11 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      field[usrChosen1].chosen.field[Bonus].value += iVar
       perform field[usrChosen1].chosen.assign[Helper.EquipMag]
       perform field[usrChosen1].chosen.assign[Custom.Infus]]]></eval>
-    <eval phase="Render" priority="100000" index="7"><![CDATA[     ~if we're on Hero, add our Active Text
+    <eval phase="Render" priority="100000" index="3"><![CDATA[     ~if we're on Hero, add our Active Text
      if (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Enhnace Defense adjustment to apply this infusion to a suit of armor or a shield.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="4">perform delete[Helper.ActivMenu]</eval>
     </thing>
   <thing id="cAtf5CEnhWea" name="Enhanced Weapon" description="{i}{b}Item:{/b} A simple or martial weapon/i}\n\nThis magic weapon grants a +1 bonus to attack and damage rolls made with it.\n\nThe bonus increases to +2 when you reach 10th level in this class." compset="CustomSpec" summary="Grant an attack and damage bonus to a weapon." uniqueness="unique">
     <fieldval field="abDuration" value="Indefinitely; see description"/>
@@ -1295,10 +1300,11 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      field[usrChosen1].chosen.field[Bonus].value += iVar
       perform field[usrChosen1].chosen.assign[Helper.EquipMag]
       perform field[usrChosen1].chosen.assign[Custom.Infus]]]></eval>
-    <eval phase="Render" priority="100000" index="7"><![CDATA[     ~if we're on Hero, add our Active Text
+    <eval phase="Render" priority="100000" index="3"><![CDATA[     ~if we're on Hero, add our Active Text
      if (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Enhnace Weapon adjustment to apply this infusion to a weapon.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="4">perform delete[Helper.ActivMenu]</eval>
     </thing>
   <thing id="cAtf5CRadWep" name="Radiant Weapon" description="{i}{b}Prerequisite:{/b} 6th-level artificer\n{b}Item:{/b} A simple or martial weapon (requires attunement){/i}\n\nThis magic weapon grants a +1 bonus to attack and damage rolls made with it. While holding it, the wielder can use a bonus action to cause it to shine bright light in a 30-foot radius and dim light for an additional 30 feet. The wielder can also use a bonus action to extinguish the light.\n\nThe weapon has four charges. Immediately after being hit by a melee attack, the wielder can take a reaction to expend a charge, causing the attacker to be blinded until the end of the attacker’s next turn. The attacker can make a successful Constitution saving throw versus your spell save DC to avoid this effect.\n\nThe weapon regains 1d4 spent charges each dawn." compset="CustomSpec" summary="Grant a bonus, luminescence, and blinding to a weapon." uniqueness="unique">
     <tag group="abAction" tag="LongRest"/>
@@ -1339,10 +1345,11 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
       doneif (field[usrChosen1].chosen.field[gIsEquip].value = 0)
       doneif (field[usrChosen1].chosen.field[gIsAttuned].value = 0)
       field[abValue].value += 1]]></eval>
-    <eval phase="Render" priority="100000" index="7"><![CDATA[     ~if we're on Hero, add our Active Text
+    <eval phase="Render" priority="100000" index="4"><![CDATA[     ~if we're on Hero, add our Active Text
      if (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Radiant Weapon adjustment to apply this infusion to a weapon.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="5">perform delete[Helper.ActivMenu]</eval>
     <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="cAtf5CResArm" name="Resistant Armor" description="{i}{b}Prerequisite:{/b} 6th-level artificer\n{b}Item:{/b} A suit of armor (requires attunement){/i}\n\nWhile wearing this armor, a creature has resistance to one damage type, chosen from this list when the item is infused: acid, cold, fire, force, lightning, necrotic, poison, psychic, radiant, or thunder." compset="CustomSpec" summary="Grant a type of damage resistance to armor." uniqueness="unique">
@@ -1382,10 +1389,11 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
 
       perform field[usrChosen2].chosen.pulltags[DamageRes.?]
       perform hero.pushtags[DamageRes.?]]]></eval>
-    <eval phase="Render" priority="100000" index="7"><![CDATA[     ~if we're on Hero, add our Active Text
+    <eval phase="Render" priority="100000" index="3"><![CDATA[     ~if we're on Hero, add our Active Text
      if (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Resistant Armor adjustment to apply this infusion to a suit of armor.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="4">perform delete[Helper.ActivMenu]</eval>
     <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="cAtf5CRetWep" name="Returning Weapon" description="{i}{b}Item:{/b} A simple or martial weapon with the thrown property{/i}\n\nThis magic weapon has a +1 bonus to its attack and damage rolls. Immediately after it is used to make a ranged attack, it returns to the user&apos;s hand." compset="CustomSpec" summary="Grant a bonus and the returning feature to a thrown weapon." uniqueness="unique">
@@ -1419,10 +1427,11 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
 
       doneif (field[usrChosen1].chosen.field[gIsAttuned].value = 0)
       field[usrChosen1].chosen.field[Bonus].value += 1]]></eval>
-    <eval phase="Render" priority="100000" index="7"><![CDATA[     ~if we're on Hero, add our Active Text
+    <eval phase="Render" priority="100000" index="3"><![CDATA[     ~if we're on Hero, add our Active Text
      if (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Returning Weapon adjustment to apply this infusion to a weapon.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="4">perform delete[Helper.ActivMenu]</eval>
     </thing>
   <thing id="cAtf5CRepShot" name="Repeating Shot" description="{i}Item: A simple or martial weapon with the ammunition property (requires attunement){/i}\n\nThis magic weapon grants a +1 bonus to its ranged attack and damage rolls. It also ignores the loading property, if it has it.\n\nThe weapon needs no ammunition, though it can still use it if you choose. When used to make a ranged attack roll without ammunition, it magically produces a piece of ammunition, which vanishes the moment after it hits or misses a target." compset="CustomSpec" summary="Grant a bonus to and ignore the loading property of a weapon." uniqueness="unique">
     <tag group="abAction" tag="LongRest"/>
@@ -1458,10 +1467,11 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      doneif (field[usrChosen1].chosen.field[gIsAttuned].value = 0)
      doneif (field[usrChosen1].chosen.tagis[wProperty.Loading] = 0)
      perform field[usrChosen1].chosen.delete[wProperty.Loading]]]></eval>
-    <eval phase="Render" priority="100000" index="7"><![CDATA[     ~if we're on Hero, add our Active Text
+    <eval phase="Render" priority="100000" index="4"><![CDATA[     ~if we're on Hero, add our Active Text
      if (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Repeating Shot adjustment to apply this infusion to a weapon.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="5">perform delete[Helper.ActivMenu]</eval>
     </thing>
   <thing id="cAtf5CRepSh" name="Repulsion Shield" description="{i}Prerequisite: 6th-level artificer Item: A shield (requires attunement){/i}\n\nThe infused shield grants a +1 bonus to Armor Class while wielded. The shield has 4 charges. While holding it, the wielder can take a reaction immediately after being hit by a melee attack to spend a charge and push the attacker up to 15 feet away. The shield regains 1d4 spent charges each dawn." compset="CustomSpec" summary="Grant an AC bonus and pushing feature to a shield." uniqueness="unique">
     <fieldval field="abDuration" value="Indefinitely; see description"/>
@@ -1504,10 +1514,11 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
       doneif (field[usrChosen1].chosen.field[gIsEquip].value = 0)
       doneif (field[usrChosen1].chosen.field[gIsAttuned].value = 0)
       field[abValue].value += 1]]></eval>
-    <eval phase="Render" priority="100000" index="7"><![CDATA[     ~if we're on Hero, add our Active Text
+    <eval phase="Render" priority="100000" index="4"><![CDATA[     ~if we're on Hero, add our Active Text
      if (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Repulsion Shield adjustment to apply this infusion to a shield.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="5">perform delete[Helper.ActivMenu]</eval>
     <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="c5CAtfSpRfRn" name="Spell-Refueling Ring" description="{i}{b}Prerequisite:{/b} 6th-level artificer\n{b}Item:{/b} A ring (requires attunement){/i}\n\nWhile wearing this ring, the creature can use an action to regain one spent spell slot of 3rd level or lower. Once used, the ring cannot be used again until the next dawn." compset="CustomSpec" summary="Grant a ring the ability to restore a spell slot." uniqueness="unique">
@@ -1549,12 +1560,13 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      sName = field[usrChosen1].chosen.field[name].text
      field[usrChosen1].chosen.field[livename].text &= " of Spell-Refuelling"
      field[usrChosen1].chosen.field[sbName].text = field[usrChosen1].chosen.field[livename].text]]></eval>
-    <eval phase="Render" priority="100000" index="7"><![CDATA[     ~if we're on Hero, add our Active Text
+    <eval phase="Render" priority="100000" index="4"><![CDATA[     ~if we're on Hero, add our Active Text
      if (tagis[portal.cfg2Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: You can add a simple ring in the Magic tab for use with this feature.{/i}"
      elseif (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Spell-Refueling Ring adjustment to apply this infusion to a ring. They can add a simple ring from the Magic tab for use with this.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="5">perform delete[Helper.ActivMenu]</eval>
     <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="c5CAtfEnArFc" name="Enhanced Arcane Focus" description="{i}{b}Item:{/b} A rod, staff, or wand (requires attunement){/i}\n\nHolding this item grants a +1 bonus to spell attack rolls to the holder. The creature also ignores half cover when making their spell attacks." compset="CustomSpec" summary="Infuse a focus that grants +1 to spell attacks and ignores half cover." uniqueness="unique">
@@ -1579,7 +1591,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      ~ If we're not enabled, get out now
      doneif (tagis[portal.cfg2Abil] <> 1)
 
-     field[usrCandid1].text = "(((component.BaseRod | component.BaseStaff | component.BaseWand | thingid.w5CPincSta | thingid.wQtrstaff | thingid.w5CStaff) & !Helper.EquipMag ) | thingid.id5CSimpRod | thingid.is5CSimpStf | thingid.iw5CSimpWnd) & !Custom.Infus"
+     field[usrCandid1].text = "(((component.BaseRod | component.BaseStaff | component.BaseWand | thingid.w5CPincSta | thingid.wQtrstaff | thingid.w5CStaff) & !Helper.EquipMag ) | thingid.id5CSimpRod | thingid.is5CSimpStf | thingid.iw5CSimpWnd | thingid.gArFocRod | thingid.gArFocStaf | thingid.gArFocWand | thingid.id5CEbImbRd | thingid.is5CEbImbSt | thingid.iw5CEbImbWn) & !Custom.Infus"
 
 
       perform delete[Helper.SpecUp]
@@ -1593,12 +1605,13 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
       foreach pick in hero from Class
         eachpick.field[cSplAttack].value += 1
       nexteach]]></eval>
-    <eval phase="Render" priority="100000" index="7"><![CDATA[     ~if we're on Hero, add our Active Text
+    <eval phase="Render" priority="100000" index="3"><![CDATA[     ~if we're on Hero, add our Active Text
      if (tagis[portal.cfg2Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: You can add a simple rod, staff, or wand in the Magic tab for use with this feature.{/i}"
      elseif (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Enhanced Arcane Focus adjustment to apply this infusion to an item. They can add a simple rod, staff, or wand from the Magic tab for use with this.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="4">perform delete[Helper.ActivMenu]</eval>
     <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="c5CAtfHlmAwr" name="Helm of Awareness" description="{i}{b}Prerequisite:{/b} 10th-level artificer\n{b}Item:{/b} A helmet (requires attunement){/i}\n\nWearing this helmet grants the wearer advantage on their initiative rolls. Additionally, the wearer cannot be surprised unless they&apos;re incapacitated." compset="CustomSpec" summary="Infuse a helm that grants advantage on initiative and prevents surprise." uniqueness="unique">
@@ -1636,12 +1649,13 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
       doneif (field[usrChosen1].chosen.field[gIsAttuned].value = 0)
 
       #situational[hero.child[Initiative],"Advantage on Initiative Rolls",field[thingname].text]]]></eval>
-    <eval phase="Render" priority="100000" index="7"><![CDATA[     ~if we're on Hero, add our Active Text
+    <eval phase="Render" priority="100000" index="3"><![CDATA[     ~if we're on Hero, add our Active Text
      if (tagis[portal.cfg2Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: You can add a simple helm in the Magic tab for use with this feature.{/i}"
      elseif (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Helm of Awareness adjustment to apply this infusion to a helm. They can add a simple helm from the Magic tab for use with this.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="4">perform delete[Helper.ActivMenu]</eval>
     <exprreq message="Must be a 10th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 10]]></exprreq>
     </thing>
   <thing id="c5CAtfMndShr" name="Mind Sharpener" description="{i}{b}Item:{/b} A suit of armor or robes{/i}\n\nThe infused robes have 4 charges. When the wearer fails a Constitution save to maintain their concentration on a spell, they can take a reaction to spend 1 charge, causing them to succeed to save instead. The robes regain 1d4 spent charges each dawn." compset="CustomSpec" summary="Infuse robes that help pass saves for spell concentration." uniqueness="unique">
@@ -1682,10 +1696,11 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      sText = "The infused robes have 4 charges. When the wearer fails a Constitution save to maintain their concentration on a spell, they can take a reaction to spend 1 charge, causing them to succeed to save instead. The robes regain 1d4 spent charges each dawn."
 
      field[usrChosen1].chosen.field[CustDesc].text = field[usrChosen1].chosen.field[CustDesc].text & "{br}" & sText]]></eval>
-    <eval phase="Render" priority="100000" index="7"><![CDATA[     ~if we're on Hero, add our Active Text
+    <eval phase="Render" priority="100000" index="4"><![CDATA[     ~if we're on Hero, add our Active Text
      if (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Mind Sharpener adjustment to apply this infusion to a suit of armor or robes.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="5">perform delete[Helper.ActivMenu]</eval>
     <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="c5CAtfArMgSt" name="Armor of Magical Strength" description="{i}{b}Item:{/b} A suit of armor (requires attunement){/i}\n\nThe armor has 6 charges. The wearer can use these charges in these ways:\n\n• When they make a Strength check or Strength save, they can spend 1 charge to add their Intelligence modifier to the roll.\n• If the wearer would be knocked prone, it can take a reaction to spend 1 charge and remain up." compset="CustomSpec" summary="Infuse armor to help Strength checks and saves and prevent you from going prone." uniqueness="unique">
@@ -1731,6 +1746,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      if (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Armor of Magical Strength adjustment to apply this infusion to a suit of armor.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="8">perform delete[Helper.ActivMenu]</eval>
     </thing>
   <thing id="c5CAtfArcPro" name="Arcane Propulsion Armor" description="{i}{b}Prerequisite:{/b} 14th-level artificer\n{b}Item:{/b} A suit of armor (requires attunement){/i}\n\nThe armor grants its wearer these benefits:\n\n• The wearer&apos;s walking speed increases by 5 feet.\n• The armor includes weaponized gauntlets, useable as magic melee weapons when not holding anything. The wearer is proficient with the gauntlets, and each deals 1d8 force damage on a hit, plus they have the thrown property. Their normal range is 20 feet and their long range is 60 feet. When thrown, the gaunlet detaches and flies at the target, then immediately comes back and reattaches itself. \n• The armor cannot be removed against the wearer&apos;s will.\n• The armor replaces any lost limbs, functioning just like the missing limb(s)." compset="CustomSpec" summary="Infuse armor to help Strength checks and saves and prevent you from going prone." uniqueness="unique">
     <fieldval field="abDuration" value="Indefinitely; see description"/>
@@ -1783,6 +1799,7 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      if (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Arcane Propulsion Armor adjustment to apply this infusion to a suit of armor.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="8">perform delete[Helper.ActivMenu]</eval>
     <exprreq message="Must be a 14th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 14]]></exprreq>
     </thing>
   <thing id="c5CAtfAlcHm" name="Homunculus Servant" description="{i}{b}Item:{/b} A gem or crystal worth at least 100 gp{/i}\n\nYou learn to magically create a special homunculus servant. The creature instantly forms around the infused item, with that item serving as its heart. You determine the homunculus&apos;s appearance. It is friendly to you and your allies, and it obeys your commands. \n\nIn combat, the homunculus shares your initiative, but takes its turn right after yours. It moves and uses its reaction without needing to be commanded. You can use a bonus action to command it to take an action, which can be from its stat block or any other action it is capable of doing. If you issue no such command, it takes the Dodge action. When you&apos;re incapacitated, it can use any of those actions, not just Dodge.\n\nIf the mending spell is cast on it, it regains 2d6 hit points. If you or the homunculus dies, it vanishes and its heart remains in its space." compset="CustomSpec" summary="Grant a ring the ability to restore a spell slot." uniqueness="unique">
@@ -1835,12 +1852,13 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
       perform field[usrChosen1].chosen.assign[Helper.EquipMag]
       perform field[usrChosen1].chosen.assign[Custom.Infus]
       perform field[usrChosen1].chosen.assign[Helper.NeedAttune]]]></eval>
-    <eval phase="Render" priority="100000" index="7"><![CDATA[     ~if we're on Hero, add our Active Text
+    <eval phase="Render" priority="100000" index="3"><![CDATA[     ~if we're on Hero, add our Active Text
      if (tagis[portal.cfg2Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: You can add a simple boots in the Magic tab for use with this feature.{/i}"
      elseif (tagis[portal.cfg3Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Boots of the Winding Path adjustment to apply this infusion to a helm. They can add simple boots from the Magic tab for use with this.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="4">perform delete[Helper.ActivMenu]</eval>
     <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="cAtf5CRepMI2" name="Replicate Magic Item (Table A)" description="Using this infusion, you replicate a particular magic item. You can learn this infusion multiple times; each time you do so, choose a different magic item that you can make with it, picking from the items listed in the below table. \n\nIn the tables, an item’s entry tells you whether the item requires attunement. See the item’s description in its sourcebook for more information on it, including the base item it is made from.{font Courier New}{b}\n{font Courier New}\n\nMagic Item                  Attunement{/b}{back FFFFFF}\nAlchemy jug                       No{back 010101}\nBag of holding                    No{back FFFFFF}\nCap of water breathing            No{back 010101}\nGoggles of night                  No{back FFFFFF}\nRope of climbing                  No{back 010101}\nSending stones                    No{back FFFFFF}\nWand of magic detection           No{back 010101}\nWand of secrets                   No{revert}" compset="CustomSpec" summary="Infuse an item with magic to replicate a specific magic item.">
@@ -4047,10 +4065,24 @@ minion.childfound[ra5CAtfMigM].field[abValue5].value = level]]></eval>
     <tag group="User" tag="NoAutoName"/>
     <tag group="Helper" tag="SpecUp"/>
     <tag group="Custom" tag="InfKnw" name="Known Infusion"/>
-    <tag group="Helper" tag="ActivMenu"/>
     <tag group="ChooseSrc1" tag="Thing"/>
     <tag group="abCategory" tag="5CArtInf"/>
     <eval phase="First" priority="200"><![CDATA[
+   var iKnow as number
+   var iAct as number
+
+   ~find how many are known
+   foreach pick in hero where "thingid.c5CAtfRepMIC"
+     iKnow += 1
+     nexteach
+
+   ~find how many are active
+   foreach pick in hero where "thingid.c5CAtfComMg"
+     iAct += 1
+     nexteach
+
+    doneif (iAct >= iKnow)
+
     perform hero.childfound[cfg5CAtfInfus].setfocus
 
     var Inf as string
@@ -4065,6 +4097,7 @@ minion.childfound[ra5CAtfMigM].field[abValue5].value = level]]></eval>
     foreach pick in hero where "thingid.c5CAtfComMg"
        eachpick.field[usrCandid1].text &= " | " & Chsn
        nexteach]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
     </thing>
   <thing id="c5CAtfComMg" name="Replicate Magic Item - Common Item" description="You infuse a non-magical item with magic, turning it into a common magic item, other than a potion or scroll." compset="CustomSpec" summary="Infuse an item to replicate a common magic item.">
     <fieldval field="abDuration" value="Indefinitely; see description"/>
@@ -4083,6 +4116,7 @@ minion.childfound[ra5CAtfMigM].field[abValue5].value = level]]></eval>
      elseif (tagis[portal.cfg2Abil] <> 0) then
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Add the item to your character like any other magical item, and remove it if this infusion ends.{/i}"
      endif]]></eval>
+    <eval phase="Render" priority="999999" index="8">perform delete[Helper.ActivMenu]</eval>
     <evalrule phase="Final" priority="100000" message="You cannot have the same item selected for multiple Replicate Magic Item infusions."><![CDATA[
        validif (tagis[Helper.Disable] <> 0)
 
