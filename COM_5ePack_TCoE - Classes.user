@@ -1,0 +1,2638 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="cfg5C1WthWrd" name="One with the Word" compset="Configure" uniqueness="unique">
+    <tag group="Helper" tag="SpCountLev"/>
+    <tag group="Helper" tag="SplMayExcd"/>
+    <eval phase="Final" priority="50000" index="3"><![CDATA[    doneif (hero.childfound[c5CWizOneWth].field[actUser].value = 0)
+    doneif (field[cfgMaxSp1].value = field[cfgLeftSp1].value)
+    doneif (tagis[Helper.Disable] <> 0)
+
+  var searchexpr as string
+  var otherexpr as string
+  var blep as number
+
+  searchexpr = "("
+  
+  foreach pick in hero from BaseSpell where "hasagent.cfg5C1WthWrd"
+    if (blep > 0) then
+      searchexpr &= " | " 
+     endif
+    searchexpr &= eachpick.tagids[thingid.?]
+    blep += 1
+   perform eachpick.assign[Hide.Spell]
+   nexteach
+
+  searchexpr &= ")"
+  otherexpr = searchexpr
+  searchexpr &= " & portal.ClsBook"
+  otherexpr &= " & Helper.Memorized"
+
+  foreach pick in hero from BaseSpell where searchexpr
+      eachpick.field[sNameMod].text = "Lost"
+      perform eachpick.assign[Hide.Spell]
+  nexteach
+
+  foreach pick in hero from BaseSpell where otherexpr
+      eachpick.field[sNameMod].text = "Lost from spellbook"
+  nexteach]]></eval>
+    <eval phase="Final" priority="50001"><![CDATA[      ~ If not disabled get out now!
+      doneif (tagis[Helper.Disable] <> 0)
+
+field[cfgAllwSp1].text &= " & ("
+
+var blep as number
+
+  foreach pick in hero from BaseSpell where "portal.ClsBook & !Hide.Spell"
+    if (blep > 0) then
+      field[cfgAllwSp1].text &= " | " 
+      endif
+    field[cfgAllwSp1].text &= eachpick.tagids[thingid.?]
+    blep += 1
+  nexteach
+
+field[cfgAllwSp1].text &= ")"]]></eval>
+    </thing>
+  <thing id="c5CWizOneWth" name="One with the Word" description="While the Awakened Spellbook is on your person, your Intelligence (Arcana) checks are made with advantage.\nAdditionally, if you take damage while your spellbook&apos;s mind is manifested, you can prevent all of that damage with a reaction. This reaction dismisses the mind, and you must roll 3d6. The spellbook temporarily loses spells with a total number of spell levels equal to or greater than the total number rolled. You choose these spells. For example, a total roll of 10 could be covered by losing a 5th-level spell, a 4th-level spell, and a 1st-level spell. If your spellbook does not have enough spells to cover the cost, you drop to 0 hit points.\nYou cannot cast these spells while they are lost, even if you find them in another spellbook or on a scroll. Once you complete 1d6 long rests, the spells reappear in your spellbook.\nYou can only use this reaction once per long rest.\n\n{b}Hero Lab Note:{/b} Use the In-Play tab to note the total number of spell levels lost by using this ability. This will open the One with the Word tab, where you can select which spells were lost. At the end of your 1d6 long rests, you can delete those spells from that tab and set the number back to zero." compset="ClSpecial" summary="Reaction to negate damage at the cost of spells.">
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="18"/>
+    <fieldval field="actIncrNam" value="Total spell levels lost:"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="abAction" tag="Reaction"/>
+    <bootstrap thing="cfg5C1WthWrd">
+      <containerreq phase="First" priority="496"><![CDATA[fieldval:actUser > 0]]></containerreq>
+      </bootstrap>
+    <eval phase="First"><![CDATA[ 
+      ~ If disabled get out now!
+      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[actUser].value = 0)
+
+    hero.childfound[cfg5C1WthWrd].field[cfgMaxSp1].value += field[actUser].value
+    hero.childfound[cfg5C1WthWrd].field[cfgSpell1].text = "spells (total levels) lost"]]></eval>
+    <eval phase="Final" index="2"><![CDATA[
+
+      ~ If disabled get out now!
+      doneif (tagis[Helper.Disable] <> 0)
+
+
+      #situational[hero.child[skArcana], "Advantage while your Awakened Spellbook is on your person.", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="c5CWizOrdScr" name="Order of Scribes" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <tag group="SpecSource" tag="cHelpWiz" name="Wizard" abbrev="Wizard"/>
+    <tag group="abCategory" tag="WizArcTrad" name="Wizard Arcane Tradition" abbrev="Wizard Arcane Tradition"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CWizOneWth">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CWizWzQuil">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CWizAwkSpl">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CWizManMnd">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CWizMstScr">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CWizWzQuil" name="Wizardly Quill" description="You can use a bonus action to create a Tiny, magical quill in your free hand. It provides these benefits:\n• The quill needs no ink, and instead produces its own ink in a color of your choice on the writing surface.\n• The time you have to spend to copy a spell into your spellbook now equals 2 minutes per spell level, as long as you&apos;re using the quill for the transcription.\n• You can use a bonus action to wave the quill over anything you&apos;ve written with it, so long as the writing is within 5 feet of you. This erases the writing." compset="ClSpecial" summary="Receive a magical quill that produces its own ink.">
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="c5CWizAwkSpl" name="Awakened Spellbook" description="You&apos;ve awakened an arcane intelligence in your spellbook. While holding the book, you gain these benefits:\n• You can use the book as your spellcasting focus for your wizard spells.\n• When you cast a wizard spell using a spell slot, you can replace the damage type of that spell with the type from another spell in your spellbook for that specific  casting of the spell. The latter spell must be of the same level as the spell slot you expend.\n• When you cast a wizard spell as a ritual, you can use the spell&apos;s casting time instead of the additional ten minutes. Once you&apos;ve used this feature, you must complete a long rest before doing so again." compset="ClSpecial" summary="You have a special spellbook with unique benefits.">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="c5CWizManMnd" name="Manifest Mind" description="You can use a bonus action to call forth the mind of your spellbook while you are carrying the book. It appears as a Tiny spectral object, hovering in an open space within 60 feet of you. The intangible manifestation doesn&apos;t occupy its space, and gives off 10 feet of dim light. \nWhile the mind is manifested, it can hear and see, and has 60 feet of darkvision. It can telepathically share what it hears and sees with you (no action needed).\nWhen you cast a wizard spell on your turn, you can cast it as if you are occupying its space and using its senses. You can do this a number of times equaling your proficiency bonus, and you regain all spent uses of this feature when you complete a long rest.\nThe manifestation ends if it is more than 300 feet away from you, if it is dispelled, if the Awakened Spellbook is destroyed, if you die, or if you use a bonus action to dismiss it.\nOnce you&apos;ve caused this manifestation, you cannot do so again until you complete a long rest. You can also expend any spell slot to do it again." compset="ClSpecial" summary="Bonus action to manifest the mind of your spellbook.">
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abAction" tag="Bonus"/>
+    <eval phase="PostAttr">field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value</eval>
+    </thing>
+  <thing id="c5CWizMstScr" name="Master Scrivener" description="When you complete a long rest, you can touch your magical quill to a blank piece of parchment or paper to create a magic scroll. Your Awakened Spellbook must be within 5 feet of you. The spell must be from that spellbook, be 1st or 2nd level, and must have a casting time of 1 action. The spell counts as 1 level higher than normal once it is on the scroll.\nYou can cast the spell from the scroll as an action. The scroll is unintelligible to anyone but you. The spell vanishes from the scroll when it&apos;s cast or when you complete your next long rest, whichever happens first.\nYou are also practiced in crafting spell scrolls. The gold and time you must spend to make them is halved so long as you use your Wizardly Quill in their crafting." compset="ClSpecial" summary="Create temporary scrolls.">
+    <fieldval field="actName" value="Scroll Made?"/>
+    <tag group="Usage" tag="5CUse"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="User" tag="Tracker"/>
+    <eval phase="Final"><![CDATA[
+
+    if ( field[abilActive].value <> 0 ) then
+      field[usrCandid1].text = "component.BaseSpell & portal.ClsBook & (sLevel.1 | sLevel.2) & sCastTime.Action1 &!Hide.Spell"
+      field[trkMax].value = 1
+      endif]]></eval>
+    </thing>
+  <thing id="c5CRgrSwrmkp" name="Swarmkeeper" description="You are surrounded by a swarm of nature spirits that assists you in combat." compset="CustomSpec" uniqueness="unique">
+    <comment>Supersedes UA Ranger.</comment>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpRgC" name="Ranger (Sept 2016)" abbrev="Ranger (Sept 2016)"/>
+    <tag group="SpecSource" tag="cHelpRgr" name="Ranger" abbrev="Ranger"/>
+    <tag group="abCategory" tag="RgrArchety" name="Ranger Archetype" abbrev="Ranger Archetype"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <bootstrap thing="c5CRgrSwWrit">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrSwMigh">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrSwDism">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrSwrmMg">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrSwGath">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgrSwrmMg" name="Swarmkeeper Magic" description="You learn {i}mage hand{/i} if you didn&apos;t already know it. The hand takes the shape of your swarming spirits. You learn additional spells at certain levels in the class, shown in the table blow. The spell counts as a ranger spell, but it doesn&apos;t count against the total number of ranger spells known. \n\n{b}Horizon Walker Spells{/b}\n{b}Ranger Level Spell{/b}\n3rd                    {i}faerie fire{/i}\n5th                    {i}web{/i}\n9th                    {i}gaseous form{/i}\n13th                  {i}arcane eye{/i}\n17th                  {i}insect plague{/i}" compset="ClSpecial" summary="Learn new swarmkeeper spells as you level.">
+    <bootstrap thing="spFaerFire">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spWeb">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spGaseForm">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spArcaEye">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spInsePlag">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgrSwWrit" name="Writhing Tide" description="You can use a bonus action to cause the swarm to coalesce, and carry you. For 1 minute, or until you&apos;re incapacitated, you gain a flying speed of 10 feet and can hover. \n\nYou can use this feature a number of times equaling your proficiency bonus, and regain all spent uses of it at the end of a long rest." compset="ClSpecial" summary="Bonus action to gain 10 ft. hovering flight for 1 minute.">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="actName" value="Writhing Tide active? (1 minute)"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abAction" tag="Bonus"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Helper" tag="Hover"/>
+      <autotag group="Value" tag="10"/>
+      </bootstrap>
+    <eval phase="PostAttr">field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value</eval>
+    </thing>
+  <thing id="c5CRgrSwMigh" name="Mighty Swarm" description="Your Gathered Seam is more powerful in these ways:\n\n• The damage of Gathered Swarm increases to 1d8\n• When a creature fails its saving throw versus being moved by Gathered Swarm, you can also cause it to be knocked prone.\n• The gathered swarm provides you half cover until the beginning of your next turn whenever it moves you." compset="ClSpecial" summary="Swarm damage increases, knocks enemies prone, provides you cover.">
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="c5CRgrSwDism" name="Swarming Dismissal" description="When you take damage, you can take a reaction to merge into your swarm. You gain resistance to that damage, vanish into your swarm, and then teleport. You reappear with your swarm in an open space you can see, within 30 feet of you.\n\nYou can use this feature a number of times equal to your proficiency bonus, and you regain all spent uses when you complete a long rest." compset="ClSpecial" summary="Reaction to resist damage and teleport.">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker"/>
+    <eval phase="PostAttr">field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value</eval>
+    </thing>
+  <thing id="c5CRgrSwGath" name="Gathered Swarm" description="A swarm of incorporeal nature spirits surrounds you, remaining in your space with you for the rest of your life. You choose its appearance. \n\nOnce on each of your turns, you can cause the swarm tot help you in once of these ways, immediately after you hit a creature with an attack:\n• The target of the attack suffers 1d6 piercing damage from the swarm.\n• The target of the attack must make a Strength save versus your spell save DC. On a failure, it is moved up to 15 feet horizontally in a direction of your choice.\n• The swarm moves you 5 feet horizontally in a direction of your choice." compset="ClSpecial" summary="Your swarm can damage or push enemies, or move you.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[      if (#levelcount[Ranger] >= 11) then
+        field[abText].text = "1d8"
+      else
+        field[abText].text = "1d6"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CPalWatch" name="Oath of the Watchers" description="Oath of the Watchers paladins are bound to defend mortal realms from extraplanar threats.\n\n{b}Tenets of the Watchers{/b}\n\n{b}{i}Vigilance..{/b} {/i}The enemies you face are powerful, cunning, and tricky. Always be on guard for their foul play.\n\n{b}{i}Loyalty.{/b} {/i}Stay true to your friends and your duty. Have no dealings with fiends, no matter how friendly they seem.\n\n{b}{i}Discipline.{/b} {/i}You are the guardian against the dark beyond. Your blade and mind must both be sharp to survive what terrors await you." compset="CustomSpec" summary="Your oath binds you to the duties of vigilance, loyalty, and discipline." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpPal" name="Paladin" abbrev="Paladin"/>
+    <tag group="abCategory" tag="PalSacOath" name="Paladin Sacred Oath" abbrev="Paladin Sacred Oath"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <bootstrap thing="c5CPalAbjExt">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalAurSnt">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalVigReb">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalMrtBlw">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="spAlarm">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spMoonbeam">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spSeeInvi">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="sp5CCounte">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spNondetec">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="sp5CAurPur">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spBanishme">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spHoldMons">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spScrying">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="c5CPalWatWil">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CPalWatWil" name="Channel Divinity: Watcher&apos;s Will" description="You can use an action to pick a number of creatures (equal to your Charisma modifier, minimum 1) visible to and within 30 feet of you. For the next minute, you and the chosen creatures have advantage on your Intelligence, Wisdom, and Charima saves." compset="ClSpecial" summary="Grant advantage on Int, Wis, and Cha saves.">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+       var CMod as number
+       CMod = #attrbonus1[aCHA]
+       CMod = maximum(1,CMod)
+
+       field[abText].text = CMod & " creature"
+
+       doneif (CMod = 1)
+       
+       field[abText].text &= "s"]]></eval>
+    </thing>
+  <thing id="c5CPalAbjExt" name="Channel Divinity: Abjure the Extraplanar" description="You can use an action to present your holy symbol to all aberrations, celestials, elementals, fey, and fiends within 30 feet of you. Such a creature, if it is able to hear you, must make a Wisdom save. On a failure, it is turned for 1 minute or until it is damaged.\n\nA turned creature must spend its turns moving as far away from you as possible, and it cannot willingly end its turn within 30 feet of you. The only actions it can take are to Dash or to escape an effect that is preventing its movement. If it cannot move any further, it can take the Dodge action." compset="ClSpecial" summary="Extraplanar creatures that can see or hear you within 30 feet must make Wis save or flee.">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wis"/>
+    <tag group="StandardDC" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    </thing>
+  <thing id="c5CPalAurSnt" name="Aura of the Sentinel" description="If you&apos;re not incapacitated, you emit an aura of alertness. You and any creatures of your choice within 10 feet of you gain a bonus to your initiative rolls equal to your proficiency bonus.\n\nThe range of this aura becomes 30 feet when you reach level 18." compset="ClSpecial" summary="You and friendly creatures in range add your proficiency to initiative.">
+    <fieldval field="abRange" value="10"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="LvNamePar" tag="IncRange" name="Include Range text" abbrev="Include Range text"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      if (field[xAllLev].value >= 18) then
+        field[abRange].value += 20
+        endif]]></eval>
+    <eval phase="PostAttr" index="2"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[Initiative].field[Bonus].value += hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="c5CPalVigReb" name="Vigilant Rebuke" description="Whenever you or a creature visible to and within 30 feet of you makes a successful Intelligence, Wisdom, or Charisma save, you can use a reaction to deal 2d8 + your Charisma modifier force damage to the creature that caused them to make that save." compset="ClSpecial" summary="Reaction to deal 2d8+CHA damage against a creature that forced a save.">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+       var CMod as number
+       var SgdC as string
+
+       CMod = hero.childfound[aCHA].field[aModBonus].value
+       if (CMod < 0) then
+         SgdC = ""
+       else
+         SgdC = "+"   
+       endif
+
+       field[abText].text = "2d8" & SgdC & CMod & " force"]]></eval>
+    </thing>
+  <thing id="c5CPalMrtBlw" name="Mortal Bulwark" description="You can use a bonus action to gain these benefits for 1 minute:\n\n•  You have 120 ft. of truesight\n•  Your attack rolls against aberrations, celestials, elementals, fey, and fiends are made with advantage.\n•  When you successfully deal damage to a creature by hitting it with an attack roll, you can force it to make a Charisma save versus your spell save DC. On a failure, the creature is magically banished to its home plane, unless it&apos;s already there. On a successful saving throw, the creature cannot be banished by this feature for the next 24 hours. \n\nOnce you&apos;ve used this feature, you can regain your use of it by either expending a 5th-level spell slot or completing a long rest." compset="ClSpecial" summary="Bonus action to gain Truesight, advantage on extraplanar foes, banishment for 1 minute.">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="DamageRes" tag="dcAll" name="All damage" abbrev="All damage"/>
+    <tag group="abSave" tag="aCHA"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="abDuration" tag="Minute"/>
+    <bootstrap thing="raTruesigh">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    </thing>
+  <thing id="io5CAtfArcHlm" name="Arcane Armor Helm" description="The helm from the Artificer Armorer&apos;s Arcane Armor." compset="Wondrous">
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    </thing>
+  <thing id="io5CAtfArcBts" name="Arcane Armor Boots" description="The boots from the Artificer Armorer&apos;s Arcane Armor." compset="Wondrous">
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="Helper"/>
+    </thing>
+  <thing id="c5CAtfArmor" name="Armorer" description="An Armorer specializes in modifying armor to act as a conduit for their magic, for attack or defense.\n\n{b}Tools of the Trade.{/b} You gain proficiency with smith’s tools, assuming you don’t already have it. If you do, you gain proficiency in another artisan&apos;s tool of your choice." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpAtf" name="Artificer" abbrev="Artificer"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CAtfArmSpl">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CAtfArcArm">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CAtfPrfArm">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="cExtraAtt">
+      <autotag group="ClSpecWhen" tag="5"/>
+      </bootstrap>
+    <bootstrap thing="c5CAtfArnMdi">
+      <autotag group="ClSpecWhen" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="gTooCarver">
+      <containerreq phase="First" priority="495">count:thingid.gTooCarver = 0</containerreq>
+      <autotag group="Helper" tag="TrainTool"/>
+      <autotag group="Hide" tag="Tool"/>
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <bootstrap thing="c5CAtfArmMod">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="2400"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+     if (hero.tagcount[ProfTool.gTooSmith] = 0) then
+       perform hero.assign[ProfTool.gTooSmith]
+     else
+       hero.childfound[cHelpAtf].field[cToolMax].value += 1
+     endif]]></eval>
+    </thing>
+  <thing id="c5CAtfArmSpl" name="Armorer Spells" description="Starting at 3rd level, you always have certain spells prepared after you reach particular levels in this class, as shown in the Armorer Spells table. These spells count as artificer spells for you, but they don’t count against the number of artificer spells you prepare.\n\n{b}Armorer Spells{/b}\n{b}Artificer Level Spell{/b}\n3rd                   {i}magic missile, thunderwave{/i}\n5th                   {i}mirror image, shatter{/i}\n9th                   {i}hypnotic pattern, lightning bolt{/i}\n13th                 {i}fire shield, greater invisibility{/i}\n17th                 {i}passwall, wall of force{/i}" compset="ClSpecial" summary="Gain new spells as an Armorer.">
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <bootstrap thing="spMagiMiss">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpAtf"/>
+      </bootstrap>
+    <bootstrap thing="spMirrImag">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpAtf"/>
+      </bootstrap>
+    <bootstrap thing="spGreaInvi">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpAtf"/>
+      </bootstrap>
+    <bootstrap thing="spPasswall">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpAtf"/>
+      </bootstrap>
+    <bootstrap thing="spHypnPatt">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpAtf"/>
+      </bootstrap>
+    <bootstrap thing="spFireShie">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpAtf"/>
+      </bootstrap>
+    <bootstrap thing="spWallForc">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpAtf"/>
+      </bootstrap>
+    <bootstrap thing="spLighBolt">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpAtf"/>
+      </bootstrap>
+    <bootstrap thing="spShatter">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpAtf"/>
+      </bootstrap>
+    <bootstrap thing="spThunderw">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpAtf"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CAtfArcArm" name="Arcane Armor" description="With your smith&apos;s tools in hand, you can use an action to turn a suit of armor you&apos;re wearing into Arcane Armor. You have these benefits while wearing the armor:\n\n• You can ignore any Strength requirements of the armor\n• The armor can be your spellcasting focus fofr your artificer spells.\n• The armor attaches to you, and cannot be removed against your will. It expands to cover your whole body, though the helmet is retractable or deployable with a bonus action. Any limbs you may be missing are replaced by the armor, and it functions identically to those limbs.\n• You can use an action to doff or done the armor. It continues to be your armor until you don another suit, or until you die." compset="ClSpecial" summary="Turn a suit of armor into your Arcane Armor.">
+    <fieldval field="usrCandid1" value="component.BaseArmor &amp; !EquipType.Shield &amp; !Helper.Natural"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Custom" tag="ArcArm" name="ArcArm" abbrev="ArcArm"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <eval phase="Final"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+     ~ If we're not enabled, get out now
+
+     perform field[usrChosen1].chosen.delete[ArmorMinSt.?]
+     perform field[usrChosen1].chosen.assign[Custom.ArcArm]]]></eval>
+    <eval phase="Render" priority="99990" index="2"><![CDATA[
+     doneif (tagis[Helper.ShowSpec] = 0)
+     doneif (tagis[Helper.Disable] <> 0)
+
+     field[usrChosen1].chosen.field[sbName].text = "Arcane Armor (" & field[usrChosen1].chosen.field[livename].text & ")"
+     field[usrChosen1].chosen.field[livename].text = "Arcane Armor (" & field[usrChosen1].chosen.field[livename].text & ")"]]></eval>
+    </thing>
+  <thing id="c5CAtfArmMod" name="Armor Model" description="You can customize your armor, choosing between either Guardian or Infiltrator armor. Each model gives you special benefits while worn, including a special weapon. Attacks you make with that weapon can use your Intelligence modifier, rather than Strength or Dexterity, for the attack and damage rolls. With your smith&apos;s tools in hand, you can switch models whenever you complete a short or long rest.\n\n{i}{b}Guardian:{/b}{/i}\n{b}Thunder Gauntlets.{/b} Each gauntlet on the armor is a simple melee weapon. When you aren&apos;t holding anything with it, a gauntlet deals 1d8 thunder damage on a hit. Additionally, a creature hit by it has disadvantage on attack rolls against targets other than you until the beginning of your next turn.\n{b}Defensive Field.{/b} You can use a bonus action to gain temporary hit points equal to your level in this class, replacing any temporary hit points you already have. You lose these hit points if you doff the armor. You can use this feature a number of times equal to your proficiency bonus, and you regain all spent uses of it when you complete a long rest.\n\n{i}{b}Infiltrator:{/b}{/i}\n{b}Lightning Launcher.{/b} A gemlike node appears on either one of your armored fists or the chest of your armor, your choice. It is a simple ranged weapon, with 90 ft//300 ft. range. It deals 1d6 lightning damage on a hit. And once on each of your turn, you can deal an extra 1d6 lightning damage when you hit a target with it.\n{b}Powered Steps.{/b} Your walking speed is increased by 5 feet.\n{b}Dampening Field.{/b} You have advantage on Dexterity (Stealth) checks. If the armor normally imposes disadvantage on those rolls for you, the disadvantage and the advantage cancel each other out as usual." compset="ClSpecial" summary="Turn a suit of armor into your Arcane Armor.">
+    <arrayval field="usrArray" index="0" value="Guardian"/>
+    <arrayval field="usrArray" index="1" value="Infiltrator"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <bootstrap thing="w5CAtfThnGnt">
+      <containerreq phase="First" priority="100">fieldval:abValue=1</containerreq>
+      </bootstrap>
+    <bootstrap thing="w5CAtfLigLau">
+      <containerreq phase="First" priority="100">fieldval:abValue=2</containerreq>
+      </bootstrap>
+    <bootstrap thing="PoolWlkBls">
+      <containerreq phase="First" priority="500">fieldval:abValue=1</containerreq>
+      <autotag group="Value" tag="9"/>
+      <assignval field="livename" value="Defensive Field"/>
+      </bootstrap>
+    <bootstrap thing="c5CAtfDefFie">
+      <containerreq phase="First" priority="500">fieldval:abValue=1</containerreq>
+      </bootstrap>
+    <bootstrap thing="w5CAtfThnGnt">
+      <containerreq phase="First" priority="100">fieldval:abValue=1</containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CAtfGrdPrf">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abValue=1 & count:Classes.ArtificerR >=15]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CAtfInfPrf">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abValue=2 & count:Classes.ArtificerR >=15]]></containerreq>
+      </bootstrap>
+    <eval phase="First" priority="99" index="2"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+     ~ If we're not enabled, get out now
+
+     ~ only proceed if we have selected Infiltrator
+     doneif (field[usrIndex].value <> 1)
+
+     ~ if no armor has been chosen, get out
+     doneif (hero.child[c5CAtfArcArm].field[usrChosen1].ischosen = 0)
+
+     ~ set our focus to the chosen armor
+     perform hero.child[c5CAtfArcArm].field[usrChosen1].chosen.setfocus
+
+     ~ check if the armor is equipped
+     if (focus.field[gIsEquip].value = 1) then
+        field[abValue].value = 2
+        hero.childfound[Speed].field[tSpeed].value += 5
+
+        if (focus.tagcount[Helper.StealthDis] <> 0) then
+           perform focus.delete[Helper.StealthDis]
+        else
+           #situational[hero.child[skStealth], "Advantage", "Infiltrator Arcane Armor"]
+       endif
+     endif]]></eval>
+    <eval phase="Final" priority="500" index="3"><![CDATA[
+     doneif (field[abValue].value <> 1)
+
+     ~ Add temp HP
+     var temphp as number
+     temphp = hero.tagcount[Classes.ArtificerR]
+     hero.findchild[TempHpPool,"Value.9"].field[thpMinAllw].value = temphp
+     hero.findchild[TempHpPool,"Value.9"].field[thpMaxAllw].value = temphp]]></eval>
+    <eval phase="First" priority="99"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+     ~ If we're not enabled, get out now
+
+     ~ only proceed if we have selected Guardian
+     doneif (field[usrIndex].value <> 0)
+
+     ~ if no armor has been chosen, get out
+     doneif (hero.child[c5CAtfArcArm].field[usrChosen1].ischosen = 0)
+
+     ~ set our focus to the chosen armor
+     perform hero.child[c5CAtfArcArm].field[usrChosen1].chosen.setfocus
+
+     ~ check if the armor is equipped
+     if (focus.field[gIsEquip].value = 1) then
+        field[abValue].value = 1
+     endif]]></eval>
+    </thing>
+  <thing id="w5CAtfLigLau" name="Lightning Launcher" description="Once on each of your turn, you can deal an extra 1d6 lightning damage when you hit a target with this weapon." compset="Weapon">
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="6"/>
+    <fieldval field="wRangeNorm" value="90"/>
+    <fieldval field="wRangeLong" value="300"/>
+    <usesource source="5eTCoE"/>
+    <tag group="DamageType" tag="dtLightnin"/>
+    <tag group="wProfReq" tag="Simple"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="DamageOpt" tag="aINT"/>
+    <tag group="RanAttOpt" tag="aINT"/>
+    <tag group="wCategory" tag="RangeProj"/>
+    <tag group="Helper" tag="NoSelect"/>
+    <eval phase="Final" priority="99999999">perform delete[Helper.AllEqBoth]
+perform delete[Helper.AllEqMain]
+perform delete[Helper.AllEqOff]</eval>
+    <eval phase="Final" index="2"><![CDATA[
+    doneif (hero.tagcount[Classes.ArtificerR] >= 9)
+
+    perform assign[Helper.EquipMag]]]></eval>
+    </thing>
+  <thing id="w5CAtfThnGnt" name="Thunder Gauntlet" description="When you aren&apos;t holding anything with the hand this gauntlet is on, you can use it to make attacks. A creature hit by it has disadvantage on attack rolls against targets other than you until the beginning of your next turn." compset="Weapon">
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="8"/>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="DamageOpt" tag="aINT"/>
+    <tag group="MelAttOpt" tag="aINT"/>
+    <tag group="DamageType" tag="dtThunder"/>
+    <tag group="wCategory" tag="Melee"/>
+    <tag group="Helper" tag="NoSelect"/>
+    <tag group="wProfReq" tag="Simple"/>
+    <eval phase="Final"><![CDATA[
+    doneif (hero.tagcount[Classes.ArtificerR] >= 9)
+
+    perform assign[Helper.EquipMag]]]></eval>
+    </thing>
+  <thing id="c5CAtfDefFie" name="Defensive Field" description="You can use a bonus action to gain temporary hit points equal to your level in this class, replacing any temporary hit points you already have. You lose these hit points if you doff your Arcane Armor. You can use this feature a number of times equal to your proficiency bonus, and you regain all spent uses of it when you complete a long rest." compset="CustomSpec" uniqueness="unique">
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr"><![CDATA[field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+field[abText].text = "Bonus action"]]></eval>
+    </thing>
+  <thing id="c5CAtfArnMdi" name="Armor Modifications" description="Your Arcane Armor now counts as separate items for the purposes of infusing items. It includes the armor (the chest piece), boots, a helm, and the special weapon(s) of the armor. Each item can bear an infusion, and the infusions transfer if you change your armor&apos;s model. Additionally, your total number of active infusions increases by 2. However, those extra two infusions must be used on parts of your Arcane Armor." compset="ClSpecial" summary="Your arcane armor is now multiple pieces for infusing.">
+    <tag group="Custom" tag="ArcArmWep"/>
+    <bootstrap thing="io5CAtfArcHlm">
+      <containerreq phase="First" priority="450"><![CDATA[count:Classes.ArtificerR >=9]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="io5CAtfArcBts">
+      <containerreq phase="First" priority="450"><![CDATA[count:Classes.ArtificerR >=9]]></containerreq>
+      </bootstrap>
+    <eval phase="PostLevel" priority="500"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+
+     hero.childfound[cfg5CAtfInfus].field[cfgMax2].value += 2]]></eval>
+    </thing>
+  <thing id="c5CAtfPrfArm" name="Perfected Armor" description="Based on the model of your Arcane Armor, you gain one of these benefits:\n\n{i}{b}Guardian:{/b}{/i}\nWhen a Huge or smaller creature visible to you ends its turn within 30 feet of you, you can take a reaction to magically force that creature to make a Strength save versus your spell save DC. On a failure, it&apos;s pulled up to 30 feet toward you into an open space. If this pull puts it within 5 feet of you, you can make a melee weapon attack against it as part of this reaction.\n\nYou can use this reaction a number of times equal to your proficiency bonus, and regain all spent uses of it when you complete a long rest.\n\n{i}{b}Infiltrator:{/b}{/i}\nAny creature that takes lightning damage from your armor&apos;s Lightning Launcher shines with magical dim light in a 5-foot radius until the beginning of your next turn. For that time, it has disadvantage on attack rolls against you. Additionally, the next attack roll against it has advantage, and it takes an extra 1d6 lightning damage if that attack hits." compset="ClSpecial" summary="Grant greater benefits to your arcane armor.">
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CAtfInfPrf" name="Perfected Armor: Infiltrator" description="Any creature that takes lightning damage from your armor&apos;s Lightning Launcher shines with magical dim light in a 5-foot radius until the beginning of your next turn. For that time, it has disadvantage on attack rolls against you. Additionally, the next attack roll against it has advantage, and it takes an extra 1d6 lightning damage if that attack hits." compset="CustomSpec" uniqueness="unique">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="c5CAtfGrdPrf" name="Perfected Armor: Guardian" description="When a Huge or smaller creature visible to you ends its turn within 30 feet of you, you can take a reaction to magically force that creature to make a Strength save versus your spell save DC. On a failure, it&apos;s pulled up to 30 feet toward you into an open space. If this pull puts it within 5 feet of you, you can make a melee weapon attack against it as part of this reaction.\n\nYou can use this reaction a number of times equal to your proficiency bonus, and regain all spent uses of it when you complete a long rest." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abRange" value="30"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <eval phase="PostAttr">field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value</eval>
+    </thing>
+  <thing id="c5CSorAbMnd" name="Aberrant Mind" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpSor" name="Sorcerer" abbrev="Sorcerer"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CSorPsiSor">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorPsyDef">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorRevFls">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorPsiSpl">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="cfg5CPsiSpl"></bootstrap>
+    <bootstrap thing="c5CSorWrpImp">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorTlSpch">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CSorTlSpch" name="Telepatchic Speech" description="You can use a bonus action to form a telepathic link between your mind and another. Choose one creature visible to and within 30 feet of you. The two of you can speak telepathically to each other while within a number of miles equalling your Charisma modifier (a minimum of 1 mile). You must speak mentally in a language you both know.\n\nThe connection lasts for a number of minutes equal to your sorcerer level. If you die, become incapacitated, or use this ability to link with a different creature, the connection with the first creature ends." compset="ClSpecial" summary="Bonus action to create a telepathic link with a creature.">
+    <fieldval field="abRange" value="1"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="abRange" tag="Mile"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+       var Miles as number
+       var Minutes as number
+       var Plural1 as string
+       var Plural2 as string
+ 
+       Miles = maximum(1,#attrbonus1[aCHA])
+       Minutes = #levelcount[Sorcerer]
+       Plural1 = ""
+
+       if (Miles > 1) then
+          Plural1 = "s"
+          endif
+
+       Plural2 = ""
+       if (Minutes > 1) then
+          Plural2 = "s"
+          endif
+
+       field[abDuration].value = Minutes
+       field[abRange].value = Miles
+       field[abText].text = Miles & " mile" & Plural1 & ", " & Minutes & " minute" & Plural2]]></eval>
+    </thing>
+  <thing id="c5CSorPsiSpl" name="Psionic Spells" description="Starting at 3rd level, you always have certain spells prepared after you reach particular levels in this class, as shown in the Psionic Spells table. These spells count as sorcerer spells for you, but they don’t count against the number of sorcerer spells you know.\n\nWhenever you gain another level in the sorcerer class, one of the spells gained from this feature can be replaced with another spell of the same level. The new spell must be from either the divination or an enchantment school, and must be from the sorcerer, warlock, or wizard spell list. Use the Psionic Spells tab to indicate if you&apos;re replacing the spell, then select the new one from the list.\n\n{b}Psionic Spells{/b}\n{b}Sorcerer Level Spell{/b}\n1st                     {i}arms of Hadar, dissonant whispers, mind sliver{/i}\n3rd                     {i}calm emotions, detect thoughts{/i}\n5th                     {i}hunger of Hadar, sending{/i}\n7th                     {i}black tentacles, summon aberration{/i}\n9th                     {i}telekinesis, telepathic bond{/i}" compset="ClSpecial" summary="Gain new spells as an psionic sorcerer.">
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    </thing>
+  <thing id="cfg5CPsiSpl" name="Psionic Spells" compset="Configure" uniqueness="unique">
+    <fieldval field="cfgAllwSp1" value="(Helper.Helper &amp; !Helper.Helper)"/>
+    <fieldval field="cfgSpell1" value="Replacement Psionic Spells"/>
+    <fieldval field="cfgObject1" value="Psionic Spells"/>
+    <tag group="Helper" tag="ClsCastLev"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <bootstrap thing="c5CPsiArmsH">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 1]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CPsiDissW">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 1]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CPsiCalmE">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 3]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CPsiDeteT">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 3]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CPsiHungH">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 5]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CPsiSendg">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 5]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CPsiBlacT">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 7]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CPsiSumAb">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 7]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CPsiTeleB">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 9]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CPsiTelek">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 9]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CPsiMindS">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 1]]></containerreq>
+      </bootstrap>
+    <eval phase="Final" priority="50000"><![CDATA[
+    doneif (field[cfgMaxSp1].value = field[cfgLeftSp1].value)
+    doneif (tagis[Helper.Disable] <> 0)
+
+
+  var searchexpr as string
+  var blep as number
+
+  searchexpr = "("
+  
+  foreach pick in hero from BaseSpell where "hasagent.cfg5CPsiSpl"
+    if (blep > 0) then
+      searchexpr &= " | " 
+     endif
+    searchexpr &= eachpick.tagids[thingid.?]
+    blep += 1
+   nexteach
+
+  searchexpr &= ") &!Helper.Cantrip"
+
+  foreach pick in hero from BaseSpell where searchexpr
+      perform eachpick.assign[Helper.Free]
+      perform eachpick.assign[Helper.Known]
+      perform eachpick.assign[SpellType.cHelpSor]
+      eachpick.field[sNameMod].text = "Psionic"
+  nexteach]]></eval>
+    <eval phase="First" priority="250" index="2"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+    field[cfgMaxSp1].value += #levelcount[Sorcerer]]]></eval>
+    <eval phase="First" priority="505" index="3"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+    field[cfgMaxSp1].value -= #levelcount[Sorcerer]]]></eval>
+    <eval phase="Final" priority="50001" index="4"><![CDATA[
+    doneif (field[cfgMaxSp1].value = field[cfgLeftSp1].value)
+    doneif (tagis[Helper.Disable] <> 0)
+
+
+  var searchexpr as string
+  var blep as number
+
+  searchexpr = "("
+  
+  foreach pick in hero from BaseSpell where "hasagent.cfg5CPsiSpl"
+    if (blep > 0) then
+      searchexpr &= " | " 
+     endif
+    searchexpr &= eachpick.tagids[thingid.?]
+    blep += 1
+   nexteach
+
+  searchexpr &= ") & Helper.Cantrip"
+
+  foreach pick in hero from BaseSpell where searchexpr
+      perform eachpick.assign[Helper.Free]
+      perform eachpick.assign[Helper.Cantrip]
+      perform eachpick.assign[SpellType.cHelpSor]
+      eachpick.field[sNameMod].text = "Psionic"
+  nexteach]]></eval>
+    </thing>
+  <thing id="c5CPsiArmsH" name="1 - Arms of Hadar" description="Your Psionic Spells feature grants you the {i}Arms of Hadar{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a divination or enchantment spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Psionic Spells tab." compset="CustomSpec" summary="Have or replace the Arms of Hadar spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CPsiSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CPsiSpl"/>
+    <bootstrap thing="sp5CArmHad">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Psionic"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 2)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Divination | sSchool.Enchant) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.1"
+
+  perform hero.childfound[cfg5CPsiSpl].setfocus
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CPsiDissW" name="1 - Dissonant Whispers" description="Your Psionic Spells feature grants you the {i}dissonant whispers{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a divination or enchantment spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Psionic Spells tab." compset="CustomSpec" summary="Have or replace the dissonant whispers spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CPsiSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CPsiSpl"/>
+    <bootstrap thing="sp5CDissW">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Psionic"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 2)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Divination | sSchool.Enchant) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.1"
+
+  perform hero.childfound[cfg5CPsiSpl].setfocus
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CPsiCalmE" name="2 - Calm Emotions" description="Your Psionic Spells feature grants you the {i}calm emotions{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a divination or enchantment spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Psionic Spells tab." compset="CustomSpec" summary="Have or replace the calm emotions spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CPsiSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CPsiSpl"/>
+    <bootstrap thing="spCalmEmot">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Psionic"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 4)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Divination | sSchool.Enchant) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.2"
+
+  perform hero.childfound[cfg5CPsiSpl].setfocus
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CPsiDeteT" name="2 - Detect Thoughts" description="Your Psionic Spells feature grants you the {i}detect thoughts{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a divination or enchantment spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Psionic Spells tab." compset="CustomSpec" summary="Have or replace the detect thoughts spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CPsiSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CPsiSpl"/>
+    <bootstrap thing="spDeteThou">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Psionic"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 4)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Divination | sSchool.Enchant) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.2"
+
+  perform hero.childfound[cfg5CPsiSpl].setfocus
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CPsiHungH" name="3 - Hunger of Hadar" description="Your Psionic Spells feature grants you the {i}Hunger of Hadar{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a divination or enchantment spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Psionic Spells tab." compset="CustomSpec" summary="Have or replace the Hunger of Hadar spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CPsiSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CPsiSpl"/>
+    <bootstrap thing="sp5CHungeH">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Psionic"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 6)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Divination | sSchool.Enchant) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.3"
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  perform hero.childfound[cfg5CPsiSpl].setfocus
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CPsiSendg" name="3 - Sending" description="Your Psionic Spells feature grants you the {i}sending{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a divination or enchantment spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Psionic Spells tab." compset="CustomSpec" summary="Have or replace the sending spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CPsiSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CPsiSpl"/>
+    <bootstrap thing="spSending">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Psionic"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 6)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Divination | sSchool.Enchant) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.3"
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  perform hero.childfound[cfg5CPsiSpl].setfocus
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CPsiBlacT" name="4 - Black Tentacles" description="Your Psionic Spells feature grants you the {i}black tentacles{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a divination or enchantment spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Psionic Spells tab." compset="CustomSpec" summary="Have or replace the black tentacles spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CPsiSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CPsiSpl"/>
+    <bootstrap thing="spBlacTent">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Psionic"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 8)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Divination | sSchool.Enchant) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.4"
+
+  perform hero.childfound[cfg5CPsiSpl].setfocus
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CPsiSumAb" name="4 - Summon Aberration" description="Your Psionic Spells feature grants you the {i}summon aberration{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a divination or enchantment spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Psionic Spells tab." compset="CustomSpec" summary="Have or replace the summon aberration spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CPsiSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CPsiSpl"/>
+    <bootstrap thing="sp5CSumAbr">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Psionic"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 8)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Divination | sSchool.Enchant) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.4"
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  perform hero.childfound[cfg5CPsiSpl].setfocus
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CPsiTeleB" name="5 - Telepathic Bond" description="Your Psionic Spells feature grants you the {i}telepathic bond{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a divination or enchantment spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Psionic Spells tab." compset="CustomSpec" summary="Have or replace the telepathic bond spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CPsiSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CPsiSpl"/>
+    <bootstrap thing="spTeleBond">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Psionic"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 10)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Divination | sSchool.Enchant) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.5"
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  perform hero.childfound[cfg5CPsiSpl].setfocus
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CPsiTelek" name="5 - Telekinesis" description="Your Psionic Spells feature grants you the {i}telekinesis{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a divination or enchantment spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Psionic Spells tab." compset="CustomSpec" summary="Have or replace the telekinesis spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CPsiSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CPsiSpl"/>
+    <bootstrap thing="spTelekine">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Psionic"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 10)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Divination | sSchool.Enchant) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.5"
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  perform hero.childfound[cfg5CPsiSpl].setfocus
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CPsiMindS" name="0 - Mind Sliver" description="Your Psionic Spells feature grants you the {i}mind sliver{/i} cantrip. When you gain a level in the Sorcerer class, you may forget this cantrip and replace it with a divination or enchantment cantrip from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new cantrip from the menu on the Psionic Spells tab." compset="CustomSpec" summary="Have or replace the mind sliver cantrip." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CPsiSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CPsiSpl"/>
+    <bootstrap thing="sp5CMndSlv">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Psionic"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 2)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Divination | sSchool.Enchant) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.0"
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  perform hero.childfound[cfg5CPsiSpl].setfocus
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="5CPsiSpRep" name="Replaced" compset="Simple">
+    <tag group="Helper" tag="Helper"/>
+    </thing>
+  <thing id="c5CSorPsiSor" name="Psionic Sorcery" description="When you cast a 1st level or higher spell using your Psionic Spells feature, you can choose to spend a spell slot like normal or use sorcery points equalling the spell&apos;s level. If you use the sorcery points, you can ignore all verbal and somatic components of the spell. If a material component is consumed by the spell, however, you still need that material component. Otherwise you can also ignore the material component." compset="ClSpecial" summary="Spend sorcery points to cast psionic spells without components.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CSorPsyDef" name="Psychic Defenses" description="You have resistance to psychic damage, and your saves versus being charmed or frightened are made with advantage." compset="ClSpecial" summary="Psychic damage resistance and advantage on saves versus being frightened or charmed.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+       #situational[hero.child[svAll], "Advantage versus being charmed or frightened", field[thingname].text]
+
+       perform hero.assign[DamageRes.dtPsychic]]]></eval>
+    </thing>
+  <thing id="c5CSorRevFls" name="Revelation in Flesh" description="You can use a bonus action to spend 1 or more sorcery points to magically transform your body for 10 minutes. For every point spent, you can gain one of these benefits, which last for the duration of the transformation:\n\n•  You can see any invisbile creatures within 60 feet of you, assuming they are not behind total cover.\n•  You gain a flying speed equal to your walking speed, with the ability to hover. \n•  You gain a swimming speed equal to twice your walking speed, and become able to breathe underwater.\n•  Your body and anything you&apos;re wearing or carrying becomes pliable. You&apos;re able to move through spaces as narrow as 1 inch without squeezing. You can also use 5 feet of movement to escape nonmagical restraints or a grapple." compset="ClSpecial" summary="Bonus action to transform your body for sight and movement.">
+    <fieldval field="actName" value="Body Transformed"/>
+    <fieldval field="abDuration" value="10"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abDuration" tag="Minute"/>
+    <bootstrap thing="c5CSorRevSwm">
+      <containerreq phase="First" priority="499"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CSorRevInv">
+      <containerreq phase="First" priority="499"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CSorRevFly">
+      <containerreq phase="First" priority="499"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CSorRevPli">
+      <containerreq phase="First" priority="499"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="c5CSorRevFly" name="Revelation in Flesh (Flight)" compset="CustomSpec" uniqueness="unique">
+    <fieldval field="actName" value="Flight active (1 point)"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Helper" tag="Hover"/>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="8999"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+       doneif (field[abilActive].value = 0)
+
+       var Speed as number
+       var Flight as string
+
+       Speed = (hero.childfound[Speed].field[tSpeed].value + hero.childfound[Speed].field[Bonus].value)
+       Speed *= 2
+
+       Speed = maximum(hero.childfound[xFly].field[abValue].value,Speed)
+
+       Flight = "Value." & Speed
+
+
+       perform hero.childfound[xFly].delete[Value.?]
+       perform hero.childfound[xFly].assignstr[Flight]]]></eval>
+    </thing>
+  <thing id="c5CSorRevSwm" name="Revelation in Flesh (Swim)" description="You are able to breath underwater and have a swim speed equal to twice your walking speed." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="actName" value="Swimming active (1 point)"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="xSwim">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="8999"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+       doneif (field[abilActive].value = 0)
+
+       var Speed as number
+       var Swim as string
+
+       Speed = (hero.childfound[Speed].field[tSpeed].value + hero.childfound[Speed].field[Bonus].value)
+       Speed *= 2
+
+       Speed = maximum(hero.childfound[xSwim].field[abValue].value,Speed)
+
+       Swim = "Value." & Speed
+
+       perform hero.childfound[xSwim].delete[Value.?]
+       perform hero.childfound[xSwim].assignstr[Swim]
+
+       perform delete[Helper.SpecUp]
+       perform hero.childfound[c5CSorRevFls].assign[Helper.SpecUp]]]></eval>
+    </thing>
+  <thing id="c5CSorRevInv" name="Revelation in Flesh (See Invisibility)" description="You can see any invisbile creatures within 60 feet of you, assuming they are not behind total cover." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="actName" value="See invisibility active (1 point)"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PostAttr" priority="8999"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+       doneif (field[abilActive].value = 0)
+
+       perform delete[Helper.SpecUp]
+       perform hero.childfound[c5CSorRevFls].assign[Helper.SpecUp]]]></eval>
+    </thing>
+  <thing id="c5CSorRevPli" name="Revelation in Flesh (Pliable)" description="Your body and anything you&apos;re wearing or carrying becomes pliable. You&apos;re able to move through spaces as narrow as 1 inch without squeezing. You can also use 5 feet of movement to escape nonmagical restraints or a grapple." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="actName" value="Pliable active (1 point)"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PostAttr" priority="8999"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+       doneif (field[abilActive].value = 0)
+
+       perform delete[Helper.SpecUp]
+       perform hero.childfound[c5CSorRevFls].assign[Helper.SpecUp]]]></eval>
+    </thing>
+  <thing id="5CPsiSpKnw" name="Known" compset="Simple">
+    <tag group="Helper" tag="Helper"/>
+    </thing>
+  <thing id="c5CRgrFeyWnd" name="Fey Wanderer" compset="CustomSpec" uniqueness="unique">
+    <comment>Supersedes UA Ranger.</comment>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpRgr" name="Ranger" abbrev="Ranger"/>
+    <tag group="abCategory" tag="RgrArchety" name="Ranger Archetype" abbrev="Ranger Archetype"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <bootstrap thing="c5CRgrBgTwst">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrFeyRei">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrMstWnd">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrOthGlm">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrDrdStr">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrFyWnMg">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgrDrdStr" name="Dreadful Strikes" description="When you hit with a weapon, you can add an additional 1d4 psychic to the total damage done. A creature can only take this extra damage once per turn. \n\nThe extra damage increases to 1d6 when you reach Ranger level 11." compset="ClSpecial" summary="Deal extra psychic damage on weapon hit once per turn.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[      if (#levelcount[Ranger] >= 11) then
+        field[abText].text = "1d6 psychic"
+      else
+        field[abText].text = "1d4 psychic"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CRgrOthGlm" name="Otherworldly Glamour" description="Your Charisma checks gain a bonus equal to your Wisdom modifier (minimum +1). You also gain proficiency in one skill of your choice between Deception, Performance, and Persuasion." compset="ClSpecial" summary="Add Wisdom to Charisma checks and gain one Charisma skill proficiency.">
+    <fieldval field="usrCandid1" value="thingid.skDecept | thingid.skPerform | thingid.skPersuas"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="Final" priority="1000"><![CDATA[   doneif (tagis[Helper.ShowSpec] = 0)
+   doneif (tagis[Helper.Disable] <> 0)
+
+   var iWis as number
+
+   iWis = hero.childfound[aWIS].field[aModBonus].value
+   iWis = maximum(1,iWis)
+
+   hero.childfound[skDecept].field[Bonus].value += iWis
+   hero.childfound[skPerform].field[Bonus].value += iWis
+   hero.childfound[skPersuas].field[Bonus].value += iWis
+   hero.childfound[skIntim].field[Bonus].value += iWis]]></eval>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[   doneif (tagis[Helper.ShowSpec] = 0)
+   doneif (tagis[Helper.Disable] <> 0)
+   doneif (field[usrChosen1].ischosen = 0)
+
+   perform field[usrChosen1].chosen.assign[Helper.Proficient]]]></eval>
+    </thing>
+  <thing id="c5CRgrBgTwst" name="Beguiling Twist" description="Your saves against being charmed or frightened are made with advantage.\n\nAdditionally, whenever you or a creature visible to and within 120 feet of you makes a successful save against a charm or frightening effect, you can use a reaction to force another creature you can see within 120 feet of you to make a Wisdom save versus you spell save DC. On a failure, that creature is either charmed or frightened (you pick which) by you for 1 minute. The target can repeat the save at the end of each of its turns, ending the effect for itself with a success." compset="ClSpecial" summary="Advantage on saves versus fright or charm, reaction to reverse such an effect.">
+    <fieldval field="abRange" value="120"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <eval phase="Final"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+       #situational[hero.child[svAll], "Advantage versus being charmed or frightened", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="c5CRgrFeyRei" name="Fey Reinforcements" description="You know the {i}summon fey{/i} spell, which does not count against your total number of ranger spells you know. You can cast it without material components. You have one free (no spell slot use required) casting of it, that recharges when you finish a long rest.\n\nWhen you begin casting the spell, you can choose for it to not require your concentration. If you do so, the duration of the spell becomes 1 minute for that casting of it." compset="ClSpecial" summary="Gain and use the summon fey spell 1/long rest or with spell slot.">
+    <bootstrap thing="sp5CSumFey">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="BonusSplAt" tag="11"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="can use slot or"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgrMstWnd" name="Misty Wanderer" description="You can cast {i}misty step{/i} without the use of a spell slot. You can do this a number of times per long rest equalling your Wisdom modifier (minimum of 1 casting).\n\nAdditionally, your castings of {i}misty step{/i} allow you to bring along a single willing creature that is visible to and within 5 feet of you. Once they teleport with you, they appear in an open space of your choice within 5 feet of your destination." compset="ClSpecial" summary="Misty step Wisdom mod per long rest, and can bring someone.">
+    <tag group="Custom" tag="FeyMisty" name="Fey Wanderer&apos;s Misty Step"/>
+    <bootstrap thing="spMistStep">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="BonusSplAt" tag="15"/>
+      <autotag group="Custom" tag="FeyMisty"/>
+      <assignval field="sNameMod" value="can bring ally"/>
+      </bootstrap>
+    <eval phase="PostAttr"><![CDATA[   doneif (tagis[Helper.ShowSpec] = 0)
+   doneif (tagis[Helper.Disable] <> 0)
+
+   var iWis as number
+
+   iWis = hero.childfound[aWIS].field[aModBonus].value
+   iWis = maximum(1,iWis)
+
+   foreach pick in hero where "thingid.spMistStep & Custom.FeyMisty"
+     eachpick.field[trkMax].value = iWis
+     eachpick.field[CustDesc].text = eachpick.field[descript].text & "\n\nYou can bring along a single willing creature that is visible to and within 5 feet of you. Once they teleport with you, they appear in an open space of your choice within 5 feet of your destination."
+     nexteach]]></eval>
+    </thing>
+  <thing id="c5CRgrFyWnMg" name="Fey Wanderer Magic" description="You learn additional spells at certain levels in the class, shown in the table blow. The spell counts as a ranger spell, but it doesn&apos;t count against the total number of ranger spells known. \n\n{b}Fey Wanderer Spells{/b}\n{b}Ranger Level Spell{/b}\n3rd                    {i}charm person{/i}\n5th                    {i}misty step{/i}\n9th                    {i}dispel magic{/i}\n13th                  {i}dimension door{/i}\n17th                  {i}mislead{/i}" compset="ClSpecial" summary="Learn new swarmkeeper spells as you level.">
+    <bootstrap thing="spCharPers">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spMistStep">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spDispMagi">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spDimeDoor">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <bootstrap thing="spMislead">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CSorClck" name="Clockwork Soul" compset="CustomSpec" uniqueness="unique">
+    <fieldval field="usrLabelAr" value="Manifestations of Order"/>
+    <arrayval field="usrArray" index="0" value="Hovering spectral cogs"/>
+    <arrayval field="usrArray" index="1" value="Eyes are spinning clock hands"/>
+    <arrayval field="usrArray" index="2" value="Brassy glowing skin"/>
+    <arrayval field="usrArray" index="3" value="Floating geometry &amp; equations "/>
+    <arrayval field="usrArray" index="4" value="Tiny clockwork casting focus"/>
+    <arrayval field="usrArray" index="5" value="Magic sounds like clockwork"/>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpSor" name="Sorcerer" abbrev="Sorcerer"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CSorRstBal">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorBstLaw">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorTrnOrd">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="cfg5CClkSpl"></bootstrap>
+    <bootstrap thing="c5CSorClkSpl">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorClkCvl">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="c5CSorPsiSpl">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CSorClkSpl" name="Clockwork Magic" description="Starting at 3rd level, you always have certain spells known after you reach particular levels in this class, as shown in the Clockwork Spells table. These spells count as sorcerer spells for you, but they don’t count against the number of sorcerer spells you know.\n\nWhenever you gain another level in the sorcerer class, one of the spells gained from this feature can be replaced with another spell of the same level. The new spell must be from either the divination or an enchantment school, and must be from the sorcerer, warlock, or wizard spell list. Use the Clockwork Spells tab to indicate if you&apos;re replacing the spell, then select the new one from the list.\n\n{b}Clockwork Spells{/b}\n{b}Sorcerer Level Spell{/b}\n1st                     {i}alarm, protection from evil and good{/i}\n3rd                     {i}aid, lesser restoration{/i}\n5th                     {i}dispel magic, protection from energy{/i}\n7th                     {i}freedom of movement, summon construct{/i}\n9th                     {i}greater restoration, wall of force{/i}" compset="ClSpecial" summary="Gain new spells as an clockwork sorcerer.">
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    </thing>
+  <thing id="cfg5CClkSpl" name="Clockwork Spells" compset="Configure" uniqueness="unique">
+    <fieldval field="cfgAllwSp1" value="(Helper.Helper &amp; !Helper.Helper)"/>
+    <fieldval field="cfgSpell1" value="Replacement Clockwork Spells"/>
+    <fieldval field="cfgObject1" value="Clockwork Spells"/>
+    <tag group="Helper" tag="ClsCastLev"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <bootstrap thing="c5CClkAlar">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 1]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CClkPrtEG">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 1]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CClkAid">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 3]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CClkLsrRs">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 3]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CClkDspMg">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 5]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CClkPrtEn">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 5]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CClkFrdMv">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 7]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CClkSumCn">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 7]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CClkGrtRs">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 9]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CClkWlFrc">
+      <containerreq phase="First" priority="501"><![CDATA[fieldval:cfgMaxSp1 >= 9]]></containerreq>
+      </bootstrap>
+    <eval phase="Final" priority="50000"><![CDATA[
+    doneif (field[cfgMaxSp1].value = field[cfgLeftSp1].value)
+    doneif (tagis[Helper.Disable] <> 0)
+
+
+  var searchexpr as string
+  var blep as number
+
+  searchexpr = "("
+  
+  foreach pick in hero from BaseSpell where "hasagent.cfg5CClkSpl"
+    if (blep > 0) then
+      searchexpr &= " | " 
+     endif
+    searchexpr &= eachpick.tagids[thingid.?]
+    blep += 1
+   nexteach
+
+  searchexpr &= ") &!Helper.Cantrip"
+
+  foreach pick in hero from BaseSpell where searchexpr
+      perform eachpick.assign[Helper.Free]
+      perform eachpick.assign[Helper.Known]
+      perform eachpick.assign[SpellType.cHelpSor]
+      eachpick.field[sNameMod].text = "Clockwork"
+  nexteach]]></eval>
+    <eval phase="First" priority="250" index="2"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+    field[cfgMaxSp1].value += #levelcount[Sorcerer]]]></eval>
+    <eval phase="First" priority="505" index="3"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+    field[cfgMaxSp1].value -= #levelcount[Sorcerer]]]></eval>
+    </thing>
+  <thing id="c5CClkAlar" name="1 - Alarm" description="Your Clockwork Magic feature grants you the {i}alarm{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a abjuration or transmutation spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Clockwork Spells tab." compset="CustomSpec" summary="Have or replace the Arms of Hadar spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CClkSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CClkSpl"/>
+    <bootstrap thing="spAlarm">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Clockwork"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 2)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Abjur | sSchool.Transmutat) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.1"
+
+  perform hero.childfound[cfg5CClkSpl].setfocus
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CClkPrtEG" name="1 - Protection from Evil and Good" description="Your Clockwork Magic feature grants you the {i}protection from evil and good{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a abjuration or transmutation spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Clockwork Spells tab." compset="CustomSpec" summary="Have or replace the dissonant whispers spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CClkSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CClkSpl"/>
+    <bootstrap thing="spProtGoEv">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Clockwork"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 2)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Abjur | sSchool.Transmutat) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.1"
+
+  perform hero.childfound[cfg5CClkSpl].setfocus
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CClkAid" name="2 - Aid" description="Your Clockwork Magic feature grants you the {i}aid{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a abjuration or transmutation spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Clockwork Spells tab." compset="CustomSpec" summary="Have or replace the calm emotions spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CClkSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CClkSpl"/>
+    <bootstrap thing="spAid">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Clockwork"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 4)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Abjur | sSchool.Transmutat) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.2"
+
+  perform hero.childfound[cfg5CClkSpl].setfocus
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CClkLsrRs" name="2 - Lesser Restoration" description="Your Clockwork Magic feature grants you the {i}lesser restoration{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a abjuration or transmutation spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Clockwork Spells tab." compset="CustomSpec" summary="Have or replace the detect thoughts spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CClkSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CClkSpl"/>
+    <bootstrap thing="spLessRest">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Clockwork"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 4)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Abjur | sSchool.Transmutat) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.2"
+
+  perform hero.childfound[cfg5CClkSpl].setfocus
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CClkDspMg" name="3 - Dispel Magic" description="Your Clockwork Magic feature grants you the {i}dispel magic{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a abjuration or transmutation spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Clockwork Spells tab." compset="CustomSpec" summary="Have or replace the Hunger of Hadar spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CClkSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CClkSpl"/>
+    <bootstrap thing="spDispMagi">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Clockwork"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 6)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Abjur | sSchool.Transmutat) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.3"
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  perform hero.childfound[cfg5CClkSpl].setfocus
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CClkPrtEn" name="3 - Protection from Energy" description="Your Clockwork Magic feature grants you the {i}protection from energy{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a abjuration or transmutation spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Clockwork Spells tab." compset="CustomSpec" summary="Have or replace the sending spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CClkSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CClkSpl"/>
+    <bootstrap thing="spProtEner">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Clockwork"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 6)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Abjur | sSchool.Transmutat) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.3"
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  perform hero.childfound[cfg5CClkSpl].setfocus
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CClkFrdMv" name="4 - Freedom of Movement" description="Your Clockwork Magic feature grants you the {i}freedom of movement{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a abjuration or transmutation spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Clockwork Spells tab." compset="CustomSpec" summary="Have or replace the black tentacles spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CClkSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CClkSpl"/>
+    <bootstrap thing="spFreeMove">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Clockwork"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 8)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Abjur | sSchool.Transmutat) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.4"
+
+  perform hero.childfound[cfg5CClkSpl].setfocus
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CClkSumCn" name="4 - Summon Construct" description="Your Clockwork Magic feature grants you the {i}summon construct{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a abjuration or transmutation spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Clockwork Spells tab." compset="CustomSpec" summary="Have or replace the summon aberration spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CClkSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CClkSpl"/>
+    <bootstrap thing="sp5CSumCon">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Clockwork"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 8)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Abjur | sSchool.Transmutat) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.4"
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  perform hero.childfound[cfg5CClkSpl].setfocus
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CClkGrtRs" name="5 - Greater Restoration" description="Your Clockwork Magic feature grants you the {i}greater restoration{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a abjuration or transmutation spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Clockwork Spells tab." compset="CustomSpec" summary="Have or replace the telepathic bond spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CClkSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CClkSpl"/>
+    <bootstrap thing="spGreaRest">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Clockwork"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 10)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Abjur | sSchool.Transmutat) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.5"
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  perform hero.childfound[cfg5CClkSpl].setfocus
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CClkWlFrc" name="5 - Wall of Force" description="Your Clockwork Magic feature grants you the {i}wall of force{/i} spell. When you gain a level in the Sorcerer class, you may forget this spell and replace it with a abjuration or transmutation spell from the Sorcerer, Warlock, or Wizard spell list. If you do so, indicate that you&apos;re replacing it using the drop down, then choose the new spell from the menu on the Clockwork Spells tab." compset="CustomSpec" summary="Have or replace the telekinesis spell." uniqueness="unique">
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CClkSpl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="CustTaken" tag="cfg5CClkSpl"/>
+    <bootstrap thing="spWallForc">
+      <containerreq phase="First" priority="503">fieldval:abValue = 1</containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpSor"/>
+      <assignval field="sNameMod" value="Clockwork"/>
+      </bootstrap>
+    <eval phase="First" priority="502" index="2"><![CDATA[  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") = 0)
+
+  field[abValue].value += 1]]></eval>
+    <eval phase="Final"><![CDATA[  doneif (#levelcount[Sorcerer] < 10)
+
+  field[usrCandid1].text = "thingid.5CPsiSpKnw | thingid.5CPsiSpRep"
+
+
+  var Repl as string
+
+  Repl = field[usrChosen1].chosen.tagids[thingid.?,""]
+
+  doneif (compare(Repl,"thingid.5CPsiSpRep") <> 0)
+
+  field[usrCandid2].text = "(sSchool.Abjur | sSchool.Transmutat) & (sClass.cHelpSor | sClass.cHelpWlk | sClass.cHelpWiz) & sLevel.5"
+
+  doneif (field[usrChosen2].ischosen = 0)
+
+  perform hero.childfound[cfg5CClkSpl].setfocus
+
+  focus.field[cfgMaxSp1].value += 1
+
+  focus.field[cfgAllwSp1].text &= " | " & field[usrChosen2].chosen.tagids[thingid.?,""]]]></eval>
+    <eval phase="Render" priority="999999" index="3">perform delete[Helper.ActivMenu]</eval>
+    </thing>
+  <thing id="c5CSorRstBal" name="Restore Balance" description="When a creature visible to and within 60 feet of you is about to roll a d20 with advantage or disadvantage, you can use a reaction to remove the advantage or disadvantage.\n\nYou can do this feature a number of times equal to your proficiency bonus, and you regain all spent uses when you finish a long rest." compset="ClSpecial" summary="Reaction to remove advantage or disadvantage.">
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <eval phase="PostAttr">field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value</eval>
+    </thing>
+  <thing id="c5CSorBstLaw" name="Bastion of Law" description="You can use an action to expend between 1 and 5 sorcery points to create a magical ward around yourself or another creature visible to and within 30 feet of you. The ward lasts until you create another one or complete a long rest.\n\nThe ward has a number of d8s equal to the number of sorcery points spent in creating it. When the warded creature is damaged, it can spend a number of those dice, roll them, and reduce the damage taken by the rolled total." compset="ClSpecial" summary="Spend sorcery points to create a damage-reducing ward.">
+    <fieldval field="actName" value="Ward Active?"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="5"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abAction" tag="Action"/>
+    <eval phase="PostAttr" priority="99999"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+       doneif (field[abilActive].value = 0)
+
+       perform assign[Helper.UserAdjust]
+       field[actIncrNam].text = "d8s remaining"
+
+       doneif (field[actUser].value = 0)
+       field[abText].text = field[actUser].value & "d8 damage left"]]></eval>
+    </thing>
+  <thing id="c5CSorTrnOrd" name="Trance of Order" description="You can use a bonus action to enter a state of consciousness aligned to the endless calculations of the lawful plane. For 1 minute, you gain these benefits:\n\n• Attack rolls against you cannot benefit from advantage.\n• Whenever you make an attack roll, ability check, or saving throw, treat a roll of 9 or lower on the d20 as a roll of 10.\n\nOnce you&apos;ve used this feature, you cannot do so again until you complete a long rest or spend 5 sorcery points to recharge it." compset="ClSpecial" summary="Bonus action to prevent advantage on attacks against you, get minimum 10 on d20 rolls.">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abText" value="1 minute"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    </thing>
+  <thing id="c5CSorClkCvl" name="Clockwork Cavalcade" description="You can use an action to summon spirits of order in a 30-foot cube originating from you. They appear as modrons or other constructs of your choice. They are intangible and invulnerable. Within the cube, they create these effects before vanishing:\n\n• They restore up to 100 hit points, divided as you like between any creatures of your choice within the cube.\n• They instantly repair any damaged objects that are completely within the cube.\n• Every spell of 6th or lower level on any creatures and objects of your choice within the cube ends immediately.\n\nOnce you&apos;ve used this feature, you cannot do so again until you complete a long rest or spend 7 sorcery points to recharge it." compset="ClSpecial" summary="Summon construct spirits to 30-foot cube of healing and repairing.">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abText" value="30-foot cube"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    </thing>
+  <thing id="c5CSorWrpImp" name="Warping Implosion" description="You can use an action to teleport to an open space visible to and within 120 feet of you. Immediately after you disappear from your previous space, every creature within 30 feet of that space must make a Strength save. On a failure, a creature suffers 3d10 force damage and is pulled directly toward the space you leff, ending in an open space as close as possible to it.  On a successful save, a creature takes half the damage and is not pulled.\n\nOnce you&apos;ve used this feature, you cannot do so again until you complete a long rest or spend 5 sorcery points to recharge it." compset="ClSpecial" summary="Action to teleport 120 feet, damage and pull in creatures by previous space.">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="120"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abDuration" tag="Instant"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    </thing>
+  <thing id="r5CWldfrSpt" name="Wildfire Spirit" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rINT" value="3"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rAC" value="1"/>
+    <fieldval field="rHPStart" value="5"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rHDSides" value="1"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="DamageImm" tag="dtFire"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnGrapple"/>
+    <tag group="CondImm" tag="pcnProne"/>
+    <tag group="CondImm" tag="pcnRestr"/>
+    <bootstrap thing="wOtherRng">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtFire"/>
+      <assignval field="livename" value="Flame Seed"/>
+      <assignval field="sbName" value="Flame Seed"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wTarget" value="one target you can see"/>
+      <assignval field="wRangeNorm" value="60"/>
+      </bootstrap>
+    <bootstrap thing="lOther">
+      <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
+      <assignval field="sbName" value="Understands its summoner&apos;s languages"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="tpElementa"></bootstrap>
+    <bootstrap thing="ra5CWldFrT"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      <autotag group="Helper" tag="Hover"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
+~Add back in the original 5 per the stat block, then remove it all
+~Add that entire thing to our total Bonus HP
+~We remove it from the total instead of just removing the total in case
+~something else is adding to that as well.
+
+var HPAdj as number
+HPAdj = hero.childfound[ra5CMstPwr].field[abValue5].value 
+HPAdj *= 5
+HPAdj -= hero.childfound[aCON].field[aModBonus].value
+HPAdj += 4
+
+herofield[tBonusHP].value += HPAdj</eval>
+    <eval phase="Final" priority="50000" index="2"><![CDATA[
+~ pull our DEX and prof to determine what our attack bonus currently is
+
+var CrAt as number
+
+CrAt = (hero.childfound[aDEX].field[aModBonus].value + hero.childfound[ProfBonus].field[tProfBonus].value)
+
+~ add our spell attack (stored in abValue4 of Primal Bond) and subtract
+~ the current to attack bonus from any natural attacks. This way any 
+~ other additions to the bonus can still count
+
+foreach pick in hero from BaseWep where "wGroup.Natural"
+eachpick.field[wRanAtk].value += hero.childfound[ra5CMstPwr].field[abValue4].value - CrAt
+nexteach]]></eval>
+    </thing>
+  <thing id="ra5CMstPwr" name="Master&apos;s Power" description="The creature inherits its master&apos;s proficiency bonus." compset="RaceSpec">
+    <eval phase="PostAttr" priority="12000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+
+~ and damage.
+foreach pick in hero from BaseWep where "wGroup.Natural"
+   eachpick.field[dmmBonus].value = field[abValue2].value 
+   eachpick.field[dmrBonus].value = field[abValue2].value
+nexteach]]></eval>
+    <eval phase="PostLevel" index="2"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+
+~ store the proficiency of the hero in abValue2:
+
+field[abValue2].value = master.childfound[ProfBonus].field[tProfBonus].value
+
+~ now we replace the prof bonus of the minion with the stored hero one
+
+hero.childfound[ProfBonus].field[tProfBonus].value = field[abValue2].value]]></eval>
+    <eval phase="Final" priority="49000" index="3"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~Pull master's spell save DC into abValue3 for use in other features
+  field[abValue3].value = master.childfound[cHelpDrd].field[cSplSaveDC].value  
+
+
+      ~Pull master's spell attack into abValue4 for use in other features
+  field[abValue4].value = master.childfound[cHelpDrd].field[cSplAttack].value]]></eval>
+    </thing>
+  <thing id="ra5CWldFrT" name="Fiery Teleportation" compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Set DC to hero's Spell save DC, as stored in companion ability
+      field[abDC].value = hero.childfound[ra5CMstPwr].field[abValue3].value
+
+      field[CustDesc].text = "The creature and every willing creature of your choice within 5 feet of it teleport up to 15 feet to open spaces visible to you. Then every creature within 5 feet of the original space must make a DC " & hero.childfound[ra5CMstPwr].field[abValue3].value & " Dexterity save. On a failure, such a creature takes 1d6 + " & hero.childfound[ra5CMstPwr].field[abValue2].value & " fire damage."
+
+      field[abText].text = "1d6+" & hero.childfound[ra5CMstPwr].field[abValue2].value & " fire damage"]]></eval>
+    </thing>
+  <thing id="c5CWldfrSpt" name="Wildfire Spirit" compset="Companion" stacking="never" uniqueness="unique">
+    <fieldval field="CompType" value="Wildfire Spirit"/>
+    <eval phase="First" priority="455" index="4"><![CDATA[~ Well, there's no way (afaik) to count the class levels from the hero
+~ at the minion, so we need to do it somewhere in the hero context and 
+~ send the info to be used at the minion. 
+~
+~ In this case, since all animal companions will receive the 
+~ companion bond racial ability to add their extra skills, we'll
+~ use it to bootstrap the extra HD as well. The tag expression used 
+~ in the condition for the bootstrap will test the value of the
+~ abValue5 field, which we set here.
+
+~ This must be done at the First stage, since the bootstraps happen
+~ there. Or so I'm told by the error messages.
+
+var level as number
+level = hero.tagcount[Classes.Druid]
+minion.childfound[ra5CMstPwr].field[abValue5].value = level]]></eval>
+    <minion id="WildfireSpirit" isinherit="no">
+      <tag group="AllowRCust" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="CompIs" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="Hero" tag="FixedRace" name="FixedRace" abbrev="FixedRace"/>
+      <tag group="Hero" tag="NoAdvance" name="NoAdvance" abbrev="NoAdvance"/>
+      <tag group="Hero" tag="NoFamLvReq" name="No familiar Level requirements" abbrev="No familiar Level requirements"/>
+      <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+      <tag group="HideTab" tag="classes"/>
+      <tag group="HideTab" tag="personal"/>
+      <tag group="HideTab" tag="journal"/>
+      <bootstrap thing="ra5CMstPwr"></bootstrap>
+      <bootstrap thing="r5CWldfrSpt"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="c5CDrdWldFr" name="Circle of Wildfire" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpDrd" name="Druid" abbrev="Druid"/>
+    <bootstrap thing="c5CDrdSmWldf">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdEnhBnd">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdCauFlm">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdBlzRvl">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdWldSpl">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CDrdWldSpl" name="Circle Spells" description="At 2nd level and above, you gain additional spells. You automatically know and prepare these spells as they become available at the appropriate levels. The spells do not count against any limit of spells known or prepared per day and you gain access to them even if they would not normally appear on the druid spell list.\n\n{b}Circle of Wildfire Spells{/b}\n{b}Druid Level    Spell{/b}\n2nd                    {i}burning hands, cure wounds{/i}\n3rd                     {i}flaming sphere, scorching ray{/i}\n5th                     {i}plant growth, revivify{/i}\n7th                     {i}aura of life, fire shield{/i}\n9th                     {i}flame strike, mass cure wounds{/i}" compset="ClSpecial" summary="Gain new spells as part of the circle of wildfire.">
+    <bootstrap thing="spPlanGrow">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spRevivify">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="sp5CAurLif">
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spFireShie">
+      <autotag group="BonusSplAt" tag="7"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spFlamStri">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spMassCure">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spAid">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spBurnHand">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spCureWoun">
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      </bootstrap>
+    <bootstrap thing="spScorRay">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CDrdSmWldf" name="Summon Wildfire Spirit" description="You can use an action to expend one use of your Wild Shape to summon a wildfire spirit, instead of taking on a beast form. \n\nThe spirit appears in an open space of your choice that is visible to and within 30 feet of you. Every creature within 10 feet of the spirit (except for you) when it appears must make a Dexterity save versus your spell save DC, taking 2d6 fire damage on a failure. \n\nThe spirit is friendly to you and your allies, and it obeys your command. You determine its appearance. In combat, it shares your initiative but take its turn right after yours. It only takes the Dodge action, unless you use a bonus action to command it to do something in its stat block or another action available to it. If you&apos;re incapacitated, it can take any action of its choice.\n\nThe spirit manifests for 1 hour, until you summon another wildfire spirit, until it reaches 0 hit points, or until you die." compset="ClSpecial" summary="Spend a Wild Shape to summon a wildfire spirit.">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="actName" value="Wildfire Spirit Summoned"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abDuration" tag="Hour"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abAction" tag="Action"/>
+    <bootstrap thing="c5CWldfrSpt">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="c5CDrdEnhBnd" name="Enhanced Bond" description="Whenever you cast a fire damage or hit point-restoring spell while your wildfire spirit is summoned, you can add 1d8 to one damage or healing roll of the spell. \n\nAdditionally, when you cast a spell with a range other than self, you can choose for the spell to originate from the wildfire spirit instead of yourself." compset="ClSpecial" summary="Add 1d8 to healing or fire damage spell while spirit is up, and cast from it.">
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="c5CDrdCauFlm" name="Cauterizing Flames" description="When a Small or larger creature dies within 30 feet of you or your wildfire spirit, a harmless spectral appears in the dead creature&apos;s space and lasts there for 1 minute. When a creature visible to you enters the space, you can use a reaction to end the flame. The creature receives either fire damage or healing, your choice, equal to 2d10 + your Wisdom modifier. \n\nYou can use this reaction a number of times equaling your proficiency bonus, and regain all spent uses of it when you complete a long rest." compset="ClSpecial" summary="Use the death of a nearby creature to heal or damage a creature in its space.">
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <eval phase="PostAttr" priority="5000"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+field[abText].text = "2d10+" & #attrbonus1[aWIS]]]></eval>
+    </thing>
+  <thing id="c5CDrdBlzRvl" name="Blazing Revival" description="If your wildfire spirit is within 120 feet of you when you are reduced to 0 hit points and thus fall unconscious, you can cause the spirit to also drop to 0 hit points. Then you regain half your hit points and immediately get back up on your feet. \n\nOnce you&apos;ve use this feature, you cannot do so again until you complete a long rest." compset="ClSpecial" summary="Drop your wildfire spirit to save you from death.">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="120"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="c5CWlkGenie" name="The Genie" compset="CustomSpec" uniqueness="unique">
+    <fieldval field="usrLabelAr" value="Genie Kind"/>
+    <arrayval field="usrArray" index="0" value="Dao"/>
+    <arrayval field="usrArray" index="1" value="Djinni"/>
+    <arrayval field="usrArray" index="2" value="Efreeti"/>
+    <arrayval field="usrArray" index="3" value="Marid"/>
+    <usesource source="5eTCoE"/>
+    <tag group="ClsAllowSp" tag="spPlanGrow" name="Plant Growth" abbrev="Plant Growth"/>
+    <tag group="ClsAllowSp" tag="spSeeming" name="Seeming" abbrev="Seeming"/>
+    <tag group="ClsAllowSp" tag="spSleep" name="Sleep" abbrev="Sleep"/>
+    <tag group="ClsAllowSp" tag="sp5CPhantF" name="Phantasmal Force" abbrev="Phantasmal Force"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron" abbrev="Warlock Otherworldly Patron"/>
+    <tag group="ClsAllowSp" tag="spBlink" name="Blink" abbrev="Blink"/>
+    <tag group="ClsAllowSp" tag="spGreaInvi" name="Greater Invisibility" abbrev="Greater Invisibility"/>
+    <tag group="ClsAllowSp" tag="spCalmEmot" name="Calm Emotions" abbrev="Calm Emotions"/>
+    <tag group="ClsAllowSp" tag="spDomiBeas" name="Dominate Beast" abbrev="Dominate Beast"/>
+    <tag group="ClsAllowSp" tag="spDomiPers" name="Dominate Person" abbrev="Dominate Person"/>
+    <tag group="ClsAllowSp" tag="spFaerFire" name="Faerie Fire" abbrev="Faerie Fire"/>
+    <bootstrap thing="c5CWlkEleGft">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkSncVsl">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkLmtWsh">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkGenVsl">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkGnWrth">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkBtlRsp">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001" index="2"><![CDATA[  doneif (hero.tagcount[Classes.Warlock] < 16)
+    foreach pick in hero where "thingid.cWlkMysArc"
+      if (eachpick.field[xIndex].value >= 4) then
+        eachpick.field[usrCandid1].text = "(component.BaseSpell & sClass.cHelpWlk & sLevel.9) | thingid.spWish"
+      endif
+    nexteach]]></eval>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].assign[ClsAllowSp.spDeteEvil]
+      perform linkage[table].assign[ClsAllowSp.sp5CPhantF]
+      perform linkage[table].assign[ClsAllowSp.spCreaFood]
+      perform linkage[table].assign[ClsAllowSp.spPhanKill]
+      perform linkage[table].assign[ClsAllowSp.spCreation]
+
+    if (field[usrIndex].value = 0) then
+      perform linkage[table].assign[ClsAllowSp.spSanctuar]
+      perform linkage[table].assign[ClsAllowSp.spSpikGrow]
+      perform linkage[table].assign[ClsAllowSp.spMeldSton]
+      perform linkage[table].assign[ClsAllowSp.spStonShap]
+      perform linkage[table].assign[ClsAllowSp.spWallSton]
+    elseif (field[usrIndex].value = 1) then
+      perform linkage[table].assign[ClsAllowSp.spThunderw]
+      perform linkage[table].assign[ClsAllowSp.spGustWind]
+      perform linkage[table].assign[ClsAllowSp.spWindWall]
+      perform linkage[table].assign[ClsAllowSp.spGreaInvi]
+      perform linkage[table].assign[ClsAllowSp.spSeeming]
+    elseif (field[usrIndex].value = 2) then
+      perform linkage[table].assign[ClsAllowSp.spBurnHand]
+      perform linkage[table].assign[ClsAllowSp.spScorRay]
+      perform linkage[table].assign[ClsAllowSp.spFireball]
+      perform linkage[table].assign[ClsAllowSp.spFireShie]
+      perform linkage[table].assign[ClsAllowSp.spFlamStri]
+    elseif (field[usrIndex].value = 3) then
+      perform linkage[table].assign[ClsAllowSp.spFogClou]
+      perform linkage[table].assign[ClsAllowSp.spBlur]
+      perform linkage[table].assign[ClsAllowSp.spSleeStor]
+      perform linkage[table].assign[ClsAllowSp.spContWate]
+      perform linkage[table].assign[ClsAllowSp.spConeCold]
+    endif</eval>
+    </thing>
+  <thing id="c5CWlkEleGft" name="Elemental Gift" description="You now have resistance to a partuclar type of damage, based on your genie patron: bludgeoning (dao), thunder (djinni), fire (efreeti), or cold (marid).\n\nAlso, you can use a bonus action to grant yourself a flying speed (with hovering) of 30 feet for 10 minutes. You can use this feature a number of times equaling your proficiency bonus, and regain all spent uses of it when you complete a long rest." compset="ClSpecial" summary="Gain damage resistance from your patron and bonus action to fly.">
+    <fieldval field="actName" value="Flying Active (10 minutes)"/>
+    <fieldval field="abDuration" value="10"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abDuration" tag="Minute"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Helper" tag="Hover"/>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="5000"><![CDATA[    doneif (tagis[Helper.Disable] <> 0)
+    doneif (tagis[Helper.ShowSpec] = 0)
+
+    perform hero.childfound[c5CWlkGenie].setfocus
+
+    if (focus.field[usrIndex].value = 0) then
+       perform hero.assign[DamageRes.dtBludgeon]
+    elseif (focus.field[usrIndex].value = 1) then
+       perform hero.assign[DamageRes.dtThunder]
+    elseif (focus.field[usrIndex].value = 2) then
+       perform hero.assign[DamageRes.dtFire]
+    elseif (focus.field[usrIndex].value = 3) then
+       perform hero.assign[DamageRes.dtCold]
+    endif
+
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="c5CWlkSncVsl" name="Sanctuary Vessel" description="When you use the Bottled Respite feature to enter your Genie&apos;s Vessel, you can now choose up to five willing creatures visible to and within 30 feet of you. The chosen creatures are pulled into the vessel with you.\n\nYou can use a bonus action to eject any creatures from the vessel. Everyone is ejected if you leave, if you die, or if the vessel is destroyed.\n\nAdditionally, anyone, including yourself, who stays in the vessel for at least 10 minutes gains the benefits of completing a short rest. You all can add your proficiency bonus to the number of hit points they regain by spending Hit Dice as part of a short rest there." compset="ClSpecial" summary="Bring others into your Genie&apos;s Vessel and quick short rests within.">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="c5CWlkLmtWsh" name="Limited Wish" description="You can use an action to speak your desire for a small wish to your patron into your Genie&apos;s Vessel. The wish is for the efffect of a 6th-level or lower spell with a casting time of 1 action. The spell can be from any class&apos;s spell list, and you do not need to meet the requirements of the spell, including components with a cost. The spell takes effect as part of the action to wish for it.\n\nOnce you&apos;ve used this action, you cannot do so again until you complete 1d4 long rests." compset="ClSpecial" summary="Ask your patron to grant you a 6th-level or lower spell every 1d4 long rests.">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Usage" tag="Usage5Cd4D"/>
+    </thing>
+  <thing id="c5CWlkGenVsl" name="Genie&apos;s Vessel" description="Your patron grants you a Tiny object to serve as a vessel of its power. You can use it as a spellcasting focus for your warlock spells. You can decide its appearance or select it at random. While holding the vessel, you can use it for both Bottled Respite and Genie&apos;s Wrath.\n\nThe vessel&apos;s AC equals your spell save DC. Its hit points are equal to your warlock level plus your proficiency bonus, and it is immune to poison and psychic damage.\n\nIf the vessel is destroyed or you lose it, you can perform a 1-hour ceremony to gain a replacement from your patron. The ceremony can be done during a short or long rest, and any existing previous vessel is destroyed. If you die, the vessel vanishes in an eruption of elemental power." compset="ClSpecial" summary="Your genie has granted you a vessel of its power.">
+    <arrayval field="usrArray" index="0" value="Oil lamp"/>
+    <arrayval field="usrArray" index="1" value="Urn"/>
+    <arrayval field="usrArray" index="2" value="Ring"/>
+    <arrayval field="usrArray" index="3" value="Bottle"/>
+    <arrayval field="usrArray" index="4" value="Statuette"/>
+    <arrayval field="usrArray" index="5" value="Lantern"/>
+    <bootstrap thing="g5CGenVsl"></bootstrap>
+    <eval phase="Final" priority="11000"><![CDATA[
+var iHP as number
+
+iHP = hero.childfound[ProfBonus].field[tProfBonus].value + hero.tagcount[Classes.Warlock]
+
+field[livename].text = field[name].text & " (AC " & hero.childfound[cHelpWlk].field[cSplSaveDC].value & ", HP " & iHP & ")"]]></eval>
+    </thing>
+  <thing id="c5CWlkBtlRsp" name="Bottled Respite" description="While touching your Genie&apos;s Vessel, you can use an action to magically disappear and enter the vessel. It remains in the space you left. The interior is an interdimensional space that is a 20-foot-radius cylinder. The ceiling is 20 feet high, and it resembles the vessel. There are cushions and low tables, and the atmosphere inside is comfortable. You can still hear whatever&apos;s happening outside, as if you were still in the space the vessel occupies.\n\nYou can stay inside the vessel for a number of hours equal to double your proficiency bonus. You can use a bonus action to exit the vessel, reappearing in an open space closest to the vessel. You also leave if the vessel is destroyed or if you die. Any objects left in the vessel remain there until removed. If the vessel is destroyed, any objects still in it also harmlessly appear in open spaces closest to the vessel&apos;s former space. Once you&apos;ve entered the vessel, you must complete a long rest before entering it again." compset="ClSpecial" summary="You can enter your Genie&apos;s Vessel.">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="c5CWlkGnWrth" name="Genie&apos;s Wrath" description="Once during each of your turns, while touching your Genie&apos;s Vessel, when you hit with an attack roll, you can deal extra damage to the target equaling your proficiency bonus. The damage type is determined by your patron: bludgeoning (dao), thunder (djinni), fire (efreeti), or cold (marid)." compset="ClSpecial" summary="You can deal extra damage on a hit equal to your proficiency bonus.">
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr"><![CDATA[    doneif (tagis[Helper.Disable] <> 0)
+    doneif (tagis[Helper.ShowSpec] = 0)
+
+    var iDam as string
+
+    perform hero.childfound[c5CWlkGenie].setfocus
+
+    if (focus.field[usrIndex].value = 0) then
+       iDam = "bludgeoning"
+    elseif (focus.field[usrIndex].value = 1) then
+       iDam = "thunder"
+    elseif (focus.field[usrIndex].value = 2) then
+       iDam = "fire"
+    elseif (focus.field[usrIndex].value = 3) then
+       iDam = "cold"
+    endif
+
+    field[abText].text = hero.childfound[ProfBonus].field[tProfBonus].value & " " & iDam & ", 1/turn"]]></eval>
+    </thing>
+  <thing id="g5CGenVsl" name="Genie&apos;s Vessel" description="Your patron grants you a Tiny object to serve as a vessel of its power. You can use it as a spellcasting focus for your warlock spells. You can decide its appearance or select it at random. While holding the vessel, you can use it for both Bottled Respite and Genie&apos;s Wrath.\n\nThe vessel&apos;s AC equals your spell save DC. Its hit points are equal to your warlock level plus your proficiency bonus, and it is immune to poison and psychic damage.\n\nIf the vessel is destroyed or you lose it, you can perform a 1-hour ceremony to gain a replacement from your patron. The ceremony can be done during a short or long rest, and any existing previous vessel is destroyed. If you die, the vessel vanishes in an eruption of elemental power." compset="Gear">
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Custom" tag="5CEbArcFoc"/>
+    <eval phase="Render" priority="999999">field[livename].text = hero.childfound[c5CWlkGenVsl].field[livename].text</eval>
+    </thing>
+  </document>
