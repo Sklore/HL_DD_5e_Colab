@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
-  <thing id="cfg5C1WthWrd" name="One wit h the Word" compset="Configure" uniqueness="unique">
+  <thing id="cfg5C1WthWrd" name="One with the Word" compset="Configure" uniqueness="unique">
     <tag group="Helper" tag="SpCountLev"/>
     <tag group="Helper" tag="SplMayExcd"/>
     <eval phase="Final" priority="50000" index="3"><![CDATA[    doneif (hero.childfound[c5CWizOneWth].field[actUser].value = 0)
@@ -2634,5 +2634,419 @@ field[livename].text = field[name].text & " (AC " & hero.childfound[cHelpWlk].fi
     <tag group="GearType" tag="gtWondrous"/>
     <tag group="Custom" tag="5CEbArcFoc"/>
     <eval phase="Render" priority="999999">field[livename].text = hero.childfound[c5CWlkGenVsl].field[livename].text</eval>
+    </thing>
+  <thing id="c5CFtrRuneKni" name="Rune Knight" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="5CFtrRunes" name="Fighter Rune Knight Runes"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <bootstrap thing="c5CFtrMstRns">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrRnBns">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrRnGiMi">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrRunCrv">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrRncShl">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrGrtStr">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrRncJug">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="9000"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+
+       linkage[table].field[cSpec4thNm].text = "Runes"
+       linkage[table].field[cSpec4thSi].text = "Rune"
+
+       linkage[table].field[cCustQuTot].arrayvalue[2] += 2
+       linkage[table].field[cCustQuTot].arrayvalue[6] += 3
+       linkage[table].field[cCustQuTot].arrayvalue[9] += 4
+       linkage[table].field[cCustQuTot].arrayvalue[14] += 5]]></eval>
+    <eval phase="Validation" priority="1" index="2"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+
+       hero.childfound[cHelpFtr].field[cCstS4Expr].text &= " & abCategory.5CFtrRunes"]]></eval>
+    </thing>
+  <thing id="c5CFtrRunCrv" name="Rune Carver" description="You learn two runes of your choice. Each time you gain a level in this class, you can replace a rune you know with a different one. You learn additional runes at levels 7, 10, and 15.\n\nWhen you complete a long rest, you can touch a number of objects equal to the total number of runes you know and insribe a different rune on each object. Such an object must be a weapon, armor, a shield, jewelry, or someother item you can wear or hold in your hand. The rune remains on that object until you complete a long rest. An object can only have one inscribed rune at a time. \n\nIf a rune requires a saving throw, your Rune Magic save DC is 8 + your proficiency bonus + your Constitution modifier." compset="ClSpecial" summary="Imbue objects with runic power.">
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="PostAttr" priority="5000"><![CDATA[var iDC as number
+
+iDC = #attrbonus1[aCON]
+iDC += hero.childfound[ProfBonus].field[tProfBonus].value
+iDC += 8
+
+field[abText].text = "Save DC " & iDC]]></eval>
+    </thing>
+  <thing id="c5CFtrRnBns" name="Bonus Proficiencies" description="You gain proficiency smith&apos;s tools, and learn the Giant language." compset="ClSpecial" summary="Learn smith&apos;s tools and the Giant language.">
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <bootstrap thing="gTooSmith"></bootstrap>
+    <bootstrap thing="lGiant"></bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+
+      perform hero.assign[ProfTool.gTooSmith]
+      perform hero.child[gTooSmith].assign[Helper.TrainTool]
+      perform hero.child[gTooSmith].assign[Hide.Tool]
+      perform hero.child[gTooSmith].assign[Proficienc.Tool]]]></eval>
+    </thing>
+  <thing id="c5CFtrRnGiMi" name="Giant&apos;s Might" description="As a bonus action, you imbue yourself with the might of a giant, magically gaining these benefits for 1 minute:\n\n• If you are not already Large, you become so. If you don&apos;t have enough room to become Large, your size does not change.\n• You have advantage on ability checks and saving throws based on Strength\n• Once on each of your turns, one of your weapon or unarmed attacks can deal an extra 1d6 damage to a hit target.\n\nYou can use this feature a number of times equal to your proficiency bonus, and you regain all spent uses of it when you complete a long rest." compset="ClSpecial" summary="Grow larger for 1 minute, gaining advantage on Strength and extra damage.">
+    <fieldval field="actName" value="Active (1 minute)"/>
+    <fieldval field="usrLabelAr" value="Size"/>
+    <fieldval field="abDuration" value="1"/>
+    <arrayval field="usrArray" index="0" value="Normal"/>
+    <arrayval field="usrArray" index="1" value="Large"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="User" tag="Tracker"/>
+    <eval phase="First" priority="20000" index="4"><![CDATA[~increase our size if Large or Huge are selected
+
+     doneif (field[abilActive].value = 0)
+
+     if (field[usrIndex].value = 1) then
+        if (herofield[tSize].value < 1) then
+           herofield[tSize].value = 1
+           field[abValue].value = 1
+        endif
+     elseif (field[usrIndex].value = 2) then
+        if (herofield[tSize].value < 2) then
+           herofield[tSize].value = 2
+           field[abValue].value = 2
+        endif       
+     endif]]></eval>
+    <eval phase="PostAttr" index="2"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+     field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    <eval phase="Final" index="3"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (tagis[Helper.ShowSpec] = 0)
+     doneif (field[abilActive].value = 0)
+
+     var iDam as string
+     if (hero.tagcount[Classes.Fighter] >= 18) then
+        iDam = "1d10"
+     elseif (hero.tagcount[Classes.Fighter] >= 10) then
+        iDam = "1d8"
+     else
+        iDam = "1d6"
+     endif 
+     field[abText].text = "+" & iDam & " damage 1/turn"
+
+     #situational[hero.child[svSTR], "Advantage", field[thingname].text]
+     #situational[hero.child[skAthletic], "Advantage", field[thingname].text]]]></eval>
+    <eval phase="Final" priority="11000" index="5"><![CDATA[     doneif (field[abilActive].value = 0)
+     doneif (field[usrIndex].value = 0)
+
+~HeroLab automatically increases reach when size increases; this is not 
+~part of the 5e rules. So we have to reduce our reach back to normal when
+~this feature increases size
+
+~we set abValue to indicate that we increased the size with this feature
+~so we call to that to make sure it was us; otherwise we leave reach alone
+
+~if made large by us (abValue=1), reduce the reach    
+     if (field[abValue].value = 1) then
+        herofield[tReach].value -= 5
+        endif
+
+~if made huge by us (abValue=2), reduce the reach
+     if (field[abValue].value = 2) then
+        herofield[tReach].value -= 5
+        endif
+
+~if we have Huge selected (usrIndex=2) but were already Huge (abValue<>2)
+~ add 5 to reach. This is a technicality, but I'm going to adhere to the ~letter of the law of the feature
+
+     doneif (field[abValue].value = 2)
+     doneif (field[usrIndex].value <> 2)
+     
+     herofield[tReach].value += 5]]></eval>
+    <eval phase="Final" index="6"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (tagis[Helper.ShowSpec] = 0)
+
+~if we're level 18 or higher, add Huge as an option
+
+     if (hero.tagcount[Classes.Fighter] >= 18) then
+        field[usrArray].arraytext[2] = "Huge"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CFtrCldRn" name="Cloud Rune" description="While wearing or carrying an object with this rune, your Dexterity (Sleight of Hand) and Charisma (Deception) checks are made with advantage.\n\nAdditionally, when you or a creature visible to and within 30 feet of you is hit by an attack roll, you can take a reaction to invoke the rune, choosing another creature within 30 feet of you other than the attacker. The chosen creature becomes the new target of the attack, using the same roll. The range of the attack does not matter in this transfer. Once used, you cannot invoke this rune again until you complete a short or long rest." compset="CustomSpec" summary="Advantage on Sleight of Hand and Deception, plus reaction to shift damage from ally." uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.MyGear &amp; !thingid.gGround &amp;!Helper.Natural &amp; !thingid.gMoney &amp; !Custom.5CFtrRune"/>
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Worn or Carried"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <tag group="abCategory" tag="5CFtrRunes"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="Custom" tag="5CFtrRune" name="Rune Knight Runed Object"/>
+    <eval phase="Render" priority="50000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
+
+perform field[usrChosen1].chosen.setfocus
+
+focus.field[livename].text = focus.field[livename].text & " (" & field[name].text & ")"
+focus.field[sbName].text = focus.field[livename].text
+
+perform focus.assign[Custom.5CFtrRune]]]></eval>
+    <eval phase="Final" priority="1000" index="2"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[abilActive].value = 0)
+
+     #situational[hero.child[skDecept], "Advantage", field[thingname].text]
+     #situational[hero.child[skSleight], "Advantage", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="c5CFtrRncShl" name="Runic Shield" description="Whenever another creature you can see within 60 feet of you is hit by an attack roll, you can use a reaction to invoke the magic of your runes to protect them. The attacker must reroll their d20 and use the new roll.\n\nYou can use this feature a number of times equaling your proficiency bonus, and you regain all spent uses when you complete a long rest." compset="ClSpecial" summary="Force attacker within 60 feet to reroll d20 as a reaction.">
+    <fieldval field="abRange" value="60"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    <eval phase="PostAttr" priority="5000"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+     field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="c5CFtrGrtStr" name="Great Stature" description="Upon gaining this feature, roll 3d4 and increase your height by a number of inches equal to the amount rolled.\n\nAlso, the extra damage from your Giant&apos;s Might feature increases to 1d8." compset="ClSpecial" summary="Giant&apos;s Might damage is now 1d8, height increases 3d4 inches.">
+    <tag group="Helper" tag="SpecUp"/>
+    </thing>
+  <thing id="c5CFtrMstRns" name="Master of Runes" description="You can invoke each of your Rune Carver runes twice per short or long rest, instead of just once." compset="ClSpecial" summary="Your runes can be used twice per short or long rest now.">
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+     doneif (hero.tagcount[Classes.Fighter] < 15)
+
+     foreach pick in hero from BaseCustSp where "abCategory.5CFtrRunes"
+        eachpick.field[trkMax].value += 1
+        nexteach]]></eval>
+    </thing>
+  <thing id="c5CFtrRncJug" name="Runic Juggernaut" description="The extra damage done with your Giant&apos;s Might feature increases to 1d10. Additionally, you can now choose to become Huge when using that feature. If you do so, your reach increases by 5 feet." compset="ClSpecial" summary="Giant&apos;s Might damage is now 1d10, can become Huge with +5 reach.">
+    <tag group="Helper" tag="SpecUp"/>
+    </thing>
+  <thing id="c5CFtrFirRn" name="Fire Rune" description="While wearing or carrying an object with this rune, double your proficiency bonus for any ability checks you make using your proficiency with a tool.\n\nAdditionally, when you hit a creature with an attack using a weapon, you can invoke the rune to create flaming shackles. The target suffers and additional 2d6 fire damage, and it must make a Strength save. On a failure, it&apos;s restrained by the shackles for 1 minute. While restrained in this way, it takes 2d6 fire damage at the beginning of each of its turns, but can repeat the save at the end of each of its turns. On a successful save, the shackles are banished. Once used, you cannot invoke this rune again until you complete a short or long rest." compset="CustomSpec" summary="Double tool proficiency and can chain attacked enemy with fire." uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.MyGear &amp; !thingid.gGround &amp;!Helper.Natural &amp; !thingid.gMoney &amp; !Custom.5CFtrRune"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Worn or Carried"/>
+    <fieldval field="abText" value="2d6 fire"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="abCategory" tag="5CFtrRunes"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Custom" tag="5CFtrRune" name="Rune Knight Runed Object"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Render" priority="50000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
+
+perform field[usrChosen1].chosen.setfocus
+
+focus.field[livename].text = focus.field[livename].text & " (" & field[name].text & ")"
+focus.field[sbName].text = focus.field[livename].text
+
+perform focus.assign[Custom.5CFtrRune]]]></eval>
+    <eval phase="Final" priority="1000" index="2"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[abilActive].value = 0)
+
+     var iTool as string
+
+     foreach pick in hero where "Proficienc.Tool"
+        iTool = eachpick.tagids[thingid.?,""]
+        iTool = replace(iTool,"thingid","ProfTooDbl",1)
+        perform hero.assignstr[iTool]
+        nexteach]]></eval>
+    </thing>
+  <thing id="c5CFtrFrsRn" name="Frost Rune" description="While wearing or carrying an object with this rune, your Wisdom (Animal Handling) and Charisma (Intimidation) checks are made with advantage.\n\nAdditionally, you can use a bonus action to invoke the rune. For 10 minutes, you have a +2 to all Strength and Constitution saves and ability checks. Once used, you cannot invoke this rune again until you complete a short or long rest." compset="CustomSpec" summary="Advantage on Animal Handling and Intimidation, plus bonus action for it on STR and CON." uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.MyGear &amp; !thingid.gGround &amp;!Helper.Natural &amp; !thingid.gMoney &amp; !Custom.5CFtrRune"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Worn or Carried"/>
+    <fieldval field="actName2" value="Active (10 minutes)"/>
+    <fieldval field="abDuration" value="10"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="abCategory" tag="5CFtrRunes"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Custom" tag="5CFtrRune" name="Rune Knight Runed Object"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <eval phase="Render" priority="50000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
+
+perform field[usrChosen1].chosen.setfocus
+
+focus.field[livename].text = focus.field[livename].text & " (" & field[name].text & ")"
+focus.field[sbName].text = focus.field[livename].text
+
+perform focus.assign[Custom.5CFtrRune]]]></eval>
+    <eval phase="Final" priority="1000" index="2"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[abilActive].value = 0)
+
+     #situational[hero.child[skAnimHand], "Advantage", field[thingname].text]
+     #situational[hero.child[skIntim], "Advantage", field[thingname].text]
+
+     doneif (field[abilAct2].value = 0)
+
+     hero.childfound[svSTR].field[Bonus].value += 2
+     hero.childfound[svCON].field[Bonus].value += 2
+     hero.childfound[skAthletic].field[Bonus].value += 2]]></eval>
+    </thing>
+  <thing id="c5CFtrStnRn" name="Stone Rune" description="While wearing or carrying an object with this rune, your Wisdom (Insight) checks are made with advantage and you have 120 feet of darkvision.\n\nAdditionally, when a creature visible to you ends its turn within 30 feet of you, you can take a reaction to invoke the rune. The creature must make a Wisdom save. On a failure, the creature becomes charmed by you for 1 minute. While so charmed, it has a speed of 0 and is incapacitated in a dreaming stupor. It can repeat the save at the end of each off its turns, ending the effect with a successful save. Once used, you cannot invoke this rune again until you complete a short or long rest." compset="CustomSpec" summary="Advantage on Insight, 120 ft. darkvision, and reaction to charm nearby creature." uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.MyGear &amp; !thingid.gGround &amp;!Helper.Natural &amp; !thingid.gMoney &amp; !Custom.5CFtrRune"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Worn or Carried"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="abCategory" tag="5CFtrRunes"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Custom" tag="5CFtrRune" name="Rune Knight Runed Object"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <eval phase="Final" priority="1000" index="2"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[abilActive].value = 0)
+
+     #situational[hero.child[skInsight], "Advantage", field[thingname].text]]]></eval>
+    <eval phase="Render" priority="50000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
+
+perform field[usrChosen1].chosen.setfocus
+
+focus.field[livename].text = focus.field[livename].text & " (" & field[name].text & ")"
+focus.field[sbName].text = focus.field[livename].text
+
+perform focus.assign[Custom.5CFtrRune]]]></eval>
+    </thing>
+  <thing id="c5CFtrHilRn" name="Hill Rune" description="While wearing or carrying an object with this rune, your saves versus being poisoned are made with advantage and you are resistant to poison damage.\n\nAdditionally, you can use a bonus action to invoke this rune, granting yourself resistance to bludgeoning, piercing, and slashing damage for 1 minute. Once used, you cannot invoke this rune again until you complete a short or long rest." compset="CustomSpec" summary="Advantage on saves and resistance versus poison, and bonus action to resist bludgeoning, piercing, and slashing." uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.MyGear &amp; !thingid.gGround &amp;!Helper.Natural &amp; !thingid.gMoney &amp; !Custom.5CFtrRune"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Worn or Carried"/>
+    <fieldval field="actName2" value="Active (1 minute)"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="abCategory" tag="5CFtrRunes"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Custom" tag="5CFtrRune" name="Rune Knight Runed Object"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <eval phase="Render" priority="50000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
+
+perform field[usrChosen1].chosen.setfocus
+
+focus.field[livename].text = focus.field[livename].text & " (" & field[name].text & ")"
+focus.field[sbName].text = focus.field[livename].text
+
+perform focus.assign[Custom.5CFtrRune]]]></eval>
+    <eval phase="Final" priority="1000" index="2"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[abilActive].value = 0)
+
+     perform hero.assign[DamageRes.dtPoison]
+     #situational[hero.child[svAll], "Advantage versus poison", field[thingname].text]
+
+     doneif (field[abilAct2].value = 0)
+
+     perform hero.assign[DamComRes.dcBluPiSla]]]></eval>
+    <exprreq message="Requires fighter level 7"><![CDATA[#levelcount[Fighter] >= 7]]></exprreq>
+    </thing>
+  <thing id="c5CFtrStrmR" name="Storm Rune" description="While wearing or carrying an object with this rune, your Intelligence (Arcana) checks are made with advantage and, so long as you&apos;re not incapacitated, you cannot be surprised.\n\nAdditionally, you can use a bonus action to invoke this rune, entering a prophetic state for 1 minute or until you become incapacitated. While in this state, whenever you or another creature visible to and within 60 feet of you makes an attack roll, saving throw, or ability check, you can take a reaction to grant the roll advantage or disadvantage. Once used, you cannot invoke this rune again until you complete a short or long rest." compset="CustomSpec" summary="Advantage on Arcana,  plus bonus action to grant advantage or disadvantage on a roll." uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.MyGear &amp; !thingid.gGround &amp;!Helper.Natural &amp; !thingid.gMoney &amp; !Custom.5CFtrRune"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Worn or Carried"/>
+    <fieldval field="actName2" value="Active (1 minute)"/>
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="60"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="abCategory" tag="5CFtrRunes"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Custom" tag="5CFtrRune" name="Rune Knight Runed Object"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abRange" tag="Feet"/>
+    <eval phase="Render" priority="50000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
+
+perform field[usrChosen1].chosen.setfocus
+
+focus.field[livename].text = focus.field[livename].text & " (" & field[name].text & ")"
+focus.field[sbName].text = focus.field[livename].text
+
+perform focus.assign[Custom.5CFtrRune]]]></eval>
+    <eval phase="Final" priority="1000" index="2"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[abilActive].value = 0)
+
+     perform hero.assign[DamageRes.dtPoison]
+     #situational[hero.child[skArcana], "Advantage", field[thingname].text]
+
+     doneif (field[abilAct2].value = 0)
+
+     perform assign[LvNamePar.IncRange]
+     perform assign[LvNamePar.IncDurati]]]></eval>
+    <exprreq message="Requires fighter level 7"><![CDATA[#levelcount[Fighter] >= 7]]></exprreq>
     </thing>
   </document>
