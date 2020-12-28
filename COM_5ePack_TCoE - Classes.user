@@ -2640,9 +2640,7 @@ field[livename].text = field[name].text & " (AC " & hero.childfound[cHelpWlk].fi
     <tag group="Helper" tag="Secondary"/>
     <tag group="abCategory" tag="5CFtrRunes" name="Fighter Rune Knight Runes"/>
     <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
-    <bootstrap thing="c5CFtrMstRns">
-      <autotag group="ClSpecWhen" tag="15"/>
-      </bootstrap>
+    <tag group="Helper" tag="SpecUp"/>
     <bootstrap thing="c5CFtrRnBns">
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
@@ -2661,6 +2659,12 @@ field[livename].text = field[name].text & " (AC " & hero.childfound[cHelpWlk].fi
     <bootstrap thing="c5CFtrRncJug">
       <autotag group="ClSpecWhen" tag="18"/>
       </bootstrap>
+    <bootstrap thing="c5CFtrMstRns">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <eval phase="Validation" priority="1" index="2"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+
+       hero.childfound[cHelpFtr].field[cCstS4Expr].text &= " & abCategory.5CFtrRunes"]]></eval>
     <eval phase="PostLevel" priority="9000"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
 
        linkage[table].field[cSpec4thNm].text = "Runes"
@@ -2670,9 +2674,6 @@ field[livename].text = field[name].text & " (AC " & hero.childfound[cHelpWlk].fi
        linkage[table].field[cCustQuTot].arrayvalue[6] += 3
        linkage[table].field[cCustQuTot].arrayvalue[9] += 4
        linkage[table].field[cCustQuTot].arrayvalue[14] += 5]]></eval>
-    <eval phase="Validation" priority="1" index="2"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
-
-       hero.childfound[cHelpFtr].field[cCstS4Expr].text &= " & abCategory.5CFtrRunes"]]></eval>
     </thing>
   <thing id="c5CFtrRunCrv" name="Rune Carver" description="You learn two runes of your choice. Each time you gain a level in this class, you can replace a rune you know with a different one. You learn additional runes at levels 7, 10, and 15.\n\nWhen you complete a long rest, you can touch a number of objects equal to the total number of runes you know and insribe a different rune on each object. Such an object must be a weapon, armor, a shield, jewelry, or someother item you can wear or hold in your hand. The rune remains on that object until you complete a long rest. An object can only have one inscribed rune at a time. \n\nIf a rune requires a saving throw, your Rune Magic save DC is 8 + your proficiency bonus + your Constitution modifier." compset="ClSpecial" summary="Imbue objects with runic power.">
     <tag group="StandardDC" tag="aCON"/>
@@ -3049,4 +3050,993 @@ perform focus.assign[Custom.5CFtrRune]]]></eval>
      perform assign[LvNamePar.IncDurati]]]></eval>
     <exprreq message="Requires fighter level 7"><![CDATA[#levelcount[Fighter] >= 7]]></exprreq>
     </thing>
+  <thing id="c5CMnkAstSlf" name="Way of the Astral Self" compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes Trio of Subclasses</comment>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpMnk" name="Monk" abbrev="Monk"/>
+    <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition" abbrev="Monk Monastic Tradition"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CMnkArmAst">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkVisAst">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkBdyAst">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkAwkSlf">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CMnkAwkSlf" name="Awakened Astral Self" description="You&apos;ve fully connected to your astral self. You can use a bonus action and spend 5 ki points to summon your astral self&apos;s arms, visage, and body, all fully awakened for 10 minutes. The awakening ends early on your death or your incapacitation. While awakened, you gain these benefits:\n\n{b}{i}Armor of the Spirit.{/i}{/b} Your Armor Class increases by 2.\n\n{b}{i}Astral Barrage.{/i}{/b} Whenever you attack twice with your Extra Attack feature, you can instead attack three times so long as all these attacks are made with your astral arms." compset="ClSpecial" summary="5 Ki for bonus action to gain +2 AC and 3 Arms attacks for 10 minutes.">
+    <fieldval field="actName" value="Active (5 ki, 10 minutes)"/>
+    <fieldval field="abText" value="5 ki points"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.child[ArmorClass].field[Bonus].value += 2]]></eval>
+    </thing>
+  <thing id="c5CMnkArmAst" name="Arms of the Astral Self" description="You can use a bonus action to spend 1 ki point to summon the arms of your astral self. When this happens, every creature of your choice that is visible to and within 10 feet of you must make a Dexterity save. On a failure, such a creature takes force damage equal to two rolls of your Martial Arts die.\n\nFor 10 minutes, these astral arms either hover from your shoulders or surround your arms (your choice.) They vanish early if you die or become incapacitated. For their duration, you gain these benefits:\n\n• You can use your Wisdom modifier in place of Strength for your Strength checks and saving throws.\n• The arms can be used to make unarmed strikes.\n• Unarmed strikes made on your turn with the arms have an extra 5 feet to their range.\n• Unarmed strikes made with the arms can use your Wisdom modifier in place of Strength or Dexterity for their attack and damage rolls, and the damage type becomes force." compset="ClSpecial" summary="1 ki point bonus action to summon astral arms for unarmed attacks using Wisdom.">
+    <fieldval field="abText" value="1 ki point, bonus action"/>
+    <fieldval field="actName" value="Active (1 ki, 10 minutes)"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="PostAttr" priority="5000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var iAct as number
+      iAct = field[abilActive].value + hero.childfound[c5CMnkAwkSlf].field[abilActive].value
+      doneif (iAct = 0)
+
+      hero.childfound[svSTR].field[svAttr].value = maximum(hero.childfound[svSTR].field[svAttr].value,hero.childfound[aWIS].field[aModBonus].value)
+      hero.childfound[skAthletic].field[skAttrBon].value = maximum(hero.childfound[skAthletic].field[skAttrBon].value,hero.childfound[aWIS].field[aModBonus].value)
+
+      foreach pick in hero from BaseNatWep where "thingid.wUnarmed"
+         eachpick.field[wReach].value += 5
+         perform eachpick.assign[DamageOpt.aWIS]
+         perform eachpick.assign[MelAttOpt.aWIS]
+         nexteach]]></eval>
+    </thing>
+  <thing id="c5CMnkVisAst" name="Visage of the Astral Self" description="You can use a bonus action to summon the visage of your astral self with 1 ki point for 10 minutes. This can be the same bonus action that activates your Arms of the Astral Self. It ends early if you die or become incapacitated.\n\nYou determine the appearance of the visage, and it covers your face like a helmet or mask. While it is present, it grants you these benefits:\n\n{b}{i}Astral Sight.{/i}{/b} You can see normally in both nonmagical and magical darkness out to 120 feet.\n\n{b}{i}Wisdom of the Spirit.{/i}{/b} Your Wisdom (Insight) and Charisma (Intimidation) checks have advantage.\n\n{b}{i}Word of the Spirit.{/i}{/b} You can direct your spoken words to be hearable only to a single creature of your choice, visible to and within 60 feet of you. Alternatively, you can make your voice loud enough for all creatures within 600 feet to hear." compset="ClSpecial" summary="1 ki point bonus action to summon astral visage.">
+    <fieldval field="abText" value="1 ki point, bonus action"/>
+    <fieldval field="actName" value="Active (1 ki, 10 minutes)"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="200"><![CDATA[fieldval:abValue <> 0]]></containerreq>
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <eval phase="First" index="2"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var iAct as number
+      iAct = field[abilActive].value + hero.childfound[c5CMnkAwkSlf].field[abilActive].value
+      doneif (iAct = 0)
+
+      field[abValue].value = 1]]></eval>
+    <eval phase="PostAttr" priority="5000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var iAct as number
+      iAct = field[abilActive].value + hero.childfound[c5CMnkAwkSlf].field[abilActive].value
+      doneif (iAct = 0)
+
+     #situational[hero.child[skIntim], "Advantage", field[thingname].text]
+     #situational[hero.child[skInsight], "Advantage", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="c5CMnkBdyAst" name="Body of the Astral Self" description="While both your astral arms and astral visage are present, you can cause the body of your astral self to appear, without any additional action required. The spectral body covers your physical body similar to armor, and it connects to the arms and visage. You determine what it looks like.\n\nWhile the astral body is present, it grants you these benefits:\n\n{b}{i}Deflect Energy.{/i}{/b} You can use a reaction to deflect acid, cold, fire, force, lightning, or thunder damage when you take it. Doing so causes the damage to be reduced by 1d10 + your Wisdom modifier (a minimum of 1 damage reduced).\n\n{b}{i}Empowered Arms.{/i}{/b} Once on each of your turns when you hit a target with your astral arms, you can deal extra damage to the target equaling one of your Martial Arts dice." compset="ClSpecial" summary="Summon body of astral self for damage deflection and extra damage.">
+    <fieldval field="actName" value="Active"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var iAct as number
+      if (hero.childfound[c5CMnkAwkSlf].field[abilActive].value <> 0) then
+         iAct += 1
+         endif
+
+      var iAct2 as number
+
+      iAct2 = field[abilActive].value + hero.childfound[c5CMnkArmAst].field[abilActive].value + hero.childfound[c5CMnkVisAst].field[abilActive].value
+      if (iAct2 = 3) then 
+        iAct += 1
+        endif
+
+      doneif (iAct = 0)
+
+      var iSign as string
+      if (hero.childfound[aWIS].field[aModBonus].value >= 0) then
+         iSign = "+"
+         endif
+
+      field[abText].text = "deflect 1d10" & iSign & hero.childfound[aWIS].field[aModBonus].value & ", extra " & hero.childfound[cMnkMarArt].field[abText].text & " damage 1/turn"]]></eval>
+    </thing>
+  <thing id="c5CFtrPsiDie" name="Psionic Energy Dice" description="The psionic energy you have within yourself is represented by your Psionic Energy dice, each of which are a d6. You have a number of these equaling double your proficiency bonus, and they fuel your psionic powers. Some of these powers spend dice. If you have no dice left to spend, you cannot use such a power. You regain all spent dice when you complete  a long rest. You can also use a bonus action to restore one die, but you cannot do so again until you complete a short or long rest.\n\nThe size of your Psionic Energy dice increases to d8 at 5th level, d10 at 11th level, and d12 at 17th level." compset="CustomSpec" uniqueness="unique">
+    <tag group="LvNamePar" tag="AppText2"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final"><![CDATA[var iNum as number
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value * 2
+
+if (hero.tagcount[Classes.Fighter] >= 17) then
+   field[abText].text = "1d12"
+elseif (hero.tagcount[Classes.Fighter] >= 11) then
+   field[abText].text = "1d10"
+elseif (hero.tagcount[Classes.Fighter] >= 5) then
+   field[abText].text = "1d8"
+else
+   field[abText].text = "1d6"
+endif
+
+if (hero.childlives[c5CRogSoulKn] <> 0) then
+   field[abText].text &= ","
+   field[abText2].text = "Psi Warrior"
+   endif]]></eval>
+    </thing>
+  <thing id="c5CFtrPsiWar" name="Psi Warrior" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eTCoE" parent="p5eBooks" name="Tasha&apos;s Cauldron of Everything"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="c5CFtrGrdMnd">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrTelMst">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrBlwFrc">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrPsiPwr">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CFtrTelAdp">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CFtrPsiPwr" name="Psionic Power" description="The psionic energy you have within yourself is represented by your Psionic Energy dice, each of which are a d6. You have a number of these equaling double your proficiency bonus, and they fuel your psionic powers. Some of these powers spend dice. If you have no dice left to spend, you cannot use such a power. You regain all spent dice when you complete  a long rest. You can also use a bonus action to restore one die, but you cannot do so again until you complete a short or long rest.\n\nThe size of your Psionic Energy dice increases to d8 at 5th level, d10 at 11th level, and d12 at 17th level.\n\n{b}Protective Field.{/b} When you or another creature visible to and within 30 feet of you is damaged, you can use a reaction to expend one Psionic Energy die, rolling it. Reduce the damage taken by the number rolled, plus your Intelligence modifier (a minimum reduction of 1 damage).\n\n{b}Psionic Strike.{/b} Once per each of your turns, immediately after you hit a target within 30 feet of you with an attack and deal damage to it using a weapon, you can spend one of your Psionic Energy dice. Roll it, and deal force damage equal to the number rolled plus your Intelligence modifier.\n\n{b}Telekinetic Movement.{/b} You can use an action to target one loose, Large or smaller object or one willing creature besides yourself, visible to and within 30 feet of you. You move the target up to 30 feet to an open space you can see. Alternatively, if it is a Tiny object, you can move it to or from your hand. Wither way, you can move the target horizontally, vertically, or both. Once you&apos;ve used this action, you cannot do so again until you complete a short or long rest, or spend one Psionic Energy die to use it again." compset="ClSpecial" summary="You have Psionic Energy dice that power your abilities.">
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="c5CFtrPrtFld">
+      <containerreq phase="First" priority="300"><![CDATA[count:Classes.Fighter >= 3]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CFtrPsiDie">
+      <containerreq phase="First" priority="300"><![CDATA[count:Classes.Fighter >= 3]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CFtrPsiStr">
+      <containerreq phase="First" priority="300"><![CDATA[count:Classes.Fighter >= 3]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CFtrTelMov">
+      <containerreq phase="First" priority="300"><![CDATA[count:Classes.Fighter >= 3]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="c5CFtrPrtFld" name="Protective Field" description="When you or another creature visible to and within 30 feet of you is damaged, you can use a reaction to expend one Psionic Energy die, rolling it. Reduce the damage taken by the number rolled, plus your Intelligence modifier (a minimum reduction of 1 damage)." compset="CustomSpec" summary="Reaction to spend 1 Psionic die to reduce damage taken by another creature." uniqueness="unique">
+    <fieldval field="abRange" value="30"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <eval phase="Final" priority="101"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+      var iSign as string
+      if (hero.childfound[aINT].field[aModBonus].value >= 0) then
+         iSign = "+"
+         endif
+
+      field[abText].text = hero.childfound[c5CFtrPsiDie].field[abText].text & iSign & hero.childfound[aINT].field[aModBonus].value & " reduction"]]></eval>
+    </thing>
+  <thing id="c5CFtrPsiStr" name="Psionic Strike" description="Once per each of your turns, immediately after you hit a target within 30 feet of you with an attack and deal damage to it using a weapon, you can spend one of your Psionic Energy dice. Roll it, and deal force damage equal to the number rolled plus your Intelligence modifier." compset="CustomSpec" summary="Spend Psionic die to add force damage to a hitting attack." uniqueness="unique">
+    <fieldval field="abRange" value="30"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="101"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+      var iSign as string
+      if (hero.childfound[aINT].field[aModBonus].value >= 0) then
+         iSign = "+"
+         endif
+
+      field[abText].text = hero.childfound[c5CFtrPsiDie].field[abText].text & iSign & hero.childfound[aINT].field[aModBonus].value & " force, 1/turn"]]></eval>
+    </thing>
+  <thing id="c5CFtrTelMov" name="Telekinetic Movement" description="You can use an action to target one loose, Large or smaller object or one willing creature besides yourself, visible to and within 30 feet of you. You move the target up to 30 feet to an open space you can see. Alternatively, if it is a Tiny object, you can move it to or from your hand. Wither way, you can move the target horizontally, vertically, or both. Once you&apos;ve used this action, you cannot do so again until you complete a short or long rest, or spend one Psionic Energy die to use it again." compset="CustomSpec" summary="Move an object or creature up to 30 feet telekinetically." uniqueness="unique">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="c5CFtrTelAdp" name="Telekinetic Adept" description="You have new telekinetic abilities:\n\n{b}Psi-Powered Leap.{/b} You can use a bonus action to gain a flying speed equal to twice your walking speed until the end of the current turn. Once you&apos;ve used this ability, you cannot do so again until you complete a short or long rest, or spend one Psionic Energy die to use it again.\n\n{b}Telekinetic Thrust.{/b} When you deal damage to a target with your Psionic Strike, you can force that target to make a Strength save. The DC is equal to 8 + your proficiency bonus + your Intelligence modifier. If the target fails the save, you knock it prone or move it up to 10 feet in any direction horizontally." compset="ClSpecial" summary="Your telekinetic abilities improve.">
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="c5CFtrPsPwLp">
+      <containerreq phase="First" priority="300"><![CDATA[count:Classes.Fighter >= 7]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CFtrTelThr">
+      <containerreq phase="First" priority="300"><![CDATA[count:Classes.Fighter >= 7]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="c5CFtrPsPwLp" name="Psi-Powered Leap" description="You can use a bonus action to gain a flying speed equal to twice your walking speed until the end of the current turn. Once you&apos;ve used this ability, you cannot do so again until you complete a short or long rest, or spend one Psionic Energy die to use it again." compset="CustomSpec" summary="Bonus action to gain flight speed for one turn." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <eval phase="PostAttr" priority="8999"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+
+       var Speed as number
+
+       Speed = (hero.childfound[Speed].field[tSpeed].value + hero.childfound[Speed].field[Bonus].value)
+       Speed *= 2
+
+       field[abText].text = Speed & " ft. flight"]]></eval>
+    </thing>
+  <thing id="c5CFtrTelThr" name="Telekinetic Thrust" description="When you deal damage to a target with your Psionic Strike, you can force that target to make a Strength save. The DC is equal to 8 + your proficiency bonus + your Intelligence modifier. If the target fails the save, you knock it prone or move it up to 10 feet in any direction horizontally." compset="CustomSpec" summary="Psionic Strike can force save to move or knock prone an enemy." uniqueness="unique">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="StandardDC" tag="aINT"/>
+    </thing>
+  <thing id="c5CFtrGrdMnd" name="Guarded Mind" description="You are resistant to psychic damage. Moreover, if you begin your turn charmed or frightened, you can spend a Psionic Energy die to end any and all effects on you that are causing those conditions." compset="ClSpecial" summary="Psychic resistance and can spend Psionic die to end charm or frightened conditions.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="Final"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+       perform hero.assign[DamageRes.dtPsychic]]]></eval>
+    </thing>
+  <thing id="c5CFtrBlwFrc" name="Bulwark of Force" description="You can use a bonus action to choose a number of creatures visible to and within 30 feet of you, including yourself, equal to your Intelligence modifier (a minimum of one creature). Each creature chosen has half cover for 1 minute, or until you become incapacitated, whichever comes first.\n\nOnce you&apos;ve used this ability, you cannot do so again until you complete a short or long rest, or spend one Psionic Energy die to use it again." compset="ClSpecial" summary="Bonus action to grant nearby creatures half cover.">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var iINT as number
+      var iPlur as string
+
+      iINT = maximum(1,hero.childfound[aINT].field[aModBonus].value)
+      if (iINT <> 1) then
+         iPlur = "s"      
+         endif
+
+      field[abText].text = iINT & " creature" & iPlur]]></eval>
+    </thing>
+  <thing id="c5CFtrTelMst" name="Telekinetic Master" description="You can cast {i}telekinesis{/i} without components, using Intelligence as your spellcasting ability. On each of your turns while you&apos;re concentrating on the spell, including the turn on which you cast it, you can use a bonus action to make one weapon attack.\n\nOnce you&apos;ve used this ability to cast the spell, you cannot do so again until you complete a short or long rest, or spend one Psionic Energy die to use it again." compset="ClSpecial" summary="Cast Telekinesis once per short or long rest without components.">
+    <bootstrap thing="spTelekine">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="ShortRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRogPsiDie" name="Psionic Energy Dice" description="The psionic energy you have within yourself is represented by your Psionic Energy dice, each of which are a d6. You have a number of these equaling double your proficiency bonus, and they fuel your psionic powers. Some of these powers spend dice. If you have no dice left to spend, you cannot use such a power. You regain all spent dice when you complete  a long rest. You can also use a bonus action to restore one die, but you cannot do so again until you complete a short or long rest.\n\nThe size of your Psionic Energy dice increases to d8 at 5th level, d10 at 11th level, and d12 at 17th level." compset="CustomSpec" uniqueness="unique">
+    <tag group="LvNamePar" tag="AppText2"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final"><![CDATA[var iNum as number
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value * 2
+
+if (hero.tagcount[Classes.Rogue] >= 17) then
+   field[abText].text = "1d12"
+elseif (hero.tagcount[Classes.Rogue] >= 11) then
+   field[abText].text = "1d10"
+elseif (hero.tagcount[Classes.Rogue] >= 5) then
+   field[abText].text = "1d8"
+else
+   field[abText].text = "1d6"
+endif
+
+if (hero.childlives[c5CFtrPsiWar] <> 0) then
+   field[abText].text &= ","
+   field[abText2].text = "Soulknife"
+   endif]]></eval>
+    </thing>
+  <thing id="c5CRogSoulKn" name="Soulknife" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpRog" name="Rogue" abbrev="Rogue"/>
+    <tag group="abCategory" tag="RogArchety" name="Rogue Archetype" abbrev="Rogue Archetype"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CRogPsiPwr">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogSlBlds">
+      <autotag group="ClSpecWhen" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogPsyVel">
+      <autotag group="ClSpecWhen" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogRndMnd">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogPsyBld">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRogPsiPwr" name="Psionic Power" description="The psionic energy you have within yourself is represented by your Psionic Energy dice, each of which are a d6. You have a number of these equaling double your proficiency bonus, and they fuel your psionic powers. Some of these powers spend dice. If you have no dice left to spend, you cannot use such a power. You regain all spent dice when you complete  a long rest. You can also use a bonus action to restore one die, but you cannot do so again until you complete a short or long rest.\n\nThe size of your Psionic Energy dice increases to d8 at 5th level, d10 at 11th level, and d12 at 17th level.\n\n{b}Psi-Bolstered Knack.{/b} If you fail an ability check with a proficient skill or tool, you can roll a Psionic Energy die and add the result to the check, potentially making that check a success. The die is only expended if the roll succeeds.\n\n{b}Psychic Whispers.{/b} You can use an action to choose one or more creatures you can see, up to a total equaling your proficiency bonus, then roll a Psionic Energy die. For a number of hours equaling the rolled number, all chosen creatures can speak telepathically with you, and you with them. No action is required to send or receive a message, and the ability works at a distance of up to 1 mile. Creatures that cannot speak any language cannot use this telepathy, but you don&apos;t need to share a common language with the chosen creatures. A creature can freely end the connection at any time." compset="ClSpecial" summary="You have Psionic Energy dice that power your abilities.">
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="c5CRogPsBlKn">
+      <containerreq phase="First" priority="300"><![CDATA[count:Classes.Rogue >= 3]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CRogPsiDie">
+      <containerreq phase="First" priority="300"><![CDATA[count:Classes.Rogue >= 3]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CRogPsyWhs">
+      <containerreq phase="First" priority="300"><![CDATA[count:Classes.Rogue >= 3]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRogPsBlKn" name="Psi-Bolstered Knack" description="If you fail an ability check with a proficient skill or tool, you can roll a Psionic Energy die and add the result to the check, potentially making that check a success. The die is only expended if the roll succeeds." compset="CustomSpec" summary="Add the roll of a Psionic die to a failed ability check." uniqueness="unique">
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="c5CRogPsyWhs" name="Psychic Whispers" description="You can use an action to choose one or more creatures you can see, up to a total equaling your proficiency bonus, then roll a Psionic Energy die. For a number of hours equaling the rolled number, all chosen creatures can speak telepathically with you, and you with them. No action is required to send or receive a message, and the ability works at a distance of up to 1 mile. Creatures that cannot speak any language cannot use this telepathy, but you don&apos;t need to share a common language with the chosen creatures. A creature can freely end the connection at any time.\n\nThe first time you use this ability after a long rest, the Psionic Energy die is not expended. But any other times you use it expends a die." compset="CustomSpec" summary="Set up telepathy with allied creatures." uniqueness="unique">
+    <fieldval field="abRange" value="1"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="abRange" tag="Mile"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <tag group="abAction" tag="Action"/>
+    <eval phase="Final" priority="5000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abText].text = hero.childfound[ProfBonus].field[tProfBonus].value & " creatures, " & hero.childfound[c5CRogPsiDie].field[abText].text & " hours"]]></eval>
+    </thing>
+  <thing id="w5CPsyBld" name="Psychic Blade" compset="Weapon">
+    <fieldval field="gWeight" value="1"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="6"/>
+    <fieldval field="wRangeNorm" value="60"/>
+    <usesource source="5eTCoE"/>
+    <tag group="wProperty" tag="Thrown" name="Thrown" abbrev="Thrown"/>
+    <tag group="wCategory" tag="Melee" name="Melee Weapon" abbrev="Melee"/>
+    <tag group="wCategory" tag="RangeThrow" name="Thrown Weapon" abbrev="Thrown"/>
+    <tag group="wProfReq" tag="Simple" name="Simple" abbrev="Simple"/>
+    <tag group="wProperty" tag="Finesse" name="Finesse" abbrev="Finesse"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="Helper" tag="NoSelect"/>
+    <tag group="Helper" tag="NoOutGear"/>
+    <tag group="wProperty" tag="Light" name="Light" abbrev="Light"/>
+    <tag group="DamageType" tag="dtPsychic"/>
+    </thing>
+  <thing id="w5CPsyBldO" name="Psychic Blade (bonus action, 2nd attack)" compset="Weapon">
+    <fieldval field="gWeight" value="1"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="4"/>
+    <fieldval field="wRangeNorm" value="60"/>
+    <usesource source="5eTCoE"/>
+    <tag group="wProperty" tag="Thrown" name="Thrown" abbrev="Thrown"/>
+    <tag group="wCategory" tag="Melee" name="Melee Weapon" abbrev="Melee"/>
+    <tag group="wCategory" tag="RangeThrow" name="Thrown Weapon" abbrev="Thrown"/>
+    <tag group="wProfReq" tag="Simple" name="Simple" abbrev="Simple"/>
+    <tag group="wProperty" tag="Finesse" name="Finesse" abbrev="Finesse"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="Helper" tag="NoSelect"/>
+    <tag group="Helper" tag="NoOutGear"/>
+    <tag group="wProperty" tag="Light" name="Light" abbrev="Light"/>
+    <tag group="DamageType" tag="dtPsychic"/>
+    </thing>
+  <thing id="c5CRogPsyBld" name="Psychic Blades" description="When you use the Attack action, you can manifest a psychic blade in your free hand and use it to make the attack. The blade is a simple melee weapon, with the finesse and thrown properties. Its normal range is 60, with no long range. On a hit, it deals psychic damage equal to 1d6 plus the ability modifier used for the attack roll. The blade vanishes immediately after the attack, hit or miss, and leaves no mark on the target if it deals damage.\n\nAfter you attack with the blade, you can use a bonus action to attack with a second psychic blade on the same turn, assuming you have a free hand in which to create it. The attack can be a melee or ranged weapon attack, and its damage die is 1d4 instead of 1d6." compset="ClSpecial" summary="Create and attack with a psychic blade.">
+    <bootstrap thing="w5CPsyBld"></bootstrap>
+    <bootstrap thing="w5CPsyBldO"></bootstrap>
+    </thing>
+  <thing id="c5CRogSlBlds" name="Soul Blades" description="Your Psionic Blades now benefit from these features:\n\n{b}Homing Strikes.{/b} If you make a Psychic Blade attack that misses its target, you can roll a Psionic Energy die and add the result to the attack roll. If this causes the attack to now hit, the die is expended.\n\n{b}Psychic Teleportation.{/b} You can use a bonus action to manifest a Psychic Blade, spend and roll a Psionic Energy die, and throw the blade at an open space you can see, up to a number of feet equal to 10 times the die roll. You then teleport to that space, and the blade disappears." compset="ClSpecial" summary="Your psionic blades gain Homing Strikes and Psychic Teleportation.">
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="c5CRogHmgStr">
+      <containerreq phase="First" priority="300"><![CDATA[count:Classes.Rogue >= 9]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CRogPsyTel">
+      <containerreq phase="First" priority="300"><![CDATA[count:Classes.Rogue >= 9]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRogHmgStr" name="Homing Strikes" description="If you make a Psychic Blade attack that misses its target, you can roll a Psionic Energy die and add the result to the attack roll. If this causes the attack to now hit, the die is expended." compset="CustomSpec" summary="Add a Psionic die to a missed attack roll." uniqueness="unique">
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="c5CRogPsyTel" name="Psychic Teleportation" description="You can use a bonus action to manifest a Psychic Blade, spend and roll a Psionic Energy die, and throw the blade at an open space you can see, up to a number of feet equal to 10 times the die roll. You then teleport to that space, and the blade disappears." compset="CustomSpec" summary="Use a Psionic die, throw a psychic blade, and teleport there." uniqueness="unique">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <eval phase="Final" priority="5000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abText].text = "10x" & hero.childfound[c5CRogPsiDie].field[abText].text & " feet"]]></eval>
+    </thing>
+  <thing id="c5CRogPsyVel" name="Psychic Veil" description="You can use an action to magically become invisible, including anything worn or carried by you, for 1 hour. You can freely dismiss the effect, requiring no action. If you deal damage to a creature or force it to make a saving throw, the invisibility ends early.\n\nOnce you&apos;ve used this feature, you cannot use it again until you complete a long rest or spend a Psionic Energy die to use it again." compset="ClSpecial" summary="Invisibility for 1 hour.">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abDuration" tag="Hour"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    </thing>
+  <thing id="c5CRogRndMnd" name="Rend Mind" description="When you use your Psychic Blades to deal Sneak Attack damage to a creature, you can force the target to make a Wisdom save. The DC equals 8 + your proficiency bonus + your Dexterity modifier. If the creature fails the save, it is stunned for 1 minute. It can repeat the saving throw at the end of each of its turns, ending the stun on a successful save.\n\nOnce you&apos;ve used this feature, you cannot use it again until you complete a long rest or spend a Psionic Energy die to use it again." compset="ClSpecial" summary="Stun a creature damaged with Sneak Attack by your psychic blades.">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aDEX"/>
+    </thing>
+  <thing id="c5CRogPhant" name="Phantom" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpRog" name="Rogue" abbrev="Rogue"/>
+    <tag group="abCategory" tag="RogArchety" name="Rogue Archetype" abbrev="Rogue Archetype"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CRogWlsGrv">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogTokDep">
+      <autotag group="ClSpecWhen" tag="9"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogGhsWlk">
+      <autotag group="ClSpecWhen" tag="13"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogDthFrn">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="c5CRogWhsDea">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRogWhsDea" name="Whispers of the Dead" description="Whenever you finish a short or long rest, you can pick one skill or tool that you are not proficient with. You gain proficiency with that skill or tool until you use this feature to select a different one." compset="ClSpecial" summary="Choose a skill or tool to become proficient with each rest.">
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <bootstrap thing="cfg5CWhsDea"></bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+    doneif (tagis[Helper.ShowSpec] = 0)
+    doneif (tagis[Helper.Disable] <> 0)
+
+    var NumOfProf as number
+
+    NumOfProf = 1
+
+    ~ If a combination of Tools/Skills is allowed add here
+    if (NumOfProf <> 0) then
+      hero.childfound[cfg5CWhsDea].field[cToolMax].value += NumOfProf
+      hero.childfound[cfg5CWhsDea].field[cSkillMax].value += NumOfProf
+    endif]]></eval>
+    </thing>
+  <thing id="cfg5CWhsDea" name="Whispers of the Dead" description="Whenever you finish a short or long rest, you can pick one skill or tool that you are not proficient with. You gain proficiency with that skill or tool until you use this feature to select a different one." compset="Configure" uniqueness="unique">
+    <fieldval field="cSkCandExp" value="component.BaseSkill &amp; !Helper.Obsolete"/>
+    <fieldval field="cSkCandEx2" value="component.BaseSkill &amp; !Helper.Obsolete"/>
+    <fieldval field="cTlCandExp" value="component.Tool &amp; !Helper.Obsolete"/>
+    <fieldval field="cTlCandEx2" value="component.Tool &amp; !Helper.Obsolete"/>
+    <eval phase="Attr" priority="10000"><![CDATA[
+      ~ The below logic is needed because we have two seperate lists
+      ~ for tools & skills. But we need to allow for a combination
+      ~ of tools/skills to be chosen.
+
+      ~ Total up all the skills and tools that have been chosen
+      field[cPhaStart].value += field[cSkillCur].value + field[cToolCur].value
+
+      ~ Set the Used values for both Tools/Skills to be the same
+      field[cToolCur].value = field[cPhaStart].value
+      field[cSkillCur].value = field[cPhaStart].value]]></eval>
+    </thing>
+  <thing id="c5CRogWlsGrv" name="Wails from the Grave" description="Immediately after you deal Sneak Attack damage to a creature on your turn, you can select a second creature visible to you and within 30 feet of the first creature. Roll half the total number of Sneak Attack dice for your level (round up) and deal necrotic damage equal to the total roll to the second creature.\n\nYou can use this ability a number of times equal to your proficiency bonus, and you regain all spent uses when you complete a long rest." compset="ClSpecial" summary="Deal half sneak attack damage to second creature on attack.">
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[
+    doneif (tagis[Helper.ShowSpec] = 0)
+    doneif (tagis[Helper.Disable] <> 0)
+
+    var iSnk as number
+
+    iSnk = hero.childfound[cSneakAtt].field[abValue].value
+    iSnk /= 2
+    iSnk = round(iSnk,0,1)
+
+    field[abText].text = iSnk & "d6 necrotic"]]></eval>
+    <eval phase="PostAttr" priority="5000"><![CDATA[
+    doneif (tagis[Helper.ShowSpec] = 0)
+    doneif (tagis[Helper.Disable] <> 0)
+
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="c5CRogTokDep" name="Tokens of the Departed" description="When a creature visible to you dies within 30 feet of you, you can use a reaction to cause a Tiny soul trinket to appear in a free hand of yours. The DM determines to trinket&apos;s form or has you roll on the PHB&apos;s Trinkets table for it. You can have a total number of soul trinkets equal to your proficiency bonus, and you cannot create one when you&apos;ve reached this maximum.\n\nYou can use soul trinkets in these ways:\n• While you have a soul trinket on your person, your death saves and Constitution saves are made with advantage.\n• When you deal Sneak Attack damage during your turn, you can destroy a soul trinket that&apos;s on your person. You immediately then use Wails from the Grave, without expending a use of it.\n• You can use an action to destroy one of your soul trinkets, regardless of where it is. You can them ask its spirit one question. It appears to you and answers in a language that it knew during its life. It does not have to be truthful, and it is as concise as possible. It only knows what it knew in life, which is determined by your DM." compset="ClSpecial" summary="Use a reaction to create a Soul Trinket from a dying creature.">
+    <fieldval field="abRange" value="30"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="AWSouls"/>
+    <eval phase="PostAttr" priority="5000"><![CDATA[
+    doneif (tagis[Helper.ShowSpec] = 0)
+    doneif (tagis[Helper.Disable] <> 0)
+
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="tr5CRogSlTrn" name="Soul Trinket" description="Soul Trinket" compset="Trinket">
+    <fieldval field="shortname" value="Soul Trinket"/>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <prereq message="Requires Phantom Rogue level 9">
+      <validate><![CDATA[var total as number
+
+if (#levelcount[Rogue] >= 9) then
+total +=1
+endif
+
+if (hero.childlives[c5CRogPhant] <> 0) then
+total +=1
+endif
+
+if (total >= 2) then
+@valid = 1
+endif]]></validate>
+      </prereq>
+    </thing>
+  <thing id="c5CRogGhsWlk" name="Ghost Walk" description="You can use a bonus action to assume a ghostly form. While in the form, you have a flying speed of 10 feet and can hover, and attack rolls have disadvantage against you. You can move through creatures and objects, treating them as difficult terrain, but you suffer 1d10 force damage if you end your turn inside one.\n\nYou can use a bonus action to end this form; otherwise you stay in it for 10 minutes. Once you&apos;ve used this feature, you must complete a long rest or destroy a soul trinket to use it again. Destroying the trinket can be part of the bonus action to activate this feature." compset="ClSpecial" summary="Bonus action to assume ghostly form for 10 minutes.">
+    <fieldval field="actName" value="Active (10 minutes)"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abDuration" value="10"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    <tag group="abDuration" tag="Minute"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Helper" tag="Hover"/>
+      <autotag group="Value" tag="10"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRogDthFrn" name="Death&apos;s Friend" description="As you grow closer to the powers of death, you gain these benefits:\n\n• Your Wails from the Grave feature deals the necrotic damage to both the first and second creature.\n• When you complete a long rest and have no soul trinkets, one appears in your hand." compset="ClSpecial" summary="Wails from the Grave damages both, and gain a free Soul Trinket on a long rest."></thing>
+  <thing id="c5CWlkFthmls" name="The Fathomless" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="ClsAllowSp" tag="spArcaHand"/>
+    <tag group="ClsAllowSp" tag="spConeCold"/>
+    <tag group="ClsAllowSp" tag="spContWate"/>
+    <tag group="ClsAllowSp" tag="spCreaor"/>
+    <tag group="ClsAllowSp" tag="spGustWind"/>
+    <tag group="ClsAllowSp" tag="spLighBolt"/>
+    <tag group="ClsAllowSp" tag="spSilence"/>
+    <tag group="ClsAllowSp" tag="spSleeStor"/>
+    <tag group="ClsAllowSp" tag="sp5CSumEle"/>
+    <tag group="ClsAllowSp" tag="spThunderw"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron" abbrev="Warlock Otherworldly Patron"/>
+    <bootstrap thing="c5CWlkTbtDps">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkGftSea">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkOcncSl">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkGrdCoi">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkGrsTnt">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkFthPln">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    <eval phase="Final" index="2"><![CDATA[foreach pick in hero from BaseSpell where "SpellType.cHelpWlk"
+  if (eachpick.tagis[thingid.sp5CSumEle] <> 0) then
+    eachpick.field[sNameMod].text = "water only"
+    endif
+  if (eachpick.tagis[thingid.spArcaHand] <> 0) then
+    eachpick.field[sNameMod].text = "appears as a tentacle"
+    endif
+  nexteach]]></eval>
+    </thing>
+  <thing id="c5CWlkTbtDps" name="Tentacle of the Deeps" description="You can use a bonus action to magically summon a 10-foot-long spectral tentacle at a point visible to and within 60 feet of you. It last for 1 minute or until you use this feature to summon another tentacle.\n\nUpon creating the tentacle, you can make a melee spell attack against a single creature within 10 feet of it. On a hit, the creature suffers 1d8 cold damage, and its speed is reduced by 10 feet until the beginning of your next turn. The damage increases to 2d8 when you reach warlock level 10.\n\nOn your turn, you can use a bonus action to move the tentacle up to 30 feet and make the attack again.\n\nThe tentacle can be summoned a number of times equaling your proficiency bonus, and you regain all spent uses of it when you complete a long rest." compset="ClSpecial" summary="Bonus action to summon an attacking tentacle.">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="Final"><![CDATA[
+    doneif (tagis[Helper.ShowSpec] = 0)
+    doneif (tagis[Helper.Disable] <> 0)
+
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+
+    if (hero.tagcount[Classes.Warlock] >= 10) then
+      field[abText].text = "2d8 cold"
+    else
+      field[abText].text = "1d8 cold"
+    endif]]></eval>
+    </thing>
+  <thing id="c5CWlkGftSea" name="Gift of the Sea" description="You have 40 ft. of swimming speed, and you are able to breathe underwater." compset="ClSpecial" summary="You have 40 ft. of swimming speed, and can breathe underwater.">
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CWlkOcncSl" name="Oceanic Soul" description="You are now resistant to cold damage. Moreover, when you are completely submerged, any creature that is likewise submerged can understand your speech, and you theirs." compset="ClSpecial" summary="You are resistant to cold and can speak underwater.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+       perform hero.assign[DamageRes.dtCold]]]></eval>
+    </thing>
+  <thing id="c5CWlkGrdCoi" name="Guardian Coil" description="When you or a creature visible to you takes damage while within 10 feet of your Tentacle of the Deeps, you can use a reaction to choose once of those creatures and reduce the damage taken by 1d8. The damage reduction increases to 2d8 when you reach warlock level 10." compset="ClSpecial" summary="Reaction to use Tentacle to reduce damage taken.">
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <eval phase="Final"><![CDATA[
+    doneif (tagis[Helper.ShowSpec] = 0)
+    doneif (tagis[Helper.Disable] <> 0)
+
+    if (hero.tagcount[Classes.Warlock] >= 10) then
+      field[abText].text = "2d8 reduction"
+    else
+      field[abText].text = "1d8 reduction"
+    endif]]></eval>
+    </thing>
+  <thing id="c5CWlkGrsTnt" name="Grasping Tentacles" description="You learn the {i}Evard&apos;s black tentacles{/i} spell as a warlock spell. It does not count against the total number of spells you know. You can also cast it once without using a spell slot, and you regain the ability to do so when you complete a long rest.\n\nWhenever you cast it, your patron&apos;s magic provides you temporary hit points equal to your Warlock level, and damage cannot break your concentration on the spell." compset="ClSpecial" summary="Cast Evard&apos;s black tentacles, gain temp HP when doing so.">
+    <fieldval field="actName" value="Evard&apos;s black tentacles active"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="PoolWlkBls">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="10"/>
+      <assignval field="livename" value="Grasping Tentacles Temporary HP"/>
+      </bootstrap>
+    <bootstrap thing="sp5CHDQEvB">
+      <containerreq phase="First" priority="250"><![CDATA[count:Classes.Warlock >= 10]]></containerreq>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="sp5CHDQEvB">
+      <containerreq phase="First" priority="250"><![CDATA[count:Classes.Warlock >= 10]]></containerreq>
+      <autotag group="Helper" tag="Known"/>
+      <autotag group="SpellType" tag="cHelpWlk"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[abilActive].value = 0)
+
+      ~ Add temp HP
+      var temphp as number
+      temphp = #levelcount[Warlock]
+      hero.findchild[TempHpPool,"Value.10"].field[thpMinAllw].value = temphp
+      hero.findchild[TempHpPool,"Value.10"].field[thpMaxAllw].value = temphp]]></eval>
+    </thing>
+  <thing id="c5CWlkFthPln" name="Fathomless Plunge" description="You can use an action to teleport yourself and up to five other willing creatures visible to and within 30 feet of you. Whirling tentacles surround you, causing you to disappear from your current spot and reappear up to 1 mile away in or within 30 feet of a body of water you&apos;ve seen (the size of a pond or larger). You all appear in open spaces within 30 feet of each other.\n\nYou must complete a short or long rest before using this feature again." compset="ClSpecial" summary="Teleport yourself and others to a nearby body of water.">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="1"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Mile"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    </thing>
+  <thing id="io5CMercMsk" name="Merciful Mask" compset="Wondrous">
+    <arrayval field="usrArray" index="0" value="Raven"/>
+    <arrayval field="usrArray" index="1" value="Blank and white"/>
+    <arrayval field="usrArray" index="2" value="Crying face"/>
+    <arrayval field="usrArray" index="3" value="Laughing face"/>
+    <arrayval field="usrArray" index="4" value="Skull"/>
+    <arrayval field="usrArray" index="5" value="Butterfly"/>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="c5CMnkWyMrcy" name="Way of Mercy" compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes Trio of Subclasses</comment>
+    <usesource source="5eTCoE" parent="p5eBooks" name="Tasha&apos;s Cauldron of Everything"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpMnk" name="Monk" abbrev="Monk"/>
+    <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition" abbrev="Monk Monastic Tradition"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CMnkPhyTch">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkFlrHnd">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkHndUlt">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkHndHea">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="io5CMercMsk"></bootstrap>
+    <bootstrap thing="c5CMnkImpMrc">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkHndHrm">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CMnkImpMrc" name="Implements of Mercy" description="You become proficient with the Insight and Medicine skills, and with herbalism kits.\n\nYou also gain a special mask, the appearance of which you determine (or can roll for it, see the mask). You often wear it while using this subclass&apos;s features." compset="ClSpecial" summary="Insight, medicine, and herbalism kit proficiency and special mask.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="gKitHerbal">
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.assign[ProfSkill.skInsight]
+perform hero.assign[ProfSkill.skMedicine]]]></eval>
+    </thing>
+  <thing id="c5CMnkHndHea" name="Hand of Healing" description="You can use an action to spend 1 ki point to touch a creature and restore hit points. The amount restored equals a roll of your Martial Arts die + your Wisdom modifier. \n\nWhen you use your Flurry of Blows, you can replace one of the unarmed strikes with a use of this healing ability. If you do, you do not need to spend the ki point for the healing." compset="ClSpecial" summary="Spend 1 ki to heal creature for Martial Arts die + Wisdom">
+    <tag group="abAction" tag="Action"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var iSign as string
+      if (hero.childfound[aWIS].field[aModBonus].value >= 0) then
+         iSign = "+"
+         endif
+
+      field[abText].text = "1 ki, " & hero.childfound[cMnkMarArt].field[abText].text & iSign & hero.childfound[aWIS].field[aModBonus].value & " HP"]]></eval>
+    </thing>
+  <thing id="c5CMnkHndHrm" name="Hand of Harm" description="When you hit a creature with an unarmed strike, you can spend 1 ki point to deal extra necrotic damage. The amount dealt equals a roll of your Martial Arts die + your Wisdom modifier. You can only use this feature once per turn." compset="ClSpecial" summary="Spend 1 ki to deal Martial Arts die + Wisdom mod necrotic damage">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Usage" tag="UsPe5CTurn"/>
+    <eval phase="Final"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var iSign as string
+      if (hero.childfound[aWIS].field[aModBonus].value >= 0) then
+         iSign = "+"
+         endif
+
+      field[abText].text = "1 ki, " & hero.childfound[cMnkMarArt].field[abText].text & iSign & hero.childfound[aWIS].field[aModBonus].value & " necrotic"]]></eval>
+    </thing>
+  <thing id="c5CMnkPhyTch" name="Physician&apos;s Touch" description="When you use your Hand of Healing on a creature, you can also end one disease or one of these conditions affecting it: blinded, deafened, paralyzed, poisoned, or stunned.\n\nWhen you use your Hand of Harm on a creature, you can impose the poisoned condition on it until the end of your next turn." compset="ClSpecial" summary="Hand of healing removes a condition, hand of harm poisons.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CMnkFlrHnd" name="Flurry of Healing and Harm" description="When you use Flurry of Blows, you can now replace any and all of the unarmed strikes with a use of your Hand of Healing ability, without using any ki points to heal.\n\nAdditionally, when you make an unarmed strike with Flurry of Blows, you can use Hand of Harm without expending any ki points for Hand of Harm. You can still only use Hand of Harm once per turn." compset="ClSpecial" summary="Can use hands of healing and harm more with flurry of blows."></thing>
+  <thing id="c5CMnkHndUlt" name="Hand of Ultimate Mercy" description="You can use an action to touch the corpse of a creature that has died within the last 24 hours. Spending 5 ki points, you return the creature to life with 4d10 + your Wisdom modifier hit points. If it dies while blinded, deafened, paralyzed, poisoned, or stunned, all of those conditions are ended for it." compset="ClSpecial" summary="Spend 5 ki to restore a recently-dead creature to life.">
+    <tag group="abAction" tag="Action"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var iSign as string
+      if (hero.childfound[aWIS].field[aModBonus].value >= 0) then
+         iSign = "+"
+         endif
+
+      field[abText].text = "5 ki, 4d10" & iSign & hero.childfound[aWIS].field[aModBonus].value]]></eval>
+    </thing>
+  <thing id="io5CDrdStrMp" name="Star Map" description="Tiny object" compset="Wondrous">
+    <arrayval field="usrArray" index="0" value="Constellation-covered scroll"/>
+    <arrayval field="usrArray" index="1" value="Hole-filled tablet"/>
+    <arrayval field="usrArray" index="2" value="Speckled owlbear hide"/>
+    <arrayval field="usrArray" index="3" value="Ebony covered map collection"/>
+    <arrayval field="usrArray" index="4" value="Star-projecting crystal"/>
+    <arrayval field="usrArray" index="5" value="Glass disks"/>
+    <usesource source="5eTCoE"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Custom" tag="5CEbArcFoc"/>
+    <tag group="Helper" tag="Helper"/>
+    </thing>
+  <thing id="c5CDrdCrcStr" name="Circle of Stars" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eTCoE" parent="p5eBooks" name="Tasha&apos;s Cauldron of Everything"/>
+    <tag group="SpecSource" tag="cHelpDrd" name="Druid" abbrev="Druid"/>
+    <bootstrap thing="c5CDrdCsmOmn">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdTwkCns">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdFlStrs">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdStrFrm">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CDrdStrMap">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CDrdStrMap" name="Star Map" description="You have created a star chart. It is a Tiny object that can serve as your druid spellcasting focus. You determine its form or roll for it.\n\nWhile holding the map, you gain these benefits:\n• You know the {i}Guidance{/i} cantrip.\n• You have {i}guiding bolt{/i} prepared as a druid spell, without it counting against your total number of prepared spells.\n• You can cast {i}guiding bolt{/i} without using a spell slot a number of times equaling your proficiency bonus. You regain all spent uses of it when you complete a long rest.\n\nYou can perform a 1-hour ceremony to magically replace a lost map. This ceremony can occur during a short or long rest, and it destroys the previous map." compset="ClSpecial" summary="You have a star map spellcasting focus that grants some spells.">
+    <tag group="Custom" tag="StrGuid"/>
+    <bootstrap thing="spGuidBolt">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <bootstrap thing="spGuidBolt">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Custom" tag="StrGuid"/>
+      </bootstrap>
+    <bootstrap thing="spGuidance">
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpDrd"/>
+      </bootstrap>
+    <eval phase="Final"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+
+foreach pick in hero from BaseSpell where "Custom.StrGuid"
+   eachpick.field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+   nexteach]]></eval>
+    </thing>
+  <thing id="c5CDrdStrFrm" name="Starry Form" description="You can use a bonus action to spend a use of your Wild Shape and take on a starry form, instead of become a beast.\n\nWhile in this form, you retain your regular statistics. However, your body becomes luminous, with your joints glimmering and star-like and lines connecting them as if a constellation. The form sheds bright light for 10 feet and dim light for another 10 feet. It lasts 10 minutes. You can dismiss it freely, and it ends early if you are incapacitated, die, or activate it again.\n\nOne of these constellations glimmers on your body while in this form, chosen by you and each granting the following benefits:\n\n{b}Archer.{/b} An archer appears as a constellation on your body. When you activate an archer starry form and on your subsequent turns while it is in effect, you can use a bonus action to make a ranged spell attack with an arrow of light. The range is 60 feet. On a hit, it deals radiant damage equal to 1d8 + your Wisdom modifier.\n\n{b}Chalice.{/b} A goblet appears as a constellation on your body. Whenever you cast a spell using a spell slot that restores hit points to a creature, you or another creature within 30 feet of you can also regain hit points equaling 1d8 + your Wisdom modifier.\n\n{b}Dragon.{/b} A dragon appears as a constellation on your body. Whenever you make an Intelligence check, a Wisdom check, or a Constitution save to maintain concentration on a spell, treat any roll of the d20 of less than 10 as a 10." compset="ClSpecial" summary="Use Wild Shape to enter various starry forms with special benefits.">
+    <fieldval field="actName" value="Starry Form (10 minutes)"/>
+    <fieldval field="abDuration" value="10"/>
+    <arrayval field="usrArray" index="0" value="Archer"/>
+    <arrayval field="usrArray" index="1" value="Chalice"/>
+    <arrayval field="usrArray" index="2" value="Dragon"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Custom" tag="StrArwLt"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <bootstrap thing="wOtherRng">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0 & fieldval:usrIndex = 0]]></containerreq>
+      <autotag group="DamTypeOvr" tag="dtRadiant"/>
+      <autotag group="DamageOver" tag="aWIS"/>
+      <autotag group="RanAttOver" tag="aWIS"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="Custom" tag="StrArwLt"/>
+      <autotag group="wProperty" tag="Spell"/>
+      <assignval field="wRangeNorm" value="60"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="livename" value="Arrow of Light"/>
+      <assignval field="sbName" value="Arrow of Light"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:abilActive <> 0 & fieldval:usrIndex = 2 & count:Classes.Druid >= 10]]></containerreq>
+      <autotag group="Value" tag="20"/>
+      <autotag group="Helper" tag="Hover"/>
+      </bootstrap>
+    <eval phase="Final" index="3"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abilActive].value <> 0)
+
+perform assign[User.NoAutoName]]]></eval>
+    <eval phase="Final" index="4"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abilActive].value = 0)
+doneif (field[usrIndex].value <> 1)
+
+      var iSign as string
+      if (hero.childfound[aWIS].field[aModBonus].value >= 0) then
+         iSign = "+"
+         endif
+
+      var iLvl as string
+      if (hero.tagcount[Classes.Druid] >= 10) then
+         iLvl = "2d8"
+      else
+         iLvl = "1d8"
+      endif
+
+      field[abText].text = iLvl & iSign & hero.childfound[aWIS].field[aModBonus].value & " HP, 30 feet"]]></eval>
+    <eval phase="Final" priority="20000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseNatWep where "Custom.StrArwLt"
+   eachpick.field[wRanAtk].value = hero.childfound[cHelpDrd].field[cSplAttack].value
+   if (hero.tagcount[Classes.Druid] >= 10) then
+   eachpick.field[wDieCount].value += 1
+   endif
+   nexteach]]></eval>
+    <eval phase="Final" index="5"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abilActive].value = 0)
+doneif (field[usrIndex].value <> 2)
+
+#situational[hero.child[svCON], "Treat spell concentration save d20 roll lower than 10 as a 10", field[thingname].text]
+#situational[hero.child[skAnimHand], "Treat a roll lower than 10 as a 10", field[thingname].text]
+#situational[hero.child[skInsight], "Treat a roll lower than 10 as a 10", field[thingname].text]
+#situational[hero.child[skMedicine], "Treat a roll lower than 10 as a 10", field[thingname].text]
+#situational[hero.child[skPercep], "Treat a roll lower than 10 as a 10", field[thingname].text]
+#situational[hero.child[skSurvival], "Treat a roll lower than 10 as a 10", field[thingname].text]
+#situational[hero.child[skArcana], "Treat a roll lower than 10 as a 10", field[thingname].text]
+#situational[hero.child[skHistory], "Treat a roll lower than 10 as a 10", field[thingname].text]
+#situational[hero.child[skInvestig], "Treat a roll lower than 10 as a 10", field[thingname].text]
+#situational[hero.child[skNature], "Treat a roll lower than 10 as a 10", field[thingname].text]
+#situational[hero.child[skReligion], "Treat a roll lower than 10 as a 10", field[thingname].text]]]></eval>
+    <eval phase="Final" priority="5000" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abilActive].value = 0)
+doneif (hero.tagcount[Classes.Druid] < 14)
+
+perform hero.assign[DamComRes.dcBluPiSla]]]></eval>
+    </thing>
+  <thing id="c5CDrdCsmOmn" name="Cosmic Omen" description="When you complete a long rest, consult your star map and roll a die. Until you complete you next long rest, you have a special reaction available to you, depending on whether the die roll was even or odd:\n\n{b}Weal (even).{/b} Whenever a creature visible to and within 30 feet of you is about to make an attack roll, a saving throw, or an ability check, you can take a reaction to roll a d6 and add the number rolled to the total.\n{b}Woe (odd).{/b} Whenever a creature visible to and within 30 feet of you is about to make an attack roll, a saving throw, or an ability check, you can take a reaction to roll a d6 and subtract the number rolled from the total.\n\nYou can use the reaction a number of times equaling your proficiency bonus, and you regain all spent uses of it when you complete a long rest." compset="ClSpecial" summary="Impose advantage or disadvantage on a nearby roll.">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <eval phase="PostAttr" priority="5000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="c5CDrdTwkCns" name="Twinkling Constellations" description="Your Starry Form&apos;s constellations grow more powerful. The 1d8 of the Archer and Chalice become 2d8. While the Dragon is active, you have 20 feet of flying speed and can hover.\n\nMoreover, at the beginning of each of your turns while Starry Form is active, you can switch which constellation is active." compset="ClSpecial" summary="Can switch constellations, and they get more powerful.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CDrdFlStrs" name="Full of Stars" description="While in your Starry form, your body becomes partially incorporeal. This grants you resistance to bludgeoning, piercing, and slashing damage." compset="ClSpecial" summary="Starry from grants bludgeoning, piercing, and slashing resistance."></thing>
   </document>
