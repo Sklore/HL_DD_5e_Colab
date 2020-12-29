@@ -1,0 +1,2339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="cfg5CTashVar" name="Tasha&apos;s Variants" compset="Configure" uniqueness="unique">
+    <fieldval field="cfgObject1" value="Variant Features"/>
+    <fieldval field="cfgObject2" value="Class Variant Features"/>
+    <fieldval field="cfgLaAllo1" value="component.BaseLang &amp; (thingid.lAbyssal | thingid.lCelestial | thingid.lCommon | thingid.lDeepSpeec | thingid.lDraconic | thingid.lDwarvish | thingid.lElvish | thingid.lGiant | thingid.lGnomish | thingid.lGoblin | thingid.lHalfling | thingid.lInfernal | thingid.lOrc | thingid.lPrimord | thingid.lSylvan | thingid.lUndercomm)"/>
+    <fieldval field="cfgRcAllo1" value="!component.BaseLang &amp; component.BaseLang"/>
+    <fieldval field="cfgObject4" value="Racial Variant Features"/>
+    <fieldval field="cfgRcAllo2" value="!component.BaseLang &amp; component.BaseLang"/>
+    <usesource source="5eVariants"/>
+    <tag group="Helper" tag="Allow1Abil"/>
+    <tag group="AllowSkl1" tag="Any"/>
+    </thing>
+  <thing id="c5CChngSk" name="Changing Skills" description="With your DM&apos;s permission, you may switch one skill proficiency provided by your class with another from the same list. The convenient time for this is when you reach a level in your class that awards an Ability Score Increase." compset="CustomSpec" summary="Replace one of your class skill proficiencies when you get an ASI." uniqueness="unique">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="5CCFFVAll" name="All Class Variant Features"/>
+    </thing>
+  <thing id="c5CCFFVEnable" name="Class Variant Features" description="Allows Class Variant Features to be selected from the menu below." compset="CustomSpec" uniqueness="unique">
+    <tag group="AllowRCust" tag="cfg5CTashVar"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="8200"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text = "abCategory.5CCFFVAll"
+      perform hero.childfound[cfg5CTashVar].assign[Helper.Allow2Abil]
+
+      if (#levelcount[Barbarian] >= 1) then
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text &= " | abCategory.5CCFVBbn"
+      endif
+
+
+      if (#levelcount[Bard] >= 1) then
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text &= " | abCategory.5CCFVBrd"
+      endif
+
+
+      if (#levelcount[Cleric] >= 1) then
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text &= " | abCategory.5CCFVClr"
+      endif
+
+
+      if (#levelcount[Druid] >= 1) then
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text &= " | abCategory.5CCFVDrd"
+      endif
+
+
+      if (#levelcount[Fighter] >= 1) then
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text &= " | abCategory.5CCFVFtr"
+      endif
+
+
+      if (#levelcount[Monk] >= 1) then
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text &= " | abCategory.5CCFVMnk"
+      endif
+
+
+      if (#levelcount[Paladin] >= 1) then
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text &= " | abCategory.5CCFVPal"
+      endif
+
+
+      if (#levelcount[Ranger] >= 1) then
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text &= " | abCategory.5CCFVRgr"
+      endif
+
+
+      if (#levelcount[Rogue] >= 1) then
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text &= " | abCategory.5CCFVRog"
+      endif
+
+
+      if (#levelcount[Sorcerer] >= 1) then
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text &= " | abCategory.5CCFVSor"
+      endif
+
+
+      if (#levelcount[Warlock] >= 1) then
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text &= " | abCategory.5CCFVWlk"
+      endif
+
+
+      if (#levelcount[Wizard] >= 1) then
+      hero.childfound[cfg5CTashVar].field[cfgAllow2].text &= " | abCategory.5CCFVWiz"
+      endif]]></eval>
+    </thing>
+  <thing id="c5CRgrNatVei" name="Nature&apos;s Veil" description="You can use a bonus action to magically turn yourself and any equipment you&apos;re wearing or carrying invisible. The invisibility lasts until the start of your next turn. You can do this a number of times equaling your proficiency bonus. You regain all spent uses of this ability at the end of your next long rest.\n\n{i}Replaces Hide in Plain Sight{/i}" compset="ClSpecial" summary="Bonus action to turn invisible." maxlimit="1">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abCategory" tag="5CCFVRgr" name="Ranger Variant Features"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="ClSpecWhen" tag="10"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <eval phase="Final" priority="500" index="2"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.childfound[cRgrHiPlSi].tagreplace[Helper.ShowSpec,Helper.Disable]
+perform hero.childfound[cRgrHiPlSi].delete[SpecSource.?]
+
+      if (#levelcount[Ranger] >= 10) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <eval phase="PostAttr" index="3"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    <exprreq message="Requires Ranger level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CClrBlsStr" name="Blessed Strikes" description="When you damage a creature with one of your spells or weapon attacks, you can also deal 1d8 radiant damage to that creature. Once you&apos;ve dealt this damage, you cannot do so again until the beginning of your next turn.\n\n{i}Replaces Divine Strike and/or Potent Spellcasting{/i}" compset="ClSpecial" summary="Deal an extra 1d8 radiant damage once per round." maxlimit="1">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="8"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="ClSpecWhen" tag="8"/>
+    <tag group="SpecSource" tag="cHelpClr"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Usage" tag="Round"/>
+    <tag group="abCategory" tag="5CCFVClr" name="Cleric Variant Features"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="DamageType" tag="dtRadiant"/>
+    <eval phase="Final" priority="500"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in Hero where "(ClSpecWhen.14 | ClSpecWhen.8) & SpecSource.cHelpClr & !thingid.cClrDesUnd & !thingid.c5CClrBlsStr"
+ perform eachpick.tagreplace[Helper.ShowSpec,Helper.Disable]
+debug eachpick.tagvalue[thingid.?]
+ perform eachpick.delete[SpecSource.?]
+      
+
+nexteach
+
+
+
+      if (#levelcount[Cleric] >= 8) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Cleric Level 1"><![CDATA[#levelcount[Cleric] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CClCnVr" name="Cantrip Versatility" description="When you reach a level in this class that provides the Ability Score Improvement feature, you can choose one cantrip that you learned from its Spellcasting feature. You may replace that cantrip with another one from the cleric spell list." compset="ClSpecial" summary="Switch out a cantrip when you gain an ASI." maxlimit="1">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="5CCFVClr" name="Cleric Variant Features"/>
+    <tag group="ClSpecWhen" tag="4"/>
+    <tag group="SpecSource" tag="cHelpClr"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="500"><![CDATA[
+
+     doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Cleric] >= 4) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Cleric Level 1"><![CDATA[#levelcount[Cleric] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CDrCnVr" name="Cantrip Versatility" description="When you reach a level in this class that provides the Ability Score Improvement feature, you can choose one cantrip that you learned from its Spellcasting feature. You may replace that cantrip with another one from the druid spell list." compset="ClSpecial" summary="Switch out a cantrip when you gain an ASI." maxlimit="1">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="5CCFVDrd" name="Druid Variant Features"/>
+    <tag group="ClSpecWhen" tag="4"/>
+    <tag group="SpecSource" tag="cHelpDrd"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="500"><![CDATA[
+
+     doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Druid] >= 4) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Druid Level 1"><![CDATA[#levelcount[Druid] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CHrDvPw" name="Channel Divinity: Harness Divine Power" description="You can use a bonus action to expend one use of your Channel Divinity feature. You regain one expended spell slot, of a level no greater than half your proficiency bonus, rounded up. You can do this a number of times that depends on your level in this class; once at 2nd level, twice at 6th level, and thrice at 18th level. You regain all spent uses of this when you complete a long rest." compset="ClSpecial" summary="Use Channel Divinity to regain a spell slot." maxlimit="1">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="2"/>
+    <tag group="SpecSource" tag="cHelpClr"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CCFVClr" name="Cleric Variant Features"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr" index="2"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+     var HPro as number
+     var trail as string
+     HPro = round(hero.childfound[ProfBonus].field[tProfBonus].value / 2,0,1)
+     
+     if (HPro = 1) then
+       trail = "st"
+     elseif (HPro = 2) then
+       trail = "nd"
+     elseif (HPro = 3) then
+       trail = "rd"
+     else
+       trail = "th"
+     endif
+
+     field[abText].text = HPro & trail & " Level"]]></eval>
+    <eval phase="Final" priority="500"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+
+     if (#levelcount[Cleric] >= 2) then
+      perform assign[Helper.ShowSpec]
+      endif
+
+     if (#levelcount[Cleric] >= 6) then
+      field[trkMax].value += 1
+      endif
+
+     if (#levelcount[Cleric] >= 18) then
+      field[trkMax].value += 1
+      endif]]></eval>
+    <exprreq message="Requires Cleric Level 1"><![CDATA[#levelcount[Cleric] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CPlHrDP" name="Channel Divinity: Harness Divine Power" description="You can use a bonus action to expend one use of your Channel Divinity feature. You regain one expended spell slot, of a level no greater than half your proficiency bonus, rounded up. You can do this a number of times that depends on your level in this class; once at 3rd level, twice at 7th level, and thrice at 15th level. You regain all spent uses of this when you complete a long rest." compset="ClSpecial" summary="Use Channel Divinity to regain a spell slot." maxlimit="1">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="3"/>
+    <tag group="SpecSource" tag="cHelpPal"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CCFVPal"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr" index="2"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+     var HPro as number
+     var trail as string
+     HPro = round(hero.childfound[ProfBonus].field[tProfBonus].value / 2,0,1)
+     
+     if (HPro = 1) then
+       trail = "st"
+     elseif (HPro = 2) then
+       trail = "nd"
+     elseif (HPro = 3) then
+       trail = "rd"
+     else
+       trail = "th"
+     endif
+
+     field[abText].text = HPro & trail & " Level"]]></eval>
+    <eval phase="Final" priority="500"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+
+     if (#levelcount[Paladin] >= 3) then
+      perform assign[Helper.ShowSpec]
+      endif
+
+     if (#levelcount[Paladin] >= 7) then
+      field[trkMax].value += 1
+      endif
+
+     if (#levelcount[Paladin] >= 15) then
+      field[trkMax].value += 1
+      endif]]></eval>
+    <exprreq message="Requires Paladin Level 1"><![CDATA[#levelcount[Paladin] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CBrdMgInsp" name="Magical Inspiration" description="A creature with one of your Bardic Inspiration dice can roll it and add the number rolled to one damage or healing roll of a spell they cast. This bonus only applies to one target, of the inspired creature&apos;s choice, of the spell. This expends that inspiration die." compset="ClSpecial" summary="Inspiration dice can be used for spells." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVBrd" name="Bard Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="2"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (#levelcount[Bard] >= 2) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Bard Level 1"><![CDATA[#levelcount[Bard] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CBrdVersat" name="Bardic Versatility" description="Each time you reach a level in this class that provides the Ability Score Improvement feature, you can choose to do one of the following:\n• You can choose one cantrip that you learned from this class&apos;s Spellcasting feature. You may replace that cantrip with another one from the bard spell list.\n• You can switch one of the skills you chose for Expertise for another skill that is not already benefitting from Expertise." compset="ClSpecial" summary="Switch out a cantrip or expertise when you gain an ASI." maxlimit="1">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="5CCFVBrd"/>
+    <tag group="ClSpecWhen" tag="4"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="500"><![CDATA[
+
+     doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Bard] >= 4) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Bard Level 1"><![CDATA[#levelcount[Bard] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CBbnInsPnc" name="Instinctive Pounce" description="When you use a bonus action to rage, you can also move up to half your speed." compset="ClSpecial" summary="Move half your speed when you begin raging." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVBbn" name="Barbarian Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="7"/>
+    <tag group="SpecSource" tag="cHelpBbn"/>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Barbarian] >= 7) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Barbarian level 1"><![CDATA[#levelcount[Barbarian] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CBbnPriKnw" name="Primal Knowledge" description="At 3rd level and again at 10th level you gain proficiency in another skill of your choice from the list available to barbarians." compset="ClSpecial" summary="Gain new skill proficiencies at levels 3 and 10." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVBbn" name="Barbarian Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="3"/>
+    <tag group="SpecSource" tag="cHelpBbn"/>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Barbarian] >= 3) then
+      perform assign[Helper.ShowSpec]
+      hero.childfound[cHelpBbn].field[cSkillMax].value += 1
+      endif
+
+      if (#levelcount[Barbarian] >= 10) then
+      hero.childfound[cHelpBbn].field[cSkillMax].value += 1
+      endif]]></eval>
+    <exprreq message="Requires Barbarian level 1"><![CDATA[#levelcount[Barbarian] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CMrtVrs" name="Martial Versatility" description="Each time you reach a level in this class that provides the Ability Score Improvement feature, you can choose to do one of the following:\n• Replace a fighting style you know with another one available to fighters.\n• Replace one maneuver you know from the Battle Master archetype with another one, if you know any." compset="ClSpecial" summary="You can replace a fighting style or maneuver when you gain an ASI." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVFtr" name="Fighter Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="4"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Fighter] >= 4) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Fighter Level 1"><![CDATA[#levelcount[Fighter] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CFtrBlndFi" name="Blind Fighting" description="You have blindsight within 10 ft. In that range, you can perceive anything not behind total cover, regardless of whether you&apos;re blinded or in magical darkness. Also, you can likewise see invisible creatures within that 10 ft. range, unless it is successfully hiding from you." compset="CustomSpec" summary="You don&apos;t have disadvantage when fighting blind." uniqueness="unique">
+    <fieldval field="abRange" value="10"/>
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpRgr" name="Ranger" abbrev="Ranger"/>
+    <tag group="SpecSource" tag="cHelpSRg" name="Ranger (spellless)" abbrev="Ranger (spellless)"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="FtrFigStyl" name="Fighter Fighting Style" abbrev="Fighter Fighting Style"/>
+    <tag group="abCategory" tag="PalFigStyl" name="Paladin Fighting Style" abbrev="Paladin Fighting Style"/>
+    <tag group="abCategory" tag="RgrFigStyl" name="Ranger Fighting Style" abbrev="Ranger Fighting Style"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="SpecSource" tag="cHelpPal" name="Paladin" abbrev="Paladin"/>
+    <tag group="abRange" tag="Feet"/>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="10"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CFtrSupTch" name="Superior Technique" description="You learn a maneuver of your choice from the options available to the Fighter&apos;s Battle Master archetype. If the maneuver requires your target to make a saving throw, that save&apos;s DC equals 8 + your proficiency bonus + your choice of either your Strength or Dexterity modifier. You gain 1d6 as a superiority die, which is added to any such dice you have from another source. This die is used to fuel the learned maneuver, and is expended when you use it. You regain it when you finish a short or long rest." compset="CustomSpec" summary="Learn a Battle Master maneuver." uniqueness="unique">
+    <fieldval field="abValue2" value="6"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aSTR | IsAttr.aDEX)"/>
+    <usesource source="5eTCoE"/>
+    <tag group="abCategory" tag="FtrFigStyl" name="Fighter Fighting Style" abbrev="Fighter Fighting Style"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="LvNamePar" tag="SignAppVal" name="Sign appended value" abbrev="Sign appended value"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="LvNamePar" tag="AppValue3" name="Append &quot;field[abValue3].value&quot;" abbrev="Append &quot;field[abValue3].value&quot;"/>
+    <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
+    <tag group="LvNamePar" tag="DieSizVal2" name="Xd &quot;field[abValue2].value&quot;" abbrev="Xd &quot;field[abValue2].value&quot;"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <bootstrap thing="cfg5CMarAd"></bootstrap>
+    <eval phase="PostLevel" priority="15000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ If we already have the Superiority class ability increase
+      ~ the number of dice by 1.
+      if (hero.childlives[c5CFtrSupD] + hero.childfound[c5CFtrSupD].tagis[Helper.ShowSpec] = 2) then        
+        #trkmax[c5CFtrSupD] += 1
+
+      ~..Show ourself on the In-Play tab
+      else
+         perform assign[User.Tracker]
+      endif
+
+hero.childfound[cfg5CMarAd].field[cfgMax3].value += 1]]></eval>
+    <eval phase="PostLevel" priority="9000" index="2"><![CDATA[       if (field[usrChosen1].ischosen <> 0) then
+         perform field[usrChosen1].chosen.pulltags[StandardDC.?]
+         endif]]></eval>
+    </thing>
+  <thing id="c5CFtrRstStr" name="Grappling Strike" description="Immediately after hitting a creature with a melee weapon attack on your turn, you can spend one superiority die to attempt to grapple that target with a bonus action. Add the die to the Strength (Athletics) check you make for the grapple." compset="CustomSpec" summary="Spend a superiority die to add a grapple to an attack." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver" abbrev="Fighter Battle Master Maneuver"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    </thing>
+  <thing id="c5CFtrBaiSwi" name="Bait and Switch" description="While within 5 feet of a creature on your turn, you can spend one superiority die and 5 feet of movement to switch places with them, without provoking opportunity attacks. The creature must be willing and not incapacitated. Roll the superiority die and add the result to your or the ally&apos;s AC until the beginning of your next turn." compset="CustomSpec" summary="Swap places with an ally and add a superiority die to your or their AC." uniqueness="unique">
+    <fieldval field="abRange" value="5"/>
+    <fieldval field="abDuration" value="1"/>
+    <usesource source="5eTCoE"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver" abbrev="Fighter Battle Master Maneuver"/>
+    <tag group="abAction" tag="Free" name="Free" abbrev="Free"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Round"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    </thing>
+  <thing id="c5CFtrBrace" name="Brace" description="When a creature visible to you moves within reach of your currently-held weapon, you can use a reaction to spend one superiority die. Make one weapon attack with that weapon against the creature. If it hits, add the superiority die to the damage." compset="CustomSpec" summary="Spend a superiority die to make a reaction attack against an advancing enemy." uniqueness="unique">
+    <fieldval field="abRange" value="5"/>
+    <usesource source="5eTCoE"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver" abbrev="Fighter Battle Master Maneuver"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    </thing>
+  <thing id="c5CFtrAmbush" name="Ambush" description="You can expend one superiority die to add it to the roll of one of your Dexterity (Stealth) checks or initiative rolls. You cannot be incapacitated to do this." compset="CustomSpec" summary="Add superiorty die to initiative or stealth." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abAction" tag="Free" name="Free" abbrev="Free"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver" abbrev="Fighter Battle Master Maneuver"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    </thing>
+  <thing id="c5CFtrComPrs" name="Commanding Presence" description="You can spend one superiority die and add it to a Charisma (Deception, Intimidation, or Persuasion) ability check." compset="CustomSpec" summary="Add a superiority die to a Charisma skill&apos;s check." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abAction" tag="Free" name="Free" abbrev="Free"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver" abbrev="Fighter Battle Master Maneuver"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    </thing>
+  <thing id="c5CFtrQuikTs" name="Quick Toss" description="You can use a bonus action to spend one superiority die and make a ranged weapon attack with a weapon that has the thrown property. As part of making the attack, you can draw the weapon. If the attack hits, add the superiority die to the attack&apos;s damage." compset="CustomSpec" summary="Spend a superiority die to add it to a thrown weapon attack." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver" abbrev="Fighter Battle Master Maneuver"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    </thing>
+  <thing id="c5CFtrTacAss" name="Tactical Assessment" description="You can spend one superiority die and add it to a Wisdom (Insight), Intelligence (History), or Intelligence (Investigation) ability check." compset="CustomSpec" summary="Add a superiority die to an Insight, History, or Investigation check." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abAction" tag="Free" name="Free" abbrev="Free"/>
+    <tag group="abCategory" tag="FtrBMasMan" name="Fighter Battle Master Maneuver" abbrev="Fighter Battle Master Maneuver"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    </thing>
+  <thing id="c5CFtrIntrcp" name="Interception" description="When a creature visible to you hits a target within 5 feet of you (you don&apos;t count) with an attack, you can take a reaction to reduce the damage by 1d10 + your proficiency bonus (down to a minimum of 0 damage). You can only use this reaction if you&apos;re wielding a shield, a simple weapon, or a martial weapon." compset="CustomSpec" summary="Use reaction to reduce damage done to adjacent creature." uniqueness="unique">
+    <fieldval field="abRange" value="5"/>
+    <usesource source="5eTCoE"/>
+    <tag group="abCategory" tag="FtrFigStyl" name="Fighter Fighting Style" abbrev="Fighter Fighting Style"/>
+    <tag group="abCategory" tag="PalFigStyl" name="Paladin Fighting Style" abbrev="Paladin Fighting Style"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="SpecSource" tag="cHelpPal" name="Paladin" abbrev="Paladin"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <eval phase="PostAttr"><![CDATA[var prof as number
+
+prof = hero.childfound[ProfBonus].field[tProfBonus].value
+
+field[abText].text = "1d10+" & prof]]></eval>
+    </thing>
+  <thing id="c5CFtrThWpFi" name="Thrown Weapon Fighting" description="You are able to draw a weapon that has the thrown property as part of an attack you&apos;re making with that weapon.\n\nAdditionally, when you hit with a ranged attack using a thrown weapon, you get a +2 bonus to the damage rolled." compset="CustomSpec" summary="+2 Bonus to thrown weapon damage and can easily draw them." uniqueness="unique">
+    <fieldval field="abValue" value="2"/>
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpRgr" name="Ranger" abbrev="Ranger"/>
+    <tag group="SpecSource" tag="cHelpSRg" name="Ranger (spellless)" abbrev="Ranger (spellless)"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="FtrFigStyl" name="Fighter Fighting Style" abbrev="Fighter Fighting Style"/>
+    <tag group="abCategory" tag="RgrFigStyl" name="Ranger Fighting Style" abbrev="Ranger Fighting Style"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="SpecSource" tag="cHelpFtr" name="Fighter" abbrev="Fighter"/>
+    <tag group="SpecSource" tag="cHelpRgC" name="Ranger (Sept 2016)" abbrev="Ranger (Sept 2016)"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      foreach pick in hero from BaseWep where "wCategory.RangeThrow"
+        eachpick.field[dmrBonus].value += field[abValue].value
+        nexteach]]></eval>
+    </thing>
+  <thing id="c5CFtrUnaFig" name="Unarmed Fighting" description="Your unarmed strikes can deal bludgeoning damage equal to 1d6 (1d8 if you&apos;re not wielding a shield or any weapons when you make the attack) + your Strength modifier. \n\nAlso, at the beginning of each of your turns, you can deal 1d4 bludgeoning damage to one creature you&apos;re grappling." compset="CustomSpec" summary="Unarmed strikes and grapples deal more damage" uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpFtr"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="abCategory" tag="FtrFigStyl"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <eval phase="PostLevel" priority="15000"><![CDATA[
+      ~ If we're disabled, do nothing  
+      doneif (tagis[Helper.Disable] <> 0)
+
+field[wDieCount].value = 1
+field[wDieSize].value = 6
+
+var dsz as number
+dsz = 3.5
+
+      ~ If we don't have a weapon in each hand, set die size to 8 
+
+
+if (hero.tagis[Hero.EquipMain] + hero.tagis[Hero.EquipOff] = 0) then
+dsz += 1
+field[wDieSize].value += 2
+endif
+
+      var curdicenum as number
+      var curdicesiz as number
+      var curwepavg as number
+
+
+      foreach pick in hero from BaseWep where "IsWeapon.wUnarmed"
+
+    ~See if our replacement damage would offer a better average damage than what the weapon can currently deal
+
+        curdicenum = eachpick.field[wDieCount].value
+        curdicesiz = eachpick.field[wDieSize].value
+
+~debug "curdicenum is " & curdicenum
+~debug "curdicesiz is " & curdicesiz
+
+        curwepavg = (curdicesiz + 1)/2
+        curwepavg *= curdicenum
+
+        if (dsz > curwepavg) then
+
+          eachpick.field[wDieCount].value = field[wDieCount].value
+          eachpick.field[wDieSize].value = field[wDieSize].value
+          endif
+        nexteach]]></eval>
+    </thing>
+  <thing id="c5CMnkQkHeal" name="Quickened Healing" description="You can use an action to spend 2 ki points, rolling one Martial Arts die. You regain hit points equal to the number rolled plus your proficiency bonus." compset="ClSpecial" summary="Spend 2 ki to regain hit points from a Martial Arts die." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVMnk" name="Monk Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="4"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Monk] >= 4) then
+      perform assign[Helper.ShowSpec]
+      endif
+
+      field[abText].text = hero.childfound[cMnkMarArt].field[abText].text & "+" & hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    <exprreq message="Requires Monk Level 1"><![CDATA[#levelcount[Monk] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CMnkKiFuAt" name="Ki-Fueled Attack" description="If you have spent 1 or more ki as part of your action for your turn, you can use a bonus action to make an unarmed strike or monk weapon attack before the end of your turn." compset="ClSpecial" summary="Make an attack as a bonus action if you&apos;ve spent ki." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVMnk" name="Monk Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="ClSpecWhen" tag="3"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (#levelcount[Monk] >= 3) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Monk Level 1"><![CDATA[#levelcount[Monk] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CMnkFocAim" name="Focused Aim" description="When you miss with an attack roll, you can spend between 1 and 3 ki points. For every ki point spent this way, increase your attack roll by 2. This potentially turns the miss into a hit." compset="ClSpecial" summary="Spend ki to cause a miss to become a hit." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVMnk" name="Monk Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="ClSpecWhen" tag="5"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (#levelcount[Monk] >= 5) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Monk Level 1"><![CDATA[#levelcount[Monk] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CMnkDedWep" name="Dedicated Weapon" description="You can choose a weapon other than just a melee weapon or shortsword to serve as your monk weapon. At the end of a short or long rest, you can touch one weapon, focus your ki on it, and count it as a monk weapon until you use this ability again. The weapon must be simple or martial, you must be proficient with it, and it cannot have the heavy or special properties." compset="ClSpecial" summary="Chose a weapon to serve as your monk weapon." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVMnk" name="Monk Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="2"/>
+    <tag group="SpecSource" tag="cHelpMnk"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <bootstrap thing="c5CMnkDedWea"></bootstrap>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Monk] >= 2) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Monk Level 1"><![CDATA[#levelcount[Monk] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CMnkDedWea" name="Dedicated Weapon" description="Select the weapon you will use as your monk weapon." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="usrCandid1" value="Helper.Proficient &amp; (wProfReq.Martial|wProfReq.Simple) &amp; !wProperty.Heavy &amp; !wProperty.Special"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PreLevel" priority="20000"><![CDATA[doneif (tagis[Helper.Disable] = 1)
+doneif (field[usrChosen1].ischosen = 0)
+      
+~ Now mark the weapon as martial arts so it grabs the proper
+~ damage and attribute tags
+var searchexpr as string
+searchexpr = "(" & field[usrChosen1].chosen.tagids[IsWeapon.?,"|"]  & ")"
+
+~ push the martial arts tag to any weapons chosen
+foreach pick in hero from BaseWep where searchexpr
+  perform eachpick.assign[Special.MartArts]
+nexteach]]></eval>
+    </thing>
+  <thing id="c5CPalMrtVrs" name="Martial Versatility" description="Each time you reach a level in this class that provides the Ability Score Improvement feature, you can choose to replace a fighting style you know with another one available to paladins." compset="ClSpecial" summary="You can replace a fighting style when you gain an ASI." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVPal" name="Paladin Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="4"/>
+    <tag group="SpecSource" tag="cHelpPal"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Paladin] >= 4) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Paladin Level 1"><![CDATA[#levelcount[Paladin] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CPalBlsdWr" name="Blessed Warrior" description="You can choose two cantrips to learn from the cleric spell list. They are considered paladin spells for you, and you use Charisma as your spellcasting ability for them. You can replace one of them with another from the cleric spell list each time you level in this class." compset="CustomSpec" summary="Learn 2 cleric cantrips." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="SpecSource" tag="cHelpPal"/>
+    <tag group="abCategory" tag="PalFigStyl"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform linkage[table].assign[Helper.HasSplExp]
+
+      linkage[table].field[cSpExAllw].value = 2
+      linkage[table].field[cSpExLst].text = "component.BaseSpell & sLevel.0 & sClass.cHelpClr"
+      linkage[table].field[cSpExLstNm].text = "Cleric Cantrips"
+
+      foreach pick in hero from BaseSpell where "portal.ClsExSpLis & SplListExp.cHelpPal"
+        perform eachpick.delete[Helper.OldCasting]
+        perform eachpick.assign[Helper.Cantrip]
+
+        perform eachpick.assign[Helper.Free]
+        eachpick.field[sNameMod].text = splice(eachpick.field[sNameMod].text,"Blessed Warrior",", ")
+        nexteach]]></eval>
+    </thing>
+  <thing id="c5CSorTrnSpl" name="Transmuted Spell" description="When you cast a spell that deals acid, cold, fire, lightning, poison, or thunder damage, you can spend 1 sorcery point to change the damage type to a different one from that list." compset="CustomSpec" summary="Change one elemental damage type to another with a sorcery point." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpSor" name="Sorcerer" abbrev="Sorcerer"/>
+    <tag group="abAction" tag="Free" name="Free" abbrev="Free"/>
+    <tag group="abCategory" tag="SorMetamag" name="Sorcerer Metamagic Ability" abbrev="Sorcerer Metamagic Ability"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    </thing>
+  <thing id="c5CSorSkgSpl" name="Seeking Spell" description="If you miss with a spell&apos;s attack roll, you can spend 2 sorcery points to reroll it. You must use the second roll.\n\nYou can use Seeking Spell even if you already used another Metamagic option when you cast the spell." compset="CustomSpec" summary="Spend 2 sorcery points to reroll spell attack" uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpSor" name="Sorcerer" abbrev="Sorcerer"/>
+    <tag group="abAction" tag="Free" name="Free" abbrev="Free"/>
+    <tag group="abCategory" tag="SorMetamag" name="Sorcerer Metamagic Ability" abbrev="Sorcerer Metamagic Ability"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    </thing>
+  <thing id="c5CStdAim" name="Steady Aim" description="You can use a bonus action to aim your next attack, granting yourself advantage on your next attack roll this turn. You can only use this bonus action if you have not moved yet this turn, and your speed is reduced to 0 for the rest of the turn once you have used it." compset="ClSpecial" summary="Bonus action to grant yourself bonus on next attack roll." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVRog" name="Rogue Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="3"/>
+    <tag group="SpecSource" tag="cHelpRog"/>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (#levelcount[Rogue] >= 3) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Rogue Level 1"><![CDATA[#levelcount[Rogue] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CRgrFavFoe" name="Favored Foe" description="When you hit an enemy with an attack roll, you can mark is as a favored enemy for 1 minute, or until you lose concentration (as if you were concentrating on a spell). \n\nThe first time on each of your turns that you hit that marked enemy and deal damage to it, including the first hit on which you marked it, you can add 1d4 to the total damage. \n\nYou can use this feature a number of times equal to your proficiency bonus, and you regain all spent uses of it at the end of a long rest. \n\nThe damage increases to 1d6 when you reach 6th level, and 1d8 when you reach 14th level.\n\n{i}Replaces Favored Enemy, but works with Foe Slayer{/i}" compset="ClSpecial" summary="Can mark an enemy as a favored foe, dealing extra damage to it." maxlimit="1">
+    <fieldval field="trkMax" value="2"/>
+    <fieldval field="abText" value="1d4"/>
+    <tag group="ClSpecWhen" tag="1"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abCategory" tag="5CCFVRgr" name="Ranger Variant Features"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr" index="3"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    <eval phase="PostLevel" priority="500" index="4"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+
+     if (#levelcount[Ranger] >= 14) then
+      field[abText].text = "1d8"    
+     elseif (#levelcount[Ranger] >= 6) then
+      field[abText].text = "1d6"  
+     endif]]></eval>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (#levelcount[Ranger] >= 1) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <eval phase="PostLevel" priority="500" index="2"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+     doneif (#levelcount[Ranger] < 1)
+
+     hero.child[cHelpRgr].field[cCustTeTot].arrayvalue[0] = 0
+
+     hero.child[cHelpRgr].field[cCustTeTot].arrayvalue[5] = 0
+
+     hero.child[cHelpRgr].field[cCustTeTot].arrayvalue[14] = 0]]></eval>
+    <exprreq message="Requires Ranger Level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CRgrSpeFoc" name="Spellcasting Focus" description="You are able to use a druidic focus as the spellcasting focus for your ranger spells. The Player&apos;s Handbook lists some items that can be used as druidic foci in Chapter 5." compset="ClSpecial" summary="Use a druidic focus as a spellcasting focus." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVRgr" name="Ranger Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="2"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (#levelcount[Ranger] >= 2) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Ranger Level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CRgrPriAwr" name="Primal Awareness" description="You can learn additional spells when you reach certain levels with this class. These spells don&apos;t count against the number of ranger spells you know, and can each be cast once without expending a spell slot. Each spell recharges at the end of a long rest.\n\n3rd          {i}speak with animals{/i}\n5th          {i}beast sense{/i}\n9th          {i}speak with plants{/i}\n13th        {i}locate creature{/i}\n17th        {i}commune with nature{/i}\n\n{i}Replaces Primeval Awareness{/i}" compset="ClSpecial" summary="Gain additional spells at certain levels." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVRgr" name="Ranger Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="3"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <bootstrap thing="spSpeaAnim">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Ranger >= 3]]></containerreq>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="sp5CBeastS">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Ranger >= 5]]></containerreq>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSpeaPlan">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Ranger >= 9]]></containerreq>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLocaCrea">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Ranger >= 13]]></containerreq>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCommNatu">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Ranger >= 17]]></containerreq>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="500"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (#levelcount[Ranger] < 1)
+
+perform hero.childfound[cRgrPriAwa].tagreplace[Helper.ShowSpec,Helper.Disable]
+perform hero.childfound[cRgrPriAwa].delete[SpecSource.?]
+
+
+      if (#levelcount[Ranger] >= 3) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Ranger Level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CRngMrVrs" name="Martial Versatility" description="Each time you reach a level in this class that provides the Ability Score Improvement feature, you can choose to replace a fighting style you know with another one available to rangers." compset="ClSpecial" summary="You can replace a fighting style when you gain an ASI." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVRgr" name="Ranger Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="4"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Ranger] >= 4) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Ranger Level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CRgrDftExp" name="Deft Explorer" description="At levels 1, 6, and 10, you can pick a benefit due to your skills as an explorer:\n\n{b}Canny{/b} - At level 1, you get double proficiency in a particular skill of your choice, as well as learn two languages.\n\n{b}Roving{/b} - At level 6, you gain 5 movement speed and climbing and swimming speeds.\n\n{b}Tireless{/b} - At level 10, you can grant yourself temporary hit points. You also reduce exhaustion on a short rest.\n\n{i}Replaces Natural Explorer. Due to programming limitations, you will need to select each of these from the drop-down that appears below.{/i}" compset="ClSpecial" summary="Gain new benefits as an explorer." maxlimit="1">
+    <tag group="abCategory" tag="5CCFVRgr" name="Ranger Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClSpecWhen" tag="1"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <eval phase="Final" priority="500" index="2"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (#levelcount[Ranger] >= 1) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <eval phase="PostLevel" priority="500"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (#levelcount[Ranger] < 1)
+
+     hero.child[cHelpRgr].field[cCustQuTot].arrayvalue[0] = 0
+     hero.child[cHelpRgr].field[cCustQuTot].arrayvalue[5] = 0
+     hero.child[cHelpRgr].field[cCustQuTot].arrayvalue[9] = 0]]></eval>
+    <eval phase="First" priority="8201" index="3"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+
+     hero.childfound[cfg5CTashVar].field[cfgMax3].value += 3
+     hero.childfound[cfg5CTashVar].field[cfgAllow3].text &= "abCategory.5CCFVRDfEx"
+     hero.childfound[cfg5CTashVar].field[cfgObject3].text = "Deft Explorer Features"]]></eval>
+    <exprreq message="Requires Ranger Level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CRgrDftCny" name="Canny" description="You ability checks with one of your skill proficiencies use double your proficiency bonus. \n\nYou also are able to speak, read, and write two languages of your choice.\n\n{i}Due to programming limitations, you&apos;ll need to go to the In-Play tab to choose the proficiency, and the Background tab to choose your langauges.{/i}" compset="ClSpecial" summary="Additional skill proficiencies and languages." maxlimit="1">
+    <tag group="ClSpecWhen" tag="1"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="abCategory" tag="5CCFVRDfEx" name="Ranger Deft Explorer Features"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <bootstrap thing="c5CRgrCanny"></bootstrap>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+    hero.childfound[resLangBck].field[resMax].value += 2]]></eval>
+    <eval phase="Final" priority="500" index="3"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (#levelcount[Ranger] >= 1) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <eval phase="Final" priority="50001" index="4"><![CDATA[
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.childfound[cfg5CTashVar].field[cfgLeft3].value -= 1]]></eval>
+    <exprreq message="Requires Ranger Level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CRgrCanny" name="Canny" compset="CustomSpec" uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.BaseSkill &amp; Helper.Proficient &amp; !Hide.Skill"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[     if (field[usrChosen1].ischosen <> 0) then
+       if (field[usrChosen1].chosen.tagis[component.BaseSkill] <> 0) then
+         perform field[usrChosen1].chosen.assign[Helper.ProfDouble]
+         endif
+       endif]]></eval>
+    </thing>
+  <thing id="c5CRgrRov" name="Roving" description="Your walking speed increases by 5 feet, and you gain swimming and climbing speeds equal to that new total walking speed." compset="ClSpecial" summary="Increase walking speed and be granted swimming and climbing speeds." maxlimit="1">
+    <tag group="ClSpecWhen" tag="6"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="abCategory" tag="5CCFVRDfEx" name="Ranger Deft Explorer Features"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <eval phase="Final" priority="500" index="3"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (#levelcount[Ranger] >= 6) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <eval phase="Final" priority="50001" index="4"><![CDATA[
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.childfound[cfg5CTashVar].field[cfgLeft3].value -= 1]]></eval>
+    <eval phase="PostAttr" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (#levelcount[Ranger] < 6)
+hero.child[Speed].field[tSpeed].value += 5]]></eval>
+    <eval phase="Final"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      doneif (#levelcount[Ranger] < 6)
+
+     var myspeed as number
+     myspeed = hero.child[Speed].field[tSpeed].value
+
+     hero.child[xClimb].field[abValue].value = myspeed
+     hero.child[xSwim].field[abValue].value = myspeed]]></eval>
+    <exprreq message="Requires Ranger Level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CRgrTirele" name="Tireless" description="You can use an action to grant yourself temporary hit points equaling 1d8 + your Wisdom modifier (minimum of 1). You can use this action a number of times equal to your proficiency bonus, and regain all uses of it at the end of a long rest. \n\nYour exhaustion level also decreases by 1 at the end of a short rest." compset="ClSpecial" summary="Give yourself temporary hit points." maxlimit="1">
+    <tag group="ClSpecWhen" tag="10"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <tag group="abCategory" tag="5CCFVRDfEx" name="Ranger Deft Explorer Features"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="ShowStatbl"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final" priority="500" index="3"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (#levelcount[Ranger] >= 10) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <eval phase="PreAttr" priority="10000" index="5"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    <eval phase="Final" index="6"><![CDATA[
+   doneif (tagis[Helper.Disable] <> 0)
+
+   var wis as number
+   
+   wis = hero.childfound[aWIS].field[aBonus].value
+   wis = maximum(1,wis)  
+
+   wis = signed(wis)
+
+   field[abText].text = "1d8" & signed(wis) & " Temp HP"]]></eval>
+    <eval phase="Final" priority="50001" index="4"><![CDATA[
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.childfound[cfg5CTashVar].field[cfgLeft3].value -= 1]]></eval>
+    <exprreq message="Requires Ranger Level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CSorVersat" name="Sorcerous Versatility" description="Each time you reach a level in this class that provides the Ability Score Improvement feature, you can choose to do one of the following:\n• You can choose one cantrip that you learned from this class&apos;s Spellcasting feature. You may replace that cantrip with another one from the sorcerer spell list.\n• You can switch one of the Metamagic features you chose with a different one of the Metamagic options available to you." compset="ClSpecial" summary="Switch out a cantrip or Metamagic when you gain an ASI." maxlimit="1">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="5CCFVSor" name="Sorcerer Variant Features"/>
+    <tag group="ClSpecWhen" tag="4"/>
+    <tag group="SpecSource" tag="cHelpSor"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="500"><![CDATA[
+
+     doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Sorcerer] >= 4) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Sorcerer Level 1"><![CDATA[#levelcount[Sorcerer] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CSorMagGui" name="Magical Guidance" description="When you fail on an ability check, you can spend a sorcery point to reroll the d20. You must use the new roll, but this reroll potentially turns the failure into a success." compset="ClSpecial" summary="Spend a sorcery point to reroll a failed ability check." maxlimit="1">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="5CCFVSor"/>
+    <tag group="ClSpecWhen" tag="5"/>
+    <tag group="SpecSource" tag="cHelpSor"/>
+    <eval phase="Final" priority="500"><![CDATA[
+
+     doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Sorcerer] >= 5) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Sorcerer Level 1"><![CDATA[#levelcount[Sorcerer] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CWlkEldVer" name="Eldritch Versatility" description="Each time you reach a level in this class that provides the Ability Score Improvement feature, you can choose to do one of the following:\n• Choose one cantrip that you learned from this class&apos;s Spellcasting feature. You may replace that cantrip with another one from the warlock spell list.\n• Replace your chosen Pact Boon with a different one.\n• If you have a Mystic Arcanum spell, you may replace it with another warlock spell of the same level/" compset="ClSpecial" summary="Switch out a cantrip, Pact Boon, or Mystic Arcanum when you gain an ASI." maxlimit="1">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="5CCFVWlk" name="Warlock Variant Features"/>
+    <tag group="ClSpecWhen" tag="4"/>
+    <tag group="SpecSource" tag="cHelpWlk"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="500"><![CDATA[
+
+     doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Warlock] >= 4) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Warlock Level 1"><![CDATA[#levelcount[Warlock] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CWizCntFrm" name="Cantrip Formulas" description="Whenever you finish a long rest, you can consult the cantrip formulas you&apos;ve written into your spellbook. You may swap one wizard cantrip you know with another from the wizard spell list." compset="ClSpecial" summary="Switch out a cantrip at the end of a long rest." maxlimit="1">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="abCategory" tag="5CCFVWiz" name="Wizard Variant Features"/>
+    <tag group="ClSpecWhen" tag="3"/>
+    <tag group="SpecSource" tag="cHelpWiz"/>
+    <eval phase="Final" priority="500"><![CDATA[
+
+     doneif (tagis[Helper.Disable] <> 0)
+
+
+      if (#levelcount[Wizard] >= 3) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Wizard Level 1"><![CDATA[#levelcount[Wizard] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CDrdWldCmp" name="Wild Companion" description="You can use an action to expend one use of your Wild Shape feature to cast {i}find familiar{/i} without material components. The familiar is fey, and disappears after a number of hours equal to half your druid level." compset="ClSpecial" summary="Use Wild Shape to summon a familiar" maxlimit="1">
+    <tag group="abCategory" tag="5CCFVDrd" name="Druid Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="2"/>
+    <tag group="SpecSource" tag="cHelpDrd"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="SpInfo" tag="spFindFami"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostLevel" index="2"><![CDATA[var level as number
+var plural as string
+
+level = hero.tagcount[Classes.Druid]
+
+level /= 2
+
+if (level <= 1) then
+plural = " hour"
+else
+plural = " hours"
+endif
+
+field[abText].text = level & plural]]></eval>
+    <eval phase="First" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.childfound[cHelpDrd].assign[CompAvail.Familiar]]]></eval>
+    <eval phase="Final" priority="500" index="3"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (#levelcount[Druid] >= 2) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <exprreq message="Requires Druid Level 1"><![CDATA[#levelcount[Druid] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CWlkPacTal" name="Pact of the Talisman" description="Your patron grants you a special talisman, an amulet to aid you or whoever&apos;s wearing it. The wearer can add 1d4 to a failed ability check, potentially turning the roll into a success. This feature can be used a number of time equal to your proficiency bonus. All spent uses of it are restored when you finish a long rest. \n\nYou can perform a 1-hour ceremony to replace a lost talisman during a short or long rest, destroying the previous amulet in the process. When you die, the talisman dissolves to ash.\n\n{i}If someone else is wearing the talisman, check the box in the In-Play tab and have them use the Pact of the Talisman adjustment on their character.{/i}" compset="CustomSpec" summary="Patron grants you a talisman that grants 1d4 on non-proficient ability checks." uniqueness="unique">
+    <fieldval field="actName" value="Worn by someone else?"/>
+    <usesource source="5eTCoE"/>
+    <tag group="abCategory" tag="WlkPacBoon" name="Warlock Pact Boon" abbrev="Warlock Pact Boon"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="Final" priority="500"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (field[abilActive].value <>0)
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+    perform assign[User.Tracker]
+    perform assign[Usage.LongRest]]]></eval>
+    </thing>
+  <thing id="p5CPctTalis" name="Warlock: Pact of the Talisman" description="A Warlock&apos;s patron has granted them a special talisman, which you are wearing. You can add 1d4 to a failed ability check, potentially turning the roll into a success. This feature can be used a number of time equal to the warlock&apos;s proficiency bonus. All spent uses of it are restored when they finish a long rest.\n\n{i}Note: Change the number on this adjustment to match the proficiency bonus of the warlock who provided this talisman to you.{/i}" compset="InPlay" summary="Add 1d4 to a failed ability check to potentially turn it into a success.">
+    <fieldval field="pMinimum" value="2"/>
+    <fieldval field="pMaximum" value="6"/>
+    <fieldval field="pDuration" value="Warlock Prof Bonus"/>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <bootstrap thing="ab5CWlkTalis"></bootstrap>
+    </thing>
+  <thing id="ab5CWlkTalis" name="Pact Talisman" description="A Warlock&apos;s patron has granted them a special talisman, which you are wearing. You can add 1d4 to a failed ability check, potentially turning the roll into a success. This feature can be used a number of time equal to the warlock&apos;s proficiency bonus. All spent uses of it are restored when they finish a long rest.\n\n{i}Note: Change the number on the adjustment to match the proficiency bonus of the warlock who provided this talisman to you.{/i}" compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="Final">field[trkMax].value = hero.childfound[p5CPctTalis].field[pAdjust].value</eval>
+    </thing>
+  <thing id="c5CWlkBndTal" name="Bond of the Talisman" description="If someone else is wearing your talisman and is on the same plane of existence as you, you can use an action to teleport to the open space closest to them. The wearer can likewise use an action to teleport to you. This teleporation can be used a number of times equal to your proficiency bonus, and regains all spent uses when you complete a long rest." compset="CustomSpec" summary="You and the wearer of your talisman can teleport to each other." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="Final" priority="500"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    <exprreq message="Warlock level 12 required"><![CDATA[#levelcount[Warlock] >= 12]]></exprreq>
+    <exprreq message="Pact of the Talisman required"><![CDATA[#hasability[c5CWlkPacTal] <> 0]]></exprreq>
+    </thing>
+  <thing id="c5CWlkFrScrb" name="Far Scribe" description="An additional page appears in your Book of Shadows. You can allow a creature to use an action to write its name on the page. The number of names that can be written there is equal to your proficiency bonus. You can use an action to touch a name, magically erasing it.\n\nYou can cast {i}sending{/i}, targeting a creature whose name is on the page and without using a spell slot or material components. To cast it, you write the message on the page. The target hears what you&apos;ve written in their mind. If they reply, the reply appears on the page instead of in your own mind. After one minute, the messages disappear from the page." compset="CustomSpec" summary="Cast the sending spell to people whose names are in your Book of Shadows." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <bootstrap thing="spSending">
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    <eval phase="Final"><![CDATA[var num as number
+
+num = hero.childfound[ProfBonus].field[tProfBonus].value
+
+num = maximum(1,num)
+
+field[abText].text = num & " names"]]></eval>
+    <exprreq message="Pact of the Tome required"><![CDATA[#hasability[cWlkPacTom] <> 0]]></exprreq>
+    <exprreq message="Warlock level 5 required"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CWlkEldMnd" name="Eldritch Mind" description="The Constitution saving throws you make to maintain concentration on a spell are made with advantage." compset="CustomSpec" summary="Make spell concentration saves with advantage." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <eval phase="Final"><![CDATA[
+
+#situational[hero.child[svCON], "Advantage to maintain concentration on spells", field[thingname].text]]]></eval>
+    <exprreq message="Pact of the Tome required"><![CDATA[#hasability[cWlkPacTom] <> 0]]></exprreq>
+    </thing>
+  <thing id="c5CWlkGftPrt" name="Gift of the Protectors" description="An additional page appears in your Book of Shadows. You can allow a creature to use an action to write its name on the page. The number of names that can be written there is equal to your proficiency bonus. You can use an action to touch a name, magically erasing it.\n\nWhen any creature whose name is on the page is reduced to 0 hit points without being outright killed, it instead magically drops to 1 hit point. Once that effect has occurred for any of the named creatures, it cannot happen again until you complete a long rest." compset="CustomSpec" summary="Prevent the death of people whose names are in your Book of Shadows." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eTCoE"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <eval phase="Final"><![CDATA[var num as number
+
+num = hero.childfound[ProfBonus].field[tProfBonus].value
+
+num = maximum(1,num)
+
+field[abText].text = num & " names"]]></eval>
+    <exprreq message="Pact of the Tome required"><![CDATA[#hasability[cWlkPacTom] <> 0]]></exprreq>
+    <exprreq message="Warlock level 9 required"><![CDATA[#levelcount[Warlock] >= 9]]></exprreq>
+    </thing>
+  <thing id="c5CWlkPrtTal" name="Protection of the Talisman" description="The wearer of your talisman can add 1d4 to the roll of a saving throw that they just failed, potentially making it a successful save. This feature can be use a number of times equal to your proficiency bonus, and regains all uses when you complete a long rest." compset="CustomSpec" summary="The talisman grants 1d4 to a failed save." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <eval phase="Final"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (hero.childfound[c5CWlkPacTal].field[abilActive].value <>0)
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+    perform assign[User.Tracker]
+    perform assign[Usage.LongRest]]]></eval>
+    <exprreq message="Warlock level 7 required"><![CDATA[#levelcount[Warlock] >= 7]]></exprreq>
+    <exprreq message="Pact of the Talisman required"><![CDATA[#hasability[c5CWlkPacTal] <> 0]]></exprreq>
+    </thing>
+  <thing id="ab5CWlkPrtT" name="Protection of the Talisman" description="While wearing the talisman given to you by the warlock, you can add 1d4 to the roll of a saving throw that you failed, potentially making it a successful save. This feature can be use a number of times equal to the warlock&apos;s proficiency bonus, and you regain all uses when they complete a long rest." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="Final">field[trkMax].value = hero.childfound[p5CPctTalis].field[pAdjust].value</eval>
+    </thing>
+  <thing id="p5CPrtTalis" name="Warlock: Protection of the Talisman" description="While wearing the talisman given to you by the warlock, you can add 1d4 to the roll of a saving throw that you failed, potentially making it a successful save. This feature can be use a number of times equal to the warlock&apos;s proficiency bonus, and you regain all uses when they complete a long rest." compset="InPlay" summary="Add 1d4 to a failed saving throw to potentially turn it into a success.">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <bootstrap thing="ab5CWlkPrtT"></bootstrap>
+    <pickreq thing="p5CPctTalis"/>
+    </thing>
+  <thing id="c5CWlkRebTal" name="Rebuke of the Talisman" description="When someone wearing your talisman is hit by an attacker visible to and within 30 feet of you, you can make a reaction to deal psychic damage equaling your proficiency bonus and push it up to 10 feet away from the creature wearing the talisman." compset="CustomSpec" summary="Use a reaction to deal psychic damage to an attacker." uniqueness="unique">
+    <fieldval field="abRange" value="30"/>
+    <usesource source="5eTCoE"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <eval phase="Final"><![CDATA[var num as number
+
+num = hero.childfound[ProfBonus].field[tProfBonus].value
+
+field[abText].text = num & " psychic"]]></eval>
+    <exprreq message="Pact of the Talisman required"><![CDATA[#hasability[c5CWlkPacTal] <> 0]]></exprreq>
+    </thing>
+  <thing id="c5CWlkUndSrv" name="Undying Servitude" description="You can cast the {i}animate dead{/i} spell once per long rest, without using a spell slot." compset="CustomSpec" summary="Cast animate dead once per long rest without a spell slot." uniqueness="unique">
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <bootstrap thing="spAnimDead">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <exprreq message="Warlock level 5 required"><![CDATA[#levelcount[Warlock] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CWlkInChMs" name="Investment of the Chain Master" description="{b}{i}Note{/b}{/i}: You must add the  Investment of the Chain Master adjustment to your minion for this invocation to fully function.\n\nThe familiar summoned by your {i}find familiar{/i} spell gains these benefits:\n\n• A swim or flight (your choice) speed of 40 feet.\n• It no longer needs to breathe.\n• You can use a bonus action to command the familiar to take the Attack action.\n• Its weapon attacks are now considered magical for the purpose of overcoming immunity and resistance to nonmagical attacks.\n• Any saving throws the familiar forces another creature to make are made against your spell save DC.\n• When the familiar takes damage, you can use a reaction to grant it resistance to that damage." compset="CustomSpec" summary="Grant additional benefits to your familiar." uniqueness="unique">
+    <fieldval field="usrLabelAr" value="Speed Gained"/>
+    <arrayval field="usrArray" index="0" value="Flying"/>
+    <arrayval field="usrArray" index="1" value="Swimming"/>
+    <usesource source="5eTCoE"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkEldInvo" name="Warlock Eldritch Invocation" abbrev="Warlock Eldritch Invocation"/>
+    <tag group="Helper" tag="Tertiary" name="Tertiary" abbrev="Tertiary"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <exprreq message="Pact of the Chain required"><![CDATA[#hasability[cWlkPacCha] <> 0]]></exprreq>
+    </thing>
+  <thing id="p5CInChMs" name="Warlock: Investment of the Chain Master" compset="InPlay">
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <tag group="OthAdjCat" tag="Class" name="Class" abbrev="Class"/>
+    <tag group="Helper" tag="NoAdvLeag"/>
+    <bootstrap thing="xSwim">
+      <containerreq phase="First" priority="5000">fieldval:abValue = 1</containerreq>
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMinInvChn">
+      <containerreq phase="First" priority="5000"><![CDATA[fieldval:pIsOn <> 0 & fieldval:abValue2 = 1]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="5000">fieldval:abValue = 0</containerreq>
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+    doneif (tagis[CompIs.Familiar] = 0)
+
+field[abValue].value = master.childfound[c5CWlkInChMs].field[usrIndex].value
+field[abValue2].value = 1]]></eval>
+    <exprreq message="Must be a Familiar"><![CDATA[tagis[CompIs.Familiar] > 0]]></exprreq>
+    <prereq message="Requires Investment of the Chain Master">
+      <validate><![CDATA[@valid = 0
+doneif (tagis[CompIs.Familiar] = 0)
+
+if (master.childlives[c5CWlkInChMs] <>0) then
+@valid = 1
+endif]]></validate>
+      </prereq>
+    </thing>
+  <thing id="ra5CMinInvChn" name="Investment of the Chain Master" description="The familiar summoned by your {i}find familiar{/i} spell gains these benefits:\n\n• A swim or flight (your choice) speed of 40 feet.\n• It no longer needs to breathe.\n• You can use a bonus action to command the familiar to take the Attack action.\n• Its weapon attacks are now considered to be magical for the purpose of overcoming immunity and resistance to nonmagical attacks.\n• Any saving throws the familiar forces another creature to make are made against your spell save DC.\n• When the familiar takes damage, you can use a reaction to grant it resistance to that damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final" priority="10001"><![CDATA[var SVDC as number
+
+SVDC = master.hero.childfound[cHelpWlk].field[cSplSaveDC].value
+
+field[abText].text = "Save DC " & SVDC]]></eval>
+    </thing>
+  <thing id="r5CCustLin" name="Custom Lineage" description="Your character&apos;s lineage can be separate from the standard races." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eTCoE"/>
+    <usesource source="5eVariants"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="ra5CCustASI"></bootstrap>
+    <bootstrap thing="ra5CCustSize"></bootstrap>
+    <bootstrap thing="ra5CCustVarT"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="raHumFeat"></bootstrap>
+    </thing>
+  <thing id="ra5CCustASI" name="Ability Score Increase" description="Choose one ability scores to receive a +2 bonus." compset="RaceSpec" uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.BaseAttr"/>
+    <tag group="Custom" tag="AttrUp" name="AttrUp" abbrev="AttrUp"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="RaceSort" tag="Attribute" name="Attribute" abbrev="Attribute"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <eval phase="PreAttr" priority="5000"><![CDATA[
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        field[usrChosen1].chosen.field[aStartMod].value += 2
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif]]></eval>
+    </thing>
+  <thing id="ra5CCustSize" name="Size" compset="RaceSpec">
+    <arrayval field="usrArray" index="1" value="Medium"/>
+    <arrayval field="usrArray" index="0" value="Small"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrIndex].value = 0) then
+      perform hero.childfound[r5CCustLin].delete[RaceSize.Medium0]
+      perform hero.childfound[r5CCustLin].assign[RaceSize.Small11]
+      endif]]></eval>
+    </thing>
+  <thing id="ra5CCustVarT" name="Variable Trait" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Darkvision"/>
+    <arrayval field="usrArray" index="1" value="Skill"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 0</containerreq>
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <eval phase="PreLevel"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (field[usrIndex].value = 0)
+ 
+      perform hero.childfound[r5CCustLin].assign[AllowSkl1.Any]
+      hero.childfound[r5CCustLin].field[cSkillMax].value += 1]]></eval>
+    </thing>
+  <thing id="c5CRogXSpLst" name="Expanded Arcane Trickster Spell List" description="This feature adds these spells to the Wizard spell list, enabling them for the Arcane Trickster:\n\n{b}Cantrips{/b}\nMind Sliver\n\n{b}1st Level{/b}\nCaustic Brew\n\n{b}2nd Level{/b}\nAugury\nEnhance Ability\nMind Whip\n\n{b}3rd Level{/b}\nIntellect Fortress\nSpeak with Dead\nSpirit Shroud\nSummon Fey\nSummon Shadowspawn\nSummon Undead\n\n{b}4th Level{/b}\nDivination\nSummon Aberration\nSummon Construct\nSummon Elemental\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="spAugury"/>
+    <tag group="ClsAllowSp" tag="spDivinati"/>
+    <tag group="ClsAllowSp" tag="spEnhaAbil"/>
+    <tag group="ClsAllowSp" tag="spSpeaDead"/>
+    <tag group="ClsAllowSp" tag="sp5CMndSlv"/>
+    <tag group="ClsAllowSp" tag="sp5CCstBrw"/>
+    <tag group="ClsAllowSp" tag="sp5CMndWhp"/>
+    <tag group="ClsAllowSp" tag="sp5CIntFrt"/>
+    <tag group="ClsAllowSp" tag="sp5CSptShr"/>
+    <tag group="ClsAllowSp" tag="sp5CSumFey"/>
+    <tag group="ClsAllowSp" tag="sp5CSumShd"/>
+    <tag group="ClsAllowSp" tag="sp5CSumUnd"/>
+    <tag group="ClsAllowSp" tag="sp5CSumAbr"/>
+    <tag group="ClsAllowSp" tag="sp5CSumCon"/>
+    <tag group="ClsAllowSp" tag="sp5CSumEle"/>
+    <tag group="abCategory" tag="5CCFVRog" name="Fighter Variant Features"/>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Rogue"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <pickreq thing="c5cRogArcT"/>
+    </thing>
+  <thing id="c5CFtrXSpLst" name="Expanded Eldritch Knight Spell List" description="This feature adds these spells to the Wizard spell list, enabling them for the Eldritch Knight:\n\n{b}Cantrips{/b}\nMind Sliver\n\n{b}1st Level{/b}\nCaustic Brew\n\n{b}2nd Level{/b}\nAugury\nEnhance Ability\nMind Whip\n\n{b}3rd Level{/b}\nIntellect Fortress\nSpeak with Dead\nSpirit Shroud\nSummon Fey\nSummon Shadowspawn\nSummon Undead\n\n{b}4th Level{/b}\nDivination\nSummon Aberration\nSummon Construct\nSummon Elemental\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="spAugury"/>
+    <tag group="ClsAllowSp" tag="spDivinati"/>
+    <tag group="ClsAllowSp" tag="spEnhaAbil"/>
+    <tag group="ClsAllowSp" tag="spSpeaDead"/>
+    <tag group="ClsAllowSp" tag="sp5CMndSlv"/>
+    <tag group="ClsAllowSp" tag="sp5CCstBrw"/>
+    <tag group="ClsAllowSp" tag="sp5CMndWhp"/>
+    <tag group="ClsAllowSp" tag="sp5CIntFrt"/>
+    <tag group="ClsAllowSp" tag="sp5CSptShr"/>
+    <tag group="ClsAllowSp" tag="sp5CSumFey"/>
+    <tag group="ClsAllowSp" tag="sp5CSumShd"/>
+    <tag group="ClsAllowSp" tag="sp5CSumUnd"/>
+    <tag group="ClsAllowSp" tag="sp5CSumAbr"/>
+    <tag group="ClsAllowSp" tag="sp5CSumCon"/>
+    <tag group="ClsAllowSp" tag="sp5CSumEle"/>
+    <tag group="abCategory" tag="5CCFVFtr" name="Fighter Variant Features"/>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Fighter"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <pickreq thing="c5CFtrEldK"/>
+    </thing>
+  <thing id="c5CSorXSpLst" name="Expanded Sorcerer Spell List" description="This feature adds these spells to the Sorcerer spell list:\n\n{b}Cantrips{/b}\nBooming Blade\nGreen-Flame Blade\nLightning Lure\nMind Sliver\nSword Burst\n\n{b}1st Level{/b}\nCaustic Brew\nGrease\n\n{b}2nd Level{/b}\nFlame Blade\nFlaming Sphere\nMagic Weapon\nMind Whip\n\n{b}3rd Level{/b}\nIntellect Fortress\nVampiric Touch\n\n{b}4th Level{/b}\nFire Shield\n\n{b}5th Level{/b}\nArcane Hand\n\n{b}6th Level{/b}\nFlesh to Stone\nFreezing Sphere\nOtherworldly Guise\n\n{b}7th Level{/b}\nDream of the Blue Veil\n\n{b}8th Level{/b}\nDemiplane\n\n{b}9th Level{/b}\nBlade of Disaster\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
+    <tag group="abCategory" tag="5CCFVSor" name="Sorcerer Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="spArcaHand"/>
+    <tag group="ClsAllowSp" tag="sp5CBldDis"/>
+    <tag group="ClsAllowSp" tag="sp5CBoomBl"/>
+    <tag group="ClsAllowSp" tag="spDemiplan"/>
+    <tag group="ClsAllowSp" tag="sp5CDrmBlu"/>
+    <tag group="ClsAllowSp" tag="spFireShie"/>
+    <tag group="ClsAllowSp" tag="spFlamBlad"/>
+    <tag group="ClsAllowSp" tag="spFlamSphe"/>
+    <tag group="ClsAllowSp" tag="spFlesSton"/>
+    <tag group="ClsAllowSp" tag="spGrease"/>
+    <tag group="ClsAllowSp" tag="sp5CGreeFB"/>
+    <tag group="ClsAllowSp" tag="sp5CIntFrt"/>
+    <tag group="ClsAllowSp" tag="sp5CLightL"/>
+    <tag group="ClsAllowSp" tag="spMagiWeap"/>
+    <tag group="ClsAllowSp" tag="sp5CMndSlv"/>
+    <tag group="ClsAllowSp" tag="spFreeSphe"/>
+    <tag group="ClsAllowSp" tag="sp5CSwordB"/>
+    <tag group="ClsAllowSp" tag="sp5CCstBrw"/>
+    <tag group="ClsAllowSp" tag="sp5CMndWhp"/>
+    <tag group="ClsAllowSp" tag="sp5COthGui"/>
+    <tag group="ClsAllowSp" tag="spVampTouc"/>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Sorcerer"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <exprreq message="Requires Sorcerer level 1"><![CDATA[#levelcount[Sorcerer] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CWizXSpLst" name="Expanded Wizard Spell List" description="This feature adds these spells to the Wizard spell list:\n\n{b}Cantrips{/b}\nMind Sliver\n\n{b}1st Level{/b}\nCaustic Brew\n\n{b}2nd Level{/b}\nAugury\nEnhance Ability\nMind Whip\n\n{b}3rd Level{/b}\nIntellect Fortress\nSpeak with Dead\nSpirit Shroud\nSummon Fey\nSummon Shadowspawn\nSummon Undead\n\n{b}4th Level{/b}\nDivination\nSummon Aberration\nSummon Construct\nSummon Elemental\n\n{b}6th Level{/b}\nOtherworldly Guise\nSummon Fiend\n\n{b}7th Level{/b}\nDream of the Blue Veil\n\n{b}9th Level{/b}\nBlade of Disaster\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
+    <tag group="abCategory" tag="5CCFVWiz" name="Wizard Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="spAugury"/>
+    <tag group="ClsAllowSp" tag="spDivinati"/>
+    <tag group="ClsAllowSp" tag="spEnhaAbil"/>
+    <tag group="ClsAllowSp" tag="spSpeaDead"/>
+    <tag group="ClsAllowSp" tag="sp5CBldDis"/>
+    <tag group="ClsAllowSp" tag="sp5CDrmBlu"/>
+    <tag group="ClsAllowSp" tag="sp5CIntFrt"/>
+    <tag group="ClsAllowSp" tag="sp5CMndSlv"/>
+    <tag group="ClsAllowSp" tag="sp5CSptShr"/>
+    <tag group="ClsAllowSp" tag="sp5CSumAbr"/>
+    <tag group="ClsAllowSp" tag="sp5CSumCon"/>
+    <tag group="ClsAllowSp" tag="sp5CSumEle"/>
+    <tag group="ClsAllowSp" tag="sp5CSumFey"/>
+    <tag group="ClsAllowSp" tag="sp5CSumFnd"/>
+    <tag group="ClsAllowSp" tag="sp5CSumShd"/>
+    <tag group="ClsAllowSp" tag="sp5CSumUnd"/>
+    <tag group="ClsAllowSp" tag="sp5CCstBrw"/>
+    <tag group="ClsAllowSp" tag="sp5CMndWhp"/>
+    <tag group="ClsAllowSp" tag="sp5COthGui"/>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Wizard"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <eval phase="PostLevel" priority="11000" index="2"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+
+    hero.childfound[cHelpWiz].field[cSplBkExpr].text &= " & !sLevel.0"]]></eval>
+    <exprreq message="Requires Wizard level 1"><![CDATA[#levelcount[Wizard] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CWlkXSpLst" name="Expanded Warlock Spell List" description="This feature adds these spells to the Warlock spell list:\n\n{b}Cantrips{/b}\nBooming Blade\nGreen-Flame Blade\nLightning Lure\nMind Sliver\nSword Burst\n\n{b}3rd Level{/b}\nIntellect Fortress\nSpirit Shroud\nSummon Fey\nSummon Shadowspawn\nSummon Undead\n\n{b}4th Level{/b}\nSummon Aberration\n\n{b}5th Level{/b}\nMislead\nPlanar Binding\nTeleportation Circle\n\n{b}6th Level{/b}\nOtherworldly Guise\nSummon Fiend\n\n{b}7th Level{/b}\nDream of the Blue Veil\n\n{b}9th Level{/b}\nBlade of Disaster\nGate\nWeird\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
+    <tag group="abCategory" tag="5CCFVWlk" name="Warlock Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="sp5CMndSlv"/>
+    <tag group="ClsAllowSp" tag="sp5CIntFrt"/>
+    <tag group="ClsAllowSp" tag="spGate"/>
+    <tag group="ClsAllowSp" tag="sp5CSptShr"/>
+    <tag group="ClsAllowSp" tag="sp5CSumEle"/>
+    <tag group="ClsAllowSp" tag="sp5CSumShd"/>
+    <tag group="ClsAllowSp" tag="sp5CSumUnd"/>
+    <tag group="ClsAllowSp" tag="spMislead"/>
+    <tag group="ClsAllowSp" tag="sp5CSumAbr"/>
+    <tag group="ClsAllowSp" tag="spPlanBind"/>
+    <tag group="ClsAllowSp" tag="sp5CDrmBlu"/>
+    <tag group="ClsAllowSp" tag="sp5CSumFnd"/>
+    <tag group="ClsAllowSp" tag="spTeleCirc"/>
+    <tag group="ClsAllowSp" tag="sp5COthGui"/>
+    <tag group="ClsAllowSp" tag="sp5CBoomBl"/>
+    <tag group="ClsAllowSp" tag="sp5CGreeFB"/>
+    <tag group="ClsAllowSp" tag="sp5CLightL"/>
+    <tag group="ClsAllowSp" tag="sp5CSwordB"/>
+    <tag group="ClsAllowSp" tag="sp5CBldDis"/>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Warlock"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <exprreq message="Requires Warlock level 1"><![CDATA[#levelcount[Warlock] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CDrdXSpLst" name="Expanded Druid Spell List" description="This feature adds these spells to the Druid spell list:\n\n{b}1st Level{/b}\nProtection from Evil and Good\n\n{b}2nd Level{/b}\nAugury\nContinual Flame\nEnlarge/Reduce\nSummon Beast\n\n{b}3rd Level{/b}\nAura of Vitality\nElemental Weapon\nRevivify\nSummon Fey\n\n{b}4th Level{/b}\nDivination\nFire Shield\nSummon Elemental\n\n{b}5th Level{/b}\nCone of Cold\n\n{b}6th Level{/b}\nFlesh to Stone\n\n{b}7th Level{/b}\nSymbol\n\n{b}8th Level{/b}\nIncendiary Cloud\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
+    <tag group="abCategory" tag="5CCFVDrd" name="Druid Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="sp5CSumBst"/>
+    <tag group="ClsAllowSp" tag="spAugury"/>
+    <tag group="ClsAllowSp" tag="sp5CAurVit"/>
+    <tag group="ClsAllowSp" tag="sp5CSumFey"/>
+    <tag group="ClsAllowSp" tag="spConeCold"/>
+    <tag group="ClsAllowSp" tag="spContFlam"/>
+    <tag group="ClsAllowSp" tag="sp5CSumEle"/>
+    <tag group="ClsAllowSp" tag="spDivinati"/>
+    <tag group="ClsAllowSp" tag="sp5CElemWe"/>
+    <tag group="ClsAllowSp" tag="spEnlargeR"/>
+    <tag group="ClsAllowSp" tag="spFireShie"/>
+    <tag group="ClsAllowSp" tag="spFlesSton"/>
+    <tag group="ClsAllowSp" tag="spInceClou"/>
+    <tag group="ClsAllowSp" tag="spProtGoEv"/>
+    <tag group="ClsAllowSp" tag="spRevivify"/>
+    <tag group="ClsAllowSp" tag="spSymbol"/>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Druid"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <exprreq message="Requires Druid level 1"><![CDATA[#levelcount[Druid] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CClrXSpLst" name="Expanded Cleric Spell List" description="This feature adds these spells to the Cleric spell list:\n\n{b}3rd Level{/b}\nAura of Vitality\nSpirit Shroud\n\n{b}4th Level{/b}\nAura of Life\nAura of Purity\n\n{b}5th Level{/b}\nSummon Celestial\n\n{b}6th Level{/b}\nSunbeam\n\n{b}8th Level{/b}\nSunburst\n\n{b}9th Level{/b}\nPower Word Heal\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
+    <tag group="abCategory" tag="5CCFVClr" name="Cleric Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="sp5CAurLif"/>
+    <tag group="ClsAllowSp" tag="sp5CAurPur"/>
+    <tag group="ClsAllowSp" tag="sp5CAurVit"/>
+    <tag group="ClsAllowSp" tag="sp5CSptShr"/>
+    <tag group="ClsAllowSp" tag="sp5CSumCel"/>
+    <tag group="ClsAllowSp" tag="sp5CPwrWH"/>
+    <tag group="ClsAllowSp" tag="spSunbeam"/>
+    <tag group="ClsAllowSp" tag="spSunburst"/>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Cleric"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <exprreq message="Requires Cleric level 1"><![CDATA[#levelcount[Cleric] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CBrdXSpLst" name="Expanded Bard Spell List" description="This feature adds these spells to the Bard spell list:\n\n{b}1st Level{/b}\nColor Spray\nCommand\n\n{b}2nd Level{/b}\nAid\nEnlarge/Reduce\nMirror Image\n\n{b}3rd Level{/b}\nIntellect Fortress\nMass Healing Word\nSlow\n\n{b}4th Level{/b}\nPhantasmal Killer\n\n{b}5th Level{/b}\nTelepathic Bond\n\n{b}6th Level{/b}\nHeroes&apos; Feast\n\n{b}7th Level{/b}\nDream of the Blue Veil\nPrismatic Spray\n\n{b}8th Level{/b}\nAntipathy/Sympathy\n\n{b}9th Level{/b}\nPrismatic Wall\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
+    <tag group="abCategory" tag="5CCFVBrd" name="Bard Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="spAid"/>
+    <tag group="ClsAllowSp" tag="spAntipath"/>
+    <tag group="ClsAllowSp" tag="sp5CIntFrt"/>
+    <tag group="ClsAllowSp" tag="spColoSpra"/>
+    <tag group="ClsAllowSp" tag="spCommand"/>
+    <tag group="ClsAllowSp" tag="sp5CDrmBlu"/>
+    <tag group="ClsAllowSp" tag="spEnlargeR"/>
+    <tag group="ClsAllowSp" tag="spHeroFeas"/>
+    <tag group="ClsAllowSp" tag="spMsHealWd"/>
+    <tag group="ClsAllowSp" tag="spMirrImag"/>
+    <tag group="ClsAllowSp" tag="spPhanKill"/>
+    <tag group="ClsAllowSp" tag="spPrisSpra"/>
+    <tag group="ClsAllowSp" tag="spPrisWall"/>
+    <tag group="ClsAllowSp" tag="spSlow"/>
+    <tag group="ClsAllowSp" tag="spTeleBond"/>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Bard"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <exprreq message="Requires Bard level 1"><![CDATA[#levelcount[Bard] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CPalXSpLst" name="Expanded Paladin Spell List" description="This feature adds these spells to the Paladin spell list:\n\n{b}2nd Level{/b}\nGentle Repose\nPrayer of Healing\nWarding Bond\n\n{b}3rd Level{/b}\nSpirit Shroud\n\n{b}5th Level{/b}\nSummon Celestial\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
+    <tag group="abCategory" tag="5CCFVPal" name="Paladin Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="sp5CSptShr"/>
+    <tag group="ClsAllowSp" tag="sp5CSumCel"/>
+    <tag group="ClsAllowSp" tag="spGentRepo"/>
+    <tag group="ClsAllowSp" tag="spPrayHeal"/>
+    <tag group="ClsAllowSp" tag="spWardBond"/>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Paladin"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <exprreq message="Requires Paladin level 1"><![CDATA[#levelcount[Paladin] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CRgrXSpLst" name="Expanded Ranger Spell List" description="This feature adds these spells to the Ranger spell list:\n\n{b}1st Level{/b}\nEntangle\nSearing Smite\n\n{b}2nd Level{/b}\nAid\nEnhance Ability\nGust of Wind\nMagic Weapon\nSummon Beast\n\n{b}3rd Level{/b}\nElemental Weapon\nMeld into Stone\nRevivify\nSummon Fey\n\n{b}4th Level{/b}\nDominate Beast\nSummon Elemental\n\n{b}5th Level{/b}\nGreater Restoration\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
+    <tag group="abCategory" tag="5CCFVRgr" name="Ranger Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClsAllowSp" tag="spAid"/>
+    <tag group="ClsAllowSp" tag="sp5CSumEle"/>
+    <tag group="ClsAllowSp" tag="sp5CSumFey"/>
+    <tag group="ClsAllowSp" tag="spMeldSton"/>
+    <tag group="ClsAllowSp" tag="spDomiBeas"/>
+    <tag group="ClsAllowSp" tag="spEnhaAbil"/>
+    <tag group="ClsAllowSp" tag="spEntangle"/>
+    <tag group="ClsAllowSp" tag="spGreaRest"/>
+    <tag group="ClsAllowSp" tag="spGustWind"/>
+    <tag group="ClsAllowSp" tag="spMagiWeap"/>
+    <tag group="ClsAllowSp" tag="spRevivify"/>
+    <tag group="ClsAllowSp" tag="sp5CSearSm"/>
+    <tag group="ClsAllowSp" tag="sp5CElemWe"/>
+    <tag group="ClsAllowSp" tag="sp5CSumBst"/>
+    <eval phase="First"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.Ranger"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <exprreq message="Requires Ranger level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CSorXSpLDv" name="Expanded Divine Soul Sorcerer Spell List" description="This feature adds these spells to the Cleric spell list, enabling them for the Divine Soul Sorcerer:\n\n{b}3rd Level{/b}\nAura of Vitality\nSpirit Shroud\n\n{b}4th Level{/b}\nAura of Life\nAura of Purity\n\n{b}5th Level{/b}\nSummon Celestial\n\n{b}9th Level{/b}\nPower Word Heal\n\n{i}Note: Any spells not in the SRD still need to have their respective sources enabled in the Configure Hero screen.{/i}" compset="CustomSpec" uniqueness="unique">
+    <tag group="abCategory" tag="5CCFVSor" name="Sorcerer Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="21000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+~these vars will hold the tag expressions for spells and cantrips
+
+var spell as string
+var known as string 
+var third as string
+var fourth as string
+var fifth as string
+var ninth as string
+
+~ fetch spell expressions
+spell = hero.childfound[cHelpSor].field[cSpKnoExpr].text 
+known = hero.childfound[cHelpSor].field[cSpellExpr].text 
+
+~ these receive the extra spells for each circle
+
+third = " | thingid.sp5CAurVit | thingid.sp5CSptShr "
+fourth = " | thingid.sp5CAurLif | thingid.sp5CAurPur "
+fifth = " | thingid.sp5CSumCel "
+ninth = " | thingid.sp5CPwrWH "
+
+
+spell &= third
+known &= third
+
+spell &= fourth
+known &= fourth
+
+spell &= fifth
+known &= fifth
+
+spell &= ninth
+known &= ninth
+
+
+hero.childfound[cHelpSor].field[cSpKnoExpr].text = spell
+hero.childfound[cHelpSor].field[cSpellExpr].text = known
+hero.childfound[cHelpSor].field[cSplBkExpr].text = known]]></eval>
+    <pickreq thing="c5CSorDiSo"/>
+    </thing>
+  <thing id="c5CRFVEnable" name="Customizing Your Origin" description="Allows Racial Variant Features to be selected from the menu below." compset="CustomSpec" uniqueness="unique">
+    <tag group="AllowRCust" tag="cfg5CTashVar"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final" priority="8200"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+
+     hero.childfound[cfg5CTashVar].field[cfgAllow4].text = "abCategory.5CRFV"
+     perform hero.childfound[cfg5CTashVar].assign[Helper.Allow4Abil]
+
+     if (hero.childlives[sr5CToFGya] <> 0) then
+     hero.childfound[cfg5CTashVar].field[cfgAllow4].text &= " | thingid.rc5CGthYRp"
+     endif
+
+     if (hero.childlives[ra5CMarTra] <> 0) then
+     hero.childfound[cfg5CTashVar].field[cfgAllow4].text &= " | thingid.rc5CGthYRp"
+     endif]]></eval>
+    </thing>
+  <thing id="rc5CRFVASI" name="Ability Score Increases" description="You can re-assign the Ability Score bonuses awared to you by your race to another ability. As an example, if your race (and subrace or variant race, where applicable) grants you +2 Constitution and +1 Dexterity, you can reassign +2 to a different score and +1 to another one, other than what you chose for the +2. In effect, you can&apos;t use this to gain +3 in a single score.\n\n{b}Due to the way variable ability score increases are handled in Hero Lab, it&apos;s not possible to automatically pull all the various possible racial bonus ability scores. Please use the &quot;Ability Score (Starting)&quot; adjustment to remove the old bonuses and assign the new ones.{/b}" compset="RaceCustom" summary="Change the ability score increases from your race." uniqueness="unique">
+    <tag group="abCategory" tag="5CRFV" name="Racial Variant Features"/>
+    <tag group="Helper" tag="SpecUp"/>
+    </thing>
+  <thing id="rc5CRFVLang" name="Replace Language" description="You may select a language that you learned in your race&apos;s Languages trait to replace with one from this list: Abyssal, Celestial, Common, Deep Speech, Draconic, Dwarvish, Elvish, Giant, Gnomish, Goblin, Halfling, Infernal, Orc, Primordial, Sylvan, or Undercommon. \n\nSelect this feature for each langauge you&apos;d like to replace, then select your new language from the table below." compset="RaceCustom" summary="Replace a racial language with a new one.">
+    <fieldval field="usrCandid1" value="component.BaseLang &amp; Helper.RaceLang &amp; !Hide.Language"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="abCategory" tag="5CRFV"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final">doneif (tagis[Helper.Disable] = 1)
+doneif (field[usrChosen1].ischosen = 0)
+      
+perform field[usrChosen1].chosen.assign[Hide.Language]
+
+hero.childfound[cfg5CTashVar].field[cfgLaMax1].value += 1</eval>
+    </thing>
+  <thing id="rc5CRFVArms" name="Replace Armor, Weapon, and Tool Proficiencies" description="You can replace armor, weapon, and tool proficiencies following this table:\n{font Courier New}\n{b}Proficiency         Replacement Proficiency{/b}\n{back FFFFFF}Armor               Simple/martial weapon or tool\n{back 010101}Simple weapon       Simple weapon or tool\n{back FFFFFF}Martial weapon      Simple/martial weapon or tool\n{back 010101}Tool                Simple weapon or tool{revert}\n\n\n\nNEED TO ADD A THING THAT ALLOWS YOU TO KEEP YOUR ARMOR PROFICIENCY WHILE REPLACING THE OTHERS FOR AT LEAST HOBGOBLIN" compset="RaceCustom" summary="Replace racial armor, weapon, and tool proficiencies." uniqueness="unique">
+    <tag group="abCategory" tag="5CRFV"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <eval phase="First" priority="10000"><![CDATA[var Smp as number
+var Mrt as number
+
+foreach pick in hero from BaseRace
+Smp += eachpick.field[cToolMax].value + eachpick.field[cToolMax2].value + eachpick.field[cToolMax3].value
+eachpick.field[cToolMax].value = 0
+eachpick.field[cToolMax2].value = 0
+eachpick.field[cToolMax3].value = 0
+nexteach
+
+foreach pick in hero where "Proficienc.Tool"
+if (eachpick.root.tagis[thingid.raGnTinker] <> 0 ) then
+perform eachpick.delete[Proficienc.Tool]
+Smp += 1
+endif
+nexteach
+
+var tagexpr as string
+
+foreach pick in hero from BaseRace
+   tagexpr = eachpick.tagids[WepProf.?," | "]
+   perform eachpick.delete[WepProf.?]
+   nexteach
+
+tagexpr = replace(tagexpr,"WepProf.","thingid.",0)
+
+foreach thing in BaseWep where tagexpr
+   if (eachthing.tagis[wProfReq.Simple] <> 0) then
+     Smp += 1
+     endif
+   if (eachthing.tagis[wProfReq.Martial] <> 0) then
+     Mrt += 1
+     endif
+   nexteach
+
+foreach pick in hero from SubRace
+   tagexpr = eachpick.tagids[WepProf.?," | "]
+   perform eachpick.delete[WepProf.?]
+   nexteach
+
+tagexpr = replace(tagexpr,"WepProf.","thingid.",0)
+
+foreach thing in BaseWep where tagexpr
+   if (eachthing.tagis[wProfReq.Simple] <> 0) then
+     Smp += 1
+     endif
+   if (eachthing.tagis[wProfReq.Martial] <> 0) then
+     Mrt += 1
+     endif
+   nexteach
+
+foreach pick in hero from RaceAbil
+   tagexpr = eachpick.tagids[WepProf.?," | "]
+   perform eachpick.delete[WepProf.?]
+
+   tagexpr = replace(tagexpr,"WepProf.","thingid.",0)
+
+   foreach thing in BaseWep where tagexpr
+     if (eachthing.tagis[wProfReq.Simple] <> 0) then
+       Smp += 1
+     endif
+     if (eachthing.tagis[wProfReq.Martial] <> 0) then
+       Mrt += 1
+     endif
+   nexteach
+nexteach
+
+foreach pick in hero from BaseRace
+   Mrt += eachpick.tagcount[ArmProfGrp.?]
+   perform eachpick.delete[ArmProfGrp.?]
+   nexteach
+
+foreach pick in hero from SubRace
+   Mrt += eachpick.tagcount[ArmProfGrp.?]
+   perform eachpick.delete[ArmProfGrp.?]
+   nexteach
+
+foreach pick in hero from RaceAbil
+   Mrt += eachpick.tagcount[ArmProfGrp.?]
+   perform eachpick.delete[ArmProfGrp.?]
+   nexteach
+
+if (hero.childlives[ra5CMarTra] <> 0) then
+   perform hero.childfound[ra5CMarTra].assign[Helper.Disable]
+   Mrt += 2
+   endif
+
+field[abValue].value = Smp
+field[abValue2].value = Mrt]]></eval>
+    <eval phase="Final" priority="51000" index="3">Var Totes as number
+Totes = field[abValue].value + field[abValue2].value
+
+var STleft as number
+STleft = Totes-hero.childfound[cfg5CTashVar].field[cfgRcSpen1].value-hero.childfound[cfg5CTashVar].field[cfgRcSpen2].value-hero.childfound[cfg5CTashVar].field[cToolCur].value
+hero.childfound[cfg5CTashVar].field[cfgRcLeft1].value = STleft
+hero.childfound[cfg5CTashVar].field[cToolMax].value = STleft + hero.childfound[cfg5CTashVar].field[cToolCur].value
+
+var Mleft as number
+Mleft = field[abValue2].value - hero.childfound[cfg5CTashVar].field[cfgRcSpen2].value
+
+hero.childfound[cfg5CTashVar].field[cfgRcLeft2].value = minimum(STleft,Mleft)</eval>
+    <eval phase="Final" priority="500" index="2"><![CDATA[
+Var Totes as number
+Totes = field[abValue].value + field[abValue2].value
+
+if (Totes > 0) then
+
+hero.childfound[cfg5CTashVar].field[cfgRcObj1].text = "Simple Weapon Proficiencies"
+hero.childfound[cfg5CTashVar].field[cfgRcAllo1].text = "abCategory.5CRFVSmpW"
+hero.childfound[cfg5CTashVar].field[cfgRcMax1].value = Totes
+
+perform hero.childfound[cfg5CTashVar].assign[AllowTool1.Any]
+hero.childfound[cfg5CTashVar].field[cToolMax].value = Totes
+
+hero.childfound[cfg5CTashVar].field[cfgRcObj2].text = "Martial Weapon Proficiencies"
+hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text = "abCategory.5CRFVMrtW"
+hero.childfound[cfg5CTashVar].field[cfgRcMax2].value = field[abValue2].value
+endif
+
+~need to add armor to the martial express if Hobgob, Mount Dwarf, or Githyanki
+~do a doneif any are present, otherwise add the thingid.___ of our "keep armor"]]></eval>
+    <eval phase="First" priority="9000" index="4"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+var iL as number
+var iM as number
+var iH as number
+var iS as number
+
+foreach pick in hero from BaseRace
+   iL += eachpick.tagcount[ArmProfGrp.ArmorLight]
+   iM += eachpick.tagcount[ArmProfGrp.ArmorMed]
+   iH += eachpick.tagcount[ArmProfGrp.ArmorHeavy]
+   iS += eachpick.tagcount[ArmProfGrp.Shields]
+   nexteach
+
+foreach pick in hero from SubRace
+   iL += eachpick.tagcount[ArmProfGrp.ArmorLight]
+   iM += eachpick.tagcount[ArmProfGrp.ArmorMed]
+   iH += eachpick.tagcount[ArmProfGrp.ArmorHeavy]
+   iS += eachpick.tagcount[ArmProfGrp.Shields]
+   nexteach
+
+foreach pick in hero from RaceAbil
+   iL += eachpick.tagcount[ArmProfGrp.ArmorLight]
+   iM += eachpick.tagcount[ArmProfGrp.ArmorMed]
+   iH += eachpick.tagcount[ArmProfGrp.ArmorHeavy]
+   iS += eachpick.tagcount[ArmProfGrp.Shields]
+   nexteach
+
+   field[abValue3].value = iL
+   field[abValue4].value = iM
+   field[abValue5].value = iH
+   field[abText].text = iS]]></eval>
+    <eval phase="Final" priority="1000" index="5"><![CDATA[if (field[abValue3].value > 0) then
+   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmL"
+   endif
+if (field[abValue4].value > 0) then
+   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmM"
+   endif
+if (field[abValue5].value > 0) then
+   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmH"
+   endif
+if (field[abText].text > 0) then
+   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmS"
+   endif]]></eval>
+    </thing>
+  <thing id="rc5CRFVSmpW" name="Martial Weapon Proficiency" description="Choose a martial weapon to become proficient with." compset="RaceCustom">
+    <fieldval field="usrCandid1" value="component.BaseWep &amp; (wProfReq.Martial) &amp; !Helper.Helper &amp; !component.BaseMagicI &amp; !thingid.w5CSpellAt "/>
+    <tag group="abCategory" tag="5CRFVMrtW" name="Variant Feature - Martial Weapon Proficiency"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PreLevel" priority="1000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull all the selected weapon proficiency tags to ourself 
+      perform field[usrChosen1].chosen.pulltags[WepProf.?]
+    
+      ~ Now push both tags to the hero
+      perform hero.pushtags[WepProf.?]]]></eval>
+    </thing>
+  <thing id="rc5CRFVMrtW" name="Simple Weapon Proficiency" description="Choose a simple weapon to become proficient with." compset="RaceCustom">
+    <fieldval field="usrCandid1" value="component.BaseWep &amp; (wProfReq.Simple) &amp; !Helper.Helper &amp; !component.BaseMagicI &amp; !thingid.w5CSpellAt "/>
+    <tag group="abCategory" tag="5CRFVSmpW" name="Variant Feature - Simple Weapon Proficiency"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull all the selected weapon proficiency tags to ourself 
+      perform field[usrChosen1].chosen.pulltags[WepProf.?]
+    
+      ~ Now push both tags to the hero
+      perform hero.pushtags[WepProf.?]]]></eval>
+    </thing>
+  <thing id="rc5CRFVSkPrf" name="Replace Skill Proficiency" description="You can replace the skill proficiencies granted by your race with an equal number of proficiencies in other skills." compset="RaceCustom" summary="Replace racial skill proficiencies." uniqueness="unique">
+    <tag group="abCategory" tag="5CRFV" name="Racial Variant Features"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PreLevel">var skills as number
+
+foreach pick in hero from BaseRace
+skills += eachpick.tagcount[ProfSkill.?]
+perform eachpick.delete[ProfSkill.?]
+nexteach
+
+foreach pick in hero from BaseRace
+skills += eachpick.field[cSkillMax].value
+skills += eachpick.field[cSkillMax2].value
+skills += eachpick.field[cSkillMax3].value
+eachpick.field[cSkillMax].value = 0
+eachpick.field[cSkillMax2].value = 0
+eachpick.field[cSkillMax3].value = 0
+nexteach
+
+hero.childfound[cfg5CTashVar].field[cSkillMax].value += skills</eval>
+    <eval phase="First" priority="10000" index="2"><![CDATA[var skills as number
+
+if (hero.childlives[raKeenSens] <> 0) then
+   perform hero.childfound[raKeenSens].assign[Helper.Disable]
+   skills += 1
+   endif
+
+if (hero.childlives[raHOMenace] <> 0) then
+   perform hero.childfound[raHOMenace].assign[Helper.Disable]
+   skills += 1
+   endif
+
+if (hero.childlives[ra5CElveKS] <> 0) then
+   perform hero.childfound[ra5CElveKS].delete[ProfSkill.?]
+   skills += 1
+   endif
+
+
+hero.childfound[cfg5CTashVar].field[cSkillMax].value += skills]]></eval>
+    </thing>
+  <thing id="rc5CRFVArmL" name="Keep Light Armor Proficiency" description="If your race provides proficiency with light armor and you would like to keep it while still replacing your weapon and tool proficiencies, select this option." compset="RaceCustom" summary="Keep your race&apos;s light armor proficiency." uniqueness="unique">
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PreLevel" priority="1000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+
+      perform hero.assign[ArmProfGrp.ArmorLight]]]></eval>
+    </thing>
+  <thing id="c5CRgrPriCmp" name="Primal Companion" description="You magically summon a primal beast, which obeys your commands and is friendly to you and your allies. Choose its stat block from the Beast of the Land, Beast of the Sea, or Beast of the Sky. You determine what kind of beast it appears as based on the stat block, but it bears primal markings that indicate its magical origin.\n\nThe beast acts on your turn in combat. It moves and uses its reaction without needing to be commanded. You can use a bonus action to command it to take an action, which can be from its stat block or any other action it is capable of doing. If you issue no such command, it takes the Dodge action. When you take the attack action, you can give up one of your own attacks to command it to take the Attack action. When you&apos;re incapacitated, it can use any of those actions, not just Dodge..\n\nIf the beast dies and you reach it within an hour, you can use an action to touch it and expend a 1st level or higher spell slot. The beast returns to life after 1 minute, having regained all its hit points.\n\nAt the end of your long rest, you can summon a different primal beast. The new beast appears in an open space within 5 feet of you, and you choose its stat block and appearance. Any beast you currently have summoned disappears when you die and/or if you summon a new one.\n\n{i}Replaces Ranger&apos;s Companion{/i}" compset="ClSpecial" summary="Summon a primal beast.">
+    <tag group="abCategory" tag="5CCFVRgr" name="Ranger Variant Features"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="ClSpecWhen" tag="3"/>
+    <tag group="SpecSource" tag="cHelpRgr"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Custom" tag="PrevComp"/>
+    <bootstrap thing="c5CPrmComp"></bootstrap>
+    <eval phase="First" index="2"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+      perform hero.assign[Custom.PrevComp]]]></eval>
+    <eval phase="Final" priority="500"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.childfound[c5CRgrRanC].tagreplace[Helper.ShowSpec,Helper.Disable]
+perform hero.childfound[c5CRgrRanC].delete[SpecSource.?]
+
+      if (#levelcount[Ranger] >= 3) then
+      perform assign[Helper.ShowSpec]
+      endif]]></eval>
+    <pickreq thing="c5CRgrBeaM"/>
+    <exprreq message="Requires Ranger Level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
+    </thing>
+  <thing id="c5CPrmComp" name="Primal Companion" compset="Companion" stacking="never" uniqueness="unique">
+    <fieldval field="CompType" value="Primal Companion"/>
+    <eval phase="PostAttr" priority="11000"><![CDATA[
+      var searchexpr as string
+
+      searchexpr = "(thingid.r5CBstLnd | thingid.r5CBstSea | thingid.r5CBstSky)"
+
+      minion.childfound[Totals].field[tRaceExpr].text = searchexpr
+
+~      perform minion.childfound[tpBeast].assign[Hide.Special]]]></eval>
+    <eval phase="First" priority="455" index="4"><![CDATA[~ Well, there's no way (afaik) to count the class levels from the hero
+~ at the minion, so we need to do it somewhere in the hero context and 
+~ send the info to be used at the minion. 
+~
+~ In this case, since all animal companions will receive the 
+~ companion bond racial ability to add their extra skills, we'll
+~ use it to bootstrap the extra HD as well. The tag expression used 
+~ in the condition for the bootstrap will test the value of the
+~ abValue5 field, which we set here.
+
+~ This must be done at the First stage, since the bootstraps happen
+~ there. Or so I'm told by the error messages.
+
+var level as number
+level = hero.tagcount[Classes.Ranger]
+minion.childfound[ra5CPrmBnd].field[abValue5].value = level]]></eval>
+    <minion id="Familiar" isinherit="no">
+      <tag group="AllowRCust" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="CompIs" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="Hero" tag="NoAdvance" name="NoAdvance" abbrev="NoAdvance"/>
+      <tag group="Hero" tag="NoFamLvReq" name="No familiar Level requirements" abbrev="No familiar Level requirements"/>
+      <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+      <tag group="HideTab" tag="race" name="race" abbrev="race"/>
+      <bootstrap thing="ra5CPrmBnd"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CBstLnd" name="Beast of the Land" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rSTR" value="4"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rINT" value="-2"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rAC" value="1"/>
+    <fieldval field="rHDSides" value="8"/>
+    <tag group="ProfSkill" tag="skAcrobat"/>
+    <tag group="ProfSkill" tag="skAnimHand"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfSkill" tag="skHistory"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skIntim"/>
+    <tag group="ProfSkill" tag="skInvestig"/>
+    <tag group="ProfSkill" tag="skMedicine"/>
+    <tag group="ProfSkill" tag="skNature"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skPerform"/>
+    <tag group="ProfSkill" tag="skPersuas"/>
+    <tag group="ProfSkill" tag="skReligion"/>
+    <tag group="ProfSkill" tag="skSleight"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <bootstrap thing="tpBeast"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="sbName" value="Maul"/>
+      <assignval field="livename" value="Maul"/>
+      <assignval field="wDieCount" value="1"/>
+      </bootstrap>
+    <bootstrap thing="lOther">
+      <assignval field="sbName" value="Understands its summoner&apos;s languages"/>
+      <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPriChrg"></bootstrap>
+    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
+~Add back in the original 5 per the stat block, then remove it all
+~Add that entire thing to our total Bonus HP
+~We remove it from the total instead of just removing the total in case
+~something else is adding to that as well.
+
+var HPAdj as number
+HPAdj -= hero.childfound[aCON].field[aModBonus].value
+HPAdj *= field[rHitDice].value
+HPAdj += 5
+
+herofield[tBonusHP].value += HPAdj</eval>
+    <eval phase="Final" priority="50000" index="2"><![CDATA[
+~ pull our STR and prof to determine what our attack bonus currently is
+
+var CrAt as number
+
+CrAt = (hero.childfound[aSTR].field[aModBonus].value + hero.childfound[ProfBonus].field[tProfBonus].value)
+
+~ add our spell attack (stored in abValue4 of Primal Bond) and subtract
+~ the current to attack bonus from any natural attacks. This way any 
+~ other additions to the bonus can still count
+
+foreach pick in hero from BaseWep where "wGroup.Natural"
+eachpick.field[wAttack].value += hero.childfound[ra5CPrmBnd].field[abValue4].value - CrAt
+nexteach]]></eval>
+    </thing>
+  <thing id="ra5CPrmBnd" name="Primal Bond" description="Add your proficiency bonus to any saving throws or ability checks made by the beast." compset="RaceSpec">
+    <fieldval field="abValue" value="2"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="ra5CRgCSBD">
+      <containerreq phase="First" priority="499"><![CDATA[(fieldval:abValue5 > 14)]]></containerreq>
+      </bootstrap>
+    <eval phase="First" priority="500"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      foreach pick in hero from BaseRace
+      eachpick.field[rHitDice].value = field[abValue5].value
+      nexteach]]></eval>
+    <eval phase="Final" priority="49000" index="4"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~Pull master's spell save DC into abValue3 for use in other features
+  field[abValue3].value = master.childfound[cHelpRgr].field[cSplSaveDC].value  
+
+
+      ~Pull master's spell attack into abValue4 for use in other features
+  field[abValue4].value = master.childfound[cHelpRgr].field[cSplAttack].value]]></eval>
+    <eval phase="PostAttr" priority="12000" index="5"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+~ Add stored prof bonus to our armor class...
+hero.childfound[ArmorClass].field[Bonus].value += field[abValue2].value
+
+~ and damage.
+foreach pick in hero from BaseWep where "wGroup.Natural"
+   eachpick.field[dmmBonus].value += field[abValue2].value
+   eachpick.field[dmrBonus].value += field[abValue2].value
+nexteach]]></eval>
+    <eval phase="PostLevel" index="6"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+
+~ store the proficiency of the hero in abValue2:
+
+field[abValue2].value = master.childfound[ProfBonus].field[tProfBonus].value
+
+~ now we replace the prof bonus of the minion with the stored hero one
+
+hero.childfound[ProfBonus].field[tProfBonus].value = field[abValue2].value]]></eval>
+    </thing>
+  <thing id="ra5CPriChrg" name="Charge" description="If the beast moves at least 20 feet directly at a target and then hits it with its maul attack on the same turn, the target takes and extra 1d6 slashing damage. If the target is a creature, it must make a Strength save versus your spell save DC. On a failure, it&apos;s knocked prone." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Set DC to hero's Spell save DC, as stored in companion ability
+      field[abDC].value = hero.childfound[ra5CPrmBnd].field[abValue3].value
+
+      field[CustDesc].text = "If the beast moves at least 20 feet directly at a target and then hits it with its maul attack on the same turn, the target takes and extra 1d6 slashing damage. If the target is a creature, it must make a DC" & hero.childfound[ra5CPrmBnd].field[abValue3].value & " Strength save. On a failure, it's knocked prone."]]></eval>
+    </thing>
+  <thing id="r5CBstSea" name="Beast of the Sea" description="wAttackEff" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rSpeed" value="5"/>
+    <fieldval field="rSTR" value="4"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rINT" value="-2"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rAC" value="1"/>
+    <fieldval field="rHDSides" value="8"/>
+    <tag group="ProfSkill" tag="skAcrobat"/>
+    <tag group="ProfSkill" tag="skAnimHand"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfSkill" tag="skHistory"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skIntim"/>
+    <tag group="ProfSkill" tag="skInvestig"/>
+    <tag group="ProfSkill" tag="skMedicine"/>
+    <tag group="ProfSkill" tag="skNature"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skPerform"/>
+    <tag group="ProfSkill" tag="skPersuas"/>
+    <tag group="ProfSkill" tag="skReligion"/>
+    <tag group="ProfSkill" tag="skSleight"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="Custom" tag="InheritDC"/>
+    <bootstrap thing="tpBeast"></bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="Custom" tag="InheritDC"/>
+      <assignval field="sbName" value="Binding Strike"/>
+      <assignval field="livename" value="Binding Strike"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDamExtra" value=" or bludgeoning"/>
+      <assignval field="wAttackEff" value="The damage type is your choice. The target is also grappled, with an escape DC equal to your spell save DC. Until the grapple ends, the beast cannot use this attack on another target."/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="lOther">
+      <assignval field="sbName" value="Understands its summoner&apos;s languages"/>
+      <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMMAmphN">
+      <assignval field="abText" value="The beast"/>
+      </bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
+~Add back in the original 5 per the stat block, then remove it all
+~Add that entire thing to our total Bonus HP
+~We remove it from the total instead of just removing the total in case
+~something else is adding to that as well.
+
+var HPAdj as number
+HPAdj -= hero.childfound[aCON].field[aModBonus].value
+HPAdj *= field[rHitDice].value
+HPAdj += 5
+
+herofield[tBonusHP].value += HPAdj</eval>
+    <eval phase="Final" priority="50000" index="3"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+foreach pick in hero from BaseWep where "Custom.InheritDC"
+ eachpick.field[wAttackEff].text = "The damage type is your choice. The target is also grappled, with an escape DC of " & hero.childfound[ra5CPrmBnd].field[abValue3].value & ". Until the grapple ends, the beast cannot use this attack on another target."
+nexteach]]></eval>
+    <eval phase="Final" priority="50000" index="2"><![CDATA[
+~ pull our STR and prof to determine what our attack bonus currently is
+
+var CrAt as number
+
+CrAt = (hero.childfound[aSTR].field[aModBonus].value + hero.childfound[ProfBonus].field[tProfBonus].value)
+
+~ add our spell attack (stored in abValue4 of Primal Bond) and subtract
+~ the current to attack bonus from any natural attacks. This way any 
+~ other additions to the bonus can still count
+
+foreach pick in hero from BaseWep where "wGroup.Natural"
+eachpick.field[wAttack].value += hero.childfound[ra5CPrmBnd].field[abValue4].value - CrAt
+nexteach]]></eval>
+    </thing>
+  <thing id="r5CBstSky" name="Beast of the Sky" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rSpeed" value="10"/>
+    <fieldval field="rSTR" value="-4"/>
+    <fieldval field="rDEX" value="6"/>
+    <fieldval field="rINT" value="-2"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rCON" value="3"/>
+    <fieldval field="rAC" value="1"/>
+    <fieldval field="rHDSides" value="6"/>
+    <tag group="ProfSkill" tag="skAcrobat"/>
+    <tag group="ProfSkill" tag="skAnimHand"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfSkill" tag="skHistory"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skIntim"/>
+    <tag group="ProfSkill" tag="skInvestig"/>
+    <tag group="ProfSkill" tag="skMedicine"/>
+    <tag group="ProfSkill" tag="skNature"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skPerform"/>
+    <tag group="ProfSkill" tag="skPersuas"/>
+    <tag group="ProfSkill" tag="skReligion"/>
+    <tag group="ProfSkill" tag="skSleight"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <bootstrap thing="tpBeast"></bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <autotag group="wProperty" tag="Finesse"/>
+      <assignval field="sbName" value="Shred"/>
+      <assignval field="livename" value="Shred"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="lOther">
+      <assignval field="sbName" value="Understands its summoner&apos;s languages"/>
+      <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFlyBy">
+      <assignval field="abText" value="beast"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
+~Add back in the original 4 per the stat block, then remove it all
+~Add that entire thing to our total Bonus HP
+~We remove it from the total instead of just removing the total in case
+~something else is adding to that as well.
+
+var HPAdj as number
+HPAdj -= hero.childfound[aCON].field[aModBonus].value
+HPAdj *= field[rHitDice].value
+HPAdj += 4
+
+herofield[tBonusHP].value += HPAdj</eval>
+    <eval phase="Final" priority="50000" index="2"><![CDATA[
+~ pull our STR and prof to determine what our attack bonus currently is
+
+var CrAt as number
+
+CrAt = (maximum(hero.childfound[aDEX].field[aModBonus].value,hero.childfound[aSTR].field[aModBonus].value) + hero.childfound[ProfBonus].field[tProfBonus].value)
+
+~ add our spell attack (stored in abValue4 of Primal Bond) and subtract
+~ the current to attack bonus from any natural attacks. This way any 
+~ other additions to the bonus can still count
+
+foreach pick in hero from BaseWep where "wGroup.Natural & wProperty.Finesse"
+eachpick.field[wAttack].value += hero.childfound[ra5CPrmBnd].field[abValue4].value - CrAt
+nexteach]]></eval>
+    </thing>
+  <thing id="rc5CGthYRp" name="Replace Decadent Mastery Tool" description="Select this to replace the tool granted by the githyanki&apos;s Decadent Mastery feature." compset="RaceCustom" summary="Replace Decadent Mastery tool." uniqueness="unique">
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <eval phase="First" priority="10001"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.childfound[rc5CRFVArms].field[abValue].value += 1
+      perform hero.childfound[ra5CToFGDM].assign[Helper.Disable]]]></eval>
+    <pickreq thing="rc5CRFVArms"/>
+    </thing>
+  <thing id="rc5CRFVArmM" name="Keep Medium Armor Proficiency" description="If your race provides proficiency with medium armor and you would like to keep it while still replacing your weapon and tool proficiencies, select this option." compset="RaceCustom" summary="Keep your race&apos;s medium armor proficiency." uniqueness="unique">
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PreLevel" priority="1000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      perform hero.assign[ArmProfGrp.ArmorMed]]]></eval>
+    </thing>
+  <thing id="rc5CRFVArmH" name="Keep Heavy Armor Proficiency" description="If your race provides proficiency with heavy armor and you would like to keep it while still replacing your weapon and tool proficiencies, select this option." compset="RaceCustom" summary="Keep your race&apos;s heavy armor proficiency." uniqueness="unique">
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PreLevel" priority="1000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      perform hero.assign[ArmProfGrp.ArmorHeavy]]]></eval>
+    </thing>
+  <thing id="rc5CRFVArmS" name="Keep Shields Proficiency" description="If your race provides proficiency with shields and you would like to keep it while still replacing your weapon and tool proficiencies, select this option." compset="RaceCustom" summary="Keep your race&apos;s shield proficiency." uniqueness="unique">
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PreLevel" priority="1000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+
+      perform hero.assign[ArmProfGrp.Shields]]]></eval>
+    </thing>
+  </document>

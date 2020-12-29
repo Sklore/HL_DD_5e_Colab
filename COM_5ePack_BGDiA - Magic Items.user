@@ -211,12 +211,8 @@
     <usesource source="p5eBGDiAP"/>
     <tag group="ItemRarity" tag="Artifact"/>
     <tag group="Helper" tag="NeedAttune"/>
-    <bootstrap thing="lCelestial">
-      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
-      </bootstrap>
-    <bootstrap thing="ab5CDiAFeaWings">
-      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
-      </bootstrap>
+    <tag group="Custom" tag="5CArtPrp"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
     <bootstrap thing="raTruesigh">
       <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
       <autotag group="Value" tag="60"/>
@@ -224,12 +220,17 @@
     <bootstrap thing="ab5CDiAHolyLight">
       <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
       </bootstrap>
-    <bootstrap thing="bn5CMinBPrp1">
+    <bootstrap thing="lCelestial">
       <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
       </bootstrap>
-    <bootstrap thing="bn5CMinBPrp2">
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="ab5CDiAFeaWings">
       <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
       </bootstrap>
+    <eval phase="Final" priority="20000" index="4"><![CDATA[doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+#situational[hero.child[skInsight], "Advantage on all Wisdom (Insight) checks.", field[thingname].text]]]></eval>
     <eval phase="PreLevel" priority="10000" index="2">doneif (field[gIsAttuned].value = 0)
 
       hero.child[aCHA].field[Minimum].value = maximum(20,hero.child[aCHA].field[aNormal].value)</eval>
@@ -247,10 +248,12 @@
 
       perform hero.assign[DamageRes.dtRadiant]
       perform hero.assign[DamageRes.dtNecrotic]</eval>
-    <eval phase="Final" priority="20000" index="4"><![CDATA[doneif (field[gIsEquip].value = 0)
-      doneif (field[gIsAttuned].value = 0)
+    <eval phase="First" index="5">perform hero.childfound[cfg5CArtPrp].setfocus
 
-#situational[hero.child[skInsight], "Advantage on all Wisdom (Insight) checks.", field[thingname].text]]]></eval>
+focus.field[cfgMax1].value += 2</eval>
+    <eval phase="Final" index="6"><![CDATA[if (tagcount[Custom.5CAPIB] >= 2) then
+perform delete[Custom.5CAPEIB]
+endif]]></eval>
     <child entity="wSpecMagic">
       <bootstrap thing="wLongsword"></bootstrap>
       </child>
@@ -297,24 +300,33 @@
     <usesource source="p5eBGDiAP"/>
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="ItemRarity" tag="Legendary"/>
-    <bootstrap thing="bn5CMinBPrp2">
-      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
-      </bootstrap>
-    <bootstrap thing="bn5CMinBPrp1">
-      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
-      </bootstrap>
-    <bootstrap thing="bn5CMajBPrp">
-      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
-      </bootstrap>
-    <bootstrap thing="bn5CMajDPrp">
-      <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
-      </bootstrap>
+    <tag group="Custom" tag="5CArtPrp" name="Artifact Properties"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAB" name="Major Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAD" name="Major Detrimental Artifact Properties Eligible"/>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
     <bootstrap thing="ab5CRuleAver">
       <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
       </bootstrap>
     <bootstrap thing="ab5CInfRcll">
       <containerreq phase="First" priority="2000"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
       </bootstrap>
+    <eval phase="First">perform hero.childfound[cfg5CArtPrp].setfocus
+
+focus.field[cfgMax1].value += 2
+focus.field[cfgMax2].value += 1
+focus.field[cfgMax4].value += 1</eval>
+    <eval phase="Final" index="2"><![CDATA[if (tagcount[Custom.5CAPIB] >= 2) then
+perform delete[Custom.5CAPEIB]
+endif
+
+if (tagcount[Custom.5CAPAB] >= 1) then
+perform delete[Custom.5CAPEAB]
+endif
+
+if (tagcount[Custom.5CAPAD] >= 1) then
+perform delete[Custom.5CAPEAD]
+endif]]></eval>
     <child entity="wSpecMagic">
       <bootstrap thing="wLongsword"></bootstrap>
       </child>

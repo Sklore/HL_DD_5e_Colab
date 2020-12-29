@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="cHelpSEx" name="Expert" compset="Class" uniqueness="unique">
+    <fieldval field="cAbbr" value="SEx"/>
+    <fieldval field="cHDSides" value="8"/>
+    <fieldval field="StartWeap" value="Shortsword, Dagger, Shortbow"/>
+    <fieldval field="StartArmor" value="Studden Leather Armor"/>
+    <fieldval field="StartGear" value="One musical instrument and one set of theives&apos; tools"/>
+    <fieldval field="cSkillMax" value="5"/>
+    <arrayval field="cAttrArray" index="3" value="2"/>
+    <arrayval field="cAttrArray" index="7" value="4"/>
+    <arrayval field="cAttrArray" index="9" value="6"/>
+    <arrayval field="cAttrArray" index="11" value="8"/>
+    <arrayval field="cAttrArray" index="15" value="10"/>
+    <arrayval field="cAttrArray" index="18" value="12"/>
+    <tag group="AllowTool1" tag="Any"/>
+    <tag group="Classes" tag="Expert2" name="Expert" abbrev="Sidekick Mage"/>
+    <tag group="AllowSkl1" tag="Any"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <bootstrap thing="c5CSExCunAct">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CSExEvasi">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CSExExpe">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CSExHelpf">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CSExRelTal">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CSExExpe">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CSExBonPrf">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CSExInspH">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CSExShrpM">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="c5CSExInspH">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="c5CSExCoord">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <eval phase="First" priority="1000" index="2">Foreach pick in Hero from BaseRace
+field[cHDSides].value = eachpick.field[rHDSides].value
+nexteach</eval>
+    <eval phase="First" index="3">var sides as number
+
+sides = field[cHDSides].value
+
+Foreach pick in Hero from BaseRace
+field[cHDSides].value = eachpick.field[rHDSides].value
+nexteach
+
+if (field[cHDSides].value = 0) then
+field[cHDSides].value = sides
+endif</eval>
+    </thing>
+  <thing id="cExpert2" name="Expert" compset="ClassLevel" maxlimit="20">
+    <usesource source="5eTCoE"/>
+    <tag group="ClassType" tag="NPC"/>
+    <bootstrap thing="cHelpSEx"></bootstrap>
+    <link linkage="helper" thing="cHelpSEx"/>
+    </thing>
+  <thing id="c5CSExBonPrf" name="Bonus Proficiencies" description="The expert gains proficiency in one of these saving throws: Dexterity, Intelligence, or Charisma.\n\nThe expert also gains proficiency in five skills of your choice and light armor.\n\nIf the expert is a humanoid or if it has a simple or martial weapon in its stat block, it becomes proficient with all simple weapons and 2 tools of your choice." compset="ClSpecial" summary="Gain extra proficiencies">
+    <fieldval field="usrCandid1" value="component.BaseSave &amp; !Hide.Save &amp; (SaveAbil.aDEX | SaveAbil.aINT | SaveAbil.aCHA)"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="First" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull the save proficiency tag and push to hero
+      perform field[usrChosen1].chosen.pulltags[ProfSave.?]
+      perform hero.pushtags[ProfSave.?]]]></eval>
+    <eval phase="PostLevel" priority="1000"><![CDATA[   ~ If we're disabled, do nothing  
+   doneif (tagis[Helper.Disable] <> 0)
+   
+   var profs as number
+
+~Check if humanoid
+    if (hero.childlives[tpHumanoid] <> 0) then
+    profs += 1
+    endif
+
+~Check if proficient in Martial Weapons
+    if (hero.tagcount[ArmProfGrp.WepMartial] <> 0) then
+    profs += 1
+    endif
+
+~Check if proficient in Simple Weapons
+    if (hero.tagcount[ArmProfGrp.WepSimple] <> 0) then
+    profs += 1
+    endif
+
+~ If any of the above are true, add Simple Weapons prof and 2 Tools to class
+    if (profs > 0) then
+    perform hero.childfound[cHelpSEx].assign[ArmProfGrp.WepSimple]
+    hero.childfound[cHelpSEx].field[cToolMax].value += 2
+    endif
+
+~ End this now if it's done, to save on processing.    
+    doneif (profs > 0)
+
+    var ids as string
+
+~ Loop through all simp/mart weapons and check if we're proficient
+    foreach thing in BaseWep where "(wProfReq.Martial | wProfReq.Simple)"
+    ids = "WepProf." & eachthing.idstring
+    if (hero.tagcountstr[ids] <> 0) then
+    profs += 1
+    endif
+
+~ If prof in any of them, add Simple Weapons prof and 2 Tools to class
+    if (profs > 0) then
+    perform hero.childfound[cHelpSEx].assign[ArmProfGrp.WepSimple]
+    hero.childfound[cHelpSEx].field[cToolMax].value += 2
+    endif
+    
+~ End this now if we've found one, to save on processing.    
+    doneif (profs > 0)
+
+
+    nexteach]]></eval>
+    </thing>
+  <thing id="cHelpSSp" name="Spellcaster" description="Arcana, History, Insight, Investigation, Medicine, Performance, Persuasion, and Religion" compset="Class" uniqueness="unique">
+    <fieldval field="cAbbr" value="SSp"/>
+    <fieldval field="cHDSides" value="6"/>
+    <fieldval field="StartWeap" value="Quarterstaff"/>
+    <fieldval field="StartArmor" value="Leather Armor"/>
+    <fieldval field="cSpecSing" value="Role"/>
+    <fieldval field="cSpecName" value="Roles"/>
+    <fieldval field="cSkillMax" value="2"/>
+    <arrayval field="cArrKnCan" index="3" value="3"/>
+    <arrayval field="cArrKnCan" index="9" value="4"/>
+    <arrayval field="cArrKnSpl" index="0" value="1"/>
+    <arrayval field="cArrKnSpl" index="1" value="2"/>
+    <arrayval field="cArrKnSpl" index="2" value="3"/>
+    <arrayval field="cArrKnSpl" index="4" value="4"/>
+    <arrayval field="cArrKnSpl" index="6" value="5"/>
+    <arrayval field="cArrKnSpl" index="8" value="6"/>
+    <arrayval field="cArrKnSpl" index="10" value="7"/>
+    <arrayval field="cArrKnSpl" index="12" value="8"/>
+    <arrayval field="cArrKnSpl" index="14" value="9"/>
+    <arrayval field="cArrKnSpl" index="16" value="10"/>
+    <arrayval field="cArrKnSpl" index="18" value="11"/>
+    <arrayval field="cAttrArray" index="3" value="2"/>
+    <arrayval field="cAttrArray" index="7" value="4"/>
+    <arrayval field="cAttrArray" index="11" value="6"/>
+    <arrayval field="cAttrArray" index="15" value="8"/>
+    <arrayval field="cAttrArray" index="17" value="10"/>
+    <arrayval field="cCustTot" index="0" value="1"/>
+    <arrayval field="cArrKnCan" index="0" value="2"/>
+    <tag group="CasterSrc" tag="Arcane" name="Arcane" abbrev="Arcane"/>
+    <tag group="CasterType" tag="SpontKnow"/>
+    <tag group="Helper" tag="HalfCaster"/>
+    <tag group="Classes" tag="Spellcast" name="Spellcaster"/>
+    <tag group="AllowSkl1" tag="skArcana"/>
+    <tag group="AllowSkl1" tag="skHistory"/>
+    <tag group="AllowSkl1" tag="skInsight"/>
+    <tag group="AllowSkl1" tag="skInvestig"/>
+    <tag group="AllowSkl1" tag="skMedicine"/>
+    <tag group="AllowSkl1" tag="skPerform"/>
+    <tag group="AllowSkl1" tag="skPersuas"/>
+    <tag group="AllowSkl1" tag="skReligion"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <bootstrap thing="c5CSSpFocCst">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="c5CSSpBonPrf">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CSSpEmpSpl">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CSSpPotCnt">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    <eval phase="First" priority="1000" index="2">var sides as number
+
+sides = field[cHDSides].value
+
+Foreach pick in Hero from BaseRace
+field[cHDSides].value = eachpick.field[rHDSides].value
+nexteach
+
+if (field[cHDSides].value = 0) then
+field[cHDSides].value = sides
+endif</eval>
+    <eval phase="PreLevel">var lev as number
+var rnd as number
+var dwn as number
+
+lev = hero.tagcount[Classes.Spellcast]
+rnd = lev/2
+dwn = lev/2
+
+rnd = round(rnd,0,0)
+dwn = round(dwn,0,-1)
+
+if (rnd - dwn = 1) then
+field[cCasterLev].value += 1
+endif</eval>
+    </thing>
+  <thing id="cSpellcast" name="Spellcaster" compset="ClassLevel" maxlimit="20">
+    <usesource source="5eTCoE"/>
+    <tag group="ClassType" tag="NPC"/>
+    <bootstrap thing="cHelpSSp"></bootstrap>
+    <link linkage="helper" thing="cHelpSSp"/>
+    </thing>
+  <thing id="c5CSSpBonPrf" name="Bonus Proficiencies" description="The spellcaster gains proficiency in one of these saving throws: Intelligence, Wisdom, or Charisma.\n\nThe spellcaster also gains proficiency in two skills of your choice (between Arcana, History, Insight, Investigation, Medicine, Performance, Persuasion, and Religion) and light armor.\n\nIf the spellcaster is a humanoid or if it has a simple or martial weapon in its stat block, it becomes proficient with all simple weapons." compset="ClSpecial" summary="Gain extra proficiencies">
+    <fieldval field="usrCandid1" value="component.BaseSave &amp; !Hide.Save &amp; (SaveAbil.aWIS | SaveAbil.aINT | SaveAbil.aCHA)"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="First" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull the save proficiency tag and push to hero
+      perform field[usrChosen1].chosen.pulltags[ProfSave.?]
+      perform hero.pushtags[ProfSave.?]]]></eval>
+    <eval phase="PostLevel" priority="1000"><![CDATA[   ~ If we're disabled, do nothing  
+   doneif (tagis[Helper.Disable] <> 0)
+   
+   var profs as number
+
+~Check if humanoid
+    if (hero.childlives[tpHumanoid] <> 0) then
+    profs += 1
+    endif
+
+~Check if proficient in Martial Weapons
+    if (hero.tagcount[ArmProfGrp.WepMartial] <> 0) then
+    profs += 1
+    endif
+
+~Check if proficient in Simple Weapons
+    if (hero.tagcount[ArmProfGrp.WepSimple] <> 0) then
+    profs += 1
+    endif
+
+~ If any of the above are true, add Simple Weapons prof and 2 Tools to class
+    if (profs > 0) then
+    perform hero.childfound[cHelpSSp].assign[ArmProfGrp.WepSimple]
+    endif
+
+~ End this now if it's done, to save on processing.    
+    doneif (profs > 0)
+
+    var ids as string
+
+~ Loop through all simp/mart weapons and check if we're proficient
+    foreach thing in BaseWep where "(wProfReq.Martial | wProfReq.Simple)"
+    ids = "WepProf." & eachthing.idstring
+    if (hero.tagcountstr[ids] <> 0) then
+    profs += 1
+    endif
+
+~ If prof in any of them, add Simple Weapons prof and 2 Tools to class
+    if (profs > 0) then
+    perform hero.childfound[cHelpSSp].assign[ArmProfGrp.WepSimple]
+    endif
+    
+~ End this now if we've found one, to save on processing.    
+    doneif (profs > 0)
+
+
+    nexteach]]></eval>
+    </thing>
+  <thing id="c5CSExHelpf" name="Helpful" description="The expert can use a bonus action to take the Help action." compset="ClSpecial" summary="The expert can Help as a bonus action.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    </thing>
+  <thing id="c5CSExCunAct" name="Cunning Action" description="On the expert&apos;s turn in combat, it can use a bonus action to take the Dash, Disengage, or Hide actions." compset="ClSpecial" summary="Bonus action to Dash, Disengage, or Hide on its turn.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="c5CSExCoord" name="Coordinated Strike" description="When the expert uses its Helpful feature to aid an ally in attacking a creature, that creature can be up to 30 feet away from the sidekick. The next time the expert hits that creature with an attack roll before the end of the current turn, it can add 2d6 damage of the same type to the attack." compset="ClSpecial" summary="Can Help at 30 ft. and gain bonus damage against the target."></thing>
+  <thing id="c5CSExEvasi" name="Evasion" description="If the expert has to make a Dexterity saving throw to take only half damage from an effect, it takes no damage on a successful save and only half damage on a failure. It does not get this benefit while it is incapacitated." compset="ClSpecial" summary="On a successful a Dex save for half damage, take none instead.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="c5CSExExpe" name="Expertise" description="The proficiency bonus of two of the expert&apos;s skill proficiencies is doubled for any ability check the expert makes with them.\n\nAt 15th level, the expert can choose two more of its skills to gain this benefit." compset="ClSpecial" summary="Double proficiency bonus with selected skills.">
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="ChooseSrc2" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="User" tag="NoAutoName" name="NoAutoName" abbrev="NoAutoName"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var tagexpr as string
+
+      if (field[usrChosen1].ischosen <> 0) then
+        tagexpr = field[usrChosen1].chosen.tagids[ProfSkill.?," | "]
+        foreach pick in hero from BaseSkill where tagexpr
+          perform eachpick.assign[Helper.ProfDouble]
+          nexteach
+        endif
+
+      if (field[usrChosen2].ischosen <> 0) then
+        tagexpr = field[usrChosen2].chosen.tagids[ProfSkill.?," | "]
+        foreach pick in hero from BaseSkill where tagexpr
+          perform eachpick.assign[Helper.ProfDouble]
+          nexteach
+        endif]]>
+      <before name="Calc skProfBon"/>
+      </eval>
+    <eval phase="Final" priority="999999" index="2"><![CDATA[
+      var tagexpr as string
+      foreach pick in hero from BaseSkill where "Helper.Proficient"
+        perform eachpick.pulltags[ProfSkill.?]
+        nexteach
+
+      if (tagis[ProfSkill.?] <> 0) then
+        tagexpr = "(component.BaseSkill & (" & tagids[ProfSkill.?, " | "] & "))"
+      
+        endif
+
+      field[usrCandid1].text = tagexpr
+      field[usrCandid2].text = tagexpr]]></eval>
+    </thing>
+  <thing id="c5CSExInspH" name="Inspiring Help" description="When the expert uses the Help action, the helped creature receives a 1d6 bonus to the d20 roll. If the helped creature is attacking, it can either use that bonus for its attack roll or choose to add it to the damage roll (against a single target) instead. This bonus increases to 2d6 when the expert reaches level 20." compset="ClSpecial" summary="Helped allies gain bonus to their d20 or damage roll.">
+    <fieldval field="abValue2" value="6"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="SbNamePar" tag="AppText"/>
+    <eval phase="PostLevel" priority="10000">field[abValue].value += field[xCount].value</eval>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[
+       if (field[xIndex].value >= 2) then
+         field[listname].text = field[thingname].text & " (2d6)"
+       else
+         field[listname].text = field[thingname].text & " (1d6)"
+         endif]]></eval>
+    <eval phase="Final" index="3"><![CDATA[
+      if (#levelcount[Expert2] >= 20) then
+        field[abText].text = "2d6"
+      else
+        field[abText].text = "1d6"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CSSpProdig" name="Prodigy" description="The spellcaster gains access to the Bard and Warlock spell lists, and Charisma becomes its spellcasting ability." compset="CustomSpec" uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpSSp"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="First"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.childfound[cHelpSSp].assign[sClass.cHelpBrd]
+      perform hero.childfound[cHelpSSp].assign[sClass.cHelpWlk]
+      perform hero.childfound[cHelpSSp].delete[SplAttr.?]
+      perform hero.childfound[cHelpSSp].assign[SplAttr.aCHA]]]></eval>
+    </thing>
+  <thing id="c5CSSpMage" name="Mage" description="The spellcaster gains access to the Wizard spell lists, and Intelligence becomes its spellcasting ability." compset="CustomSpec" uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpSSp"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="First"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.childfound[cHelpSSp].assign[sClass.cHelpWiz]]]></eval>
+    </thing>
+  <thing id="c5CSSpHealer" name="Healer" description="The spellcaster gains access to the Cleric and Druid spell lists, and Wisdom becomes its spellcasting ability." compset="CustomSpec" uniqueness="unique">
+    <tag group="SpecSource" tag="cHelpSSp"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="First"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.childfound[cHelpSSp].assign[sClass.cHelpClr]
+      perform hero.childfound[cHelpSSp].assign[sClass.cHelpDrd]
+      perform hero.childfound[cHelpSSp].delete[SplAttr.?]
+      perform hero.childfound[cHelpSSp].assign[SplAttr.aWIS]]]></eval>
+    </thing>
+  <thing id="c5CSExRelTal" name="Reliable Talent" description="When the expert makes an ability check that benefits from its full proficiency bonus, any d20 rolls for the check lower than a 10 can be treated as a 10." compset="ClSpecial" summary="When making proficient ability check, treats roll of 9 or lower as 10.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="c5CSExShrpM" name="Sharp Mind" description="The expert gains proficiency in one of these saving throws: Intelligence, Wisdom, or Charisma." compset="ClSpecial" summary="Gain proficiency in Intelligence, Wisdom, or Charisma saves.">
+    <fieldval field="usrCandid1" value="component.BaseSave &amp; !Hide.Save &amp; (SaveAbil.aWIS | SaveAbil.aINT | SaveAbil.aCHA)"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="First" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull the save proficiency tag and push to hero
+      perform field[usrChosen1].chosen.pulltags[ProfSave.?]
+      perform hero.pushtags[ProfSave.?]]]></eval>
+    </thing>
+  <thing id="c5CSWaBonPrf" name="Bonus Proficiencies" description="The warrior gains proficiency in one of these saving throws: Strength, Dexterity, or Constitution.\n\nThe warrior also gains proficiency in two skills of your choice (between Acrobatics, Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival) and all armor.\n\nIf the warrior is a humanoid or if it has a simple or martial weapon in its stat block, it becomes proficient with all simple and martial weapons, as well as shields." compset="ClSpecial" summary="Gain extra proficiencies">
+    <fieldval field="usrCandid1" value="component.BaseSave &amp; !Hide.Save &amp; (SaveAbil.aSTR | SaveAbil.aDEX | SaveAbil.aCON)"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="First" index="2"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull the save proficiency tag and push to hero
+      perform field[usrChosen1].chosen.pulltags[ProfSave.?]
+      perform hero.pushtags[ProfSave.?]]]></eval>
+    <eval phase="PostLevel" priority="1000"><![CDATA[   ~ If we're disabled, do nothing  
+   doneif (tagis[Helper.Disable] <> 0)
+
+   var profs as number
+
+~Check if humanoid
+    if (hero.childlives[tpHumanoid] <> 0) then
+    profs += 1
+    endif
+
+~Check if proficient in Martial Weapons
+    if (hero.tagcount[ArmProfGrp.WepMartial] <> 0) then
+    profs += 1
+    endif
+
+~Check if proficient in Simple Weapons
+    if (hero.tagcount[ArmProfGrp.WepSimple] <> 0) then
+    profs += 1
+    endif
+
+~ If any of the above are true, add Simple Weapons prof and 2 Tools to class
+    if (profs > 0) then
+    perform hero.childfound[cHelpSWa].assign[ArmProfGrp.WepSimple]
+    perform hero.childfound[cHelpSWa].assign[ArmProfGrp.WepMartial]
+    perform hero.childfound[cHelpSWa].assign[ArmProfGrp.Shields]
+    endif
+
+~ End this now if it's done, to save on processing.    
+    doneif (profs > 0)
+
+    var ids as string
+
+~ Loop through all simp/mart weapons and check if we're proficient
+    foreach thing in BaseWep where "(wProfReq.Martial | wProfReq.Simple)"
+    ids = "WepProf." & eachthing.idstring
+    if (hero.tagcountstr[ids] <> 0) then
+    profs += 1
+    endif
+
+~ If prof in any of them, add Simple Weapons prof and 2 Tools to class
+    if (profs > 0) then
+    perform hero.childfound[cHelpSWa].assign[ArmProfGrp.WepSimple]
+    perform hero.childfound[cHelpSWa].assign[ArmProfGrp.WepMartial]
+    perform hero.childfound[cHelpSWa].assign[ArmProfGrp.Shields]
+    endif
+    
+~ End this now if we've found one, to save on processing.    
+    doneif (profs > 0)
+
+
+    nexteach]]></eval>
+    </thing>
+  <thing id="cHelpSWa" name="Warrior" compset="Class" uniqueness="unique">
+    <fieldval field="cSpecSing" value="Martial Role"/>
+    <fieldval field="cAbbr" value="SWa"/>
+    <fieldval field="cHDSides" value="10"/>
+    <fieldval field="StartWeap" value="Longbow, Longsword"/>
+    <fieldval field="StartArmor" value="Chain Shirt, Shield"/>
+    <fieldval field="cSpecName" value="Martial Roles"/>
+    <fieldval field="cSkillMax" value="2"/>
+    <arrayval field="cAttrArray" index="3" value="2"/>
+    <arrayval field="cAttrArray" index="7" value="4"/>
+    <arrayval field="cAttrArray" index="11" value="6"/>
+    <arrayval field="cAttrArray" index="13" value="8"/>
+    <arrayval field="cAttrArray" index="15" value="10"/>
+    <arrayval field="cAttrArray" index="18" value="12"/>
+    <arrayval field="cCustTot" index="0" value="1"/>
+    <tag group="Classes" tag="Warrior2" name="Warrior" abbrev="Sidekick Warrior"/>
+    <tag group="AllowSkl1" tag="skAcrobat"/>
+    <tag group="AllowSkl1" tag="skAnimHand"/>
+    <tag group="AllowSkl1" tag="skAthletic"/>
+    <tag group="AllowSkl1" tag="skIntim"/>
+    <tag group="AllowSkl1" tag="skNature"/>
+    <tag group="AllowSkl1" tag="skPercep"/>
+    <tag group="AllowSkl1" tag="skSurvival"/>
+    <tag group="ArmProfGrp" tag="ArmorHeavy"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <bootstrap thing="c5CSWaImrpCrt">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWaSecWnd">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWaBonPrf">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWaExtAtt">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWaBatRdy">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWaIndom">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWaImpDef">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWaExtAtt">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWaIndom">
+      <autotag group="ClSpecWhen" tag="18"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWaSecWnd">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    <eval phase="First" priority="1000">var sides as number
+
+sides = field[cHDSides].value
+
+Foreach pick in Hero from BaseRace
+field[cHDSides].value = eachpick.field[rHDSides].value
+nexteach
+
+if (field[cHDSides].value = 0) then
+field[cHDSides].value = sides
+endif</eval>
+    </thing>
+  <thing id="cWarrior2" name="Warrior" compset="ClassLevel" maxlimit="20">
+    <usesource source="5eTCoE"/>
+    <tag group="ClassType" tag="NPC"/>
+    <bootstrap thing="cHelpSWa"></bootstrap>
+    <link linkage="helper" thing="cHelpSWa"/>
+    </thing>
+  <thing id="c5CSSpPotCnt" name="Potent Cantrips" description="The spellcaster can add its spellcasting ability modifier to the total damage of any of its harmful cantrips." compset="ClSpecial" summary="Adds spellcasting modifier to damage from cantrips.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="c5CSSpEmpSpl" name="Empowered Spells" description="Choose a school of magic. Whenever the spellcaster casts a spell of that school using a spell slot, it can add its spellcasting ability modifier to the spell&apos;s damage or healing roll, if any." compset="ClSpecial" summary="Add spellcasting mod to spell damage and healing.">
+    <fieldval field="usrLabelAr" value="Magic School"/>
+    <arrayval field="usrArray" index="0" value="Abjuration"/>
+    <arrayval field="usrArray" index="1" value="Conjuration"/>
+    <arrayval field="usrArray" index="2" value="Divination"/>
+    <arrayval field="usrArray" index="3" value="Enchantment"/>
+    <arrayval field="usrArray" index="4" value="Evocation"/>
+    <arrayval field="usrArray" index="5" value="Illusion"/>
+    <arrayval field="usrArray" index="6" value="Necromancy"/>
+    <arrayval field="usrArray" index="7" value="Transmutation"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="c5CSSpFocCst" name="Focused Casting" description="The spellcaster&apos;s concentration on spells cannot be broken by taking damage." compset="ClSpecial" summary="Spell concentration can&apos;t be broken by damage."></thing>
+  <thing id="c5CSWaAttac" name="Attacker" description="The warrior has a +2 bonus to its attack rolls." compset="CustomSpec" summary="+2 to attack rolls." uniqueness="unique">
+    <fieldval field="abValue" value="2"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="SpecSource" tag="cHelpSWa"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.child[Attack].field[atmBonus].value += 2
+      hero.child[Attack].field[atrBonus].value += 2]]></eval>
+    </thing>
+  <thing id="c5CSWaDefend" name="Defender" description="The warrior can use a reaction to impose disadvantage on the attack roll of another creature. That attacking creature must be visible to and within 5 feet of the warrior, and it must be attacking a creature other than the warrior." compset="CustomSpec" summary="Reaction to impose disadvantage on an attack against an ally." uniqueness="unique">
+    <fieldval field="abValue" value="2"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="SpecSource" tag="cHelpSWa"/>
+    </thing>
+  <thing id="c5CSWaSecWnd" name="Second Wind" description="The warrior regains hit points equal to 1d10 + its level by using a bonus action on its turn. It can&apos;t do this again until it completes a short or long rest.\n\nOnce the sidekick reaches level 20, it can use this feature twice between short rests." compset="ClSpecial" summary="Bonus action to recover HP once per short rest (twice at level 20).">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="LvNameApp" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <eval phase="PostLevel" priority="10001"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abValue].value += field[xAllLev].value
+
+      field[abText].text = "(recover 1d10" & signed(field[abValue].value) & " hp)"]]></eval>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[
+       if (field[xIndex].value >= 2) then
+         field[listname].text = field[thingname].text & " (two uses)"
+       else
+         field[listname].text = field[thingname].text & " (one use)"
+         endif]]></eval>
+    <eval phase="PostLevel" priority="10000" index="3">field[trkMax].value += field[xCount].value</eval>
+    </thing>
+  <thing id="c5CSWaImrpCrt" name="Improved Critical" description="The warrior&apos;s attacks rolls are critical hits on a 19 as well as a 20." compset="ClSpecial" summary="Weapon attacks score a critical hit on a roll of 19 or 20.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    </thing>
+  <thing id="c5CSWaExtAtt" name="Extra Attack" description="The warrior can make two attacks, instead of one, when using the Attack action on its turn. The number of attacks increases to three when the warrior reaches 15th level.\n\nIf the warrior has the multiattack action, it can choose to use either Extra Attack or Multiattack on its turn. It cannot use both in the same turn." compset="ClSpecial" summary="The warrior can make extra attacks when it takes the Attack action.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <eval phase="PostLevel" priority="500" name="Fighter extra attacks"><![CDATA[
+      ~These calculations should only happen for the first copy
+      doneif (tagis[Helper.FirstCopy] = 0)
+
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~Hide the standard extra attack option, because we're better than that
+      perform hero.childfound[cExtraAtt].assign[Helper.SpecUp]
+      field[abValue].value += field[xCount].value
+
+      if (field[abValue].value > 1) then
+        perform assign[LvNamePar.AppText]
+        field[abText].text = field[abValue].value & " attacks"
+        endif
+
+      ~Assign extra attack tags
+      var i as number
+      for i = 1 to field[abValue].value
+        perform hero.assign[Hero.ExtraAtt]
+        next]]></eval>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[
+      if (field[xIndex].value >= 2) then
+        field[listname].text = field[thingname].text & " (" & field[xIndex].value & ")"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CSWaBatRdy" name="Battle Readiness" description="The warrior has advantage on its initiative rolls." compset="ClSpecial">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.childfound[Initiative].assign[Helper.Advantage]
+      #situational[hero.child[Initiative], "Advantage on initiative rolls", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="c5CSWaImpDef" name="Improved Defense" description="The warrior&apos;s gains a +1 bonus to its AC." compset="ClSpecial" summary="Gain +1 Bonus to Armor Class.">
+    <eval phase="PreLevel" priority="5000"><![CDATA[~ If we're disabled, do nothing
+doneif (tagis[Helper.Disable] <> 0)
+
+if (#levelcount[Warrior2] >= 10 ) then
+hero.childfound[ArmorClass].field[Bonus].value += 1
+endif]]></eval>
+    </thing>
+  <thing id="c5CSWaIndom" name="Indomitable" description="If it fails a saving throw, the warrior can reroll it but must use the new roll.\n\nAt level 18, the sidekick can use this feature twice before having to complete a long rest." compset="ClSpecial" summary="Reroll a saving throw if the warrior fails.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="Free" name="Free" abbrev="Free"/>
+    <tag group="abDuration" tag="Instant" name="Instantaneous" abbrev="inst"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <eval phase="PostLevel" priority="10000">field[trkMax].value += field[xCount].value</eval>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[
+       if (field[xIndex].value >= 2) then
+         field[listname].text = field[thingname].text & " (two uses)"
+       else
+         field[listname].text = field[thingname].text & " (one use)"
+         endif]]></eval>
+    </thing>
+  </document>

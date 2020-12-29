@@ -80,14 +80,9 @@
     </thing>
   <thing id="c5CClrOrdr" name="Order" compset="CustomSpec" uniqueness="unique">
     <usesource source="5eGGtRCP"/>
-    <tag group="abCategory" tag="ClrDomain" name="Cleric Domain" abbrev="Cleric Domain"/>
+    <usesource source="5eTCoE"/>
     <tag group="SpecSource" tag="cHelpClr" name="Cleric" abbrev="Cleric"/>
-    <bootstrap thing="spHoldPers">
-      <autotag group="BonusSplAt" tag="3"/>
-      <autotag group="Helper" tag="Free"/>
-      <autotag group="Helper" tag="Memorized"/>
-      <autotag group="SpellType" tag="cHelpClr"/>
-      </bootstrap>
+    <tag group="abCategory" tag="ClrDomain" name="Cleric Domain" abbrev="Cleric Domain"/>
     <bootstrap thing="spZoneTrut">
       <autotag group="BonusSplAt" tag="3"/>
       <autotag group="Helper" tag="Free"/>
@@ -159,6 +154,12 @@
       </bootstrap>
     <bootstrap thing="spHeroism">
       <autotag group="BonusSplAt" tag="1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpClr"/>
+      </bootstrap>
+    <bootstrap thing="spHoldPers">
+      <autotag group="BonusSplAt" tag="3"/>
       <autotag group="Helper" tag="Free"/>
       <autotag group="Helper" tag="Memorized"/>
       <autotag group="SpellType" tag="cHelpClr"/>
@@ -244,10 +245,8 @@
   <thing id="c5CDrdSpre" name="Circle of Spores" compset="CustomSpec" uniqueness="unique">
     <comment>Supercedes UA: Druid Circles</comment>
     <usesource source="5eGGtRCP"/>
+    <usesource source="5eTCoE"/>
     <tag group="SpecSource" tag="cHelpDrd" name="Druid" abbrev="Druid"/>
-    <bootstrap thing="c5CDrdSymE">
-      <autotag group="ClSpecWhen" tag="2"/>
-      </bootstrap>
     <bootstrap thing="c5CDrdSpSp">
       <autotag group="ClSpecWhen" tag="10"/>
       </bootstrap>
@@ -272,6 +271,9 @@
     <bootstrap thing="c5CDrdFuIn">
       <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
+    <bootstrap thing="c5CDrdSymE">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
     </thing>
   <thing id="c5CDrdSymE" name="Symbiotic Entity" description="At 2nd level, you are able to channel magic into your spores. You may use an action to awaken the spores, expending a use of your Wild Shape feature. You gain 4 temporary hit points for every druid level you have taken. While in this form, you gain these benefits:\n\n* Your Halo of Spores damage does an extra damage dice\n* Your melee weapon atacks deal an additional 1d6 poison damage to any hit targets\n\nThese benefits and form last for 10 minutes, until you lose the temporary hit points, or until you use your Wild Shape again, whichever comes first." compset="ClSpecial" summary="You infuse magic into your spores to transform into a fungal form">
     <fieldval field="abDuration" value="10"/>
@@ -282,6 +284,7 @@
     <tag group="abAction" tag="None"/>
     <tag group="User" tag="Tracker"/>
     <bootstrap thing="PoolWlkBls">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
       <autotag group="Value" tag="8"/>
       <assignval field="livename" value="Symbiotic Entity Temporary HP Pool"/>
       </bootstrap>
@@ -289,7 +292,7 @@
       ~ If we're not shown, just get out now
       doneif (tagis[Helper.ShowSpec] = 0)
       doneif (tagis[Helper.Disable] <> 0)
-      doneif (hero.tagis[Hero.Raging] = 0)
+      doneif (field[abilActive].value = 0)
 
       ~ Add temp HP
       var temphp as number
@@ -301,12 +304,6 @@
 foreach pick in hero from BaseWep where "wCategory.Melee"
       #extradamage[eachpick, " plus 1d6 poison", field[thingname].text]
 nexteach]]></eval>
-    <eval phase="First" priority="450"><![CDATA[
-      ~if we're curently raging, forward a tag to the hero.
-      ~note the timing is just before First/500, which is when the containerreqs on the rage powers will look for this tag
-      if (field[abilActive].value <> 0) then
-        perform hero.assign[Hero.Raging]
-        endif]]></eval>
     </thing>
   <thing id="c5CDrdHaOS" name="Halo of Spores" description="Beginning at 2nd level, invisible, necrotic spores surround you, normally harmless. When a creature you can see moves within 10 feet of you or starts its turn there, you can use a reaction to send the spores at them. The spires deal 1d4 necrotic damage to the creature unless they succeed on a Constitution saving thrown against your spell save DC. \n\nThe damage increases to 1d6 at 6th level, 1d8 at 10th level , and 1d10 at 14th level." compset="ClSpecial" summary="Use your reaction to deal necrotic damage to a nearby enemy.">
     <fieldval field="abRange" value="10"/>
