@@ -1624,9 +1624,17 @@ hero.childfound[cHelpSor].field[cSplBkExpr].text = known]]></eval>
      doneif (tagis[Helper.Disable] <> 0)
 
      hero.childfound[cfg5CTashVar].field[cfgAllow4].text = "abCategory.5CRFV"
-     perform hero.childfound[cfg5CTashVar].assign[Helper.Allow4Abil]]]></eval>
+     perform hero.childfound[cfg5CTashVar].assign[Helper.Allow4Abil]
+
+     if (hero.childlives[sr5CToFGya] <> 0) then
+     hero.childfound[cfg5CTashVar].field[cfgAllow4].text &= " | thingid.rc5CGthYRp"
+     endif
+
+     if (hero.childlives[ra5CMarTra] <> 0) then
+     hero.childfound[cfg5CTashVar].field[cfgAllow4].text &= " | thingid.rc5CGthYRp"
+     endif]]></eval>
     </thing>
-  <thing id="rc5CRFVASI" name="Ability Score Increases" description="You can re-assign the Ability Score bonuses awared to you by your race to another ability. As an example, if your race (and subrace or variant race, where applicable) grants you +2 Constitution and +1 Dexterity, you can reassign +2 to a different score and +1 to another one, other than what you chose for the +2. In effect, you can&apos;t use this to gain +3 in a single score.\n\nDue to the way variable ability score increases are handled in Hero Lab, it&apos;s not possible to automatically pull all the various possible racial bonus abiltiy scores. Please use the &quot;Ability Score (Starting)&quot; adjustment to remove the old bonuses and assign the new ones." compset="RaceCustom" summary="Change the ability score increases from your race." uniqueness="unique">
+  <thing id="rc5CRFVASI" name="Ability Score Increases" description="You can re-assign the Ability Score bonuses awared to you by your race to another ability. As an example, if your race (and subrace or variant race, where applicable) grants you +2 Constitution and +1 Dexterity, you can reassign +2 to a different score and +1 to another one, other than what you chose for the +2. In effect, you can&apos;t use this to gain +3 in a single score.\n\n{b}Due to the way variable ability score increases are handled in Hero Lab, it&apos;s not possible to automatically pull all the various possible racial bonus ability scores. Please use the &quot;Ability Score (Starting)&quot; adjustment to remove the old bonuses and assign the new ones.{/b}" compset="RaceCustom" summary="Change the ability score increases from your race." uniqueness="unique">
     <tag group="abCategory" tag="5CRFV" name="Racial Variant Features"/>
     <tag group="Helper" tag="SpecUp"/>
     </thing>
@@ -1665,8 +1673,75 @@ Smp += 1
 endif
 nexteach
 
+var tagexpr as string
 
-Mrt = 2
+foreach pick in hero from BaseRace
+   tagexpr = eachpick.tagids[WepProf.?," | "]
+   perform eachpick.delete[WepProf.?]
+   nexteach
+
+tagexpr = replace(tagexpr,"WepProf.","thingid.",0)
+
+foreach thing in BaseWep where tagexpr
+   if (eachthing.tagis[wProfReq.Simple] <> 0) then
+     Smp += 1
+     endif
+   if (eachthing.tagis[wProfReq.Martial] <> 0) then
+     Mrt += 1
+     endif
+   nexteach
+
+foreach pick in hero from SubRace
+   tagexpr = eachpick.tagids[WepProf.?," | "]
+   perform eachpick.delete[WepProf.?]
+   nexteach
+
+tagexpr = replace(tagexpr,"WepProf.","thingid.",0)
+
+foreach thing in BaseWep where tagexpr
+   if (eachthing.tagis[wProfReq.Simple] <> 0) then
+     Smp += 1
+     endif
+   if (eachthing.tagis[wProfReq.Martial] <> 0) then
+     Mrt += 1
+     endif
+   nexteach
+
+foreach pick in hero from RaceAbil
+   tagexpr = eachpick.tagids[WepProf.?," | "]
+   perform eachpick.delete[WepProf.?]
+
+   tagexpr = replace(tagexpr,"WepProf.","thingid.",0)
+
+   foreach thing in BaseWep where tagexpr
+     if (eachthing.tagis[wProfReq.Simple] <> 0) then
+       Smp += 1
+     endif
+     if (eachthing.tagis[wProfReq.Martial] <> 0) then
+       Mrt += 1
+     endif
+   nexteach
+nexteach
+
+foreach pick in hero from BaseRace
+   Mrt += eachpick.tagcount[ArmProfGrp.?]
+   perform eachpick.delete[ArmProfGrp.?]
+   nexteach
+
+foreach pick in hero from SubRace
+   Mrt += eachpick.tagcount[ArmProfGrp.?]
+   perform eachpick.delete[ArmProfGrp.?]
+   nexteach
+
+foreach pick in hero from RaceAbil
+   Mrt += eachpick.tagcount[ArmProfGrp.?]
+   perform eachpick.delete[ArmProfGrp.?]
+   nexteach
+
+if (hero.childlives[ra5CMarTra] <> 0) then
+   perform hero.childfound[ra5CMarTra].assign[Helper.Disable]
+   Mrt += 2
+   endif
 
 field[abValue].value = Smp
 field[abValue2].value = Mrt]]></eval>
@@ -1702,7 +1777,50 @@ endif
 
 ~need to add armor to the martial express if Hobgob, Mount Dwarf, or Githyanki
 ~do a doneif any are present, otherwise add the thingid.___ of our "keep armor"]]></eval>
-    <eval phase="Final" priority="1000" index="4"></eval>
+    <eval phase="First" priority="9000" index="4"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+var iL as number
+var iM as number
+var iH as number
+var iS as number
+
+foreach pick in hero from BaseRace
+   iL += eachpick.tagcount[ArmProfGrp.ArmorLight]
+   iM += eachpick.tagcount[ArmProfGrp.ArmorMed]
+   iH += eachpick.tagcount[ArmProfGrp.ArmorHeavy]
+   iS += eachpick.tagcount[ArmProfGrp.Shields]
+   nexteach
+
+foreach pick in hero from SubRace
+   iL += eachpick.tagcount[ArmProfGrp.ArmorLight]
+   iM += eachpick.tagcount[ArmProfGrp.ArmorMed]
+   iH += eachpick.tagcount[ArmProfGrp.ArmorHeavy]
+   iS += eachpick.tagcount[ArmProfGrp.Shields]
+   nexteach
+
+foreach pick in hero from RaceAbil
+   iL += eachpick.tagcount[ArmProfGrp.ArmorLight]
+   iM += eachpick.tagcount[ArmProfGrp.ArmorMed]
+   iH += eachpick.tagcount[ArmProfGrp.ArmorHeavy]
+   iS += eachpick.tagcount[ArmProfGrp.Shields]
+   nexteach
+
+   field[abValue3].value = iL
+   field[abValue4].value = iM
+   field[abValue5].value = iH
+   field[abText].text = iS]]></eval>
+    <eval phase="Final" priority="1000" index="5"><![CDATA[if (field[abValue3].value > 0) then
+   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmL"
+   endif
+if (field[abValue4].value > 0) then
+   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmM"
+   endif
+if (field[abValue5].value > 0) then
+   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmH"
+   endif
+if (field[abText].text > 0) then
+   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmS"
+   endif]]></eval>
     </thing>
   <thing id="rc5CRFVSmpW" name="Martial Weapon Proficiency" description="Choose a martial weapon to become proficient with." compset="RaceCustom">
     <fieldval field="usrCandid1" value="component.BaseWep &amp; (wProfReq.Martial) &amp; !Helper.Helper &amp; !component.BaseMagicI &amp; !thingid.w5CSpellAt "/>
@@ -1757,23 +1875,35 @@ eachpick.field[cSkillMax2].value = 0
 eachpick.field[cSkillMax3].value = 0
 nexteach
 
-debug skills
 hero.childfound[cfg5CTashVar].field[cSkillMax].value += skills</eval>
+    <eval phase="First" priority="10000" index="2"><![CDATA[var skills as number
+
+if (hero.childlives[raKeenSens] <> 0) then
+   perform hero.childfound[raKeenSens].assign[Helper.Disable]
+   skills += 1
+   endif
+
+if (hero.childlives[raHOMenace] <> 0) then
+   perform hero.childfound[raHOMenace].assign[Helper.Disable]
+   skills += 1
+   endif
+
+if (hero.childlives[ra5CElveKS] <> 0) then
+   perform hero.childfound[ra5CElveKS].delete[ProfSkill.?]
+   skills += 1
+   endif
+
+
+hero.childfound[cfg5CTashVar].field[cSkillMax].value += skills]]></eval>
     </thing>
-  <thing id="rc5CRFVArmL" name="Keep Light Armor Proficiency" description="If your race provides proficiency with light armor and you would like to keep it while still replacing your weapon and tool proficiencies, select this option." compset="RaceCustom" summary="Keep your class&apos;s light armor proficiency.">
-    <tag group="abCategory" tag="5CRFVMrtW" name="Variant Feature - Martial Weapon Proficiency"/>
+  <thing id="rc5CRFVArmL" name="Keep Light Armor Proficiency" description="If your race provides proficiency with light armor and you would like to keep it while still replacing your weapon and tool proficiencies, select this option." compset="RaceCustom" summary="Keep your race&apos;s light armor proficiency." uniqueness="unique">
     <tag group="Helper" tag="SpecUp"/>
     <eval phase="PreLevel" priority="1000"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
-      ~ If nothing chosen then get out now!
-      doneif (field[usrChosen1].ischosen = 0)
-      
-      ~ Pull all the selected weapon proficiency tags to ourself 
-      perform field[usrChosen1].chosen.pulltags[WepProf.?]
-    
-      ~ Now push both tags to the hero
-      perform hero.pushtags[WepProf.?]]]></eval>
+
+
+      perform hero.assign[ArmProfGrp.ArmorLight]]]></eval>
     </thing>
   <thing id="c5CRgrPriCmp" name="Primal Companion" description="You magically summon a primal beast, which obeys your commands and is friendly to you and your allies. Choose its stat block from the Beast of the Land, Beast of the Sea, or Beast of the Sky. You determine what kind of beast it appears as based on the stat block, but it bears primal markings that indicate its magical origin.\n\nThe beast acts on your turn in combat. It moves and uses its reaction without needing to be commanded. You can use a bonus action to command it to take an action, which can be from its stat block or any other action it is capable of doing. If you issue no such command, it takes the Dodge action. When you take the attack action, you can give up one of your own attacks to command it to take the Attack action. When you&apos;re incapacitated, it can use any of those actions, not just Dodge..\n\nIf the beast dies and you reach it within an hour, you can use an action to touch it and expend a 1st level or higher spell slot. The beast returns to life after 1 minute, having regained all its hit points.\n\nAt the end of your long rest, you can summon a different primal beast. The new beast appears in an open space within 5 feet of you, and you choose its stat block and appearance. Any beast you currently have summoned disappears when you die and/or if you summon a new one.\n\n{i}Replaces Ranger&apos;s Companion{/i}" compset="ClSpecial" summary="Summon a primal beast.">
     <tag group="abCategory" tag="5CCFVRgr" name="Ranger Variant Features"/>
@@ -2167,5 +2297,42 @@ CrAt = (maximum(hero.childfound[aDEX].field[aModBonus].value,hero.childfound[aST
 foreach pick in hero from BaseWep where "wGroup.Natural & wProperty.Finesse"
 eachpick.field[wAttack].value += hero.childfound[ra5CPrmBnd].field[abValue4].value - CrAt
 nexteach]]></eval>
+    </thing>
+  <thing id="rc5CGthYRp" name="Replace Decadent Mastery Tool" description="Select this to replace the tool granted by the githyanki&apos;s Decadent Mastery feature." compset="RaceCustom" summary="Replace Decadent Mastery tool." uniqueness="unique">
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <eval phase="First" priority="10001"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.childfound[rc5CRFVArms].field[abValue].value += 1
+      perform hero.childfound[ra5CToFGDM].assign[Helper.Disable]]]></eval>
+    <pickreq thing="rc5CRFVArms"/>
+    </thing>
+  <thing id="rc5CRFVArmM" name="Keep Medium Armor Proficiency" description="If your race provides proficiency with medium armor and you would like to keep it while still replacing your weapon and tool proficiencies, select this option." compset="RaceCustom" summary="Keep your race&apos;s medium armor proficiency." uniqueness="unique">
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PreLevel" priority="1000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      perform hero.assign[ArmProfGrp.ArmorMed]]]></eval>
+    </thing>
+  <thing id="rc5CRFVArmH" name="Keep Heavy Armor Proficiency" description="If your race provides proficiency with heavy armor and you would like to keep it while still replacing your weapon and tool proficiencies, select this option." compset="RaceCustom" summary="Keep your race&apos;s heavy armor proficiency." uniqueness="unique">
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PreLevel" priority="1000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      perform hero.assign[ArmProfGrp.ArmorHeavy]]]></eval>
+    </thing>
+  <thing id="rc5CRFVArmS" name="Keep Shields Proficiency" description="If your race provides proficiency with shields and you would like to keep it while still replacing your weapon and tool proficiencies, select this option." compset="RaceCustom" summary="Keep your race&apos;s shield proficiency." uniqueness="unique">
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="PreLevel" priority="1000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+
+      perform hero.assign[ArmProfGrp.Shields]]]></eval>
     </thing>
   </document>
