@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
-  <thing id="cHelpSEx" name="Expe rt" compset="Class" uniqueness="unique">
+  <thing id="cHelpSEx" name="Expert" compset="Class" uniqueness="unique">
     <fieldval field="cAbbr" value="SEx"/>
     <fieldval field="cHDSides" value="8"/>
     <fieldval field="StartWeap" value="Shortsword, Dagger, Shortbow"/>
@@ -13,13 +13,11 @@
     <arrayval field="cAttrArray" index="11" value="8"/>
     <arrayval field="cAttrArray" index="15" value="10"/>
     <arrayval field="cAttrArray" index="18" value="12"/>
-    <tag group="AllowTool1" tag="Any"/>
+    <usesource source="5eTCoE"/>
     <tag group="Classes" tag="Expert2" name="Expert" abbrev="Sidekick Mage"/>
     <tag group="AllowSkl1" tag="Any"/>
     <tag group="ArmProfGrp" tag="ArmorLight"/>
-    <bootstrap thing="c5CSExCunAct">
-      <autotag group="ClSpecWhen" tag="2"/>
-      </bootstrap>
+    <tag group="AllowTool1" tag="Any"/>
     <bootstrap thing="c5CSExEvasi">
       <autotag group="ClSpecWhen" tag="7"/>
       </bootstrap>
@@ -50,9 +48,9 @@
     <bootstrap thing="c5CSExCoord">
       <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
-    <eval phase="First" priority="1000" index="2">Foreach pick in Hero from BaseRace
-field[cHDSides].value = eachpick.field[rHDSides].value
-nexteach</eval>
+    <bootstrap thing="c5CSExCunAct">
+      <autotag group="ClSpecWhen" tag="2"/>
+      </bootstrap>
     <eval phase="First" index="3">var sides as number
 
 sides = field[cHDSides].value
@@ -64,6 +62,9 @@ nexteach
 if (field[cHDSides].value = 0) then
 field[cHDSides].value = sides
 endif</eval>
+    <eval phase="First" priority="1000" index="2">Foreach pick in Hero from BaseRace
+field[cHDSides].value = eachpick.field[rHDSides].value
+nexteach</eval>
     </thing>
   <thing id="cExpert2" name="Expert" compset="ClassLevel" maxlimit="20">
     <usesource source="5eTCoE"/>
@@ -162,7 +163,7 @@ endif</eval>
     <arrayval field="cAttrArray" index="17" value="10"/>
     <arrayval field="cCustTot" index="0" value="1"/>
     <arrayval field="cArrKnCan" index="0" value="2"/>
-    <tag group="CasterSrc" tag="Arcane" name="Arcane" abbrev="Arcane"/>
+    <usesource source="5eTCoE"/>
     <tag group="CasterType" tag="SpontKnow"/>
     <tag group="Helper" tag="HalfCaster"/>
     <tag group="Classes" tag="Spellcast" name="Spellcaster"/>
@@ -175,9 +176,7 @@ endif</eval>
     <tag group="AllowSkl1" tag="skPersuas"/>
     <tag group="AllowSkl1" tag="skReligion"/>
     <tag group="ArmProfGrp" tag="ArmorLight"/>
-    <bootstrap thing="c5CSSpFocCst">
-      <autotag group="ClSpecWhen" tag="20"/>
-      </bootstrap>
+    <tag group="CasterSrc" tag="Arcane" name="Arcane" abbrev="Arcane"/>
     <bootstrap thing="c5CSSpBonPrf">
       <autotag group="ClSpecWhen" tag="1"/>
       </bootstrap>
@@ -187,18 +186,10 @@ endif</eval>
     <bootstrap thing="c5CSSpPotCnt">
       <autotag group="ClSpecWhen" tag="6"/>
       </bootstrap>
+    <bootstrap thing="c5CSSpFocCst">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
     <link linkage="castattr" thing="aINT"/>
-    <eval phase="First" priority="1000" index="2">var sides as number
-
-sides = field[cHDSides].value
-
-Foreach pick in Hero from BaseRace
-field[cHDSides].value = eachpick.field[rHDSides].value
-nexteach
-
-if (field[cHDSides].value = 0) then
-field[cHDSides].value = sides
-endif</eval>
     <eval phase="PreLevel">var lev as number
 var rnd as number
 var dwn as number
@@ -212,6 +203,17 @@ dwn = round(dwn,0,-1)
 
 if (rnd - dwn = 1) then
 field[cCasterLev].value += 1
+endif</eval>
+    <eval phase="First" priority="1000" index="2">var sides as number
+
+sides = field[cHDSides].value
+
+Foreach pick in Hero from BaseRace
+field[cHDSides].value = eachpick.field[rHDSides].value
+nexteach
+
+if (field[cHDSides].value = 0) then
+field[cHDSides].value = sides
 endif</eval>
     </thing>
   <thing id="cSpellcast" name="Spellcaster" compset="ClassLevel" maxlimit="20">
@@ -484,7 +486,7 @@ endif</eval>
     <arrayval field="cAttrArray" index="15" value="10"/>
     <arrayval field="cAttrArray" index="18" value="12"/>
     <arrayval field="cCustTot" index="0" value="1"/>
-    <tag group="Classes" tag="Warrior2" name="Warrior" abbrev="Sidekick Warrior"/>
+    <usesource source="5eTCoE"/>
     <tag group="AllowSkl1" tag="skAcrobat"/>
     <tag group="AllowSkl1" tag="skAnimHand"/>
     <tag group="AllowSkl1" tag="skAthletic"/>
@@ -495,9 +497,7 @@ endif</eval>
     <tag group="ArmProfGrp" tag="ArmorHeavy"/>
     <tag group="ArmProfGrp" tag="ArmorLight"/>
     <tag group="ArmProfGrp" tag="ArmorMed"/>
-    <bootstrap thing="c5CSWaImrpCrt">
-      <autotag group="ClSpecWhen" tag="3"/>
-      </bootstrap>
+    <tag group="Classes" tag="Warrior2" name="Warrior" abbrev="Sidekick Warrior"/>
     <bootstrap thing="c5CSWaSecWnd">
       <autotag group="ClSpecWhen" tag="2"/>
       </bootstrap>
@@ -524,6 +524,9 @@ endif</eval>
       </bootstrap>
     <bootstrap thing="c5CSWaSecWnd">
       <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="c5CSWaImrpCrt">
+      <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
     <eval phase="First" priority="1000">var sides as number
 
