@@ -1060,4 +1060,588 @@ endif]]></eval>
   <thing id="pHd5CCmpSm" name="Companions and Summons" compset="InPlay" uniqueness="unique" isshowonly="yes">
     <tag group="OthAdjCat" tag="UserBot6th"/>
     </thing>
+  <thing id="p5CSplMgArm" name="Mage Armor" compset="InPlay" uniqueness="unique">
+    <fieldval field="pDuration" value="8 Hours"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="SpInfo" tag="spMageArmo"/>
+    <eval phase="PreAttr"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      doneif (hero.tagcount[Hero.EquipArmor] <> 0)
+
+      hero.childfound[ArmorClass].field[tACBase].value = 13]]></eval>
+    </thing>
+  <thing id="pHd5CSpls" name="Specific Spells" compset="InPlay" uniqueness="unique" isshowonly="yes">
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    </thing>
+  <thing id="p5CSplAwkn" name="Awaken" compset="InPlay" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="SpInfo" tag="spAwaken"/>
+    <bootstrap thing="lOther">
+      <containerreq phase="First" priority="100003"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      <assignval field="livename" value="A language of its awakener"/>
+      </bootstrap>
+    <eval phase="PreAttr" priority="1000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      hero.childfound[aINT].field[aOverride].value = 10]]></eval>
+    <prereq message="Requires Huge or smaller">
+      <validate><![CDATA[
+var iSiz as number
+
+iSiz = herofield[tSize].value
+
+if (iSiz > 2) then
+ @valid = 0
+ else
+ @valid = 1
+ endif]]></validate>
+      </prereq>
+    <prereq message="Requires Intelligence of 3 or lower">
+      <validate><![CDATA[
+var iInt as number
+
+iInt = hero.childfound[aINT].field[aFinalVal].value
+
+if (iInt > 3) then
+ @valid = 0
+ else
+ @valid = 1
+ endif]]></validate>
+      </prereq>
+    </thing>
+  <thing id="p5CSplBrkskn" name="Barkskin" compset="InPlay" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="SpInfo" tag="spBarkskin"/>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      hero.childfound[ArmorClass].field[tAC].value = maximum(16,hero.childfound[ArmorClass].field[tAC].value)]]></eval>
+    </thing>
+  <thing id="p5CSplHaste" name="Haste" compset="InPlay" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="SpInfo" tag="spHaste"/>
+    <bootstrap thing="abSplHaste">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="Final" priority="11000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      hero.childfound[ArmorClass].field[tAC].value += 2
+      hero.childfound[Speed].field[tSpeed].value *= 2
+      #situational[hero.child[svDEX], "Advantage", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="abSplHaste" name="Haste" description="While under the effects of {i}haste{/i}, you gain an additional action once per your turn. This action can be used only to take the Attack (one weapon attack only), Dash, Disengage, Hide, or Use an Object action." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="p5CSplAltSlf" name="Alter Self (Natural Weapons)" compset="InPlay" uniqueness="unique">
+    <fieldval field="pCandExpr" value="thingid.dtPiercing | thingid.dtSlashing | thingid.dtBludgeon"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Custom" tag="AltSlfNat" name="Alter Self Natural Attack"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="SpInfo" tag="spAlteSelf"/>
+    <bootstrap thing="wOtherMel">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      <autotag group="Custom" tag="AltSlfNat"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wAttack" value="1"/>
+      <assignval field="wDamBonus" value="1"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="livename" value="Natural attack"/>
+      <assignval field="sbName" value="Natural attack"/>
+      </bootstrap>
+    <eval phase="First" priority="600" index="2"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+foreach pick in hero from BaseWep where "Custom.AltSlfNat"
+  var iDam as string
+  iDam = field[pChosen].chosen.tagids[thingid.?,""]
+  iDam = replace(iDam,"thingid","DamTypeOvr",0)
+  perform eachpick.assignstr[iDam]
+  nexteach]]></eval>
+    <eval phase="Render" priority="99999999"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+
+foreach pick in hero from BaseWep where "Custom.AltSlfNat"
+  var S2Type as number
+  Call S2SeleText
+  If (S2Type = 1) Then
+    eachpick.field[livename].text = field[pSource].text & " (Alter Self)"
+    eachpick.field[sbName].text = field[pSource].text & " (Alter Self)"
+  ElseIf (S2Type = 2) Then
+    eachpick.field[livename].text = field[pDuration].text & " (Alter Self)"
+    eachpick.field[sbName].text = field[pDuration].text & " (Alter Self)" 
+  Endif
+  nexteach]]></eval>
+    </thing>
+  <thing id="p5CSplDrkvis" name="Darkvision" compset="InPlay" uniqueness="unique">
+    <fieldval field="pDuration" value="8 hours"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="SpInfo" tag="spDarkvisi"/>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    </thing>
+  <thing id="p5CSplEleWep" name="Elemental Weapon" compset="InPlay">
+    <fieldval field="pCandExpr" value="thingid.dtAcid | thingid.dtCold | thingid.dtFire | thingid.dtLightnin | thingid.dtThunder"/>
+    <fieldval field="pMinimum" value="1"/>
+    <fieldval field="pMaximum" value="3"/>
+    <fieldval field="pCandExpr2" value="component.BaseWep &amp; !Helper.EquipMag"/>
+    <fieldval field="pDuration" value="1 hour"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Custom" tag="AltSlfNat" name="Alter Self Natural Attack"/>
+    <tag group="ChooseSrc2" tag="Hero"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="SpInfo" tag="sp5CElemWe"/>
+    <eval phase="First" priority="600" index="2"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+doneif (field[pChosen2].ischosen = 0)
+
+field[pChosen2].chosen.field[wAttBonus].value += field[pAdjust].value
+field[pChosen2].chosen.field[wDamExtra].text &= " +" & field[pAdjust].value & "d4 " & lowercase(field[pChosen].chosen.field[name].text)
+perform field[pChosen2].chosen.assign[Helper.EquipMag]]]></eval>
+    <eval phase="Render" priority="99999999"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+doneif (field[pChosen2].ischosen = 0)
+
+field[pChosen2].chosen.field[livename].text &= " (Elemental)"
+field[pChosen2].chosen.field[sbName].text &= " (Elemental)"]]></eval>
+    </thing>
+  <thing id="p5CSplHlyWep" name="Holy Weapon" compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseWep"/>
+    <fieldval field="pDuration" value="1 hour"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Custom" tag="AltSlfNat" name="Alter Self Natural Attack"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="SpInfo" tag="sp5CXGEHoW"/>
+    <eval phase="Render" priority="99999999"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+field[pChosen].chosen.field[livename].text &= " (Holy)"
+field[pChosen].chosen.field[sbName].text &= " (Holy)"]]></eval>
+    <eval phase="First" priority="600" index="2"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+field[pChosen].chosen.field[wDamExtra].text &= " +2d8 radiant"
+perform field[pChosen].chosen.assign[Helper.EquipMag]]]></eval>
+    </thing>
+  <thing id="p5cSplMgcWep" name="Magic Weapon" compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseWep &amp; !Helper.EquipMag"/>
+    <fieldval field="pMinimum" value="1"/>
+    <fieldval field="pMaximum" value="3"/>
+    <fieldval field="pDuration" value="1 hour"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Custom" tag="AltSlfNat" name="Alter Self Natural Attack"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="SpInfo" tag="spMagiWeap"/>
+    <eval phase="First" priority="600" index="2"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+field[pChosen].chosen.field[wAttBonus].value += field[pAdjust].value
+field[pChosen].chosen.field[wDamBonus].value += field[pAdjust].value
+perform field[pChosen].chosen.assign[Helper.EquipMag]]]></eval>
+    <eval phase="Render" priority="99999999"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+field[pChosen].chosen.field[livename].text &= " (+"&field[pAdjust].value&")"
+field[pChosen].chosen.field[sbName].text &= " (+"&field[pAdjust].value&")"]]></eval>
+    </thing>
+  <thing id="p5CSplShllgh" name="Shillelagh" description="Select the weapon and your spellcasting ability to apply this." compset="InPlay" uniqueness="unique">
+    <fieldval field="pCandExpr" value="thingid.wClub | thingid.wQtrstaff"/>
+    <fieldval field="pDuration" value="1 minute"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Adjust2nd" tag="Attribute"/>
+    <tag group="ChooseSrc2" tag="Hero"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="SpInfo" tag="spShillela"/>
+    <eval phase="PostAttr" priority="600" index="2"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen2].ischosen = 0)
+doneif (field[pChosen].ischosen = 0)
+
+var iAtr as string
+
+iAtr = field[pChosen2].chosen.tagids[SplAttr.?,""]
+
+iAtr = replace(iAtr,"SplAttr","DamageOpt",0)
+  perform field[pChosen].chosen.assignstr[iAtr]
+
+iAtr = replace(iAtr,"DamageOpt","MelAttOpt",0)
+  perform field[pChosen].chosen.assignstr[iAtr]
+
+field[pChosen].chosen.field[wDieSize].value = 8
+field[pChosen].chosen.field[wDSizVers].value = 8]]></eval>
+    <eval phase="Render" priority="99999999"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+doneif (field[pChosen2].ischosen = 0)
+
+
+field[pChosen].chosen.field[livename].text &= " (Shillelagh)"
+field[pChosen].chosen.field[sbName].text &= " (Shillelagh)"]]></eval>
+    </thing>
+  <thing id="w5CSplMgcStn" name="Magic Stone (Thrown)" compset="Weapon">
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="6"/>
+    <fieldval field="wRangeNorm" value="60"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="wProfReq" tag="Special"/>
+    <tag group="wProperty" tag="Thrown" name="Thrown" abbrev="Thrown"/>
+    <tag group="DamageType" tag="dtBludgeon"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="Helper" tag="NoSelect"/>
+    <tag group="wCategory" tag="RangeThrow" name="Thrown Weapon" abbrev="Thrown"/>
+    <tag group="Helper" tag="Proficient"/>
+    </thing>
+  <thing id="p5CSplMgcStn" name="Magic Stone" description="Select the your spellcasting ability and the number of stones. You can also select a sling to apply this bonus to that weapon when using one of the stones." compset="InPlay" uniqueness="unique">
+    <fieldval field="pCandExpr" value="thingid.wSling | thingid.w5CSplMgcStn"/>
+    <fieldval field="pDuration" value="1 minute"/>
+    <fieldval field="pMinimum" value="0"/>
+    <fieldval field="pMaximum" value="3"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Adjust2nd" tag="Attribute"/>
+    <tag group="ChooseSrc2" tag="Hero"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="SpInfo" tag="sp5CXGEMaS"/>
+    <bootstrap thing="w5CSplMgcStn">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:pIsOn <> 0 & fieldval:pAdjust >= 2]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="w5CSplMgcStn">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:pIsOn <> 0 & fieldval:pAdjust >= 3]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="w5CSplMgcStn">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:pIsOn <> 0 & fieldval:pAdjust >= 1]]></containerreq>
+      </bootstrap>
+    <eval phase="Render" priority="99999999"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].chosen.tagis[thingid.wSling] = 0)
+doneif (field[pChosen2].ischosen = 0)
+
+
+field[pChosen].chosen.field[livename].text &= " (Magic Stone)"
+field[pChosen].chosen.field[sbName].text &= " (Magic Stone)"]]></eval>
+    <eval phase="PostAttr" priority="600" index="3"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen2].ischosen = 0)
+doneif (field[pAdjust].value = 0)
+
+var iAtr as string
+var iDam as string
+var iAtk as string
+
+iAtr = field[pChosen2].chosen.tagids[SplAttr.?,""]
+iDam = replace(iAtr,"SplAttr","DamageOver",0)
+iAtk = replace(iAtr,"SplAttr","RanAttOver",0)
+
+foreach pick in hero where "thingid.w5CSplMgcStn"
+  perform eachpick.assignstr[iDam]
+  perform eachpick.assignstr[iAtk]
+  nexteach]]></eval>
+    <eval phase="PostAttr" priority="600" index="2"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen2].ischosen = 0)
+doneif (field[pChosen].chosen.tagis[thingid.wSling] = 0)
+
+var iAtr as string
+
+iAtr = field[pChosen2].chosen.tagids[SplAttr.?,""]
+
+iAtr = replace(iAtr,"SplAttr","DamageOver",0)
+  perform field[pChosen].chosen.assignstr[iAtr]
+
+iAtr = replace(iAtr,"DamageOver","RanAttOver",0)
+  perform field[pChosen].chosen.assignstr[iAtr]
+
+field[pChosen].chosen.field[wDieSize].value = 6]]></eval>
+    </thing>
+  <thing id="p5CSplEnlRed" name="Enlarge/Reduce" description="Choose the appropriate number on the incremeter to select which effect of the spell is active:\n1 - Enlarge with size increase\n2 - Enlarge without size increase (not enough room)\n3 - Reduce" compset="InPlay" uniqueness="unique">
+    <fieldval field="pMinimum" value="1"/>
+    <fieldval field="pMaximum" value="3"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="SpInfo" tag="spEnlargeR"/>
+    <eval phase="First" priority="20000"><![CDATA[
+     doneif (field[pIsOn].value = 0)
+
+     if (field[pAdjust].value = 1) then
+       herofield[tSize].value += 1
+       foreach pick in hero from BaseWep
+         eachpick.field[wDamExtra].text &= " + 1d4"
+         nexteach
+     elseif (field[pAdjust].value = 2) then
+       foreach pick in hero from BaseWep
+         eachpick.field[wDamExtra].text &= " + 1d4"
+         nexteach
+     elseif (field[pAdjust].value = 3) then
+       herofield[tSize].value -= 1
+       foreach pick in hero from BaseWep
+         eachpick.field[wDamExtra].text &= " - 1d4"
+         nexteach
+     endif]]></eval>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[doneif (field[pIsOn].value = 0)
+
+if (field[pAdjust].value = 3) then
+  if (herofield[tSize].value <= -2) then
+   herofield[tReach].value += 5
+   endif
+  #situational[hero.child[svSTR], "Disadvantage", field[thingname].text]
+  #situational[hero.child[skAthletic], "Disadvantage", field[thingname].text]
+else
+  if (field[pAdjust].value = 1) then
+    if (herofield[tSize].value >= 1) then
+      herofield[tReach].value -= 5
+      endif
+    endif
+  #situational[hero.child[svSTR], "Advantage", field[thingname].text]
+  #situational[hero.child[skAthletic], "Advantage", field[thingname].text]
+  endif]]></eval>
+    </thing>
+  <thing id="pHd5CCndDmg" name="Conditions and Damage Types" compset="InPlay" uniqueness="unique" isshowonly="yes">
+    <tag group="OthAdjCat" tag="Condition"/>
+    </thing>
+  <thing id="p5CDmgResC" name="Damage Type Resistance (Combined)" compset="InPlay">
+    <fieldval field="pCandExpr" value="thingid.dcAll | thingid.dcAtkNonMa | thingid.dcBluPiSla | thingid.dcWepNonMa | thingid.dcWepNonSi"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Condition"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="First"><![CDATA[      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      doneif (field[pChosen].ischosen = 0)
+
+      var iDam as string
+
+      iDam = field[pChosen].chosen.tagids[thingid.?,""]
+      iDam = replace(iDam,"thingid","DamComRes",0)
+      perform hero.assignstr[iDam]]]></eval>
+    </thing>
+  <thing id="p5CDmgRes" name="Damage Type Resistance" compset="InPlay">
+    <fieldval field="pCandExpr" value="thingid.dtAcid | thingid.dtBludgeon | thingid.dtCold | thingid.dtFire | thingid.dtForce | thingid.dtLightnin | thingid.dtNecrotic | thingid.dtPiercing | thingid.dtPoison | thingid.dtPsychic | thingid.dtRadiant | thingid.dtSlashing | thingid.dtThunder"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Condition"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="First"><![CDATA[      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      doneif (field[pChosen].ischosen = 0)
+
+      var iDam as string
+
+      iDam = field[pChosen].chosen.tagids[thingid.?,""]
+      iDam = replace(iDam,"thingid","DamageRes",0)
+      perform hero.assignstr[iDam]]]></eval>
+    </thing>
+  <thing id="p5CDmgVulC" name="Damage Type Vulnerability (Combined)" compset="InPlay">
+    <fieldval field="pCandExpr" value="thingid.dcAll | thingid.dcAtkNonMa | thingid.dcBluPiSla | thingid.dcWepNonMa | thingid.dcWepNonSi"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Condition"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="First"><![CDATA[      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      doneif (field[pChosen].ischosen = 0)
+
+      var iDam as string
+
+      iDam = field[pChosen].chosen.tagids[thingid.?,""]
+      iDam = replace(iDam,"thingid","DamComVuln",0)
+      perform hero.assignstr[iDam]]]></eval>
+    </thing>
+  <thing id="p5CDmgVul" name="Damage Type Vulnerability" compset="InPlay">
+    <fieldval field="pCandExpr" value="thingid.dtAcid | thingid.dtBludgeon | thingid.dtCold | thingid.dtFire | thingid.dtForce | thingid.dtLightnin | thingid.dtNecrotic | thingid.dtPiercing | thingid.dtPoison | thingid.dtPsychic | thingid.dtRadiant | thingid.dtSlashing | thingid.dtThunder"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Condition"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="First"><![CDATA[      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      doneif (field[pChosen].ischosen = 0)
+
+      var iDam as string
+
+      iDam = field[pChosen].chosen.tagids[thingid.?,""]
+      iDam = replace(iDam,"thingid","DamageVuln",0)
+      perform hero.assignstr[iDam]]]></eval>
+    </thing>
+  <thing id="p5CDmgImmC" name="Damage Type Immunity (Combined)" compset="InPlay">
+    <fieldval field="pCandExpr" value="thingid.dcAll | thingid.dcAtkNonMa | thingid.dcBluPiSla | thingid.dcWepNonMa | thingid.dcWepNonSi"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Condition"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="First"><![CDATA[      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      doneif (field[pChosen].ischosen = 0)
+
+      var iDam as string
+
+      iDam = field[pChosen].chosen.tagids[thingid.?,""]
+      iDam = replace(iDam,"thingid","DamComImm",0)
+      perform hero.assignstr[iDam]]]></eval>
+    </thing>
+  <thing id="p5CDmgImm" name="Damage Type Immunity" compset="InPlay">
+    <fieldval field="pCandExpr" value="thingid.dtAcid | thingid.dtBludgeon | thingid.dtCold | thingid.dtFire | thingid.dtForce | thingid.dtLightnin | thingid.dtNecrotic | thingid.dtPiercing | thingid.dtPoison | thingid.dtPsychic | thingid.dtRadiant | thingid.dtSlashing | thingid.dtThunder"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Condition"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="First"><![CDATA[      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      doneif (field[pChosen].ischosen = 0)
+
+      var iDam as string
+
+      iDam = field[pChosen].chosen.tagids[thingid.?,""]
+      iDam = replace(iDam,"thingid","DamageImm",0)
+      perform hero.assignstr[iDam]]]></eval>
+    </thing>
+  <thing id="p5CCndImm" name="Condition Immunity" compset="InPlay">
+    <fieldval field="pCandExpr" value="thingid.pcnBlind | thingid.pcnCharmed | thingid.pcnDeaf | thingid.pcnExhaust | thingid.pcnFright | thingid.pcnGrapple | thingid.pcnIncapa | thingid.pcnParaly | thingid.pcnPetri | thingid.pcnPoison | thingid.pcnProne | thingid.pcnRestr | thingid.pcnStunned | thingid.pcnUnconc"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Condition"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="First"><![CDATA[      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      doneif (field[pChosen].ischosen = 0)
+
+      var iDam as string
+
+      iDam = field[pChosen].chosen.tagids[thingid.?,""]
+      iDam = replace(iDam,"thingid","CondImm",0)
+      perform hero.assignstr[iDam]]]></eval>
+    </thing>
+  <thing id="p5CSplEnhAbi" name="Enhance Ability" description="Choose the appropriate number on the incremeter to select which effect of the spell is active:\n1 - Bear&apos;s Endurance\n2 - Bull&apos;s Strength\n3 - Cat&apos;s Grace\n4 - Eagle&apos;s Splendor\n5 - Fox&apos;s Cunning\n6 - Owl&apos;s Wisdom" compset="InPlay">
+    <fieldval field="pMinimum" value="1"/>
+    <fieldval field="pMaximum" value="6"/>
+    <fieldval field="pDuration" value="1 hour"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="SpInfo" tag="spEnhaAbil"/>
+    <bootstrap thing="PoolWlkBls">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:pIsOn <> 0 & fieldval:pAdjust = 1]]></containerreq>
+      <autotag group="Value" tag="14"/>
+      <assignval field="livename" value="Bear&apos;s Endurance (2d6)"/>
+      </bootstrap>
+    <bootstrap thing="ab5CSplEnCtG">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:pIsOn <> 0 & fieldval:pAdjust = 3]]></containerreq>
+      </bootstrap>
+    <eval phase="Final" priority="500" index="2"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+      doneif (field[pAdjust].value <> 1)
+
+~Use this to add the result to the pool
+hero.findchild[TempHpPool,"Value.14"].field[thpMinAllw].value = 2
+hero.findchild[TempHpPool,"Value.14"].field[thpMaxAllw].value = 12]]></eval>
+    <eval phase="PostAttr" priority="20000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      if (field[pAdjust].value = 1) then
+        perform hero.childfound[aCON].pulltags[SkillAbil.?]
+      elseif (field[pAdjust].value = 2) then
+        perform hero.childfound[aSTR].pulltags[SkillAbil.?]
+        herofield[tEncumLgt].value = herofield[tEncumLgt].value * 2
+        herofield[tEncumHvy].value = herofield[tEncumHvy].value * 2
+        herofield[tEncumMax].value = herofield[tEncumMax].value * 2
+      elseif (field[pAdjust].value = 3) then
+        perform hero.childfound[aDEX].pulltags[SkillAbil.?]
+      elseif (field[pAdjust].value = 4) then
+        perform hero.childfound[aCHA].pulltags[SkillAbil.?]
+      elseif (field[pAdjust].value = 5) then
+        perform hero.childfound[aINT].pulltags[SkillAbil.?]
+      elseif (field[pAdjust].value = 6) then
+        perform hero.childfound[aWIS].pulltags[SkillAbil.?]
+      endif
+
+      foreach pick in hero from BaseSkill
+        if (eachpick.intersect[SkillAbil,SkillAbil] <> 0) then
+          #situational[eachpick, "Advantage", field[thingname].text]
+          endif
+        nexteach
+
+
+      foreach pick in hero from BaseAttr
+        if (eachpick.intersect[SkillAbil,SkillAbil] <> 0) then
+          #situational[eachpick, "Advantage on all checks with this ability", field[thingname].text]
+          endif
+        nexteach]]></eval>
+    </thing>
+  <thing id="ab5CSplEnCtG" name="Enhance Ability: Cat&apos;s Grace" description="If you&apos;re not incapacitated, you don&apos;t take damage when falling 20 feet or less." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ab5CSplSlow" name="Slow" compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="SpInfo" tag="spSlow"/>
+    </thing>
+  <thing id="p5CSplSlow" name="Slow" compset="InPlay" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="SpInfo" tag="spSlow"/>
+    <bootstrap thing="ab5CSplSlow">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      hero.childfound[ArmorClass].field[tAC].value -= 2
+      hero.childfound[svDEX].field[svTotal].value -= 2]]></eval>
+    </thing>
   </document>
