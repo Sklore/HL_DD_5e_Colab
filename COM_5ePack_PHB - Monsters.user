@@ -8401,4 +8401,144 @@ hero.childfound[ArmorClass].field[Bonus].value += 2</eval>
       <bootstrap thing="rMammoth"></bootstrap>
       </minion>
     </thing>
+  <thing id="r5CPHBPhntm" name="Phantom Steed" compset="Race">
+    <fieldval field="rHitDice" value="2"/>
+    <fieldval field="rHPStart" value="13"/>
+    <fieldval field="rCR" value="0.25"/>
+    <fieldval field="rSpeed" value="100"/>
+    <fieldval field="rSTR" value="6"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="-8"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rCHA" value="-3"/>
+    <fieldval field="rDescript" value="The phantom steed can travel 10 miles per hour, or 13 miles per hour at a fast pace."/>
+    <usesource source="5ePHBCP"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="Helper" tag="CantSpeak" name="Cannot Speak" abbrev="Cannot Speak"/>
+    <tag group="RaceSize" tag="Large1" name="Large" abbrev="Large"/>
+    <bootstrap thing="tpBeast"></bootstrap>
+    <bootstrap thing="wHooves">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CAnimObj" name="Animated Object" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rHPStart" value="1"/>
+    <fieldval field="rINT" value="-7"/>
+    <fieldval field="rWIS" value="-7"/>
+    <fieldval field="rCHA" value="-9"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <bootstrap thing="wSlam">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="wProperty" tag="Finesse"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wAttack" value="2"/>
+      </bootstrap>
+    <bootstrap thing="ra5CAnObSz"></bootstrap>
+    <bootstrap thing="ra5CAnObDm"></bootstrap>
+    <bootstrap thing="ra5CAnObMv"></bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="30"/>
+      <autotag group="AbilModify" tag="BlindBeyo"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CAnObSz" name="Size" description="Select the size of the Animated Object." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Tiny"/>
+    <arrayval field="usrArray" index="1" value="Small"/>
+    <arrayval field="usrArray" index="2" value="Medium"/>
+    <arrayval field="usrArray" index="3" value="Large"/>
+    <arrayval field="usrArray" index="4" value="Huge"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="User" tag="NoAutoName" name="NoAutoName" abbrev="NoAutoName"/>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.childfound[r5CAnimObj].setfocus
+      perform focus.delete[RaceSize.Medium0]
+
+
+
+
+      if (field[usrIndex].value = 0) then
+        perform focus.assign[RaceSize.Tiny12]
+        focus.field[rSTR].value = -6
+        focus.field[rDEX].value = 8
+        focus.field[rAC].value = 4
+        herofield[tBonusHP].value = 19
+
+      elseif (field[usrIndex].value = 1) then
+        perform focus.assign[RaceSize.Small11]
+        focus.field[rSTR].value = -4
+        focus.field[rDEX].value = 4
+        focus.field[rAC].value = 4
+        hero.childfound[wSlam].field[wDieSize].value = 8
+        herofield[tBonusHP].value = 24
+
+      elseif (field[usrIndex].value = 2) then
+        perform focus.assign[RaceSize.Medium0]
+        focus.field[rDEX].value = 2
+        focus.field[rAC].value = 2
+        hero.childfound[wSlam].field[wDieCount].value = 2
+        hero.childfound[wSlam].field[wDieSize].value = 6
+        herofield[tBonusHP].value = 39
+
+      elseif (field[usrIndex].value = 3) then
+        perform focus.assign[RaceSize.Large1]
+        focus.field[rSTR].value = 4
+        hero.childfound[wSlam].field[wDieCount].value = 2
+        hero.childfound[wSlam].field[wDieSize].value = 10
+        herofield[tBonusHP].value = 49
+
+      elseif (field[usrIndex].value = 4) then
+        perform focus.assign[RaceSize.Huge2]
+        focus.field[rSTR].value = 8
+        focus.field[rDEX].value = -4
+        focus.field[rAC].value = 2
+        hero.childfound[wSlam].field[wDieCount].value = 2
+        hero.childfound[wSlam].field[wDieSize].value = 12
+        herofield[tBonusHP].value = 79
+
+      endif]]></eval>
+    </thing>
+  <thing id="ra5CAnObDm" name="Damage Type" description="Select the damage type of the Animated Object&apos;s slam attacks." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Bludgeoning"/>
+    <arrayval field="usrArray" index="1" value="Piercing"/>
+    <arrayval field="usrArray" index="2" value="Slashing"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="User" tag="NoAutoName" name="NoAutoName" abbrev="NoAutoName"/>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrIndex].value = 0)
+
+      if (field[usrIndex].value = 1) then
+        perform hero.childfound[wSlam].assign[DamTypeOvr.dtPiercing]
+      elseif (field[usrIndex].value = 2) then
+        perform hero.childfound[wSlam].assign[DamTypeOvr.dtSlashing]
+      endif]]></eval>
+    </thing>
+  <thing id="ra5CAnObMv" name="Movement Type" description="Select the movement type of the Animated Object." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Walking"/>
+    <arrayval field="usrArray" index="1" value="Flying"/>
+    <arrayval field="usrArray" index="2" value="Stationary"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="User" tag="NoAutoName" name="NoAutoName" abbrev="NoAutoName"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="100">fieldval:usrIndex = 1</containerreq>
+      <autotag group="Helper" tag="Hover"/>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrIndex].value = 0)
+
+      hero.childfound[r5CAnimObj].field[rSpeed].value = 0]]></eval>
+    </thing>
   </document>
