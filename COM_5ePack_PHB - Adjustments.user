@@ -23,7 +23,7 @@
     </thing>
   <thing id="p5CWepDT" name="Weapon, Damage Type" description="Select this adjustment to be able to change the type of damage a weapon does. In example change a greatsword slashing damage to cold or bludgeoning damage type." compset="InPlay">
     <fieldval field="pUsePicks2" value="1"/>
-    <fieldval field="pCandExpr2" value="component.DamageType"/>
+    <fieldval field="pCandExpr2" value="thingid.dtAcid | thingid.dtBludgeon | thingid.dtCold | thingid.dtFire | thingid.dtForce | thingid.dtLightnin | thingid.dtNecrotic | thingid.dtPiercing | thingid.dtPoison | thingid.dtPsychic | thingid.dtRadiant | thingid.dtSlashing | thingid.dtThunder"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="NoIncr"/>
     <tag group="OthAdjCat" tag="Equipment"/>
@@ -1643,5 +1643,142 @@ hero.findchild[TempHpPool,"Value.14"].field[thpMaxAllw].value = 12]]></eval>
 
       hero.childfound[ArmorClass].field[tAC].value -= 2
       hero.childfound[svDEX].field[svTotal].value -= 2]]></eval>
+    </thing>
+  <thing id="p5CVision" name="Senses, Special" description="Select this adjustment to add a special vision type to the character, such as darkvision or truesight. If you select blindsight, a second drop down will open to select whether or not you are blind beyond that radius." compset="InPlay">
+    <fieldval field="pMinimum" value="1"/>
+    <fieldval field="pCandExpr" value="thingid.raBlindSi | thingid.raDarkVis | thingid.xTremorsen | thingid.raTruesigh"/>
+    <tag group="OthAdjCat" tag="Attributes"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <bootstrap thing="xTremorsen">
+      <containerreq phase="First" priority="100">fieldval:pMaximum = 996</containerreq>
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="raTruesigh">
+      <containerreq phase="First" priority="100">fieldval:pMaximum = 995</containerreq>
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <containerreq phase="First" priority="100">fieldval:pMaximum = 998</containerreq>
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="100">fieldval:pMaximum = 997</containerreq>
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <eval phase="First" priority="101" index="2"><![CDATA[
+      ~if nothing's been chosen yet, there's nothing we can do
+      doneif (field[pChosen].ischosen = 0)
+
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      var tID as string
+      var iVal as string
+      var cVal as string
+
+      tID = field[pChosen].chosen.idstring
+      iVal = "Value." & field[pAdjust].value
+
+      if (compare(tID,"raBlindSi") = 0) then
+         if (hero.childfound[raBlindSi].tagvalue[Value.?] < field[pAdjust].value) then
+            perform hero.childfound[raBlindSi].delete[Value.?]
+            perform hero.childfound[raBlindSi].assignstr[iVal]
+            endif
+      elseif (compare(tID,"raDarkVis") = 0) then
+         if (hero.childfound[raDarkVis].tagvalue[Value.?] < field[pAdjust].value) then
+            perform hero.childfound[raDarkVis].delete[Value.?]
+            perform hero.childfound[raDarkVis].assignstr[iVal]
+            endif
+      elseif (compare(tID,"xTremorsen") = 0) then
+         if (hero.childfound[xTremorsen].tagvalue[Value.?] < field[pAdjust].value) then
+            perform hero.childfound[xTremorsen].delete[Value.?]
+            perform hero.childfound[xTremorsen].assignstr[iVal]
+            endif
+      elseif (compare(tID,"raTruesigh") = 0) then
+         if (hero.childfound[raTruesigh].tagvalue[Value.?] < field[pAdjust].value) then
+            perform hero.childfound[raTruesigh].delete[Value.?]
+            perform hero.childfound[raTruesigh].assignstr[iVal]
+            endif
+      endif
+
+      if (compare(field[pChosen2].chosen.idstring,"5CBlndBeyo") = 0) then
+         perform hero.childfound[raBlindSi].assign[AbilModify.BlindBeyo]
+         endif]]></eval>
+    <eval phase="First" priority="50"><![CDATA[
+      ~if nothing's been chosen yet, there's nothing we can do
+      doneif (field[pChosen].ischosen = 0)
+
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      var tID as string
+      tID = field[pChosen].chosen.idstring
+
+      if (compare(tID,"raBlindSi") = 0) then
+         field[pMaximum].value = 998
+         field[pCandExpr2].text = "thingid.5CNBlndBey | thingid.5CBlndBeyo"
+      elseif (field[pChosen].chosen.tagis[thingid.raDarkVis] <> 0) then
+         field[pMaximum].value = 997
+      elseif (field[pChosen].chosen.tagis[thingid.xTremorsen] <> 0) then
+         field[pMaximum].value = 996
+      elseif (field[pChosen].chosen.tagis[thingid.raTruesigh] <> 0) then
+         field[pMaximum].value = 995
+      endif]]></eval>
+    </thing>
+  <thing id="rSULTstVis" name="Vision Test" compset="Race">
+    <fieldval field="rHitDice" value="16"/>
+    <fieldval field="rHPStart" value="184"/>
+    <fieldval field="rCR" value="10"/>
+    <fieldval field="rMultiatt" value="The froghemoth makes two attacks with its tentacles. It can also use its tongue or bite. "/>
+    <fieldval field="rSTR" value="13"/>
+    <fieldval field="rDEX" value="3"/>
+    <fieldval field="rCON" value="10"/>
+    <fieldval field="rINT" value="-8"/>
+    <fieldval field="rWIS" value="2"/>
+    <fieldval field="rCHA" value="-5"/>
+    <fieldval field="rAC" value="3"/>
+    <tag group="DamageRes" tag="dtLightnin" name="Lightning" abbrev="Lightning"/>
+    <tag group="ProfDouble" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="RaceSize" tag="Huge2" name="Huge" abbrev="Huge"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="DamageRes" tag="dtFire" name="Fire" abbrev="Fire"/>
+    <bootstrap thing="tpMonstros"></bootstrap>
+    <bootstrap thing="xTremorsen">
+      <autotag group="Value" tag="7"/>
+      </bootstrap>
+    </thing>
+  <thing id="5CBlndBeyo" name="Blind beyond radius" compset="Simple"></thing>
+  <thing id="5CNBlndBey" name="Not blind beyond radius" compset="Simple"></thing>
+  <thing id="p5CAttrSwp" name="Ability Score (Swap)" description="Select this adjustment to subtract the chosen amount from one score and add it to another. This is useful for Tasha&apos;s variant features. Choose the score to decrement in the first drop-down and the score to increment in the second, and select the number of points to move." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseAttr &amp; !Custom.ASISwp1"/>
+    <fieldval field="pCandExpr2" value="component.BaseAttr &amp; !Custom.ASISwp2"/>
+    <fieldval field="pMaximum" value="5"/>
+    <fieldval field="pMinimum" value="0"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="ChooseSrc2" tag="Hero"/>
+    <tag group="Custom" tag="ASISwp2"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="OthAdjCat" tag="Attributes" name="Attributes" abbrev="Attributes"/>
+    <tag group="Custom" tag="ASISwp1"/>
+    <eval phase="PreAttr" priority="10000"><![CDATA[
+      ~ If we're not enabled, get out now
+   doneif (field[pIsOn].value = 0)
+   doneif (field[pAdjust].value = 0)
+   doneif (field[pChosen].ischosen = 0)
+   doneif (field[pChosen2].ischosen = 0)
+
+      ~ Subtract from first and add to second
+   field[pChosen].chosen.field[aStartMod].value -= field[pAdjust].value
+   field[pChosen2].chosen.field[aStartMod].value += field[pAdjust].value
+
+      ~ Add tags so they cannot be chosen again
+   perform field[pChosen].chosen.assign[Custom.ASISwp1]
+   perform field[pChosen2].chosen.assign[Custom.ASISwp2]]]></eval>
     </thing>
   </document>
