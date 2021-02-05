@@ -224,20 +224,18 @@ endif</eval>
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
     <bootstrap thing="gSupAlchem">
-      <containerreq phase="First" priority="495">count:thingid.gSupAlchem = 0</containerreq>
-      <autotag group="Helper" tag="TrainTool"/>
       <autotag group="Hide" tag="Tool"/>
-      <autotag group="Proficienc" tag="Tool"/>
       </bootstrap>
     <bootstrap thing="c5CAtfRstRea">
       <autotag group="ClSpecWhen" tag="9"/>
       </bootstrap>
-    <eval phase="PostLevel" priority="2400"><![CDATA[
-     doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="2400"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
 
      if (hero.tagcount[ProfTool.gSupAlchem] = 0) then
+       perform hero.childfound[gSupAlchem].assign[Proficienc.Tool]
+       perform hero.childfound[gSupAlchem].assign[Helper.TrainTool]
        perform hero.assign[ProfTool.gSupAlchem]
-     else
+     elseif (hero.tagcount[ProfTool.gSupAlchem] <> 0) then
        hero.childfound[cHelpAtf].field[cToolMax].value += 1
      endif]]></eval>
     </thing>
@@ -259,10 +257,7 @@ endif</eval>
       <autotag group="ClSpecWhen" tag="9"/>
       </bootstrap>
     <bootstrap thing="gTooCarver">
-      <containerreq phase="First" priority="495">count:thingid.gTooCarver = 0</containerreq>
-      <autotag group="Helper" tag="TrainTool"/>
       <autotag group="Hide" tag="Tool"/>
-      <autotag group="Proficienc" tag="Tool"/>
       </bootstrap>
     <bootstrap thing="cAtf5CArtSpl">
       <autotag group="ClSpecWhen" tag="3"/>
@@ -271,8 +266,10 @@ endif</eval>
      doneif (tagis[Helper.Disable] <> 0)
 
      if (hero.tagcount[ProfTool.gTooCarver] = 0) then
+       perform hero.childfound[gTooCarver].assign[Proficienc.Tool]
+       perform hero.childfound[gTooCarver].assign[Helper.TrainTool]
        perform hero.assign[ProfTool.gTooCarver]
-     else
+     elseif (hero.tagcount[ProfTool.gTooCarver] <> 0) then
        hero.childfound[cHelpAtf].field[cToolMax].value += 1
      endif]]></eval>
     </thing>
@@ -653,17 +650,18 @@ herofield[tBonusHP].value = HPAdj</eval>
       <autotag group="ClSpecWhen" tag="3"/>
       </bootstrap>
     <bootstrap thing="gTooSmith">
-      <containerreq phase="First" priority="495">count:thingid.gTooSmith = 0</containerreq>
-      <autotag group="Helper" tag="TrainTool"/>
+      <containerreq phase="First" priority="495">hero#ProfTool.gTooSmith = 0</containerreq>
       <autotag group="Hide" tag="Tool"/>
-      <autotag group="Proficienc" tag="Tool"/>
       </bootstrap>
     <eval phase="PostLevel" priority="2400"><![CDATA[
      doneif (tagis[Helper.Disable] <> 0)
 
+
      if (hero.tagcount[ProfTool.gTooSmith] = 0) then
+       perform hero.childfound[gTooSmith].assign[Proficienc.Tool]
+       perform hero.childfound[gTooSmith].assign[Helper.TrainTool]
        perform hero.assign[ProfTool.gTooSmith]
-     else
+     elseif (hero.tagcount[ProfTool.gTooSmith] <> 0) then
        hero.childfound[cHelpAtf].field[cToolMax].value += 1
      endif]]></eval>
     </thing>
@@ -1612,7 +1610,6 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Enhanced Arcane Focus adjustment to apply this infusion to an item. They can add a simple rod, staff, or wand from the Magic tab for use with this.{/i}"
      endif]]></eval>
     <eval phase="Render" priority="999999" index="4">perform delete[Helper.ActivMenu]</eval>
-    <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="c5CAtfHlmAwr" name="Helm of Awareness" description="{i}{b}Prerequisite:{/b} 10th-level artificer\n{b}Item:{/b} A helmet (requires attunement){/i}\n\nWearing this helmet grants the wearer advantage on their initiative rolls. Additionally, the wearer cannot be surprised unless they&apos;re incapacitated." compset="CustomSpec" summary="Infuse a helm that grants advantage on initiative and prevents surprise." uniqueness="unique">
     <fieldval field="abDuration" value="Indefinitely; see description"/>
@@ -1701,7 +1698,6 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
        field[CustDesc].text = field[descript].text & "\n\n{i}Note: Have the recipient of the given item use the Mind Sharpener adjustment to apply this infusion to a suit of armor or robes.{/i}"
      endif]]></eval>
     <eval phase="Render" priority="999999" index="5">perform delete[Helper.ActivMenu]</eval>
-    <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="c5CAtfArMgSt" name="Armor of Magical Strength" description="{i}{b}Item:{/b} A suit of armor (requires attunement){/i}\n\nThe armor has 6 charges. The wearer can use these charges in these ways:\n\n• When they make a Strength check or Strength save, they can spend 1 charge to add their Intelligence modifier to the roll.\n• If the wearer would be knocked prone, it can take a reaction to spend 1 charge and remain up." compset="CustomSpec" summary="Infuse armor to help Strength checks and saves and prevent you from going prone." uniqueness="unique">
     <fieldval field="abDuration" value="Indefinitely; see description"/>
@@ -1817,7 +1813,6 @@ minion.childfound[ra5cEldCanTyp].field[abValue5].value = level]]></eval>
      doneif (tagis[portal.cfg2Abil] <> 1)
 
       field[abValue].value += 1]]></eval>
-    <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="c5CAtfBotWP" name="Boots of the Winding Path" description="{i}{b}Prerequisite:{/b} 6th-level artificer\n{b}Item:{/b} A pair of boots (requires attunement){/i}\n\nWhile wearing these boots, a creature can use a bonus action to teleport up to 15 feet to an open space the creature can see. The creature must have occupied that space at some point during the current turn." compset="CustomSpec" summary="Infuse boots with teleportation." uniqueness="unique">
     <fieldval field="abDuration" value="Indefinitely; see description"/>
@@ -2241,7 +2236,6 @@ Inf = " | thingid.c5CAtfEnArFc"
 
   focus.field[cfgAllow2].text &= Inf
   focus.field[cfgAllow3].text &= Inf]]></eval>
-    <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="c5CAtfHoA1" name="Helm of Awareness" description="{i}{b}Prerequisite:{/b} 10th-level artificer\n{b}Item:{/b} A helmet (requires attunement){/i}\n\nWearing this helmet grants the wearer advantage on their initiative rolls. Additionally, the wearer cannot be surprised unless they&apos;re incapacitated." compset="CustomSpec" summary="Infuse a helm that grants advantage on initiative and prevents surprise." uniqueness="unique">
     <usesource source="5eTCoE"/>
@@ -2271,7 +2265,6 @@ Inf = " | thingid.c5CAtfMndShr"
 
   focus.field[cfgAllow2].text &= Inf
   focus.field[cfgAllow3].text &= Inf]]></eval>
-    <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="c5CAtfAMS1" name="Armor of Magical Strength" description="{i}{b}Item:{/b} A suit of armor (requires attunement){/i}\n\nThe armor has 6 charges. The wearer can use these charges in these ways:\n\n• When they make a Strength check or Strength save, they can spend 1 charge to add their Intelligence modifier to the roll.\n• If the wearer would be knocked prone, it can take a reaction to spend 1 charge and remain up." compset="CustomSpec" summary="Infuse armor to help Strength checks and saves and prevent you from going prone." uniqueness="unique">
     <usesource source="5eTCoE"/>
@@ -2331,7 +2324,6 @@ var Inf as string
 Inf = " | thingid.c5CAtfAlcHm"
 
   focus.field[cfgAllow2].text &= Inf]]></eval>
-    <exprreq message="Must be a 6th level Artificer"><![CDATA[hero.child[cHelpAtf].field[cTotalLev].value >= 6]]></exprreq>
     </thing>
   <thing id="c5CAtfAlJg" name="Replicate Magic Item - Alchemy Jug" description="You infuse a non-magical item with magic, turning it into the alchemy jug magic item. See the magic item&apos;s description for the base item needed." compset="CustomSpec" summary="Infuse an item to replicate the alchemy jug magic item." uniqueness="unique">
     <fieldval field="abDuration" value="Indefinitely; see description"/>
