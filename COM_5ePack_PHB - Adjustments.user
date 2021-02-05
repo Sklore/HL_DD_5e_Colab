@@ -1781,4 +1781,172 @@ hero.findchild[TempHpPool,"Value.14"].field[thpMaxAllw].value = 12]]></eval>
    perform field[pChosen].chosen.assign[Custom.ASISwp1]
    perform field[pChosen2].chosen.assign[Custom.ASISwp2]]]></eval>
     </thing>
+  <thing id="p5CSplSlts" name="Adjust Spell Slots" description="Use this adjustment to change how many slots you have of a particular level. Use the drop-down box to select the level, and adjust the incremeter to the number of total slots that should be added to or subtracted from that slot&apos;s total." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.SlotHolder"/>
+    <fieldval field="pMinimum" value="-10"/>
+    <fieldval field="pMaximum" value="10"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="Spell"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <eval phase="First"><![CDATA[if (hero.childlives[cWarlock] <> 0) then 
+   field[pCandExpr].text &= " | thingid.SlotHoldWa"
+  else
+   field[pCandExpr].text &= " & !thingid.SlotHoldWa"
+  endif]]></eval>
+    <eval phase="First" index="2">doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+field[pChosen].chosen.field[MaxAllow].value += field[pAdjust].value</eval>
+    </thing>
+  <thing id="p5CDmgTypRep" name="Weapon, Damage Type (Replace)" description="Select this adjustment to be able to change the type of damage a weapon does, replacing the old damge type. In example change a greatsword slashing damage to cold or bludgeoning damage type." compset="InPlay">
+    <fieldval field="pUsePicks2" value="1"/>
+    <fieldval field="pCandExpr2" value="component.DamageType"/>
+    <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
+    <tag group="Adjustment" tag="YourWep" name="Current Weapons" abbrev="Current Weapons"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <tag group="OthAdjCat" tag="Equipment" name="Equipment" abbrev="Equipment"/>
+    <eval phase="PreLevel" priority="11000" index="2"><![CDATA[
+        ~ Set custom expression to "Picks"
+        field[pUsePicks].value = 1
+        ~ Set custom expression to "All Things on Hero"
+        field[pUsePicks2].value = 0]]></eval>
+    <eval phase="First" priority="10001"><![CDATA[
+      ~ If we're not enabled, get out now & leave
+      doneif (field[pIsOn].value = 0)
+      ~ If nothing chosen get out now!
+      doneif (field[pChosen].ischosen = 0)
+      doneif (field[pChosen2].ischosen = 0)
+     
+      perform field[pChosen2].chosen.pulltags[DamTypeOvr.?]
+      perform field[pChosen].chosen.delete[DamTypeOvr.?]
+      perform field[pChosen].chosen.pushtags[DamTypeOvr.?]]]></eval>
+    </thing>
+  <thing id="p5COvrCrtTyp" name="Creature Type, Overwrite" description="and the conditional bootstraps for each type\n\nUse this adjustment to add a new creature type to the creature. The original type cannot be removed (this is a Hero Lab limitation), but the new type will supercede it on the stat block." compset="InPlay">
+    <fieldval field="pCandExpr" value="thingid.tpAberr | thingid.tpBeast | thingid.tpCelestia | thingid.tpConst | thingid.tpDragon | thingid.tpElementa | thingid.tpFey | thingid.tpFiend | thingid.tpGiant | thingid.tpHumanoid | thingid.tpMonstros | thingid.tpOoze | thingid.tpPlant | thingid.tpUndead"/>
+    <usesource source="5eDMGCP"/>
+    <usesource source="5eMMCP"/>
+    <usesource source="5ePHBCP"/>
+    <tag group="OthAdjCat" tag="UserBot5th"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <bootstrap thing="tpAberr">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 1</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpBeast">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 2</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpCelestia">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 3</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpConst">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 4</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpDragon">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 5</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpElementa">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 6</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpFey">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 7</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpFiend">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 8</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpGiant">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 9</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 10</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpMonstros">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 11</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpOoze">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 12</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpPlant">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 13</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpUndead">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 14</containerreq>
+      </bootstrap>
+    <eval phase="First"><![CDATA[doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+perform field[pChosen].chosen.pulltags[OverType.?]
+perform hero.pushtags[OverType.?]
+
+if (field[pChosen].chosen.tagis[thingid.tpAberr] <> 0) then
+  field[pMaximum].value = 1
+elseif (field[pChosen].chosen.tagis[thingid.tpBeast] <> 0) then
+  field[pMaximum].value = 2
+elseif (field[pChosen].chosen.tagis[thingid.tpCelestia] <> 0) then
+  field[pMaximum].value = 3
+elseif (field[pChosen].chosen.tagis[thingid.tpConst] <> 0) then
+  field[pMaximum].value = 4
+elseif (field[pChosen].chosen.tagis[thingid.tpDragon] <> 0) then
+  field[pMaximum].value = 5
+elseif (field[pChosen].chosen.tagis[thingid.tpElementa] <> 0) then
+  field[pMaximum].value = 6
+elseif (field[pChosen].chosen.tagis[thingid.tpFey] <> 0) then
+  field[pMaximum].value = 7
+elseif (field[pChosen].chosen.tagis[thingid.tpFiend] <> 0) then
+  field[pMaximum].value = 8
+elseif (field[pChosen].chosen.tagis[thingid.tpGiant] <> 0) then
+  field[pMaximum].value = 9
+elseif (field[pChosen].chosen.tagis[thingid.tpHumanoid] <> 0) then
+  field[pMaximum].value = 10
+elseif (field[pChosen].chosen.tagis[thingid.tpMonstros] <> 0) then
+  field[pMaximum].value = 11
+elseif (field[pChosen].chosen.tagis[thingid.tpOoze] <> 0) then
+  field[pMaximum].value = 12
+elseif (field[pChosen].chosen.tagis[thingid.tpPlant] <> 0) then
+  field[pMaximum].value = 13
+elseif (field[pChosen].chosen.tagis[thingid.tpUndead] <> 0) then
+  field[pMaximum].value = 14
+  endif]]></eval>
+    </thing>
+  <thing id="p5CRacHDSz" name="Racial Hit Die Size" description="Use this adjustment to change how many sides the creature&apos;s race&apos;s Hit Dice have. Select the race from the dropdown, then use the incremeter to increase or decrease the number of sides by that amount." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseRace &amp; (RaceType.NPC | RaceType.CustomMon)"/>
+    <fieldval field="pMinimum" value="-3"/>
+    <fieldval field="pMaximum" value="16"/>
+    <usesource source="5eMMCP"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="OthAdjCat" tag="UserBot5th"/>
+    <eval phase="First" priority="600" index="2">doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+field[pChosen].chosen.field[rHDSides].value += field[pAdjust].value</eval>
+    </thing>
+  <thing id="p5CRacHDCt" name="Racial Hit Die Count" description="Use this adjustment to change how many Hit Dice the creature&apos;s race has. Select the race from the dropdown, then use the incremeter to increase or decrease the number of dice by that amount." compset="InPlay">
+    <fieldval field="pCandExpr" value="component.BaseRace &amp; (RaceType.NPC | RaceType.CustomMon)"/>
+    <fieldval field="pMaximum" value="50"/>
+    <fieldval field="pMinimum" value="-50"/>
+    <usesource source="5eMMCP"/>
+    <tag group="OthAdjCat" tag="UserBot5th"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <eval phase="First" priority="1" index="2">doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+field[pChosen].chosen.field[rHitDice].value += field[pAdjust].value</eval>
+    </thing>
+  <thing id="p5CAddMulti" name="Multiattack, Add" description="Use this adjustment to add multiattack to a creature. Type your text into the (Source) field first, then use the (Duration) field if you need more text. Please note; the maximum text for each field is 100 characters." compset="InPlay">
+    <usesource source="5eMMCP"/>
+    <tag group="OthAdjCat" tag="Race" name="Race Modificiations" abbrev="Race Modificiations"/>
+    <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <eval phase="First" priority="1"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      ~ Set our focus to the hero's race &
+      perform hero.findchild[BaseRace].setfocus
+      doneif (state.isfocus = 0)
+
+      focus.field[rMultiatt].text = field[pSource].text
+      hero.childfound[xMultiatt].field[CustDesc].text = field[pSource].text
+      hero.childfound[xMultiatt].field[CustDesc].text &= field[pDuration].text]]></eval>
+    </thing>
   </document>
