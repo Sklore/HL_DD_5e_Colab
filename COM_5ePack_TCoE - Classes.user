@@ -417,7 +417,7 @@ hero.childfound[Initiative].field[Bonus].value += hero.childfound[ProfBonus].fie
     <tag group="GearType" tag="gtWondrous"/>
     <tag group="Helper" tag="Helper"/>
     </thing>
-  <thing id="c5CAtfArmor" name="Armorer" description="An Armorer specializes in modifying armor to act as a conduit for their magic, for attack or defense.\n\n{b}Tools of the Trade.{/b} You gain proficiency with smith’s tools, assuming you don’t already have it. If you do, you gain proficiency in another artisan&apos;s tool of your choice." compset="CustomSpec" uniqueness="unique">
+  <thing id="c5CAtfArmor" name="Armorer" description="An Armorer specializes in modifying armor to act as a conduit for their magic, for attack or defense.\n\n{b}Tools of the Trade.{/b} You gain proficiency with smith’s tools, assuming you don’t already have it. If you do, you gain proficiency in another artisan&apos;s tool of your choice. You also become proficient with heavy armor." compset="CustomSpec" uniqueness="unique">
     <usesource source="5eTCoE"/>
     <tag group="SpecSource" tag="cHelpAtf" name="Artificer" abbrev="Artificer"/>
     <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
@@ -436,11 +436,8 @@ hero.childfound[Initiative].field[Bonus].value += hero.childfound[ProfBonus].fie
     <bootstrap thing="c5CAtfArnMdi">
       <autotag group="ClSpecWhen" tag="9"/>
       </bootstrap>
-    <bootstrap thing="gTooCarver">
-      <containerreq phase="First" priority="495">count:thingid.gTooCarver = 0</containerreq>
-      <autotag group="Helper" tag="TrainTool"/>
+    <bootstrap thing="gTooSmith">
       <autotag group="Hide" tag="Tool"/>
-      <autotag group="Proficienc" tag="Tool"/>
       </bootstrap>
     <bootstrap thing="c5CAtfArmMod">
       <autotag group="ClSpecWhen" tag="3"/>
@@ -448,9 +445,13 @@ hero.childfound[Initiative].field[Bonus].value += hero.childfound[ProfBonus].fie
     <eval phase="PreLevel" priority="2400"><![CDATA[
      doneif (tagis[Helper.Disable] <> 0)
 
+     perform hero.childfound[cHelpAtf].assign[ArmProfGrp.ArmorHeavy]
+
      if (hero.tagcount[ProfTool.gTooSmith] = 0) then
+       perform hero.childfound[gTooSmith].assign[Proficienc.Tool]
+       perform hero.childfound[gTooSmith].assign[Helper.TrainTool]
        perform hero.assign[ProfTool.gTooSmith]
-     else
+     elseif (hero.tagcount[ProfTool.gTooSmith] <> 0) then
        hero.childfound[cHelpAtf].field[cToolMax].value += 1
      endif]]></eval>
     </thing>
