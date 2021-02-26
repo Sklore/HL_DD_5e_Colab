@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CBatBall" name="Battle Balloon" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rHPStart" value="200"/>
+    <fieldval field="rDescript" value="{b}Dimensions:{/b} 80 ft. by 20 ft.\n{b}Creature Capacity:{/b} 20 crew, 10 passengers\n{b}Cargo Capacity:{/b} 1 ton\n{b}Travel Pace:{/b} 9 miles per hour (216 miles per day)"/>
+    <fieldval field="rMultiatt" value="The balloon can take 3 actions on its turn. The number of actions it can take drops to 2 if it has less than 30 crew, 1 at less than 10 crew, and 0 without any crew. It can fire its harpoons, pull something they&apos;ve grappled, fire its arbalester, and move, each an action."/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="7"/>
+    <fieldval field="rCON" value="10"/>
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rAC" value="2"/>
+    <fieldval field="rArmText" value="Damage Threshold 15"/>
+    <tag group="DamageImm" tag="dtPsychic" name="Psychic" abbrev="Psychic"/>
+    <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal" name="journal" abbrev="journal"/>
+    <tag group="HideTab" tag="personal" name="personal" abbrev="personal"/>
+    <tag group="RaceSize" tag="Gargant3" name="Gargantuan" abbrev="Gargantuan"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="CondImm" tag="pcnBlind" name="Blinded" abbrev="Blinded"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnDeaf" name="Deafened" abbrev="Deafened"/>
+    <tag group="CondImm" tag="pcnExhaust" name="Exhaustion" abbrev="Exhaustion"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="CondImm" tag="pcnIncapa" name="Incapacitated" abbrev="Incapacitated"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPetri" name="Petrified" abbrev="Petrified"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="CondImm" tag="pcnProne" name="Prone" abbrev="Prone"/>
+    <tag group="CondImm" tag="pcnStunned" name="Stunned" abbrev="Stunned"/>
+    <tag group="CondImm" tag="pcnUnconc" name="Unconscious" abbrev="Unconscious"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CVehHull">
+      <assignval field="abValue" value="15"/>
+      <assignval field="abValue2" value="15"/>
+      <assignval field="abValue3" value="200"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehCrtCap">
+      <assignval field="abText" value="Crew"/>
+      <assignval field="abText2" value="Passengers"/>
+      <assignval field="abValue" value="20"/>
+      <assignval field="abValue2" value="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehCrgCap">
+      <assignval field="abText" value="1 ton"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehTrvlPc">
+      <assignval field="abValue" value="9"/>
+      <assignval field="abValue2" value="216"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehDimen">
+      <assignval field="abValue" value="80"/>
+      <assignval field="abValue2" value="20"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      <assignval field="shortname" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="ra5CHlmBal">
+      <assignval field="abText" value="18"/>
+      <assignval field="actUserMax" value="50"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehProp">
+      <assignval field="abText" value="12"/>
+      <assignval field="abValue" value="80"/>
+      <assignval field="abValue2" value="50"/>
+      <assignval field="abValue3" value="100"/>
+      <assignval field="abValue4" value="5"/>
+      <assignval field="abValue5" value="25"/>
+      <assignval field="actUserMax" value="100"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="80"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehHlBl">
+      <assignval field="abText" value="12"/>
+      <assignval field="actUserMax" value="75"/>
+      </bootstrap>
+    <bootstrap thing="ra5CBallooMv"></bootstrap>
+    <bootstrap thing="ra5CBalHarp"></bootstrap>
+    <bootstrap thing="ra5CBalHarp"></bootstrap>
+    <bootstrap thing="ra5CBalHarp"></bootstrap>
+    <bootstrap thing="ra5CBalArba"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+HPAdj -= hero.childfound[aCON].field[aModBonus].value
+
+~then add in the total of the vehicle (minus since it has 1d1 HD)
+
+HPAdj += 199
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="ra5CVehProp" name="Movement: Propeller" description="{b}Armor Class{/b}: 12\n{b}Hit Points{/b}: 100; -10 ft. speed for every 25 damage taken\n{b}Speed (water){/b}: 35 ft.; 15 ft. when sailing into the wind; 50 ft. when saling with the wind" compset="RaceSpec">
+    <fieldval field="actUserMin" value="0"/>
+    <arrayval field="usrArray" index="0" value="Flying Normally"/>
+    <arrayval field="usrArray" index="1" value="Flying into the wind"/>
+    <arrayval field="usrArray" index="2" value="Flying with the wind"/>
+    <tag group="Helper" tag="UserAdjust" name="UserAdjust" abbrev="UserAdjust"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostAttr" priority="8999" index="2"><![CDATA[~ If we're disabled, do nothing 
+doneif (tagis[Helper.Disable] <> 0)
+
+var iFly as number
+
+if (field[usrIndex].value = 0) then
+iFly += field[abValue].value
+elseif (field[usrIndex].value = 1) then
+iFly += field[abValue2].value
+elseif (field[usrIndex].value = 2) then
+iFly += field[abValue3].value
+endif
+
+var red as number
+
+if (field[actUser].value >= field[abValue5].value * 4) then
+red = (field[abValue4].value * 4)
+elseif (field[actUser].value >= field[abValue5].value * 3) then
+red = (field[abValue4].value * 3)
+elseif (field[actUser].value >= field[abValue5].value * 2) then
+red = (field[abValue4].value * 2)
+elseif (field[actUser].value >= field[abValue5].value) then
+red = (field[abValue4].value)
+endif
+
+red = iFly - red
+
+var Flight as string
+
+Flight = "Value." & red
+
+perform hero.childfound[xFly].delete[Value.?]
+perform hero.childfound[xFly].assignstr[Flight]]]></eval>
+    <eval phase="Render" index="3"><![CDATA[var thresh as string
+var sep as string
+thresh = field[abText2].text
+
+if (empty(thresh)=0) then
+thresh = " (damage threshold " & field[abText2].text & ")"
+sep = " | Dmg Thresh " & field[abText2].text
+endif
+
+
+
+field[CustDesc].text = "\n{b}Armor Class{/b}: " & field[abText].text & "\n{b}Hit Points{/b}: " & field[actUserMax].value & ";" & thresh &" -" & field[abValue4].value & " ft. speed for every " & field[abValue5].value & " damage taken\n{b}Speed (fly){/b}: " & field[abValue].value & " ft.; "& field[abValue2].value & " ft. when flying into the wind; " & field[abValue3].value & " ft. when flying with the wind"
+
+
+field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMax].value & sep & " | Damage Taken: "]]></eval>
+    </thing>
+  <thing id="ra5CVehHlBl" name="Control: Balloon" description="{b}Armor Class{/b}: 16\n{b}Hit Points{/b}: 50\n\nI" compset="RaceSpec">
+    <fieldval field="actUserMin" value="0"/>
+    <tag group="Helper" tag="UserAdjust" name="UserAdjust" abbrev="UserAdjust"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Render"><![CDATA[var thresh as string
+var sep as string
+thresh = field[abText2].text
+
+if (empty(thresh)=0) then
+thresh = " (damage threshold " & field[abText2].text & ")"
+sep = " | Dmg Thresh " & field[abText2].text
+endif
+
+field[CustDesc].text = "\n{b}Armor Class{/b}: " & field[abText].text & "\n{b}Hit Points{/b}: " & field[actUserMax].value & thresh & "\n\nIf the balloon is destroyed, the battle balloon cannot maintain its altitude."
+
+field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMax].value & sep & " | Damage Taken: "]]></eval>
+    </thing>
+  <thing id="ra5CBallooMv" name="Move" description="The balloon can use its helm to move with its propeller. If the balloon enters the space of a Large or smaller creature, that creature is automatically pushed to the edge of the balloon&apos;s space. The creature must make a DC 14 Dexterity save. On a failure, it suffers 5 (1d10) bludgeoning damage." compset="RaceSpec">
+    <fieldval field="abDC" value="15"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CBalHarp" name="Weapon: Harpoon Gun" description="{b}Armor Class{/b}: 15\n{b}Hit Points{/b}: 50" compset="RaceSpec">
+    <fieldval field="abText" value="15"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="50"/>
+    <tag group="Helper" tag="UserAdjust" name="UserAdjust" abbrev="UserAdjust"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="w5CVehAttk">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:actUser < 50]]></containerreq>
+      <autotag group="DamageType" tag="dtPiercing"/>
+      <autotag group="Helper" tag="NoAttrDam"/>
+      <autotag group="wCategory" tag="RangeProj"/>
+      <assignval field="atrBonus" value="3"/>
+      <assignval field="livename" value="Harpoon"/>
+      <assignval field="sbName" value="Harpoon"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wRangeLong" value="480"/>
+      <assignval field="wRangeNorm" value="120"/>
+      <assignval field="wAttackEff" value="The target is grappled with an escape DC of 16. Until grapple ends, the target&apos;s speed is halved and it is unable to move farther away from the balloon. Each harpoon gun can grapple  one target, and the balloon&apos;s speed is not halved when it has one or more targets grappled."/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[var thresh as string
+var sep as string
+thresh = field[abText2].text
+
+if (empty(thresh)=0) then
+thresh = " (damage threshold " & field[abText2].text & ")"
+sep = " | Dmg Thresh " & field[abText2].text
+endif
+
+field[CustDesc].text = "{b}Armor Class{/b}: " & field[abText].text & "\n{b}Hit Points{/b}: " & field[actUserMax].value & thresh 
+
+field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMax].value & sep & " | Damage Taken: "]]></eval>
+    </thing>
+  <thing id="ra5CBalArba" name="Weapon: Green Flame Arbalester" description="{b}Armor Class{/b}: 15\n{b}Hit Points{/b}: 50" compset="RaceSpec">
+    <fieldval field="abText" value="15"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="75"/>
+    <tag group="Helper" tag="UserAdjust" name="UserAdjust" abbrev="UserAdjust"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="w5CVehAttk">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:actUser < 75]]></containerreq>
+      <autotag group="DamageType" tag="dtPiercing"/>
+      <autotag group="Helper" tag="NoAttrDam"/>
+      <autotag group="wCategory" tag="RangeProj"/>
+      <assignval field="atrBonus" value="3"/>
+      <assignval field="livename" value="Green Flame Arbalester"/>
+      <assignval field="sbName" value="Green Flame Arbalester"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wRangeLong" value="800"/>
+      <assignval field="wRangeNorm" value="200"/>
+      <assignval field="wAttackEff" value="If the attack misses, the DM decides where the bolt strikes. Every creature within 10 feet of that spot must make a DC 15 Dexterity save. On a failure, the creature is unable to avoid the shattering bolt and takes 5 (1d10) piercing and 5 (1d10) fire damage."/>
+      <assignval field="wTarget" value="(cannot hit within 60 ft.), one target"/>
+      <assignval field="wDamExtra" value=" and 22 (4d10) fire"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[var thresh as string
+var sep as string
+thresh = field[abText2].text
+
+if (empty(thresh)=0) then
+thresh = " (damage threshold " & field[abText2].text & ")"
+sep = " | Dmg Thresh " & field[abText2].text
+endif
+
+field[CustDesc].text = "{b}Armor Class{/b}: " & field[abText].text & "\n{b}Hit Points{/b}: " & field[actUserMax].value & thresh 
+
+field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMax].value & sep & " | Damage Taken: "]]></eval>
+    </thing>
+  <thing id="c5CBatBal" name="Battle Balloon" compset="Companion" stacking="never">
+    <fieldval field="CompType" value="Airship"/>
+    <usesource source="p5eAIS"/>
+    <usesource source="p5eTOotWP"/>
+    <minion id="BattleBalloon" isinherit="no">
+      <tag group="Hero" tag="FixedRace" name="FixedRace" abbrev="FixedRace"/>
+      <bootstrap thing="r5CBatBall"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="g5CBatBal" name="Battle Balloon" compset="Gear">
+    <usesource source="p5eAIS"/>
+    <usesource source="p5eTOotWP"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="GearType" tag="gt5CVehAir" name="Air Vehicles" abbrev="Air Vehicles"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <tag group="explicit" tag="5"/>
+    <bootstrap thing="c5CBatBal"></bootstrap>
+    </thing>
+  <thing id="g5CVehAirH" name="Air Vehicles" compset="Gear" holdable="no" isshowonly="yes">
+    <tag group="GearType" tag="gt5CVehAir"/>
+    <tag group="explicit" tag="5"/>
+    </thing>
+  <thing id="ra5CHlmBal" name="Control: Helm" description="{b}Armor Class{/b}: 16\n{b}Hit Points{/b}: 50\n\nMove up to its speed with its propeller. It can make a 90-degree turn with this movement. The ship cannot turn if the helm is destroyed." compset="RaceSpec">
+    <fieldval field="actUserMin" value="0"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Helper" tag="UserAdjust" name="UserAdjust" abbrev="UserAdjust"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <eval phase="Render"><![CDATA[var thresh as string
+var sep as string
+thresh = field[abText2].text
+
+if (empty(thresh)=0) then
+thresh = " (damage threshold " & field[abText2].text & ")"
+sep = " | Dmg Thresh " & field[abText2].text
+endif
+
+field[CustDesc].text = "\n{b}Armor Class{/b}: " & field[abText].text & "\n{b}Hit Points{/b}: " & field[actUserMax].value & thresh & "\n\nMove up to its speed with its propeller. It can make a 90-degree turn with this movement. The ship cannot turn if the helm is destroyed."
+
+field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMax].value & sep & " | Damage Taken: "]]></eval>
+    </thing>
+  <thing id="c5CMechBhld" name="Mechanical Beholder" compset="Companion" stacking="never">
+    <fieldval field="CompType" value="Airship"/>
+    <usesource source="p5eAIS"/>
+    <usesource source="p5eTOotWP"/>
+    <minion id="MechBehold" isinherit="no">
+      <tag group="Hero" tag="FixedRace" name="FixedRace" abbrev="FixedRace"/>
+      <bootstrap thing="r5CMechBhld"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CMechBhld" name="Mechanical Beholder" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rHPStart" value="200"/>
+    <fieldval field="rDescript" value="{b}Dimensions:{/b} 15 ft. by 15 ft.\n{b}Creature Capacity:{/b} 1 crew, 5 passengers\n{b}Cargo Capacity:{/b} normal gear of its occupants\n{b}Travel Pace:{/b} 3 miles per hour (72 miles per day)"/>
+    <fieldval field="rMultiatt" value="The mechanical beholder can take 1 action on its turn. It can move or use its eye rays, each an action. Without any crew, it cannot take any actions."/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rAC" value="7"/>
+    <fieldval field="rArmText" value="Damage Threshold 10"/>
+    <tag group="DamageImm" tag="dtPsychic" name="Psychic" abbrev="Psychic"/>
+    <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal" name="journal" abbrev="journal"/>
+    <tag group="HideTab" tag="personal" name="personal" abbrev="personal"/>
+    <tag group="RaceSize" tag="Huge2"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="CondImm" tag="pcnBlind" name="Blinded" abbrev="Blinded"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnDeaf" name="Deafened" abbrev="Deafened"/>
+    <tag group="CondImm" tag="pcnExhaust" name="Exhaustion" abbrev="Exhaustion"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="CondImm" tag="pcnIncapa" name="Incapacitated" abbrev="Incapacitated"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPetri" name="Petrified" abbrev="Petrified"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="CondImm" tag="pcnProne" name="Prone" abbrev="Prone"/>
+    <tag group="CondImm" tag="pcnStunned" name="Stunned" abbrev="Stunned"/>
+    <tag group="CondImm" tag="pcnUnconc" name="Unconscious" abbrev="Unconscious"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CVehHull">
+      <assignval field="abValue" value="18"/>
+      <assignval field="abValue2" value="10"/>
+      <assignval field="abValue3" value="200"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehCrtCap">
+      <assignval field="abText" value="Crew"/>
+      <assignval field="abText2" value="Passengers"/>
+      <assignval field="abValue" value="1"/>
+      <assignval field="abValue2" value="5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehCrgCap">
+      <assignval field="abText" value="normal gear of its occupants"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehTrvlPc">
+      <assignval field="abValue" value="3"/>
+      <assignval field="abValue2" value="72"/>
+      </bootstrap>
+    <bootstrap thing="ra5CVehDimen">
+      <assignval field="abValue" value="15"/>
+      <assignval field="abValue2" value="15"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      <assignval field="shortname" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="ra5CHlmBhld">
+      <assignval field="abText" value="16"/>
+      <assignval field="actUserMax" value="25"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMgPrpl">
+      <assignval field="abText" value="16"/>
+      <assignval field="abValue" value="30"/>
+      <assignval field="abValue4" value="5"/>
+      <assignval field="abValue5" value="25"/>
+      <assignval field="actUserMax" value="100"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="xBurrow">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMchEyRy"></bootstrap>
+    <bootstrap thing="ra5CMcEyRyT"></bootstrap>
+    <bootstrap thing="ra5CMcEyRyT"></bootstrap>
+    <bootstrap thing="ra5CMcEyRyT"></bootstrap>
+    <bootstrap thing="ra5CMcEyRyT"></bootstrap>
+    <bootstrap thing="ra5CMcEyRyT"></bootstrap>
+    <bootstrap thing="ra5CMcEyRyT"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+HPAdj -= hero.childfound[aCON].field[aModBonus].value
+
+~then add in the total of the vehicle (minus since it has 1d1 HD)
+
+HPAdj += 199
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="ra5CHlmBhld" name="Control: Helm" description="{b}Armor Class{/b}: 16\n{b}Hit Points{/b}: 50\n\nMove up to its speed with its propeller. It can make a 90-degree turn with this movement. The ship cannot turn if the helm is destroyed." compset="RaceSpec">
+    <fieldval field="actUserMin" value="0"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Helper" tag="UserAdjust" name="UserAdjust" abbrev="UserAdjust"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <eval phase="Render"><![CDATA[var thresh as string
+var sep as string
+thresh = field[abText2].text
+
+if (empty(thresh)=0) then
+thresh = " (damage threshold " & field[abText2].text & ")"
+sep = " | Dmg Thresh " & field[abText2].text
+endif
+
+field[CustDesc].text = "\n{b}Armor Class{/b}: " & field[abText].text & "\n{b}Hit Points{/b}: " & field[actUserMax].value & thresh & "\n\nMove up to its speed with its propulsion unit. It can make a 90-degree turn with this movement. The helm is only attackable if the hull has taken 100 or more damage. The mechanical beholder cannot move if the helm is destroyed."
+
+field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMax].value & sep & " | Damage Taken: "]]></eval>
+    </thing>
+  <thing id="ra5CMgPrpl" name="Movement: Magical Propulsion Unit" description="{b}Armor Class{/b}: 12\n{b}Hit Points{/b}: 100; -10 ft. speed for every 25 damage taken\n{b}Speed (water){/b}: 35 ft.; 15 ft. when sailing into the wind; 50 ft. when saling with the wind" compset="RaceSpec">
+    <fieldval field="actUserMin" value="0"/>
+    <tag group="Helper" tag="UserAdjust" name="UserAdjust" abbrev="UserAdjust"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostAttr" priority="8999" index="2"><![CDATA[~ If we're disabled, do nothing 
+doneif (tagis[Helper.Disable] <> 0)
+
+var iFly as number
+
+iFly = 30
+
+var red as number
+
+if (field[actUser].value >= field[abValue5].value * 4) then
+red = (field[abValue4].value * 4)
+elseif (field[actUser].value >= field[abValue5].value * 3) then
+red = (field[abValue4].value * 3)
+elseif (field[actUser].value >= field[abValue5].value * 2) then
+red = (field[abValue4].value * 2)
+elseif (field[actUser].value >= field[abValue5].value) then
+red = (field[abValue4].value)
+endif
+
+red = iFly - red
+
+var Flight as string
+
+Flight = "Value." & red
+
+perform hero.childfound[xFly].delete[Value.?]
+perform hero.childfound[xSwim].delete[Value.?]
+perform hero.childfound[xBurrow].delete[Value.?]
+perform hero.childfound[xFly].assignstr[Flight]
+perform hero.childfound[xSwim].assignstr[Flight]
+perform hero.childfound[xBurrow].assignstr[Flight]]]></eval>
+    <eval phase="Render" index="3"><![CDATA[var thresh as string
+var sep as string
+thresh = field[abText2].text
+
+if (empty(thresh)=0) then
+thresh = " (damage threshold " & field[abText2].text & ")"
+sep = " | Dmg Thresh " & field[abText2].text
+endif
+
+
+
+field[CustDesc].text = "\n{b}Armor Class{/b}: " & field[abText].text & "\n{b}Hit Points{/b}: " & field[actUserMax].value & ";" & thresh &" -" & field[abValue4].value & " ft. speed for every " & field[abValue5].value & " damage taken\n{b}Speed (magical){/b}: flying, burrow, and swim " & field[abValue].value & " ft."
+
+
+field[actIncrNam].text = "AC " & field[abText].text & " | HP " & field[actUserMax].value & sep & " | Damage Taken: "]]></eval>
+    </thing>
+  <thing id="g5CMechBhld" name="Mechanical Beholder" compset="Gear">
+    <usesource source="p5eAIS"/>
+    <usesource source="p5eTOotWP"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="GearType" tag="gt5CVehAir" name="Air Vehicles" abbrev="Air Vehicles"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <tag group="explicit" tag="5"/>
+    <bootstrap thing="c5CMechBhld"></bootstrap>
+    </thing>
+  <thing id="ra5CMchEyRy" name="Weapon: Eye Ray Tenatcles (6)" description="\n{b}Armor Class{/b}: 14\n{b}Hit Points{/b}: 50\n{b}Magical Attack{/b}: The mechanical beholder shoots these eye rays at up to three targets that the crew can see and that are within 120 feet of the mechanical beholder. \n\n{i}Disintegration Ray{/i}. A target creature must make a DC 15 Dexterity save. On a failure, it takes 18 (4d8) force damage. If the creature is reduced to 0 hit points by the damage, its body disintegrates into a pile of gray dust. If the target is a Large or smaller nonmagical object or the creation of a magical force, it is disintegrated without the save. If the target is such an object that is Huge or larger, a 10-foot cube of it is disintegrated.\n\n{i}Enervation Ray{/i}. A target creature must make a DC 15 Constitution save. It takes 18 (4d8) necrotic damage on a failure, or half that on a success.\n\n{i}Paralyzing Ray{/i}. A target creature must make a DC 15 Constitution save. On a failure, it is paralyzed for 1 minute. It can repeat the save at the end of each of its turns, ending the effect for itself on a successful save." compset="RaceSpec">
+    <fieldval field="abDC" value="15"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="abSave" tag="aDEX"/>
+    </thing>
+  <thing id="ra5CMcEyRyT" name="Weapon: Eye Ray Tentacle" description="Use this feature in the In-Play tab to track the health of individual Eye Ray Tentacles." compset="RaceSpec">
+    <fieldval field="actUserMax" value="50"/>
+    <fieldval field="actIncrNam" value="AC 14  | HP 50 | Damage Taken:"/>
+    <fieldval field="actUserMin" value="0"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Render" priority="999999"></eval>
+    </thing>
+  </document>
