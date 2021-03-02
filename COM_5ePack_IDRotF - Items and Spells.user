@@ -42,7 +42,7 @@
     <tag group="ItemRarity" tag="Legendary"/>
     <tag group="GearType" tag="gtWondrous"/>
     <tag group="abSave" tag="aCON"/>
-    <eval phase="PreLevel" priority="10000">perform assign[Helper.ShowSpec]</eval>
+    <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="io5COrcStn" name="Orc Stone" description="You can use this stone to summon the spirit of an orc warrior to a spot within 30 feet of yourself. The spirit uses the orc war chief stat block (see the Monster Manual), and it disappears after 10 minutes or once it&apos;s reduced to 0 hit points. It understands any of your spoken languages and obeys your commands. Once it has been used three times, it crumbles to dust." compset="Wondrous">
     <fieldval field="miAttunTxt" value="requires attunement by its original recipient only"/>
@@ -97,7 +97,6 @@
     <tag group="Helper" tag="EquipMag"/>
     <tag group="Helper" tag="EquipAvail"/>
     <tag group="GearType" tag="gtAdventGe"/>
-    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
     </thing>
   <thing id="g5CCrmpns" name="Crampons" description="Strapping this spiked metal plate to your boots provides immunity to falling prone while moving across slippery ice." compset="Gear">
     <fieldval field="gCost" value="2"/>
@@ -106,7 +105,6 @@
     <tag group="Helper" tag="EquipMag"/>
     <tag group="Helper" tag="EquipAvail"/>
     <tag group="GearType" tag="gtAdventGe"/>
-    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
     </thing>
   <thing id="g5CDogsled" name="Dogsled" description="An empty dogsled costs 20 gp, weighs 300 pounds, and has room at the back for a single driver." compset="Gear">
     <fieldval field="gCost" value="20"/>
@@ -144,7 +142,6 @@
     <tag group="Helper" tag="EquipMag"/>
     <tag group="Helper" tag="EquipAvail"/>
     <tag group="GearType" tag="gtAdventGe"/>
-    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
     </thing>
   <thing id="io5CCdclWht" name="The Codicil of White" description="A creature carrying this tome has resistance to cold damage.\n\nWithin its pages is the {i}frost fingers{/i} spell and a poem titled Rime of the Frostmaiden. The poem may have other features, decided by the DM, but it does have the power to split a glacier." compset="Wondrous">
     <usesource source="p5eIDRotFP"/>
@@ -388,5 +385,157 @@ hero.childfound[xTelepathy].field[abRange].value = maximum(hero.childfound[xTele
     <bootstrap thing="spMageHand">
       <autotag group="Helper" tag="ItemSpell"/>
       </bootstrap>
+    </thing>
+  <thing id="c5CChSnwb" name="Charm of Snowball Strike" description="This charm has 5 charges, and it vanishes once all of the charges are expended. You can use a bonus action to spend 1 of the charges to create a magical snowball in your free hand and throw it. If you don&apos;t have a free hand, the charge is wasted. The snowball is a magic ranged weapon with which you are proficient. It has a normal range of 20 feet and a long range of 60 feet, it deals 1d4 cold damage on a hit, and it scores a critical hit on a roll of 19 or 20. If you score a critical hit with the snowball, the target is blinded until the end of its next turn. The snowball vanishes immediately after you hit or miss with it, or at the end of your turn if you don&apos;t throw it.\n\nA chwinga from a frigid region can bestow this charm using its Magical Gift action." compset="CustomSpec" uniqueness="useronce">
+    <fieldval field="trkMax" value="5"/>
+    <fieldval field="actName" value="Snowball Created"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="4"/>
+    <fieldval field="wRangeNorm" value="20"/>
+    <fieldval field="wRangeLong" value="60"/>
+    <usesource source="p5eIDRotFP"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="wCategory" tag="RangeThrow"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="DamageType" tag="dtCold"/>
+    <tag group="Usage" tag="Charges" name=" charges" abbrev=" charges"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="Helper" tag="Proficient"/>
+    <tag group="Helper" tag="NoAttrDam"/>
+    <eval phase="First">doneif (field[abilActive].value = 0)
+
+perform assign[Helper.WeaponSpec]</eval>
+    </thing>
+  <thing id="c5CChTrvl" name="Charm of the Traveler&apos;s Haven" description="This charm has 3 charges, and it vanishes once all of the charges are expended. You can use an action to spend 1 of the charm&apos;s charges to cast {i}tiny hut{/i} without components.\n\nA chwinga from a frigid region can bestow this charm using its Magical Gift action." compset="CustomSpec" uniqueness="useronce">
+    <usesource source="p5eIDRotFP"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <bootstrap thing="spTinyHut">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="sNameMod" value="no components"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CChBnty" name="Charm of Bounty" description="This charm has 3 charges, and it vanishes once all of the charges are expended. You can use an action to spend 1 of the charm&apos;s charges to cast {i}create food and water{/i} without components.\n\nA chwinga from a frigid region can bestow this charm using its Magical Gift action." compset="CustomSpec" uniqueness="useronce">
+    <usesource source="p5eIDRotFP"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <bootstrap thing="spCreaFood">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="sNameMod" value="no components"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CChSnwW" name="Charm of the Snow Walker" description="This charm has 3 charges, and it vanishes once all of the charges are expended. You can use an action to expend 1 of the charm&apos;s charges, gaining these benefits for 24 hours:\n\n• You and your allies within 15 feet of you can ignore terrain made difficult by snow or ice.\n• You can see up to 60 feet through areas heavily obscured by snow.\n• You are immune to the effects of extreme cold that are described in the DMG. This immunity does not extend to cold damage.\n\nA chwinga from a frigid region can bestow this charm using its Magical Gift action." compset="CustomSpec" uniqueness="useronce">
+    <fieldval field="trkMax" value="3"/>
+    <fieldval field="actName" value="Active"/>
+    <usesource source="p5eIDRotFP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges" name=" charges" abbrev=" charges"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="Tertiary"/>
+    </thing>
+  <thing id="c5CChBtng" name="Charm of Biting Cold" description="This charm has 3 charges, and it vanishes once all of the charges are expended. As a bonus action, You can use a bonus action to spend 1 of the charm&apos;s charges to enchant your weapon attacks with frost. For the next minute, you deal an extra 1d6 cold damage when you hit with a melee or ranged weapon attack.\n\nA chwinga from a frigid region can bestow this charm using its Magical Gift action." compset="CustomSpec" uniqueness="useronce">
+    <fieldval field="trkMax" value="3"/>
+    <fieldval field="abDuration" value="1"/>
+    <usesource source="p5eIDRotFP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges" name=" charges" abbrev=" charges"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    </thing>
+  <thing id="c5CChIceT" name="Charm of the Ice Troll" description="This charm allows you to use your reaction when you suffer cold damage, reducing that damage to 0. You regain a number of hit points equal to half the cold damage you would have taken. Once you use this reaction, the charm vanishes from you.\n\nA chwinga from a frigid region can bestow this charm using its Magical Gift action." compset="CustomSpec" uniqueness="useronce">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5eIDRotFP"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges" name=" charges" abbrev=" charges"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    </thing>
+  <thing id="c5CChCldR" name="Charm of Cold Resistance" description="This charm allows you to use an action to give yourself resistance to cold damage for 24 hours. Once that time has passed, the charm vanishes from you.\n\nA chwinga from a frigid region can bestow this charm using its Magical Gift action." compset="CustomSpec" uniqueness="useronce">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Active"/>
+    <fieldval field="abDuration" value="24"/>
+    <usesource source="p5eIDRotFP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Usage" tag="Charges" name=" charges" abbrev=" charges"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="abDuration" tag="Hour"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abilActive].value = 0)
+
+perform hero.assign[DamageRes.dtCold]]]></eval>
+    </thing>
+  <thing id="c5CChVlgS" name="Vlagomir&apos;s Spark" description="You gain 1 foot of height every hour, becoming proportionately heavier until you stand 21 feet tall and weigh 7,700 pounds. When you reach 9 feet, your Strength becomes a minimum of 19. For every 3 additional feet of height you gain, your Strength increases by 1, up to a maximum of 23. Your worn armor and clothing and carried weapons magically increase in size to match your growth. If {i}greater restoration{/i} or similar magic is used on you, this charm vanishes from you, and you and your items immediately shrink back to normal size." compset="CustomSpec" uniqueness="useronce">
+    <fieldval field="actName" value="Inactive (Greater Restoration)"/>
+    <arrayval field="usrArray" index="0" value="&lt;9 Feet"/>
+    <arrayval field="usrArray" index="1" value="9-11 Feet"/>
+    <arrayval field="usrArray" index="2" value="12-14 Feet"/>
+    <arrayval field="usrArray" index="3" value="15-17 Feet"/>
+    <arrayval field="usrArray" index="4" value="18-20 Feet"/>
+    <arrayval field="usrArray" index="5" value="21 Feet"/>
+    <usesource source="p5eIDRotFP"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="PreAttr" priority="11000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abilActive].value <> 0)
+doneif (field[usrIndex].value < 2)
+
+var iSTR as number
+var iMOD as number
+
+perform hero.childfound[aSTR].setfocus
+
+iSTR = focus.field[aMaxValue].value
+
+if (field[usrIndex].value >= 2) then
+  iSTR = minimum(23,iSTR+1)
+  iMOD += 1
+  endif
+
+if (field[usrIndex].value >= 3) then
+  iSTR = minimum(23,iSTR+1)
+  iMOD += 1
+  endif
+
+if (field[usrIndex].value >= 4) then
+  iSTR = minimum(23,iSTR+1)
+  iMOD += 1
+  endif
+
+if (field[usrIndex].value >= 5) then
+  iSTR = minimum(23,iSTR+1)
+  iMOD += 1
+  endif
+
+focus.field[aNormMod].value += iMOD
+focus.field[aMaxValue].value = maximum(iSTR, focus.field[aMaxValue].value)]]></eval>
+    <eval phase="PreLevel" priority="11000" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abilActive].value <> 0)
+doneif (field[usrIndex].value = 0)
+
+
+      hero.child[aSTR].field[Minimum].value = maximum(hero.child[aSTR].field[Minimum].value,19)]]></eval>
+    </thing>
+  <thing id="io5CIcTrlHrt" name="Ice Troll Heart" description="{i}TIny object{/i}\n\n{b}Armor Class{/b}: 13\n{b}Hit Points{/b}: 4\n{b}Dammage Immunities{/b}: acid, bludgeoning, cold, force, lightning, necrotic, piercing, poison, psychic, radiant, slashing, thunder\n\n{b}Heart Effects{/b}: An ice troll&apos;s heart stays cold even after the troll is destroyed. As long as the troll can&apos;t regenerate, its heart can be safely taken from its remains. Once removed, it is a harmless, Tiny object and has these properties for 24 hours:\n• A creature that eats the heart gains the ability to regenerate for the next 24 hours. It regains 5 hit points at the beginning of each of its turns. If the creature takes acid or fire damage, this trait doesn&apos;t function at the beginning of its next turn. The creature dies only if it starts its turn with 0 hit points and doesn&apos;t regenerate.\n• If buried in the ground under a foot or more of earth, the heart begins to melt away for 10 minutes. During that time, it begins generating a blizzard like the one made by {i}control weather{/i}. The blizzard lasts for 8 hours.\n• A hag or similar creature can perform a ritual that turns the heart into a magical talisman that acts like a patch of brown mold (see the DMG for details on that). This effect lasts until the heart is destroyed.\n• A creature proficient with alchemist&apos;s supplies can extract enough residual fluid out of the heart to mix with other alchemical ingredients. With one hour of work, it can create a single Potion of Cold Resistance." compset="Wondrous">
+    <usesource source="p5eIDRotFP"/>
+    <tag group="GearType" tag="gtWondrous"/>
     </thing>
   </document>
