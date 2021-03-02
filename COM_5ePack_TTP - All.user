@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CTortle" name="Tortle" description="Tortles were a race of intelligent turtle-like humanoids indigenous to southern Chult.\n\nTortles were reptilian-looking humanoids with large shells on their backs that were capable of containing their entire bodies and provided ample protection.\n\nMost tortles had the notion of having their houses on their backs, which meant that they rarely felt homesick or the need to lay roots in any single place. They were eager to learn new customs and found beauty in the most ordinary things. Despite spending much of their lives isolated, tortles liked to form strong friendships.\n\nBesides being able to wield weapons and shields, tortles had claws that were effective as natural weapons and could retreat into their shells for protection if necessary. The shape of their bodies made it impossible for tortles to wear armor, however.\n\nTortles only reproduced near the end of their natural lifespans. When their young hatched from their eggs, they spent the remainder of their lives sharing all their life experiences and teaching survival skills. Young tortles would become orphans after about one year, by which time they were expected to be able to fend for themselves." compset="Race">
+    <fieldval field="rSTR" value="2"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rHeightMin" value="48"/>
+    <fieldval field="rWeightMin" value="450"/>
+    <usesource source="p5eToAP"/>
+    <usesource source="5eEGtWCP"/>
+    <usesource source="p5eTTPP"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal"/>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="wDieCount" value="1"/>
+      </bootstrap>
+    <bootstrap thing="lAquan"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CSheDef"></bootstrap>
+    <bootstrap thing="ra5CHoBr1H"></bootstrap>
+    <bootstrap thing="ra5CNaArTo"></bootstrap>
+    </thing>
+  <thing id="ra5CHoBr1H" name="Hold Breath" description="The creature can hold its breath for up to 1 hour at a time allowing them to stay underwater for some time before needing to surface for air." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CNaArTo" name="Natural Armor" description="You have a base AC of 17 (DEX mod does not affect this number). Armor provides no benefit but shield bonus does apply." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="PostAttr" priority="5000" index="2"><![CDATA[~ If we're not shown, just get out now
+doneif (tagis[Helper.Disable] <> 0)
+
+var dexmod as number
+
+dexmod = #attrmod[aDEX]
+~ turn it into a penalty
+dexmod *= -1
+
+if (hero.tagis[Hero.EquipArmor] = 0) then
+     ~ we are unarmored, remove Dex bonus by adding it's negative value back
+     hero.child[ArmorClass].field[tACUnarDef].value += dexmod
+else
+     ~ we are armored, strip all armor bonuses
+     hero.child[ArmorClass].field[tACDexMod].value = 0
+     foreach pick in hero from BaseArmor where "Helper.CurrArmor"
+     ~ kill off any type of AC modifier
+          eachpick.field[arAC].value = 0 
+          eachpick.field[arBonus].value = 0
+          eachpick.field[Bonus].value = 0
+     nexteach
+endif]]></eval>
+    <eval phase="Final" priority="1000"><![CDATA[~ If we're not shown, just get out now
+doneif (tagis[Helper.Disable] <> 0)
+
+      if (hero.tagis[Hero.EquipArmor] = 0) then
+        hero.child[ArmorClass].field[tACNatural].value = 7
+        endif]]></eval>
+    </thing>
+  <thing id="ra5CSheDef" name="Shell Defense" description="You can hide in your shell as an action. Provides +4 bonus to AC, and you have advantage on Strength and Constitution saving throws. While in the shell you are considered prone. Your speed is 0 and cannot be increased. You have disadvantage on DEX saving throws. Unable to take reactions. The only action you can take as a bonus action is to leave your shell." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="ra5CGeoBldGs" name="Boulder Guise" description="When hidden in its shell, the geonid cannot see, and is indistinguishable from a rock." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="ra5CGeoStnTll" name="Stone Tell" description="The geonid can touch a stone object or stone surface and learn about the creatures that have been within 10 feet of it within the last 24 hours. It learns the type of creatures they were and how many of each, but no specific identifying information about any of them." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    </thing>
+  <thing id="ra5CGSlgAnTnt" name="Animate Tentacle" description="When the slug takes damage in its home, it can use a reaction to animate a tentacle of a statue nearby, causing that tentacle to make a melee weapon attack (+3 to hit) against a creature within 20 feet of the statue and that is visible to the slug. On a hit, it deals 8 (1d8 + 4) bludgeoning damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    </thing>
+  <thing id="ra5CTopiTrnRs" name="Turn Resistance" description="When the topi rolls a saving throw against turn undead effects, it does so with advantage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="r5CDecap" name="Decapus" compset="Race">
+    <fieldval field="rHitDice" value="10"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="75"/>
+    <fieldval field="rSTR" value="5"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="-6"/>
+    <fieldval field="rCHA" value="-3"/>
+    <fieldval field="rSpeed" value="15"/>
+    <fieldval field="rAC" value="2"/>
+    <fieldval field="rCR" value="4"/>
+    <fieldval field="rMultiatt" value="The decapus makes one bite attack and one tentacles attack."/>
+    <usesource source="p5eTTPP"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Bite"/>
+      <assignval field="sbName" value="Bite"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wTarget" value="one creature grappled by the decapus"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Tentacles"/>
+      <assignval field="sbName" value="Tentacles"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wAttackEff" value=" The attack instead deals 14 (5d4 + 2) bludgeoning damage if the decapus is on the ground or the floor, or if the decapus is already grappling a different creature. If it is not grappling another creature, the target is also now grappled with an escape DC of 14, and the target is restrained until that grapple ends."/>
+      <assignval field="wDieCount" value="9"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpMonstros"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CGeoni" name="Geonid" compset="Race">
+    <fieldval field="rHitDice" value="4"/>
+    <fieldval field="rHDSides" value="6"/>
+    <fieldval field="rHPStart" value="26"/>
+    <fieldval field="rSTR" value="2"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="-1"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rAC" value="7"/>
+    <fieldval field="rCR" value=".25"/>
+    <usesource source="p5eTTPP"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="xTremorsen">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Club"/>
+      <assignval field="sbName" value="Club"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpElementa"></bootstrap>
+    <bootstrap thing="ra5CGeoBldGs"></bootstrap>
+    <bootstrap thing="ra5CGeoStnTll"></bootstrap>
+    </thing>
+  <thing id="r5CGiaSl" name="Giant Slug" compset="Race">
+    <fieldval field="rHitDice" value="6"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="66"/>
+    <fieldval field="rSTR" value="4"/>
+    <fieldval field="rDEX" value="3"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="2"/>
+    <fieldval field="rCHA" value="-5"/>
+    <fieldval field="rSpeed" value="10"/>
+    <fieldval field="rAC" value="2"/>
+    <fieldval field="rCR" value="3"/>
+    <fieldval field="rMultiatt" value="The slug makes one bite attack and one tentacles attack."/>
+    <usesource source="p5eTTPP"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtPoison"/>
+      <assignval field="wAttBonus" value="4"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Tentacles"/>
+      <assignval field="sbName" value="Tentacles"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wAttackEff" value=" The target must make a DC 13 Constitution save, becoming poisoned and paralyzed for one minute on a failure. The target can repeat the save at the end of each of its turns, ending the effects if it succeeds."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Bite"/>
+      <assignval field="sbName" value="Bite"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpMonstros"></bootstrap>
+    <bootstrap thing="xInnatSpel"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="lAquan"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGSlgAnTnt"></bootstrap>
+    <bootstrap thing="ra5CKeeSme">
+      <assignval field="abText" value="The slug"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPieSpC">
+      <assignval field="abText" value="slug"/>
+      </bootstrap>
+    <bootstrap thing="spGuidBolt">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSanctuar">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSpirWeap">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
+    </thing>
+  <thing id="r5CTopi" name="Topi" compset="Race">
+    <fieldval field="rHitDice" value="3"/>
+    <fieldval field="rHDSides" value="6"/>
+    <fieldval field="rHPStart" value="13"/>
+    <fieldval field="rSTR" value="-3"/>
+    <fieldval field="rDEX" value="5"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="-4"/>
+    <fieldval field="rCHA" value="-5"/>
+    <fieldval field="rAC" value="1"/>
+    <fieldval field="rCR" value=".5"/>
+    <usesource source="p5eTTPP"/>
+    <tag group="Helper" tag="UndLifLang"/>
+    <tag group="Helper" tag="CantSpeak" name="Cannot Speak" abbrev="Cannot Speak"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="DamageRes" tag="dtBludgeon"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDamBonus" value="4"/>
+      <assignval field="livename" value="Venomous Claws"/>
+      <assignval field="sbName" value="Venomous Claws"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDamExtra" value=" plus 2 (1d4) poison"/>
+      <assignval field="wAttackEff" value=" The target must make a DC 11 Constitution save, becoming poisoned until the end of its next turn on a failure."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="ra5CTopiTrnRs"></bootstrap>
+    <bootstrap thing="ra5CUndFrt">
+      <assignval field="abText" value="topi"/>
+      </bootstrap>
+    </thing>
+  <thing id="io5CCnchSfR" name="Conch of Safe Rest" description="Using an action to blow the conch like a horn creates the same effect as {i}tiny hut{/i}. The conch disappears when the spell takes effect, and the effect ends if you leave the area of the spell." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="gWeight" value="2"/>
+    <usesource source="p5eTTPP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="SpInfo" tag="spTinyHut"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  </document>
