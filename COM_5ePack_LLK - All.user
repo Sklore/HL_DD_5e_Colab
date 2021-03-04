@@ -939,29 +939,4 @@ doneif (field[usrChosen1].ischosen = 0)
 perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
 perform hero.pushtags[ProfSkill.?]]]></eval>
     </thing>
-  <thing id="casfdas" name="Arcane Archer&apos;s Lore" description="At 3rd level, you learn some of the magical theories or secrets of nature. You choose to gain proficiency in either the Arcana or Nature skill, and you learn either the {i}prestidigitation{/i} or {i}druidcraft{/i} cantrip." compset="ClSpecial">
-    <fieldval field="usrCandid1" value="component.BaseSkill &amp; (Reference.skArcana | Reference.skNature)"/>
-    <arrayval field="usrArray" index="0" value="Prestidigitation"/>
-    <arrayval field="usrArray" index="1" value="Druidcraft"/>
-    <bootstrap thing="spPrestidi">
-      <containerreq phase="First" priority="500">fieldval:usrIndex = 0</containerreq>
-      <autotag group="Helper" tag="Cantrip"/>
-      <autotag group="Helper" tag="RaceSpell"/>
-      <autotag group="Usage" tag="AtWill"/>
-      </bootstrap>
-    <bootstrap thing="spDruidcra">
-      <containerreq phase="First" priority="500">fieldval:usrIndex = 1</containerreq>
-      <autotag group="Helper" tag="Cantrip"/>
-      <autotag group="Helper" tag="RaceSpell"/>
-      <autotag group="Usage" tag="AtWill"/>
-      </bootstrap>
-    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
-      doneif (tagis[Helper.Disable] <> 0)
-      if (field[usrChosen1].ischosen <> 0) then
-        perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
-        endif
-      perform forward[ProfSkill.?]]]>
-      <before name="Calc skProfBon"/>
-      </eval>
-    </thing>
   </document>
