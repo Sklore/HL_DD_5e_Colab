@@ -10,11 +10,7 @@
     <tag group="User" tag="NeedDomain"/>
     <tag group="User" tag="OptDomain"/>
     <tag group="User" tag="NoAutoName"/>
-    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
-
-
-
-      perform assign[Helper.ShowSpec]</eval>
+    <tag group="Helper" tag="ShowSpec"/>
     </thing>
   <thing id="io5CFndGggl" name="Finder&apos;s Goggles" description="While wearing these carved-dragonshard lenses, you gain these benefits:\n• When you make a Wisdom (Insight) check, you can roll a d4 and add the number rolled to the check.\n• You can use an action to examine an object through the goggles to identify the aura of the last creature that touched it. Make a Wisdom (Insight) check against a DC of 13 + the number of days since the last contact occurred. On a successful check, you learn the creature&apos;s type and can immediately use the goggles to cast {i}locate creature{/i} to find that creature. Once used, this property of the goggles can&apos;t be used again until the next dawn." compset="Wondrous">
     <fieldval field="miAttunTxt" value="requires attunement by a creature with the Mark of Finding"/>
@@ -31,7 +27,6 @@
     <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spLocaCrea"></bootstrap>
     <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[gIsEquip].value = 0)
-
 
       #situational[hero.child[skInsight],"+1d4",field[thingname].text]
       perform assign[Helper.ShowSpec]]]></eval>
@@ -82,8 +77,6 @@
     <tag group="User" tag="NoAutoName"/>
     <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
 
-
-
       perform assign[Helper.ShowSpec]</eval>
     </thing>
   <thing id="io5CWhlWndW" name="Wheel of Wind and Water" description="When mounted at the helm of an elemental galleon or airship, this wheel allows a creature that possesses the Mark of Storm to telepathically control the elemental bound inside the vessel.\n\nIf a wheel of wind and water is mounted on an ordinary sailing ship, a creature with the Mark of Storm who is using the wheel can generate an area of ideal sailing conditions around the vessel, increasing its speed by 5 miles per hour." compset="Wondrous">
@@ -100,7 +93,6 @@
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="ItemRarity" tag="VeryRare"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
     <child entity="wSpecMagic">
       <bootstrap thing="wWhip"></bootstrap>
       </child>
@@ -126,7 +118,6 @@
       <autotag group="Helper" tag="ItemSpell"/>
       </bootstrap>
     <bootstrap thing="lDeepSpeec"></bootstrap>
-    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
     </thing>
   <thing id="i5CLvngArm" name="Living Armor" description="To attune to this living, chitinous armor, you must wear it for the entire attunement period, during which tendrils on the inside burrow into you. While wearing the armor, you have a +1 bonus to Armor Class, and you are resistant to necrotic, poison, and psychic damage.\n\n{b}Symbiotic Nature{/b}. This item cannot be removed while you&apos;re attuned to it, and you cannot voluntarily end your attunement. If you are targeted by an effect that ends curses, your attunement ends and the item detaches from you. The armor requires fresh blood. Immediately after you complete any long rest, you must either feed half of your remaining Hit Dice to the armor (round up) or suffer 1 level of exhaustion." compset="MagicArmor">
     <fieldval field="Bonus" value="1"/>
@@ -400,5 +391,75 @@ hero.childfound[r5CEbDocnt].field[rLanguages].value += field[abValue].value</eva
     <tag group="LvNamePar" tag="AppText"/>
     <tag group="abAction" tag="Action"/>
     <tag group="FeatureTyp" tag="Action"/>
+    </thing>
+  <thing id="io5CPrsaLmb" name="Prosthetic Limb" description="This item replaces a lost arm, hand, foot, leg, or similar appendage. While attached, the prosthetic is a fully functional part of your body, working just like the lost limb. You can take an action to attach or remove the prosthetic. It can&apos;t be removed against your will, but detaches when you die." compset="Wondrous">
+    <usesource source="5eRftLWCP"/>
+    <usesource source="5eEGtWCP"/>
+    <usesource source="5eTCoE"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="io5CBelBehC" name="Belashyrra&apos;s Beholder Crown" description="Attuning to this item causes its stalks to burrow into your head and bond with your skill. While attuned and wearing the crown, you can see normally in magical and nonmagical darkness to a distance of 120 feet. \n\nThe crown has 10 charges, which can be spent to cast one of these spells (spell save DC 16): {i}charm person{/i} (1 charge), {i}disintegrate{/i} (6 charges), {i}fear{/i} (3 charges), {i}finger of death{/i} (7 charges), {i}flesh to stone{/i} (6 charges), {i}hold person{/i} (2 charges), {i}ray of enfeeblement{/i} (2 charges), {i}sleep{/i} (1 charge), {i}slow{/i} (3 charges), {i}telekinesis{/i} (5 charges).\n The crown regains 1d6+3 charges at dawn.\n\n{b}Symbiotic Nature{/b}. This item cannot be removed while you&apos;re attuned to it, and you cannot voluntarily end your attunement. If you are targeted by an effect that ends curses, your attunement ends and the item detaches from you. While you&apos;re on the same plane of existence, Belashyrra can see through it." compset="Wondrous">
+    <fieldval field="trkMax" value="10"/>
+    <fieldval field="abText" value="regains 1d6+3 at dawn"/>
+    <usesource source="5eRftLWCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <bootstrap thing="spHoldPers">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="2"/>
+      <assignval field="sNameMod" value="save DC 16"/>
+      </bootstrap>
+    <bootstrap thing="spRayEnfe">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="spSleep">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="spSlow">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="3"/>
+      <assignval field="sNameMod" value="save DC 16"/>
+      </bootstrap>
+    <bootstrap thing="spTelekine">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDrkVsMgc">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="spCharPers">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <assignval field="sNameMod" value="save DC 16"/>
+      </bootstrap>
+    <bootstrap thing="spDisinteg">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="6"/>
+      <assignval field="sNameMod" value="save DC 16"/>
+      </bootstrap>
+    <bootstrap thing="spFear">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="3"/>
+      <assignval field="sNameMod" value="save DC 16"/>
+      </bootstrap>
+    <bootstrap thing="spFingDeat">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="7"/>
+      <assignval field="sNameMod" value="save DC 16"/>
+      </bootstrap>
+    <bootstrap thing="spFlesSton">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="6"/>
+      <assignval field="sNameMod" value="save DC 16"/>
+      </bootstrap>
     </thing>
   </document>
