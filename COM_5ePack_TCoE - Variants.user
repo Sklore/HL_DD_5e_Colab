@@ -124,7 +124,6 @@ perform hero.childfound[cRgrHiPlSi].delete[SpecSource.?]
 
 foreach pick in Hero where "(ClSpecWhen.14 | ClSpecWhen.8) & SpecSource.cHelpClr & !thingid.cClrDesUnd & !thingid.c5CClrBlsStr"
  perform eachpick.tagreplace[Helper.ShowSpec,Helper.Disable]
-debug eachpick.tagvalue[thingid.?]
  perform eachpick.delete[SpecSource.?]
       
 
@@ -530,9 +529,6 @@ endif
         curdicenum = eachpick.field[wDieCount].value
         curdicesiz = eachpick.field[wDieSize].value
 
-~debug "curdicenum is " & curdicenum
-~debug "curdicesiz is " & curdicesiz
-
         curwepavg = (curdicesiz + 1)/2
         curwepavg *= curdicenum
 
@@ -728,7 +724,12 @@ nexteach]]></eval>
 
      hero.child[cHelpRgr].field[cCustTeTot].arrayvalue[5] = 0
 
-     hero.child[cHelpRgr].field[cCustTeTot].arrayvalue[14] = 0]]></eval>
+     hero.child[cHelpRgr].field[cCustTeTot].arrayvalue[14] = 0
+
+     foreach pick in Hero where "abCategory.RgrFavEnem"
+        perform eachpick.assign[Helper.Disable]
+        perform eachpick.assign[Helper.SpecUp]
+        nexteach]]></eval>
     <exprreq message="Requires Ranger Level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
     </thing>
   <thing id="c5CRgrSpeFoc" name="Spellcasting Focus" description="You are able to use a druidic focus as the spellcasting focus for your ranger spells. The Player&apos;s Handbook lists some items that can be used as druidic foci in Chapter 5." compset="ClSpecial" summary="Use a druidic focus as a spellcasting focus." maxlimit="1">
@@ -832,19 +833,37 @@ perform hero.childfound[cRgrPriAwa].delete[SpecSource.?]
      hero.childfound[cfg5CTashVar].field[cfgMax3].value += 3
      hero.childfound[cfg5CTashVar].field[cfgAllow3].text &= "abCategory.5CCFVRDfEx"
      hero.childfound[cfg5CTashVar].field[cfgObject3].text = "Deft Explorer Features"]]></eval>
+    <eval phase="PostLevel" priority="10000" index="4"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+     doneif (#levelcount[Ranger] < 1)
+
+     foreach pick in Hero where "abCategory.RgrNatExpl"
+        perform eachpick.assign[Helper.Disable]
+        perform eachpick.assign[Helper.SpecUp]
+        nexteach]]></eval>
     <exprreq message="Requires Ranger Level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
     </thing>
-  <thing id="c5CRgrDftCny" name="Canny" description="You ability checks with one of your skill proficiencies use double your proficiency bonus. \n\nYou also are able to speak, read, and write two languages of your choice.\n\n{i}Due to programming limitations, you&apos;ll need to go to the In-Play tab to choose the proficiency, and the Background tab to choose your langauges.{/i}" compset="ClSpecial" summary="Additional skill proficiencies and languages." maxlimit="1">
+  <thing id="c5CRgrDftCny" name="Canny" description="You ability checks with one of your skill proficiencies use double your proficiency bonus. \n\nYou also are able to speak, read, and write two languages of your choice.\n\n{i}Due to programming limitations, you&apos;ll need to go to the In-Play tab to choose the proficiency.{/i}" compset="ClSpecial" summary="Additional skill proficiencies and languages." maxlimit="1">
     <tag group="ClSpecWhen" tag="1"/>
     <tag group="SpecSource" tag="cHelpRgr"/>
     <tag group="Helper" tag="SpecUp"/>
     <tag group="abCategory" tag="5CCFVRDfEx" name="Ranger Deft Explorer Features"/>
     <tag group="Helper" tag="Tertiary"/>
     <bootstrap thing="c5CRgrCanny"></bootstrap>
-    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[
-     doneif (tagis[Helper.Disable] <> 0)
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
 
-    hero.childfound[resLangBck].field[resMax].value += 2]]></eval>
+      perform hero.childfound[cHelpRgr].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += 2
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += 2
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += 2
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
     <eval phase="Final" priority="500" index="3"><![CDATA[
       doneif (tagis[Helper.Disable] <> 0)
 
@@ -868,7 +887,7 @@ perform hero.childfound[cRgrPriAwa].delete[SpecSource.?]
          endif
        endif]]></eval>
     </thing>
-  <thing id="c5CRgrRov" name="Roving" description="Your walking speed increases by 5 feet, and you gain swimming and climbing speeds equal to that new total walking speed." compset="ClSpecial" summary="Increase walking speed and be granted swimming and climbing speeds." maxlimit="1">
+  <thing id="c5CRgrRov" name="Roving" description="At level 6, your walking speed increases by 5 feet, and you gain swimming and climbing speeds equal to that new total walking speed." compset="ClSpecial" summary="Increase walking speed and be granted swimming and climbing speeds." maxlimit="1">
     <tag group="ClSpecWhen" tag="6"/>
     <tag group="SpecSource" tag="cHelpRgr"/>
     <tag group="Helper" tag="SpecUp"/>
@@ -898,7 +917,7 @@ hero.child[Speed].field[tSpeed].value += 5]]></eval>
      hero.child[xSwim].field[abValue].value = myspeed]]></eval>
     <exprreq message="Requires Ranger Level 1"><![CDATA[#levelcount[Ranger] >= 1]]></exprreq>
     </thing>
-  <thing id="c5CRgrTirele" name="Tireless" description="You can use an action to grant yourself temporary hit points equaling 1d8 + your Wisdom modifier (minimum of 1). You can use this action a number of times equal to your proficiency bonus, and regain all uses of it at the end of a long rest. \n\nYour exhaustion level also decreases by 1 at the end of a short rest." compset="ClSpecial" summary="Give yourself temporary hit points." maxlimit="1">
+  <thing id="c5CRgrTirele" name="Tireless" description="At level 10, you can use an action to grant yourself temporary hit points equaling 1d8 + your Wisdom modifier (minimum of 1). You can use this action a number of times equal to your proficiency bonus, and regain all uses of it at the end of a long rest. \n\nYour exhaustion level also decreases by 1 at the end of a short rest." compset="ClSpecial" summary="Give yourself temporary hit points." maxlimit="1">
     <tag group="ClSpecWhen" tag="10"/>
     <tag group="SpecSource" tag="cHelpRgr"/>
     <tag group="abCategory" tag="5CCFVRDfEx" name="Ranger Deft Explorer Features"/>
