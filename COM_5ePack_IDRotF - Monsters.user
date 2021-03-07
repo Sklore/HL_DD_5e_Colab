@@ -1420,7 +1420,7 @@
       <assignval field="CustDesc" value="The weasel has glowing eyes, which shine bright light out in a 20-foot radius and dim light for another 20 feet."/>
       </bootstrap>
     </thing>
-  <thing id="r5CChwin" name="Chwinga" description="Unusual Nature. The chwinga doesn&apos;t require air, food, or drink. When it dies, it turns into a handful of flower petals, a cloud of pollen, a stone statuette resembling its former self, a tiny sphere of smooth stone, or a puddle of fresh water (your choice)." compset="Race">
+  <thing id="r5CChwin" name="Chwinga" compset="Race">
     <fieldval field="rHitDice" value="2"/>
     <fieldval field="rHDSides" value="4"/>
     <fieldval field="rHPStart" value="5"/>
@@ -1470,7 +1470,11 @@
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    <bootstrap thing="ra5CUnusNat">
+      <assignval field="CustDesc" value="The chwinga doesn&apos;t need air, food, or drink. When it dies, it turns into your choice of  a handful of flower petals, a cloud of pollen, a small stone statue resembling its former self, a tiny sphere of smooth stone, or a puddle of fresh water."/>
+      </bootstrap>
     <link linkage="castattr" thing="aWIS"/>
+    <eval phase="Final" priority="60000"><![CDATA[hero.childfound[ra5CUnusNat].field[CustDesc].text = "The chwinga doesn't need air, food, or drink. When it dies, it turns into your choice of  a handful of flower petals, a cloud of pollen, a small stone statue resembling its former self, a tiny sphere of smooth stone, or a puddle of fresh water."]]></eval>
     </thing>
   <thing id="r5CColWa" name="Coldlight Walker" compset="Race">
     <fieldval field="rHitDice" value="11"/>
@@ -1734,7 +1738,7 @@ hero.childfound[SlotHold5].field[MaxAllow].value = 0</eval>
     <bootstrap thing="xSpellcast"></bootstrap>
     <link linkage="castattr" thing="aWIS"/>
     </thing>
-  <thing id="r5CFroGi" name="Frost Giant Skeleton" description="Freezing Stare. The skeleton targets one creature it can see within 60 feet of it. The target must succeed on a DC 13 Constitution saving throw or take 35 (10d6) cold damage and be paralyzed until the end of its next turn." compset="Race">
+  <thing id="r5CFroGi" name="Frost Giant Skeleton" compset="Race">
     <fieldval field="rHitDice" value="12"/>
     <fieldval field="rHDSides" value="12"/>
     <fieldval field="rHPStart" value="102"/>
@@ -1781,6 +1785,7 @@ hero.childfound[SlotHold5].field[MaxAllow].value = 0</eval>
       <assignval field="wDieCount" value="3"/>
       <assignval field="wDieSize" value="12"/>
       </bootstrap>
+    <bootstrap thing="ra5CFrzStr"></bootstrap>
     </thing>
   <thing id="r5CGalMa" name="Galvan Magen" compset="Race">
     <fieldval field="rHitDice" value="8"/>
@@ -1890,7 +1895,7 @@ hero.childfound[SlotHold5].field[MaxAllow].value = 0</eval>
       <assignval field="abValue" value="30"/>
       </bootstrap>
     </thing>
-  <thing id="r5CGnoVa" name="Gnoll Vampire" description="Unusual Nature. The vampire doesn&apos;t require air.\n\nStake to the Heart. If a piercing weapon made of wood is driven into the vampire&apos;s heart while the vampire is incapacitated in its resting place, the vampire is paralyzed until the stake is removed." compset="Race">
+  <thing id="r5CGnoVa" name="Gnoll Vampire" compset="Race">
     <fieldval field="rHitDice" value="11"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="93"/>
@@ -1960,6 +1965,11 @@ hero.childfound[SlotHold5].field[MaxAllow].value = 0</eval>
       <assignval field="abText" value="vampire"/>
       <assignval field="abValue" value="20"/>
       </bootstrap>
+    <bootstrap thing="ra5CUnusNat">
+      <assignval field="CustDesc" value="The vampire does not require air."/>
+      </bootstrap>
+    <bootstrap thing="ra5CGnlStkHrt"></bootstrap>
+    <eval phase="Final" priority="60000"><![CDATA[hero.childfound[ra5CUnusNat].field[CustDesc].text = "The vampire does not require air."]]></eval>
     </thing>
   <thing id="r5CGnoCe" name="Gnome Ceremorph" compset="Race">
     <fieldval field="rHitDice" value="13"/>
@@ -2061,7 +2071,7 @@ hero.childfound[SlotHold5].field[MaxAllow].value = 0</eval>
       </bootstrap>
     <link linkage="castattr" thing="aINT"/>
     </thing>
-  <thing id="r5CGnoSq" name="Gnome Squidling" description="&lt;place-holder&gt;" compset="Race">
+  <thing id="r5CGnoSq" name="Gnome Squidling" compset="Race">
     <fieldval field="rHitDice" value="3"/>
     <fieldval field="rHDSides" value="6"/>
     <fieldval field="rHPStart" value="10"/>
@@ -4233,5 +4243,13 @@ hero.childfound[xSwim].field[shortname].text &= " (hybrid or bear form)"]]></eva
       <assignval field="abText" value="fanatic"/>
       </bootstrap>
     <link linkage="castattr" thing="aWIS"/>
+    </thing>
+  <thing id="ra5CFrzStr" name="Freezing Stare" description="The skeleton targets one creature visible to and within 60 feet of it. The target must make a DC 13 Constitution save. On a failure, it takes 35 (10d6) cold damage and is paralyzed until the end of its next turn." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    </thing>
+  <thing id="ra5CGnlStkHrt" name="Stake to the Heart" description="If a piercing weapon made of wood is driven into the vampire&apos;s heart while the vampire is incapacitated in its resting place, the vampire becomes paralyzed, and remains so until the stake is removed." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
     </thing>
   </document>
