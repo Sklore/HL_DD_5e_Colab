@@ -104,13 +104,11 @@
 
       ~ we get the attribute bonus to add to the offhand damage
       ~ as a kludge to non-light weapons
-      debug "Style = " & hero.tagis[Hero.2WepStyle]
       if ( hero.tagis[Hero.2WepStyle] <> 0 ) then
          var StrBonus as number
          var DexBonus as number
          StrBonus = hero.child[aSTR].field[aModBonus].value
          DexBonus = hero.child[aDEX].field[aModBonus].value
-         debug " StrBonus " & StrBonus & " DexBonus " & DexBonus
          foreach pick in hero from BaseWep where "(wCategory.Melee) &   (fieldval:wIs2nd <> 0) & !wProperty.TwoHanded & !wProperty.Light & !Hero.MainHand"
              if (eachpick.tagis[wProperty.Finesse] <> 0 ) then
                 eachpick.field[dmmBonus].value += maximum(StrBonus,DexBonus)
@@ -243,7 +241,7 @@ hero.findchild[TempHpPool,"Value.2"].field[thpMaxAllw].value = temphp]]></eval>
     <fieldval field="usrCandid1" value="component.BaseAttr &amp; (thingid.aSTR|thingid.aDEX)"/>
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <tag group="ArmProfGrp" tag="ArmorLigh"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
     <eval phase="First"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)

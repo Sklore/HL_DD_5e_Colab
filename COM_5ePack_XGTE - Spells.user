@@ -924,7 +924,7 @@
     <tag group="sClass" tag="cHelpSRg"/>
     <tag group="sClass" tag="cHelpWiz"/>
     </thing>
-  <thing id="sp5CXGESnS" name="Snilloc’s Snowball Swarm" description="Each creature in a 5- foot-radius sphere centered on a point you choose within range must make a Dexterity saving throw. A creature takes 3d6 cold damage on a failed save, or half as much damage on a successful one. \n\n{b}At Higher Levels.{/b} When you cast this spell using a spell slot of 3rd level or higher, the damage increases by 1d6 for each slot level above 2nd." compset="Spell">
+  <thing id="sp5CXGESnS" name="Snowball Swarm" description="Each creature in a 5- foot-radius sphere centered on a point you choose within range must make a Dexterity saving throw. A creature takes 3d6 cold damage on a failed save, or half as much damage on a successful one. \n\n{b}At Higher Levels.{/b} When you cast this spell using a spell slot of 3rd level or higher, the damage increases by 1d6 for each slot level above 2nd." compset="Spell">
     <fieldval field="sCompDesc" value="a piece of ice or a small white rock chip"/>
     <fieldval field="sRange" value="90 feet"/>
     <fieldval field="sDuration" value="Instantaneous"/>
@@ -1262,5 +1262,170 @@
     <tag group="sClass" tag="cHelpRgr"/>
     <tag group="sClass" tag="cHelpRgC"/>
     <tag group="sClass" tag="cHelpSRg"/>
+    </thing>
+  <thing id="i5CSplShdBld" name="Shadow Blade" compset="MagicWep" uniqueness="unique">
+    <fieldval field="wDieCount" value="2"/>
+    <fieldval field="wDieSize" value="8"/>
+    <fieldval field="wRangeNorm" value="20"/>
+    <fieldval field="wRangeLong" value="60"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="wProperty" tag="Light"/>
+    <tag group="wProperty" tag="Thrown"/>
+    <tag group="wProfReq" tag="Simple"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="DamageType" tag="dtPsychic"/>
+    <tag group="wProperty" tag="Finesse"/>
+    <tag group="wCategory" tag="Melee"/>
+    <tag group="wCategory" tag="RangeThrow"/>
+    <tag group="SpInfo" tag="sp5CXGEShB"/>
+    <eval phase="Final">field[wDieCount].value = hero.childfound[p5CSplShdBld].field[pAdjust].value</eval>
+    <child entity="wSpecMagic"></child>
+    </thing>
+  <thing id="p5CSplShdBld" name="Shadow Blade" description="Select the number of d8&apos;s that the weapon deals as psychic damage, based on the level at which it was cast." compset="InPlay" uniqueness="unique">
+    <fieldval field="pMinimum" value="2"/>
+    <fieldval field="pMaximum" value="5"/>
+    <fieldval field="pDuration" value="1 minute"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="AdjNoPlus" name="AdjNoPlus" abbrev="AdjNoPlus"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="SpInfo" tag="sp5CXGEShB"/>
+    <bootstrap thing="i5CSplShdBld">
+      <containerreq phase="First" priority="99"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ab5CSplGrdPr" name="Guardian of Nature: Primal Beast" description="• Your Strength-based attack rolls have advantage.\n• Your melee weapon attacks deal an extra 1d6 force damage on a hit.\n• Your walking speed increases by 10 feet.\n• You have 120 feet of darkvision." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseWep where "wCategory.Melee"
+  eachpick.field[wDamExtra].text &= " +1d6 force"
+  nexteach]]></eval>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[Speed].field[tSpeed].value += 10]]></eval>
+    </thing>
+  <thing id="p5CSplGrdNat" name="Guardian of Nature" description="Select the appropriate number that matches the option chosen when the spell was cast:\n\n1 - Primal Beast\n2 - Great Tree" compset="InPlay" uniqueness="unique">
+    <fieldval field="pMinimum" value="1"/>
+    <fieldval field="pMaximum" value="2"/>
+    <fieldval field="pDuration" value="1 minute"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="Helper" tag="AdjNoPlus" name="AdjNoPlus" abbrev="AdjNoPlus"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="SpInfo" tag="sp5CXGEGuo"/>
+    <bootstrap thing="ab5CSplGrdPr">
+      <containerreq phase="First" priority="99"><![CDATA[fieldval:pIsOn <> 0 & fieldval:pAdjust = 1]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:pIsOn <> 0 & fieldval:pAdjust = 1]]></containerreq>
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ab5CSplGrdTr">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:pIsOn <> 0 & fieldval:pAdjust = 2]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ab5CSplGrdTr" name="Guardian of Nature: Great Tree" description="• You make Dexterity- and Wisdom-based attack rolls with advantage.\n• While you are on the ground, the ground within 15 feet of you is difficult terrain for your enemies.\n• You gain 10 temporary hit points.\n• You make Constitution saving throws with advantage." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="PoolWlkBls">
+      <autotag group="Value" tag="12"/>
+      <assignval field="livename" value="Guardian of Nature: Great Tree"/>
+      </bootstrap>
+    <eval phase="Final" priority="500" index="3"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+hero.findchild[TempHpPool,"Value.12"].field[thpMinAllw].value = 10
+hero.findchild[TempHpPool,"Value.12"].field[thpMaxAllw].value = 10
+
+#situational[hero.child[svCON], "Advantage", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="p5CSplSklEmp" name="Skill Empowerment" compset="InPlay">
+    <fieldval field="pDuration" value="1 hour"/>
+    <fieldval field="pCandExpr" value="(component.BaseSkill &amp; !Helper.ProfDouble &amp; Helper.Proficient &amp; !Hide.Skill)"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="SpInfo" tag="sp5CXGESkE"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <eval phase="PostLevel" priority="10000">doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+
+perform field[pChosen].chosen.assign[Helper.ProfDouble]</eval>
+    </thing>
+  <thing id="ab5CSplTnTrn" name="Transformation" description="• You have advantage on attack rolls that you make with simple and martial weapons. \n• You can attack twice, instead of once, when you take the Attack action on your turn. You ignore this benefit if you already have a feature, like Extra Attack, that gives you extra attacks. \n• You gain 50 temporary hit points. If any of these remain when the spell ends, they are lost. \n• When you hit a target with a weapon attack, that target takes an extra 2d12 force damage. \n• You have proficiency with all armor, shields, simple weapons, and martial weapons. \n• You have proficiency in Strength and Constitution saving throws." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="PoolWlkBls">
+      <autotag group="Value" tag="13"/>
+      <assignval field="livename" value="Transformation"/>
+      </bootstrap>
+    <eval phase="Final" priority="500" index="2"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+hero.findchild[TempHpPool,"Value.13"].field[thpMinAllw].value = 50
+hero.findchild[TempHpPool,"Value.13"].field[thpMaxAllw].value = 50]]></eval>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseWep
+  eachpick.field[wDamExtra].text &= " +2d12 force"
+  nexteach
+
+perform hero.assign[ArmProfGrp.ArmorLight]
+perform hero.assign[ArmProfGrp.ArmorMed]
+perform hero.assign[ArmProfGrp.ArmorHeavy]
+perform hero.assign[ArmProfGrp.Shields]
+perform hero.assign[ArmProfGrp.WepSimple]
+perform hero.assign[ArmProfGrp.WepMartial]
+perform hero.assign[ProfSave.svSTR]
+perform hero.assign[ProfSave.svCON]]]></eval>
+    </thing>
+  <thing id="p5CSplTrnsfr" name="Transformation" compset="InPlay" uniqueness="unique">
+    <fieldval field="pDuration" value="10 minutes"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="SpInfo" tag="sp5CXGETeT"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <bootstrap thing="ab5CSplTnTrn">
+      <containerreq phase="First" priority="99"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="r5CTnySrv" name="Tiny Servant" compset="Race">
+    <fieldval field="rHitDice" value="4"/>
+    <fieldval field="rHDSides" value="4"/>
+    <fieldval field="rHPStart" value="10"/>
+    <fieldval field="rSTR" value="-6"/>
+    <fieldval field="rDEX" value="6"/>
+    <fieldval field="rINT" value="-8"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rAC" value="2"/>
+    <usesource source="5eXGTECP"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="DamageImm" tag="dtPsychic"/>
+    <tag group="CondImm" tag="pcnBlind"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnDeaf"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Tiny12"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="60"/>
+      <autotag group="AbilModify" tag="BlindBeyo"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="wSlam">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="wProperty" tag="Finesse"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
     </thing>
   </document>

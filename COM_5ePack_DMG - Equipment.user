@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
-  <fileinfo>
-    <info_todo>Need scripting
-	Rod of the Pact Keeper
-
-	Artifacts
-	?
-	
-	Sentient items
-	?</info_todo>
-    </fileinfo>
   <thing id="i5CDMGWoWa" name="Weapon of Warning" description="Weapon (any), uncommon (requires attunement)\nThis magic weapon warns you of danger. While the weapon is on your person, you have advantage on initiative rolls. In addition, you and any of your companions within 30 feet of you can&apos;t be surprised, except when incapacitated by something other than nonmagical sleep. The weapon magically awakens you and your companions within range if any of you are sleeping naturally when combat begins." compset="MagicWep" summary="This magic weapon warns you of danger." buytemplate="BuyMoney" xactspecial="2">
     <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
     <tag group="Helper" tag="NeedAttune"/>
@@ -674,7 +664,7 @@
     <fieldval field="wRangeLong" value="120"/>
     <fieldval field="wCapacity" value="50"/>
     <usesource source="5eDMGCP"/>
-    <tag group="wGroup" tag="Firearm"/>
+    <usesource source="p5eIDRotFP"/>
     <tag group="wCategory" tag="Firearm"/>
     <tag group="wCategory" tag="RangeProj" name="Projectile Weapon" abbrev="Projectile"/>
     <tag group="wProfReq" tag="Special"/>
@@ -682,6 +672,7 @@
     <tag group="DamageType" tag="dtRadiant"/>
     <tag group="wProperty" tag="AWReload"/>
     <tag group="EquipType" tag="Metal" name="Metal" abbrev="Metal"/>
+    <tag group="wGroup" tag="Firearm"/>
     </thing>
   <thing id="w5CLzrRfl" name="Laser Rifle" compset="Weapon">
     <fieldval field="wRangeNorm" value="100"/>
@@ -2788,5 +2779,188 @@ endif
 if (tagcount[Custom.5CAPAD] >= 1) then
 perform delete[Custom.5CAPEAD]
 endif]]></eval>
+    </thing>
+  <thing id="i5CMthrl1" name="Mithral Armor +1" description="You have a +1 bonus to AC while wearing this armor.\n\nMithral is a light, flexible metal. A mithral chain shirt or breastplate can be worn under normal clothes. If the armor normally imposes disadvantage on Dexterity (Stealth) checks or has a Strength requirement, the mithral version of the armor doesn’t." compset="MagicArmor" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="medium or heavy, but not hide"/>
+    <fieldval field="Bonus" value="1"/>
+    <usesource source="5eDMGCP"/>
+    <usesource source="p5eAIS"/>
+    <usesource source="p5eTOotWP"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~restrict the list of armor to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & ((ArmorClass.Medium | ArmorClass.Heavy) & !IsArmor.mHide)"
+
+      ~set our name based on the type of armor chosen
+      field[livename].text = "Mithral "
+      perform gizmo.findchild[BaseArmor].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text) & " +1"
+      else
+        field[livename].text &= "Armor +1"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text
+
+      ~make Mithral changes
+      perform delete[ArmorMinSt.?]
+      perform delete[Helper.StealthDis]
+
+      ~show in specials list when equipped
+      doneif (field[gIsEquip].value = 0)
+      perform assign[Helper.ShowSpec]]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagArmor"></child>
+    </thing>
+  <thing id="i5CMthrl2" name="Mithral Armor +2" description="You have a +2 bonus to AC while wearing this armor.\n\nMithral is a light, flexible metal. A mithral chain shirt or breastplate can be worn under normal clothes. If the armor normally imposes disadvantage on Dexterity (Stealth) checks or has a Strength requirement, the mithral version of the armor doesn’t." compset="MagicArmor" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="medium or heavy, but not hide"/>
+    <fieldval field="Bonus" value="2"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~restrict the list of armor to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & ((ArmorClass.Medium | ArmorClass.Heavy) & !IsArmor.mHide)"
+
+      ~set our name based on the type of armor chosen
+      field[livename].text = "Mithral "
+      perform gizmo.findchild[BaseArmor].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text) & " +2"
+      else
+        field[livename].text &= "Armor +2"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text
+
+      ~make Mithral changes
+      perform delete[ArmorMinSt.?]
+      perform delete[Helper.StealthDis]
+
+      ~show in specials list when equipped
+      doneif (field[gIsEquip].value = 0)
+      perform assign[Helper.ShowSpec]]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagArmor"></child>
+    </thing>
+  <thing id="i5CMthrl3" name="Mithral Armor +3" description="You have a +3 bonus to AC while wearing this armor.\n\nMithral is a light, flexible metal. A mithral chain shirt or breastplate can be worn under normal clothes. If the armor normally imposes disadvantage on Dexterity (Stealth) checks or has a Strength requirement, the mithral version of the armor doesn’t." compset="MagicArmor" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="medium or heavy, but not hide"/>
+    <fieldval field="Bonus" value="3"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~restrict the list of armor to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & ((ArmorClass.Medium | ArmorClass.Heavy) & !IsArmor.mHide)"
+
+      ~set our name based on the type of armor chosen
+      field[livename].text = "Mithral "
+      perform gizmo.findchild[BaseArmor].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text) & " +3"
+      else
+        field[livename].text &= "Armor +3"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text
+
+      ~make Mithral changes
+      perform delete[ArmorMinSt.?]
+      perform delete[Helper.StealthDis]
+
+      ~show in specials list when equipped
+      doneif (field[gIsEquip].value = 0)
+      perform assign[Helper.ShowSpec]]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagArmor"></child>
+    </thing>
+  <thing id="i5CVicious" name="Vicious Weapon" description="When you roll a 20 on your attack roll with this magic weapon, your critical hit deals an extra 7 damage of the weapon’s type." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2" replaces="mwVicious">
+    <comment><![CDATA[The SRD is incorrect, per updated versions of this in errata and other sources. It's a straight 7 damage, not 2d6. Thus this replaces the SRD version.]]></comment>
+    <fieldval field="miTypeDet" value="any"/>
+    <tag group="ItemRarity" tag="Rare" name="Rare" abbrev="Rare"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Vicious "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Weapon"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="i5CVicious1" name="Vicious Weapon +1" description="When you roll a 20 on your attack roll with this magic weapon, your critical hit deals an extra 7 damage of the weapon’s type.\n\nYou also have a +1 bonus to attack and damage rolls made using this weapon." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <comment><![CDATA[The SRD is incorrect, per updated versions of this in errata and other sources. It's a straight 7 damage, not 2d6. Thus this replaces the SRD version.]]></comment>
+    <fieldval field="miTypeDet" value="any"/>
+    <fieldval field="Bonus" value="1"/>
+    <usesource source="5eDMGCP"/>
+    <usesource source="p5eAIS"/>
+    <usesource source="p5eTOotWP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare" name="Rare" abbrev="Rare"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Vicious "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text) & " +" & field[Bonus].value
+      else
+        field[livename].text &= "Weapon" & " +" & field[Bonus].value
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="i5CVicious3" name="Vicious Weapon +3" description="When you roll a 20 on your attack roll with this magic weapon, your critical hit deals an extra 7 damage of the weapon’s type.\n\nYou also have a +3 bonus to attack and damage rolls made using this weapon." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <comment><![CDATA[The SRD is incorrect, per updated versions of this in errata and other sources. It's a straight 7 damage, not 2d6. Thus this replaces the SRD version.]]></comment>
+    <fieldval field="miTypeDet" value="any"/>
+    <fieldval field="Bonus" value="3"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare" name="Rare" abbrev="Rare"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Vicious "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text) & " +" & field[Bonus].value
+      else
+        field[livename].text &= "Weapon" & " +" & field[Bonus].value
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="i5CVicious2" name="Vicious Weapon +2" description="When you roll a 20 on your attack roll with this magic weapon, your critical hit deals an extra 7 damage of the weapon’s type.\n\nYou also have a +2 bonus to attack and damage rolls made using this weapon." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <comment><![CDATA[The SRD is incorrect, per updated versions of this in errata and other sources. It's a straight 7 damage, not 2d6. Thus this replaces the SRD version.]]></comment>
+    <fieldval field="miTypeDet" value="any"/>
+    <fieldval field="Bonus" value="2"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare" name="Rare" abbrev="Rare"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Vicious "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text) & " +" & field[Bonus].value
+      else
+        field[livename].text &= "Weapon" & " +" & field[Bonus].value
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
     </thing>
   </document>

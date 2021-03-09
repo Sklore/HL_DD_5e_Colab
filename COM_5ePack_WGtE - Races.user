@@ -73,11 +73,10 @@
     <bootstrap thing="l5CEbQuori"></bootstrap>
     <bootstrap thing="ra5CEbDuaMin"></bootstrap>
     </thing>
-  <thing id="l5CEbQuori" name="Quori" compset="Language" uniqueness="useronce">
+  <thing id="l5CEbQuori" name="Quori" description="{b}Primary Speakers{/b}: kalashtar, Inspired, quori\n{b}Script{/b}: Quori" compset="Language" uniqueness="useronce">
     <usesource source="5eWGtECP"/>
     <usesource source="5eRftLWCP"/>
     <tag group="LangPreval" tag="Exotic"/>
-    <tag group="Helper" tag="Obsolete" name="Obsolete" abbrev="Obsolete"/>
     </thing>
   <thing id="ra5CEbDuaMin" name="Dual Mind" description="You make all Wisdom saving throws with advantage." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
@@ -1190,5 +1189,102 @@ call 5CAddProf]]></eval>
 foreach pick in hero from BaseRace
     perform eachpick.assign[ProfSkill.skAthletic]
     nexteach]]></eval>
+    </thing>
+  <thing id="sr5CValWood" name="Valenar Wood Elf" compset="SubRace" uniqueness="unique">
+    <fieldval field="rSpeed" value="35"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rHeightMin" value="54"/>
+    <fieldval field="rWeightMin" value="90"/>
+    <usesource source="5eWGtECP"/>
+    <tag group="WeightDice" tag="1" name="1" abbrev="1"/>
+    <tag group="WeightSize" tag="4" name="d4" abbrev="d4"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <tag group="HeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="HeightSize" tag="10" name="d10" abbrev="d10"/>
+    <tag group="SplAttr" tag="aINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="SubRace" tag="rElf" name="Elf" abbrev="Elf"/>
+    <bootstrap thing="ra5CUAEEmValWT"></bootstrap>
+    <bootstrap thing="ra5CMskWld"></bootstrap>
+    </thing>
+  <thing id="sr5CValHigh" name="Valenar High Elf" compset="SubRace" uniqueness="unique">
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="rHeightMin" value="54"/>
+    <fieldval field="rWeightMin" value="90"/>
+    <fieldval field="rSpExLst" value="sClass.cHelpWiz &amp; sLevel.0"/>
+    <fieldval field="rSpExLstNm" value="Wizard Cantrips"/>
+    <fieldval field="rSpExAllw" value="1"/>
+    <usesource source="5eWGtECP"/>
+    <tag group="HeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="HeightSize" tag="10" name="d10" abbrev="d10"/>
+    <tag group="SplAttr" tag="aINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="SubRace" tag="rElf" name="Elf" abbrev="Elf"/>
+    <tag group="WeightDice" tag="1" name="1" abbrev="1"/>
+    <tag group="WeightSize" tag="4" name="d4" abbrev="d4"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <bootstrap thing="ra5CUAEEmValWT"></bootstrap>
+    </thing>
+  <thing id="ra5CAerTrn" name="Aerini Training" description="Choose one skill or tool proficiency. Your proficiency bonus is doubled for any ability check you make that uses the chosen proficiency." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Skill"/>
+    <arrayval field="usrArray" index="1" value="Tool"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.childfound[rElf].setfocus
+
+if (field[usrIndex].value = 0) then
+   focus.field[cSkillMax].value += 1
+   perform focus.assign[AllowSkl1.Any]
+   field[usrCandid1].text = "(component.BaseSkill & portal.RacSkPrim)"
+   if (field[usrChosen1].ischosen <> 0) then
+      perform field[usrChosen1].chosen.pulltags[ProfDouble.?]
+      perform hero.pushtags[ProfDouble.?]
+      endif
+else
+   focus.field[cToolMax].value += 1
+   perform focus.assign[AllowTool1.Any]
+   field[usrCandid1].text = "(component.Tool & portal.RacTlPrim)"
+   if (field[usrChosen1].ischosen <> 0) then
+      perform field[usrChosen1].chosen.pulltags[ProfTooDbl.?]
+      perform hero.pushtags[ProfTooDbl.?]
+      endif
+endif]]></eval>
+    </thing>
+  <thing id="sr5CAerWood" name="Aerini Wood Elf" compset="SubRace" uniqueness="unique">
+    <fieldval field="rSpeed" value="35"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rHeightMin" value="54"/>
+    <fieldval field="rWeightMin" value="90"/>
+    <usesource source="5eWGtECP"/>
+    <tag group="WeightDice" tag="1" name="1" abbrev="1"/>
+    <tag group="WeightSize" tag="4" name="d4" abbrev="d4"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <tag group="HeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="HeightSize" tag="10" name="d10" abbrev="d10"/>
+    <tag group="SplAttr" tag="aINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="SubRace" tag="rElf" name="Elf" abbrev="Elf"/>
+    <bootstrap thing="ra5CAerTrn"></bootstrap>
+    <bootstrap thing="ra5CMskWld"></bootstrap>
+    </thing>
+  <thing id="sr5CAerHigh" name="Aerini High Elf" compset="SubRace" uniqueness="unique">
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="rHeightMin" value="54"/>
+    <fieldval field="rWeightMin" value="90"/>
+    <fieldval field="rSpExLst" value="sClass.cHelpWiz &amp; sLevel.0"/>
+    <fieldval field="rSpExLstNm" value="Wizard Cantrips"/>
+    <fieldval field="rSpExAllw" value="1"/>
+    <usesource source="5eWGtECP"/>
+    <tag group="HeightDice" tag="2" name="2" abbrev="2"/>
+    <tag group="HeightSize" tag="10" name="d10" abbrev="d10"/>
+    <tag group="SplAttr" tag="aINT" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="SubRace" tag="rElf" name="Elf" abbrev="Elf"/>
+    <tag group="WeightDice" tag="1" name="1" abbrev="1"/>
+    <tag group="WeightSize" tag="4" name="d4" abbrev="d4"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <bootstrap thing="ra5CAerTrn"></bootstrap>
     </thing>
   </document>

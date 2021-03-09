@@ -529,7 +529,6 @@ hero.findchild[BaseRace].field[rMultiatt].text &= " An ettercap with advantage o
     <tag group="AllowRCust" tag="rYoungRed"/>
     <tag group="AllowRCust" tag="rYoungSilv"/>
     <tag group="AllowRCust" tag="rYoungWhit"/>
-    <tag group="ClVaryName" tag="AppParen"/>
     <tag group="AllowRCust" tag="rAdultBlac"/>
     <bootstrap thing="xInnatSpel"></bootstrap>
     <eval phase="First" priority="10000"><![CDATA[~ Calculate 1/3 the CR, always round down.
@@ -559,7 +558,7 @@ hero.findchild[BaseRace].field[rMultiatt].text &= " An ettercap with advantage o
   var foo as number
   var tempstr as string
   foo = 1
-  tempstr = "sClass.cHelpSor"
+  tempstr = "sClass.?"
   while (foo <= tempCR)
     ~ if first time through loop, start the string
     if (foo = 1) then
@@ -1942,5 +1941,315 @@ hero.child[Speed].field[tSpeedMod].value += -5</eval>
     <eval phase="First" index="2">perform assign[Hero.HasDarkvis]</eval>
     <eval phase="Final" priority="10000" index="3">hero.child[Speed].field[tSpeed].value += 5
 hero.child[Speed].field[tSpeedMod].value += 5</eval>
+    </thing>
+  <thing id="t5CHalfling" name="Halfling" compset="Template" uniqueness="unique">
+    <bootstrap thing="ttHalfing"></bootstrap>
+    <bootstrap thing="ra5CBraveM">
+      <assignval field="abText" value="halfling"/>
+      </bootstrap>
+    <bootstrap thing="lHalfling"></bootstrap>
+    <bootstrap thing="ra5CHaldNim">
+      <assignval field="abText" value="halfling"/>
+      </bootstrap>
+    <eval phase="First" priority="600"><![CDATA[      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseRace
+  eachpick.field[rSpeed].value = 25
+  perform eachpick.delete[RaceSize.?]
+  perform eachpick.assign[RaceSize.Small11]
+  nexteach]]></eval>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="t5CTiefling" name="Tiefling" compset="Template" uniqueness="unique">
+    <bootstrap thing="ttTiefling"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="spThaumatu">
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      </bootstrap>
+    <bootstrap thing="lInfernal"></bootstrap>
+    <eval phase="First">foreach pick in hero from BaseRace
+  perform eachpick.assign[DamageRes.dtFire]
+  nexteach</eval>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="t5CBullywug" name="Bullywug" compset="Template" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <usesource source="5eDMGCP"/>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="l5CBullyWu"></bootstrap>
+    <bootstrap thing="lOther">
+      <assignval field="sbName" value="can speak to toads and frogs"/>
+      <assignval field="livename" value="can speak to toads and frogs"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMMStan">
+      <assignval field="abText" value="bullywug"/>
+      <assignval field="abValue" value="20"/>
+      <assignval field="abValue2" value="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMMSwam">
+      <assignval field="abText" value="bullywug"/>
+      </bootstrap>
+    <bootstrap thing="tt5CBullyw"></bootstrap>
+    <bootstrap thing="ra5CMMAmphN">
+      <assignval field="abText" value="The bullywug"/>
+      </bootstrap>
+    <eval phase="First">foreach pick in hero from BaseRace
+  eachpick.field[rSpeed].value = 20
+  nexteach</eval>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="t5CGenasFi" name="Fire Genasi" compset="Template" uniqueness="unique">
+    <usesource source="5eEGtWCP"/>
+    <usesource source="5eEEPCCP"/>
+    <bootstrap thing="lPrimord"></bootstrap>
+    <bootstrap thing="tt5CGenasi"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="spProdFlam">
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      </bootstrap>
+    <eval phase="First">foreach pick in hero from BaseRace
+  perform eachpick.assign[DamageRes.dtFire]
+  nexteach</eval>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="tt5CGenasi" name="Genasi" compset="TypeTag" uniqueness="unique">
+    <tag group="NeedType" tag="tpHumanoid" name="Humanoid" abbrev="Humanoid"/>
+    </thing>
+  <thing id="t5CDwarf" name="Dwarf" compset="Template" uniqueness="unique">
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ttDwarf"></bootstrap>
+    <bootstrap thing="ra5CDwaRes"></bootstrap>
+    <eval phase="First">foreach pick in hero from BaseRace
+  eachpick.field[rSpeed].value = 25
+  perform eachpick.assign[DamageRes.dtPoison]
+  nexteach</eval>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="t5CDuergar" name="Duergar" compset="Template" uniqueness="unique">
+    <usesource source="5eSCAGCP"/>
+    <usesource source="5eMTOFCP"/>
+    <bootstrap thing="ra5CDwaRes"></bootstrap>
+    <bootstrap thing="raDueInRec"></bootstrap>
+    <bootstrap thing="raDueEnRec"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ttDwarf"></bootstrap>
+    <eval phase="First">foreach pick in hero from BaseRace
+  eachpick.field[rSpeed].value = 25
+  perform eachpick.assign[DamageRes.dtPoison]
+  nexteach</eval>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="t5CTabaxi" name="Tabaxi" compset="Template" uniqueness="unique">
+    <usesource source="5eVGtMCP"/>
+    <usesource source="5eEGtWCP"/>
+    <usesource source="p5eToAP"/>
+    <bootstrap thing="ra5CTaFeAg"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tt5CTabaxi"></bootstrap>
+    <eval phase="First">foreach pick in hero from BaseRace
+  eachpick.field[rSpeed].value = 25
+  perform eachpick.assign[DamageRes.dtFire]
+  nexteach</eval>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="t5CGenasWa" name="Water Genasi" compset="Template" uniqueness="unique">
+    <usesource source="5eEGtWCP"/>
+    <usesource source="5eEEPCCP"/>
+    <bootstrap thing="lPrimord"></bootstrap>
+    <bootstrap thing="tt5CGenasi"></bootstrap>
+    <bootstrap thing="ra5CShaWa">
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      </bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMMAmphN">
+      <assignval field="abText" value="The genasi"/>
+      </bootstrap>
+    <eval phase="First">foreach pick in hero from BaseRace
+  perform eachpick.assign[DamageRes.dtAcid]
+  nexteach</eval>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="t5CGnome" name="Gnome" compset="Template" uniqueness="unique">
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raGnDGnCun"></bootstrap>
+    <bootstrap thing="ttGnome"></bootstrap>
+    <eval phase="First">foreach pick in hero from BaseRace
+  eachpick.field[rSpeed].value = 25
+  nexteach</eval>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="t5CHalfElf" name="Half-Elf" compset="Template" uniqueness="unique">
+    <bootstrap thing="ra5CFeyAnc">
+      <assignval field="abText" value="half-elf"/>
+      </bootstrap>
+    <bootstrap thing="ttHalfElf"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="t5CElf" name="Elf" compset="Template" uniqueness="unique">
+    <bootstrap thing="ra5CFeyAnc">
+      <assignval field="abText" value="half-elf"/>
+      </bootstrap>
+    <bootstrap thing="ttElf"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="t5COrc" name="Orc" compset="Template" uniqueness="unique">
+    <usesource source="5eMMCP"/>
+    <usesource source="5eVGtMCP"/>
+    <bootstrap thing="ra5CRelEndN">
+      <assignval field="abText" value="the orc"/>
+      </bootstrap>
+    <bootstrap thing="ttOrc"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="lOrc"></bootstrap>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="t5CHalfOrc" name="Half-Orc" compset="Template" uniqueness="unique">
+    <bootstrap thing="lOrc"></bootstrap>
+    <bootstrap thing="ra5CRelEndN">
+      <assignval field="abText" value="the half-orc"/>
+      </bootstrap>
+    <bootstrap thing="ttHalfOrc"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="ra5CTmpDbnBr" name="Breath Weapon" description="The dragonborn can use an action to breathe at certain kind of damage in a specific area, depending on what color dragonborn it is. Any creatures in that area must make saving throw, the ability for which is also determined by the color, taking 2d6 of that type of damage on a failure or half that on a success. The dragonborn must complete a short or long rest before using this ability again.\n\nThe dragonborn also gains resistance to the same type of damage." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="wDieCount" value="2"/>
+    <fieldval field="wDieSize" value="6"/>
+    <arrayval field="usrArray" index="0" value="Black"/>
+    <arrayval field="usrArray" index="1" value="Blue"/>
+    <arrayval field="usrArray" index="2" value="Brass"/>
+    <arrayval field="usrArray" index="3" value="Bronze"/>
+    <arrayval field="usrArray" index="4" value="Copper"/>
+    <arrayval field="usrArray" index="5" value="Gold"/>
+    <arrayval field="usrArray" index="6" value="Green"/>
+    <arrayval field="usrArray" index="7" value="Red"/>
+    <arrayval field="usrArray" index="8" value="Silver"/>
+    <arrayval field="usrArray" index="9" value="White"/>
+    <tag group="Usage" tag="ShortRest" name="/short rest" abbrev="/short rest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="StandardDC" tag="aCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="First" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+var iTyp as string
+var iRng as string
+var iSav as string
+var iRes as string
+var iDam as string
+
+
+if (field[usrIndex].value = 0) then
+    iTyp = "dtAcid"
+    iRng = "5 by 30 ft. line"
+    iSav = "aDEX"
+    field[abText2].text = "acid"
+elseif (field[usrIndex].value = 1) then
+    iTyp = "dtLightnin"
+    iRng = "5 by 30 ft. line"
+    iSav = "aDEX"
+    field[abText2].text = "lightning"
+elseif (field[usrIndex].value = 2) then
+    iTyp = "dtFire"
+    iRng = "5 by 30 ft. line"
+    iSav = "aDEX"
+    field[abText2].text = "fire"
+elseif (field[usrIndex].value = 3) then
+    iTyp = "dtLightnin"
+    iRng = "5 by 30 ft. line"
+    iSav = "aDEX"
+    field[abText2].text = "lightning"
+elseif (field[usrIndex].value = 4) then
+    iTyp = "dtAcid"
+    iRng = "5 by 30 ft. line"
+    iSav = "aDEX"
+    field[abText2].text = "acid"
+elseif (field[usrIndex].value = 5) then
+    iTyp = "dtFire"
+    iRng = "15 ft. cone"
+    iSav = "aDEX"
+    field[abText2].text = "fire"
+elseif (field[usrIndex].value = 6) then
+    iTyp = "dtPoison"
+    iRng = "15 ft. cone"
+    iSav = "aCON"
+    field[abText2].text = "poison"
+elseif (field[usrIndex].value = 7) then
+    iTyp = "dtFire"
+    iRng = "15 ft. cone"
+    iSav = "aDEX"
+    field[abText2].text = "fire"
+elseif (field[usrIndex].value = 8) then
+    iTyp = "dtCold"
+    iRng = "15 ft. cone"
+    iSav = "aCON"
+    field[abText2].text = "cold"
+elseif (field[usrIndex].value = 9) then
+    iTyp = "dtCold"
+    iRng = "15 ft. cone"
+    iSav = "aCON"
+    field[abText2].text = "cold"
+endif
+
+iRes = "DamageRes." & iTyp
+iDam = "DamageType." & iTyp
+iSav = "abSave." & iSav
+
+perform assignstr[iDam]
+perform assignstr[iSav]
+field[abText].text = iRng
+
+foreach pick in hero from BaseRace
+    perform eachpick.assignstr[iRes]
+    nexteach]]></eval>
+    <eval phase="Final"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+field[CustDesc].text = "The dragonborn can use an action to breathe " & field[abText2].text & " in a " & field[abText].text & ". Any creatures in that area must make a DC #StandardDC# #abSave# save, taking 2d6 " & field[abText2].text & " damage on a failure or half that on a success. The dragonborn must complete a short or long rest before using this ability again.\n\nIt also gains resistance to " & field[abText2].text & " damage."]]></eval>
+    </thing>
+  <thing id="t5CDragonb" name="Dragonborn" compset="Template" uniqueness="unique">
+    <bootstrap thing="ttDragonbo"></bootstrap>
+    <bootstrap thing="ra5CTmpDbnBr"></bootstrap>
+    <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
     </thing>
   </document>

@@ -4,12 +4,13 @@
     <fieldval field="sRange" value="60 feet"/>
     <fieldval field="sDuration" value="Concentration, up to 1 minute"/>
     <usesource source="5eTCoE"/>
-    <tag group="sSchool" tag="Conjur"/>
+    <usesource source="p5eIDRotFP"/>
     <tag group="sComp" tag="V"/>
     <tag group="sComp" tag="S"/>
     <tag group="sLevel" tag="9"/>
     <tag group="sCastTime" tag="BonusAct1"/>
     <tag group="Helper" tag="SplAttack"/>
+    <tag group="sSchool" tag="Conjur"/>
     </thing>
   <thing id="sp5CDrmBlu" name="Dream of the Blue Veil" description="You and up to eight willing creatures within range fall unconscious for the spell&apos;s duration. You dream of another world on the Material Plane. If the spell reaches its full duration, the visions end with each of you finding and pulling back a mysterious blue curtain. The spell then ends as you&apos;re mentally and physically transported to the world you saw in those visions.\n\nIn order to cast this spell, you must have a magic item that came from the destination world, and you must know that world exists, even if you don&apos;t know it by name. You arrive in the other world in a safe location within 1 mile of where that magic item was created. Alternatively, you can cast the spell if one of the affected creatures was originally from the other world, which causes your destination to be a safe location within 1 mile of where they were born.\n\nIf a creature takes damage, the spell ends early for them and they are not transported. If yoy take damage, the spell ends for everyone, and nobody is transported." compset="Spell">
     <fieldval field="sCompDesc" value="A willing creature or a magic item from the destination world"/>
@@ -1875,5 +1876,63 @@ nexteach]]></eval>
       doneif (tagis[Helper.Disable] = 1)
 
       herofield[tBonusHP].value -= 10]]></eval>
+    </thing>
+  <thing id="p5CSplOthGui" name="Otherworldly Guise" description="Select the your spellcasting ability to apply this. Select the appropriate number on the incremeter to choose which planes you chose for this spell:\n1 - Lower Planes\n2 - Upper Planes" compset="InPlay" uniqueness="unique">
+    <fieldval field="pDuration" value="1 minute"/>
+    <fieldval field="pMinimum" value="1"/>
+    <fieldval field="pMaximum" value="2"/>
+    <usesource source="5eTCoE"/>
+    <tag group="OthAdjCat" tag="UserBot3rd" name="User 3rd Bottom Group" abbrev="User 3rd Bottom Group"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="Adjustment" tag="Attribute"/>
+    <tag group="SpInfo" tag="sp5COthGui"/>
+    <bootstrap thing="ab5CSplOthGu">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <eval phase="Final" priority="50000" index="5"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      hero.childfound[ArmorClass].field[tAC].value += 2]]></eval>
+    <eval phase="PostAttr" priority="600" index="3"><![CDATA[
+~ If we're not enabled, get out now
+doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+var iAtr as string
+var iDam as string
+var iAtk as string
+var iRng as string
+
+iAtr = field[pChosen].chosen.tagids[SplAttr.?,""]
+iDam = replace(iAtr,"SplAttr","DamageOpt",0)
+iAtk = replace(iAtr,"SplAttr","MelAttOpt",0)
+iRng = replace(iAtr,"SplAttr","RanAttOpt",0)
+
+foreach pick in hero from BaseWep
+  perform eachpick.assignstr[iDam]
+  perform eachpick.assignstr[iAtk]
+  perform eachpick.assignstr[iRng]
+  nexteach]]></eval>
+    <eval phase="First" index="4">doneif (field[pIsOn].value = 0)
+
+if (field[pAdjust].value = 1) then 
+  perform hero.assign[DamageImm.dtFire]
+  perform hero.assign[DamageImm.dtPoison]
+  perform hero.assign[CondImm.pcnPoison]
+elseif (field[pAdjust].value = 2) then 
+  perform hero.assign[DamageImm.dtRadiant]
+  perform hero.assign[DamageImm.dtNecrotic]
+  perform hero.assign[CondImm.pcnCharmed]
+endif</eval>
+    </thing>
+  <thing id="ab5CSplOthGu" name="Otherworldly Guise" compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="SpInfo" tag="sp5COthGui"/>
     </thing>
   </document>

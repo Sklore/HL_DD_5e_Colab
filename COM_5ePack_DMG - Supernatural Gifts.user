@@ -4,6 +4,7 @@
     <usesource source="5eDMGCP"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
     <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Secondary"/>
     <eval phase="PreAttr" priority="10000"><![CDATA[
       ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
@@ -17,6 +18,7 @@
     <usesource source="5eDMGCP"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
     <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Secondary"/>
     <eval phase="PreLevel" priority="5000"><![CDATA[
       ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
@@ -32,11 +34,13 @@
     <tag group="User" tag="Tracker"/>
     <tag group="SpInfo" tag="spGreaRest"/>
     <tag group="SpInfo" tag="spLessRest"/>
+    <tag group="Helper" tag="Tertiary"/>
     </thing>
   <thing id="c5CSGBoMR" name="Blessing of Magic Resistance" description="Your saving throws versus spells and other magical effects are made with advantage." compset="CustomSpec" uniqueness="useronce">
     <usesource source="5eDMGCP"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
     <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Secondary"/>
     <eval phase="Final" priority="10000"><![CDATA[
       ~if we've been replaced, get out now
       doneif (tagis[Helper.Disable] <> 0)
@@ -46,6 +50,7 @@
     <usesource source="5eDMGCP" parent="p5ePack" name="5e Dungeon Master&apos;s Guide"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
     <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Secondary"/>
     <eval phase="PreAttr" priority="10000"><![CDATA[
       ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
@@ -65,6 +70,7 @@
     <tag group="abAction" tag="Action"/>
     <tag group="FeatureTyp" tag="Action"/>
     <tag group="abDuration" tag="Hour"/>
+    <tag group="Helper" tag="Secondary"/>
     </thing>
   <thing id="c5CSGBoWE" name="Blessing of Weapon Enhancement" description="One nonmagical weapon you have becomes a +1 weapon when you wield it." compset="CustomSpec" uniqueness="useronce">
     <comment><![CDATA[~set our name based on the type of weapon chosen
@@ -83,13 +89,7 @@
     <tag group="abAction" tag="None"/>
     <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
-    <eval phase="First" index="2"><![CDATA[
-      ~ If we're disabled, do nothing
-      doneif (tagis[Helper.Disable] <> 0)
-      ~if nothing's been chosen, get out now
-      doneif (field[usrChosen1].ischosen = 0)
-
-      field[usrChosen1].chosen.field[Bonus].value = field[abValue].value]]></eval>
+    <tag group="Helper" tag="Secondary"/>
     <eval phase="Render" priority="20000"><![CDATA[
       ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
@@ -97,10 +97,18 @@
       doneif (field[usrChosen1].ischosen = 0)
 
       field[usrChosen1].chosen.field[livename].text = field[usrChosen1].chosen.field[name].text & " +" & field[abValue].value]]></eval>
+    <eval phase="First" index="2"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+      ~if nothing's been chosen, get out now
+      doneif (field[usrChosen1].ischosen = 0)
+
+      field[usrChosen1].chosen.field[Bonus].value = field[abValue].value]]></eval>
     </thing>
   <thing id="c5CSGBoWC" name="Blessing of Wound Closure" description="You are granted the benefits of a {i}{b}periapt of wound closure{/b}{/i}.\n\n{i}{b}Periapt of Wound Closure{/b}\nWhile wearing this pendant, you stabilize whenever you are dying at the beginning of your turn. Also, whenever you roll a Hit Die to regain hit points, you regain double the amount.{/i}" compset="CustomSpec" uniqueness="useronce">
     <usesource source="5eDMGCP"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <tag group="Helper" tag="Secondary"/>
     </thing>
   <thing id="c5CSGCoAC" name="Charm of Animal Conjuring" description="This charm allows you to cast {i}conjure animals{/i} at 3rd-level as an action. Once used three times, the charm vanishes." compset="CustomSpec" uniqueness="useronce">
     <fieldval field="trkMax" value="3"/>
@@ -108,6 +116,7 @@
     <tag group="User" tag="Tracker"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
     <tag group="Usage" tag="UsedUp"/>
+    <tag group="Helper" tag="Tertiary"/>
     <bootstrap thing="spConjAnim">
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="UsedUp"/>
@@ -124,14 +133,15 @@
     <tag group="User" tag="Tracker"/>
     <tag group="SpInfo" tag="spDarkvisi"/>
     <tag group="Usage" tag="UsedUp"/>
-    <bootstrap thing="raDarkVis">
-      <containerreq phase="First" priority="5000"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
-      <autotag group="Value" tag="60"/>
-      </bootstrap>
+    <tag group="Helper" tag="Tertiary"/>
     <bootstrap thing="spDarkvisi">
       <autotag group="Helper" tag="RaceSpell"/>
       <autotag group="Usage" tag="UsedUp"/>
       <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="5000"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="60"/>
       </bootstrap>
     </thing>
   <thing id="c5CSGCoFf" name="Charm of Feather Falling" description="This charm the same benefits as a ring of feather falling for 10 days. After that time, the charm vanishes." compset="CustomSpec" uniqueness="useronce">
@@ -141,6 +151,7 @@
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
     <tag group="SpInfo" tag="spFeatFall"/>
     <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="Tertiary"/>
     <bootstrap thing="spFeatFall">
       <autotag group="Helper" tag="RaceSpell"/>
       </bootstrap>
@@ -151,6 +162,7 @@
     <tag group="User" tag="Tracker"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
     <tag group="Usage" tag="UsedUp"/>
+    <tag group="Helper" tag="Tertiary"/>
     </thing>
   <thing id="c5CSGCotS" name="Charm of the Slayer" description="A single sword of yours becomes a dragon slayer or giant slayer (DM’s choice) for the next 9 days. After that time, the charm vanishes and the sword returns to normal." compset="CustomSpec" uniqueness="useronce">
     <fieldval field="trkMax" value="9"/>
@@ -163,6 +175,7 @@
     <tag group="Usage" tag="5cDays"/>
     <tag group="User" tag="Tracker"/>
     <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="Tertiary"/>
     <eval phase="First"><![CDATA[
       ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
@@ -192,5 +205,6 @@
     <tag group="User" tag="Tracker"/>
     <tag group="AllowRCust" tag="cfg5CSupGif"/>
     <tag group="Usage" tag="UsedUp"/>
+    <tag group="Helper" tag="Tertiary"/>
     </thing>
   </document>
