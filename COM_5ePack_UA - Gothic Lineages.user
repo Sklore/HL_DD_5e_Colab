@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CUADmph" name="Dhampir" compset="Race">
+    <fieldval field="rSpeed" value="35"/>
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="p5eGthLinUACP"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="ra5CLnASI21"></bootstrap>
+    <bootstrap thing="ra5CUADmSpd"></bootstrap>
+    <bootstrap thing="ra5CUADmVmp"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="DamageOver" tag="aCON"/>
+      <autotag group="MelAttOver" tag="aCON"/>
+      <autotag group="wProfReq" tag="Simple"/>
+      <autotag group="Helper" tag="Proficient"/>
+      <assignval field="livename" value="Vampiric Bite"/>
+      <assignval field="sbName" value="Vampiric Bite"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001">hero.childfound[xClimb].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xClimb].field[abValue].value)</eval>
+    <eval phase="First" index="2">perform hero.assign[OverType.tpUndead]</eval>
+    </thing>
+  <thing id="ra5CLinSize" name="Size" description="Choose your size; either Small or Medium." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Small"/>
+    <arrayval field="usrArray" index="1" value="Medium"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrIndex].value = 0) then
+        foreach pick in hero from BaseRace
+      perform eachpick.delete[RaceSize.Medium0]
+      perform eachpick.assign[RaceSize.Small11]
+        nexteach
+      endif]]></eval>
+    </thing>
+  <thing id="ra5CLnASI21" name="Ability Score Increase" description="You can choose any one ability to increase by 2, and any other to increase by 1." compset="RaceSpec" uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.BaseAttr"/>
+    <fieldval field="usrCandid2" value="component.BaseAttr"/>
+    <tag group="Custom" tag="AttrUp" name="AttrUp" abbrev="AttrUp"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="RaceSort" tag="Attribute" name="Attribute" abbrev="Attribute"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="ChooseSrc2" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <eval phase="PreAttr" priority="5000"><![CDATA[
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        field[usrChosen1].chosen.field[aStartMod].value += 2
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif
+
+      if (field[usrChosen2].ischosen <> 0) then
+        field[usrChosen2].chosen.field[aStartMod].value += 1
+        perform field[usrChosen1].chosen.assign[Custom.AttrUp]
+        endif]]></eval>
+    <evalrule phase="Validation" priority="10000" message="You must choose two different ability scores!" summary="You must choose two different ability scores!"><![CDATA[
+      validif (field[usrChosen1].ischosen + field[usrChosen2].ischosen < 2)
+      validif (field[usrChosen1].chosen.tagcount[Custom.AttrUp] < 2)
+      validif (field[usrChosen2].chosen.tagcount[Custom.AttrUp] < 2)]]></evalrule>
+    </thing>
+  <thing id="r5CUAHxBld" name="Hexblood" compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="p5eGthLinUACP"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="ra5CLnASI21"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="ra5CUAHxRes"></bootstrap>
+    <bootstrap thing="ra5CUAHxTkn"></bootstrap>
+    <bootstrap thing="ra5CUAHxMgc"></bootstrap>
+    <bootstrap thing="tpFey"></bootstrap>
+    </thing>
+  <thing id="r5CUARbrn" name="Reborn" compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="p5eGthLinUACP"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="DamageRes" tag="dtPoison"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CRbrnTyp"></bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="ra5CUARbDth"></bootstrap>
+    <bootstrap thing="ra5CUARbKnw"></bootstrap>
+    <bootstrap thing="ra5CLnASI21"></bootstrap>
+    </thing>
+  <thing id="ra5CRbrnTyp" name="Type" description="You are both humanoid and your choice of either construct or undead." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Construct"/>
+    <arrayval field="usrArray" index="1" value="Undead"/>
+    <bootstrap thing="tpUndead">
+      <containerreq phase="First" priority="100">fieldval:usrIndex = 1</containerreq>
+      </bootstrap>
+    <bootstrap thing="tpConst">
+      <containerreq phase="First" priority="100">fieldval:usrIndex = 0</containerreq>
+      </bootstrap>
+    <eval phase="First">if (field[usrIndex].value = 0) then
+  perform hero.assign[OverType.tpConst]
+else
+  perform hero.assign[OverType.tpUndead]
+endif</eval>
+    </thing>
+  <thing id="ra5CUADmSpd" name="Spider Climb" description="Your climbing speed is equal to your walking speed. Additionally, at 3rd level, you can move up, down, and across vertical surfaces and upside down along ceilings, while keeping your hands free." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="First"><![CDATA[~if we've been replaced, get out now 
+doneif (tagis[Helper.Disable] <> 0)
+doneif (hero.tagcount[Classes.?] < 3)
+
+perform assign[Helper.ShowSpec]]]></eval>
+    </thing>
+  <thing id="ra5CUADmVmp" name="Vampiric Bite" description="Your are proficient with biting with your fangs as a natural weapon, which counts as a simple melee weapon. You add your Constitution modifier to the attack and damage rolls when you attack with this bite. It deals 1d4 piercing damage on a hit. While you are missing half or more of your hit points, you have advantage on attack rolls you make with this bite.\n\nWhen you use your bite and hit a non-Construct, non-Undead creature, you can choose from one of these ways to empower yourself:\n\n• You regain hit points equal to bite&apos;s damage dealt\n• You gain a bonus to the next ability check or attack roll you make; the bonus equals the damage dealt by the bite\n\nYou can empower yourself with a bite a number of times equaling your proficiency bonus, and you regain all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="2"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="PostAttr" priority="5000">field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value</eval>
+    </thing>
+  <thing id="ra5CUAHxRes" name="Fey Resilience" description="You have advantage on saves to avoid or end the charmed condition on yourself." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="First"><![CDATA[~if we've been replaced, get out now 
+doneif (tagis[Helper.Disable] <> 0)
+
+  #situational[hero.child[svAll],"Advantage to avoid or end the charmed condition",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CUAHxMgc" name="Hex Magic" description="You know the {i}disguise self{/i} and {i}hex{/i} spells. Choose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells. You can cast  each spell once without expending a spell slot, and you must complete a long rest before you can cast each one this way again. You can also cast them using any spell slots you have. " compset="RaceSpec">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Custom" tag="OnlyIfCaster"/>
+    <bootstrap thing="sp5CHex">
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Custom" tag="OnlyIfCaster"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="sp5CHex">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Custom" tag="OnlyIfCaster"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="Final"><![CDATA[
+doneif (hero.tagis[Hero.Caster] = 0)
+
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster"
+  perform eachpick.delete[Hide.Spell]
+  nexteach]]></eval>
+    </thing>
+  <thing id="ra5CUAHxTkn" name="Magic Token" description="You can use an action to harmlessly pull out one of your nails, a tooth, or a lock of hair. This token becomes imbued with magic until you complete a long rest. While the token is imbued like this, you can use an action to send a telepathic message to the creature holding or carrying the token, so long as you are on the same plane of existence and are within 10 miles of it. The message can contain up to twenty-five words.\n\nAdditionally, while you are within 10 miles of the token, you can use an action to enter a trance for 1 minute. During that time, you can see and hear from the token as if you were in its location. While you are using your senses at the token&apos;s location, you are blind and deaf to your own surroundings. Afterward, the token is harmlessly destroyed.\n\nOnce you create a token using this feature, you can&apos;t do so again until you complete a long rest, at which point your missing body part regrows." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="ra5CUARbDth" name="Deathless Nature" description="Having escaped death, you have these benefits:\n\n• You have advantage on saves versus disease and being poisoned, and you are resistant to poison damage.\n• You have advantage on death saving throws.\n• You do not require food, drink, or air.\n• You don&apos;t require sleep, and magic can&apos;t put you to sleep. You can complete a long rest in 4 hours if you spend those hours in an inactive, motionless state, during which you stay consciousness." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="First"><![CDATA[~if we've been replaced, get out now 
+doneif (tagis[Helper.Disable] <> 0)
+
+  #situational[hero.child[svAll],"Advantage versus poison and disease",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CUARbKnw" name="Knowledge from a Past Life" description="You temporarily catch glimpses of a past life. When you make an ability check using a skill, you can roll and add 1d6 to the check. You can use this feature a number of times equaling your proficiency bonus, and you regain all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="PostAttr" priority="5000"><![CDATA[~if we've been replaced, get out now 
+doneif (tagis[Helper.Disable] <> 0)
+
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  </document>
