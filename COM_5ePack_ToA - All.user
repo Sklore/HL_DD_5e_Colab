@@ -2563,4 +2563,118 @@ eachpick.Field[livename].text = eachpick.Field[sbName].text
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
     </thing>
+  <thing id="c5CInhIjin" name="Inhabitation: I&apos;jin" description="{b}Gender:{/b} Female\n{b}Alignment:{/b} Chaotic Neutral\n{b}Personality:{/b} Fickle and unpredictable\n{b}Inherited flaw:{/b} I don&apos;t stick to the plan.\n{b}Enemy:{/b} Obo&apos;laka\n{b}Power:{/b} The host&apos;s Dexterity score becomes a minimum of 23." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="bt5CIjiFlw"></bootstrap>
+    <eval phase="PreLevel" priority="10000">hero.child[aDEX].field[Minimum].value = maximum(hero.child[aDEX].field[Minimum].value,23)</eval>
+    </thing>
+  <thing id="c5CInhKubaz" name="Inhabitation: Kubazan" description="{b}Gender:{/b} Male\n{b}Alignment:{/b} Chaotic Good\n{b}Personality:{/b} Wild and spirited\n{b}Inherited flaw:{/b} I&apos;m not afraid of the risks. I&apos;m not afraid at all.\n{b}Enemy:{/b} Papazotl\n{b}Power:{/b} The host&apos;s Strength score becomes a minimum of 23." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="bt5CKubFlw"></bootstrap>
+    <eval phase="PreLevel" priority="10000">hero.child[aSTR].field[Minimum].value = maximum(hero.child[aSTR].field[Minimum].value,23)</eval>
+    </thing>
+  <thing id="c5CInhMoa" name="Inhabitation: Moa" description="{b}Gender:{/b} Male\n{b}Alignment:{/b} Lawful Good\n{b}Personality:{/b} Honest and kind\n{b}Inherited flaw:{/b} I must always be truthful.\n{b}Enemy:{/b} Wongo\n{b}Power:{/b} The host can use an action to turn tiself and anything it&apos;s wearing or carrying invisible. The effect ends if the host attacks, casts a spell, forces a saving throw, or deals damage, and it ends on any of its worn or carried items if that item is removed from the host&apos;s person." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="actName" value="Invisible"/>
+    <usesource source="p5eToAP"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <bootstrap thing="bt5CMoaFlw"></bootstrap>
+    </thing>
+  <thing id="c5CInhNangn" name="Inhabitation: Nangnang" description="{b}Gender:{/b} Female\n{b}Alignment:{/b} Neutral Evil\n{b}Personality:{/b} Selfish and cruel\n{b}Inherited flaw:{/b} What&apos;s mine is mine, and you can&apos;t have any of it.\n{b}Enemy:{/b} Shagambi\n{b}Power:{/b} The host gains a climbing speed equal to its walking speed. It can also move up, down, and across vertical surfaces and upside down along ceilings, while keeping its hands free." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <bootstrap thing="bt5CNanFlw"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001">hero.childfound[xClimb].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xClimb].field[abValue].value)</eval>
+    </thing>
+  <thing id="c5CInhObol" name="Inhabitation: Obo&apos;laka" description="{b}Gender:{/b} Female\n{b}Alignment:{/b} Lawful Neutral\n{b}Personality:{/b} Nervous and obsessive\n{b}Inherited flaw:{/b} I have to stick to the routine and not take any risks.\n{b}Enemy:{/b} I&apos;jin\n{b}Power:{/b} The host is able to attune to one extra magic item. When this spirit leaves the host, the host&apos;s attunement to all its magic items ends." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="bt5COboFlw"></bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+     doneif (tagis[Helper.ShowSpec] = 0)
+     doneif (tagis[Helper.Disable] <> 0)
+
+     herofield[tAttunMax].value += 1]]></eval>
+    </thing>
+  <thing id="c5CInhPapaz" name="Inhabitation: Papazotl" description="{b}Gender:{/b} Male\n{b}Alignment:{/b} Lawful Evil\n{b}Personality:{/b} Shrewd and plotting\n{b}Inherited flaw:{/b} I kneel to nobody. Others should do what I say.\n{b}Enemy:{/b} Kubazan\n{b}Power:{/b} The host can&apos;t be surprised, has advantage on all Wisdom checks, and never takes falling damage." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <bootstrap thing="bt5CPapFlw"></bootstrap>
+    <eval phase="Final"><![CDATA[
+foreach pick in hero from BaseSkill where "SkillAbil.aWIS"
+   #situational[eachpick,"Advantage on all checks",field[livename].text]
+   nexteach]]></eval>
+    </thing>
+  <thing id="c5CInhShaga" name="Inhabitation: Shagambi" description="{b}Gender:{/b} Female\n{b}Alignment:{/b} Neutral Good\n{b}Personality:{/b} Wise and virtuous\n{b}Inherited flaw:{/b} Evil must be slain without mercy.\n{b}Enemy:{/b} Nangnang\n{b}Power:{/b} When it takes the Attack action on its turn, the host can make one additional attack." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <bootstrap thing="bt5CShaFlw"></bootstrap>
+    </thing>
+  <thing id="c5CInhUnkh" name="Inhabitation: Unkh" description="{b}Gender:{/b} Female\n{b}Alignment:{/b} True Neutral\n{b}Personality:{/b} Self-absorbed and indecisive\n{b}Inherited flaw:{/b} I can&apos;t make a decision.\n{b}Enemy:{/b} None\n{b}Power:{/b} The host&apos;s Constitution score becomes a minimum of 23." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="bt5CUnkFlw"></bootstrap>
+    <eval phase="PreLevel" priority="10000">hero.child[aCON].field[Minimum].value = maximum(hero.child[aCON].field[Minimum].value,23)</eval>
+    </thing>
+  <thing id="c5CInhWongo" name="Inhabitation: Wongo" description="{b}Gender:{/b} Male\n{b}Alignment:{/b} Chaotic Evil\n{b}Personality:{/b} Violent and insane\n{b}Inherited flaw:{/b} I don&apos;t concern myself with the needs of others.\n{b}Enemy:{/b} Moa\n{b}Power:{/b} The host can use an action to let loose a psionic attack on a creature visible to and within 60 feet of it. The target must make a DC 16 Wisdom save. On a failure, the target is stunned until the end of its next turn." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abDC" value="16"/>
+    <usesource source="p5eToAP"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif"/>
+    <tag group="abSave" tag="aWIS"/>
+    <bootstrap thing="bt5CWonFlw"></bootstrap>
+    </thing>
+  <thing id="bt5CIjiFlw" name="Unpredictable" description="I don&apos;t stick to the plan." compset="BackFlaw" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="Background" tag="5CNoBckgr" name="Not available to any backgrounds" abbrev="None"/>
+    <eval phase="First" priority="10000">hero.childfound[BackCheck].field[FlawCurr].value -= 1</eval>
+    </thing>
+  <thing id="bt5CKubFlw" name="Without fear" description="I&apos;m not afraid of the risks. I&apos;m not afraid at all." compset="BackFlaw" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="Background" tag="5CNoBckgr" name="Not available to any backgrounds" abbrev="None"/>
+    <eval phase="First" priority="10000">hero.childfound[BackCheck].field[FlawCurr].value -= 1</eval>
+    </thing>
+  <thing id="bt5CMoaFlw" name="Honest" description="I must always be truthful." compset="BackFlaw" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="Background" tag="5CNoBckgr" name="Not available to any backgrounds" abbrev="None"/>
+    <eval phase="First" priority="10000">hero.childfound[BackCheck].field[FlawCurr].value -= 1</eval>
+    </thing>
+  <thing id="bt5CNanFlw" name="Selfish" description="What&apos;s mine is mine, and you can&apos;t have any of it." compset="BackFlaw" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="Background" tag="5CNoBckgr" name="Not available to any backgrounds" abbrev="None"/>
+    <eval phase="First" priority="10000">hero.childfound[BackCheck].field[FlawCurr].value -= 1</eval>
+    </thing>
+  <thing id="bt5COboFlw" name="Routine" description="I have to stick to the routine and not take any risks." compset="BackFlaw" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="Background" tag="5CNoBckgr" name="Not available to any backgrounds" abbrev="None"/>
+    <eval phase="First" priority="10000">hero.childfound[BackCheck].field[FlawCurr].value -= 1</eval>
+    </thing>
+  <thing id="bt5CPapFlw" name="Dominant" description="I kneel to nobody. Others should do what I say." compset="BackFlaw" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="Background" tag="5CNoBckgr" name="Not available to any backgrounds" abbrev="None"/>
+    <eval phase="First" priority="10000">hero.childfound[BackCheck].field[FlawCurr].value -= 1</eval>
+    </thing>
+  <thing id="bt5CShaFlw" name="Merciless" description="Evil must be slain without mercy." compset="BackFlaw" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="Background" tag="5CNoBckgr" name="Not available to any backgrounds" abbrev="None"/>
+    <eval phase="First" priority="10000">hero.childfound[BackCheck].field[FlawCurr].value -= 1</eval>
+    </thing>
+  <thing id="bt5CUnkFlw" name="Indecisive" description="I can&apos;t make a decision." compset="BackFlaw" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="Background" tag="5CNoBckgr" name="Not available to any backgrounds" abbrev="None"/>
+    <eval phase="First" priority="10000">hero.childfound[BackCheck].field[FlawCurr].value -= 1</eval>
+    </thing>
+  <thing id="bt5CWonFlw" name="Unconcerned" description="I don&apos;t concern myself with the needs of others." compset="BackFlaw" uniqueness="unique">
+    <usesource source="p5eToAP"/>
+    <tag group="Background" tag="5CNoBckgr" name="Not available to any backgrounds" abbrev="None"/>
+    <eval phase="First" priority="10000">hero.childfound[BackCheck].field[FlawCurr].value -= 1</eval>
+    </thing>
   </document>
