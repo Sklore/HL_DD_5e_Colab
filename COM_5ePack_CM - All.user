@@ -1,0 +1,2701 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CChMrg" name="Charm of the Mirage" description="This charm allows you to use an action to cast  {i}hallucinatory terrain{/i} (save DC 15). Once used, this charm vanishes from you.\n\nThis charm can be bestowed by a desert-dwelling chwinga when they use their Magical Gift action." compset="CustomSpec" uniqueness="useronce">
+    <usesource source="p5eCnMystP"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="spHallTerr">
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="save DC 15"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CChWtrB" name="Charm of the Water Bearer" description="This charm allows you to create up to 1 gallon of fresh water, which fills one or more empty containers that you already have. You can do this up to three times per day for 10 days, after which time this charm vanishes from you.\n\nThis charm can be bestowed by a desert-dwelling chwinga when they use their Magical Gift action." compset="CustomSpec" uniqueness="useronce">
+    <fieldval field="trkMax" value="10"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="Helper" tag="Tertiary"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="5cDays"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <bootstrap thing="trk5CChrmWtr">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:trkUser <> 10]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="iw5CRadianc" name="Radiance" description="This beautiful, golden hand mirror is a wand that grants a +1 bonus to spell attacks while you are holding it. Also while held, it allows you to ignore half cover when making spell attacks. It sheds 5 feet of dim light when immersed in darkness. A creature attuned to the wand can use a bonus action while holding it to cast {i}enhance ability{/i}, but only targeting itself. Once this property of the wand is used, it cannot be used again until the next dawn." compset="Wand">
+    <fieldval field="miAttunTxt" value="requires attunement by a spellcaster"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="spEnhaAbil">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="bonus action, self only"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="5000">doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      foreach pick in hero from Spellcast
+        eachpick.field[cSplAttack].value += 1
+        nexteach</eval>
+    </thing>
+  <thing id="io5CCrkDrft" name="Cracked Driftglobe" description="If you are within 60 feet of of this small sphere of thick glass, you can speak its command word to cause it to emanate the {i}light{/i} spell." compset="Wondrous">
+    <fieldval field="gWeight" value="1"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spLight">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sNameMod" value="Cracked Driftglobe"/>
+      </bootstrap>
+    </thing>
+  <thing id="io5CWtchHlm" name="Watchful Helm" description="Wearing this helm grants you a +1 bonus to AC. Also while wearing it, you remain aware of your surroundings even while sleeping, and you have advantage on sight-based Wisdom (Perception) checks.\n\nYou can use a bonus action to cast {i}see invisibility{/i} from the helm. Once you have used this feature of the helm, you cannot do so again until the next dawn." compset="Wondrous">
+    <usesource source="p5eCnMystP"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="spSeeInvi">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="bonus action"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[gIsAttuned].value = 0)
+doneif (field[gIsEquip].value = 0)
+
+#situational[hero.child[skPercep],"Advantage on sight-based checks",field[thingname].text]
+hero.child[ArmorClass].field[Bonus].value += 1]]></eval>
+    </thing>
+  <thing id="ir5CStnkRng" name="Stonky&apos;s ring" description="While wearing this ring, you can cast t{i}telekinesis{/i} spell at will, but you can target only objects that aren&apos;t being worn or carried.\n\nA character attuned to the ring can control Stonky&apos;s creations. However, the skitterwidgets ignore commands unless they are spoken within 30 feet of them." compset="Ring">
+    <usesource source="p5eCnMystP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <bootstrap thing="spTelekine">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sNameMod" value="unworn/uncarried objects only"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
+
+
+
+      perform assign[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="io5CAlcJgBl" name="Alchemy Jug (Blue)" description="This ceramic jug always sounds full when sloshed, and seems capable of holding a gallon of liquid. You can use an action to name a liquid from the table below. You can then use another action to uncork the jug and pour that liquid out at at a speed of up to 2 gallons per minute. The jug produces up to the amount listed for the chosen liquid.\n\n{font Courier New}{b}Liquid          Max Amount{/b}\n{back FFFFFF}Beer            4 gallons\n{back 010101}Honey           1 gallon\n{back FFFFFF}Mayonnaise      2 gallons\n{back 010101}Oil             1 quart\n{back FFFFFF}Soy Sauce       1 gallon\n{back 010101}Vinegar         2 gallons\n{back FFFFFF}Water, fresh    8 gallons\n{back 010101}Water, salt     12 gallons\n{back FFFFFF}Wine            1 gallon\n{back 010101}{revert}\nOnce the jug begins producing a particular liquid, it can&apos;t produce a different one, or more of one that has reached its maximum, until the next dawn." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="gWeight" value="12"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="io5CAlcJgOr" name="Alchemy Jug (Orange)" description="This ceramic jug always sounds full when sloshed, and seems capable of holding a gallon of liquid. You can use an action to name a liquid from the table below. You can then use another action to uncork the jug and pour that liquid out at at a speed of up to 2 gallons per minute. The jug produces up to the amount listed for the chosen liquid.\n\n{font Courier New}{b}Liquid             Max Amount{/b}\n{back FFFFFF}Beer               4 gallons\n{back 010101}Boiling Hot Tea    1 quart\n{back FFFFFF}Honey              1 gallon\n{back 010101}Mayonnaise         2 gallons\n{back FFFFFF}Oil                1 quart\n{back 010101}Vinegar            2 gallons\n{back FFFFFF}Water, fresh       8 gallons\n{back 010101}Water, salt        12 gallons\n{back FFFFFF}Wine               1 gallon\n{back 010101}{revert}\nOnce the jug begins producing a particular liquid, it can&apos;t produce a different one, or more of one that has reached its maximum, until the next dawn." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="gWeight" value="12"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="io5CGlvSlCt" name="Gloves of Soul Catching" description="If your Constitution score is below 20, it becomes 20 while you are wearing these gloves. After making a successful unarmed strike while wearing them, you can use the gloves to deal an additional 2d10 force damage to the target, and you regain a number of hit points equal to the force damage dealt. Alternatively, instead of regaining those hit points, you can choose to gain advantage on one attack roll, ability check, or saving throw you make before the end of your next turn." compset="Wondrous">
+    <usesource source="p5eCnMystP"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[gIsAttuned].value = 0)
+doneif (field[gIsEquip].value = 0)
+
+hero.child[aCON].field[Minimum].value = maximum(hero.child[aCON].field[Minimum].value,20)
+
+foreach pick in hero from BaseWep where "IsWeapon.wUnarmed"
+   eachpick.field[wDamExtra].text &= " + 2d10 force"
+   nexteach]]></eval>
+    </thing>
+  <thing id="io5CNthrSc" name="Nether Scroll of Azumar" description="Instead of being consumed like other scrolls, this scroll requires 30 days of intense study (at least 8 hours per day). After completing this study period, you must make a DC 25 Intelligence (Arcana) check. On a failure, you suffer 16d10 psychic damage, and must endure the study period again before you can attempt this check. On a success, you gain these benefits:\n\n• Your Intelligence score increased by 2 to a maximum of 22. Once this scroll grants this benefit, it cannot do so to you again.\n• You gain advantage on saves versus spells and other magical effects.\n\nWhen you gain the scroll&apos;s benefits, a stone golem magically appears in an open space within 60 feet of you. It acts as your ally, and crumbles to dust if you die." compset="Wondrous">
+    <fieldval field="actName" value="Successfully Studied"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[abilActive].value = 0)
+
+#situational[hero.child[svAll],"Advantage versus spells and other magical effects",field[thingname].text]
+
+hero.childfound[aINT].field[aNormMod].value += 2
+hero.childfound[aINT].field[aMaxValue].value = maximum(22,hero.childfound[aINT].field[aMaxValue].value)]]></eval>
+    </thing>
+  <thing id="io5COrcsFig" name="Orcus Figurine" description="This figurine, carved from the petrified heart of an ogre, has a scent of decaying flesh that is detectable out to a range of 5 feet.\nThe figurine is a Tiny object with AC 17, 3 hit points, and immunity to all but radiant damage. The {i}detect evil and good{/i} spell or similar magic reveals that the figurine has been desecrated. So long as it has at least 1 hit point, the figurine has these magical properties:\n\n• Undead within 30 feet of it can&apos;t be turned.\n• Dead creatures within 30 feet of it can&apos;t be brought back to life.\n• A creature that holds the figurine can spend at least an hour praying to Orcus. After that time, there is a 10 percent chance that an avatar of the demon lord is summoned. Once summoned, it can&apos;t be summoned again for 30 days. The avatar is chaotic evil, but otherwise has the statistics of a wraith. It attacks all non-undead creatures it encounters. It disappears after 1 hour or when it is reduced to 0 hit points." compset="Wondrous">
+    <fieldval field="trkMax" value="3"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="HP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="trk5COrcsFig">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:trkUser <3]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="trk5COrcsFig" name="Orcus Figurine Prayer" compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="5C30Days"/>
+    </thing>
+  <thing id="i5CSrpSclA" name="Serpent Scale Armor" description="While wearing this shimmering, scale armor, you can add your full Dexterity modifier (instead of the maximum +2 for scale mail) when determining your Armor Class. Also, this armor does not impose disadvantage on your Dexterity (Stealth) checks.\n\n{i}Note: Due to limitations with Hero Lab, the Armor tab will still show this as a max bonus of +2 from your Dexterity. However, your AC will calculate correctly automatically.{/i}" compset="MagicArmor">
+    <fieldval field="gWeight" value="45"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <eval phase="First" priority="101"><![CDATA[
+
+foreach pick in hero from BaseArmor where "Custom.NoStealth"
+   perform eachpick.delete[Helper.StealthDis]
+   perform eachpick.delete[ArmorClass.Medium]
+   perform eachpick.assign[ArmorClass.Light]
+   nexteach]]></eval>
+    <eval phase="Validation" priority="1000" index="2"><![CDATA[
+
+foreach pick in hero from BaseArmor where "Custom.NoStealth"
+   perform eachpick.delete[ArmorClass.Light]
+   perform eachpick.assign[ArmorClass.Medium]
+   nexteach]]></eval>
+    <child entity="mSpecMagic">
+      <tag group="Custom" tag="NoStealth"/>
+      <bootstrap thing="mScaleMail"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CSrpFng" name="Serpent&apos;s Fang" description="This one-edged magic sword was crafted from the fang of a gigantic serpent, and its hilt changes shape to fit the hand of any creature that wields it. The weapon deals an additional 1d10 poison damage to any target it hits." compset="MagicWep">
+    <fieldval field="gWeight" value="3"/>
+    <fieldval field="wDamExtra" value=" + 1d10 poison"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wLongsword"></bootstrap>
+      </child>
+    </thing>
+  <thing id="trk5CChrmWtr" name="Charm of the Water Bearer (daily)" compset="Tracker">
+    <fieldval field="trkMax" value="3"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CHlSlfN" name="Heal Self" description="[abText] regains [abValue]d[abValue2] + [abValue3] hit points, and all levels of exhaustion on [abText2] end." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text =  field[abText].text & " regains " & field[abValue].value & "d" & field[abValue2].value & " + " & field[abValue3].value & " hit points, and all levels of exhaustion on " & field[abText2].text & " end."]]></eval>
+    </thing>
+  <thing id="ra5CShldN" name="Shield (1st-Level Spell)" description="When [abText] is hit by an attack or targeted by the {i}magic missile{/i} spell, [abText] creates an invisible barrier of magical force as protection. Until the start of [abText2] next turn, [abText] has a +5 bonus to AC, including against the triggering attack, and takes no damage from {i}magic missile{/i}." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text =  "When " & field[abText].text & " is hit by an attack or targeted by the {i}magic missile{/i} spell, " & field[abText].text & " creates an invisible barrier of magical force as protection. Until the start of " & field[abText2].text & " next turn, " & field[abText].text & " has a +5 bonus to AC, including against the triggering attack, and takes no damage from {i}magic missile{/i}."]]></eval>
+    </thing>
+  <thing id="ra5CLgTel2N" name="Teleport" description="[abText] magically teleports up to [abValue] feet to an open space [abText2] is able to see." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text =  field[abText].text & " magically teleports up to " & field[abValue].value & " feet to an open space " & field[abText2].text & " is able to see."]]></eval>
+    </thing>
+  <thing id="ra5CLmSplN" name="Limited Spell Immunity" description="[abText] automatically succeeds on saves versus spells of level [abValue] or lower, and the attack rolls of such spells always miss [abText2]." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text =  field[abText].text & " automatically succeeds on saves versus spells of level " & field[abValue].value & " or lower, and the attack rolls of such spells always miss " & field[abText2].text & "."]]></eval>
+    </thing>
+  <thing id="ra5CSplDefN" name="Spell Deflection" description="In response to a spell attack missing [abText], [abText2] causes that spell to hit another creature within [abValue] feet of [abText] that [abText2] can see." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text =  "In response to a spell attack missing " & field[abText].text & ", " & field[abText2].text & " causes that spell to hit another creature within " & field[abValue].value & " feet of " & field[abText].text & " that " & field[abText2].text & " can see."]]></eval>
+    </thing>
+  <thing id="ra5CArQSupMoc" name="Supreme Mockery" description="Quill throws enchanted insults at a creature he can see within 60 feet of him. If the creature can hear Quill (though doesn&apos;t have to understand him), it must make a DC 17 Wisdom save. On a failure, it takes 66 (12d10) psychic damage and has disadvantage on the next attack roll it makes before the end of its next turn." compset="RaceSpec">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="wDieCount" value="12"/>
+    <fieldval field="wDieSize" value="10"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="DamageType" tag="dtPsychic"/>
+    </thing>
+  <thing id="ra5CArQulFbl" name="Quill&apos;s Fable" description="Quill tells a short tale while targeting up to five creatures within 30 feet of him that he can see. Each target that can hear Quill&apos;s magical fable must make a DC 17 Wisdom save. The target takes 36 (8d8) psychic damage on a failure or half that on a success." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="wDieCount" value="8"/>
+    <fieldval field="wDieSize" value="8"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="Recharge" tag="6"/>
+    <tag group="DamageType" tag="dtPsychic"/>
+    </thing>
+  <thing id="ra5CBkMCrnDnc" name="Crane Dance" description="Bak Mei moves up to 20 feet without provoking opportunity attacks." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LegenAct" tag="1"/>
+    </thing>
+  <thing id="ra5CBkMSpcEqp" name="Special Equipment" description="Bak Mei wields a staff of striking, which has 10 charges." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CBkMThndSt" name="Thunder Strike" description="Bak Mei uses Thunder Strike." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="LegenAct" tag="2"/>
+    </thing>
+  <thing id="ra5CCGGWndHwl" name="Wind Howl" description="The ghost howls, summoning a bitingly cold wind that engulfs up to three creatures of the ghost&apos;s choice that it can see within 60 feet of it. Each target is pulled up to 20 feet toward the ghost and must make a DC 15 Constitution save. The creature takes 16 (3d10) cold damage on a failure or half that on a success." compset="RaceSpec">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="wDieCount" value="3"/>
+    <fieldval field="wDieSize" value="10"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="Recharge" tag="6"/>
+    <tag group="DamageType" tag="dtCold"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CCnsUnsNat" name="Unusual Nature" description="The commoner doesn&apos;t need air, food, drink, or sleep, and it gains no benefit from finishing short or long rests. When it drops to 0 hit points, it becomes a lifeless object." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CDrTSndBrt" name="Sand Breath" description="The dragon tortoise exhales abrasive sand. Each creature in a 60-foot cone must make a DC 18 Constitution save, taking 52 (15d6) slashing damage on a failure or half that on a success." compset="RaceSpec">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="wDieCount" value="15"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="Recharge" tag="5"/>
+    <tag group="DamageType" tag="dtSlashing"/>
+    </thing>
+  <thing id="ra5CFngBldSpr" name="Blinding Spores" description="Blinding spores swirl magically around the fungal servant. Each creature within 5 feet of the servant must succeed on a DC 16 Constitution save or be blinded until the end of the creature&apos;s next turn." compset="RaceSpec">
+    <fieldval field="abRange" value="5"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="LegenAct" tag="1"/>
+    </thing>
+  <thing id="ra5CFngWhrlSp" name="Whirlwind of Spores" description="The fungal servant magically transforms into a whirlwind of spores, moves up to 60 feet, and then reverts back to its normal form. While in whirlwind form, the fungal servant is immune to all damage, can&apos;t be grappled, petrified, knocked prone, restrained, or stunned. Equipment worn or carried by the servant remains in its possession." compset="RaceSpec">
+    <fieldval field="abRange" value="60"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LegenAct" tag="2"/>
+    </thing>
+  <thing id="ra5CGngAltFrm" name="Alternate Forms" description="The gingwatzim has two alternate forms, both of which are chosen by its creator when the gingwatzim is created. One form is a perfect replica of a Tiny nonmagical object (like a tome, a knife, or a gemstone) that its creator is carrying or wearing when the gingwatzim is conjured. The other form can be any Tiny beast. Once chosen, these alternate forms cannot be changed." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CGngChgShp" name="Change Shape" description="The gingwatzim changes from its true form, a 3-foot-diameter glowing sphere, into one of its two alternate forms, or from one of those forms back into its true form. In object form, it retains its statistics but can&apos;t move or make attacks, and it is indistinguishable from the thing it is imitating. In beast form, it keeps its hit points but otherwise uses the stat block of the beast it is imitating. When it dies, the gingwatzim reverts to its true form before vanishing." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CLchFrStrm" name="Fire Storm (7th-Level Spell)" description="The lich fills up to ten 10-foot cubes with fire. Every cube must be within 150 feet of the lich and be in a space the lich can see, and each cube must have at least one face adjacent to the face of another cube. Each creature in the area must make a DC 19 Dexterity save. A creature takes 38 (7d10) fire damage on a failure or half that on a success. The fire ignites flammable objects in the area that aren&apos;t being worn or carried. The lich can choose for plant life in the area to be unaffected by the spell." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="150"/>
+    <fieldval field="wDieCount" value="7"/>
+    <fieldval field="wDieSize" value="10"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="DamageType" tag="dtFire"/>
+    </thing>
+  <thing id="ra5CLchPsnPrk" name="Poison Prick" description="The lich targets one poisoned creature visible to and within 30 feet of it. The target must make a DC 19 Constitution save. On a failure, it falls unconscious until the poisoned condition ends on it." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="LegenAct" tag="2"/>
+    </thing>
+  <thing id="ra5CLchSpLife" name="Sap Life" description="The lich targets one creature visible to and within 30 feet of it. The target must make a DC 19 Constitution save, taking 11 (2d10) necrotic damage on a failure. The lich regains a number of hit points equal to the amount of damage taken by creature." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="wDieCount" value="2"/>
+    <fieldval field="wDieSize" value="10"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="DamageType" tag="dtNecrotic"/>
+    <tag group="LegenAct" tag="2"/>
+    </thing>
+  <thing id="ra5CMryBndCnd" name="Bound to Candlekeep" description="Miirym can&apos;t leave Candlekeep and is immune to any effect that would put her somewhere outside it, including extradimensional spaces. If she dies, Miirym regains her form and all her hit points after 1d10 days, reappearing where she died or the closest unoccupied space." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CMryBrthWp" name="Breath Weapon" description="Miirym uses one of these breath weapons:\n{b}Cold Breath{/b}. Miirym exhales an icy blast. Each creature in a 90-foot cone must make a DC 21 Constitution save, taking 67 (15d8) cold damage on a failure or half that on a success.\n{b}Necrotic Breath{/b}. Miirym exhales a bolt of necrotic energy. Each creature in a 120-foot line that is 10 feet wide must make a DC 21 Dexterity saving throw, taking 82 (15d10) necrotic damage on a failure or half that on a success.\n{b}Paralyzing Breath{/b}. Miirym exhales paralyzing gas. Each creature in a 90-foot cone must succeed on a DC 21 Constitution save or be paralyzed for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect for itself on a success." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="Recharge" tag="5"/>
+    </thing>
+  <thing id="ra5CMryXRyVis" name="X-Ray Vision" description="Miirym is able to see through solid matter out to a range of 60 feet. To her, opaque creatures, objects, and obstacles within that distance appear transparent and don&apos;t stop light from passing through them. This vision can penetrate 5 feet of stone, 3 inches of common metal, and up to 10 feet of wood or dirt. Thicker substances block this vision, as does a thin sheet of lead." compset="RaceSpec">
+    <fieldval field="abRange" value="60"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CMSgFrbll" name="Fireball (3rd-Level Spell; 3/Day)" description="The sage creates a ball of fire centered on a point it can see within 150 feet of it. Each creature in a 20-foot-radius sphere centered on that point must make a DC 14 Dexterity save. A creature takes 28 (8d6) fire damage on a failure or half that on a success. The fire spreads around corners and ignites flammable objects in the area that aren&apos;t being worn or carried." compset="RaceSpec">
+    <fieldval field="trkMax" value="3"/>
+    <fieldval field="abRange" value="150"/>
+    <fieldval field="wDieCount" value="8"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="DamageType" tag="dtFire"/>
+    </thing>
+  <thing id="ra5CNnSShdStr" name="Shadow Strikes" description="If she is in bright or dim light, Nintra can cause her shadow to attack a creature within 10 feet of her. The shadow makes two claw attacks, each the same as Nintra&apos;s claw attack except that it deals psychic damage instead of piercing damage." compset="RaceSpec">
+    <fieldval field="abRange" value="10"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LegenAct" tag="2"/>
+    </thing>
+  <thing id="ra5CNnSStrmSh" name="Storm of Shattered Glass" description="Nintra targets a point she can see within 60 feet of her and creates a 20-foot-radius sphere of swirling glass shards centered on that point. Every creature in that sphere must make a DC 20 Dexterity save. A creature takes 28 (8d6) slashing damage on a failure, or half that on a success. Nintra takes no damage from the shards when she&apos;s in the sphere." compset="RaceSpec">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="wDieCount" value="8"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Recharge" tag="6"/>
+    <tag group="DamageType" tag="dtSlashing"/>
+    </thing>
+  <thing id="ra5CSGSLgtStr" name="Lightning Strike" description="The giant throws a magical lightning bolt at a point it can see within 500 feet of it. Every creature within 10 feet of that point must make a DC 15 Dexterity save. A creature takes 54 (12d8) lightning damage on a failure or half that on a success." compset="RaceSpec">
+    <fieldval field="abRange" value="500"/>
+    <fieldval field="wDieCount" value="12"/>
+    <fieldval field="wDieSize" value="8"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Recharge" tag="5"/>
+    <tag group="DamageType" tag="dtLightnin"/>
+    </thing>
+  <thing id="ra5CShmCrshEn" name="Crushing End" description="Unless the damage is the result of an object weighing at least 1,000 pounds crushing Shemshime, damage that reduces Shemshime to 0 hit points instead reduces Shemshime to 1 hit point." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CShmHwlBbl" name="Howling Babble" description="Shemshime targets one creature it can see within 30 feet of it. The creature must make a DC 13 Wisdom saving throw. On a failure, it takes 21 (4d8 + 3) psychic damage and is stunned until the end of its next turn. On a success, it takes half that damage and isn&apos;t stunned." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="Recharge" tag="6"/>
+    </thing>
+  <thing id="ra5CShmWhspVi" name="Whispers of Violence" description="Shemshime chooses up to two creatures it can see within 60 feet of it. Each target must make a DC 13 Wisdom save. On a failure, the target takes 7 (1d8 + 3) psychic damage and must use its reaction to make a melee weapon attack against one creature it can reach (chosen by and visible to Shemshime)." compset="RaceSpec">
+    <fieldval field="abRange" value="60"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abSave" tag="aWIS"/>
+    </thing>
+  <thing id="ra5CSktGdPrnt" name="Good Parent" description="The skitterwidget imposes disadvantage on one attack roll made against a kiddywidget it can see within 5 feet of it." compset="RaceSpec">
+    <fieldval field="abRange" value="5"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="ra5CStlSlwDes" name="Slow Descent" description="When Steel Crane falls, he can slow his descent. He thus takes no damage from the fall." compset="RaceSpec">
+    <fieldval field="trkMax" value="3"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CZikEleCan" name="Elemental Cannon" description="Zikran can use this only while in the basement. On initiative count 20 (losing initiative ties), Zikran uses his handheld device to fire the cannon at one creature he can see, so long as that creature is in the basement or on the staircase. The target must make a DC 17 Dexterity save, taking 24 (7d6) cold damage on a failure or half that on a success." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Lair"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="r5CSwaof" name="Swarm of Animated Books" compset="Race">
+    <fieldval field="rHitDice" value="4"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="22"/>
+    <fieldval field="rDEX" value="3"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rAC" value="1"/>
+    <fieldval field="rCR" value="0.25"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="DamageImm" tag="dtPsychic"/>
+    <tag group="DamageVuln" tag="dtFire"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnGrapple"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="CondImm" tag="pcnProne"/>
+    <tag group="CondImm" tag="pcnRestr"/>
+    <tag group="CondImm" tag="pcnStunned"/>
+    <tag group="SwarmSize" tag="Tiny12"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDamBonus" value="1"/>
+      <assignval field="livename" value="Book Club"/>
+      <assignval field="sbName" value="Book Club"/>
+      <assignval field="wReach" value="0"/>
+      <assignval field="wTarget" value="one target in the swarm&apos;s space"/>
+      <assignval field="wDamExtra" value=" damage or, if the swarm has half of its hit points or fewer, 3 (1d4+1) bludgeoning"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFlsObj">
+      <assignval field="abText" value="swarm"/>
+      <assignval field="abValue" value="15"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSwarmS">
+      <assignval field="abText" value="12 by 8 by 2 inch object"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="60"/>
+      <autotag group="AbilModify" tag="BlindBeyo"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CGingw" name="Gingwatzim" compset="Race">
+    <fieldval field="rHitDice" value="6"/>
+    <fieldval field="rHDSides" value="6"/>
+    <fieldval field="rHPStart" value="39"/>
+    <fieldval field="rSTR" value="-7"/>
+    <fieldval field="rDEX" value="5"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="-6"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rCHA" value="-4"/>
+    <fieldval field="rCR" value="2"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="60"/>
+      <autotag group="AbilModify" tag="BlindBeyo"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtNecrotic"/>
+      <assignval field="wDamBonus" value="6"/>
+      <assignval field="livename" value="Energy Drain (True Form Only)"/>
+      <assignval field="sbName" value="Energy Drain (True Form Only)"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="The target must make a DC 12 Constitution save. On a failure, it gains 1 level of exhaustion. When the target completes a short or long rest, it loses every level of exhaustion that it gained from this attack."/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="tpAberr"></bootstrap>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGngAltFrm"></bootstrap>
+    <bootstrap thing="ra5CGngChgShp"></bootstrap>
+    <eval phase="Render" priority="1000"><![CDATA[
+hero.childfound[xFly].field[livename].text &= " (true form only)"
+hero.childfound[xFly].field[shortname].text &= " (true form only)"]]></eval>
+    </thing>
+  <thing id="r5CShems" name="Shemshime" compset="Race">
+    <fieldval field="rHitDice" value="7"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="31"/>
+    <fieldval field="rSTR" value="-4"/>
+    <fieldval field="rDEX" value="7"/>
+    <fieldval field="rINT" value="7"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCHA" value="6"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rCR" value="4"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfDouble" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageRes" tag="dtAcid"/>
+    <tag group="DamageRes" tag="dtBludgeon"/>
+    <tag group="DamageRes" tag="dtFire"/>
+    <tag group="DamageRes" tag="dtLightnin"/>
+    <tag group="DamageRes" tag="dtPiercing"/>
+    <tag group="DamageRes" tag="dtSlashing"/>
+    <tag group="DamageRes" tag="dtThunder"/>
+    <tag group="DamageImm" tag="dtCold"/>
+    <tag group="DamageImm" tag="dtNecrotic"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnGrapple"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="CondImm" tag="pcnProne"/>
+    <tag group="CondImm" tag="pcnRestr"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPsychic"/>
+      <assignval field="livename" value="Maddening Touch"/>
+      <assignval field="sbName" value="Maddening Touch"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDamBonus" value="5"/>
+      </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="40"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    <bootstrap thing="ra5CShmCrshEn"></bootstrap>
+    <bootstrap thing="ra5CShmHwlBbl"></bootstrap>
+    <bootstrap thing="ra5CShmWhspVi"></bootstrap>
+    <bootstrap thing="ra5CIncMovN">
+      <assignval field="abText" value="Shemshime"/>
+      <assignval field="abValue" value="5"/>
+      <assignval field="abValue2" value="1"/>
+      <assignval field="abValue3" value="10"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CAniBr" name="Animated Broom" compset="Race">
+    <fieldval field="rHitDice" value="5"/>
+    <fieldval field="rHDSides" value="6"/>
+    <fieldval field="rHPStart" value="17"/>
+    <fieldval field="rDEX" value="7"/>
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-5"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rAC" value="2"/>
+    <fieldval field="rCR" value="0.25"/>
+    <fieldval field="rMultiatt" value="The broom makes two melee attacks."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="DamageImm" tag="dtPsychic"/>
+    <tag group="CondImm" tag="pcnBlind"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnDeaf"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="CondImm" tag="pcnProne"/>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="120"/>
+      <autotag group="AbilModify" tag="BlindBeyo"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDamBonus" value="3"/>
+      <assignval field="livename" value="Broomstick"/>
+      <assignval field="sbName" value="Broomstick"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="50"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFlsObj">
+      <assignval field="abText" value="animated broom"/>
+      <assignval field="abValue" value="15"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFlyBy">
+      <assignval field="abText" value="animated broom"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CCorAv" name="Corrupted Avatar of Lurue" compset="Race">
+    <fieldval field="rHitDice" value="12"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="90"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rWIS" value="7"/>
+    <fieldval field="rCHA" value="6"/>
+    <fieldval field="rSpeed" value="50"/>
+    <fieldval field="rAC" value="2"/>
+    <fieldval field="rCR" value="8"/>
+    <fieldval field="rMultiatt" value="The avatar makes one hooves attack and one horn attack."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtNecrotic"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Hooves"/>
+      <assignval field="sbName" value="Hooves"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="8"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtNecrotic"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Horn"/>
+      <assignval field="sbName" value="Horn"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="If the target is a humanoid, it must make a DC 13 Wisdom save. On a failure, it is transformed into a wolf under the avatar&apos;s control. This transformation lasts for 1 hour, or until the target drops to 0 hit points or dies. The target retains its hit points but otherwise has its game statistics replaced by the wolf&apos;s. The target is limited to the actions its wolf form can perform. It can&apos;t speak, cast spells, or take any other action that requires hands or speech. The target&apos;s gear melds into the new form, and it can&apos;t activate, use, wield, or otherwise benefit from any of its equipment."/>
+      <assignval field="wDieCount" value="8"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="tpMonstros"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCelestial"></bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="lSylvan"></bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="50"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CJadTi" name="Jade Tigress" compset="Race">
+    <fieldval field="rHitDice" value="11"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="71"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rWIS" value="6"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rCR" value="8"/>
+    <fieldval field="rMultiatt" value="Jade Tigress makes three attacks."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skIntim"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageRes" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtForce"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Force Strike"/>
+      <assignval field="sbName" value="Force Strike"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must make a DC 15 Constitution save. On a failure, it is stunned until the end of Jade Tigress&apos;s next turn."/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Poisoned Dart"/>
+      <assignval field="sbName" value="Poisoned Dart"/>
+      <assignval field="wRangeNorm" value="20"/>
+      <assignval field="wRangeLong" value="60"/>
+      <assignval field="wDamExtra" value=" plus 7 (3d4) poison"/>
+      <assignval field="wAttackEff" value="The target must make a DC 15 Constitution save. On a failure, it gains 1 level of exhaustion."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttHuman"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CDefMissN">
+      <assignval field="abText" value="Jade Tigress"/>
+      <assignval field="abValue" value="1"/>
+      <assignval field="abValue2" value="10"/>
+      <assignval field="abValue3" value="9"/>
+      <assignval field="abText2" value="she"/>
+      </bootstrap>
+    <bootstrap thing="ra5CNmbEsc">
+      <assignval field="abText" value="Jade Tigress"/>
+      <assignval field="abText2" value="her"/>
+      </bootstrap>
+    <bootstrap thing="ra5CUnaDefN">
+      <assignval field="abText" value="Jade Tigress"/>
+      <assignval field="abText2" value="her"/>
+      </bootstrap>
+    <bootstrap thing="ra5CHlSlfN">
+      <assignval field="abText" value="Jade Tigress"/>
+      <assignval field="abValue" value="2"/>
+      <assignval field="abValue2" value="8"/>
+      <assignval field="abValue3" value="2"/>
+      <assignval field="abText2" value="her"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CBakMe" name="Bak Mei" compset="Race">
+    <fieldval field="rHitDice" value="12"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="102"/>
+    <fieldval field="rDEX" value="8"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="3"/>
+    <fieldval field="rWIS" value="7"/>
+    <fieldval field="rCHA" value="6"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rCR" value="13"/>
+    <fieldval field="rMultiatt" value="Bak Mei makes two Thunder Strike attacks and one attack with his staff of striking."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="ProfSkill" tag="skAcrobat"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skReligion"/>
+    <tag group="ProfSkill" tag="skMedicine"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageRes" tag="dtPoison"/>
+    <tag group="DamageRes" tag="dtThunder"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtThunder"/>
+      <assignval field="wDamBonus" value="4"/>
+      <assignval field="livename" value="Thunder Strike"/>
+      <assignval field="sbName" value="Thunder Strike"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must make a DC 17 Constitution save. On a failure, it is deafened and stunned until the beginning of Bak Mei&apos;s next turn."/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="10"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <autotag group="wProperty" tag="Versatile"/>
+      <assignval field="sbName" value="Staff of Striking"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="Bak Mei can spend up to 3 of the staff&apos;s charges. For each spent charge, the target takes an additional 1d6 force damage."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDCntVers" value="1"/>
+      <assignval field="wDSizVers" value="8"/>
+      <assignval field="livename" value="Staff of Striking"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttHuman"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lAuran"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CBkMCrnDnc"></bootstrap>
+    <bootstrap thing="ra5CBkMSpcEqp"></bootstrap>
+    <bootstrap thing="ra5CBkMThndSt"></bootstrap>
+    <bootstrap thing="ra5CDefMissN">
+      <assignval field="abText" value="Bak Mei"/>
+      <assignval field="abText2" value="he"/>
+      <assignval field="abValue" value="1"/>
+      <assignval field="abValue2" value="10"/>
+      <assignval field="abValue3" value="12"/>
+      </bootstrap>
+    <bootstrap thing="ra5CNmbEsc">
+      <assignval field="abText" value="Bak Mei"/>
+      <assignval field="abText2" value="his"/>
+      </bootstrap>
+    <bootstrap thing="ra5CUnaDefN">
+      <assignval field="abText" value="Bak Mei"/>
+      <assignval field="abText2" value="his"/>
+      </bootstrap>
+    <bootstrap thing="ra5CHlSlfN">
+      <assignval field="abText" value="Bak Mei"/>
+      <assignval field="abValue" value="2"/>
+      <assignval field="abValue2" value="8"/>
+      <assignval field="abValue3" value="4"/>
+      <assignval field="abText2" value="him"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLegResN">
+      <assignval field="abText" value="Bak Mei"/>
+      <assignval field="abText2" value="he"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CSteCr" name="Steel Crane" compset="Race">
+    <fieldval field="rHitDice" value="9"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="76"/>
+    <fieldval field="rSTR" value="3"/>
+    <fieldval field="rDEX" value="8"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="3"/>
+    <fieldval field="rWIS" value="7"/>
+    <fieldval field="rCHA" value="4"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rCR" value="8"/>
+    <fieldval field="rMultiatt" value="Steel Crane makes three attacks."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSkill" tag="skAcrobat"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageRes" tag="dtPoison"/>
+    <tag group="DamageRes" tag="dtPsychic"/>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtForce"/>
+      <assignval field="wDamBonus" value="3"/>
+      <assignval field="livename" value="Force Strike"/>
+      <assignval field="sbName" value="Force Strike"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must make a DC 15 Constitution save. On a failure, it is stunned until the end of Steel Crane&apos;s next turn."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDamBonus" value="3"/>
+      <assignval field="livename" value="Whip"/>
+      <assignval field="sbName" value="Whip"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wAttackEff" value="As an alternative to dealing this damage, Steel Crane can instead grapple the target (escape DC 15). Steel Crane can&apos;t make attacks with the whip while it&apos;s being used to grapple a creature. Steel Crane can release a grappled creature any time his turn, no action required."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttHuman"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CStlSlwDes"></bootstrap>
+    <bootstrap thing="ra5CDefMissN">
+      <assignval field="abText" value="Steel Crane"/>
+      <assignval field="abValue" value="1"/>
+      <assignval field="abValue2" value="10"/>
+      <assignval field="abValue3" value="10"/>
+      <assignval field="abText2" value="he"/>
+      </bootstrap>
+    <bootstrap thing="ra5CUnaDefN">
+      <assignval field="abText" value="Steel Crane"/>
+      <assignval field="abText2" value="his"/>
+      </bootstrap>
+    <bootstrap thing="ra5CHlSlfN">
+      <assignval field="abText" value="Steel Crane"/>
+      <assignval field="abValue" value="2"/>
+      <assignval field="abValue2" value="8"/>
+      <assignval field="abValue3" value="4"/>
+      <assignval field="abText2" value="him"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CAniCh" name="Animated Chained Library" compset="Race">
+    <fieldval field="rHitDice" value="6"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="45"/>
+    <fieldval field="rSTR" value="5"/>
+    <fieldval field="rDEX" value="-2"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-5"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rSpeed" value="10"/>
+    <fieldval field="rAC" value="5"/>
+    <fieldval field="rCR" value="1"/>
+    <fieldval field="rMultiatt" value="The library makes two attacks."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="DamageImm" tag="dtPsychic"/>
+    <tag group="CondImm" tag="pcnBlind"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnDeaf"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="CondImm" tag="pcnProne"/>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="30"/>
+      <autotag group="AbilModify" tag="BlindBeyo"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Chained Book"/>
+      <assignval field="sbName" value="Chained Book"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it is grappled with an escape DC of 12."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="ra5CFlsObj">
+      <assignval field="abText" value="library"/>
+      <assignval field="abValue" value="15"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CGriWa" name="Grippli Warrior" compset="Race">
+    <fieldval field="rHitDice" value="3"/>
+    <fieldval field="rHDSides" value="6"/>
+    <fieldval field="rHPStart" value="13"/>
+    <fieldval field="rDEX" value="5"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCR" value="0.25"/>
+    <fieldval field="rMultiatt" value="The grippli makes one tongue attack. If that attack hits, the grippli can make a melee trident attack against the same target."/>
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="ra5CHoBrth">
+      <assignval field="abText" value="grippli"/>
+      <assignval field="abValue" value="20"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMMStanN">
+      <assignval field="abText" value="The grippli"/>
+      <assignval field="abValue" value="30"/>
+      <assignval field="abValue2" value="20"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Tongue"/>
+      <assignval field="sbName" value="Tongue"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wTarget" value="one Medium or smaller creature"/>
+      <assignval field="wAttackEff" value="The target is grappled with an escape DC of 12. Until the grapple ends, the target is restrained and the grippli can&apos;t grab another creature."/>
+      <assignval field="wDieCount" value="0"/>
+      <assignval field="wDieSize" value="0"/>
+      </bootstrap>
+    <bootstrap thing="l5CGrippli"></bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Shortbow"/>
+      <assignval field="sbName" value="Shortbow"/>
+      <assignval field="wRangeNorm" value="80"/>
+      <assignval field="wRangeLong" value="320"/>
+      <assignval field="wDamExtra" value=" damage plus, if the grippli had advantage on the attack roll, 2 (1d4) piercing"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[hero.childfound[wTrident].field[wDamExtra].text = " damage plus, if the grippli had advantage on the attack roll, 2 (1d4) piercing"
+
+perform hero.childfound[wTrident].assign[wProperty.Finesse]]]></eval>
+    </thing>
+  <thing id="r5CSkitt" name="Skitterwidget" compset="Race">
+    <fieldval field="rHitDice" value="10"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="85"/>
+    <fieldval field="rSTR" value="6"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="-7"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rAC" value="6"/>
+    <fieldval field="rCR" value="5"/>
+    <fieldval field="rMultiatt" value="The skitterwidget makes one bite attack and one tail attack."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageImm" tag="dtLightnin"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnBlind"/>
+    <tag group="CondImm" tag="pcnDeaf"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Bite"/>
+      <assignval field="sbName" value="Bite"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it is grappled by the skitterwidget with an escape DC of 13."/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Tail"/>
+      <assignval field="sbName" value="Tail"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDamExtra" value=" plus 10 (3d6) lightning"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must make a DC 15 Constitution save. On a failure, it is stunned until the end of its next turn."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSktGdPrnt"></bootstrap>
+    <bootstrap thing="ra5CUnusNat">
+      <assignval field="abText" value="The skitterwidget"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLigtAbsN">
+      <assignval field="abText" value="the skitterwidget"/>
+      <assignval field="abText2" value="it"/>
+      </bootstrap>
+    <bootstrap thing="l5CSkitter"></bootstrap>
+    </thing>
+  <thing id="r5CCanGo" name="Canopic Golem" compset="Race">
+    <fieldval field="rHitDice" value="24"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="252"/>
+    <fieldval field="rSTR" value="10"/>
+    <fieldval field="rCON" value="10"/>
+    <fieldval field="rINT" value="-3"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rAC" value="7"/>
+    <fieldval field="rCR" value="13"/>
+    <fieldval field="rMultiatt" value="The golem makes two attacks."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnBlind"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnDeaf"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtForce"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Slam"/>
+      <assignval field="sbName" value="Slam"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="10"/>
+      </bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="RanAttOpt" tag="aSTR"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtForce"/>
+      <assignval field="wDamBonus" value="5"/>
+      <assignval field="livename" value="Crystal Dart"/>
+      <assignval field="sbName" value="Crystal Dart"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wRangeNorm" value="120"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="ra5CUnusNat">
+      <assignval field="abText" value="The golem"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLmSplN">
+      <assignval field="abText" value="The golem"/>
+      <assignval field="abValue" value="7"/>
+      <assignval field="abText2" value="it"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSplDefN">
+      <assignval field="abText" value="the golem"/>
+      <assignval field="abText2" value="it"/>
+      <assignval field="abValue" value="120"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CKiddy" name="Kiddywidget" compset="Race">
+    <fieldval field="rHitDice" value="2"/>
+    <fieldval field="rHDSides" value="6"/>
+    <fieldval field="rHPStart" value="15"/>
+    <fieldval field="rSTR" value="-4"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rSpeed" value="20"/>
+    <fieldval field="rAC" value="4"/>
+    <fieldval field="rCR" value="0.5"/>
+    <fieldval field="rMultiatt" value="The kiddywidget makes one bite attack and one tail attack."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="DamageImm" tag="dtLightnin"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnBlind"/>
+    <tag group="CondImm" tag="pcnDeaf"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="4"/>
+      <assignval field="livename" value="Bite"/>
+      <assignval field="sbName" value="Bite"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it is grappled by the kiddywidget with an escape DC of 8."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="4"/>
+      <assignval field="livename" value="Tail"/>
+      <assignval field="sbName" value="Tail"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDamExtra" value=" plus 2 (1d4) lightning"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="ra5CUnusNat">
+      <assignval field="abText" value="The kiddywidget"/>
+      </bootstrap>
+    <bootstrap thing="l5CSkitter"></bootstrap>
+    </thing>
+  <thing id="r5CImmLo" name="Immortal Lotus Monk" compset="Race">
+    <fieldval field="rHitDice" value="10"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="65"/>
+    <fieldval field="rSTR" value="2"/>
+    <fieldval field="rDEX" value="6"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCR" value="5"/>
+    <fieldval field="rMultiatt" value="The monk makes two attacks."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSkill" tag="skAcrobat"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtForce"/>
+      <assignval field="wDamBonus" value="2"/>
+      <assignval field="livename" value="Force Strike"/>
+      <assignval field="sbName" value="Force Strike"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must make a DC 14 Dexterity save. On a failure, it is knocked prone."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Dart"/>
+      <assignval field="sbName" value="Dart"/>
+      <assignval field="wRangeNorm" value="20"/>
+      <assignval field="wRangeLong" value="60"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CUnaDef">
+      <assignval field="abText" value="monk"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CArrQu" name="Arrant Quill" compset="Race">
+    <fieldval field="rHitDice" value="18"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="135"/>
+    <fieldval field="rDEX" value="8"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="6"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rCHA" value="10"/>
+    <fieldval field="rCR" value="11"/>
+    <fieldval field="rMultiatt" value="Quill makes two dagger attacks and uses Supreme Mockery."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfDouble" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skHistory"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfDouble" tag="skPerform"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttHuman"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="ra5CArQSupMoc"></bootstrap>
+    <bootstrap thing="ra5CArQulFbl"></bootstrap>
+    <bootstrap thing="spLight">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spPrestidi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spDispMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spFaerFire">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spHoldMons">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spMindBlan">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spTeleport">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="xInnatSpel">
+      <assignval field="CustDesc" value="Quill uses Charisma as his spellcasting ability (save DC 17) and can cast these spells:"/>
+      <assignval field="livename" value="Spellcasting"/>
+      <assignval field="sbName" value="Spellcasting"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
+    </thing>
+  <thing id="r5CConCo" name="Constructed Commoner" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="6"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rSpeed" value="25"/>
+    <fieldval field="rAC" value="5"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="livename" value="Club"/>
+      <assignval field="sbName" value="Club"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CCnsUnsNat"></bootstrap>
+    </thing>
+  <thing id="r5CStoGi" name="Storm Giant Skeleton" compset="Race">
+    <fieldval field="rHitDice" value="24"/>
+    <fieldval field="rHDSides" value="12"/>
+    <fieldval field="rHPStart" value="204"/>
+    <fieldval field="rSTR" value="19"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rINT" value="-7"/>
+    <fieldval field="rWIS" value="-2"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rSpeed" value="50"/>
+    <fieldval field="rAC" value="1"/>
+    <fieldval field="rCR" value="16"/>
+    <fieldval field="rMultiatt" value="The giant makes two greatsword attacks or hurls two rocks."/>
+    <fieldval field="rArmText" value="armor scraps"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Huge2"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="DamageImm" tag="dtLightnin"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="DamageImm" tag="dtThunder"/>
+    <tag group="DamageVuln" tag="dtBludgeon"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Greatsword"/>
+      <assignval field="sbName" value="Greatsword"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wDamExtra" value=" plus 18 (4d8) necrotic"/>
+      <assignval field="wDieCount" value="6"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="RanAttOpt" tag="aSTR"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDamBonus" value="7"/>
+      <assignval field="livename" value="Rock"/>
+      <assignval field="sbName" value="Rock"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="12"/>
+      <assignval field="wRangeNorm" value="60"/>
+      <assignval field="wRangeLong" value="240"/>
+      </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="ra5CSGSLgtStr"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CFlsObj" name="False Object" description="If the [abText] isn&apos;t moving at the beginning of combat, it has advantage on its initiative roll. Additionally, if a creature hasn&apos;t seen the [abText] move or act, that creature must make a successful DC [abValue] Wisdom (Perception) check to determine that the [abText] is animate." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text =  "If the " & field[abText].text & " isn't moving at the beginning of combat, it has advantage on its initiative roll. Additionally, if a creature hasn't seen the " & field[abText].text & " move or act, that creature must make a successful DC " & field[abValue].value & " Wisdom (Perception) check to determine that the " & field[abText].text & " is animate."]]></eval>
+    </thing>
+  <thing id="is5CStfFate" name="Staff of Fate" description="This transparent crystal staff can be used as a +3 magic quarterstaff.\n\n{b}Altered Outcome{/b}. The staff has 6 charges. You can use a bonus action to spend 1 of the charges to give yourself or one other creature visible to you a d4. The recipient can roll that die and add the result to one ability check, attack roll, damage roll, or saving throw it makes before the beginning of your next turn. If the die is not used by then, it is lost.\nIf you spend the staff&apos;s last charge, roll 1d20. On a 9 or lower, the staff becomes a non-magical quarterstaff, and breaks as soon as it hits and deals damage to something. On a roll of 10 or higher, the staff regains 1d6 spent charges." compset="Staff">
+    <fieldval field="trkMax" value="6"/>
+    <fieldval field="gWeight" value="4"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="w5CStfFte">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="w5CStfFte" name="Staff of Fate" compset="Weapon">
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="6"/>
+    <fieldval field="wDCntVers" value="1"/>
+    <fieldval field="wDSizVers" value="8"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="wProperty" tag="Versatile" name="Versatile" abbrev="Versatile"/>
+    <tag group="DamageType" tag="dtBludgeon" name="Bludgeoning" abbrev="Bludgeoning"/>
+    <tag group="Helper" tag="Helper" name="Helper" abbrev="Helper"/>
+    <tag group="IsWeapon" tag="wQtrstaff" name="Quarterstaff" abbrev="Quarterstaff"/>
+    <tag group="wCategory" tag="Melee" name="Melee Weapon" abbrev="Melee"/>
+    <tag group="wProfReq" tag="Simple" name="Simple" abbrev="Simple"/>
+    <eval phase="PreLevel" priority="5000">doneif (isroot = 0)
+
+      doneif (root.field[gIsAttuned].value = 0)
+      field[Bonus].value += 3</eval>
+    </thing>
+  <thing id="r5CCloGi" name="Cloud Giant Ghost" compset="Race">
+    <fieldval field="rHitDice" value="16"/>
+    <fieldval field="rHDSides" value="12"/>
+    <fieldval field="rHPStart" value="104"/>
+    <fieldval field="rSTR" value="17"/>
+    <fieldval field="rDEX" value="1"/>
+    <fieldval field="rINT" value="2"/>
+    <fieldval field="rWIS" value="6"/>
+    <fieldval field="rCHA" value="7"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rAC" value="5"/>
+    <fieldval field="rCR" value="9"/>
+    <fieldval field="rMultiatt" value="The ghost makes two melee attacks."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Huge2"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="DamageImm" tag="dtNecrotic"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnGrapple"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="CondImm" tag="pcnProne"/>
+    <tag group="CondImm" tag="pcnRestr"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtForce"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Spectral Weapon"/>
+      <assignval field="sbName" value="Spectral Weapon"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="xInnatSpel">
+      <assignval field="livename" value="Spellcasting"/>
+      <assignval field="sbName" value="Spellcasting"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lGiant"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="40"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    <bootstrap thing="ra5CCGGWndHwl"></bootstrap>
+    <bootstrap thing="ra5CIncMov">
+      <assignval field="abText" value="ghost"/>
+      <assignval field="abValue" value="5"/>
+      <assignval field="abValue2" value="1"/>
+      <assignval field="abValue3" value="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CRegDamM">
+      <assignval field="abText" value="ghost"/>
+      <assignval field="abValue" value="10"/>
+      <assignval field="abText2" value="damage from a magic weapon or radiant"/>
+      </bootstrap>
+    <bootstrap thing="ra5CEthSig">
+      <assignval field="abText" value="ghost"/>
+      <assignval field="abValue" value="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CEthnssN">
+      <assignval field="abText" value="The ghost"/>
+      <assignval field="abText2" value="It"/>
+      </bootstrap>
+    <bootstrap thing="spContWeat">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spTelekine">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spFogClou">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
+    </thing>
+  <thing id="r5CLicLi" name="Lichen Lich" compset="Race">
+    <fieldval field="rHitDice" value="30"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="225"/>
+    <fieldval field="rSTR" value="1"/>
+    <fieldval field="rDEX" value="6"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="4"/>
+    <fieldval field="rWIS" value="10"/>
+    <fieldval field="rCHA" value="6"/>
+    <fieldval field="rAC" value="7"/>
+    <fieldval field="rCR" value="18"/>
+    <fieldval field="rMultiatt" value="The lich makes four attacks."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfDouble" tag="skNature"/>
+    <tag group="ProfSkill" tag="skMedicine"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="CondImm" tag="pcnStunned"/>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtPoison"/>
+      <assignval field="livename" value="Poisonous Touch"/>
+      <assignval field="sbName" value="Poisonous Touch"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wAttackEff" value="The target must make a DC 19 Constitution save. On a failure, it is poisoned for 1 minute. It can repeat the save at the end of each of its turns, ending the effect for itself with a success."/>
+      <assignval field="wDieCount" value="5"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtNecrotic"/>
+      <assignval field="wDamBonus" value="-3"/>
+      <assignval field="livename" value="Wither"/>
+      <assignval field="sbName" value="Wither"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wRangeNorm" value="60"/>
+      </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="xInnatSpel">
+      <assignval field="livename" value="Spellcasting"/>
+      <assignval field="sbName" value="Spellcasting"/>
+      <assignval field="CustDesc" value="The lich uses WIsdom as its spellcasting ability (save DC 19) and can cast these spells:"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lDruidic"></bootstrap>
+    <bootstrap thing="lSylvan"></bootstrap>
+    <bootstrap thing="ra5CLchFrStrm"></bootstrap>
+    <bootstrap thing="ra5CLchPsnPrk"></bootstrap>
+    <bootstrap thing="ra5CLchSpLife"></bootstrap>
+    <bootstrap thing="ra5CLegRes">
+      <assignval field="abText" value="lich"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLegAttack">
+      <assignval field="abText" value="The lich"/>
+      </bootstrap>
+    <bootstrap thing="spAntiShel">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDispMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSpeaPlan">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spTranvia">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spFogClou">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spPassTrac">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spDruidcra">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="raLicRejuv"></bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
+    </thing>
+  <thing id="r5CMasSa" name="Master Sage" compset="Race">
+    <fieldval field="rHitDice" value="12"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="54"/>
+    <fieldval field="rSTR" value="-2"/>
+    <fieldval field="rINT" value="10"/>
+    <fieldval field="rWIS" value="8"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rCR" value="5"/>
+    <fieldval field="rLanguages" value="5"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfDouble" tag="skHistory"/>
+    <tag group="ProfDouble" tag="skInvestig"/>
+    <tag group="ProfDouble" tag="skNature"/>
+    <tag group="ProfDouble" tag="skReligion"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfDouble" tag="skMedicine"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfDouble" tag="skArcana"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="xInnatSpel">
+      <assignval field="livename" value="Spellcasting"/>
+      <assignval field="sbName" value="Spellcasting"/>
+      <assignval field="CustDesc" value="The sage casts one of these spells, using Intelligence as its spellcasting ability (+6 to hit with spell attacks, save DC 14):"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMSgFrbll"></bootstrap>
+    <bootstrap thing="ra5CShldN">
+      <assignval field="abText" value="the sage"/>
+      <assignval field="abText2" value="its"/>
+      </bootstrap>
+    <bootstrap thing="spBanishme">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spContOthe">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spInstSumm">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLegeLore">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLocaCrea">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPlanBind">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPolymorp">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spProtGoEv">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spScrying">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSending">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spTrueSeei">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCompLang">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spDispMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spIdentify">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spLocaObje">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spFloaDisk">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spUnseServ">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spLight">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMending">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spPrestidi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="MelAttOpt" tag="aINT"/>
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtLightnin"/>
+      <assignval field="wDamBonus" value="--1"/>
+      <assignval field="livename" value="Shocking Grasp (Cantrip)"/>
+      <assignval field="sbName" value="Shocking Grasp (Cantrip)"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="This attack has advantage if the target is wearing armor made with metal. On a hit, the target also cannot take reactions until the beginning of its next turn."/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    </thing>
+  <thing id="r5CMiiry" name="Miirym" compset="Race">
+    <fieldval field="rHitDice" value="25"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="262"/>
+    <fieldval field="rSTR" value="7"/>
+    <fieldval field="rCON" value="10"/>
+    <fieldval field="rINT" value="8"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rCHA" value="13"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rCR" value="22"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfDouble" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skHistory"/>
+    <tag group="ProfDouble" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="DamageRes" tag="dtAcid"/>
+    <tag group="DamageRes" tag="dtFire"/>
+    <tag group="DamageRes" tag="dtLightnin"/>
+    <tag group="DamageRes" tag="dtThunder"/>
+    <tag group="DamageImm" tag="dtCold"/>
+    <tag group="DamageImm" tag="dtNecrotic"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnGrapple"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="CondImm" tag="pcnProne"/>
+    <tag group="CondImm" tag="pcnRestr"/>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtForce"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Bite"/>
+      <assignval field="sbName" value="Bite"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="9"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="xInnatSpel">
+      <assignval field="CustDesc" value="Miirym&apos;s spellcasting ability is Charisma, they have a +13 to hit on spell attacks, and a save DC of 21. They can cast these spells without needing material components:"/>
+      <assignval field="livename" value="Spellcasting"/>
+      <assignval field="sbName" value="Spellcasting"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="60"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMryBndCnd"></bootstrap>
+    <bootstrap thing="ra5CMryBrthWp"></bootstrap>
+    <bootstrap thing="ra5CMryXRyVis"></bootstrap>
+    <bootstrap thing="ra5CLegResN">
+      <assignval field="abText" value="Miirym"/>
+      <assignval field="abText2" value="she"/>
+      </bootstrap>
+    <bootstrap thing="ra5CIncMovN">
+      <assignval field="abText" value="Miirym"/>
+      <assignval field="abText2" value="she"/>
+      <assignval field="abValue" value="5"/>
+      <assignval field="abValue2" value="1"/>
+      <assignval field="abValue3" value="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CRegDamN">
+      <assignval field="abText" value="Miirym"/>
+      <assignval field="abValue" value="40"/>
+      <assignval field="abText2" value="magic weapon or spell"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLgTel2N">
+      <autotag group="LegenAct" tag="2"/>
+      <assignval field="abValue" value="120"/>
+      <assignval field="abText2" value="she"/>
+      <assignval field="abText" value="Miirym"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLegAttack">
+      <assignval field="sbName" value="Bite"/>
+      <assignval field="livename" value="Bite"/>
+      <assignval field="abText2" value="bite"/>
+      <assignval field="abText" value="Miirym"/>
+      </bootstrap>
+    <bootstrap thing="raDraFrigh"></bootstrap>
+    <bootstrap thing="spDispEvil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spWallForc">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spDeteThou">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spDispMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spLocaCrea">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
+    </thing>
+  <thing id="r5CNinSi" name="Nintra Siotta" compset="Race">
+    <fieldval field="rHitDice" value="36"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="306"/>
+    <fieldval field="rSTR" value="6"/>
+    <fieldval field="rDEX" value="14"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="7"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rCHA" value="14"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rCR" value="16"/>
+    <fieldval field="rMultiatt" value="Nintra makes two attacks."/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnStunned"/>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="4"/>
+      <assignval field="livename" value="Claw"/>
+      <assignval field="sbName" value="Claw"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtNecrotic"/>
+      <assignval field="livename" value="Shard of Shadow"/>
+      <assignval field="sbName" value="Shard of Shadow"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must make a DC 20 Constitution save. On a failure, it is poisoned until the end of its next turn."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wRangeNorm" value="120"/>
+      </bootstrap>
+    <bootstrap thing="tpFey"></bootstrap>
+    <bootstrap thing="xInnatSpel">
+      <assignval field="CustDesc" value="Nintra&apos;s spellcasting ability is Charisma, they have a +12 to hit on spell attacks, and a save DC of 20. They can cast these spells without needing material components:"/>
+      <assignval field="livename" value="Spellcasting"/>
+      <assignval field="sbName" value="Spellcasting"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="lSylvan"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="40"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    <bootstrap thing="ra5CNnSShdStr"></bootstrap>
+    <bootstrap thing="ra5CNnSStrmSh"></bootstrap>
+    <bootstrap thing="ra5CLegResN">
+      <assignval field="abText" value="Nintra"/>
+      <assignval field="abText2" value="she"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLgTel2N">
+      <assignval field="livename" value="Fey Step"/>
+      <assignval field="sbName" value="Fey Step"/>
+      <assignval field="abText" value="Nintra"/>
+      <assignval field="abValue" value="30"/>
+      <assignval field="abText2" value="she"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLegAttack">
+      <assignval field="abText" value="Nintra"/>
+      <assignval field="abText2" value="regular"/>
+      </bootstrap>
+    <bootstrap thing="spDispMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spFaerFire">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spMirrImag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="ra5CNnSLrHead"></bootstrap>
+    <bootstrap thing="ra5CNnSExplPn"></bootstrap>
+    <bootstrap thing="ra5CNnSCVtxPn"></bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
+    </thing>
+  <thing id="r5CSage" name="Sage" compset="Race">
+    <fieldval field="rHitDice" value="5"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="22"/>
+    <fieldval field="rSTR" value="-2"/>
+    <fieldval field="rINT" value="8"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rCR" value="0.5"/>
+    <fieldval field="rLanguages" value="4"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfDouble" tag="skHistory"/>
+    <tag group="ProfDouble" tag="skInvestig"/>
+    <tag group="ProfDouble" tag="skNature"/>
+    <tag group="ProfDouble" tag="skReligion"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfDouble" tag="skMedicine"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ProfDouble" tag="skArcana"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="xInnatSpel">
+      <assignval field="livename" value="Spellcasting"/>
+      <assignval field="sbName" value="Spellcasting"/>
+      <assignval field="CustDesc" value="The sage&apos;s spellcasting ability is Intelligence (+6 to spell attacks, save DC 14). It can cast these spells:"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CShldN">
+      <assignval field="abText" value="the sage"/>
+      <assignval field="abText2" value="its"/>
+      </bootstrap>
+    <bootstrap thing="spDispMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLocaObje">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSeeInvi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSending">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spTongues">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spUnseServ">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCompLang">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spIdentify">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spLight">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMending">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="MelAttOpt" tag="aINT"/>
+      <autotag group="AttackTarg" tag="1Creature"/>
+      <autotag group="DamTypeOvr" tag="dtLightnin"/>
+      <assignval field="livename" value="Shocking Grasp (Cantrip)"/>
+      <assignval field="sbName" value="Shocking Grasp (Cantrip)"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="This attack has advantage if the target is wearing armor made with metal. On a hit, the target also cannot take reactions until the beginning of its next turn."/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wDamBonus" value="1"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    </thing>
+  <thing id="l5CGrippli" name="Grippli" compset="Language" uniqueness="useronce">
+    <usesource source="p5eCnMystP"/>
+    <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <tag group="LangCat" tag="Monster" name="Monster Languages" abbrev="Monster"/>
+    </thing>
+  <thing id="l5CSkitter" name="Sikitterwidget" compset="Language" uniqueness="useronce">
+    <usesource source="p5eCnMystP"/>
+    <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <tag group="LangCat" tag="Monster" name="Monster Languages" abbrev="Monster"/>
+    </thing>
+  <thing id="r5CDrgTrts" name="Dragon Tortoise" compset="Race">
+    <fieldval field="rHitDice" value="22"/>
+    <fieldval field="rHPStart" value="341"/>
+    <fieldval field="rCR" value="17.0"/>
+    <fieldval field="rMultiatt" value="The dragon tortoise makes one bite attack and two claws attacks. It can make one tail attack in place of its two claw attacks."/>
+    <fieldval field="rSpeed" value="20"/>
+    <fieldval field="rSTR" value="15"/>
+    <fieldval field="rCON" value="10"/>
+    <fieldval field="rWIS" value="2"/>
+    <fieldval field="rCHA" value="2"/>
+    <fieldval field="rAC" value="10"/>
+    <tag group="DamageRes" tag="dtFire" name="Fire" abbrev="Fire"/>
+    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="ProfSave" tag="svDEX" name="Dexterity" abbrev="Dexterity"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="RaceSize" tag="Gargant3" name="Gargantuan" abbrev="Gargantuan"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="NeutralGE" name="Neutral" abbrev="N"/>
+    <tag group="Alignment" tag="NeutralLC" name="Neutral" abbrev="N"/>
+    <bootstrap thing="tpDragon"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="12"/>
+      <assignval field="wReach" value="15"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wReach" value="10"/>
+      </bootstrap>
+    <bootstrap thing="wTail">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must succeed on a DC 20 Strength saving throw or be pushed up to 10 feet away from the tortoise and knocked prone."/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="12"/>
+      <assignval field="wReach" value="4"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lTerran"></bootstrap>
+    <bootstrap thing="ra5CDrTSndBrt"></bootstrap>
+    </thing>
+  <thing id="r5CFtdGzHg" name="Hag of the Fetid Gaze" compset="Race">
+    <fieldval field="rHitDice" value="11"/>
+    <fieldval field="rHPStart" value="82"/>
+    <fieldval field="rCR" value="3.0"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="3"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCHA" value="4"/>
+    <fieldval field="rAC" value="6"/>
+    <fieldval field="rSpCastLev" value="12"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Evil" name="Evil" abbrev="E"/>
+    <tag group="Alignment" tag="NeutralLC" name="Neutral" abbrev="N"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="ProfSkill" tag="skArcana" name="Arcana" abbrev="Arcana"/>
+    <tag group="ProfSkill" tag="skDecept" name="Deception" abbrev="Deception"/>
+    <bootstrap thing="lSylvan"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raGrHAmphi"></bootstrap>
+    <bootstrap thing="xInnatSpel">
+      <assignval field="abText" value="hag"/>
+      <assignval field="CustDesc" value="The hag can innately cast spells using Charisma as their spellcasting ability (save DC 12). They can cast these spells without material components:"/>
+      </bootstrap>
+    <bootstrap thing="raGrHMimic"></bootstrap>
+    <bootstrap thing="raGrHIlApp"></bootstrap>
+    <bootstrap thing="raGrHInPas"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="livename" value="Claws"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMinoIllu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spViciMock">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="xSpellcast">
+      <assignval field="CustDesc" value="Hags of the Fetid Gaze gain shared spellcasting when within 30 feet of one another, sharing these spell slots between each other. They use Intelligence as their spellcasting modifier, with an attack bonus of 4+ their intelligence modifier and a spell save DC of 12 + that modifier."/>
+      </bootstrap>
+    <bootstrap thing="tpFey"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    </thing>
+  <thing id="r5CLghtGlm" name="Lightning Golem" compset="Race">
+    <fieldval field="rHitDice" value="11"/>
+    <fieldval field="rHPStart" value="93"/>
+    <fieldval field="rCR" value="5.0"/>
+    <fieldval field="rMultiatt" value="The golem makes two slam attacks."/>
+    <fieldval field="rSTR" value="9"/>
+    <fieldval field="rDEX" value="-1"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="-4"/>
+    <fieldval field="rCHA" value="-5"/>
+    <fieldval field="rLangPromp" value="Understands the languages of its creator but can&apos;t speak"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="Helper" tag="CantSpeak" name="Cannot Speak" abbrev="Cannot Speak"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="NeutralGE" name="Neutral" abbrev="N"/>
+    <tag group="Alignment" tag="NeutralLC" name="Neutral" abbrev="N"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnExhaust" name="Exhaustion" abbrev="Exhaustion"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPetri" name="Petrified" abbrev="Petrified"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="DamComImm" tag="dcAtkNonAd" name="Bludgeoning, piercing, and slashing from nonmagical attacks that aren&apos;t adamantine" abbrev="Bludgeoning, piercing, and slashing from nonmagical attacks that aren&apos;t adamantine"/>
+    <tag group="DamageImm" tag="dtLightnin" name="Lightning" abbrev="Lightning"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raFGoBerse"></bootstrap>
+    <bootstrap thing="raCGoImFor"></bootstrap>
+    <bootstrap thing="raFGoLiAbs"></bootstrap>
+    <bootstrap thing="raCGoMaRes"></bootstrap>
+    <bootstrap thing="raCGoMaWea"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="wSlam">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtLightnin"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wDieCount" value="2"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    </thing>
+  <thing id="r5CZikran" name="Zikran" compset="Race">
+    <comment>Spellcasting
+statblock includes effects from Mage Armor and Stoneskin</comment>
+    <fieldval field="rHitDice" value="26"/>
+    <fieldval field="rHPStart" value="144"/>
+    <fieldval field="rCR" value="12.0"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="10"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rCHA" value="6"/>
+    <fieldval field="rSpCastLev" value="18"/>
+    <fieldval field="rAC" value="3"/>
+    <fieldval field="rArmText" value="12 without mage armor"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="WepProf" tag="wDagger" name="Dagger" abbrev="Dagger"/>
+    <tag group="sClass" tag="cHelpWiz" name="Wizard" abbrev="Wizard"/>
+    <tag group="ProfDouble" tag="skArcana" name="Arcana" abbrev="Arcana"/>
+    <tag group="DamageRes" tag="dtSpells" name="Spells" abbrev="Spells"/>
+    <tag group="ProfDouble" tag="skHistory" name="History" abbrev="History"/>
+    <tag group="ProfSave" tag="svINT" name="Intelligence" abbrev="Intelligence"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ra5CZikEleCan"></bootstrap>
+    <bootstrap thing="raArcMaRes"></bootstrap>
+    <bootstrap thing="xSpellcast"></bootstrap>
+    <bootstrap thing="lAquan"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lSahuagin"></bootstrap>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    <eval phase="First" priority="1000"><![CDATA[
+      hero.child[xSpellcast].field[CustDesc].text = "Zikran is a #lev#-level spellcaster. His spellcasting ability is #abil# (spell save DC #dc#, #atk# to hit with spell attacks). Zikran can cast {i}disguise self{/i} and {i}invisibility{/i} at will and has the following #class# spells prepared:"]]></eval>
+    </thing>
+  <thing id="r5CZizokr" name="Zikzokrishka" compset="Race">
+    <fieldval field="rHitDice" value="18"/>
+    <fieldval field="rHPStart" value="225"/>
+    <fieldval field="rCR" value="16.0"/>
+    <fieldval field="rMultiatt" value="The dragon can use its Frightful Presence. It then makes three attacks: one with its bite and two with its claws."/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rSTR" value="15"/>
+    <fieldval field="rCON" value="13"/>
+    <fieldval field="rINT" value="6"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rCHA" value="9"/>
+    <fieldval field="rAC" value="9"/>
+    <tag group="Alignment" tag="Evil" name="Evil" abbrev="E"/>
+    <tag group="Alignment" tag="Lawful" name="Lawful" abbrev="L"/>
+    <tag group="DamageImm" tag="dtLightnin" name="Lightning" abbrev="Lightning"/>
+    <tag group="ProfDouble" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="ProfSave" tag="svDEX" name="Dexterity" abbrev="Dexterity"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="RaceSize" tag="Huge2" name="Huge" abbrev="Huge"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="OverType" tag="tpUndead"/>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="raAnBDetec"></bootstrap>
+    <bootstrap thing="raAnBTaAtt"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDamExtra" value="5 (1d10) lightning damage"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wReach" value="10"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="wTail">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wReach" value="15"/>
+      </bootstrap>
+    <bootstrap thing="raDraFrigh"></bootstrap>
+    <bootstrap thing="raDraWingA">
+      <assignval field="abRange" value="10"/>
+      </bootstrap>
+    <bootstrap thing="raAdBLiBre"></bootstrap>
+    <bootstrap thing="ra5CZkzLrHead"></bootstrap>
+    <bootstrap thing="ra5CZkzClpsCg"></bootstrap>
+    <bootstrap thing="ra5CZkzSwrlS"></bootstrap>
+    <bootstrap thing="ra5CZkzLghtLn"></bootstrap>
+    <bootstrap thing="tpDragon"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="xBurrow">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Maneuver" tag="Average"/>
+      <autotag group="Value" tag="80"/>
+      </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="raAnBLeRes"></bootstrap>
+    <bootstrap thing="ra5CMagResN">
+      <assignval field="abText" value="Zikzokrishka"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CFnglSrv" name="Fungal Servant" compset="Race">
+    <fieldval field="rHitDice" value="13"/>
+    <fieldval field="rHPStart" value="97"/>
+    <fieldval field="rCR" value="15.0"/>
+    <fieldval field="rMultiatt" value="The fungal servant can use its Dreadful Glare and makes one attack with its rotting fist."/>
+    <fieldval field="rSpeed" value="20"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rCON" value="7"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rWIS" value="8"/>
+    <fieldval field="rCHA" value="6"/>
+    <fieldval field="rLangPromp" value="the languages it knew in life"/>
+    <fieldval field="rAC" value="7"/>
+    <fieldval field="rSpCastLev" value="11"/>
+    <usesource source="p5eCnMystP"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSkill" tag="skHistory" name="History" abbrev="History"/>
+    <tag group="ProfSkill" tag="skReligion" name="Religion" abbrev="Religion"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="sClass" tag="cHelpClr" name="Cleric" abbrev="Cleric"/>
+    <tag group="Alignment" tag="Evil" name="Evil" abbrev="E"/>
+    <tag group="Alignment" tag="Lawful" name="Lawful" abbrev="L"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnExhaust" name="Exhaustion" abbrev="Exhaustion"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="DamComImm" tag="dcAtkNonMa" name="Bludgeoning, piercing, and slashing from nonmagical attacks" abbrev="Bludgeoning, piercing, and slashing from nonmagical attacks"/>
+    <tag group="DamageImm" tag="dtNecrotic" name="Necrotic" abbrev="Necrotic"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <tag group="DamageVuln" tag="dtFire" name="Fire" abbrev="Fire"/>
+    <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="ProfSave" tag="svINT" name="Intelligence" abbrev="Intelligence"/>
+    <bootstrap thing="xSpellcast"></bootstrap>
+    <bootstrap thing="raMuLDrGla"></bootstrap>
+    <bootstrap thing="raMuLAttac"></bootstrap>
+    <bootstrap thing="raMuLBlWor"></bootstrap>
+    <bootstrap thing="raMuLChNeg"></bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamageType" tag="dtBludgeon"/>
+      <autotag group="StandardDC" tag="aCON"/>
+      <autotag group="abSave" tag="aCON"/>
+      <assignval field="livename" value="Rotting Fist"/>
+      <assignval field="sbName" value="Rotting Fist"/>
+      <assignval field="wAttackEff" value="If the target is a creature, it must succeed on a DC 16 Constitution saving throw or be cursed with mummy rot. The cursed target can’t regain hit points, and its hit point maximum decreases by 10 (3d6) for every 24 hours that elapse. If the curse reduces the target’s hit point maximum to 0, the target dies, and its body turns to spores. The curse lasts until removed by the {i}remove curse{/i} spell or other magic."/>
+      <assignval field="wDamExtra" value=" plus 21 (6d6) necrotic damage"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wReach" value="5"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raMuLMaRes"></bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="raMuLRejuv"></bootstrap>
+    <bootstrap thing="ra5CFngBldSpr"></bootstrap>
+    <bootstrap thing="ra5CFngWhrlSp"></bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
+    <eval phase="First"><![CDATA[
+var Desc as string
+
+foreach pick in hero where "thingid.raMuLDrGla | thingid.raMuLBlWor | thingid.raMuLChNeg | thingid.raMuLMaRes | thingid.raMuLRejuv | thingid.raMuLAttac"
+  Desc = eachpick.field[descript].text
+  Desc = replace(Desc,"mummy lord","fungal servant",0)
+  Desc = replace(Desc,"mummy","servant",0)
+  Desc = replace(Desc,"mummies and fungal servants","fungal servants",0)
+  eachpick.field[CustDesc].text = Desc
+  nexteach]]></eval>
+    </thing>
+  <thing id="ra5CNnSLrHead" name="Lair Actions" description="On initiative count 20 (losing initiative ties) Nintra can use one of these lair actions. She can&apos;t use the same one two rounds in a row:" compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="LairHeader"/>
+    </thing>
+  <thing id="ra5CNnSExplPn" name="Exploding Pane" description="Nintra targets one pane of shadow glass in her lair. The pane explodes into shards. Each creature within 20 feet of the exploding pane must make a DC 18 Dexterity save, suffering 13 (3d8) piercing damage on a failure or half that on a success. The shards dissolve into vapor and the pane is restored to normal at the next initiative count 20." compset="RaceSpec">
+    <fieldval field="wDieCount" value="3"/>
+    <fieldval field="wDieSize" value="8"/>
+    <fieldval field="abText" value="DC 18 Dex"/>
+    <tag group="FeatureTyp" tag="Lair"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="DamageType" tag="dtPiercing"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    </thing>
+  <thing id="ra5CNnSCVtxPn" name="Vortex Pane" description="Nintra targets one pane of shadow glass in her lair. The pane briefly becomes a swirling vortex. One creature of her choice within 20 feet of that pane must make a DC 20 Strength save. On a failure, it is drawn into the vortex, taking 11 (2d10) necrotic damage. The creature is then teleported to an open space within 5 feet of another pane of shadow glass in Nintra&apos;s lair. The pane it teleports to is determined randomly." compset="RaceSpec">
+    <fieldval field="wDieCount" value="2"/>
+    <fieldval field="wDieSize" value="10"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Lair"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="DamageType" tag="dtNecrotic"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CZkzLrHead" name="Lair Actions" description="On initiative count 20 (losing initiative ties) whenever she is in area V3, Zikzokrishka can take one of these lair actions. She can&apos;t use the same one two rounds in a row:" compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="LairHeader"/>
+    </thing>
+  <thing id="ra5CZkzClpsCg" name="Collapse Ceiling" description="Part of the ceiling collapses above one creature that Zikzokrishka can see. The creature must make a DC 15 Dexterity save. On a failure, the creature takes 21 (6d6) bludgeoning damage, is knocked prone, and is buried under the resulting rubble. The buried creature is restrained and unable to stand up. A creature can use an action to try to pull itself or another creature out of the rubble, doing so with a successful DC 10 Strength (Athletics) check." compset="RaceSpec">
+    <fieldval field="wDieCount" value="6"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Lair"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="DamageType" tag="dtBludgeon"/>
+    </thing>
+  <thing id="ra5CZkzSwrlS" name="Swirling Sand" description="A cloud of sand swirls in a 20-foot-radius sphere centered on a point Zikzokrishka can see within 60 feet of herself. The cloud spreads around corners. Each creature in the cloud must make a DC 15 Constitution save. On a failure, it is blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect for itself on a success." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Lair"/>
+    <tag group="abSave" tag="aCON"/>
+    </thing>
+  <thing id="ra5CZkzLghtLn" name="Lightning Line" description="Zikzokrishka chooses two points that she can see, each of which must be on a solid surface, and creates a 5-foot-wide line of lightning between them. The two points must be within 60 feet of Zikzokrishka and 60 feet of each other. Each creature in the line must make a DC 15 Dexterity save. On a failure, the creature takes 10 (3d6) lightning damage." compset="RaceSpec">
+    <fieldval field="wDieCount" value="3"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Lair"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="DamageType" tag="dtLightnin"/>
+    </thing>
+  </document>
