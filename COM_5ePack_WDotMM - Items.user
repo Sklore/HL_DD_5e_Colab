@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="io5CBlkCrySh" name="Black Crystal Tablet" description="Any creature that attunes to this tablet must make a DC 20 Wisdom save when it finishes its next long rest. On a failure, the creature becomes afflicted with a random form of long-term madness (see the Madness section in chapter 8 of the DMG).\nA creature attuned to the tablet can use an action to use the tablet to cast {i}eyebite{/i} or {i}gate{/i} (the portal created by this version of gate can only link to the Far Realm). After the tablet is used to cast a spell, it cannot be used again until the next dawn." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a creature that has proficiency in the Arcana skill"/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spGate">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="ChargeUse" tag="1"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="Far Realm only"/>
+      </bootstrap>
+    <bootstrap thing="spEyebite">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="ChargeUse" tag="1"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    </thing>
+  <thing id="id5CBlstScpt" name="Blast Scepter" description="The Blast Scepter can be used as an arcane focus. Whoever is attuned to it is resistant to fire and lightning damage. They can also use an action to cast {i}thunderwave{/i} at 4th level (spell save DC 16) without using a spell slot." compset="Rod">
+    <usesource source="p5eWDotMM"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Custom" tag="5CEbArcFoc"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <bootstrap thing="spThunderw">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sNameMod" value="4th level, save DC 16"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
+
+
+
+
+      perform hero.assign[DamageRes.dtFire]
+      perform hero.assign[DamageRes.dtLightnin]</eval>
+    </thing>
+  <thing id="io5CCrcHmPrf" name="Circlet of Human Perfection" description="This circlet transforms its attuned wearer to an attractive human of average height and weight. The circle chooses the physical aspects of that human, including age, gender, skin color, hair color, and voice. Other than size, the wearer&apos;s stats and racial traits are not changed, nor are items the wearer is wearing or carrying. The effect ends when the circlet is removed." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a humanoid"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="NeedDomain"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="User" tag="OptDomain"/>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
+    </thing>
+  <thing id="i5CDgrGtr" name="Dagger of Guitar Solos" description="When struck or used to strike a foe, this drow-made dagger magically plays snippets of a guitar solo." compset="MagicWep">
+    <fieldval field="gCost" value="750"/>
+    <fieldval field="gWeight" value="1"/>
+    <usesource source="p5eWDotMM"/>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wDagger"></bootstrap>
+      </child>
+    </thing>
+  <thing id="io5CD12Doom" name="Dodecahedron of Doom" description="This twelve-sided metal die is 12 inches across and bears the numbers 1 through 12 engraved on its pentagonal sides. Casting the die causes its internal arcane clockwork to whir and click.\n\nThe dodecahedron can be thrown up to 60 feet with an action. When the die rolls at least 10 feet and comes to rest, a magical effect occurs. Spells cast as one of these effects require no components. If the effect needs a target and no eligible targets are within range, nothing happens. Roll a d12 to determine the effect from the options below:\n\n{b}1-2{/b}. The dodecahedron explodes and is destroyed. Every creature within 20 feet of the exploding die must make a DC 13 Dexterity save. A creature takes 40 (9d8) force damage on a failure or half that on a success.\n{b}3-4{/b}. The dodecahedron casts {i}light{/i} on itself, lasting until a creature touches the die.\n{b}5-6{/b}. The dodecahedron casts {i}ray of frost{/i} with a +5 to hit, targeting a random creature within 60 feet of it that doesn&apos;t have total cover against the attack.\n{b}7-8{/b}. The dodecahedron casts {i}shocking grasp{/i} with a +5 to hit on the next creature that touches it.\n{b}9-10{/b}. The dodecahedron casts {i}darkness{/i} on itself, with a duration of 10 minutes.\n{b}11-12{/b}. The next creature to touch the dodecahedron gains 1d10 temporary hit points, which last for 1 hour." compset="Wondrous">
+    <usesource source="p5eWDotMM"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <bootstrap thing="spLight">
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    <bootstrap thing="spRayFros">
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    <bootstrap thing="spShocGras">
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    </thing>
+  <thing id="io5CPigHelm" name="Falkir&apos;s Helm of Pigheadedness" description="Once donned, this steel, boar head-shaped helm can&apos;t be removed until you die or until a {i}remove curse{/i} spell or similar magic is cast on it. If you wear the helm and are a humanoid, you gain this flaw, superseding any conflicting flaw: I&apos;m incredibly stubborn and think I&apos;m always right." compset="Wondrous">
+    <usesource source="p5eWDotMM"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="CursedItem"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <bootstrap thing="bt5CPigFlw">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
+
+
+
+      perform assign[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="io5CHlmScvg" name="Helm of the Scavenger" description="This fancy chair is designed to move a ship through space.\n\n{b}Passive Properties{/b}. These properties of the helm are present regardless of whether or not a creature is attuned to it, when the helm is aboard a vessel weighing between 1 and 100 tons:\nThe helm creates a zone of fresh air around the ship while it is in the void of space (but not underwater). This envelope extends out from the edges of the hull in all directions for a distance equal in length to the vessel&apos;s beam, so that creatures aboard and near the ship can breathe normally in space. The temperature within the bubble is 70 degrees Fahrenheit.\nThe helm creates an artificial gravity field while the ship is in the void of space, so that creatures can walk on the ship&apos;s decks as usual. Creatures and objects that fall overboard bob in a gravity plane that extends out from the main deck for a distance equal in length to the vessel&apos;s beam.\n\n{b}Active Properties{/b}. Being attuned to the helm feels similar to being immersed in warm water. While attuned to the helm and sitting in it, you gain these abilities:\nYou can use the helm to propel the vessel across or through water and other liquids at a maximum speed in miles per hour equal to your highest-level unexpended spell slot.\nYou can use the helm to propel the vessel through air or space at a maximum speed in miles per hour equal ten times to your highest-level unexpended spell slot.\nIf you have at least one unexpended spell slot, you can steer the vessel in a similar manner to how oars or a rudder would steer it.\nWhenever you choose, you can see what&apos;s happening on and around the vessel as if you were standing in any location of your choice on board it.\n\n{b}{/b}Drawback. While attuned to the helm, you cannot spend your own spell slots." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a spellcaster"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <eval phase="PreLevel" priority="10000">perform assign[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="io5CHrnEndMz" name="Horn of the Endless Maze" description="You can use an action to blow this horn, causing 3d4+ 3 abyssal warriors to appear within 60 feet of you. These spirits use the berserker stat block and appear as minotaurs. They return to the abyss after 1 hour or when they drop to 0 hit points. Once you use the horn, it can&apos;t be used again until 7 days have passed.\nIf you are not proficient all simple weapons, the summoned berserkers attack you. If you are proficient with them, the summoned berserkers are friendly to you and your allies and obey your commands." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="gWeight" value="2"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="5C7Days" name="/7 days"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="ir5CHrndRng" name="Horned Ring" description="While wearing this ring, the person attuned to it can ignore the magical restrictions of the mad mage&apos;s dungeon." compset="Ring">
+    <usesource source="p5eWDotMM"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
+    </thing>
+  <thing id="io5CMdgthH" name="Maddgoth&apos;s Helm" description="Wearing this helmet while within the confines of Maddgoth&apos;s castle (including the roof and courtyard) grants you immunity to all damage. The helm crumbles to dust, destroyed, if it is removed from the castle." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a humanoid"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
+    </thing>
+  <thing id="io5CMndFlySk" name="Mind Flayer Skull" description="While you&apos;re in possession of the skull, you and anything you&apos;re wearing or carrying are invisible to mind flayers." compset="Wondrous">
+    <usesource source="p5eWDotMM"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="io5CPrlUndD" name="Pearl of Undead Detection" description="This black pearl emits a faint glows within 120 feet of undead." compset="Wondrous">
+    <fieldval field="gCost" value="500"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="po5CPtComp" name="Potion of Comprehension" description="Drinking this potion grants you the effect of a {i}comprehend languages{/i} spell for 1 hour." compset="Wondrous">
+    <usesource source="p5eWDotMM"/>
+    <tag group="SpInfo" tag="spCompLang"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="po5CPtWtchf" name="Potion of Watchful Rest" description="Drinking this potion grants you these benefits for the next 8 hours:\n• Magic cannot put you to sleep\n• You do not have to sleep during a long rest to gain its benefits.\n\nThis potion has no effect on creatures that do not need to sleep, such as elves." compset="Wondrous">
+    <usesource source="p5eWDotMM"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="io5CPrpHlm" name="Propeller Helm" description="The helm&apos;s wearer can use an action to cast {i}levitate{/i} spell, requiring no components. Until the spell ends, the helm&apos;s propeller spins and whirs loudly. Each time the spell ends, there is a 50 percent chance that the helm loses its magic and becomes nonmagical." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a small humanoid"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="SpInfo" tag="spLevitate"/>
+    <bootstrap thing="spLevitate">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
+
+
+
+      perform assign[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="g5CTngGrnd" name="Tangler Grenade" description="A creature can use an action to throw this nonmagical, alchemical grenade at a point up to 60 feet away. Every creature within 10 feet of a shattered tangler grenade must make a DC 15 Dexterity save, becoming restrained by sticky white webs on a failure. The creature can use an action to try to free itself or another creature within its reach from the webs, doing so with a successful DC 20 Strength (Athletics) check. A gallon of alcohol dissolves the webs produced by a single grenade. Otherwise, the webs dissolve on their own after 1 hour, freeing any creatures they have restrained." compset="Gear">
+    <usesource source="p5eWDotMM"/>
+    <tag group="GearType" tag="gtAdventGe"/>
+    </thing>
+  <thing id="io5CVlStrdst" name="Vial of Stardust" description="A creature that sprinkles the contents of this vial over itself is able to cast {i}dream{/i} once as an action with spell save DC 15, and needing no components." compset="Wondrous">
+    <usesource source="p5eWDotMM"/>
+    <tag group="SpInfo" tag="spDream"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="io5CChstPre" name="Chest of Preserving" description="Food and other perishable items do not age or decay while inside this chest. The chest is 2 and a half feet long, 1 and a half feet wide, and 1 foot tall with a half-barrel lid. The chest does have a lock, which can be picked with thieves&apos; tools and a successful DC 15 Dexterity check. Destroying the lock or any other part of the chest causes the chest to become nonmagical." compset="Wondrous">
+    <fieldval field="gWeight" value="25"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="thing" tag="holder"/>
+    </thing>
+  <thing id="i5CDgrBlnd" name="Dagger of Blindsight" description="Attunement to this rare, magic dagger grants the user blindsight to a range of 30 feet." compset="MagicWep">
+    <fieldval field="gWeight" value="1"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <bootstrap thing="raBlindSi">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wDagger"></bootstrap>
+      </child>
+    </thing>
+  <thing id="is5CJdSrpStf" name="Jade Serpent Staff" description="This staff is broken into five pieces, each worth 100gp for the jade they&apos;re made of. The {i}mending{/i} cantrip can be used to fix the breaks between each piece. Once made whole with multiple castings of that spell, the staff transforms into an animated jade serpent (see the encounter builder for its statistics). It obeys whoever was holding the completed staff when it transforms. When the serpent reaches 0 hit points, roll a d6. On a roll of 1, the snake crumbles to dust and is destroyed. On a roll of 2-6, it reverts to its staff form and breaks into 1d4+1 pieces, which must be magically reassembled in the same manner before the staff can be used again." compset="Staff">
+    <usesource source="p5eWDotMM"/>
+    </thing>
+  <thing id="io5COrbGong" name="Orb of Gonging" description="This hollow, 5-inch-diameter orb weighs 5 pounds, and its outer shell is composed of notched bronze rings. The notches can be aligned as an action, and doing so causes the orb to emit a loud gong until the notches are unaligned again. The sound occurs every 6 seconds and is audible out to a range of 600 feet." compset="Wondrous">
+    <fieldval field="gWeight" value="5"/>
+    <fieldval field="actName" value="Aligned"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="ItemRarity" tag="Common"/>
+    </thing>
+  <thing id="i5CShldUven" name="Shield of the Uven Rune" description="A character who examines the rune burned into the shield&apos;s outer side and succeeds on a DC 20 Intelligence (History) check recognizes it as the Giant rune for enemy.\n\nWhile holding the shield, you benefit from these properties:\n{b}Winter&apos;s Friend{/b}. You have immunity to cold damage.\n{b}Deadly Rebuke{/b}. Immediately after a creature hits you with a melee attack, you can take your reaction to deal 3d6 necrotic damage to that creature.\n{b}Bane{/b}. You can cast {i}bane{/i} from the shield (save DC 17). The spell does not require concentration and lasts for 1 minute. Once you cast the spell from the shield, you can&apos;t do so again until you complete a short or long rest.\n{b}Gift of Vengeance{/b}. You can shift the shield&apos;s magic to a nonmagical weapon by tracing its rune on the weapon with a finger. The transfer takes 8 hours of work, and the two items must be within 5 feet of each other for that duration. At the end, the shield is destroyed, and the rune is now on the chosen weapon. This weapon becomes a rare magic item that requires attunement. It has the properties of a +1 weapon. The bonus increases to +3 when the weapon is used against one of these types of creature, chosen by you when you transfer the rune: aberrations, celestials, constructs, dragons, elementals, fey, fiends, giants, or undead.\n\n{i}Note: You can add a +1 Uven Rune Weapon to your hero when you do this transfer.{/i}" compset="MagicArmor">
+    <fieldval field="gWeight" value="6"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <bootstrap thing="spBane">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="ShortRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
+
+
+perform hero.assign[DamageImm.dtCold]</eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="mShield"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CTearulai" name="Tearulai" description="This sentient, neutral good longsword&apos;s magical properties are suppressed until it is removed from Valdemar&apos;s skull.\n\nAny evil creature that tries to attune to this sword is unable to do so, and suffers 20 psychic damage. Its emerald blade can&apos;t be damaged or dulled, and the sword can&apos;t be teleported anywhere without its wielder while the two are attuned to one another.\n\n{b}Spells{/b}. The sword has 6 charges, regaining 1d4 + 2 spent charges each dawn. A creature attuned to the sword can use an action and spend 1 or more charges to cast one these spells from it without material components: {i}fly{/i} (2 charges), {i}polymorph{/i} (3 charges), or {i}transport via plants{/i} (4 charges).\n\n{b}Sentience{/b}. The sword has an Intelligence of 17, a Wisdom of 12, and a Charisma of 20. It has hearing and truesight out to a range of 120 feet. It communicates telepathically with its attuned wielder and can speak, read, and understand Common, Draconic, Elvish, and Sylvan. Additionally, the sword can determine the true value of any gemstone brought within 5 feet of it.\n\n{b}Personality{/b}. The sword admires beauty, music, fine art, and poetry. It is vain, constantly wanting to look better. It seeks gemstones and whatever else it can find to add to itself. Most of all, it desires to return to where it was made, the forests around Myth Drannor. If its wielder&apos;s goals run counter to its own, Tearulai attempts to take control of its wielder and escape the mad mage&apos;s dungeon, whereupon it can use its {i}transport via plants{/i} spell to return to where it was made.\n\nWhen you attack an object with this magic sword and hit, maximize your weapon damage dice against the target.\n\nWhen you attack a creature with this weapon and roll a 20 on the attack roll, that target takes an additional 14 slashing damage. Then roll another d20. If you roll a 20, you chop off one of the target&apos;s limbs, with the effect of such loss determined by the DM. If the creature has no limb to sever, you cut off a section of its body instead.\n\nYou can speak the sword&apos;s command to cause the blade to shed bright light in a 10-foot radius and dim light for another 10 feet. Speaking the command word again or sheathing the sword extinguishes the light." compset="MagicWep">
+    <fieldval field="trkMax" value="6"/>
+    <fieldval field="gWeight" value="3"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <bootstrap thing="spFly">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="spPolymorp">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="spTranvia">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="4"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[gIsEquip].value = 0)
+      field[abText].text = "regains 1d4+2 at dawn"
+
+
+      perform assign[Helper.ShowSpec]]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wLongsword"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CVnrkMthr" name="Vanrak&apos;s Mithral Shirt" description="A chain shirt or breastplate made of mithral, this light, flexible metal, can be worn under normal clothes. If the armor normally imposes disadvantage on Dexterity (Stealth) checks or requires a certain amount of Strength, the mithral version does not. While wearing this armor, you have 60 feet of darkvision." compset="MagicArmor">
+    <fieldval field="gWeight" value="20"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="250"><![CDATA[fieldval:gIsEquip <> 0]]></containerreq>
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <eval phase="Final" priority="20000">~make Mithral changes
+      perform delete[ArmorMinSt.?]
+      perform delete[Helper.StealthDis]
+
+      ~show in specials list when equipped
+      doneif (field[gIsEquip].value = 0)
+      perform assign[Helper.ShowSpec]</eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="mChainShrt"></bootstrap>
+      </child>
+    </thing>
+  <thing id="is5CWylStfFl" name="Wyllow&apos;s Staff of Flowers" description="This wooden staff has 10 charges, regaining 1d6 + 4 spent charges each dawn. While holding it, you can use an action to spend 1 charge from the staff and cause a flower to sprout from a patch of earth or soil within 5 feet of you, or from the staff itself. You can choose a specific type of flower; if you do not, the staff creates a daisy with a mild scent. The flower is harmless and nonmagical, and it grows or dies as any normal flower would. If you spend the last charge, roll a d20. On a 1, the staff turns into flower petals and is destroyed. \n\nThis particular staff of flowers cannot create roses. Choosing a rose causes the daisy to grow instead." compset="Staff">
+    <fieldval field="trkMax" value="10"/>
+    <fieldval field="gWeight" value="4"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[gIsEquip].value = 0)
+      field[abText].text = "regains 1d6+4 at dawn"]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="w5CStaff"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CUvnWpn" name="Uven Rune Weapon, +1" description="You have a +1 bonus to attack and damage rolls made with this magic weapon. The bonus increases to +3 when the weapon is used against one of these types of creature, chosen by you when you transfer the rune from the shield to this weapon: aberrations, celestials, constructs, dragons, elementals, fey, fiends, giants, or undead." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="any"/>
+    <fieldval field="Bonus" value="1"/>
+    <arrayval field="usrArray" index="1" value="Celestials"/>
+    <arrayval field="usrArray" index="2" value="Constructs"/>
+    <arrayval field="usrArray" index="3" value="Dragons"/>
+    <arrayval field="usrArray" index="4" value="Elementals"/>
+    <arrayval field="usrArray" index="5" value="Fey"/>
+    <arrayval field="usrArray" index="6" value="Fiends"/>
+    <arrayval field="usrArray" index="7" value="Giants"/>
+    <arrayval field="usrArray" index="8" value="Undead"/>
+    <arrayval field="usrArray" index="0" value="Aberrations"/>
+    <usesource source="p5eWDotMM"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "+1 Uven "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Weapon"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="bt5CPigFlw" name="Stubborn" description="I&apos;m incredibly stubborn and think I&apos;m always right." compset="BackFlaw" uniqueness="unique">
+    <tag group="Background" tag="5CNoBckgr" name="Not available to any backgrounds" abbrev="None"/>
+    <eval phase="First" priority="10000">hero.childfound[BackCheck].field[FlawCurr].value -= 1</eval>
+    </thing>
+  </document>

@@ -12,7 +12,7 @@
     <bootstrap thing="gKitDisgui">
       <autotag group="Proficienc" tag="Tool"/>
       </bootstrap>
-    <bootstrap thing="ab5CDiVDualPers"></bootstrap>
+    <bootstrap thing="ab5CDualP"></bootstrap>
     </thing>
   <thing id="bt5CDiAForth" name="Forthright" description="I am forthright and earnest." compset="BackPerTrt" uniqueness="unique">
     <usesource source="p5eBGDiAP"/>
@@ -194,29 +194,215 @@
     <tag group="Roll" tag="10"/>
     <tag group="Background" tag="bck5CDiAFaceless" name="Faceless" abbrev="Faceless"/>
     </thing>
-  <thing id="ab5CDiVDualPers" name="Dual Personalities" description="Most of those who think they know you only know you as your persona. Individuals who seek to learn more about you, weaknesses, origins, purpose, etc , find themselves stymied by your disguise. \n\nWhen you don a disguise and behave as your persona, you are unidentifiable as your true self. \n\nBy removing your disguise and revealing your true face, you are no longer identifiable as your persona. This allows you to change appearances between your two personalities as often as you wish, using one to hide the other or serve as convenient camouflage. However, should someone realize the connection between your persona and your true self, your deception might lose its effectiveness." compset="Ability">
+  <thing id="ab5CDualP" name="Dual Personalities" description="Most of those who think they know you only know you as your persona. Individuals who seek to learn more about you, weaknesses, origins, purpose, etc , find themselves stymied by your disguise. \n\nWhen you don a disguise and behave as your persona, you are unidentifiable as your true self. \n\nBy removing your disguise and revealing your true face, you are no longer identifiable as your persona. This allows you to change appearances between your two personalities as often as you wish, using one to hide the other or serve as convenient camouflage. However, should someone realize the connection between your persona and your true self, your deception might lose its effectiveness." compset="Ability">
     <usesource source="p5eBGDiAP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="AbilFunc" tag="Background"/>
     </thing>
-  <thing id="p5CDiVVBGF" name="Variant Background Features (BG:DiA)" description="This adjustment allows the selection of variant background features associated with Baldur&apos;s Gate." compset="InPlay" summary="Baldur&apos;s Gate: Descent into Avernus">
+  <thing id="p5CDiVVBGF" name="Background Option, Baldur&apos;s Gate" description="This adjustment will add Baldur&apos;s Gate-related features to some of the standard backgrounds." compset="InPlay" uniqueness="unique">
     <usesource source="p5eBGDiAP"/>
     <tag group="OthAdjCat" tag="UserTop5th"/>
-    <tag group="Helper" tag="NoIncr"/>
     <tag group="Helper" tag="AdjNoPlus"/>
     <tag group="Helper" tag="AdjInfo"/>
-    <eval phase="First">
-     if (tagis[Background.bckAcolyte] = 1) then
-       ~perform tagreplace[hero.bAcolShelt,hero.ab5CDiVbgAcolyte]
-     endif
+    <tag group="Helper" tag="NoIncr"/>
+    <bootstrap thing="ab5CBGLngLs">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 2</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGCrmCn">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 3</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGBckPs">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 4</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGSclVn">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 5</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGPrfCr">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 6</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGRlCty">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 7</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGPatri">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 8</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGImgEx">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 9</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGRmMng">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 10</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGSmgSn">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 11</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGCtyGd">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 12</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGLylTs">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 12</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGGtgdC">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 13</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGCrmOr">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 3</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGRelCm">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 1</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGFlkOr">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 5</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGHrmOr">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 7</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CBGOutOr">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 9</containerreq>
+      </bootstrap>
+    <eval phase="First"><![CDATA[doneif (field[pIsOn].value = 0)
 
-     if (tagis[Background.bck5CDiAFaceless] = 1) then
-
-     endif</eval>
+if (hero.childlives[bckAcolyte] <> 0) then
+    field[pMaximum].value = 1
+elseif (hero.childlives[bck5CChar] <> 0) then
+    field[pMaximum].value = 2
+elseif (hero.childlives[bck5CCrim] <> 0) then
+    field[pMaximum].value = 3
+elseif (hero.childlives[bck5CEnte] <> 0) then
+    field[pMaximum].value = 4
+elseif (hero.childlives[bck5CFolk] <> 0) then
+    field[pMaximum].value = 5
+elseif (hero.childlives[bck5CGldA] <> 0) then
+    field[pMaximum].value = 6
+elseif (hero.childlives[bck5CHerm] <> 0) then
+    field[pMaximum].value = 7
+elseif (hero.childlives[bck5CNobl] <> 0) then
+    field[pMaximum].value = 8
+elseif (hero.childlives[bck5COutl] <> 0) then
+    field[pMaximum].value = 9
+elseif (hero.childlives[bck5CSage] <> 0) then
+    field[pMaximum].value = 10
+elseif (hero.childlives[bck5CSail] <> 0) then
+    field[pMaximum].value = 11
+elseif (hero.childlives[bck5CSold] <> 0) then
+    field[pMaximum].value = 12
+elseif (hero.childlives[bck5CUrch] <> 0) then
+    field[pMaximum].value = 13
+endif]]></eval>
     </thing>
-  <thing id="ab5CDiVbgAcolyte" name="Baldur’s Gate Feature: Religious Community" description="You’re tightly connected with the religious community of Baldur’s Gate. You know if a deity has a following in the city and any places that faith openly congregates and the neighborhoods those faithful typically inhabit. While this isn’t remarkable for most of the city’s larger faiths, keeping track of the hundreds of religions newcomers bring with them is no mean feat." compset="Ability">
+  <thing id="ab5CBGRelCm" name="Baldur’s Gate: Religious Community" description="You have strong connections to the religious communities in the city. You know which deities have followings, as well as where their faithful tend to live and congregate. While the larger followings are obvious, your knowledge is detailed even to the least known deities and groups.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
     <usesource source="p5eBGDiAP"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGLngLs" name="Baldur’s Gate: Long-Lost Heir" description="You are quite familiar with the mannerisms of patriars and other nobility, and you can imitate them well enough to convince even the snootiest nobles of your authenticity. With ease, you portray some long-lost heir of an obscure patriar family.\n\nBecause you&apos;re so good at this, you have a Watch token that allows you solo entry into the Upper City. You may be able to bluff enough to bring others in with you, or even to convince members of the Watch that you&apos;re a patriar yourself. But any real test of your authenticity could possibly reveal the deception.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGCrmCn" name="Baldur’s Gate: Criminal Connections" description="Crime is business, and you&apos;ve got business connections. You can arrange shady meetings with low-ranking members of virtually any organization. Those operatives will, at their discretion, carry your words or requests up the chain. \n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGBckPs" name="Baldur’s Gate: Backstage Pass" description="You&apos;ve learned that the real business of entertainment is what happens behind the curtain. You know what types of people will attend what types of entertainment and venues. After a successful performance, you may meet a fan from the crowd, someone of that particular social class or profession that&apos;s normal for the venue. They&apos;re happy to speak with you, and to hear what you have to say.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGSclVn" name="Baldur’s Gate: Social Vengeance" description="You&apos;ve lived your whole life under the thumb of the patriars, and know how much people want to see them get what they deserve. While in a busy part of the Lower or Outer City, you can spend 2d10 minutes convincing 1d6 commoners to inconvenience a solider of the Watch or Fist, a patriar, or any other wealthy-looking individual. The commoners won&apos;t do anything illegal for you, though.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGPrfCr" name="Baldur’s Gate: Professional Courtesy" description="You know the city&apos;s crews, their territories, and their inner politics. Choose one of the three districts of the city: the Upper City, the Lower City, or the Outer City. The chosen district is where you do most of your business. Whenever you need information about something in those neighborhoods, you can find crew members from the area. They provide the local gossip. You also can gain entry to almost any bank, guild hall, business, workhouse, or crew meeting place in the chosen district.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGRlCty" name="Baldur’s Gate: The Real City" description="You know where to go for anonymity in the Lower or Outer City. You can get a raggedy bed and a bad meal, but also privacy. You can stay as long as you want, and it&apos;s pretty unlikely you&apos;ll be found.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGPatri" name="Baldur’s Gate: Patriar" description="Being a part of the elite, you can move through the gates toll-free, easily mingle with the other nobles, and impress anyone looking for a wealthy patron. You&apos;re welcome in the Upper City, even after dark. Most tend to take your word over others&apos;, and the corrupt guards and government tend to work in your favor, so long as you don&apos;t rock the boat.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGImgEx" name="Baldur’s Gate: Immigrant Experience" description="The city&apos;s immigrant community knows you. If you need information about a foreign land, people, tradition, or history, you know where you can find someone with that knowledge.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGRmMng" name="Baldur’s Gate: Rumor Monger" description="You&apos;ve got your finger on the pulse of the city as far as secrets are concerned. You&apos;ve heard the rumors of who&apos;s practicing dark magic, spying, working the black market, etc. When a noteworthy event or crime happens, you immediately have a list of 1d4 suspects. If they weren&apos;t directly involved, chances are very good they know who was.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGSmgSn" name="Baldur’s Gate: Smuggler&apos;s Sense" description="You know your way around the city&apos;s docks, the flow of cargo and coin, and the movements of the inspectors and tax collectors. So it&apos;s not too hard for you to move cargo without catching such watchful eyes. This knowledge includes the harbor guards, as well as how to operate the mechanical cargo cranes of the docks.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGCtyGd" name="Baldur’s Gate: City Guard" description="You can choose to currently serve either the Flaming Fist or the Watch. So long as you fulfill your duties, you retain the benefits of serving. If you don&apos;t fulfill them and therefore lose the benefits, you can have a very unpleasant conversation with your commanding officer. By fulfilling your responsibilities again for a month, you may regain the benefits.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGLylTs" name="Baldur’s Gate: Loyalty Test" description="You&apos;ve dealt with enough crooked soldiers that you can spot them a mile away. This means you have a good idea of who might take a bribe, turn a blind eye, or even have criminal connections. Conversely, you also have a good eye for soldiers that go strictly by the book.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGGtgdC" name="Baldur’s Gate: Gateguide Connection" description="Though you may not be a part of the Gateguides crew, you&apos;ve associated with enough of them that you know their torch-based code. You know what lighting, placement, and kind of torch to use. This grants you a keen knowledge of those who live and do business in the area, such as whether they deal fairly, are connected with the Guild or government, or whether they&apos;ve been helpful to the Gateguides in the past.\n\nThe effects of your Baldur&apos;s Gate background feature are only usable while within the area of the city itself. At the DM&apos;s discretion, the background may have similar effects in other places." compset="Ability">
+    <usesource source="p5eBGDiAP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CBGCrmOr" name="Baldur’s Gate: Criminal Origins" description="You may choose one of the below options as an origin.\n\n{b}1 - Kingpin:{/b} Without realizing who you were dealing with, you crippled a Guild kingpin&apos;s cousin. You&apos;re paying it off by working for them, but the kingpin may still want your head.\n{b}2 - Revenge:{/b} The Guild took over your family business and both figuratively and literally burned it all down. Driven to crime yourself, you enjoy finding opportunities to hit the Guild&apos;s targets before they can and ruining their schemes.\n{b}3 - Getting Paid:{/b} You weren&apos;t paid enough for your current job. So you pass on what information you learn from it to the Guild, for a nice price.\n{b}4 - Justice:{/b} You were driven to crime by the inequality you saw around you. You steal from the rich and channel it into charities to help those in need.\n{b}5 - Patriar:{/b} You were bored with your life as a patriar, so you joined up. Neither the Guild nor your family knows about your dual-life, and your neck depends on you keeping it that way.\n{b}6 - Friend:{/b} A close friend or relative vanished after joining the Guild. You&apos;re working your way up to try and find where they went.\n{b}7 - Admirer:{/b} You joined the Guild as soon as you could, having admired them since you were a child.\n{b}8 - Job:{/b} This is all just a job. You don&apos;t have time for thrill-seekers or notions of unjust laws. You just want to get paid." compset="Ability">
+    <arrayval field="usrArray" index="0" value="0 - Not Applicable"/>
+    <arrayval field="usrArray" index="1" value="1 - Kingpin"/>
+    <arrayval field="usrArray" index="2" value="2 - Revenge"/>
+    <arrayval field="usrArray" index="3" value="3 - Getting Paid"/>
+    <arrayval field="usrArray" index="4" value="4 - Justice"/>
+    <arrayval field="usrArray" index="5" value="5 - Patriar"/>
+    <arrayval field="usrArray" index="6" value="6 - Friend"/>
+    <arrayval field="usrArray" index="7" value="7 - Admirer"/>
+    <arrayval field="usrArray" index="8" value="8 - Job"/>
+    <tag group="AbilFunc" tag="Background"/>
+    <tag group="User" tag="NoAutoName"/>
+    </thing>
+  <thing id="ab5CBGFlkOr" name="Baldur’s Gate: Folk Hero Origins" description="You may choose one of the below options as an origin.\n\n{b}1 - Savior:{/b} You once helped find healing for a child. Now others come to you for help with their afflictions.\n{b}2 - Protector:{/b} You helped stop a Guild protection racket from taking advantage of immigrants in the Outer City. Now the people in that part of the city celebrate you.\n{b}3 - Neighborhood Hero:{/b} One evening, you helped a lost patriar find his way out of the Outer City. He repaid your kindness with improvements to your neighborhood, and its denizens are grateful to you for it.\n{b}4 - Drunk:{/b} You drunkenly punched a carrion crawler that had come up from the sewers, defeating it. But now your drinking is a worsening problem, and those who once admired you don&apos;t see much hope for you.\n{b}5 - Battler:{/b} You once beat an enraged bugbear with a mirror, a mounted buck&apos;s head, and two swift kicks in the crotch. He&apos;s now your friend.\n{b}6 - Headfirst:{/b} Everyone at the docks knows about you. You&apos;re the person that dove into freezing waters to save all hands of a fishing boat with your bare hands." compset="Ability">
+    <arrayval field="usrArray" index="0" value="0 - Not Applicable"/>
+    <arrayval field="usrArray" index="1" value="1 - Savior"/>
+    <arrayval field="usrArray" index="2" value="2 - Protector"/>
+    <arrayval field="usrArray" index="3" value="3 - Neighborhood Hero"/>
+    <arrayval field="usrArray" index="4" value="4 - Drunk"/>
+    <arrayval field="usrArray" index="5" value="5 - Battler"/>
+    <arrayval field="usrArray" index="6" value="6 - Headfirst"/>
+    <tag group="AbilFunc" tag="Background"/>
+    <tag group="User" tag="NoAutoName"/>
+    </thing>
+  <thing id="ab5CBGHrmOr" name="Baldur’s Gate: Hermit Origins" description="You may choose one of the below options as an origin.\n\n{b}1 - Guilt:{/b} You feel tremendous survivor&apos;s guilt over the deaths of your companions on an expedition into the Riverveins. You live alone outside the cavern now.\n{b}2 - Guild:{/b} You&apos;re in hiding from the Guild for crossing them. They think you&apos;re dead, and you want to keep it that way.\n{b}3 - Meditation:{/b} You fill your days meditating on the contradictory natures of peoples&apos; actions.\n{b}4 - Keeper:{/b} You tend to some part of the city forgotten by most. In doing so, you&apos;ve learned things nobody else knows.\n{b}5 - Hiding:{/b} You&apos;re in hiding from the family of a patriar&apos;s scion, who you killed in an illegal duel.\n{b}6 - Seeker:{/b} You&apos;re not originally from Baldur&apos;s Gate. You came here seeking something that you later learned was impossible to obtain. You now linger in the city, directionless." compset="Ability">
+    <arrayval field="usrArray" index="0" value="0 - Not Applicable"/>
+    <arrayval field="usrArray" index="1" value="1 - Guilt"/>
+    <arrayval field="usrArray" index="2" value="2 - Guild"/>
+    <arrayval field="usrArray" index="3" value="3 - Meditation"/>
+    <arrayval field="usrArray" index="4" value="4 - Keeper"/>
+    <arrayval field="usrArray" index="5" value="5 - Hiding"/>
+    <arrayval field="usrArray" index="6" value="6 - Seeker"/>
+    <tag group="AbilFunc" tag="Background"/>
+    <tag group="User" tag="NoAutoName"/>
+    </thing>
+  <thing id="ab5CBGOutOr" name="Baldur’s Gate: Outlander Origins" description="You may choose one of the below options as an origin.\n\n{b}1 - Tracker:{/b} You tracked the person who stole something precious from your people all the way to this city. But once inside, you have a much harder time of finding them.\n{b}2 - Big City:{/b} You&apos;ve always been drawn to the idea of life in the big city. You&apos;ve made it, but you&apos;re not quite sure where to start.\n{b}3 - Escaped:{/b} Some horrible happening drove you from your homeland. You&apos;re either alone or accompanies by a few fellow survivors, but you don&apos;t know if anyone else made it out.\n{b}4 - Kidnapped:{/b} The Knights of the Unicorn freed you from your kidnappers. But you&apos;re incredibly far from home.\n{b}5 - Exile:{/b} You were exiled for breaking what you thought was a trivial taboo. Your friends, family, and home all were lost to you, so you had little choice but to go your own way.\n{b}6 - Seeker:{/b} A peddler once brought a truly marvelous item to your homeland, and said it was from Baldur&apos;s Gate. You&apos;ve come seeking such wonders." compset="Ability">
+    <arrayval field="usrArray" index="0" value="0 - Not Applicable"/>
+    <arrayval field="usrArray" index="1" value="1 - Tracker"/>
+    <arrayval field="usrArray" index="2" value="2 - Big City"/>
+    <arrayval field="usrArray" index="3" value="3 - Escaped"/>
+    <arrayval field="usrArray" index="4" value="4 - Kidnapped"/>
+    <arrayval field="usrArray" index="5" value="5 - Exile"/>
+    <arrayval field="usrArray" index="6" value="6 - Seeker"/>
+    <tag group="AbilFunc" tag="Background"/>
+    <tag group="User" tag="NoAutoName"/>
     </thing>
   </document>

@@ -46,10 +46,6 @@
         perform eachpick.assign[Broadcast.WepProf]
         perform eachpick.assign[Helper.ExoticProf]
         nexteach]]></eval>
-    <eval phase="First"><![CDATA[~ Stop if this class special is disabled
-doneif (tagis[Helper.Disable] <> 0)
-
-perform hero.assign[ProfSkill.skPerform]]]></eval>
     </thing>
   <thing id="c5CWizBlS" name="Bladesong" description="You can use Bladesong unless you&apos;re wearing medium or heavy armor or using a shield.  \n\nStarting the Bladesong takes a bonus action and lasts for a minute, ending early if you are incapacitated, make a 2-handed weapon attack, change your armor/shield into one of the previously mentioned or decide to dismiss it (no action.)\n\nBladesong gives you the following while active: \n• AC bonus equal to your Intelligence modifier (minimum of +1). \n• 10 feet increase to your walking speed. \n• Advantage on Dexterity (Acrobatics) checks. \n• Your Intelligence modifier (minimum +1) as a bonus to any Constitution saving throw you make to maintain your concentration on a spell.. \n\nBladesong can be used a number of times equal to your proficiency bonus, and recharges on a short or long rest." compset="ClSpecial" summary="You can invoke a secret magic called the Bladesong.">
     <fieldval field="abRange" value="Self"/>
@@ -67,9 +63,12 @@ perform hero.assign[ProfSkill.skPerform]]]></eval>
 
       doneif (field[abilActive].value = 0)
 
+var iInt as number
+iInt = maximum(1,field[abValue].value)
+
 hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value
 hero.child[Speed].field[Bonus].value += 10
-#situational[hero.child[svCON],"+ Intelligence Modifier (minimum 1) to maintain concentration",field[thingname].text]
+#situational[hero.child[svCON],"+" & iInt & " to maintain concentration",field[thingname].text]
 #situational[hero.child[skAcrobat],"Advantage on Acrobatics checks",field[thingname].text]
 
 doneif (#levelcount[Wizard] < 14)
