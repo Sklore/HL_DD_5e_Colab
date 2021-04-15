@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CWlkUndd" name="The Undead" description="You have entered a pact with an ancient undead entity." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="ClsAllowSp" tag="spBlinDeaf"/>
+    <tag group="ClsAllowSp" tag="spDeatWard" name="Death Ward" abbrev="Death Ward"/>
+    <tag group="ClsAllowSp" tag="spFalsLife" name="False Life" abbrev="False Life"/>
+    <tag group="ClsAllowSp" tag="sp5CPhantF"/>
+    <tag group="ClsAllowSp" tag="spPhanStee"/>
+    <tag group="ClsAllowSp" tag="spSpeaDead" name="Speak with Dead" abbrev="Speak with Dead"/>
+    <tag group="ClsAllowSp" tag="spGreaInvi"/>
+    <tag group="ClsAllowSp" tag="spAntiShel"/>
+    <tag group="ClsAllowSp" tag="spCloudkil"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron" abbrev="Warlock Otherworldly Patron"/>
+    <tag group="ClsAllowSp" tag="spBane"/>
+    <bootstrap thing="c5CWlkMrtHsk">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkSptPrj">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkFrmDrd">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CWlkGrvTch">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].pushtags[ClsAllowSp.?]</eval>
+    </thing>
+  <thing id="c5CWlkFrmDrd" name="Form of Dread" description="You can use a bonus action to transform for 1 minute, gaining these benefits while transformed:\n\n• You gain temporary hit points equal to 1d10 + your warlock level.\n• Once during each of your turns, when you hit a creature with an attack, you can make it to make a Wisdom save. If it fails the save, it is frightened of you until the end of your next turn.\n• You have immunity to the frightened condition.\n\nYou can use this feature a number of times per long rest equaling your proficiency bonus." compset="ClSpecial" summary="Bonus action to transform for 1 minute.">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="actName" value="Form of Dread (bonus action, 1 minute)"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Usage" tag="LongRest"/>
+    <bootstrap thing="PoolWlkBls">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="15"/>
+      <assignval field="livename" value="Form of Dread (1d10 + Warlock level)"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+
+doneif (field[abilActive].value = 0)
+
+perform hero.assign[CondImm.pcnFright]
+
+var TmpMax as number
+var TmpMin as number
+
+TmpMax = 10 + hero.tagcount[Classes.Warlock]
+TmpMin = 1 + hero.tagcount[Classes.Warlock]
+
+hero.findchild[TempHpPool,"Value.15"].field[thpMinAllw].value = TmpMin
+hero.findchild[TempHpPool,"Value.15"].field[thpMaxAllw].value = TmpMax
+
+doneif (hero.tagcount[Classes.Warlock] < 10)
+
+perform hero.assign[DamageImm.dtNecrotic]]]></eval>
+    </thing>
+  <thing id="c5CWlkGrvTch" name="Grave Touched" description="You no longer need to eat, drink, or breathe.\n\nAdditionally, when you hit a creature with an attack and roll damage against the creature, you can switch the damage type for necrotic damage. While in your Form of Dread, you can roll one additional damage die when determining the amount of necrotic damage the target takes." compset="ClSpecial" summary="You can switch your damage to necrotic."></thing>
+  <thing id="c5CWlkMrtHsk" name="Mortal Husk" description="You are now resistant to necrotic damage. If you are transformed into your Form of Dread, you instead are immune to necrotic damage.\n\nIn addition, when you are reduced to 0 hit points, you can cause your body to explode. Every creature within 30 feet of you suffers necrotic damage equaling 2d10 + your warlock level. You then revive in your previous space. You have 1 hit point, 1 level of exhaustion (added to any you already have), and your gear. Once you revive using this feature, you can&apos;t do so again until you complete 1d4 long rests." compset="ClSpecial" summary="Gain resistance to necrotic and explod when nearly killed.">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="5C1d4LR" name="/1d4 long rests"/>
+    <eval phase="PostLevel" priority="1000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+doneif (hero.tagcount[Classes.Warlock] < 10)
+
+perform hero.assign[DamageRes.dtNecrotic]
+
+field[abText].text = "2d10+" & hero.tagcount[Classes.Warlock] & " necrotic"]]></eval>
+    </thing>
+  <thing id="c5CWlkSptPrj" name="Spirit Projection" description="You can use an action to project your spirit from your body. Your body itself is left behind, unconscious and in a state of suspended animation. Your spirit can remain away from your body for up to 1 hour or until your concentration is broken (as if concentrating on a spell). When your projection ends, you can chose whether your spirit returns to your body or your body magically teleports to wherever your spirit is.\n\nWhile projecting your spirit, you gain these benefits:\n• Both your spirit and body are resistant to bludgeoning, piercing, and slashing damage.\n• When you cast a conjuration or necromancy spell, that spell doesn&apos;t require verbal, somatic, or material components that lack a gold cost.\n• You can fly at an equal speed to your walking speed, and are able to hover. You can move through creatures and objects as if they were difficult terrain, but you suffer 1d10 force damage if you end your turn inside a creature or an object.\n• While you are also in your Form of Dread, once per each of your turns when you deal necrotic damage to a creature, you regain hit points equaling half the amount of necrotic damage dealt.\n\nOnce you use this feature, you can&apos;t use it again until you complete a long rest." compset="ClSpecial" summary="Project your spirit out from your body for special benefits.">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Spirit Projection (action, 1 hour, concentration)"/>
+    <tag group="abDuration" tag="Hour"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="User" tag="Tracker"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="1"/>
+      <autotag group="Helper" tag="Hover"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001"><![CDATA[doneif (field[abilActive].value = 0)
+doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.assign[DamComRes.dcBluPiSla]
+
+hero.childfound[xFly].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xFly].field[abValue].value)]]></eval>
+    </thing>
+  <thing id="c5CBrdSprUA" name="College of Spirits" description="You excel in telling the stories of spirits from beyond the material world." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpBrd" name="Bard" abbrev="Bard"/>
+    <tag group="abCategory" tag="BrdCollege" name="Bardic College" abbrev="Bardic College"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CBrdSprFcs">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CBrdSptSsh">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CBrdSprFc2">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CBrdMysCon">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CBrdTlsBynd">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CBrdGdWhs">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="9000"><![CDATA[
+       doneif (tagis[Helper.Disable] <> 0)
+
+       linkage[table].field[cSpec2ndNm].text = "Spirits' Tales"
+       linkage[table].field[cSpec2ndSi].text = "Spirits' Tale"
+
+       linkage[table].field[cCustScTot].arrayvalue[2] += 1
+       linkage[table].field[cCstS2Expr].text &= "abCategory.5CSptTale"]]></eval>
+    </thing>
+  <thing id="c5CBrdGdWhs" name="Guiding Whispers" description="You learn the {i}guidance{/i} cantrip, which doesn&apos;t count against your total number of known bard cantrips. For you, it has a range of 60 feet when you cast it." compset="ClSpecial" summary="Learn guidance with a range of 60 feet.">
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <bootstrap thing="spGuidance">
+      <autotag group="SpellType" tag="cHelpBrd"/>
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <assignval field="sRange" value="60 feet"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CBrdSprFcs" name="Spiritual Focus" description="You are able to use any of these objects as a spellcasting focus for your bard spells: a candle, a crystal ball, a talking board, a tarokka deck, or a skull." compset="ClSpecial" summary="Use special items as your spellcasting focus.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CBrdTlsBynd" name="Tales from Beyond" description="While you are holding your Spiritual Focus, you can use a bonus action to spend one use of your Bardic Inspiration and roll it. The resulting number rolled determines what tale you retain in your mind until you bestow the tale&apos;s effect or until you complete a short or long rest.\n\nYou can use an action to choose one creature you can see within 30 feet of you (you can choose yourself) to be the target of the tale&apos;s effect. Once you have bestowed the effect, you cannot do so again until you roll that effect again.\n\nYou can retain only one of these tales in mind at a time, and rolling for a new tale immediately ends the effect of the previous tale. Tales that require a saving throw use your spell save DC." compset="ClSpecial" summary="Tell a tale to a creature, granting it a special ability.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CBrdSptTl1" name="01 - Beast" description="{b}Roll:{/b} 1\n\nYou tell the tale of a clever beast. For 1 minute, the target has advantage on Wisdom (Perception) checks and advantage on attack rolls versus a creature if another enemy is within 5 feet of it, and that enemy isn&apos;t incapacitated." compset="CustomSpec" summary="Grant target advantage on Perception and attacking nearby enemies for 1 minute." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CSptTale" name="Bard Spirits&apos; Tale"/>
+    <eval phase="First"><![CDATA[field[livename].text = "Tale: Beast"
+field[sbName].text = "Tale: Beast"]]></eval>
+    <exprreq message="Requires level 2 Bard"><![CDATA[#levelcount[Bard] >= 2]]></exprreq>
+    </thing>
+  <thing id="c5CBrdSptTl2" name="02 - Warrior" description="{b}Roll:{/b} 2\n\nYou speak the story of a renowned duelist. Make a melee spell attack against the target. An attacking spiritual warrior briefly appears in an open space within 5 feet of the target before vanishing. On a hit, the target suffers force damage equaling two rolls of your Bardic Inspiration die + your Charisma modifier." compset="CustomSpec" summary="Attack an enemy with a spiritual warrior." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CSptTale" name="Bard Spirits&apos; Tale"/>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[field[abText].text = "2" & hero.childfound[cBrdInspir].field[abText].text & " + " & hero.childfound[aCHA].field[aBonus].value & " force"]]></eval>
+    <eval phase="First"><![CDATA[field[livename].text = "Tale: Warrior"
+field[sbName].text = "Tale: Warrior"]]></eval>
+    </thing>
+  <thing id="c5CBrdSptTl3" name="03 - Friends" description="{b}Roll:{/b} 3\n\nYou tell the tale of friends who reunited in the afterlife. The target and another creature of its choice it can see within 5 feet of it regains hit points equaling one roll of your Bardic Inspiration die + your Charisma modifier." compset="CustomSpec" summary="Heal a target and its friend." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CSptTale" name="Bard Spirits&apos; Tale"/>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[field[abText].text = "heal 1" & hero.childfound[cBrdInspir].field[abText].text & " + " & hero.childfound[aCHA].field[aBonus].value]]></eval>
+    <eval phase="First"><![CDATA[field[livename].text = "Tale: Friends"
+field[sbName].text = "Tale: Friends"]]></eval>
+    </thing>
+  <thing id="c5CBrdSptTl4" name="04 - Runaway" description="{b}Roll:{/b} 4\n\nYou recite the tale of an adventurer that could escape any bonds. The target can immediately use its reaction to teleport up to 30 feet to an open space it can see. When the target teleports, it can choose a number of creatures it can see within 30 feet of it up to your Charisma modifier (a minimum of 1 creature) to immediately use the same teleport reaction." compset="CustomSpec" summary="Allow a target and its allies to teleport 30 feet." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CSptTale" name="Bard Spirits&apos; Tale"/>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[field[abText].text = hero.childfound[aCHA].field[aBonus].value & " additional people"]]></eval>
+    <eval phase="First"><![CDATA[field[livename].text = "Tale: Runaway"
+field[sbName].text = "Tale: Runaway"]]></eval>
+    </thing>
+  <thing id="c5CBrdSptTl5" name="05 - Avenger" description="{b}Roll:{/b} 5\n\nYou recount the tale of an vengeful knight. For 1 minute, whenever a creature the target can see within 30 feet of it is damaged by a creature, the target can take a reaction to deal force damage equaling one roll of your Bardic Inspiration die to the attacker." compset="CustomSpec" summary="Grant a target the ability to use a damaging reaction." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CSptTale" name="Bard Spirits&apos; Tale"/>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[field[abText].text = "1" & hero.childfound[cBrdInspir].field[abText].text & " force"]]></eval>
+    <eval phase="First"><![CDATA[field[livename].text = "Tale: Avenger"
+field[sbName].text = "Tale: Avenger"]]></eval>
+    </thing>
+  <thing id="c5CBrdSptTl6" name="06 - Hero" description="{b}Roll:{/b} 6\n\nYou recount the tale of an epic hero. Choose a creature you can see within 30 feet of you. The target gains temporary hit points equaling one roll of your Bardic Inspiration die + your bard level. While it has these temporary hit points, the target&apos;s walking speed is increased by 10 feet." compset="CustomSpec" summary="Grant a target a boost of speed and temporary hit points." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CSptTale" name="Bard Spirits&apos; Tale"/>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[field[abText].text = "1" & hero.childfound[cBrdInspir].field[abText].text & " + " & #levelcount[Bard] & " temp HP"]]></eval>
+    <eval phase="First"><![CDATA[field[livename].text = "Tale: Hero"
+field[sbName].text = "Tale: Hero"]]></eval>
+    </thing>
+  <thing id="c5CBrdSptTl7" name="07 - Fey" description="{b}Roll:{/b} 7\n\nYou recite the tale of a mischievous fey. The target must make a Wisdom save. On a failure, it becomes charmed by you until the end of its next turn. The charmed target must use its action to make a melee attack against a creature other than itself, chosen mentally by you. If you do not choose a creature, the target can act normally on its turn." compset="CustomSpec" summary="Charm a target to attack other creatures." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CSptTale" name="Bard Spirits&apos; Tale"/>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[field[abText].text = "1" & hero.childfound[cBrdInspir].field[abText].text & " force, DC " & hero.childfound[cHelpBrd].field[cSplSaveDC].value & " Wisdom"]]></eval>
+    <eval phase="First"><![CDATA[field[livename].text = "Tale: Fey"
+field[sbName].text = "Tale: Fey"]]></eval>
+    <exprreq message="Requires level 5 Bard"><![CDATA[#levelcount[Bard] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CBrdSptTl8" name="08 - Dark Spirit" description="{b}Roll:{/b} 8\n\nYou recount a terrible tale of a killer in the shadows. The target becomes invisible until the end of its next turn or until it hits a creature with an attack. If it hits a creature with an attack during this invisibility, that creature takes necrotic damage equaling one roll of your Bardic Inspiration die and is frightened of the target until the end of its next turn." compset="CustomSpec" summary="Give a target invisibility." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CSptTale" name="Bard Spirits&apos; Tale"/>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[field[abText].text = "1" & hero.childfound[cBrdInspir].field[abText].text & " necrotic"]]></eval>
+    <eval phase="First"><![CDATA[field[livename].text = "Tale: Dark Spirit"
+field[sbName].text = "Tale: Dark Spirit"]]></eval>
+    <exprreq message="Requires level 5 Bard"><![CDATA[#levelcount[Bard] >= 5]]></exprreq>
+    </thing>
+  <thing id="c5CBrdSptTl9" name="09 - Giant" description="{b}Roll:{/b} 9\n\nYou tell of the deeds of a great giant. Every creature of the target&apos;s choice visible to and within 30 feet of it must make a Strength save. On a failure, a chosen creature suffers force damage equaling two rolls of your Bardic Inspiration and is knocked prone. On a successful save, the creature takes half that damage and is not knocked prone." compset="CustomSpec" summary="Allow a target to harm and knock its enemies prone." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CSptTale" name="Bard Spirits&apos; Tale"/>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[field[abText].text = "2" & hero.childfound[cBrdInspir].field[abText].text & " force"]]></eval>
+    <eval phase="First"><![CDATA[field[livename].text = "Tale: Giant"
+field[sbName].text = "Tale: Giant"]]></eval>
+    <exprreq message="Requires level 10 Bard"><![CDATA[#levelcount[Bard] >= 10]]></exprreq>
+    </thing>
+  <thing id="c5CBrdSptTl10" name="10 - Dragon" description="{b}Roll:{/b} 10\n\nYou speak a poem of a wrathful dragon. The target magically breathes fire. Ever creature in a 30-foot cone emanating from the target&apos;s mouth must make a Dexterity save. The creature takes fire damage equaling three rolls of your Bardic Inspiration die on a failure, or half that on a success." compset="CustomSpec" summary="Grant a target a fiery breath weapon." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CSptTale" name="Bard Spirits&apos; Tale"/>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[field[abText].text = "3" & hero.childfound[cBrdInspir].field[abText].text & " fire, DC " & hero.childfound[cHelpBrd].field[cSplSaveDC].value & " Dexerity"]]></eval>
+    <eval phase="First"><![CDATA[field[livename].text = "Tale: Dragon"
+field[sbName].text = "Tale: Dragon"]]></eval>
+    <exprreq message="Requires level 10 Bard"><![CDATA[#levelcount[Bard] >= 10]]></exprreq>
+    </thing>
+  <thing id="c5CBrdSptTl11" name="11 - Celestial" description="{b}Roll:{/b} 11\n\nYou recount the honored deeds of a celestial. The target regains hit points equaling two rolls of your Bardic Inspiration die + your bard level, and you end one disease. Instead of a disease, you can end one of these conditions affecting it: blinded, deafened, paralyzed, petrified, or poisoned." compset="CustomSpec" summary="Heal a target and end something afflicting it." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CSptTale" name="Bard Spirits&apos; Tale"/>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[field[abText].text = "2" & hero.childfound[cBrdInspir].field[abText].text & " + " & #levelcount[Bard] & " HP"]]></eval>
+    <eval phase="First"><![CDATA[field[livename].text = "Tale: Celestial"
+field[sbName].text = "Tale: Celestial"]]></eval>
+    <exprreq message="Requires level 15 Bard"><![CDATA[#levelcount[Bard] >= 15]]></exprreq>
+    </thing>
+  <thing id="c5CBrdSptTl12" name="12 - Unknown" description="{b}Roll:{/b} 12\n\nYou utter an incomprehensible fable from a being beyond the universe. Choose a creature you can see within 30 feet of you. The target must make an Intelligence save. On a failure, it takes psychic damage equaling three rolls of your Bardic Inspiration die, and is unable to speak any language for 1 minute." compset="CustomSpec" summary="Deal psychic damage to the target&apos;s target." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="p5e20SbP4UACP"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="SpecSource" tag="cHelpBrd"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abCategory" tag="5CSptTale" name="Bard Spirits&apos; Tale"/>
+    <eval phase="Final" priority="11000" index="2"><![CDATA[field[abText].text = "3" & hero.childfound[cBrdInspir].field[abText].text & " psychic, DC " & hero.childfound[cHelpBrd].field[cSplSaveDC].value & " Intelligence"]]></eval>
+    <eval phase="First"><![CDATA[field[livename].text = "Tale: Unknown"
+field[sbName].text = "Tale: Unknown"]]></eval>
+    <exprreq message="Requires level 15 Bard"><![CDATA[#levelcount[Bard] >= 15]]></exprreq>
+    </thing>
+  <thing id="c5CBrdSprFc2" name="Spiritual Focus" description="When you cast a bard spell that deals damage or restores hit points using such a Spiritual Focus, roll a d6. You gain a bonus to one roll of the spell equal to the number rolled." compset="ClSpecial" summary="Add 1d6 to the damage or healing of a spell.">
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="c5CBrdMysCon" name="Mystical Connection" description="When using your Tales from Beyond feature, you can choose to roll a d6 and use it instead of spending a Bardic Inspiration die. However, you do still use your Bardic Inspiration die for the tale&apos;s effect, without expending it." compset="ClSpecial" summary="Use Tales from Beyond without spending an inspiration die.">
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="c5CBrdSptSsh" name="Spirit Session" description="You can conduct an hour-long ritual channeling spirits using your Spiritual Focus. You can do this ritual during a short or long rest. You can conduct the ritual with a number of creatures equal to your proficiency bonus (including yourself). At the end of the ritual, you temporarily learn one spell of your choice from any class.\n\nThe spell you choose must be of a level equal to the number of creatures that conducted the ritual or less, the spell must be of a level you can cast, and it must be a divination or necromancy spell. The chosen spell counts as a bard spell for you but doesn&apos;t count against the number of bard spells you know.\n\nYou know the chosen spell until you begin a long rest. Once you perform the ritual, you can&apos;t perform it again until you begin a long rest." compset="ClSpecial" summary="Conduct a ritual to temporarily learn a spell.">
+    <fieldval field="usrCandid1" value="component.BaseSpell &amp; (sSchool.Divination | sSchool.Necromancy)"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actUserMin" value="1"/>
+    <fieldval field="actIncrNam" value="Ritual Participants"/>
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="Final" index="3"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrChosen1].ischosen = 0)
+
+      var searchexpr as string
+
+      searchexpr = "(sLevel.1"
+
+      if (field[actUser].value > 1) then
+        searchexpr &= " | sLevel.2"
+      endif
+      if (field[actUser].value > 2) then
+        searchexpr &= " | sLevel.3"
+      endif
+      if (field[actUser].value > 3) then
+        searchexpr &= " | sLevel.4"
+      endif
+      if (field[actUser].value > 4) then
+        searchexpr &= " | sLevel.5"
+      endif
+      if (field[actUser].value > 5) then
+        searchexpr &= " | sLevel.6"
+      endif
+
+      searchexpr &= ")"
+      
+      field[usrCandid1].text &= "& " & searchexpr]]></eval>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (field[usrChosen1].ischosen <> 0) then
+        perform field[usrChosen1].chosen.pulltags[ClsAllowSp.?]
+        endif
+
+      if (root.tagis[component.Class] <> 0) then
+        perform root.pushtags[ClsAllowSp.?]
+      elseif (root.tagis[component.BaseCustSp] <> 0) then
+        perform root.linkage[table].pushtags[ClsAllowSp.?]
+        endif]]></eval>
+    <eval phase="Level" priority="15001" index="2"><![CDATA[
+      field[actUserMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+
+
+      debug "UserMax" & field[actUserMax].value
+      debug "Prof" & hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    <evalrule phase="PostLevel" priority="10000" message="Must add chosen spell to spells known!" summary="Must add chosen spell to spells known!"><![CDATA[
+      validif (tagis[Helper.ShowSpec] = 0)
+
+      validif (tagis[Helper.Disable] <> 0)
+
+      var spellname1 as string
+      var searchexpr as string
+      var foundone as number
+
+      @valid = 1
+
+      if (field[usrChosen1].ischosen <> 0) then
+        foundone = 0
+        searchexpr = "KnowSpell." & field[usrChosen1].chosen.idstring & " & SpellType.cHelpBrd & (Helper.Known | Helper.Cantrip)"
+
+        foreach pick in hero from BaseSpell where searchexpr
+          foundone = 1
+          perform eachpick.assign[Helper.Free]
+          nexteach
+
+        if (foundone = 0) then
+          spellname1 = field[usrChosen1].chosen.field[name].text
+          @valid = 0
+          endif
+        endif
+
+      if (@valid = 0) then
+        @message = "You have selected the " & spellname1 & " spell for Spirit Session but have not added it to your Bard spells known."
+        endif]]></evalrule>
+    </thing>
+  </document>
