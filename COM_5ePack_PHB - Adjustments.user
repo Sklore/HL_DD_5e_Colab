@@ -2089,4 +2089,49 @@ endif]]></validate>
 
       field[pChosen].chosen.field[wReach].value += field[pAdjust].value]]></eval>
     </thing>
+  <thing id="p5CHideDei" name="Hide Deities" description="Selecting a deity category in the first drop down will hide just the deities from that category.\n\nSelecting a deity category in the second drop down will hide deities from any category {i}except for{/i} the one selected." compset="InPlay">
+    <fieldval field="pCandExpr" value="Custom.5CDeiHide"/>
+    <fieldval field="pCandExpr2" value="Custom.5CDeiHide"/>
+    <tag group="OthAdjCat" tag="UserTop5th"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <eval phase="First" priority="10000"><![CDATA[doneif (field[pChosen2].ischosen = 0)
+doneif (field[pIsOn].value = 0)
+
+var searchexpr as string
+
+searchexpr = field[pChosen2].chosen.tagids[DeityCat.?,""]
+searchexpr = "!" & searchexpr & "& !thingid.deiAtheist & !thingid.deiOther"
+
+~ Find all deities that are not this
+foreach thing in Deity where searchexpr
+
+~ If no deity category then pull the thingid
+
+   If (eachthing.tagcount[DeityCat.?] = 0) Then
+     perform eachthing.pulltags[thingid.?,HideDeity]
+
+~ If we have a category then pull the cateogry only
+~ if we have not already pulled it.
+
+   Elseif (eachthing.intersect[DeityCat,DeityCat] = 0) then
+     perform eachthing.pulltags[DeityCat.?]
+   Endif
+
+  nexteach
+
+~ Create Hide Deity Catagory tags
+    perform pulltags[DeityCat.?,HideDeiCat]
+~ Push the hide deity tags to the hero
+perform hero.pushtags[HideDeiCat.?]
+perform hero.pushtags[HideDeity.?]]]></eval>
+    <eval phase="First" priority="10000" index="2">doneif (field[pChosen].ischosen = 0)
+doneif (field[pIsOn].value = 0)
+
+perform field[pChosen].chosen.pulltags[DeityCat.?,HideDeiCat]
+
+perform hero.pushtags[HideDeiCat.?]</eval>
+    </thing>
   </document>
