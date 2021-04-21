@@ -2134,4 +2134,46 @@ perform field[pChosen].chosen.pulltags[DeityCat.?,HideDeiCat]
 
 perform hero.pushtags[HideDeiCat.?]</eval>
     </thing>
+  <thing id="p5CDblPrfSk" name="Proficient Skill, Double" description="Select this adjustment to become doubly proficient in the selected skill. The first drop down is for skills that you&apos;re already proficient in. The second drop down has all skills." compset="InPlay">
+    <fieldval field="pWhat" value="Proficient Skill"/>
+    <fieldval field="pCandExpr" value="asdf"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <tag group="Adjust2nd" tag="Skill"/>
+    <tag group="OthAdjCat" tag="SkillProf" name="Skills and Proficiencies" abbrev="Skills and Proficiencies"/>
+    <eval phase="Final" priority="999999999"><![CDATA[
+      var tagexpr as string
+      foreach pick in hero from BaseSkill where "Helper.Proficient"
+        perform eachpick.pulltags[ProfSkill.?]
+        nexteach
+
+
+
+      if (tagis[ProfSkill.?] <> 0) then
+        tagexpr = "(component.BaseSkill & !Hide.Skill & (" & tagids[ProfSkill.?, " | "] & "))"
+      else
+        tagexpr = "Helper.Helper & !Helper.Helper"
+        endif
+
+
+
+
+      field[pCandExpr].text = tagexpr]]></eval>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[      doneif (field[pIsOn].value = 0)
+
+      var tagexpr as string
+
+      if (field[pChosen].ischosen <> 0) then
+        tagexpr = field[pChosen].chosen.tagids[ProfSkill.?," | "]
+        foreach pick in hero from BaseSkill where tagexpr
+          perform eachpick.assign[Helper.ProfDouble]
+          nexteach
+        endif
+
+      if (field[pChosen2].ischosen <> 0) then
+        tagexpr = field[pChosen2].chosen.tagids[ProfSkill.?," | "]
+        foreach pick in hero from BaseSkill where tagexpr
+          perform eachpick.assign[Helper.ProfDouble]
+          nexteach
+        endif]]></eval>
+    </thing>
   </document>
