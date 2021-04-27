@@ -1429,7 +1429,7 @@ perform hero.assign[ProfSave.svCON]]]></eval>
       <assignval field="wDieSize" value="4"/>
       </bootstrap>
     </thing>
-  <thing id="c5CFndGStd" name="Find Greater Steed" description="Add this to add a steed, per the {i}find greater steed{/i} spell, to your character." compset="CompClHelp" uniqueness="unique">
+  <thing id="c5CFndGStd" name="Greater Steed" description="Add this to add a steed, per the {i}find greater steed{/i} spell, to your character." compset="CompClHelp" uniqueness="unique">
     <tag group="CompAvail" tag="c5CFndGStd" name="Found Greater Steed" abbrev="Found Greater Steed"/>
     <tag group="SpInfo" tag="sp5CXGEFiG"/>
     <bootstrap thing="c5CFndGSte"></bootstrap>
@@ -1451,5 +1451,34 @@ perform hero.assign[ProfSave.svCON]]]></eval>
       <tag group="HideTab" tag="background" name="background" abbrev="background"/>
       <bootstrap thing="cfg5CFndStd"></bootstrap>
       </minion>
+    </thing>
+  <thing id="p5CFndGStd" name="Find Greater Steed" description="Add this to add a steed to your character, as per the {i}find greater steed{/i} spell. This adjustment is usually used if a scroll or item grants you the spell." compset="InPlay">
+    <usesource source="5eXGTECP"/>
+    <tag group="Custom" tag="ScrollSum" name="ScrollSum" abbrev="ScrollSum"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <tag group="OthAdjCat" tag="UserBot6th" name="User 6th Bottom Group" abbrev="User 6th Bottom Group"/>
+    <tag group="Adjustment" tag="Class" name="Classes" abbrev="Classes"/>
+    <eval phase="First" priority="10000"><![CDATA[    doneif (field[pIsOn].value = 0)
+    doneif (field[pChosen].ischosen = 0)
+    perform field[pChosen].chosen.assign[CompAvail.c5CFndGStd]
+      
+~ that assigned the summoning to a particular class
+~ if that class then summons the creature, it's using the spell scroll,
+~ and therefore needs use to push our custom tag, whiche we'll use later
+~ to tell it to use the default scroll spell bonuses, not the class's
+~ so we test to see which class added the summoned creature   
+~ this is by looking at the hasagent on the companion helper
+
+    var Cls as string
+    Cls = hero.childfound[c5CFndGStd].tagids[hasagent.?,""]
+    Cls = replace(Cls,"hasagent.","",0)
+
+~ now our variable should equal the class helper, like cHelpFtr
+~ then we test it to see if it's the same as where this adjustment
+~ added the summon spell
+
+    if (compare(field[pChosen].chosen.idstring,Cls) = 0) then
+    perform hero.childfound[c5CFndGStd].pushtags[Custom.?]
+    endif]]></eval>
     </thing>
   </document>
