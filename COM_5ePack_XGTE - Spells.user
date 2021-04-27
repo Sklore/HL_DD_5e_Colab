@@ -387,6 +387,7 @@
     <tag group="sComp" tag="V"/>
     <tag group="sComp" tag="S"/>
     <tag group="sClass" tag="cHelpPal"/>
+    <tag group="CompAvail" tag="c5CFndGStd" name="Found Greater Steed" abbrev="Found Greater Steed"/>
     </thing>
   <thing id="sp5CXGEFlA" name="Flame Arrows" description="When a target is hit by a ranged weapon attack using a piece of ammunition drawn from the quiver, the target takes an extra 1d6 fire damage. The spell’s magic ends on a piece of ammunition when it hits or misses, and the spell ends when twelve pieces of ammunition have been drawn from the quiver. \n\n{b}At Higher Levels.{/b} When you cast this spell using a spell slot of 4th level or higher, the number of pieces of ammunition you can affect with this spell increases by two for each slot level above 3rd." compset="Spell">
     <fieldval field="sRange" value="Touch"/>
@@ -1427,5 +1428,28 @@ perform hero.assign[ProfSave.svCON]]]></eval>
       <assignval field="wDieCount" value="1"/>
       <assignval field="wDieSize" value="4"/>
       </bootstrap>
+    </thing>
+  <thing id="c5CFndGStd" name="Find Greater Steed" description="Add this to add a steed, per the {i}find greater steed{/i} spell, to your character." compset="CompClHelp" uniqueness="unique">
+    <tag group="CompAvail" tag="c5CFndGStd" name="Found Greater Steed" abbrev="Found Greater Steed"/>
+    <tag group="SpInfo" tag="sp5CXGEFiG"/>
+    <bootstrap thing="c5CFndGSte"></bootstrap>
+    <link linkage="realcomp" thing="c5CFndGSte"/>
+    </thing>
+  <thing id="c5CFndGSte" name="Found Greater Steed" compset="Companion" stacking="never" uniqueness="unique">
+    <fieldval field="CompType" value="Found Greater Steed"/>
+    <eval phase="PostAttr" priority="11000"><![CDATA[
+
+      minion.childfound[Totals].field[tRaceExpr].text = "(thingid.rGriffon | thingid.rPegasus | thingid.r5CMMPeryt | thingid.rDireWolf | thingid.rRhinocero | thingid.rSaberTige)"
+      minion.childfound[RaceHelper].field[rCustMax].value += 1
+      perform minion.findchild[BaseRace].assign[AllowRCust.Familiar]]]></eval>
+    <eval phase="Final" priority="90000" index="2"><![CDATA[
+      minion.childfound[RaceHelper].field[rCustName].text = "Types"]]></eval>
+    <minion id="FoundGSteed">
+      <tag group="AllowRCust" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="Hero" tag="NoAdvance" name="NoAdvance" abbrev="NoAdvance"/>
+      <tag group="Hero" tag="NoFamLvReq" name="No familiar Level requirements" abbrev="No familiar Level requirements"/>
+      <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+      <bootstrap thing="cfg5CFndStd"></bootstrap>
+      </minion>
     </thing>
   </document>
