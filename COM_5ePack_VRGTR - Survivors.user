@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CSrvAppr" name="Apprentice" compset="Race">
+    <fieldval field="rSpecName" value="Talents"/>
+    <fieldval field="rSpecSing" value="Talent"/>
+    <fieldval field="rHitDice" value="2"/>
+    <fieldval field="rHPStart" value="7"/>
+    <fieldval field="rSTR" value="-2"/>
+    <fieldval field="rCON" value="-1"/>
+    <fieldval field="rINT" value="3"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rCHA" value="2"/>
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="rLangPromp" value="one language (usually Common)"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skHistory"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="spMinoIllu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="sp5CFireBo">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spBurnHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spGrease">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSrvLvl"></bootstrap>
+    <bootstrap thing="xInnatSpel">
+      <assignval field="CustDesc" value="The apprentice can cast one of these wizard spells (spell save DC 11), using Intelligence as its spellcasting ability:"/>
+      <assignval field="livename" value="Spellcasting"/>
+      <assignval field="sbName" value="Spellcasting"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    </thing>
+  <thing id="ra5CSrvLvl" name="Survivor Level" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Level 1"/>
+    <arrayval field="usrArray" index="1" value="Level 2"/>
+    <arrayval field="usrArray" index="2" value="Level 3"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[usrIndex].value < 1)
+
+perform hero.findchild[BaseRace].setfocus
+
+focus.field[rGiveSpec].value += 1
+focus.field[rHitDice].value += 1
+
+doneif (field[usrIndex].value < 2)
+
+focus.field[rGiveSpec].value += 1
+focus.field[rHitDice].value += 1]]></eval>
+    </thing>
+  <thing id="rc5CSrvAdr" name="Adrenaline Surge" description="At the beginning of the survivor&apos;s turn, it can pick one creature visible to and within 30 feet of it. Until the beginning of its next turn, it is frightened of that creature and its walking speed doubles." compset="RaceCustom" summary="Double your speed but fear a creature." uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="AllowRCust" tag="r5CSrvDis"/>
+    <tag group="AllowRCust" tag="r5CSrvSnk"/>
+    <tag group="AllowRCust" tag="r5CSrvSqr"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="AllowRCust" tag="r5CSrvAppr"/>
+    </thing>
+  <thing id="r5CSrvDis" name="Disciple" compset="Race">
+    <fieldval field="rSpecName" value="Talents"/>
+    <fieldval field="rSpecSing" value="Talent"/>
+    <fieldval field="rHitDice" value="2"/>
+    <fieldval field="rLangPromp" value="one language (usually Common)"/>
+    <fieldval field="rHPStart" value="9"/>
+    <fieldval field="rSTR" value="2"/>
+    <fieldval field="rDEX" value="-1"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rWIS" value="3"/>
+    <fieldval field="rCHA" value="-1"/>
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skReligion"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <tag group="ArmProfGrp" tag="Shields"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="spGuidance">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spSacrFlam">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSrvLvl"></bootstrap>
+    <bootstrap thing="xInnatSpel">
+      <assignval field="CustDesc" value="The disciple can cast one of these cleric spells (spell save DC 11), using Wisdom as its spellcasting ability:"/>
+      <assignval field="sbName" value="Spellcasting"/>
+      <assignval field="livename" value="Spellcasting"/>
+      </bootstrap>
+    <bootstrap thing="spCureWoun">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
+    </thing>
+  <thing id="r5CSrvSnk" name="Sneak" compset="Race">
+    <fieldval field="rSpecName" value="Talents"/>
+    <fieldval field="rSpecSing" value="Talent"/>
+    <fieldval field="rHitDice" value="2"/>
+    <fieldval field="rLangPromp" value="one language (usually Common)"/>
+    <fieldval field="rHPStart" value="9"/>
+    <fieldval field="rSTR" value="-2"/>
+    <fieldval field="rDEX" value="3"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rWIS" value="2"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="ArmProfGrp" tag="Shields"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSkill" tag="skSleight"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="RaceType" tag="NPC"/>
+    <bootstrap thing="ra5CDiseng"></bootstrap>
+    <bootstrap thing="ra5CSrvLvl"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    </thing>
+  <thing id="r5CSrvSqr" name="Squire" compset="Race">
+    <fieldval field="rSpecName" value="Talents"/>
+    <fieldval field="rSpecSing" value="Talent"/>
+    <fieldval field="rHitDice" value="2"/>
+    <fieldval field="rLangPromp" value="one language (usually Common)"/>
+    <fieldval field="rHPStart" value="11"/>
+    <fieldval field="rSTR" value="3"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="-2"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rCHA" value="-1"/>
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <tag group="ArmProfGrp" tag="Shields"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <bootstrap thing="ra5CShove"></bootstrap>
+    <bootstrap thing="ra5CSrvLvl"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    </thing>
+  <thing id="ra5CDiseng" name="Disengage" description="The creature can use a bonus action to take the Disengage action." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="ra5CShove" name="Shove" description="When wielding a shield, the creature can use a bonus action to try and shove one creature within 5 feet of it." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="rc5CSrvDsp" name="Desperate Scream" description="Whenever the survivor rolls a save, it can loose a scream that is audible up to 100 feet away. It gain advantage on the saving throw. You It scream like this twice, regaining all spent uses of this feature when it completes a long rest." compset="RaceCustom" summary="Scream to get advantage on a save." uniqueness="unique">
+    <fieldval field="trkMax" value="2"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="AllowRCust" tag="r5CSrvSnk"/>
+    <tag group="AllowRCust" tag="r5CSrvSqr"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="AllowRCust" tag="r5CSrvAppr"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="AllowRCust" tag="r5CSrvDis"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="rc5CSrvSkl" name="Skillful" description="The survivor becomes proficient in two skills of your choice." compset="RaceCustom" summary="Gain two skill proficiencies." uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="AllowRCust" tag="r5CSrvDis"/>
+    <tag group="AllowRCust" tag="r5CSrvSnk"/>
+    <tag group="AllowRCust" tag="r5CSrvSqr"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="AllowRCust" tag="r5CSrvAppr"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.findchild[BaseRace].setfocus
+
+focus.field[cSkillMax].value += 2
+perform focus.assign[AllowSkl1.Any]]]></eval>
+    </thing>
+  <thing id="rc5CSrvRes" name="Resilience" description="The survivor gains proficiency in saving throws using a chosen ability." compset="RaceCustom" summary="Gain proficiency in a saving throw." uniqueness="unique">
+    <fieldval field="usrCandid1" value="component.BaseSave &amp; !Hide.Save"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="AllowRCust" tag="r5CSrvSnk"/>
+    <tag group="AllowRCust" tag="r5CSrvSqr"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="AllowRCust" tag="r5CSrvAppr"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="r5CSrvDis"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull the save proficiency tag and push to hero
+      perform field[usrChosen1].chosen.pulltags[ProfSave.?]
+      perform hero.pushtags[ProfSave.?]]]></eval>
+    </thing>
+  <thing id="rc5CSrvShd" name="Sacrificing Shield" description="When a creature visible to the survivor attacks a target visible to and within 5 feet of the survivor, the survivor can use its reaction to become the target of the attack instead. If the survivor is wearing a shield, it can reduce the damage by 1d10. Once it has used this feature, it cannot do so again until it completes a short or long rest." compset="RaceCustom" summary="Take and reduce damage for an ally." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="AllowRCust" tag="r5CSrvSqr"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="rc5CSrvSlp" name="Slip Away" description="Whenever a creature visible to and within 5 feet of the survivor hits it with an attack roll and deals damage to it, it can use its reaction to gain resistance to that damage. The survivor can then move up to half its speed without provoking attacks of opportunity. Once it has used this feature, it cannot do so again until it completes a short or long rest." compset="RaceCustom" summary="Reduce damage and escape the situation." uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="AllowRCust" tag="r5CSrvSnk"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="cfg5CSrvSpl" name="Bonus Spells" description="This configurable helps with the Magical Talent and Divine Guidance Survivor Talents." compset="Configure" uniqueness="unique">
+    <fieldval field="cfgAllwSp1" value="sLevel.1"/>
+    <tag group="Helper" tag="OutCfgSpl"/>
+    <eval phase="First"><![CDATA[foreach pick in Hero from BaseSpell where "CfgSpell.cfg5CSrvSpl"
+  perform eachpick.assign[Helper.RaceSpell]
+  perform eachpick.assign[Usage.Day]
+  eachpick.field[trkMax].value = 1
+   nexteach]]></eval>
+    </thing>
+  <thing id="rc5CSrvDiv" name="Divine Guidance" description="The survivor learns one 1st-level spell of its choice from the cleric spell list. It must be a spell it doesn’t already know. Once the survivor casts the spell using this talent, it cannot do so again until it completes a long rest.\n\nThe survivor can take this talent more than once, choosing a different spell each time." compset="RaceCustom" summary="Learn a 1st-level cleric spell.">
+    <usesource source="5eVRGtR"/>
+    <tag group="AllowRCust" tag="r5CSrvDis"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="cfg5CSrvSpl"></bootstrap>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+var iSpl as string
+
+foreach pick in hero from BaseSpell where "sLevel.1"
+iSpl &= " & !" & eachpick.tagids[thingid.?,""]
+nexteach
+
+perform hero.childfound[cfg5CSrvSpl].setfocus
+
+focus.field[cfgMaxSp1].value += 1
+focus.field[cfgAllwSp1].text &= " & sClass.cHelpClr" & iSpl]]></eval>
+    </thing>
+  <thing id="rc5CSrvMgc" name="Magical Talent" description="The survivor learns one 1st-level spell of its choice from the wizard spell list. It must be a spell it doesn’t already know. Once the survivor casts the spell using this talent, it cannot do so again until it completes a long rest.\n\nThe survivor can take this talent more than once, choosing a different spell each time." compset="RaceCustom" summary="Learn a 1st-level wizard spell.">
+    <usesource source="5eVRGtR"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="AllowRCust" tag="r5CSrvAppr"/>
+    <bootstrap thing="cfg5CSrvSpl"></bootstrap>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+var iSpl as string
+
+foreach pick in hero from BaseSpell where "sLevel.1"
+iSpl &= " & !" & eachpick.tagids[thingid.?,""]
+nexteach
+
+perform hero.childfound[cfg5CSrvSpl].setfocus
+
+focus.field[cfgMaxSp1].value += 1
+focus.field[cfgAllwSp1].text &= " & sClass.cHelpWiz" & iSpl]]></eval>
+    </thing>
+  </document>

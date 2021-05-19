@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="g5CMstTlsm" name="Mist Talisman" description="This nonmagical object resonates with the unique nature of its domain of origin. A creature can hold the talisman while traveling through the mists to reach the original domain with 2d6 hours&apos; travel. Creatures that willingly follow the creature holding the talisman also reach that domain. Creatures imprisoned within the borders of a domain do not benefit from the talisman. If a domain&apos;s borders are closed, instead roll on the Wandering the Mists table (Van Richten&apos;s Guide to Ravenloft, chapter 3)." compset="Gear">
+    <usesource source="5eVRGtR"/>
+    <tag group="GearType" tag="gtAdventGe"/>
+    </thing>
+  <thing id="g5CIvnWhsp" name="Ivana&apos;s Whisper" description="{i}Inhaled{/i}\n\nA creature subjected to this poison must make a DC 18 Constitution save. On a failure, it is subjected to the effects of a {i}dream{/i} spell created by Ivana the next time they sleep." compset="Gear" stacking="merge">
+    <usesource source="5eVRGtR"/>
+    <tag group="PoisonType" tag="Injury" name="Injury" abbrev="Injury"/>
+    <tag group="GearType" tag="gtPoison" name="Poison" abbrev="Poison"/>
+    </thing>
+  <thing id="i5CNepen" name="Nepenthe" description="You gain a +3 bonus to attack and damage rolls made with this magic longsword. When you hit a fiend or an undead with it, that creature takes an extra 2d10 radiant damage.\n\nWhile you hold the drawn longsword, it creates an aura in a 10 foot radius around you. You and all creatures friendly to you in the aura have advantage on saving throws against spells and other magical effects. If you have 17 or more levels in the paladin class, the radius of the aura increases to 30 feet.\n\n{b}Sentience.{/b} The sword is sentient, with an Intelligence of 10, a Wisdom of 8, and a Charisma of 18. It can hear and see with darkvision to a range of 60 feet. It can read and understand Elvish. It can also speak Elvish, but only through its wielder&apos;s voice. It can communicate with the wielder telepathically. \n\n{b}Personality.{/b} Nepenthe cannot distinguish between the guilty and the innocent, but beheads convicted criminals all the same, hungering for more. It is corrupt, and cannot be redeemed." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="wDamExtra" value=" plus 2d10 radiant vs fiends/undead"/>
+    <fieldval field="Bonus" value="3"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="IsWeapon" tag="wLongsword"/>
+    <tag group="ItemRarity" tag="Legendary" name="Legendary" abbrev="Legendary"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~restrict the list of weapons to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & (wGroup.Sword)"
+
+      doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+      #situational[hero.child[svAll], "Advantage on saving throws against spells", field[thingname].text]]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wLongsword"></bootstrap>
+      </child>
+    </thing>
+  <thing id="ip5CSprNbl" name="Spirit of Nobility" description="Drinking this magical elixir grants the drinker the effects of the {i}greater invisbility{/i} spell until dawn." compset="Potion">
+    <usesource source="5eVRGtR"/>
+    <tag group="SpInfo" tag="spGreaInvi"/>
+    </thing>
+  <thing id="io5CHrkBt" name="Harkon&apos;s Bite" description="While wearing this simple corded, dire wolf tooth necklace, you gain a +1 to all ability checks and saving throws. \n\n{b}Curse.{/b} Attuning to this necklace curses you until either Harkon removes the necklace from you or you are the recipient of the {i}remove curse{/i} spell or similar magic. So long as you are cursed, you cannot remove the necklace. Regardless of your attunement to it, donning or removing the necklace curses you with werewolf lycanthropy (see the Monster Manual) until the dawn following the next full moon. If you are still wearing the necklace at that time, you are afflicted with the lycanthropy again." compset="Wondrous">
+    <usesource source="5eVRGtR"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      doneif (field[gIsAttuned].value = 0)
+
+      hero.child[svAll].field[Bonus].value += 1
+      hero.child[AllSkills].field[Bonus].value += 1
+      hero.child[Initiative].field[Bonus].value += 1
+      foreach pick in hero from BaseAttr
+        #situational[eachpick,"+1 bonus on ability checks",field[thingname].text]
+        nexteach]]></eval>
+    </thing>
+  </document>

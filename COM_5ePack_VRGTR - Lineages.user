@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CDamphir" name="Dhampir" compset="Race">
+    <fieldval field="rSpeed" value="35"/>
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="cSkillMax" value="2"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="AllowSkl1" tag="Any"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CUADmSpd"></bootstrap>
+    <bootstrap thing="ra5CDmphVmp"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="DamageOver" tag="aCON"/>
+      <autotag group="MelAttOver" tag="aCON"/>
+      <autotag group="wProfReq" tag="Simple"/>
+      <autotag group="Helper" tag="Proficient"/>
+      <assignval field="livename" value="Vampiric Bite"/>
+      <assignval field="sbName" value="Vampiric Bite"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CAncLeg"></bootstrap>
+    <bootstrap thing="ra5CDmpDth"></bootstrap>
+    <eval phase="Final" priority="10001">hero.childfound[xClimb].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xClimb].field[abValue].value)</eval>
+    <eval phase="First" index="2">perform hero.assign[OverType.tpUndead]</eval>
+    </thing>
+  <thing id="r5CHexblood" name="Hexblood" compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="cSkillMax" value="2"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="AllowSkl1" tag="Any"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="ra5CHxbldTkn"></bootstrap>
+    <bootstrap thing="ra5CHxbldMgc"></bootstrap>
+    <bootstrap thing="tpFey"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CAncLeg"></bootstrap>
+    </thing>
+  <thing id="r5CReborn" name="Reborn" compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="cSkillMax" value="2"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="DamageRes" tag="dtPoison"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="AllowSkl1" tag="Any"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="ra5CUARbDth"></bootstrap>
+    <bootstrap thing="ra5CRbrnKnwl"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CAncLeg"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    </thing>
+  <thing id="ra5CDmphVmp" name="Vampiric Bite" description="Your are proficient with biting with your fangs as a natural weapon, which counts as a simple melee weapon. You add your Constitution modifier to the attack and damage rolls when you attack with this bite. It deals 1d4 piercing damage on a hit. While you are missing half or more of your hit points, you have advantage on attack rolls you make with this bite.\n\nWhen you use your bite and hit a non-Construct, non-Undead creature, you can choose from one of these ways to empower yourself:\n\n• You regain hit points equal to the bite&apos;s piercing damage dealt.\n• You gain a bonus to the next ability check or attack roll you make; the bonus equals the piercing damage dealt by the bite\n\nYou can empower yourself with a bite a number of times equaling your proficiency bonus, and you regain all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="2"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="PostAttr" priority="5000">field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value</eval>
+    </thing>
+  <thing id="ra5CHxbldMgc" name="Hex Magic" description="You know the {i}disguise self{/i} and {i}hex{/i} spells. When you gain this lineage, choose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells. You can cast  each spell once without expending a spell slot, and you must complete a long rest before you can cast each one this way again. You can also cast them using any spell slots you have." compset="RaceSpec">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Custom" tag="OnlyIfCaster"/>
+    <bootstrap thing="sp5CHex">
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Custom" tag="OnlyIfCaster"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="sp5CHex">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Custom" tag="OnlyIfCaster"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="Final"><![CDATA[
+doneif (hero.tagis[Hero.Caster] = 0)
+
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster"
+  perform eachpick.delete[Hide.Spell]
+  nexteach]]></eval>
+    </thing>
+  <thing id="ra5CHxbldTkn" name="Eerie Token" description="You can use a bonus action to harmlessly pull out one of your nails, a tooth, or a lock of hair. This token becomes imbued with magic until you complete a long rest. While the token is imbued like this, you can use these actions:\n\n{b}Telepathic Message{/b}\nYou can use an action to send a telepathic message to the creature holding or carrying the token, so long as you are on the same plane of existence and are within 10 miles of it. The message can contain up to twenty-five words.\n\n{b}Remote Viewing{/b}\nWhile you are within 10 miles of the token, you can use an action to enter a trance for 1 minute. You can end the trance before that time freely (no action needed). During the trance, you can see and hear from the token as if you were in its location. While you are using your senses at the token&apos;s location, you are blind and deaf to your own surroundings. After the trance ends, the token is harmlessly destroyed.\n\nOnce you create a token using this feature, you can&apos;t do so again until you complete a long rest, at which point your missing body part regrows." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="ra5CRbrnKnwl" name="Knowledge from a Past Life" description="You temporarily catch glimpses of a past life. When you make an ability check using a skill, you can roll and add 1d6 to the check immediately after seeing the d20 roll. You can use this feature a number of times equaling your proficiency bonus, and you regain all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="PostAttr" priority="5000"><![CDATA[~if we've been replaced, get out now 
+doneif (tagis[Helper.Disable] <> 0)
+
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="ra5CAncLeg" name="Ancestral Legacy" description="If this lineage is replacing your character&apos;s previous race, you may keep that previous race&apos;s skill proficiencies and any climbing, swimming, or flying speeds. If you are not replacing a race or not keeping those previous racial benefits, you gain proficiency in two skills of your choice.\n\n{i}Note: Hero Lab does not allow for one race to replace another. If you are replacing one and keeping the benefits, choose &quot;Keep Previous&quot; from the drop-down then add the &quot;Proficiencies&quot; and &quot;Speed, Special&quot; adjustments to add back in those benefits.{/i}" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="New Proficiencies"/>
+    <arrayval field="usrArray" index="1" value="Keep Previous"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[usrIndex].value <> 1)
+
+perform hero.findchild[BaseRace].setfocus
+
+focus.field[cSkillMax].value -= 2]]></eval>
+    </thing>
+  <thing id="ra5CDmpDth" name="Deathless Nature" description="You do not need to breathe." compset="RaceSpec">
+    <comment><![CDATA[This is the Damphir's version.]]></comment>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"><![CDATA[~if we've been replaced, get out now 
+doneif (tagis[Helper.Disable] <> 0)
+
+  #situational[hero.child[svAll],"Advantage versus poison and disease",field[thingname].text]]]></eval>
+    </thing>
+  </document>
