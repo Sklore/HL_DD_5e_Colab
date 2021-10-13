@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CUABarPthBst" name="Path of the Beast (UA)" compset="CustomSpec" uniqueness="unique">
+    <fieldval field="usrLabelAr" value="Origin of the Beast"/>
+    <arrayval field="usrArray" index="0" value="Lycanthrope parent"/>
+    <arrayval field="usrArray" index="1" value="Archdruid parent"/>
+    <arrayval field="usrArray" index="2" value="Blessed by fey spirit"/>
+    <arrayval field="usrArray" index="3" value="Ancient animal spirit"/>
+    <usesource source="p5e20SbP1UACP"/>
+    <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpBbn" name="Barbarian" abbrev="Barbarian"/>
+    <tag group="User" tag="NoAutoName" name="NoAutoName" abbrev="NoAutoName"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="BbnPriPath" name="Barbarian Primal Path" abbrev="Barbarian Primal Path"/>
+    <tag group="abDuration" tag="ConstRage" name="Constant While Raging" abbrev="rage"/>
+    <bootstrap thing="c5CUABarFrmBst">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CUABarBstlSl">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CUABarInfFry">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CUABarClHunt">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CUABarFrmBst" name="Form of the Beast" description="When you begin to rage, your body can transform, manifesting a natural, simple melee weapon. You add your Strength modifier to the attack and damage rolls, as normal. Choose the type of weapon every time you rage:\n\n{b}Bite.{/b} Deals 1d8 piercing. Once per each of your turns, when you damage a creature with this bite attack, you regain hit points equal to your Constitution modifier.\n{b}Claws.{/b} Deals 1d6 slashing. Each of your hands is transformed, and each can be used for this attack if it is empty. Once on each of your turns, when you use the Attack action to make this attack, you can make one extra Claw attack as part of that action.\n{b}Tail.{/b} Deals 1d12 piercing, and has reach." compset="ClSpecial" summary="Manifest a natural weapon with special benefits while raging.">
+    <fieldval field="usrLabelAr" value="Natural Weapon"/>
+    <arrayval field="usrArray" index="0" value="Bite"/>
+    <arrayval field="usrArray" index="1" value="Claws"/>
+    <arrayval field="usrArray" index="2" value="Tail"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="wClaw">
+      <containerreq phase="First" priority="500"><![CDATA[hero#Hero.Raging & fieldval:usrIndex = 1]]></containerreq>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wAttackEff" value="Each of your hands is transformed, and each can be used for this attack if it is empty. Once on each of your turns, when you use the Attack action to make this attack, you can make one extra Claw attack as part of that action."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="wTail">
+      <containerreq phase="First" priority="500"><![CDATA[hero#Hero.Raging & fieldval:usrIndex = 2]]></containerreq>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="wProperty" tag="Reach"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="12"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <containerreq phase="First" priority="500"><![CDATA[hero#Hero.Raging & fieldval:usrIndex = 0]]></containerreq>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wAttackEff" value="Once per each of your turns, when you damage a creature with this bite attack, you regain hit points equal to your Constitution modifier (minimum 1)."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CUABarBstlSl" name="Bestial Soul" description="Your natural weapons from your Form of the Beast now count as magical for the purpose of overcoming resistance and immunity to nonmagical attacks and damage.\n\nWhen you complete a short or long rest, you can select one of these benefits:\n• You gain a swim speed equal to your walking speed, and you are able to breathe underwater.\n• You gain a climb speed equal to your walking speed, and are able to climb difficult surfaces, including upside down, without having to make an ability check.\n• Once per turn, when you jump, you can make a Strength (Athletics) check and extend the length of your jump equal to the check&apos;s total." compset="ClSpecial" summary="Your natural attacks are magical, and you select a benefit at the end of a rest.">
+    <fieldval field="usrLabelAr" value="Natural Weapon"/>
+    <arrayval field="usrArray" index="0" value="Swimming and water breathing"/>
+    <arrayval field="usrArray" index="1" value="Climbing without checks"/>
+    <arrayval field="usrArray" index="2" value="Jumping with Athletics check"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="xClimb">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:usrIndex = 1 & count:Classes.Barbarian >= 6]]></containerreq>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="xSwim">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:usrIndex = 0 & count:Classes.Barbarian >= 6]]></containerreq>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <eval phase="Final" priority="8999"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (field[usrIndex].value <> 0)
+
+       var Speed as number
+       var Flight as string
+
+       Speed = (hero.childfound[Speed].field[tSpeed].value + hero.childfound[Speed].field[Bonus].value)
+
+       Speed = maximum(hero.childfound[xSwim].field[abValue].value,Speed)
+
+       Flight = "Value." & Speed
+
+
+       perform hero.childfound[xSwim].delete[Value.?]
+       perform hero.childfound[xSwim].assignstr[Flight]
+       hero.childfound[xSwim].field[abValue].value = Speed]]></eval>
+    <eval phase="Final" priority="8999" index="2"><![CDATA[       doneif (tagis[Helper.Disable] <> 0)
+       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (field[usrIndex].value <> 1)
+
+       var Speed as number
+       var Flight as string
+
+       Speed = (hero.childfound[Speed].field[tSpeed].value + hero.childfound[Speed].field[Bonus].value)
+
+       Speed = maximum(hero.childfound[xClimb].field[abValue].value,Speed)
+
+       Flight = "Value." & Speed
+
+
+       perform hero.childfound[xClimb].delete[Value.?]
+       perform hero.childfound[xClimb].assignstr[Flight]
+       hero.childfound[xClimb].field[abValue].value = Speed]]></eval>
+    </thing>
+  <thing id="c5CUABarInfFry" name="Infectious Fury" description="When you hit a creature with your natural weapons and are raging, you force the target to make a Wisdom save (the DC of which equals 8 + your Constitution modifier + your proficiency bonus). On a failure, it suffers one of these effects:\n\n• The target must use its reaction to make a melee attack versus another creature, chosen by and visible to you.\n• The target suffers 2d12 psychic damage.\n\nYou can use this ability a number of times equaling to your Constitution modifier (minimum 1), and you regain all spent uses when you complete a long rest." compset="ClSpecial" summary="Hit with natural weapon forces Wisdom save. Failure causes them to attack or suffer damage.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="StandardDC" tag="aCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wis"/>
+    <eval phase="Final"><![CDATA[
+     doneif (tagis[Helper.ShowSpec] = 0)
+     doneif (tagis[Helper.Disable] <> 0)
+
+     field[trkMax].value = maximum(1,hero.childfound[aCON].field[aModBonus].value)]]></eval>
+    </thing>
+  <thing id="c5CUABarClHunt" name="Call the Hunt" description="When you begin raging, you can choose a number of willing creatures visible to and within 30 feet of you. The number of creatures equals your Constitution modifier (a minimum of one creature), and cannot include yourself.\n\nYou gain 5 temporary hit points for each creature that accepts this. Until your rage ends, the chosen creatures can each use this benefit once on each of their turns: when the creature hits a target with an attack roll and deals damage with that attack, it can add 1d6 damage to the total.\n\nYou can use this ability a number of times equaling to your Constitution modifier (minimum 1), and you regain all spent uses when you complete a long rest." compset="ClSpecial" summary="Grant extra damage to nearby allies and receive temporary HP.">
+    <comment><![CDATA[not sure why the version from TCoE uses the Dark One's Blessing Temp HP Pool, but for consistency's sake, I'm just gonna do the same.]]></comment>
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="actIncrNam" value="Creatures"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="10"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="Helper" tag="UserAdjust" name="UserAdjust" abbrev="UserAdjust"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="LvNamePar" tag="IncRange" name="Include Range text" abbrev="Include Range text"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="PoolWlkBls">
+      <containerreq phase="First" priority="500"><![CDATA[hero#Hero.Raging & fieldval:actUser <> 0]]></containerreq>
+      <autotag group="Value" tag="11"/>
+      <assignval field="livename" value="Call the Hunt Temporary HP"/>
+      </bootstrap>
+    <eval phase="Final" priority="500"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[trkMax].value = maximum(1,hero.childfound[aCON].field[aModBonus].value)
+
+      var iINT as number
+      var iPlur as string
+
+      iINT = maximum(1,hero.childfound[aCON].field[aModBonus].value)
+      if (iINT <> 1) then
+         iPlur = "s"      
+         endif
+
+      field[abText].text = iINT & " creature" & iPlur
+
+      field[actIncrNam].text = "Creatures (Maximum " & iINT & ")"
+
+      doneif (field[actUser].value = 0)
+
+      var temphp as number
+      temphp = field[actUser].value
+      temphp *= 5
+
+       if (field[actUser].value > maximum(1,hero.childfound[aCON].field[aModBonus].value)) then
+           temphp = 0
+         endif
+
+
+      ~Use this to add the result to the pool
+      hero.findchild[TempHpPool,"Value.11"].field[thpMinAllw].value = temphp
+      hero.findchild[TempHpPool,"Value.11"].field[thpMaxAllw].value = temphp]]></eval>
+    <evalrule phase="Final" message="Your chosen number of creatures is higher than your CON mod allows." summary="Your chosen number of creatures is higher than your CON mod allows."><![CDATA[
+       validif (tagis[Helper.ShowSpec] = 0)
+       validif (tagis[Helper.Disable] <> 0)
+
+       @valid = 1
+
+       if (field[actUser].value > maximum(1,hero.childfound[aCON].field[aModBonus].value)) then
+           @valid = 0
+         endif]]></evalrule>
+    </thing>
+  <thing id="c5CUAMnkWyMrcy" name="Way of Mercy (UA)" compset="CustomSpec" uniqueness="unique">
+    <comment>Supercedes Trio of Subclasses</comment>
+    <usesource source="p5e20SbP1UACP"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpMnk" name="Monk" abbrev="Monk"/>
+    <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition" abbrev="Monk Monastic Tradition"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CMnkFlrHnd">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CUAMnkHndMcy">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="c5CUAMnkHndHea">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="io5CUAMercMsk"></bootstrap>
+    <bootstrap thing="c5CUAMnkImpMrc">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CUAMnkHndHrm">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CUAMnkNoxAur">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CUAMnkImpMrc" name="Implements of Mercy" description="You become proficient with the Insight and Medicine skills, and with herbalism kits.\n\nYou also gain a special mask, the appearance of which you determine (or can roll for it, see the mask). You often wear it while using this subclass&apos;s features." compset="ClSpecial" summary="Insight, medicine, and herbalism kit proficiency and special mask.">
+    <fieldval field="usrCandid1" value="component.BaseSkill &amp; (Reference.skInsight | Reference.skMedicine)"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <bootstrap thing="gKitHerbal">
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+if (field[usrChosen1].ischosen <> 0) then
+  perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
+  endif
+
+
+perform forward[ProfSkill.?]]]></eval>
+    </thing>
+  <thing id="c5CUAMnkHndHea" name="Hand of Healing" description="You can use an action to spend 1 ki point to touch a creature and restore hit points. The amount restored equals a roll of your Martial Arts die + your Wisdom modifier. \n\nWhen you use your Flurry of Blows, you can replace one of the unarmed strikes with a use of this healing ability. If you do, you do not need to spend the ki point for the healing." compset="ClSpecial" summary="Spend 1 ki to heal creature for Martial Arts die + Wisdom">
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <eval phase="Final"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      var iSign as string
+      if (hero.childfound[aWIS].field[aModBonus].value >= 0) then
+         iSign = "+"
+         endif
+
+      field[abText].text = "1 ki, " & hero.childfound[cMnkMarArt].field[abText].text & iSign & hero.childfound[aWIS].field[aModBonus].value & " HP"]]></eval>
+    </thing>
+  <thing id="c5CUAMnkHndHrm" name="Hand of Harm" description="When you hit a creature with an unarmed strike, you can spend 1 ki point to deal extra necrotic damage. The amount dealt equals a roll of your Martial Arts die. If the creature is incapacitated or poisoned, the amount dealt increases to three rolls of your Martial Arts die. You can only use this feature once per turn." compset="ClSpecial" summary="Spend 1 ki to deal Martial Arts die of necrotic damage">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="UsPe5CTurn" name="/turn" abbrev="/turn"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <eval phase="Final"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abText].text = "1 ki, " & hero.childfound[cMnkMarArt].field[abText].text & " necrotic"]]></eval>
+    </thing>
+  <thing id="c5CUAMnkNoxAur" name="Noxious Aura" description="You can use a bonus action to spend 1 ki to make a 5 foot aura around you toxic. It lasts for 1 minute or until you&apos;re incapacitated or dismiss it, which doesn&apos;t require an action.\n\nWhile your aura is active, all ranged attacks against you have disadvantage, and any creature that starts its turn in the area become poisoned and take poison damage equal to your Wisdom modifier (minimum 0)." compset="ClSpecial" summary="Spend 1 ki to exude a small toxic aura.">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="5"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abText].text = maximum(0,hero.childfound[aWIS].field[aModBonus].value) & " poison"]]></eval>
+    </thing>
+  <thing id="c5CUAMnkHeaTec" name="Healing Technique" description="When you use your Hands of Healing ability, you can also end one of the following conditions if any are afflicting the target: blinded, deafened, paralyzed, or poisoned." compset="ClSpecial" summary="Your Hand of Healing ability grows stronger.">
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="c5CUAMnkHndMcy" name="Hand of Mercy" description="You can use an action to touch a creature. Spending 4 ki points, you force the creature to make a Constitution saving throw. Should the target fail, which they can choose to do, they enter a state of suspended animation for a number of days equal to your monk level, unless you end the effect early, which requires no action. While in this state, the creature is paralyzed, immune to all damage, and ongoing effects such as curses, diseases, or poisons are temporarily negated. Any observation of the crature either with one&apos;s senses or using spells that determine the creatures&apos;s status seemingly reveal that the creature is dead. You can only affect one creature in this manner at a time." compset="ClSpecial" summary="Spend 4 ki to temporarily suspend the life of one creature.">
+    <fieldval field="abText" value="4 ki"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    </thing>
+  <thing id="io5CUAMercMsk" name="Merciful Mask" compset="Wondrous">
+    <arrayval field="usrArray" index="0" value="Raven"/>
+    <arrayval field="usrArray" index="1" value="Blank and white"/>
+    <arrayval field="usrArray" index="2" value="Crying face"/>
+    <arrayval field="usrArray" index="3" value="Laughing face"/>
+    <arrayval field="usrArray" index="4" value="Skull"/>
+    <arrayval field="usrArray" index="5" value="Butterfly"/>
+    <usesource source="p5e20SbP1UACP"/>
+    <tag group="User" tag="NoAutoName" name="NoAutoName" abbrev="NoAutoName"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    <tag group="Helper" tag="EquipMag" name="Magic Armor" abbrev="Magic Armor"/>
+    <tag group="Helper" tag="Helper" name="Helper" abbrev="Helper"/>
+    </thing>
+  <thing id="c5CUAPalWatch" name="Oath of the Watchers (UA)" description="Oath of the Watchers paladins are bound to defend mortal realms from extraplanar threats.\n\n{b}Tenets of the Watchers{/b}\n\n{b}{i}Vigilance..{/b} {/i}The enemies you face are powerful, cunning, and tricky. Always be on guard for their foul play.\n\n{b}{i}Loyalty.{/b} {/i}Stay true to your friends and your duty. Have no dealings with fiends, no matter how friendly they seem.\n\n{b}{i}Discipline.{/b} {/i}You are the guardian against the dark beyond. Your blade and mind must both be sharp to survive what terrors await you." compset="CustomSpec" summary="Your oath binds you to the duties of vigilance, loyalty, and discipline." uniqueness="unique">
+    <usesource source="p5e20SbP1UACP"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpPal" name="Paladin" abbrev="Paladin"/>
+    <tag group="abCategory" tag="PalSacOath" name="Paladin Sacred Oath" abbrev="Paladin Sacred Oath"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <bootstrap thing="c5CUAPalAurSnt">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    <bootstrap thing="c5CUAPalVigReb">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CUAPalMrtBlw">
+      <autotag group="ClSpecWhen" tag="20"/>
+      </bootstrap>
+    <bootstrap thing="spAlarm">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="sp5CChroO">
+      <autotag group="BonusSplAt" tag="3"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spMoonbeam">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spAugury">
+      <autotag group="BonusSplAt" tag="5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="sp5CCounte">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spNondetec">
+      <autotag group="BonusSplAt" tag="9"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="sp5CAurPur">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spBanishme">
+      <autotag group="BonusSplAt" tag="13"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spHoldMons">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="spHallow">
+      <autotag group="BonusSplAt" tag="17"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="SpellType" tag="cHelpPal"/>
+      </bootstrap>
+    <bootstrap thing="c5CUAPalWatWil">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CUAPalAbjExt">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CUAPalAbjExt" name="Channel Divinity: Abjure the Extraplanar" description="You can use an action to present your holy symbol to all aberrations, elementals, fey, and fiends within 30 feet of you. Such a creature, if it is able to hear you, must make a Wisdom save. On a failure, it is turned for 1 minute or until it is damaged.\n\nA turned creature must spend its turns moving as far away from you as possible, and it cannot willingly end its turn within 30 feet of you. The only actions it can take are to Dash or to escape an effect that is preventing its movement. If it cannot move any further, it can take the Dodge action." compset="ClSpecial" summary="Extraplanar creatures that can see or hear you within 30 feet must make Wis save or flee.">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="abSave" tag="aWIS" name="Wisdom" abbrev="Wis"/>
+    <tag group="StandardDC" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    </thing>
+  <thing id="c5CUAPalWatWil" name="Channel Divinity: Watcher&apos;s Will" description="You can use an action to pick a number of creatures (equal to your Charisma modifier, minimum 1) visible to and within 30 feet of you. For the next minute, you and the chosen creatures have advantage on your Intelligence, Wisdom, and Charima saves." compset="ClSpecial" summary="Grant advantage on Int, Wis, and Cha saves.">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="abCategory" tag="PalChanDiv" name="Paladin Channel Divinity" abbrev="Paladin Channel Divinity"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+       var CMod as number
+       CMod = #attrbonus1[aCHA]
+       CMod = maximum(1,CMod)
+
+       field[abText].text = CMod & " creature"
+
+       doneif (CMod = 1)
+       
+       field[abText].text &= "s"]]></eval>
+    </thing>
+  <thing id="c5CUAPalAurSnt" name="Aura of the Sentinel" description="If you&apos;re not incapacitated, you emit an aura of alertness. You and any creatures of your choice within 10 feet of you gain a bonus to your initiative rolls equal to your Charisma modifier (minimum 1).\n\nThe range of this aura becomes 30 feet when you reach level 18." compset="ClSpecial" summary="You and friendly creatures in range add your proficiency to initiative.">
+    <fieldval field="abRange" value="10"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="LvNamePar" tag="IncRange" name="Include Range text" abbrev="Include Range text"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      if (field[xAllLev].value >= 18) then
+        field[abRange].value += 20
+        endif]]></eval>
+    <eval phase="PostAttr" index="2"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[Initiative].field[Bonus].value += hero.childfound[aCHA].field[aModBonus].value]]></eval>
+    </thing>
+  <thing id="c5CUAPalVigReb" name="Vigilant Rebuke" description="Whenever you or a creature visible to and within 30 feet of you makes a successful Intelligence, Wisdom, or Charisma save, you can use a reaction to deal 2d8 + your Charisma modifier force damage to the creature that caused them to make that save." compset="ClSpecial" summary="Reaction to deal 2d8+CHA damage against a creature that forced a save.">
+    <fieldval field="abRange" value="30"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    <tag group="abRange" tag="Feet" name="Feet" abbrev="ft."/>
+    <tag group="FeatureTyp" tag="Reaction" name="Reaction" abbrev="Reaction"/>
+    <eval phase="PostAttr"><![CDATA[       doneif (tagis[Helper.ShowSpec] = 0)
+       doneif (tagis[Helper.Disable] <> 0)
+
+       var CMod as number
+       var SgdC as string
+
+       CMod = hero.childfound[aCHA].field[aModBonus].value
+       if (CMod < 0) then
+         SgdC = ""
+       else
+         SgdC = "+"   
+       endif
+
+       field[abText].text = "2d8" & SgdC & CMod & " force"]]></eval>
+    </thing>
+  <thing id="c5CUAPalMrtBlw" name="Mortal Bulwark" description="You can use a bonus action to gain these benefits for 1 minute:\n\n•  You have 120 ft. of truesight\n•  Your attack rolls against aberrations, elementals, fey, and fiends are made with advantage.\n•  When you successfully deal damage to a creature by hitting it with an attack roll, you can force it to make a Charisma save versus your spell save DC. On a failure, the creature is magically banished to its home plane, unless it&apos;s already there. On a successful saving throw, the creature cannot be banished by this feature for the next 24 hours. \n\nOnce you&apos;ve used this feature, you cannot use it again until you complete a long rest." compset="ClSpecial" summary="Bonus action to gain Truesight, advantage on extraplanar foes, banishment for 1 minute.">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="StandardDC" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="abSave" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="DamageRes" tag="dcAll" name="All damage" abbrev="All damage"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="raTruesigh">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CUAWlkNblGen" name="The Noble Genie (UA)" compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5e20SbP1UACP"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpWlk" name="Warlock" abbrev="Warlock"/>
+    <tag group="abCategory" tag="WlkOthPatr" name="Warlock Otherworldly Patron" abbrev="Warlock Otherworldly Patron"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CUAWlkPrtWsh">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CUAWlkColCal">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CUAWlkColVsl">
+      <autotag group="ClSpecWhen" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CUAWlkEleRes">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CUAWlkGenEnt">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">doneif (islinkage[table] = 0)
+
+      perform linkage[table].assign[ClsAllowSp.spSleep]
+      perform linkage[table].assign[ClsAllowSp.spFogClou]
+      perform linkage[table].assign[ClsAllowSp.spEnlargeR]
+      perform linkage[table].assign[ClsAllowSp.sp5CPhantF]
+      perform linkage[table].assign[ClsAllowSp.spCreaFood]
+      perform linkage[table].assign[ClsAllowSp.spProtEner]
+      perform linkage[table].assign[ClsAllowSp.spPolymorp]
+      perform linkage[table].assign[ClsAllowSp.spPhanKill]
+      perform linkage[table].assign[ClsAllowSp.spArcaHand]
+      perform linkage[table].assign[ClsAllowSp.spCreation]</eval>
+    </thing>
+  <thing id="c5CUAWlkColVsl" name="Collector&apos;s Vessel" description="Your patron grants you a Tiny object to serve as a vessel of its power. You can use it as a spellcasting focus for your warlock spells. You can decide its appearance or select it at random.\n\nIf the vessel is destroyed or you lose it, you can perform a 1-hour ceremony to gain a replacement from your patron. The ceremony can be done during a short or long rest, and any existing previous vessel is destroyed. If you die, the vessel vanishes in an eruption of elemental power.\n\nBy using your action, you may create a wispy tether between the yourself and a willing creature visible and within 100 feet of you. If the creature drops to 0 hit points, ends its turn further than 100 feet away, or you create another tether, this tether will dissipate. Otherwise, it will last up to an hour.\n\nWhile tethered, you gain the following benefits:\n• You gain a bonus equal to your Charisma modifier (minimum 1) to your Wisdom (Perception) checks\n• You may deliver a spell you cast from either your space or the thethered creature&apos;s space.\n• You can use your ability to tether yourself to others a number of times equal to your Charisma modifier (minimum 1) per long rest" compset="ClSpecial" summary="Your genie has granted you a vessel of its power.">
+    <fieldval field="actName" value="Tethered"/>
+    <arrayval field="usrArray" index="0" value="Oil lamp"/>
+    <arrayval field="usrArray" index="1" value="Urn"/>
+    <arrayval field="usrArray" index="2" value="Ring"/>
+    <arrayval field="usrArray" index="3" value="Bottle"/>
+    <arrayval field="usrArray" index="4" value="Statuette"/>
+    <arrayval field="usrArray" index="5" value="Lantern"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="User" tag="Activation"/>
+    <bootstrap thing="g5CUAColVsl"></bootstrap>
+    <eval phase="Final"><![CDATA[
+     doneif (tagis[Helper.ShowSpec] = 0)
+     doneif (tagis[Helper.Disable] <> 0)
+
+     field[trkMax].value = maximum(1,hero.childfound[aCHA].field[aModBonus].value)]]></eval>
+    <eval phase="First" index="2"><![CDATA[if (field[abilActive].value <> 0) then
+    #skillbonus[skPercep] += maximum(1,hero.childfound[aCHA].field[aModBonus].value)
+endif]]></eval>
+    </thing>
+  <thing id="c5CUAWlkEleRes" name="Elemental Resistance" description="You now have resistance to a partuclar type of damage, your choice of acid, cold, fire, or lighning. You may change this choice at the end of a long rest.\n\nIf a creature is tethered to you via your Collector&apos;s Vessel, they gain this same elemental resistance." compset="ClSpecial" summary="Gain elemental resistance from your patron.">
+    <fieldval field="abDuration" value="10"/>
+    <arrayval field="usrArray" index="0" value="Acid"/>
+    <arrayval field="usrArray" index="1" value="Cold"/>
+    <arrayval field="usrArray" index="2" value="Fire"/>
+    <arrayval field="usrArray" index="3" value="Lightning"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Helper" tag="Hover"/>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="5000"><![CDATA[    doneif (tagis[Helper.Disable] <> 0)
+    doneif (tagis[Helper.ShowSpec] = 0)
+
+    if (field[usrIndex].value = 0) then
+       perform hero.assign[DamageRes.dtAcid]
+    elseif (field[usrIndex].value = 1) then
+       perform hero.assign[DamageRes.dtCold]
+    elseif (field[usrIndex].value = 2) then
+       perform hero.assign[DamageRes.dtLightnin]
+    elseif (field[usrIndex].value = 3) then
+       perform hero.assign[DamageRes.dtFire]
+    endif
+    
+    
+
+~~if (field[usrChosen1].ischosen <> 0) then
+        ~~perform field[usrChosen1].chosen.pulltags[ElemType.?]
+        ~~endif
+
+      ~~perform hero.assign[DamageRes.?]]]></eval>
+    </thing>
+  <thing id="g5CUAColVsl" name="Collector&apos;s Vessel" description="Your patron grants you a Tiny object to serve as a vessel of its power. You can use it as a spellcasting focus for your warlock spells. You can decide its appearance or select it at random.\n\nIf the vessel is destroyed or you lose it, you can perform a 1-hour ceremony to gain a replacement from your patron. The ceremony can be done during a short or long rest, and any existing previous vessel is destroyed. If you die, the vessel vanishes in an eruption of elemental power.\n\nBy using your action, you may create a wispy tether between the yourself and a willing creature visible and within 100 feet of you. If the creature drops to 0 hit points, ends its turn further than 100 feet away, or you create another tether, this tether will dissipate. Otherwise, it will last up to an hour.\n\nWhile tethered, you gain the following benefits:\nYou gain a bonus equal to your Charisma modifier (minimum 1) to your Wisdom (Perception) checks\n\nYou may deliver a spell you cast from either your space or the thethered creature&apos;s space.\n\nYou can use your ability to tether yourself to others a number of times equal to your Charisma modifier (minimum 1) per long rest" compset="Wondrous">
+    <tag group="Custom" tag="5CEbArcFoc" name="Arcane Focus" abbrev="Arcane Focus"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    <tag group="Helper" tag="Helper" name="Helper" abbrev="Helper"/>
+    <eval phase="Render" priority="99999999">field[livename].text = hero.childfound[c5CUAWlkColVsl].field[livename].text</eval>
+    </thing>
+  <thing id="c5CUAWlkPrtWsh" name="Protective Wish" description="The abilities you can use with your tether increase. If you or the creature you tethered to yourself is hit by an attack, you may use your reaction to immediately teleport, switching places with them and changing who gets hit by the attack." compset="ClSpecial" summary="Swap places with your tether, changing who takes damage from an attack.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="c5CUAWlkGenEnt" name="Genie&apos;s Entertainment" description="By using your action, select a creature within 90 feet of yourself, and draw it into your vessel to send it to your patron&apos;s court. The target must make a Charisma saving throw, and if it fails, teleports to your patron&apos;s court in the Elemental Planes. The target is stunned during their time in your patron&apos;s court, but no harm comes to it. It may repeat the saving throw at the end of each of its turns, and on a success, teleports back to where it was or the nearest empty space from before you activated this ability.\nYou can only use this ability once per long rest unless the target remains within your patron&apos;s court for a full minute, in which case you regain use of this ability once more." compset="ClSpecial">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="abRange" value="90"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abSave" tag="aCHA"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="c5CUAWlkColCal" name="Collector&apos;s Call" description="You can request aid from your patron as an action, and must make a Charisma (Persuasion) check against your own warlock spell save DC. On success, you may choose one of the following effects:\n\n• You heal a creature you can see within 60 feet by 8d6 hit points and remove one of the following afflictions if any are affecting it: blinded, charmed, deafened, frightened, paralyzed, or poisoned.\n• You give disadvantage on attack rolls and saving throws to one creature you can see within 60 feet.\n• You cast {i}legend lore{i} without material components.\n\nRegardless of success, you may only use this feature once per long rest, unless you sacrifice nonmagical treasure worth at least 500 gp to your patron. Whatever treasure you sacrifice must be within 10 feet of you for a minute and you must be holding your vessel, after which you can use an action to teleport it to your patron&apos;s realm." compset="ClSpecial" summary="Ask your patron to grant you a special effect.">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    </thing>
+  </document>
