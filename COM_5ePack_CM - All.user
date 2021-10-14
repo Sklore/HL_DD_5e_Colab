@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
-  <thing id="c5CChMrg" name="Charm  of the Mirage" description="This charm allows you to use an action to cast  {i}hallucinatory terrain{/i} (save DC 15). Once used, this charm vanishes from you.\n\nThis charm can be bestowed by a desert-dwelling chwinga when they use their Magical Gift action." compset="CustomSpec" uniqueness="useronce">
+  <thing id="c5CChMrg" name="Charm of the Mirage" description="This charm allows you to use an action to cast  {i}hallucinatory terrain{/i} (save DC 15). Once used, this charm vanishes from you.\n\nThis charm can be bestowed by a desert-dwelling chwinga when they use their Magical Gift action." compset="CustomSpec" uniqueness="useronce">
     <usesource source="p5eCnMystP"/>
     <tag group="Helper" tag="Tertiary"/>
     <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
@@ -151,28 +151,6 @@ hero.childfound[aINT].field[aMaxValue].value = maximum(22,hero.childfound[aINT].
     <fieldval field="trkMax" value="1"/>
     <tag group="User" tag="Tracker"/>
     <tag group="Usage" tag="5C30Days"/>
-    </thing>
-  <thing id="i5CSrpSclA" name="Serpent Scale Armor" description="While wearing this shimmering, scale armor, you can add your full Dexterity modifier (instead of the maximum +2 for scale mail) when determining your Armor Class. Also, this armor does not impose disadvantage on your Dexterity (Stealth) checks.\n\n{i}Note: Due to limitations with Hero Lab, the Armor tab will still show this as a max bonus of +2 from your Dexterity. However, your AC will calculate correctly automatically.{/i}" compset="MagicArmor">
-    <fieldval field="gWeight" value="45"/>
-    <usesource source="p5eCnMystP"/>
-    <tag group="ItemRarity" tag="Uncommon"/>
-    <eval phase="First" priority="101"><![CDATA[
-
-foreach pick in hero from BaseArmor where "Custom.NoStealth"
-   perform eachpick.delete[Helper.StealthDis]
-   perform eachpick.delete[ArmorClass.Medium]
-   perform eachpick.assign[ArmorClass.Light]
-   nexteach]]></eval>
-    <eval phase="Validation" priority="1000" index="2"><![CDATA[
-
-foreach pick in hero from BaseArmor where "Custom.NoStealth"
-   perform eachpick.delete[ArmorClass.Light]
-   perform eachpick.assign[ArmorClass.Medium]
-   nexteach]]></eval>
-    <child entity="mSpecMagic">
-      <tag group="Custom" tag="NoStealth"/>
-      <bootstrap thing="mScaleMail"></bootstrap>
-      </child>
     </thing>
   <thing id="i5CSrpFng" name="Serpent&apos;s Fang" description="This one-edged magic sword was crafted from the fang of a gigantic serpent, and its hilt changes shape to fit the hand of any creature that wields it. The weapon deals an additional 1d10 poison damage to any target it hits." compset="MagicWep">
     <fieldval field="gWeight" value="3"/>
@@ -2697,5 +2675,37 @@ foreach pick in hero where "thingid.raMuLDrGla | thingid.raMuLBlWor | thingid.ra
     <tag group="FeatureTyp" tag="Lair"/>
     <tag group="abSave" tag="aDEX"/>
     <tag group="DamageType" tag="dtLightnin"/>
+    </thing>
+  <thing id="i5CSrpSclA" name="Serpent Scale Armor" description="While wearing this shimmering, scale armor, you can add your full Dexterity modifier (instead of the maximum +2 for scale mail) when determining your Armor Class. Also, this armor does not impose disadvantage on your Dexterity (Stealth) checks.\n\n{i}Note: Due to limitations with Hero Lab, the Armor tab will still show this as a max bonus of +2 from your Dexterity. However, your AC will calculate correctly automatically.{/i}" compset="MagicArmor">
+    <fieldval field="gWeight" value="45"/>
+    <usesource source="p5eCnMystP" parent="p5eCnMyst" name="Candlekeep Mysteries"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
+    <eval phase="First" index="4"><![CDATA[
+
+foreach pick in hero from BaseArmor where "Custom.NoStealth"
+   perform eachpick.delete[Helper.StealthDis]
+   perform eachpick.delete[ArmorClass.Medium]
+   perform eachpick.assign[ArmorClass.Light]
+   nexteach]]></eval>
+    <eval phase="Final" index="5">perform delete[Helper.StealthDis]
+  perform delete[ArmorClass.Light]
+  perform assign[ArmorClass.Medium]</eval>
+    <eval phase="Validation" index="6"><![CDATA[
+
+foreach pick in hero from BaseArmor where "Custom.NoStealth"
+   perform eachpick.delete[ArmorClass.Light]
+   perform eachpick.assign[ArmorClass.Medium]
+   nexteach]]></eval>
+    <eval phase="First" index="3"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+  perform delete[ArmorClass.Medium]
+  perform assign[ArmorClass.Light]
+hero.childfound[ArmorClass].field[tACDexMod].value =  maximum(hero.childfound[ArmorClass].field[tACDexMod].value,hero.childfound[aDEX].field[aModBonus].value)]]></eval>
+    <child entity="mSpecMagic">
+      <tag group="Custom" tag="NoStealth" name="Stealth" abbrev="Stealth"/>
+      <bootstrap thing="mScaleMail"></bootstrap>
+      </child>
     </thing>
   </document>
