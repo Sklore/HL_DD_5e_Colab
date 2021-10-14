@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="l5CHomarid" name="Homarid" compset="Language" uniqueness="useronce">
+    <usesource source="5CPSDCP"/>
+    <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    <tag group="LangCat" tag="Monster" name="Monster Languages" abbrev="Monster"/>
+    </thing>
+  <thing id="l5CKeldon" name="Keldon" compset="Language" uniqueness="useronce">
+    <usesource source="5CPSDCP"/>
+    <tag group="LangPreval" tag="Standard" name="Standard Languages" abbrev="Standard"/>
+    </thing>
+  <thing id="ra5CHumKeld" name="Keldon" compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5CPSDCP"/>
+    <tag group="AllowRCust" tag="rHuman" name="Human" abbrev="Human"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="l5CKeldon"></bootstrap>
+    <bootstrap thing="ra5CEbNatAth"></bootstrap>
+    <bootstrap thing="ra5CIcehvBrn"></bootstrap>
+    <bootstrap thing="ra5CKldRes"></bootstrap>
+    <eval phase="First" priority="500"><![CDATA[
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~overwrite the human's default +1 to everything
+      hero.child[rHuman].field[rAttrAll].value = 0
+      
+      ~lower bonus languages by 1
+      hero.child[rHuman].field[rLanguages].value -=1
+      
+      ~add proficiency in Athletics
+      perform hero.childfound[rHuman].assign[ProfSkill.skAthletic]
+
+      ~add STR save proficiency
+      perform hero.childfound[rHuman].assign[ProfSave.svSTR]
+
+      ~set STR and CON bonuses
+      hero.childfound[rHuman].field[rSTR].value = 2
+      hero.childfound[rHuman].field[rCON].value = 1]]>
+      <before name="Base Race Racial Stats"/>
+      </eval>
+    </thing>
+  <thing id="ra5CKldRes" name="Keldon Resilience" description="You have proficiency in Strength saves." compset="RaceSpec" summary="~"></thing>
+  <thing id="ra5CIcehvBrn" name="Icehaven Born" description="You are naturally adapted to cold climates, as described in chapter 5 of the DMG." compset="RaceSpec" summary="~">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  </document>

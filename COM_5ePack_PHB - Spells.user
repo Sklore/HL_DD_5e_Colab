@@ -741,4 +741,91 @@
     <tag group="sComp" tag="S" name="Somatic" abbrev="{ref s_S}S{ref}"/>
     <tag group="sClass" tag="cHelpBrd"/>
     </thing>
+  <thing id="cfg5CFndStd" name="Find Steed" compset="Configure" uniqueness="unique">
+    <fieldval field="cfgLaMax1" value="1"/>
+    <bootstrap thing="c5CStAlwAll"></bootstrap>
+    <eval phase="Final"><![CDATA[
+
+var searchexpr as string
+
+searchexpr = master.tagids[SpeakLang.?," | "]
+debug searchexpr
+
+searchexpr = replace(searchexpr,"SpeakLang","thingid",0)
+debug searchexpr
+field[cfgLaAllo1].text = searchexpr]]></eval>
+    <eval phase="First" index="2">hero.findchild[BaseRace].field[rINT].value = maximum(hero.findchild[BaseRace].field[rINT].value,-4)</eval>
+    </thing>
+  <thing id="c5CStAlwAll" name="Allow Any Creature" description="Select &quot;Yes&quot; to allow your steed to be any creature, not just those listed in the spell. You should get your DM&apos;s  permission before doing this." compset="CustomSpec" summary="Select &quot;Yes&quot; to allow your steed to be any creature." uniqueness="unique">
+    <arrayval field="usrArray" index="0" value="No"/>
+    <arrayval field="usrArray" index="1" value="Yes"/>
+    <tag group="CustTaken" tag="cfg5CFndStd"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="Final"><![CDATA[doneif (field[usrIndex].value <> 1)
+
+hero.childfound[Totals].field[tRaceExpr].text &= " | (component.BaseRace & RaceType.NPC)"]]></eval>
+    </thing>
+  <thing id="c5CFndStd" name="Steed" description="Add this to add a steed, per the {i}find steed{/i} spell, to your character." compset="CompClHelp" uniqueness="unique">
+    <tag group="CompAvail" tag="c5CFndStd" name="Found Steed" abbrev="Found Steed"/>
+    <tag group="SpInfo" tag="sp5CFindStee"/>
+    <bootstrap thing="c5CFndSte"></bootstrap>
+    <link linkage="realcomp" thing="c5CFndSte"/>
+    </thing>
+  <thing id="c5CFndSte" name="Found Steed" compset="Companion" stacking="never" uniqueness="unique">
+    <fieldval field="CompType" value="Found Steed"/>
+    <eval phase="PostAttr" priority="11000"><![CDATA[
+
+      minion.childfound[Totals].field[tRaceExpr].text = "(thingid.rWarhorse | thingid.rPony | thingid.rCamel | thingid.rElk | thingid.rMastiff)"
+      minion.childfound[RaceHelper].field[rCustMax].value += 1
+      perform minion.findchild[BaseRace].assign[AllowRCust.Familiar]]]></eval>
+    <eval phase="Final" priority="90000" index="2"><![CDATA[
+      minion.childfound[RaceHelper].field[rCustName].text = "Types"]]></eval>
+    <minion id="FoundSteed">
+      <tag group="AllowRCust" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="Hero" tag="NoAdvance" name="NoAdvance" abbrev="NoAdvance"/>
+      <tag group="Hero" tag="NoFamLvReq" name="No familiar Level requirements" abbrev="No familiar Level requirements"/>
+      <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+      <bootstrap thing="cfg5CFndStd"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="sp5CFindStee" name="Find Steed" description="You summon a spirit that assumes the form of an unusually intelligent, strong, and loyal steed, creating a long lasting bond with it. Appearing in an unoccupied space within range, the steed takes on a form that you choose: a warhorse, a pony, a camel, an elk, or a mastiff. (Your GM might allow other animals to be summoned as steeds.) The steed has the statistics of the chosen form, though it is a celestial, fey, or fiend (your choice) instead of its normal type. Additionally, if your steed has an Intelligence of 5 or less, its Intelligence becomes 6, and it gains the ability to understand one language of your choice that you speak.{br}Your steed serves you as a mount, both in combat and out, and you have an instinctive bond with it that allows you to fight as a seamless unit. While mounted on your steed, you can make any spell you cast that targets only you also target your steed.{br}When the steed drops to 0 hit points, it disappears, leaving behind no physical form. You can also dismiss your steed at any time as an action, causing it to disappear. In either case, casting this spell again summons the same steed, restored to its hit point maximum.{br}While your steed is within 1 mile of you, you can communicate with it telepathically.{br}You can’t have more than one steed bonded by this spell at a time. As an action, you can release the steed from its bond at any time, causing it to disappear." compset="Spell" replaces="spFindStee">
+    <fieldval field="sRange" value="30 feet"/>
+    <fieldval field="sDuration" value="Instantaneous"/>
+    <tag group="sComp" tag="S" name="Somatic" abbrev="{ref s_S}S{ref}"/>
+    <tag group="sComp" tag="V" name="Verbal" abbrev="{ref s_V}V{ref}"/>
+    <tag group="sLevel" tag="2" name="2" abbrev="2"/>
+    <tag group="sSchool" tag="Conjur" name="Conjuration" abbrev="Conjur"/>
+    <tag group="sCastTime" tag="Minutes10" name="10 minutes" abbrev="10 minutes"/>
+    <tag group="sClass" tag="cHelpPal" name="Paladin" abbrev="Paladin"/>
+    <tag group="CompAvail" tag="c5CFndStd" name="Found Steed" abbrev="Found Steed"/>
+    </thing>
+  <thing id="p5CFndStd" name="Find Steed" description="Add this to add a steed to your character, as per the {i}find steed{/i} spell. This adjustment is usually used if a scroll or item grants you the spell." compset="InPlay">
+    <tag group="Adjustment" tag="Class" name="Classes" abbrev="Classes"/>
+    <tag group="Custom" tag="ScrollSum" name="ScrollSum" abbrev="ScrollSum"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <tag group="OthAdjCat" tag="UserBot6th" name="User 6th Bottom Group" abbrev="User 6th Bottom Group"/>
+    <eval phase="First" priority="10000"><![CDATA[    doneif (field[pIsOn].value = 0)
+    doneif (field[pChosen].ischosen = 0)
+    perform field[pChosen].chosen.assign[CompAvail.c5CFndStd]
+      
+~ that assigned the summoning to a particular class
+~ if that class then summons the creature, it's using the spell scroll,
+~ and therefore needs use to push our custom tag, whiche we'll use later
+~ to tell it to use the default scroll spell bonuses, not the class's
+~ so we test to see which class added the summoned creature   
+~ this is by looking at the hasagent on the companion helper
+
+    var Cls as string
+    Cls = hero.childfound[c5CFndStd].tagids[hasagent.?,""]
+    Cls = replace(Cls,"hasagent.","",0)
+
+~ now our variable should equal the class helper, like cHelpFtr
+~ then we test it to see if it's the same as where this adjustment
+~ added the summon spell
+
+    if (compare(field[pChosen].chosen.idstring,Cls) = 0) then
+    perform hero.childfound[c5CFndStd].pushtags[Custom.?]
+    endif]]></eval>
+    </thing>
   </document>

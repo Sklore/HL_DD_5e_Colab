@@ -46,7 +46,7 @@ hero.childfound[cSneakAtt].field[abValue].value += 2</eval>
       </bootstrap>
     </thing>
   <thing id="c5CFtrBoPo" name="Bonus Proficiencies" description="When you choose this archetype at 3rd level, you gain proficiency with two of the following skills of your choice: Arcana, History, Insight, Investigation, Nature or Perception. You can gain proficiency with a tool of your choice in place of one skill choice." compset="ClSpecial">
-    <fieldval field="usrCandid1" value="component.BaseSkill &amp; (Reference.skArcana | Reference.skHistory | Reference.skInsight | Reference.skInvestig | Reference.skNature | Reference.skPercep | Reference.skTools) &amp; !Helper.Proficient"/>
+    <fieldval field="usrCandid1" value="(component.BaseSkill &amp; (Reference.skArcana | Reference.skHistory | Reference.skInsight | Reference.skInvestig | Reference.skNature | Reference.skPercep) &amp; !Helper.Proficient ) | thingid.5CTool"/>
     <fieldval field="abValue" value="2"/>
     <fieldval field="usrCandid2" value="component.BaseSkill &amp; (Reference.skArcana | Reference.skHistory | Reference.skInsight | Reference.skInvestig | Reference.skNature | Reference.skPercep) &amp; !Helper.Proficient"/>
     <tag group="abDuration" tag="Constant" name="Constant" abbrev="cons"/>
@@ -62,7 +62,7 @@ hero.childfound[cSneakAtt].field[abValue].value += 2</eval>
       var NumOfTool as number
 
       if (field[usrChosen1].ischosen <> 0) then
-        if (field[usrChosen1].chosen.tagis[ProfSkill.?] <> field[usrChosen1].chosen.tagis[ProfSkill.skTools]) then
+        if (field[usrChosen1].chosen.tagcount[ProfSkill.?] <> 0) then
           perform field[usrChosen1].chosen.pulltags[ProfSkill.?]
           perform forward[ProfSkill.?]
         else
@@ -489,9 +489,7 @@ perform hero.assign[Size.Small]</eval>
     <tag group="SubRace" tag="r5CBMTiefl"/>
     <bootstrap thing="ra5CRelNat"></bootstrap>
     </thing>
-  <thing id="skTools" name="Tools" description="Placeholder" compset="Skill" uniqueness="useronce">
-    <fieldval field="skAbbrev" value="Tool"/>
-    <usesource source="p5eGoHUACP"/>
-    <link linkage="skillattr" thing="aWIS"/>
+  <thing id="5CTool" name="Tool" compset="Simple">
+    <tag group="Helper" tag="Helper"/>
     </thing>
   </document>

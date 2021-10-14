@@ -1390,6 +1390,7 @@ endif]]></eval>
     <tag group="abDuration" tag="Constant"/>
     <tag group="abRange" tag="Personal"/>
     <eval phase="PostLevel" priority="10000" index="2"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      doneif (hero.tagcount[Classes.Fighter] < 7)
 
 if (hero.tagis[ProfSave.svWIS] = 0) then
       ~ remove choices
@@ -1690,8 +1691,8 @@ foreach pick in hero from BaseWep where "!wGroup.Natural"
     <tag group="abRange" tag="Personal"/>
     <tag group="LvNamePar" tag="AppText"/>
     <tag group="LvNamePar" tag="AppValue"/>
-    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
-field[abValue].value = round(#levelcount[Paladin]/2,0,-1)]]></eval>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+field[abValue].value = maximum(1,hero.childfound[aCHA].field[aModBonus].value)]]></eval>
     </thing>
   <thing id="c5CPalInCo" name="Invincible Conqueror" description="At 20th level, you gain the ability to harness extraordinary martial prowess. As an action, you can magically become an avatar of conquest, gaining the following benefits for 1 minute:\n\n•  You have resistance to all damage.\n•  When you take the Attack action on your turn, you can make one additional attack as part of that action. \n•  Your melee weapon attacks score a critical hit on a roll of 19 or 20. \n\nOnce you use this feature, you can’t use it again until you finish a long rest." compset="ClSpecial">
     <fieldval field="trkMax" value="1"/>
@@ -1900,7 +1901,7 @@ field[abValue].value = round(#levelcount[Paladin]/2, 0, -1)]]></eval>
   <thing id="c5CRgrDrAm" name="Dread Ambusher" description="At 3rd level, you can give yourself a bonus to your initiative rolls equal to your Wisdom modifier as you master the art of the ambush.\n\nAt the start of your first turn of each combat, your walking speed is increased by 10 feet, which lasts until the end of that turn. If you take the Attack action on that turn, you can make one additional weapon attack as part of that action. If that attack hits, the target takes an additional 1d8 damage of the weapon&apos;s damage type." compset="ClSpecial">
     <eval phase="PostAttr" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
 var InBon as number
-InBon = maximum(0, #attrmod[aWIS])
+InBon = maximum(0, #attrmod[aWIS]) + #skillbonus[Initiative]
 
 #applybonus[Bonus, hero.child[Initiative], InBon]]]></eval>
     </thing>
@@ -2583,9 +2584,8 @@ hero.childfound[thp5CCelRa].field[thpMaxAllw].value = BonusHP]]></eval>
     <tag group="abAction" tag="Bonus"/>
     <tag group="User" tag="Activation"/>
     </thing>
-  <thing id="c5CWlkHeWa" name="Hex Warrior" description="At 1st level, you gain proficiency with medium armor, shields, and martial weapons. \n\nWhen you finish a long rest, you can touch one weapon that you are proficient with  and that lacks the two-handed property, you can use your Charisma modifier, instead of Strength or Dexterity, for the attack and damage rolls. This benefits lasts until you finish a long rest. If you later gain the Pact of the Blade feature, this benefit extends to every pact weapon you conjure with that feature, no matter the type.\n\n{b}Note:{/b} To use this ability, first add the weapon on the weapons tab, then select it from Hex Warrior. This overrides DEX/STR, so you must deactivate the ability on the Activated Abilities tab if your CHA bonus would be a lower score." compset="ClSpecial">
+  <thing id="c5CWlkHeWa" name="Hex Warrior" description="At 1st level, you gain proficiency with medium armor, shields, and martial weapons. \n\nWhen you finish a long rest, you can touch one weapon that you are proficient with  and that lacks the two-handed property, you can use your Charisma modifier, instead of Strength or Dexterity, for the attack and damage rolls. This benefits lasts until you finish a long rest. If you later gain the Pact of the Blade feature, this benefit extends to every pact weapon you conjure with that feature, no matter the type.\n\n{b}Note:{/b} To use this ability, first add the weapon on the weapons tab, then select it from Hex Warrior." compset="ClSpecial">
     <fieldval field="trkMax" value="1"/>
-    <fieldval field="actName" value="Remove CHA bonus"/>
     <tag group="ArmProfGrp" tag="WepMartial" name="Martial weapons" abbrev="Martial weapons"/>
     <tag group="abRange" tag="Personal" name="Personal" abbrev="pers"/>
     <tag group="abAction" tag="LongRest"/>
@@ -2593,20 +2593,25 @@ hero.childfound[thp5CCelRa].field[thpMaxAllw].value = BonusHP]]></eval>
     <tag group="Usage" tag="LongRest"/>
     <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="ArmProfGrp" tag="ArmorMed" name="Medium armor" abbrev="Medium armor"/>
-    <tag group="User" tag="Activation"/>
     <tag group="ArmProfGrp" tag="Shields" name="Shields" abbrev="Shields"/>
     <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
 
 perform forward[ArmProfGrp.?]]]></eval>
-    <eval phase="Final" priority="10000" index="2"><![CDATA[doneif (tagis[Helper.Disable] = 1)
-doneif (field[usrChosen1].ischosen = 0)
-doneif (field[abilActive].value = 1)
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[doneif (tagis[Helper.Disable] = 1)
 
-field[usrChosen1].chosen.field[wMelAttTxt].text = "charisma"
-field[usrChosen1].chosen.field[wRanAttTxt].text = "charisma"
-field[usrChosen1].chosen.field[wMeleeAttr].value = hero.child[aCHA].field[aBonus].value
-field[usrChosen1].chosen.field[wRangeAttr].value = hero.child[aCHA].field[aBonus].value
-field[usrChosen1].chosen.field[wDamAttr].value = hero.child[aCHA].field[aBonus].value]]></eval>
+
+if (field[usrChosen1].ischosen <> 0) then
+perform field[usrChosen1].chosen.assign[DamageOpt.aCHA]
+perform field[usrChosen1].chosen.assign[MelAttOpt.aCHA] 
+perform field[usrChosen1].chosen.assign[RanAttOpt.aCHA]
+endif
+
+if (hero.childlives[cWlkPacBla] <> 0) then
+perform hero.childfound[cWlkPacBla].setfocus
+perform focus.field[usrChosen1].chosen.assign[DamageOpt.aCHA]
+perform focus.field[usrChosen1].chosen.assign[MelAttOpt.aCHA] 
+perform focus.field[usrChosen1].chosen.assign[RanAttOpt.aCHA]
+endif]]></eval>
     <eval phase="Final" priority="99999" index="3"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
 
 
@@ -2620,6 +2625,8 @@ var PactWep as string
 if ( hero.childfound[cWlkPacBla].field[usrChosen1].chosen.tagis[wProperty.TwoHanded] = 1 ) then
      searchexp = "(component.BaseWep & !wProperty.TwoHanded) | (" & hero.childfound[cWlkPacBla].field[usrChosen1].chosen.tagids[thingid.?,"|"] & ")"
 endif
+
+searchexp = "(" & searchexp & ") & !IsWeapon.wUnarmed"
 
 field[usrCandid1].text = searchexp]]></eval>
     </thing>

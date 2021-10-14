@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="p5CRvnlftBck" name="Background Option, Ravenloft" description="Selecting this adjustment allows you to replace your background&apos;s default feature with one of the features from Van Richten&apos;s Guide to Ravenloft: Inheritor, Mist Wanderer, Spirit Medium, Trauma Survivor, or Traveler. Select the background feature to replace from the first drop down, then your new feature from the second drop down." compset="InPlay">
+    <fieldval field="pCandExpr" value="SpecSource.bck? &amp; component.Ability"/>
+    <fieldval field="pCandExpr2" value="Custom.RvlBckFeat"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="ChooseSrc2" tag="Thing"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="UserTop5th"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <bootstrap thing="ab5CRvlTrm">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 4</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CRvlTrv">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 5</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CRvlInh">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 1</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CRvlMst">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 2</containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CRvlSpr">
+      <containerreq phase="First" priority="150">fieldval:pMaximum = 3</containerreq>
+      </bootstrap>
+    <eval phase="First" index="2"><![CDATA[doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+doneif (field[pChosen2].ischosen = 0)
+
+perform field[pChosen2].chosen.setfocus
+
+if (focus.tagis[thingid.ab5CRvlInh] <> 0) then
+   field[pMaximum].value = 1
+elseif (focus.tagis[thingid.ab5CRvlMst] <> 0) then
+   field[pMaximum].value = 2
+elseif (focus.tagis[thingid.ab5CRvlSpr] <> 0) then
+   field[pMaximum].value = 3
+elseif (focus.tagis[thingid.ab5CRvlTrm] <> 0) then
+   field[pMaximum].value = 4
+elseif (focus.tagis[thingid.ab5CRvlTrv] <> 0) then
+   field[pMaximum].value = 5
+   endif]]></eval>
+    <eval phase="First">doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+doneif (field[pChosen2].ischosen = 0)
+
+
+perform field[pChosen].chosen.setfocus
+
+
+perform focus.assign[Helper.Disable]
+perform focus.delete[Helper.ShowSpec]
+perform focus.delete[Hide.Activation]</eval>
+    </thing>
+  <thing id="ab5CRvlInh" name="Inheritor" description="You ancestor or mentor&apos;s great deeds precede you. As the inheritor of their legacy, you carry a token that marks you as such. It could be a ring, a special garment,  or a famous weapon.\n\nAny time you reveal that legacy, you quickly learn the locals&apos; opinions on your predecessor. If the locals have never heard of them, nothing changes. However if they have, word of your connection spreads quickly. This may cause you to be seen as a hero or a threat. Heroes receive the appropriate welcome, and can easily gain an audience with the local government. Threats are urged to leave, else their presence invite danger." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Custom" tag="RvlBckFeat" name="Ravenloft Background Feature"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CRvlMst" name="Mist Wanderer" description="You receive guidance through the mists from the mists themselves. You instantly know if an object you&apos;re touching is a Mist talisman (described in Chapter 3 of Van Richten&apos;s Guide to Ravenloft). You recognize where the talisman comes from if you&apos;ve been to that domain." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Custom" tag="RvlBckFeat" name="Ravenloft Background Feature"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CRvlSpr" name="Spirit Medium" description="You have advantage on Arcana or Religion checks made to remember or research information about spirits and the afterlife. You also begin your adventure with the custom-made instrument for communing with other-worldly forces. This could be a spirit board, a tarroka deck, dowsing rods, or some other device of your own creation. You can add your proficiency bonus to any ability checks you make using this device." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Custom" tag="RvlBckFeat" name="Ravenloft Background Feature"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CRvlTrm" name="Trauma Survivor" description="You are a survivor. Whatever it was, people see you as an expert on what you faced. It could have been a particular form of violence, an illness, or something else. You know of nonmagical recovery techniques, common resources, and misinformation on the subject. You know how to speak to sympathetic parties, such as doctors, clergy, or local leaders, which allows you to convince such a party to shelter one person (not including you) at a modest lifestyle for up to one month." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Custom" tag="RvlBckFeat" name="Ravenloft Background Feature"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="ab5CRvlTrv" name="Traveler" description="You&apos;re not from around here. Maybe you hail from some far-off corner of the mists, maybe you&apos;re from another world entirely. Wherever it is, you share common experiences with other travelers, such as traders, migrant families, or displaced peoples. So long as you don&apos;t pose or present as a threat, you can find rest and recuperation with such people. They may hide you from the law or someone searching for you, though they will not risk their own lives for your sake. Also, you are able to determine whether an object you touch is from your homeland." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Custom" tag="RvlBckFeat" name="Ravenloft Background Feature"/>
+    <tag group="AbilFunc" tag="Background"/>
+    </thing>
+  <thing id="bck5CInvst" name="Investigator" description="{i}Note that this is the Van Richten&apos;s Guide to Ravenloft version of this background, not the one from Sword Coast Adventurer&apos;s Guide.{/i}" compset="Background" uniqueness="unique">
+    <fieldval field="AbilName" value="First Case"/>
+    <fieldval field="AbilPlur" value="First Case"/>
+    <fieldval field="AbilMax" value="1"/>
+    <fieldval field="cSkillMax" value="2"/>
+    <fieldval field="StartAll" value="• A magnifying glass{br}• Evidence from a past case{br}• Common clothes{br}• 10 gp"/>
+    <fieldval field="StartGear" value="• A magnifying glass{br}• Evidence from a past case{br}• Common clothes{br}• 10 gp"/>
+    <usesource source="5eVRGtR" parent="p5eBooks" name="Van Richten&apos;s Guide to Ravenloft"/>
+    <tag group="AllowSkl1" tag="skInvestig" name="Investigation" abbrev="Investigation"/>
+    <tag group="AllowSkl1" tag="skInsight"/>
+    <tag group="AllowSkl1" tag="skPercep"/>
+    <bootstrap thing="ab5COfInq"></bootstrap>
+    <bootstrap thing="gTooThieve">
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <bootstrap thing="gKitDisgui">
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    </thing>
+  <thing id="ab5COfInq" name="Official Inquiry" description="You have experience in acquiring access to the people and places you need. By talking fast, staying determined, and flashing official-looking documents, you can gain access to a person or place related to the crime that you&apos;re investigating. Those not involved in the investigation stay out of your way, or pass along your requests. Additionally, the local lawmen have strong feelings about you, seeing you as either one of them or as a nuisance." compset="Ability">
+    <tag group="AbilFunc" tag="Background" name="Background Feature" abbrev="Background Feature"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    </thing>
+  <thing id="b5CCase1" name="Accused Friend" description="A friend was wrongfully accused of murder. You proved their innocence by tracking down the real killer." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Roll" tag="1" name="1" abbrev="1"/>
+    <tag group="Background" tag="bck5CInvst"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    </thing>
+  <thing id="b5CCase2" name="Disappeared" description="You disappeared for weeks, but have no memory of what happened. You continue to investigate what happened to you." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Roll" tag="2" name="2" abbrev="2"/>
+    <tag group="Background" tag="bck5CInvst"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    </thing>
+  <thing id="b5CCase3" name="Spirits" description="You assisted a spirit in finding its missing corpse, helping it find peace. Other spirits have sought you out ever since." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Roll" tag="3" name="3" abbrev="3"/>
+    <tag group="Background" tag="bck5CInvst"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    </thing>
+  <thing id="b5CCase4" name="Magical Hoaxes" description="You discovered that the monsters terrorizing your village were actually the illusions of an evil mage. Though the mage escaped, you continue to uncover magical hoaxes." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Roll" tag="4" name="4" abbrev="4"/>
+    <tag group="Background" tag="bck5CInvst"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    </thing>
+  <thing id="b5CCase5" name="Escapee" description="You were wrongfully accused and convicted of a crime. You escaped, and now try to prevent others from facing the same fate, even while the law continues to chase you." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Roll" tag="5" name="5" abbrev="5"/>
+    <tag group="Background" tag="bck5CInvst"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    </thing>
+  <thing id="b5CCase6" name="Survivor" description="Destructive magic destroyed your home, though you survived. A secret organization took you in. You now work for them tracking down dangerous, supernatural phenomena to prevent further harm to others." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Roll" tag="6" name="6" abbrev="6"/>
+    <tag group="Background" tag="bck5CInvst"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    </thing>
+  <thing id="b5CCase7" name="Conspiracy" description="You found evidence of a large conspiracy. Nobody believed you when you tried to expose it, but you&apos;ll keep going until they do." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Roll" tag="7" name="7" abbrev="7"/>
+    <tag group="Background" tag="bck5CInvst"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    </thing>
+  <thing id="b5CCase8" name="Agent" description="You work for an agency that investigates crimes that are beyond the capabilities of local law enforcement. You&apos;re not sure which is worth more to you; the truth or your pay." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Roll" tag="8" name="8" abbrev="8"/>
+    <tag group="Background" tag="bck5CInvst"/>
+    <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
+    </thing>
+  <thing id="bt5CRvnPrs1" name="Ravenloft 01 - Encounter" description="I had an encounter that I think gave me a special affinity to a supernatural creature or event." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnPrs2" name="Ravenloft 02 - Emblem" description="I have a special piece of clothing or weapon that is emblematic of who I am." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnPrs3" name="Ravenloft 03 - Confident" description="I never believe that I&apos;m in over my head." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnPrs4" name="Ravenloft 04 - Curious" description="I have to know every secret, open every door." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnPrs5" name="Ravenloft 05 - Underestimated" description="I allow people to underestimate me. Only those closest know what I&apos;m truly capable of." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnPrs6" name="Ravenloft 06 - Trophies" description="I have to collect trophies from my victories and travels." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnPrs7" name="Ravenloft 07 - Staunch" description="I&apos;ll always follow my heart and do what I think is right, even if the world disagrees." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnPrs8" name="Ravenloft 08 - Macabre" description="My interests are rather morbid, and my style macabre." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnPrs9" name="Ravenloft 09 - Stress" description="I deal with stress through a personal mantra, ritual, or technique." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnPrs10" name="Ravenloft 10 - Life" description="Life is the greatest gift. I won&apos;t leave anyone in danger." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnPrs11" name="Ravenloft 11 - Extreme" description="I opt for the most extreme solutions. I won&apos;t chance things not working." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnPrs12" name="Ravenloft 12 - Startled" description="I&apos;m not a coward, but I am easily startled." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnIdl1" name="Ravenloft 01 - Adrenaline" description="I&apos;ve seen such strange things that now only extreme situations make me feel alive." compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnIdl2" name="Ravenloft 02 - Balance" description="I feel responsible for someone else&apos;s deeds, and seek to rectify them." compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnIdl3" name="Ravenloft 03 - Bound" description="I&apos;ve wronged someone. To avoid their curse, I must work for them." compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnIdl4" name="Ravenloft 04 - Escape" description="I believe there is something beyond this world, and I want to know what it is." compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnIdl5" name="Ravenloft 05 - Legacy" description="My time is running out. I must do something to be remembered." compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnIdl6" name="Ravenloft 06 - Misdirection" description="I work hard to keep others from seeing my flaws or mistakes." compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnIdl7" name="Ravenloft 07 - Obsession" description="I&apos;ve lived like this for so long that I don&apos;t know any other way." compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnIdl8" name="Ravenloft 08 - Obligation" description="I&apos;m bound to the legacy of my people, faith, mentor, or family." compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnIdl9" name="Ravenloft 09 - Promise" description="I must live the dream of someone who is departed." compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnIdl10" name="Ravenloft 10 - Revelation" description="There must be something beyond death, the world, or the mists. I must know what it is." compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnIdl11" name="Ravenloft 11 - Sanctuary" description="I seek to separate myself from the forces at work in this world." compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnIdl12" name="Ravenloft 12 - Truth" description="Even if it&apos;s of no benefit to anyone, I seek the truth above all else." compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnBnd1" name="Ravenloft 01 - Mists" description="I lost someone or some place in the mists, and am desperate to get back to them." compset="BackBond" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnBnd2" name="Ravenloft 02 - Secret Master" description="My actions are all in service to a powerful master, but I must keep it a secret." compset="BackBond" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnBnd3" name="Ravenloft 03 - Mentor" description="I seek to continue the work of my lost mentor, even as I search for them." compset="BackBond" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnBnd4" name="Ravenloft 04 - Light" description="I&apos;ve seen the darkness, and I want to be the greatest light against it." compset="BackBond" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnBnd5" name="Ravenloft 05 - Loved One" description="A loved one has become a monster, murderer, or other threat. I seek to redeem them." compset="BackBond" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnBnd6" name="Ravenloft 06 - Great Lie" description="The world has been told a horrible lie. I will reveal the truth to them." compset="BackBond" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnBnd7" name="Ravenloft 07 - Adopting" description="I miss someone terribly, and will adopt anyone that reminds me of them." compset="BackBond" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnBnd8" name="Ravenloft 08 - Inner Evil" description="There is an evil within me. I will resist it and all the evils of the world as long as I can." compset="BackBond" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnBnd9" name="Ravenloft 09 - Affliction" description="I or someone close to me has an affliction or curse, and I am desperate to cure it." compset="BackBond" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnBnd10" name="Ravenloft 10 - Spirits" description="I try to find peace for the spirits that are drawn to me." compset="BackBond" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnBnd11" name="Ravenloft 11 - Justice" description="I use my wits to solve mysteries, finding justice for those who have been harmed." compset="BackBond" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnBnd12" name="Ravenloft 12 - Lost" description="I lost someone I cared for. But I still see them in dreams, visions, or as a spirit." compset="BackBond" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnFlw1" name="Ravenloft 01 - Doom" description="I believe doom follows me and those close to me." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnFlw2" name="Ravenloft 02 - Sought" description="I&apos;m sure someone is after me. I can see them in mirrors, in dreams, and in other places where nobody could truly be." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnFlw3" name="Ravenloft 03 - Superstitious" description="I&apos;m very superstitious. I do everything I can to avoid bad luck, evil spirits, and the mists." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnFlw4" name="Ravenloft 04 - Guilty" description="I have done horrible things, and will do what I must to keep it a secret." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnFlw5" name="Ravenloft 05 - Gullible" description="I believe any story or legend as soon as I hear it." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnFlw6" name="Ravenloft 06 - Skeptic" description="I&apos;m a skeptic. Rituals, religions, spirits, and spirits are all bogus as far as I&apos;m concerned." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnFlw7" name="Ravenloft 07 - Destined" description="My future is already written. Whatever I do just leads me towards it." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnFlw8" name="Ravenloft 08 - Optimist" description="I must see the best in all things, even if that means I ignore obvious evil." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnFlw9" name="Ravenloft 09 - Evil Places" description="I&apos;ve seen what evil dwells in a type of place, such as in forests or graveyards, and don&apos;t want to go there." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnFlw10" name="Ravenloft 10 - Cautious" description="I&apos;m overly cautious. I have to plan for every contingency." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnFlw11" name="Ravenloft 11 - Hero" description="I have a reputation as the conqueror of a great evil. But it&apos;s a lie, and that evil knows it. " compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CRvnFlw12" name="Ravenloft 12 - Justifying" description="The ends always justify the means. I&apos;ll sacrifice what I must to achieve my objectives." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="fac5CKalLoy" name="Kalakeri Loyalists" compset="Faction" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    </thing>
+  <thing id="fac5CKalReb" name="Kalakeri Rebels" compset="Faction" uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    </thing>
+  <thing id="dei5CEzra" name="Ezra" description="Ezra is an aloof god, usually known as female and depicted as a vauge, vaporous figure. Her perceived alignment varies from worshipper to worshipper, domain to domain." compset="Deity" uniqueness="unique">
+    <fieldval field="deiSymbol" value="Sprig of belladonna upon a silver kite shield"/>
+    <fieldval field="deiEpithet" value="God of the Mists"/>
+    <usesource source="5eVRGtR"/>
+    <tag group="explicit" tag="60"/>
+    <tag group="DeityCat" tag="Dei5CUnkTag"/>
+    </thing>
+  <thing id="dei5CUnkPtn" name="{bmp npcclass} Unknown Pantheon {bmp npcclass}" compset="Deity" uniqueness="unique" isshowonly="yes">
+    <tag group="explicit" tag="60"/>
+    <tag group="DeityCat" tag="Dei5CUnkTag" name="Unknown Pantheon"/>
+    </thing>
+  <thing id="dei5CProcan" name="Procan" compset="Deity" uniqueness="unique">
+    <fieldval field="deiEpithet" value="Sailor of Sea and Sky"/>
+    <fieldval field="deiPortfol" value="Sea and weather"/>
+    <usesource source="p5eGoSP"/>
+    <tag group="SuggDomain" tag="c5CClrTemp"/>
+    <tag group="AlignTemp" tag="ChaotNeut"/>
+    <tag group="DeityCat" tag="Dei5CUnkTag"/>
+    <tag group="explicit" tag="60"/>
+    </thing>
+  </document>

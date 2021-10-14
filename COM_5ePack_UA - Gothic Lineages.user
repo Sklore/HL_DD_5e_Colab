@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
-  <thing id="r5CUADmph" name="Dhampir" compset="Race">
+  <thing id="r5CUADmph" name="Dhampir (UA)" compset="Race">
     <fieldval field="rSpeed" value="35"/>
     <fieldval field="rLanguages" value="1"/>
     <usesource source="p5eGthLinUACP"/>
@@ -33,10 +33,15 @@
       </bootstrap>
     <eval phase="Final" priority="10001">hero.childfound[xClimb].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xClimb].field[abValue].value)</eval>
     <eval phase="First" index="2">perform hero.assign[OverType.tpUndead]</eval>
+    <eval phase="First" priority="10000" index="3"><![CDATA[var iNam as string
+iNam = field[name].text
+iNam = replace(iNam," (UA)","",0)
+field[livename].text = iNam]]></eval>
     </thing>
   <thing id="ra5CLinSize" name="Size" description="Choose your size; either Small or Medium." compset="RaceSpec">
-    <arrayval field="usrArray" index="0" value="Small"/>
+    <comment>Used by many different lineages.</comment>
     <arrayval field="usrArray" index="1" value="Medium"/>
+    <arrayval field="usrArray" index="0" value="Small"/>
     <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
     <eval phase="First"><![CDATA[      ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
@@ -75,7 +80,7 @@
       validif (field[usrChosen1].chosen.tagcount[Custom.AttrUp] < 2)
       validif (field[usrChosen2].chosen.tagcount[Custom.AttrUp] < 2)]]></evalrule>
     </thing>
-  <thing id="r5CUAHxBld" name="Hexblood" compset="Race">
+  <thing id="r5CUAHxBld" name="Hexblood (UA)" compset="Race">
     <fieldval field="rLanguages" value="1"/>
     <usesource source="p5eGthLinUACP"/>
     <tag group="RaceType" tag="Normal"/>
@@ -91,8 +96,12 @@
     <bootstrap thing="ra5CUAHxTkn"></bootstrap>
     <bootstrap thing="ra5CUAHxMgc"></bootstrap>
     <bootstrap thing="tpFey"></bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[var iNam as string
+iNam = field[name].text
+iNam = replace(iNam," (UA)","",0)
+field[livename].text = iNam]]></eval>
     </thing>
-  <thing id="r5CUARbrn" name="Reborn" compset="Race">
+  <thing id="r5CUARbrn" name="Reborn (UA)" compset="Race">
     <fieldval field="rLanguages" value="1"/>
     <usesource source="p5eGthLinUACP"/>
     <tag group="RaceSize" tag="Medium0"/>
@@ -108,6 +117,10 @@
     <bootstrap thing="ra5CUARbDth"></bootstrap>
     <bootstrap thing="ra5CUARbKnw"></bootstrap>
     <bootstrap thing="ra5CLnASI21"></bootstrap>
+    <eval phase="First" priority="10000"><![CDATA[var iNam as string
+iNam = field[name].text
+iNam = replace(iNam," (UA)","",0)
+field[livename].text = iNam]]></eval>
     </thing>
   <thing id="ra5CRbrnTyp" name="Type" description="You are both humanoid and your choice of either construct or undead." compset="RaceSpec">
     <arrayval field="usrArray" index="0" value="Construct"/>
@@ -125,9 +138,10 @@ else
 endif</eval>
     </thing>
   <thing id="ra5CUADmSpd" name="Spider Climb" description="Your climbing speed is equal to your walking speed. Additionally, at 3rd level, you can move up, down, and across vertical surfaces and upside down along ceilings, while keeping your hands free." compset="RaceSpec">
-    <tag group="FeatureTyp" tag="Special"/>
+    <comment>Used by both UA and official versions.</comment>
     <tag group="abAction" tag="None"/>
-    <eval phase="First"><![CDATA[~if we've been replaced, get out now 
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="PostLevel"><![CDATA[~if we've been replaced, get out now 
 doneif (tagis[Helper.Disable] <> 0)
 doneif (hero.tagcount[Classes.?] < 3)
 
@@ -195,10 +209,11 @@ foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster"
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="Usage" tag="LongRest"/>
     </thing>
-  <thing id="ra5CUARbDth" name="Deathless Nature" description="Having escaped death, you have these benefits:\n\n• You have advantage on saves versus disease and being poisoned, and you are resistant to poison damage.\n• You have advantage on death saving throws.\n• You do not require food, drink, or air.\n• You don&apos;t require sleep, and magic can&apos;t put you to sleep. You can complete a long rest in 4 hours if you spend those hours in an inactive, motionless state, during which you stay consciousness." compset="RaceSpec">
-    <tag group="Helper" tag="ShowSpec"/>
+  <thing id="ra5CUARbDth" name="Deathless Nature" description="Having escaped death, you have these benefits:\n\n• You have advantage on saves versus disease and being poisoned, and you are resistant to poison damage.\n• You have advantage on death saving throws.\n• You do not require food, drink, or air.\n• You don&apos;t require sleep, and magic can&apos;t put you to sleep. You can complete a long rest in 4 hours if you spend those hours in an inactive, motionless state, during which you stay conscious." compset="RaceSpec">
+    <comment><![CDATA[This is the Reborn's version. It's used for both the UA and official versions.]]></comment>
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
     <eval phase="First"><![CDATA[~if we've been replaced, get out now 
 doneif (tagis[Helper.Disable] <> 0)
 

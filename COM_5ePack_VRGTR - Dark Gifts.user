@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CEchoSl" name="Echoing Soul" description="Your soul wasn&apos;t always entirely yours, and you experience echoes from another life." compset="CustomSpec" summary="Your soul is not entirely your own." uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Dark Gifts" abbrev="Dark Gifts"/>
+    <bootstrap thing="ra5CInhrtTng"></bootstrap>
+    <bootstrap thing="ra5CEchChr"></bootstrap>
+    <bootstrap thing="ra5CChnlProw"></bootstrap>
+    <bootstrap thing="ra5CItrsvEch"></bootstrap>
+    </thing>
+  <thing id="ra5CChnlProw" name="Channeled Prowess" description="You gain proficiency in two skills of your choice." compset="RaceSpec">
+    <fieldval field="abValue" value="1"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] <> 0)
+
+      hero.childfound[cfg5CSupGif].field[cSkillMax].value += 2
+      perform hero.childfound[cfg5CSupGif].assign[AllowSkl1.Any]]]></eval>
+    </thing>
+  <thing id="ra5CInhrtTng" name="Inherent Tongue" description="You can speak, read, and write one more language." compset="RaceSpec">
+    <comment><![CDATA[not sure how to easily implement the scripting on this one as a racial special, I'll get back to it]]></comment>
+    <eval phase="Final"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[cfg5CSupGif].field[cfgLaMax1].value += 1
+
+var iLng as string
+iLng = hero.tagids[SpeakLang.?,"&"]
+iLng = replace(iLng,"SpeakLang","!Language",0)
+
+hero.childfound[cfg5CSupGif].field[cfgLaAllo1].text &= " & (LangPreval.Standard | LangPreval.Exotic) & " & iLng]]></eval>
+    </thing>
+  <thing id="ra5CItrsvEch" name="Intrusive Echoes" description="The first time after a short or long rest that you roll a 1 on the d20, your soul&apos;s memories emerge, causing you to see people as other people or view the world in a disorienting dual state. Roll on the below table to determine the effects you experience.\n\n{b}Intrusive Echoes{/b}\n{font Courier New}{back FFFFFF}d6  Effect\n{back 010101}1   You are charmed by a creature you can see (chosen by the DM) for 1 minute or until the creature harms you.\n{back FFFFFF}2   You are frightened by a creature you can see (chosen by the DM) for 1 minute, or until the creature harms you.\n{back 010101}3   You perceive another time or place around you until the end of your next turn. During this time, you are blinded what&apos;s actually around you.\n{back FFFFFF}4   You see a different time or place overlapping your surroundings. You only have half your total speed until the end of your next turn.\n{back 010101}5   You are incapacitated until the beginning of your next turn, as you are overwhelmed by memories and sensations.\n{back FFFFFF}6   The memory is a triumphant one. You can reroll the ability check, attack roll, or saving throw that you just made, but must use the new roll.\n{back 010101}" compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="ra5CEchChr" name="Soul Echoes" description="Roll on or choose an option from the table below to determine the nature of your Dark Gift.\n\n{b}Soul Echoes{/b}\n{font Courier New}{back FFFFFF}d6  Echo\n{back 010101}1   My soul is linked with that of a someone somewhere else, maybe in another domain, world, or plane.\n{back FFFFFF}2   I have lived many lifetimes, reincarnating upon death, unable to pass on.\n{back 010101}3   My consciousness was removed from my first body and placed in this one.\n{back FFFFFF}4   My spirit and form were merged with another being.\n{back 010101}5   An intangible, otherworldly force cohabits my body.\n{back FFFFFF}6   Time splits around me. I sometimes collide with my own past or future.\n{back 010101}" compset="RaceSpec" uniqueness="unique">
+    <arrayval field="usrArray" index="0" value="1-Soul is linked"/>
+    <arrayval field="usrArray" index="1" value="2-Reincarnated many times"/>
+    <arrayval field="usrArray" index="2" value="3-Consciousness transplanted"/>
+    <arrayval field="usrArray" index="3" value="4-Merged with another being"/>
+    <arrayval field="usrArray" index="4" value="5-Body shared with other force"/>
+    <arrayval field="usrArray" index="5" value="6-Time is fractured around you"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="First"></eval>
+    </thing>
+  <thing id="ra5CWhsChr" name="Whispering Spirits" description="Roll on or choose an option from the table below to determine the nature of the spirits that whisper to you.\n\n{b}Whispering Spirits{/b}\n{font Courier New}{back FFFFFF}d6  Spirits\n{back 010101}1   A group of my dead ancestors watches over me.\n{back FFFFFF}2   Fiendish spirits battle for my soul.\n{back 010101}3   Disquieted souls come to me, begging for peace.\n{back FFFFFF}4   I am haunted by the spirits of those I have killed.\n{back 010101}5   An alien mind intrudes upon my own.\n{back FFFFFF}6   A sibling I never had shares my body with me.\n{back 010101}" compset="RaceSpec" uniqueness="unique">
+    <arrayval field="usrArray" index="0" value="1-Ancestors watch over you"/>
+    <arrayval field="usrArray" index="1" value="2-Soul sought by fiends"/>
+    <arrayval field="usrArray" index="2" value="3-Souls beg you for peace"/>
+    <arrayval field="usrArray" index="3" value="4-Those you kill haunt you"/>
+    <arrayval field="usrArray" index="4" value="5-Alien intelligence"/>
+    <arrayval field="usrArray" index="5" value="6-Sibling shares your body"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CShdChr" name="Shadow Quirk" description="Roll on or choose an option from the table below to determine how your living shadow behaves.\n\n{b}Shadow Quirk{/b}\n{font Courier New}{back FFFFFF}d6  Quirk\n{back 010101}1   My shadow often has nonexistent weapons or wounds.\n{back FFFFFF}2   When I&apos;m not paying attention, my shadow tries to attract attention, as if in a desperate attempt to escape me.\n{back 010101}3   When it&apos;s not being watched, my shadow makes threatening gestures or stalking motions toward people.\n{back FFFFFF}4   My shadow&apos;s movements don&apos;t correctly match mine—shaking my left hand, it shakes its right.\n{back 010101}5   My shadow toys with or occasionally damages Tiny, nonmagical objects.\n{back FFFFFF}6   There&apos;s a slight but perceivable delay between my movements and my shadow&apos;s.\n{back 010101}" compset="RaceSpec" uniqueness="unique">
+    <arrayval field="usrArray" index="0" value="1-Additional weapons or wounds"/>
+    <arrayval field="usrArray" index="1" value="2-Panics and wants to escape"/>
+    <arrayval field="usrArray" index="2" value="3-Acts out when not watched"/>
+    <arrayval field="usrArray" index="3" value="4-Imperfect mirror"/>
+    <arrayval field="usrArray" index="4" value="5-Fiddles with or breaks stuff"/>
+    <arrayval field="usrArray" index="5" value="6-Noticable delay when moving"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CWkrChr" name="Misty Travels" description="Roll on or choose an option from the table below to determine how you acquired this Dark Gift.\n\n{b}Misty Travels{/b}\n{font Courier New}{back FFFFFF}d4  Origin\n{back 010101}1   You learned a secret about the nature of the Mists. You can now manipulate them, but the lands you travel oppose you.\n{back FFFFFF}2   You fled into the Mists to escape an entity that hunts you. Knowing it still pursues you, you can never rest for long.\n{back 010101}3   You&apos;re part of an organization, a family, or a traveling community that has traversed the Mists, and learned how from them.\n{back FFFFFF}4   The Mists took you from your home and damaged your memories of home. You quest to find it and return.\n{back 010101}" compset="RaceSpec" uniqueness="unique">
+    <arrayval field="usrArray" index="0" value="1-Secret of the Mists"/>
+    <arrayval field="usrArray" index="1" value="2-Fled into the Mists"/>
+    <arrayval field="usrArray" index="2" value="3-Traveler of the Mists"/>
+    <arrayval field="usrArray" index="3" value="4-Stolen by the Mists"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CSknChr" name="Second Form" description="Roll on or choose an option from the table below to determine the nature of your other form.\n\n{b}Second Form{/b}\n{font Courier New}{back FFFFFF}d6  Form\n{back 010101}1   An exaggerated version of your own, normal body\n{back FFFFFF}2   A hybrid form of humanoid and beast\n{back 010101}3   An angelic, demonic, or aberrant form\n{back FFFFFF}4   A somewhat humanoid-shaped slime creature\n{back 010101}5   A brooding or passionate fey-like form\n{back FFFFFF}6   A constructed body, made of metal, stone, or machinery\n{back 010101}" compset="RaceSpec" uniqueness="unique">
+    <arrayval field="usrArray" index="0" value="1-Exaggerated form"/>
+    <arrayval field="usrArray" index="1" value="2-Humanoid beast hybrid form"/>
+    <arrayval field="usrArray" index="2" value="3-Angelic, demonic or aberrant"/>
+    <arrayval field="usrArray" index="3" value="4-human-shaped slime"/>
+    <arrayval field="usrArray" index="4" value="5-fey-like"/>
+    <arrayval field="usrArray" index="5" value="6-stone, metal, or mechanical"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CDthChr" name="Deadly Touch" description="Roll on or choose an option from the table below to determine the nature of your Dark Gift.\n\n{b}Deadly Touch{/b}\n{font Courier New}{back FFFFFF}d6  Manifestation\n{back 010101}1   Your body has been infused with deadly fluids, by alchemy or biology.\n{back FFFFFF}2   You earned the ire of a druid or fey, and now your very presence kills small plants and insects.\n{back 010101}3   You&apos;re the omen of a grim prophecy. Any creature your touch harms is marked with a temporary scar of a group, fiend, deity, or other force that has taken an interest in you.\n{back FFFFFF}4   You should have died, but somehow avoided it. Now death and ill omens follow you.\n{back 010101}5   You are not quite aligned with time or reality. Your touch warps things to that distortion.\n{back FFFFFF}6   The laughter of someone you hurt is audible to you whenever you touch a creature.\n{back 010101}" compset="RaceSpec" uniqueness="unique">
+    <arrayval field="usrArray" index="0" value="1-Infused with chemicals"/>
+    <arrayval field="usrArray" index="1" value="2-Plants and bugs die near you"/>
+    <arrayval field="usrArray" index="2" value="3-Touch damage scars others"/>
+    <arrayval field="usrArray" index="3" value="4-Survived, but shouldn&apos;t have"/>
+    <arrayval field="usrArray" index="4" value="5-Warp things with time"/>
+    <arrayval field="usrArray" index="5" value="6-Hear ominous laughter"/>
+    </thing>
+  <thing id="ra5CWatChr" name="Watchers" description="Roll on or choose an option from the table below to determine the nature of the spirits that watch you. They take the form of Tiny, shadowy spirits that follow you and inhabit your general area.\n\n{b}Watchers{/b}\n{font Courier New}{back FFFFFF}d8  Watchers\n{back 010101}1   Carrion Eaters - hyenas, crows, vultures\n{back FFFFFF}2   Inescapable Judgments - animate torture implements, drifting eyeballs, religious iconography\n{back 010101}3   Night Wings - bats, moths, owls\n{back FFFFFF}4   Plague Carriers - parasites, rodents\n{back 010101}5   Unnatural Observers - animated or clockwork objects, otherworldly voyeurs\n{back FFFFFF}6   Sea Skulkers - bottom feeding crustaceans, life from the sea floor\n{back 010101}7   Stray Souls - ghostly orbs, shadows, wisps of ectoplasm\n{back FFFFFF}8   Venomous Vermin - arachnids, serpents\n{back 010101}" compset="RaceSpec" uniqueness="unique">
+    <arrayval field="usrArray" index="0" value="1-Carrion Eaters"/>
+    <arrayval field="usrArray" index="1" value="2-Inescapable Judgements"/>
+    <arrayval field="usrArray" index="2" value="3-Night Wings"/>
+    <arrayval field="usrArray" index="3" value="4-Plague Carriers"/>
+    <arrayval field="usrArray" index="4" value="5-Unnatural Observers"/>
+    <arrayval field="usrArray" index="5" value="6-Sea Skulkers"/>
+    <arrayval field="usrArray" index="6" value="7-Stray Souls"/>
+    <arrayval field="usrArray" index="7" value="8-Venomous Vermin"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="c5CGthWhs" name="Gathered Whispers" description="Spirits haunt you, but only you can see them as they whisper in your ear." compset="CustomSpec" summary="Spirits haunt you." uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Dark Gifts" abbrev="Dark Gifts"/>
+    <bootstrap thing="ra5CVRGRSpWh"></bootstrap>
+    <bootstrap thing="ra5CWhsChr"></bootstrap>
+    <bootstrap thing="ra5CSddnCcph"></bootstrap>
+    <bootstrap thing="ra5CVoicBynd"></bootstrap>
+    </thing>
+  <thing id="ra5CVRGRSpWh" name="Spirit Whispers" description="You learn the {i}message{/i} cantrip, and can cast it without any components. Messages are delivered by one of your whispering spirits. Choose Intelligence, Wisdom, or Charisma as your spellcasting ability for this spell when you gain this Dark Gift." compset="RaceSpec">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <bootstrap thing="spMessage">
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CSddnCcph" name="Sudden Cacophony" description="You can use your reaction when an attack hits you to let your haunting spirits howl through you. If the attacker can hear you, your proficiency bonus is added to your AC against that attack. Once this feature has caused an attack to miss, you cannot use it again until you complete a long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    </thing>
+  <thing id="ra5CVoicBynd" name="Voices From Beyond" description="The first time after a short or long rest that you roll a 1 on the d20 for an attack roll, ability check, or saving throw, the voices that haunt you become impossible to ignore. Roll on the below table to determine the effect theses voices impose on you.\n\n{b}Voices from Beyond{/b}\n{font Courier New}{back FFFFFF}d4  Effect\n{back 010101}1   Your next attack roll, ability check, or saving throw is made with disadvantage.\n{back FFFFFF}2   Voices deafen you for 1 minute.\n{back 010101}3   You are frightened of the creature nearest you, other than yourself, until the end of your next turn. If multiple creatures are closest, the DM chooses which one becomes the object of your fear.\n{back FFFFFF}4   Within the next 10 minutes, you can ask your spirits about a specific course of action that you plan to take within the next 30 minutes. You can receive an omen about the results, as if you had cast {i}augury{/i}. The omen manifests as whisperings from your spirits, which nobody else can perceive.\n{back 010101}" compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="ra5CGrspShdw" name="Grasping Shadow" description="You learn the {i}mage hand{/i} cantrip, and can cast it without any components. The hand appears to be made of shadow but is not bound to yours. Choose Intelligence, Wisdom, or Charisma as your spellcasting ability for this spell when you gain this Dark Gift." compset="RaceSpec">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CShdwStrk" name="Shadow Strike" description="You can increase your reach by 10 feet for a number of attacks equal to your proficiency bonus, as your shadow stretches and delivers the attack as if it were you. You regain these uses upon finishing a long rest." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="PostAttr"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="ra5COmnsWill" name="Ominous Will" description="The first time after a short or long rest that you roll a 1 on the d20, your shadow exerts its own will. The next time a creature you can see within 30 feet of you (including yourself) makes an attack roll, an ability check, or a saving throw, roll a d4. If the result is odd, reduce the d20 result by that number. If it&apos;s even, increase the d20 result by that much." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="c5CLvgShd" name="Living Shadow" description="Your shadow is always visible and has a mind of its own, moving independently from you. Roll or choose from the Shadow Quirk table." compset="CustomSpec" summary="Your shadow is always visible and moves on its own." uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Dark Gifts" abbrev="Dark Gifts"/>
+    <bootstrap thing="ra5CGrspShdw"></bootstrap>
+    <bootstrap thing="ra5CShdChr"></bootstrap>
+    <bootstrap thing="ra5CShdwStrk"></bootstrap>
+    <bootstrap thing="ra5COmnsWill"></bootstrap>
+    </thing>
+  <thing id="ra5CMistStep" name="Misty Step" description="You learn the {i}misty step{/i} spell, and can cast it without using a spell slot. You may also cast this spell with spell slots of 2nd level or higher. Choose Intelligence, Wisdom, or Charisma as your spellcasting ability for this spell when you gain this Dark Gift." compset="RaceSpec">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Custom" tag="OnlyIfCaster" name="OnlyIfCaster" abbrev="OnlyIfCaster"/>
+    <bootstrap thing="spMistStep">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      <autotag group="Custom" tag="OnlyIfCaster"/>
+      </bootstrap>
+    <bootstrap thing="spMistStep">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[var i2nd as number
+
+if (hero.childfound[SlotHold2].field[MaxAllow].value > 0) then
+  i2nd += 1
+  endif
+
+if (#levelcount[Warlock] >= 3) then
+  i2nd += 1
+  endif
+
+
+doneif (i2nd = 0)
+
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster"
+  perform eachpick.delete[Hide.Spell]
+  nexteach]]></eval>
+    </thing>
+  <thing id="ra5CMistTrav" name="Mist Traveler" description="When traversing the Mists to reach a particular domain, you are treated as having a Mist talisman keyed to that domain. You need not have visited that domain before, only know its name, however if the domain borders were closed by a Darklord&apos;s will, you cannot bypass those borders." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CPsnRoots" name="Poisoned Roots" description="Whenever you finish a long rest, a 10 mile area around where you rested becomes slightly hazardous to you. You may remain in that area safely for a number of weeks equal to your Constitution modifier (minimum 1) . Every time you complete a long rest after that period, you must make a DC 15 Constitution saving throw or gain a level of exhaustion. This level of exhaustion cannot be removed until you leave the area." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[field[abValue].value = hero.childfound[aCON].field[aModBonus].value
+
+field[abText].text = "DC 15 CON, " & field[abValue].value & " weeks"]]></eval>
+    </thing>
+  <thing id="c5CMstWlk" name="Mist Walker" description="You know how to navigate the Mists, but can&apos;t remain in one place for too long. Roll or choose from the Misty Travels table." compset="CustomSpec" summary="You are adept at traveling the Mists." uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Dark Gifts" abbrev="Dark Gifts"/>
+    <bootstrap thing="ra5CWkrChr"></bootstrap>
+    <bootstrap thing="ra5CMistStep"></bootstrap>
+    <bootstrap thing="ra5CMistTrav"></bootstrap>
+    <bootstrap thing="ra5CPsnRoots"></bootstrap>
+    </thing>
+  <thing id="ra5CTransform" name="Transformation" description="You learn the {i}alter self{/i} spell, and can cast it once per long rest without using a spell slot. You may also cast this spell with spell slots of 2nd level or higher. When casting this spell, you may only use the spell&apos;s Change Appearance option, and only change into your second form. When you transform back to your normal form, you retain some aspect of your second form until you complete a long rest, such as scaly skin, stunted wings, eyes without pupils, horns, etc.. Choose Intelligence, Wisdom, or Charisma as your spellcasting ability for this spell when you gain this Dark Gift." compset="RaceSpec">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Custom" tag="OnlyIfCaster" name="OnlyIfCaster" abbrev="OnlyIfCaster"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <bootstrap thing="spAlteSelf">
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      <autotag group="Custom" tag="OnlyIfCaster"/>
+      <autotag group="Helper" tag="Free"/>
+      <assignval field="sNameMod" value="Your second form only"/>
+      </bootstrap>
+    <bootstrap thing="spAlteSelf">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Your second form only"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[var i2nd as number
+
+if (hero.childfound[SlotHold2].field[MaxAllow].value > 0) then
+  i2nd += 1
+
+debug "Slot 2's found"
+  endif
+
+if (#levelcount[Warlock] >= 3) then
+  i2nd += 1
+debug "warlock found"
+  endif
+
+
+doneif (i2nd = 0)
+debug "not done"
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster"
+  perform eachpick.delete[Hide.Spell]
+  debug eachpick.field[livename].text
+  nexteach]]></eval>
+    </thing>
+  <thing id="ra5CInvolChg" name="Involuntary Change" description="Specific situations trigger your Dark Gift. At the start of your next turn after your Dark Gift is triggered in this way, you must make a DC 15 Charisma saving throw or cast {i}alter self{/i} as described in the Transformation trait, even if you cannot normally use it again. Roll or choose from the Change Catalyst table to see what triggers the change.\n\n{b}Change Catalyst{/b}\n{font Courier New}{back FFFFFF}d6  Catalyst\n{back 010101}1   Seeing a specific phase of the moon\n{back FFFFFF}2   A certain type of flower&apos;s smell\n{back 010101}3   The sound of a temple&apos;s bells being rung.\n{back FFFFFF}4   Hearing a specific melody\n{back 010101}5   Touching pure silver with unprotected skin\n{back FFFFFF}6   Seeing someone who resembles a specific individual\n{back 010101}" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="1-Specific moon phase"/>
+    <arrayval field="usrArray" index="1" value="2-Certain flower&apos;s smell"/>
+    <arrayval field="usrArray" index="2" value="3-Ringing temple bells"/>
+    <arrayval field="usrArray" index="3" value="4-Particular melody"/>
+    <arrayval field="usrArray" index="4" value="5-Touching pure silver"/>
+    <arrayval field="usrArray" index="5" value="6-Specific person&apos;s appearance"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="c5CSecSkn" name="Second Skin" description="You can transform into a second, very different form. Roll or choose from the Second Form table." compset="CustomSpec" summary="You have a second form that differs greatly from your own." uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Dark Gifts" abbrev="Dark Gifts"/>
+    <bootstrap thing="ra5CTransform"></bootstrap>
+    <bootstrap thing="ra5CSknChr"></bootstrap>
+    <bootstrap thing="ra5CInvolChg"></bootstrap>
+    </thing>
+  <thing id="c5CSmbBng" name="Symbiotic Being" description="A symbiotic being is merged with you and depends on you for survival. Roll or choose from the Symbiotic Nature table." compset="CustomSpec" summary="You host a symbiote." uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Dark Gifts" abbrev="Dark Gifts"/>
+    <bootstrap thing="cfg5CSymbio"></bootstrap>
+    </thing>
+  <thing id="c5CSustSymb" name="Sustained Symbiosis" description="Your symbiote takes extra measures to keep you alive. If you fail a saving throw, it can expend one of your Hit Dice, rolls it, and adds the rseult to your saving throw. If it does this for a death saving throw, it doesn&apos;t matter what you rolled on the d20, you automatically succeed and regain 1 hit point. Once your symbiote helps you succeed on one saving throw, it cannot assist in this manner again until you finish a long rest." compset="CustomSpec">
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="CustTaken" tag="cfg5CSymbio"/>
+    </thing>
+  <thing id="c5CSymbAgnd" name="Symbiotic Agenda" description="Your symbiote has some driving goal, and it wants you to help accomplish it. Your DM determines how patient or permissive it is, as that depends on its personality, but if you have an opportunity to help further its cause and you don&apos;t act on it, the symbiote can try to charm you into doing so. You must succeed on a Charisma saving throw (DC) or become charmed and follow its commands for 1d12 hours. Taking damage that&apos;s not self-inflicted allows you to make another saving throw, ending the effect on a success. Roll or choose from the Symbiotic Agenda table.\n\n{b}Symbiotic Agenda{/b}\n{font Courier New}{back FFFFFF}d6  Agenda\n{back 010101}1   The symbiote seeks to destroy a specific type of creature, such as dragons, gnolls, or clerics.\n{back FFFFFF}2   The symbiote desires knowledge and is driven to solve a mystery or learn a secret.\n{back 010101}3   The symbiote desires to either make true or thwart a prophecy.\n{back FFFFFF}4   The symbiote wants to defend the members and interests of a powerful entity or organization.\n{back 010101}5   The symbiote seeks your safety, and insists it knows what&apos;s best for you.\n{back FFFFFF}6   The symbiote wants new experiences, the stranger the better.\n{back 010101}" compset="CustomSpec">
+    <arrayval field="usrArray" index="0" value="1-Specific type of creature"/>
+    <arrayval field="usrArray" index="1" value="2-Knowledge, secrets, mystery"/>
+    <arrayval field="usrArray" index="2" value="3-Prophecy"/>
+    <arrayval field="usrArray" index="3" value="4-A being or organization"/>
+    <arrayval field="usrArray" index="4" value="5-Your best interest"/>
+    <arrayval field="usrArray" index="5" value="6-New, strange experiences"/>
+    <arrayval field="usrArray" index="6" value="7-Other (displays text box)"/>
+    <tag group="CustTaken" tag="cfg5CSymbio"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="Final" priority="150"><![CDATA[field[abValue2].value = hero.childfound[c5CSymbCha].field[abValue].value + 12
+field[abText].text = "DC " & field[abValue2].value & " CHA" & field[abText2].text]]></eval>
+    <eval phase="Final" index="2"><![CDATA[if (field[usrIndex].value = 0) then
+  field[abText2].text = ", Creature"
+elseif (field[usrIndex].value = 1) then
+  field[abText2].text = ", Knowledge"
+elseif (field[usrIndex].value = 2) then
+  field[abText2].text = ", Prophecy"
+elseif (field[usrIndex].value = 3) then
+  field[abText2].text = ", Entity"
+elseif (field[usrIndex].value = 4) then
+  field[abText2].text = ", You"
+elseif (field[usrIndex].value = 5) then
+  field[abText2].text = ", Experiences"
+elseif (field[usrIndex].value = 6) then
+  perform assign[User.NeedDomain]
+  field[abText2].text = ", " & field[domDomain].text
+endif]]></eval>
+    </thing>
+  <thing id="ra5CDeathTch" name="Death Touch" description="Make an unarmed strike as an action. In addition to the normal damage, you deal 1d10 necrotic damage, 2d10 necrotic damage if you&apos;re at least 5th level, 3d10 if you&apos;re at least 11th level, or 4d10 if you&apos;re 17th level." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <eval phase="Final"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+if (hero.tagcount[Classes.?] > 16) then
+   field[abValue].value = 4
+elseif (hero.tagcount[Classes.?] > 10) then
+   field[abValue].value = 3
+elseif (hero.tagcount[Classes.?] > 4) then
+   field[abValue].value = 2
+else
+   field[abValue].value = 1
+endif
+
+field[abText].text = "Unarmed strike + " & field[abValue].value & "d10 necrotic"]]></eval>
+    </thing>
+  <thing id="ra5CInescDth" name="Inescapable Death" description="You ignore a target&apos;s resistance to necrotic damage when you hit it with an attack roll and deal necrotic damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="ra5CWithCont" name="Withering Contact" description="If you start a turn either grapling or being grappled by another creature, that creature takes 1d10 necrotic damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="c5CTchDth" name="Touch of Death" description="Physical contact with you harms others. Roll or choose from the Deadly Touch table." compset="CustomSpec" summary="You exude necrotic energy." uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Dark Gifts" abbrev="Dark Gifts"/>
+    <bootstrap thing="ra5CDthChr"></bootstrap>
+    <bootstrap thing="ra5CInescDth"></bootstrap>
+    <bootstrap thing="ra5CWithCont"></bootstrap>
+    <bootstrap thing="ra5CDeathTch"></bootstrap>
+    </thing>
+  <thing id="ra5CBrwdEyes" name="Borrowed Eyes" description="As an action, you can affect the creatures that watch you. Doing so gives you advantage on any Investigation and Perception checks and it becomes impossible to blind you for the duration. You can only use this ability once per long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="ra5CDreadPrs" name="Dread Presence" description="You have disadvantage on Deception, Performance, and Persuasion checks against creatures that can see your watchers, as well as saving throws against any attempt to scry on you with the {i}scrying{/i} spell. With 1 minute of effort and a successful DC 15 Animal Handling check, you can suppress both this effect and Borrowed Eyes. This suppression lasts for 1 hour, and cannot be done again until you complete a long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="ra5CWatchrs" name="Watchers" description="Shadowy creatures gather around you, serving as eyes for something else to watch you. Roll or choose from the Watchers table." compset="CustomSpec" summary="Small shadowy creatures follow you around, watching you." uniqueness="unique">
+    <usesource source="5eVRGtR"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="Helper" tag="Quaternary"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Dark Gifts" abbrev="Dark Gifts"/>
+    <bootstrap thing="ra5CWatChr"></bootstrap>
+    <bootstrap thing="ra5CBrwdEyes"></bootstrap>
+    <bootstrap thing="ra5CDreadPrs"></bootstrap>
+    </thing>
+  <thing id="cfg5CSymbio" name="Symbiote" description="You have a symbiote whose separate physical form is bound and dependent on you to survive. It has only the three mental stats, either rolled or chosen by your DM (4d6, drop the lowest if rolled), and experiences the world through your senses. It knows two languages, one that you speak and one appropriate to its nature. The symbiote also grants you proficiency in one of the following skills if you don&apos;t already have it: Arcana, Deception, History, Intimidation, Insight, Nature, Reigion, Perception, or Persuasion. If you die or are returned to life, the symbiote shares this condition." compset="Configure" uniqueness="unique">
+    <fieldval field="cSkillMax" value="1"/>
+    <fieldval field="cfgObject1" value="Mental Stats"/>
+    <fieldval field="cfgObject2" value="Features"/>
+    <tag group="AllowSkl1" tag="skInsight"/>
+    <tag group="AllowSkl1" tag="skIntim"/>
+    <tag group="AllowSkl1" tag="skInvestig"/>
+    <tag group="AllowSkl1" tag="skNature"/>
+    <tag group="AllowSkl1" tag="skPercep"/>
+    <tag group="AllowSkl1" tag="skPersuas"/>
+    <tag group="AllowSkl1" tag="skReligion"/>
+    <tag group="AllowSkl1" tag="skArcana"/>
+    <tag group="AllowSkl1" tag="skDecept"/>
+    <tag group="AllowSkl1" tag="skHistory"/>
+    <bootstrap thing="c5CSymbInt"></bootstrap>
+    <bootstrap thing="c5CSymbCha"></bootstrap>
+    <bootstrap thing="c5CSymbNat"></bootstrap>
+    <bootstrap thing="c5CSymbWis"></bootstrap>
+    <bootstrap thing="c5CSustSymb"></bootstrap>
+    <bootstrap thing="c5CSymbAgnd"></bootstrap>
+    </thing>
+  <thing id="c5CSymbInt" name="Symbiote Intelligence" description="Determined by the DM or 4d6 dropping the lowest." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="usrLabelAr" value="Ability Score"/>
+    <arrayval field="usrArray" index="0" value="1"/>
+    <arrayval field="usrArray" index="1" value="2"/>
+    <arrayval field="usrArray" index="2" value="3"/>
+    <arrayval field="usrArray" index="3" value="4"/>
+    <arrayval field="usrArray" index="4" value="5"/>
+    <arrayval field="usrArray" index="5" value="6"/>
+    <arrayval field="usrArray" index="6" value="7"/>
+    <arrayval field="usrArray" index="7" value="8"/>
+    <arrayval field="usrArray" index="8" value="9"/>
+    <arrayval field="usrArray" index="9" value="10"/>
+    <arrayval field="usrArray" index="10" value="11"/>
+    <arrayval field="usrArray" index="11" value="12"/>
+    <arrayval field="usrArray" index="12" value="13"/>
+    <arrayval field="usrArray" index="13" value="14"/>
+    <arrayval field="usrArray" index="14" value="15"/>
+    <arrayval field="usrArray" index="15" value="16"/>
+    <arrayval field="usrArray" index="16" value="17"/>
+    <arrayval field="usrArray" index="17" value="18"/>
+    <arrayval field="usrArray" index="18" value="19"/>
+    <arrayval field="usrArray" index="19" value="20"/>
+    <tag group="CustTaken" tag="cfg5CSymbio"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[var iMod as number
+
+iMod = field[usrIndex].value - 9
+iMod = iMod / 2
+iMod = round(iMod,0,-1)
+
+field[abValue].value = iMod
+
+field[abText].text = "Modifier: " & signed(iMod)]]></eval>
+    </thing>
+  <thing id="c5CSymbWis" name="Symbiote Wisdom" description="Determined by the DM or 4d6 dropping the lowest." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="usrLabelAr" value="Ability Score"/>
+    <arrayval field="usrArray" index="0" value="1"/>
+    <arrayval field="usrArray" index="1" value="2"/>
+    <arrayval field="usrArray" index="2" value="3"/>
+    <arrayval field="usrArray" index="3" value="4"/>
+    <arrayval field="usrArray" index="4" value="5"/>
+    <arrayval field="usrArray" index="5" value="6"/>
+    <arrayval field="usrArray" index="6" value="7"/>
+    <arrayval field="usrArray" index="7" value="8"/>
+    <arrayval field="usrArray" index="8" value="9"/>
+    <arrayval field="usrArray" index="9" value="10"/>
+    <arrayval field="usrArray" index="10" value="11"/>
+    <arrayval field="usrArray" index="11" value="12"/>
+    <arrayval field="usrArray" index="12" value="13"/>
+    <arrayval field="usrArray" index="13" value="14"/>
+    <arrayval field="usrArray" index="14" value="15"/>
+    <arrayval field="usrArray" index="15" value="16"/>
+    <arrayval field="usrArray" index="16" value="17"/>
+    <arrayval field="usrArray" index="17" value="18"/>
+    <arrayval field="usrArray" index="18" value="19"/>
+    <arrayval field="usrArray" index="19" value="20"/>
+    <tag group="CustTaken" tag="cfg5CSymbio"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[var iMod as number
+
+iMod = field[usrIndex].value - 9
+iMod = iMod / 2
+iMod = round(iMod,0,-1)
+
+field[abValue].value = iMod
+
+field[abText].text = "Modifier: " & signed(iMod)]]></eval>
+    </thing>
+  <thing id="c5CSymbCha" name="Symbiote Charisma" description="Determined by the DM or 4d6 dropping the lowest." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="usrLabelAr" value="Ability Score"/>
+    <arrayval field="usrArray" index="0" value="1"/>
+    <arrayval field="usrArray" index="1" value="2"/>
+    <arrayval field="usrArray" index="2" value="3"/>
+    <arrayval field="usrArray" index="3" value="4"/>
+    <arrayval field="usrArray" index="4" value="5"/>
+    <arrayval field="usrArray" index="5" value="6"/>
+    <arrayval field="usrArray" index="6" value="7"/>
+    <arrayval field="usrArray" index="7" value="8"/>
+    <arrayval field="usrArray" index="8" value="9"/>
+    <arrayval field="usrArray" index="9" value="10"/>
+    <arrayval field="usrArray" index="10" value="11"/>
+    <arrayval field="usrArray" index="11" value="12"/>
+    <arrayval field="usrArray" index="12" value="13"/>
+    <arrayval field="usrArray" index="13" value="14"/>
+    <arrayval field="usrArray" index="14" value="15"/>
+    <arrayval field="usrArray" index="15" value="16"/>
+    <arrayval field="usrArray" index="16" value="17"/>
+    <arrayval field="usrArray" index="17" value="18"/>
+    <arrayval field="usrArray" index="18" value="19"/>
+    <arrayval field="usrArray" index="19" value="20"/>
+    <tag group="CustTaken" tag="cfg5CSymbio"/>
+    <tag group="Helper" tag="Primary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[var iMod as number
+
+iMod = field[usrIndex].value - 9
+iMod = iMod / 2
+iMod = round(iMod,0,-1)
+
+field[abValue].value = iMod
+
+field[abText].text = "Modifier: " & signed(iMod)]]></eval>
+    </thing>
+  <thing id="c5CSymbNat" name="Symbiotic Nature" description="Roll on or choose an option from the below Symbiotic Nature table to determine the nature of the being that shares your body. \n\n{b}Symbiotic Nature{/b}\n{font Courier New}{back FFFFFF}d6  Symbiote\n{back 010101}1   Tiny humanoid facial features that protrude from some part of your body\n{back FFFFFF}2   An alien appendage within an unhealing wound\n{back 010101}3   A burrowed, worm-like creature\n{back FFFFFF}4   An intrusive thought that plagues your mind.\n{back 010101}5   A living tattoo" compset="CustomSpec" uniqueness="unique">
+    <arrayval field="usrArray" index="0" value="1-Face on your torso or hand"/>
+    <arrayval field="usrArray" index="1" value="2-Alien appendage in a wound"/>
+    <arrayval field="usrArray" index="2" value="3-burrowing worm-like being"/>
+    <arrayval field="usrArray" index="3" value="4-Sentient intrusive thought"/>
+    <arrayval field="usrArray" index="4" value="5-Living tattoo"/>
+    <arrayval field="usrArray" index="5" value="6-Crystal growths"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="CustTaken" tag="cfg5CSymbio"/>
+    <tag group="Helper" tag="Secondary"/>
+    <tag group="User" tag="NoAutoName"/>
+    </thing>
+  </document>
