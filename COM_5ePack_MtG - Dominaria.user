@@ -47,4 +47,63 @@
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="abAction" tag="None"/>
     </thing>
+  <thing id="c5CFBBelz" name="Cult of Belzenlok" description="Belzenok&apos;s cultists can have the Demonic Vigor feature. His cult leaders or most favored cultists may also be granted the Unholy Tether reaction." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5CPSDCP"/>
+    <tag group="Custom" tag="FBBelz" name="FBBelz" abbrev="FBBelz"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CFndBoon" name="Fiendish Cults and Boons" abbrev="Fiendish Cults and Boons"/>
+    <eval phase="First"><![CDATA[~ If we're disabled, do nothing 
+doneif (tagis[Helper.Disable] <> 0)
+
+var thresh as string
+var sep as string
+thresh = hero.childfound[cfg5CFndBoon].field[cfgAllow2].text
+
+if (empty(thresh)=0) then
+sep = " | "
+endif
+
+hero.childfound[cfg5CFndBoon].field[cfgAllow2].text &= sep & "Custom.FBBelz"]]></eval>
+    </thing>
+  <thing id="c5CFBBelzSpl" name="Cult of Belzenlokl Signature Spells" description="Spellcasters that are members of this cult can replace spells they know with spells from the following list, so long as the replacing spell is the same level as the one it replaces: {i}chill touch{/i}, {i}hex{/i}, {i}phantasmal force{/i}, and {i}fear{/i}." compset="CustomSpec" summary="Membership in the cult provides alternate spells." uniqueness="unique">
+    <tag group="ClsAllowSp" tag="spChilTouc"/>
+    <tag group="ClsAllowSp" tag="spHex"/>
+    <tag group="ClsAllowSp" tag="spFear"/>
+    <tag group="ClsAllowSp" tag="sp5CPhantF" name="Phantasmal Force" abbrev="Phantasmal Force"/>
+    <tag group="Custom" tag="FBBelz" name="FBBelz" abbrev="FBBaal"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <bootstrap thing="spChilTouc"></bootstrap>
+    <bootstrap thing="spHex"></bootstrap>
+    <bootstrap thing="spFear"></bootstrap>
+    <eval phase="PreLevel"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+foreach pick in hero from Class where "Classes.?"
+perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach]]></eval>
+    <pickreq thing="c5CFBBelz"/>
+    </thing>
+  <thing id="c5CFBBelzDV" name="Demonic Vigor" description="As a bonus action, this creature regains 1 hit point and gains temporary hit points equaling its Constitution modifier plus its maximum number of Hit Dice. It can alternatively do this as a reaction when it would drop to 0 hit points." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Custom" tag="FBBelz" name="FBBelz" abbrev="FBBelz"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[field[abValue].value = hero.childfound[aCON].field[aModBonus].value + herofield[tHitDice].value
+field[abText].text = "+" & field[abValue].value & " temp HP, Reaction or Bonus"]]></eval>
+    <pickreq thing="c5CFBBelz"/>
+    </thing>
+  <thing id="c5CFBBelzUT" name="Unholy Tether" description="When an ally of this creature within 30 feet of it dies, this creature can use a reaction to regain hit points equal to twice the dead creature&apos;s Constitution modifier." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    <tag group="Custom" tag="FBBelz" name="FBBelz" abbrev="FBBelz"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <tag group="abRange" tag="Feet"/>
+    <pickreq thing="c5CFBBelz"/>
+    </thing>
   </document>
