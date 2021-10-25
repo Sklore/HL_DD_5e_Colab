@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="sp5CSumDra" name="Summon Draconic Spirit" description="You summon a draconic spirit. It manifests in an open space that you can see within range. This physical manifestation uses the Draconic Spirit stat block. When you cast the spell, choose which family it belongs to: Chromatic, Gem, or Metallic. Your choice determines the creature&apos;s attack in its stat block. If the creature drops to 0 hit points or the spell ends, the creature disappears.\n\nThe creature is your and your companions&apos; ally. In combat, it shares your initiative count, but it takes its turn immediately after yours. It obeys your verbal commands (no action needed from you). If it doesn&apos;t receive orders, it takes the Dodge action and moves out of harm&apos;s way when possbile.\n\n{b}{i}At Higher Levels.{/i}{/b} When you cast this spell using a 6th level or higher spell slot, apply that higher level in the appropriate places indicated on the creature&apos;s stat block." compset="Spell">
+    <fieldval field="sCompDesc" value="an object engraved with the image of a dragon worth a minimum of 500 gp"/>
+    <fieldval field="sCompCost" value="500"/>
+    <fieldval field="sRange" value="60 feet"/>
+    <fieldval field="sDuration" value="Concentration, up to 1 hour"/>
+    <usesource source="5eFFToD"/>
+    <tag group="sComp" tag="V" name="Verbal" abbrev="{ref s_V}V{ref}"/>
+    <tag group="sLevel" tag="5" name="5" abbrev="5"/>
+    <tag group="sSchool" tag="Conjur" name="Conjuration" abbrev="Conjur"/>
+    <tag group="CompAvail" tag="c5CSummon" name="Summoned Creature" abbrev="Summoned Creature"/>
+    <tag group="Helper" tag="SplMatAtLe" name="Material Component Cost is &quot;at least&quot;" abbrev="Material Component Cost is &quot;at least&quot;"/>
+    <tag group="sCastTime" tag="Action1" name="1 action" abbrev="1 action"/>
+    <tag group="sComp" tag="M" name="Material" abbrev="{ref s_M}M{ref}"/>
+    <tag group="sComp" tag="S" name="Somatic" abbrev="{ref s_S}S{ref}"/>
+    <tag group="sClass" tag="cHelpDrd"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <eval phase="First"><![CDATA[
+
+    ~ If we're disabled, do nothing & 
+    doneif (tagis[Helper.Disable] = 1)
+
+    ~ Push our info to the Summoned creature so we can pull it down
+    perform hero.childfound[5CSummon].pushtags[SpInfo.?]]]></eval>
+    </thing>
+  <thing id="r5CSumDra" name="Draconic Spirit" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rSTR" value="9"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="7"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCHA" value="4"/>
+    <tag group="Custom" tag="InheritDC" name="InheritDC" abbrev="InheritDC"/>
+    <tag group="RaceSize" tag="Large1" name="Large" abbrev="Large"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="Alignment" tag="NeutralGE"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="tpDragon"></bootstrap>
+    <bootstrap thing="lOther">
+      <assignval field="lCustName" value="Understands its summoner&apos;s languages"/>
+      <assignval field="sbName" value="Understands its summoner&apos;s languages"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="MelAttOver" tag="aSTR"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="livename" value="Rend"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="sbName" value="Rend"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDrSpBW"></bootstrap>
+    <bootstrap thing="ra5CDrcFam"></bootstrap>
+    <bootstrap thing="ra5CShrResDS"></bootstrap>
+    <eval phase="Final" priority="50000" index="2"><![CDATA[~ go through each natural weapon on the hero and find what attack attribute
+~ we've assigned to it. We MUST assign one with the MelAttOver and RanAttOver
+~ tags for this to work. Pull that bonus, add the prof, find the master's
+~ spell attack bonus in abValue4 from the Spell Level thing, and remove
+~ the regular attack bonus while adding the master spell attack
+
+foreach pick in hero from BaseWep where "wGroup.Natural"
+
+    var Rng as string
+    var CrR as number
+    Rng = eachpick.tagids[RanAttOver.?,""]
+    Rng = replace(Rng,"hasagent","thingid",0)
+    CrR = (hero.firstchild[Rng].field[aModBonus].value + hero.childfound[ProfBonus].field[tProfBonus].value)
+
+    eachpick.field[wRanAtk].value += hero.childfound[ra5CSumSplLvl].field[abValue4].value - CrR
+
+    var Mel as string
+    var CrM as number
+    Mel = eachpick.tagids[MelAttOver.?,""]
+    Mel = replace(Mel,"hasagent","thingid",0)
+    CrM = (hero.firstchild[Mel].field[aModBonus].value + hero.childfound[ProfBonus].field[tProfBonus].value)
+
+eachpick.field[wAttack].value += hero.childfound[ra5CSumSplLvl].field[abValue4].value - CrM
+
+nexteach
+
+~Take half our spell level rounded down for multiattack text
+var Mlt as number
+Mlt = hero.childfound[ra5CSumSplLvl].field[actUser].value
+Mlt /= 2
+Mlt = round(Mlt,0,-1)
+hero.childfound[xMultiatt].field[CustDesc].text = "The dragon can make " & Mlt & " Rend attacks then use its Breath Weapon."]]></eval>
+    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
+~Add back in the original 5 per the stat block, then remove it all
+~Add that entire thing to our total Bonus HP
+~We remove it from the total instead of just removing the total in case
+~something else is adding to that as well.
+
+var HPAdj as number
+HPAdj = 50
+HPAdj += hero.childfound[ra5CSumSplLvl].field[actUser].value * 10 - 50 - 1
+
+herofield[tBonusHP].value = HPAdj
+
+~ Add the spell level to our AC Bonus
+hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl].field[actUser].value - 1 + 3</eval>
+    <eval phase="First" priority="5000" index="4"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~Tell the spell level thing that our minimum spell level is 5
+     hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 5]]></eval>
+    </thing>
+  <thing id="ra5CDrSpBW" name="Breath Weapon" description="The draconic spirit breathes destructive energy. Each creature in a 30-foot cone must make a Dexterity save versus the spirit&apos;s summoner&apos;s spell save DC. On a failure, a creature takes 2d6 damage of the type chosen for the spirit&apos;s Shared Resistances trait, or half that on a success." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abSave" tag="aDEX"/>
+    <eval phase="Final" priority="50000"><![CDATA[    doneif (tagis[Helper.Disable] <> 0)
+    doneif (hero.childfound[ra5CShrResDS].field[usrChosen1].ischosen = 0)
+
+    perform hero.childfound[ra5CShrResDS].pulltags[DamageRes.?]
+    perform assign[LvNamePar.AppText]
+    field[abDC].value = hero.childfound[ra5CSumSplLvl].field[abValue3].value
+    field[CustDesc].text = "The draconic spirit breathes destructive energy. Each creature in a 30-foot cone must make a DC " & field[abDC].value & " Dexterity save. On a failure, a creature takes 2d6 " & lowercase(tagnames[DamageRes.?]) & " damage, or half that on a success."
+    field[abText].text = "2d6 " & lowercase(tagnames[DamageRes.?])]]></eval>
+    </thing>
+  <thing id="ra5CDrcFam" name="Dragon Family" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Chromatic"/>
+    <arrayval field="usrArray" index="1" value="Gem"/>
+    <arrayval field="usrArray" index="2" value="Metallic"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CShrResDS" name="Shared Resistances" description="When the dragon is summoned, its summoner chooses what type of damage it resists, and receives the resistance as well, until the spell ends." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+perform assign[ChooseSrc1.Thing]
+
+if (hero.childfound[ra5CDrcFam].field[usrIndex].value = 1) then
+   field[usrCandid1].text = "thingid.dtForce | thingid.dtRadiant | thingid.dtPsychic | thingid.dtThunder | thingid.dtNecrotic"
+else
+   field[usrCandid1].text = "thingid.dtFire  | thingid.dtLightnin | thingid.dtAcid | thingid.dtPoison  | thingid.dtCold"
+endif]]></eval>
+    <eval phase="First" priority="200" index="2"><![CDATA[    doneif (tagis[Helper.Disable] <> 0)
+    doneif (field[usrChosen1].ischosen = 0)
+
+    perform field[usrChosen1].chosen.pulltags[DamageRes.?]
+    perform hero.pushtags[DamageRes.?]
+    perform master.pushtags[DamageRes.?]]]></eval>
+    </thing>
+  <thing id="sp5CDrgStrd" name="Dragon&apos;s Stride" description="Draconic flames burst forth from your feet, granting you explosive speed. For the duration, your speed increases by 20 feet and moving doesn&apos;t provoke attacks of opportunity.\n\nWhen you move within 5 feet of a creature or an object that isn&apos;t being worn or carried, it takes 1d6 fire damage. A creature or object can take this damage only once during a turn.\n\n{b}{i}At Higher Levels.{/i}{/b} When you cast this spell using a spell slot of 4th level or higher, your speed increases by an extra 5 feet for each spell slot level above 3rd. Also for each spell slot level above 3rd, the spell deals an extra 1d6 fire damage." compset="Spell">
+    <fieldval field="sDuration" value="Concentration, up to 1 minute"/>
+    <fieldval field="sRange" value="Self"/>
+    <usesource source="5eFFToD"/>
+    <tag group="sCastTime" tag="BonusAct1"/>
+    <tag group="sSchool" tag="Transmutat"/>
+    <tag group="sClass" tag="cHelpAtf"/>
+    <tag group="sClass" tag="cHelpRgr"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="sLevel" tag="3"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    </thing>
+  <thing id="sp5CDrcTrns" name="Draconic Transformation" description="Roaring, you draw upon draconic magic to transform yourself. You take on draconic features and gain these benefits for the duration of the spell:\n\n{b}Blindsight.{/b} You have 30 feet of blindsight. Within that range, you can, in effect, see anything not behind total cover even if you&apos;re blinded or in darkness. Unless an invisible creature successfully hides from you, you can see it.\n\n{b}Breath Weapon.{/b} As a bonus action while this spell is active, you can exhale energy in a 60-foot cone. Each creature in that area must make a Dexterity save. A creature takes 6d8 force damage on a failure or half that on  a success.\n\n{b}Wings.{/b} Incorporeal wings sprout form your back, granting you 60 feet of flight speed." compset="Spell">
+    <fieldval field="sDuration" value="Concentration, up to 1 minute"/>
+    <fieldval field="sRange" value="Self"/>
+    <fieldval field="sCompDesc" value="a small statue of a dragon worth a minimum of 500 gp"/>
+    <fieldval field="sCompCost" value="500 gp"/>
+    <usesource source="5eFFToD"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="sLevel" tag="7"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sClass" tag="cHelpDrd"/>
+    <tag group="Helper" tag="SplSave"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="sSchool" tag="Transmutat"/>
+    <tag group="Helper" tag="SplMatAtLe"/>
+    <tag group="sCastTime" tag="BonusAct1"/>
+    </thing>
+  <thing id="p5CDrcTrns" name="Draconic Transformation" compset="InPlay" uniqueness="unique">
+    <usesource source="5eFFToD"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <tag group="OthAdjCat" tag="UserBot3rd" name="User 3rd Bottom Group" abbrev="User 3rd Bottom Group"/>
+    <tag group="SpInfo" tag="spHaste" name="Haste" abbrev="Haste"/>
+    <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
+    <bootstrap thing="ab5CBrWpDT">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    </thing>
+  <thing id="ab5CBrWpDT" name="Breath Weapon" description="As a bonus action while your Draconic Transformation spell is active, you can exhale energy in a 60-foot cone. Each creature in that area must make a Dexterity save versus your spell save DC. A creature takes 6d8 force damage on a failure or half that on  a success." compset="Ability">
+    <fieldval field="abRange" value="60"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <eval phase="Final"><![CDATA[field[abText].text = "6d8 force, DEX save vs spell"]]></eval>
+    </thing>
+  <thing id="sp5CPltShld" name="Platinum Shield" description="Silver light surrounds a creature of your choice within range (it can be you), shining dim light for 5 feet. While in the field, a creature gains these benefits:\n\n{b}Cover.{/b} The creature is considered to be in half cover.\n\n{b}Damage Resistance.{/b} The creature gains resistance to acid, cold, fire, lightning, and poison damage.\n\n{b}Evasion.{/b} If the creature has to make a Dexterity save to take only half damage from an effect, it instead takes no damage on a success and half damage on a failure.\n\nOn subsequent turns, you can use a bonus action to move the field of light onto another creature within 60 feet of its current location." compset="Spell">
+    <fieldval field="sDuration" value="Concentration, up to 1 minute"/>
+    <fieldval field="sRange" value="60 feet"/>
+    <fieldval field="sCompDesc" value="a platinum-plated dragon scale worth a minimum of 500 gp"/>
+    <fieldval field="sCompCost" value="500 gp"/>
+    <usesource source="5eFFToD"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="sLevel" tag="6"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="Helper" tag="SplMatAtLe"/>
+    <tag group="sCastTime" tag="BonusAct1"/>
+    <tag group="sSchool" tag="Abjur"/>
+    </thing>
+  <thing id="ab5CEvasion" name="Evasion" description="If you have to make a Dexterity save to take only half damage from an effect, you instead takes no damage on a success and half damage on a failure." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="p5CPltShld" name="Platinum Shield" compset="InPlay" uniqueness="unique">
+    <usesource source="5eFFToD"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <tag group="OthAdjCat" tag="UserBot3rd" name="User 3rd Bottom Group" abbrev="User 3rd Bottom Group"/>
+    <tag group="SpInfo" tag="spHaste" name="Haste" abbrev="Haste"/>
+    <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
+    <bootstrap thing="ab5CEvasion">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="Final" priority="11000"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      perform hero.assign[DamageRes.dtAcid]
+      perform hero.assign[DamageRes.dtCold]
+      perform hero.assign[DamageRes.dtFire]
+      perform hero.assign[DamageRes.dtLightnin]
+      perform hero.assign[DamageRes.dtPoison]]]></eval>
+    </thing>
+  <thing id="sp5CDrgMisch" name="Dragon&apos;s Mischief" description="You fill a 20-foot cube that you can see within range with fey and draconic magic. Roll on the table below to determine the effect produced, and roll again at the beginning of each of your turns for the duration of the spell. You can move the cube up to 10 feet before you roll.\n\n\n{b}Mischievous Surge{/b}{back FFFFFF}\nd4  Effect{back 010101}\n1   The scent of apple pie wafts through the air. Each creature must succeed on a Wisdom save or become charmed by you until the beginning of your next turn.{back FFFFFF}\n2   Floral boquets appear. Each creature in the cube must make a Dexterity save. On a failure, they&apos;re blinded until the beginning of your next turn, as the flowers spray water in their eyes.{back 010101}\n3   Each creature in the cube must make a Wisdom save. On a failure, a creature starts giggling until the beginning of your next turn. While giggling, they are incapacitated and use the entirety of their movement to move in a random direction.{back FFFFFF}\n4   Drops of sticky molasses hover within the cube, making it difficult terrain until the beginning of your next turn.{back 010101}" compset="Spell">
+    <fieldval field="sCompDesc" value="a piece of an apple pie&apos;s crust"/>
+    <fieldval field="sDuration" value="Concentration, up to 1 minute"/>
+    <fieldval field="sRange" value="60 feet"/>
+    <usesource source="5eFFToD"/>
+    <tag group="sSchool" tag="Illusion"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="sLevel" tag="2"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sClass" tag="cHelpBrd"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CPsyLnc" name="Psychic Lance" description="You unleash psychic power from your forehead at a creature that visible to you and within range. Alternatively, you can speak the creature&apos;s name. If the named target is within range, it gains no benefit from cover or invisibility as the lance of psychic seeks it. If the named target isn&apos;t within range, the lance dissipates with no effect.\n\nThe target must succeed on an Intelligence save. On a failure, it takes 7d6 psychic damage and is incapacitated until the beginning of your next turn. On a success, it takes half the damage but is not incapacitated.\n\n{b}{i}At Higher Levels.{/i}{/b} When you cast this spell using a spell slot of 5th level or higher, the damage increases by 1d6 for each slot level above 4th." compset="Spell">
+    <fieldval field="sRange" value="120 Feet"/>
+    <fieldval field="sDuration" value="Instantaneous"/>
+    <usesource source="5eFFToD"/>
+    <tag group="sSchool" tag="Enchant"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="sComp" tag="V"/>
+    <tag group="sLevel" tag="4"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sClass" tag="cHelpBrd"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    <tag group="sClass" tag="cHelpWlk"/>
+    <tag group="Helper" tag="SplSave"/>
+    </thing>
+  <thing id="sp5CBndIce" name="Binding Ice" description="Each creature in a 30-foot cone emanating from you must make a Constitution save. On a failure, a creature takes 3d8 cold damage and is hindered by ice for 1 minute or until it or another creature within reach uses its action to break the ice. A creature so hindered has its speed reduced to 0. On a successful save, a creature takes half the damage and is not hindered.\n\n{b}{i}At Higher Levels.{/i}{/b} When you cast this spell using a spell slot of 3rd level or higher, increase the cold damage by 1d8 for each slot level above 2nd." compset="Spell">
+    <fieldval field="sCompDesc" value="meltwater in a vial"/>
+    <fieldval field="sRange" value="Self (30-foot cone)"/>
+    <fieldval field="sDuration" value="Instantaneous"/>
+    <usesource source="5eFFToD"/>
+    <tag group="Helper" tag="SplSave"/>
+    <tag group="sComp" tag="S"/>
+    <tag group="sComp" tag="M"/>
+    <tag group="sClass" tag="cHelpWiz"/>
+    <tag group="sLevel" tag="2"/>
+    <tag group="sCastTime" tag="Action1"/>
+    <tag group="sSchool" tag="Evocation"/>
+    <tag group="sClass" tag="cHelpSor"/>
+    </thing>
+  </document>

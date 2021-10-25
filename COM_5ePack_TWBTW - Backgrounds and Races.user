@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CHarengon" name="Harengon" compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CUARtTrg"></bootstrap>
+    <bootstrap thing="ra5CUARtSns"></bootstrap>
+    <bootstrap thing="ra5CLkyFtwrk"></bootstrap>
+    <bootstrap thing="ra5CRbtHop"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    </thing>
+  <thing id="ra5CLkyFtwrk" name="Lucky Footwork" description="When you fail a Dexterity saving throw, you take your reaction to roll and add 1d4 to the result, potentially turning the failure into a success. You cannot use this reaction if your speed is 0 or if you are currently prone." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Reaction" name="Reaction" abbrev="Reaction"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="Reaction" name="Reaction" abbrev="React"/>
+    <eval phase="First"><![CDATA[~if we've been replaced, get out now 
+doneif (tagis[Helper.Disable] <> 0)
+
+  #situational[hero.child[svDEX],"Can use reaction to add 1d4 to a failed save",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CRbtHop" name="Rabbit Hop" description="You can use a bonus action to jump a number of feet equal to five times your proficiency bonus, without provoking attacks of opportunity. You can do this hop only if your speed isn&apos;t 0. You can do it a number of times equaling your proficiency bonus, and regain all spent uses when you complete a long rest." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+
+    field[abValue].value = hero.childfound[ProfBonus].field[tProfBonus].value
+    field[trkMax].value = field[abValue].value
+    field[abValue].value *= 5
+
+    field[abText].text = field[abValue].value & " feet"]]></eval>
+    </thing>
+  <thing id="r5CFairy" name="Fairy" compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="RaceSize" tag="Small11" name="Small" abbrev="Small"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <bootstrap thing="tpFey"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CFryFlght"></bootstrap>
+    <bootstrap thing="ra5CFryMgc"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    </thing>
+  <thing id="ra5CFryFlght" name="Flight" description="Your wings grant you a flying speed equals your walking speed, usable only if you&apos;re not wearing medium or heavy armor." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="FlyRemove"/>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="0"/>
+      <autotag group="Custom" tag="FlyRemove"/>
+      </bootstrap>
+    <eval phase="First" priority="10001" index="4"><![CDATA[var iIsOn as number
+
+if (hero.tagis[Hero.MedArmor] <> 0) then
+   iIsOn += 1
+   endif
+if (hero.tagis[Hero.HeavyArmor] <> 0) then
+   iIsOn += 1
+   endif
+
+if (iIsOn = 0) then
+  foreach pick in hero where "thingid.xFly & Custom.FlyRemove"
+     perform eachpick.tagreplace[Value.0,Value.1]
+     nexteach
+  field[abValue].value += 1
+  endif]]></eval>
+    <eval phase="Final" priority="10001" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value = 0)
+
+hero.childfound[xFly].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xFly].field[abValue].value)]]></eval>
+    </thing>
+  <thing id="ra5CFryMgc" name="Fairy Magic" description="You know the {i}druidcraft{/i} cantrip. At 3rd level and 5th level, you learn {i}faerie fire{/i} and {i}enlarge/reduce{/i}, respectively. You can cast {i}faerie fire{/i}  and {i}enlarge/reduce{/i} once each per long rest without expending any spell slots. You can also cast them using any spell slots you have, so long as those spell slots are the appropriate level. Choose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="Custom" tag="OnlyIfCaster1" name="OnlyIfCaster1" abbrev="OnlyIfCaster1"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <bootstrap thing="spFaerFire">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      </bootstrap>
+    <bootstrap thing="spFaerFire">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spEnlargeR">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      </bootstrap>
+    <bootstrap thing="spEnlargeR">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDruidcra">
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[var i2nd as number
+
+if (hero.childfound[SlotHold2].field[MaxAllow].value > 0) then
+  i2nd += 1
+  endif
+
+if (#levelcount[Warlock] >= 3) then
+  i2nd += 1
+  endif
+
+
+doneif (i2nd = 0)
+
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster2"
+  perform eachpick.delete[Hide.Spell]
+  nexteach]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[var i1st as number
+
+if (hero.childfound[SlotHold1].field[MaxAllow].value > 0) then
+  i1st += 1
+  endif
+
+if (#levelcount[Warlock] >= 1) then
+  i1st += 1
+  endif
+
+
+doneif (i1st = 0)
+
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster1"
+  perform eachpick.delete[Hide.Spell]
+  nexteach]]></eval>
+    </thing>
+  <thing id="bck5CFeyLost" name="Feylost" compset="Background" uniqueness="unique">
+    <fieldval field="StartLang" value="1"/>
+    <fieldval field="cToolMax" value="1"/>
+    <fieldval field="StartGear" value="A musical instrument of your choice, a set of traveler&apos;s clothes, three Feywild trinkets, and 8 gp in a pouch"/>
+    <fieldval field="StartAll" value="A musical instrument of your choice, a set of traveler&apos;s clothes, three Feywild trinkets, and 8 gp in a pouch"/>
+    <fieldval field="AbilMax" value="1"/>
+    <fieldval field="AbilName" value="Fey Mark"/>
+    <fieldval field="AbilPlur" value="Fey Marks"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="AllowTool1" tag="Instrument"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="BackLang" tag="lElvish"/>
+    <tag group="BackLang" tag="lGnomish"/>
+    <tag group="BackLang" tag="lGoblin"/>
+    <tag group="BackLang" tag="lSylvan"/>
+    <bootstrap thing="ab5CFywVst"></bootstrap>
+    </thing>
+  <thing id="bck5CWtchHnd" name="Witchlight Hand" compset="Background" uniqueness="unique">
+    <fieldval field="StartLang" value="1"/>
+    <fieldval field="cToolMax" value="1"/>
+    <fieldval field="StartGear" value="Either a disguise kit or your choice of musical instrument, a deck of cards, your carnival uniform or costume, one Feywild trinket, and 8 gp in a pouch"/>
+    <fieldval field="StartAll" value="Either a disguise kit or your choice of musical instrument, a deck of cards, your carnival uniform or costume, one Feywild trinket, and 8 gp in a pouch"/>
+    <fieldval field="AbilMax" value="1"/>
+    <fieldval field="AbilName" value="Carnival Companion"/>
+    <fieldval field="AbilPlur" value="Carnival Companions"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="AllowTool1" tag="gKitDisgui"/>
+    <tag group="ProfSkill" tag="skSleight"/>
+    <tag group="AllowTool1" tag="Instrument"/>
+    <tag group="ProfSkill" tag="skPerform"/>
+    <bootstrap thing="ab5CCrnFxt"></bootstrap>
+    </thing>
+  <thing id="bt5CFeyPrs1" name="Feywild 01 - Laughter" description="I know it&apos;s just my mind playing tricks on me, but I&apos;m haunted by fey laughter that nobody else can hear." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyPrs2" name="Feywild 02 - Nomadic" description="I don&apos;t settle down in one in one place before moving on." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyPrs3" name="Feywild 03 - Crier" description="A good song makes me cry like a baby." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyPrs4" name="Feywild 04 - Homey" description="I try to bring the peace and comfort of home with me wherever I go." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyPrs5" name="Feywild 05 - Wonder" description="I&apos;ve kept my childlike sense of wonder." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyPrs6" name="Feywild 06 - New Ideas" description="I go crazy over my new ideas, until I come up with ever newer ideas." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyPrs7" name="Feywild 07 - Rules" description="I have my own strange and awesome set of rules to live by." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyPrs8" name="Feywild 08 - Untrusting" description="I just don&apos;t find adults trustworthy." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyIdl1" name="Feywild 01 - Friendship" description=" I never leave a companion behind. (Good)" compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyIdl2" name="Feywild 02 - Empathy" description=" Nobody deserves to suffer. (Good)" compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyIdl3" name="Feywild 03 - Wanderlust" description=" I like the road less travelled. (Chaotic)" compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyIdl4" name="Feywild 04 - Changeability" description=" Change is good, which is the rules I live by are always changing. (Chaotic)" compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyIdl5" name="Feywild 05 - Honor" description=" A deal&apos;s a deal, which is why I don&apos;t break them. (Lawful)" compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyIdl6" name="Feywild 06 - Rule of Three" description="The rule of threes is always happening, across the multiverse.(Lawful)" compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyIdl7" name="Feywild 07 - Obsession" description=" I have grudges, and I intend to hold them. (Evil)" compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyIdl8" name="Feywild 08 - Greed" description="I don&apos;t care who gets hurt. I&apos;m going to get what I want. (Evil)" compset="BackIdeal" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyBnd1" name="Feywild 01 - Honor" description="I don&apos;t break my word." compset="BackBond" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyBnd2" name="Feywild 02 - Magic" description="I&apos;m drawn to magical places, as I find any and all forms of magic compelling." compset="BackBond" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyBnd3" name="Feywild 03 - Nature" description="I do whatever I can to preserve nature." compset="BackBond" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyBnd4" name="Feywild 04 - Friendship" description="A true friend is more important than anything else in the multiverse." compset="BackBond" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyBnd5" name="Feywild 05 - Fey Creatures" description="I can&apos;t hurt Fey creatures, either because I consider myself one or because I fear the consequences of doing so." compset="BackBond" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyBnd6" name="Feywild 06 - Carnival" description="The fey carnival is my home." compset="BackBond" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyBnd7" name="Feywild 07 - Feywild" description="I hear the call of the Feywild, and wish to return there even if only for a moment." compset="BackBond" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyBnd8" name="Feywild 08 - Masters" description="I feel as if I owe a debt to the masters of the carnival for providing me a home and purpose." compset="BackBond" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyFlw1" name="Feywild 01 - Time Management" description="I easily lose track of time. Consequently, I&apos;m usually late." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyFlw2" name="Feywild 02 - Paranoid" description="I&apos;m pretty sure the entire multiverse has it in for me." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyFlw3" name="Feywild 03 - Schedule" description="I keep a tight schedule, always sticking to it." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyFlw4" name="Feywild 04 - Kleptomaniac" description="I can&apos;t help but steal any shiny and sparkling treasures." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyFlw5" name="Feywild 05 - Forgetful" description="I struggle to remember even simple things, my memory is so bad." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyFlw6" name="Feywild 06 - Dealer" description="Nothing in life is free, so I expect to get something back." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyFlw7" name="Feywild 07 - Vices" description="I tend to indulge in my many vices." compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="bt5CFeyFlw8" name="Feywild 08 - Indecisive" description="I&apos;m constantly changing my mind. Well maybe not constantly. Well, maybe…" compset="BackFlaw" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Background" tag="All"/>
+    </thing>
+  <thing id="b5CCrnCmp1" name="Old hand" description="An old, grumbly carnival hand" compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="1" name="1" abbrev="1"/>
+    <tag group="Background" tag="bck5CWtchHnd"/>
+    </thing>
+  <thing id="b5CCrnCmp2" name="New hand" description="A young, impressionable carnival hand" compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="2" name="2" abbrev="2"/>
+    <tag group="Background" tag="bck5CWtchHnd"/>
+    </thing>
+  <thing id="b5CCrnCmp3" name="Performer" description="One of the carnival&apos;s performers" compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="3" name="3" abbrev="3"/>
+    <tag group="Background" tag="bck5CWtchHnd"/>
+    </thing>
+  <thing id="b5CCrnCmp4" name="Retiree" description="A retired performer from the carnival" compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="4" name="4" abbrev="4"/>
+    <tag group="Background" tag="bck5CWtchHnd"/>
+    </thing>
+  <thing id="b5CCrnCmp5" name="Animal trainer" description="One of the more seasoned animal trainers" compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="5" name="5" abbrev="5"/>
+    <tag group="Background" tag="bck5CWtchHnd"/>
+    </thing>
+  <thing id="b5CCrnCmp6" name="Old blink dog" description="An aged blink dog" compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="6" name="6" abbrev="6"/>
+    <tag group="Background" tag="bck5CWtchHnd"/>
+    </thing>
+  <thing id="b5CCrnCmp7" name="Chipper sprite" description="A cheery sprite" compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="7" name="7" abbrev="7"/>
+    <tag group="Background" tag="bck5CWtchHnd"/>
+    </thing>
+  <thing id="b5CCrnCmp8" name="Wisp of light" description="A harmless, magical spirit of light. It has 30 feet of flight speed, can hover, and shines bright light 5 feet around it, plus dim light for another 5 feet." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="8" name="8" abbrev="8"/>
+    <tag group="Background" tag="bck5CWtchHnd"/>
+    </thing>
+  <thing id="ab5CCrnFxt" name="Carnival Fixture" description="The carnival provides you with modest meals, room and board as no cost to you. The many wonders of the carnival are likewise provided to you at no fee, so long as you&apos;re not causing trouble." compset="Ability">
+    <usesource source="5eWBtWA"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="AbilFunc" tag="Background" name="Background Feature" abbrev="Background Feature"/>
+    </thing>
+  <thing id="ab5CFywVst" name="Feywild Visitor" description="Whenever you&apos;re sleeping or trancing deeply during a long rest, a spirit from the Feywild may visit you (at the DM&apos;s discretion). Roll a d8 to determine the form it takes, selecting it from the drop-down box. The visit never causes you harm, and it can last for minutes or even hours. You remember the visit upon waking. You conversations with the visitor can include many things, and per the DM&apos;s preference they can be helpful or maybe even diversions on your adventures. Even if the visitor normally cannot speak your language, you can understand it during these conversations." compset="Ability">
+    <arrayval field="usrArray" index="0" value="1 - Awakened creature"/>
+    <arrayval field="usrArray" index="1" value="2 - Centaur"/>
+    <arrayval field="usrArray" index="2" value="3 - Dryad"/>
+    <arrayval field="usrArray" index="3" value="4 - Faerie Dragon"/>
+    <arrayval field="usrArray" index="4" value="5 - Pixie"/>
+    <arrayval field="usrArray" index="5" value="6 - Satyr"/>
+    <arrayval field="usrArray" index="6" value="7 - Sprite"/>
+    <arrayval field="usrArray" index="7" value="8 - Unicorn"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="AbilFunc" tag="Background" name="Background Feature" abbrev="Background Feature"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="b5CFeyMrk1" name="Iridescent eyes" description="Your eyes are swimming with a colorful iridescence." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="1" name="1" abbrev="1"/>
+    <tag group="Background" tag="bck5CFeyLost"/>
+    </thing>
+  <thing id="b5CFeyMrk2" name="Sweet smell" description="You smell of sweetness, like nectar or honey." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="2" name="2" abbrev="2"/>
+    <tag group="Background" tag="bck5CFeyLost"/>
+    </thing>
+  <thing id="b5CFeyMrk3" name="Cat whiskers" description="Long, feline whiskers sprout from your face." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="3" name="3" abbrev="3"/>
+    <tag group="Background" tag="bck5CFeyLost"/>
+    </thing>
+  <thing id="b5CFeyMrk4" name="Fuzzy ears" description="You have soft fur covering your ears." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="4" name="4" abbrev="4"/>
+    <tag group="Background" tag="bck5CFeyLost"/>
+    </thing>
+  <thing id="b5CFeyMrk5" name="Moonlit sparkle" description="Moonlight causes your skin to sparkle." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="5" name="5" abbrev="5"/>
+    <tag group="Background" tag="bck5CFeyLost"/>
+    </thing>
+  <thing id="b5CFeyMrk6" name="Floral influence" description="When you&apos;re around, flowers either bloom or wilt (your choice)." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="6" name="6" abbrev="6"/>
+    <tag group="Background" tag="bck5CFeyLost"/>
+    </thing>
+  <thing id="b5CFeyMrk7" name="Plants for hair" description="Instead of hair, you have vines or brambles. Within an hour of being cut, they regrow back to their normal length." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="7" name="7" abbrev="7"/>
+    <tag group="Background" tag="bck5CFeyLost"/>
+    </thing>
+  <thing id="b5CFeyMrk8" name="Animal tail" description="You have a canine (or other animal&apos;s) tail." compset="BckCstAbil" uniqueness="unique">
+    <usesource source="5eWBtWA"/>
+    <tag group="Roll" tag="8" name="8" abbrev="8"/>
+    <tag group="Background" tag="bck5CFeyLost"/>
+    </thing>
+  </document>
