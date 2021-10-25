@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CChrmInfs" name="Chromatic Infusion" description="You can use a bonus action to touch a simple or martial weapon, infusing it with one of these damage types: acid, cold, fire, lightning, or poison. For the next minute, that weapon deals an additional 1d4 damage of the chosen type on a hit. Once you&apos;ve used this feature, you must complete a long rest before you can use it again." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Active (1 minute)"/>
+    <fieldval field="abDuration" value="1"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="First" priority="600"><![CDATA[doneif (tagis[Helper.Disable] <>0)
+doneif (field[abilActive].value = 0)
+
+field[usrCandid1].text = "!Helper.Helper & (wProfReq.Martial | wProfReq.Simple) & component.BaseWep & !thingid.w5CSpellAt"
+field[usrCandid2].text = "thingid.dtAcid | thingid.dtCold | thingid.dtFire | thingid.dtLightnin | thingid.dtPoison"
+perform assign[ChooseSrc1.Hero]
+perform assign[ChooseSrc2.Thing]
+
+
+doneif (field[usrChosen1].ischosen = 0)
+doneif (field[usrChosen2].ischosen = 0)
+
+
+field[usrChosen1].chosen.field[wDamExtra].text &= " +1d4 " & lowercase(field[usrChosen2].chosen.field[name].text)]]></eval>
+    </thing>
+  <thing id="c5CReacRes" name="Reactive Resistance" description="When you take acid, cold, fire, lightning, or poison damage, you can use a reaction to grant yourself resistance to that damage. You can do so a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest." compset="CustomSpec" uniqueness="unique">
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <eval phase="PostAttr"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="f5CGftGemDrg" name="Gift of the Gem Dragon" description="The power of gem dragons grants you these benefits:\n\n{b}Ability Score Increase.{/b} Your Intelligence, Wisdom, or Charisma score increases by 1, to a maximum of 20.\n\n{b}Telekinetic Reprisal.{/b} When you take damage from a creature that is within 10 feet of you, you can use your reaction to send out telekinetic energy. The creature that dealt the damage must make a Strength saving throw (DC 8 + your proficiency bonus + the ability modifier of the score increased by your Gift of the Gem Dragon feat). On a failure, the creature takes 2d8 force damage and is pushed 10 feet away from you. On a success, the creature takes half the damage but is not pushed. You can use this reaction a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." compset="Feat" uniqueness="useronce">
+    <fieldval field="usrCandid1" value="thingid.aINT | thingid.aWIS | thingid.aCHA"/>
+    <usesource source="5eFFToD"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="NoAutoName"/>
+    <bootstrap thing="c5CTelkRepr"></bootstrap>
+    <eval phase="First" priority="500"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+    doneif (field[usrChosen1].ischosen = 0)
+
+    field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
+    </thing>
+  <thing id="c5CTelkRepr" name="Telekinetic Reprisal" description="When you take damage from a creature that is within 10 feet of you, you can use your reaction to send out telekinetic energy. The creature that dealt the damage must make a Strength saving throw (DC 8 + your proficiency bonus + the ability modifier of the score increased by your Gift of the Gem Dragon feat). On a failure, the creature takes 2d8 force damage and is pushed 10 feet away from you. On a success, the creature takes half the damage but is not pushed.\n\nYou can use this reaction a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." compset="CustomSpec" uniqueness="unique">
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="abSave" tag="aSTR"/>
+    <eval phase="First" priority="500" index="2"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+    doneif (hero.childfound[f5CGftGemDrg].field[usrChosen1].ischosen = 0)
+
+    perform hero.childfound[f5CGftGemDrg].field[usrChosen1].chosen.pulltags[StandardDC.?]]]></eval>
+    <eval phase="PostAttr"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="f5CGftMetDrg" name="Gift of the Metallic Dragon" description="The power of metallic dragons grants you these benefits:\n\n{b}Draconic Healing.{/b} You learn {i}cure wounds{/i}. You can cast this spell without expending a spell slot. Once you cast this spell in this way, you can&apos;t do so again until you complete a long rest. You can also cast this spell using an appropriate level spell slot you have. The spell&apos;s spellcasting ability is Intelligence, Wisdom, or Charisma when you cast it with this feat (chosen when you gain this feat).\n\n{b}Protective Wings.{/b} When you or another creature you can see within 5 feet of you is hit by an attack roll, you can use your reaction to momentarily create spectral wings from your back. You can grant a bonus to the target&apos;s AC equaling your proficiency bonus against the attack roll, which could cause it to miss. You can use this reaction a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." compset="Feat" uniqueness="useronce">
+    <fieldval field="usrCandid1" value="thingid.aINT | thingid.aWIS | thingid.aCHA"/>
+    <usesource source="5eFFToD"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="NoAutoName"/>
+    <bootstrap thing="spCureWoun">
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spCureWoun">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="c5CProtWing"></bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[var i1st as number
+
+if (hero.childfound[SlotHold1].field[MaxAllow].value > 0) then
+  i1st += 1
+  endif
+
+if (#levelcount[Warlock] >= 1) then
+  i1st += 1
+  endif
+
+
+doneif (i1st = 0)
+
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster1"
+  perform eachpick.delete[Hide.Spell]
+  nexteach]]></eval>
+    </thing>
+  <thing id="c5CProtWing" name="Protective Wings" description="When you or another creature you can see within 5 feet of you is hit by an attack roll, you can use your reaction to momentarily create spectral wings from your back. You can grant a bonus to the target&apos;s AC equaling your proficiency bonus against the attack roll, which could cause it to miss.\n\nYou can use this reaction a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." compset="CustomSpec" uniqueness="unique">
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr"><![CDATA[
+    doneif (tagis[Helper.Disable] <> 0)
+
+    field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+    field[abText].text = "+" & field[trkMax].value & " AC"]]></eval>
+    </thing>
+  <thing id="c5CDGfFeat" name="Feat" description="{i}Rarity Varies{/i}\nYou receive a feat as a draconic gift." compset="CustomSpec" summary="You receive a feat as a draconic gift.">
+    <usesource source="5eFFToD"/>
+    <tag group="Helper" tag="Quintenary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[cfg5CSupGif].field[cfgMaxF1].value += 1]]></eval>
+    </thing>
+  <thing id="c5CDGfDrcFam" name="Draconic Familiar" description="{i}Uncommon{/i}\nYou can cast {i}find familiar{/i} as a ritual without needing material components. When you cast the spell in this manner, your familiar always takes the form of a pseudodragon.\nWhen you take the Attack action on your turn, you can give up one of your own attacks to allow the pseudodragon familiar to use its reaction to make one attack of its own.\n\n{i}Hero Lab note: Choose your class from the drop down box and select the familiar from that class&apos;s tab. You will have to manually select Pseudodragon from the list.{/i}" compset="CustomSpec" summary="Grants you a pseudodragon familiar.">
+    <usesource source="5eFFToD"/>
+    <tag group="Helper" tag="Quintenary"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="fShowWhat" tag="Classes"/>
+    <tag group="Race" tag="rPseudodra"/>
+    <bootstrap thing="spFindFami">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="sNameMod" value="Pseudodragon, ritual only"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      perform field[usrChosen1].chosen.assign[CompAvail.Familiar]]]></eval>
+    <eval phase="PostLevel" priority="10000" index="2">perform hero.childfound[cFamiliar].pushtags[Race.?]</eval>
+    </thing>
+  <thing id="c5CDGfDrcReb" name="Draconic Rebirth" description="{i}Uncommon{/i}\nYou become a chromatic, gem, or metallic dragonborn, replacing your race with one of those. The kind of dragonborn you become matches the family of the dragon that provided this gift. You can keep any skill proficiencies you gained from your previous race, or you gain proficiency in two skills of your choice.\n\n{i}Hero Lab Note: Due to programming limitations, you will need to manually replace your current race with one of the Fizban&apos;s Dragonborn races, and use adjustments to keep/add skill proficiencies per this trait.{/i}" compset="CustomSpec" summary="You become a dragonborn, replacing your current race.">
+    <usesource source="5eFFToD"/>
+    <tag group="Helper" tag="Quintenary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    </thing>
+  <thing id="c5CDGfDrcSns" name="Draconic Senses" description="{i}Rare{/i}\nYour senses become keener, akin to a dragon&apos;s.\n{b}Blindsight.{/b} You have 10 feet of blindsight. Within that range, you can effectively see anything not in total cover, even if you&apos;re blinded or in darkness. Also, you can see invisible creatures within that range, unless those creatures have successfully hidden from you.\n{b}Keen Senses.{/b} You have advantage on Wisdom (Perception) checks." compset="CustomSpec" summary="You gain blindsight and keen senses.">
+    <usesource source="5eFFToD"/>
+    <tag group="Helper" tag="Quintenary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDrcKnSns"></bootstrap>
+    </thing>
+  <thing id="c5CDGfEchDrg" name="Echo of Dragonsight" description="{i}Very Rare{/i}\nYou can cast {i}contact other plane{/i} as a ritual. The entity you contact is a dragon on another Material Plane world, so its knowledge of your own world may be limited. This dragon is an echo of the dragon who provided the gift, which might affect its attitude and behavior toward you." compset="CustomSpec" summary="You can contact a dragon from another Material Plane.">
+    <usesource source="5eFFToD"/>
+    <tag group="Helper" tag="Quintenary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <bootstrap thing="spContOthe">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Helper" tag="Free"/>
+      <assignval field="sNameMod" value="ritual, dragon only"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CDGfFrtPrs" name="Frightful Presence" description="{i}Very Rare{/i}\nYou can use a bonus action to force each creature of your choice that is within 120 feet of you and aware of you must to a Wisdom save. The DC is equal to 8+ your proficiency bonus + your Charisma modifier. A creature that fails becomes frightened of you for 1 minute. The creature can repeat the saving throw at the end of each of its turns, ending the effect for itself on a success.\nYou can use this ability a number of times equal to your proficiency bonus, and regain all spent uses of it when you complete a long rest." compset="CustomSpec" summary="You can frighten other creatures within 120 feet.">
+    <fieldval field="abRange" value="120"/>
+    <usesource source="5eFFToD"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="Helper" tag="Quintenary"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="Final"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="c5CDGfPsiRch" name="Psionic Reach" description="{i}Very Rare{/i}\nYou become resistant to psychic damage.\nYou also learn {i}telekinesis{/i}. You can cast this spell without expending a spell slot. Once you cast this spell in this way, you can’t do so again until you complete a long rest. You can also cast this spell using spell slots you have of the appropriate level. When you gain this gift, choose its spellcasting ability from Intelligence, Wisdom, or Charisma." compset="CustomSpec" summary="Gain psychic resistance and {i}telekinesis{/i}.">
+    <usesource source="5eFFToD"/>
+    <tag group="Helper" tag="Quintenary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="Custom" tag="OnlyIfCaster5"/>
+    <bootstrap thing="spTelekine">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spTelekine">
+      <autotag group="Custom" tag="OnlyIfCaster5"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.assign[DamageRes.dtPsychic]
+
+call 5CShowSpls]]></eval>
+    </thing>
+  <thing id="c5CDGfSclTgh" name="Scaled Toughness" description="{i}Legendary{/i}\nYour skin toughens, granting you resistance to piercing and slashing damage." compset="CustomSpec" summary="Gain piercing and slashing resistance.">
+    <usesource source="5eFFToD"/>
+    <tag group="Helper" tag="Quintenary"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.assign[DamageRes.dtPiercing]
+perform hero.assign[DamageRes.dtSlashing]]]></eval>
+    </thing>
+  <thing id="c5CDGfTngDrg" name="Tongue of the Dragon" description="{i}Uncommon{/i}\nYou gain some draconic vocal features:\n{b}Dragon’s Speech.{/b} You learn Draconic.\n{b}Dragon&apos;s Voice.{/b} You can use a bonus action to make your voice audible up to 300 feet away for 1 minute.\n{b}Dragon&apos;s Wiles.{/b} You have advantage on Charisma (Persuasion) checks." compset="CustomSpec" summary="Learn Draconic, get Persuasion advantage and a booming voice.">
+    <fieldval field="abRange" value="300"/>
+    <fieldval field="abDuration" value="1"/>
+    <usesource source="5eFFToD"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="Helper" tag="Quintenary"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <eval phase="Final"><![CDATA[#situational[hero.child[skPersuas], "Advantage", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CDrcKnSns" name="Keen Senses" description="You have advantage on Wisdom (Perception) checks." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="20000"><![CDATA[
+#situational[hero.child[skPercep], "Advantage", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="f5CGftChrDrg" name="Gift of the Chromatic Dragon" description="The power of chromatic dragons grants you these benefits:\n\n{b}Chromatic Infusion.{/b} You can use a bonus action to touch a simple or martial weapon, infusing it with one of these damage types: acid, cold, fire, lightning, or poison. For the next minute, that weapon deals an additional 1d4 damage of the chosen type on a hit. Once you&apos;ve used this feature, you must complete a long rest before you can use it again.\n\n{b}Reactive Resistance.{/b} When you take acid, cold, fire, lightning, or poison damage, you can use a reaction to grant yourself resistance to that damage. You can do so a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest." compset="Feat" uniqueness="useronce">
+    <usesource source="5eFFToD"/>
+    <bootstrap thing="c5CChrmInfs"></bootstrap>
+    <bootstrap thing="c5CReacRes"></bootstrap>
+    </thing>
+  </document>
