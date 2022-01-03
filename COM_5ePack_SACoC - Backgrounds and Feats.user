@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="cfg5CStrxInt" name="Strixhaven Initiate" description="Choose one college: Lorehold, Prismari, Quandrix, Silverquill, or Witherbloom. Based on your choice, you learn two cantrips and one 1st-level spell based on the college you choose. You can cast the chosen 1st-level spell without a spell slot, and you must complete a long rest before you can cast it in this manner again. You can also cast the spell using any spell slots you have.\n\nWhen you gain this feat, choose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells.\n\nSee the Strixhaven Initiate tab to choose your spells. Choose two cantrips from the three listed, and a 1st-level spell from among the spell lists of the two listed classes." compset="Configure" uniqueness="unique">
+    <comment>need to add tags to chosen spells</comment>
+    <fieldval field="cfgMaxSp1" value="2"/>
+    <fieldval field="cfgSpell2" value="1st-Level Spells"/>
+    <fieldval field="cfgMaxSp2" value="1"/>
+    <fieldval field="cfgSpell1" value="Cantrips"/>
+    <eval phase="First" priority="500"><![CDATA[      foreach pick in hero from BaseSpell where "CfgSpell.cfg5CStrxInt & sLevel.1"
+          field[cfgSpenSp1].value -= 1
+          field[cfgSpenSp2].value += 1
+          nexteach]]></eval>
+    <eval phase="Final" priority="50000" index="2"><![CDATA[
+
+      ~ Loop through all the spell picks added on the "Strixhaven Initiate"
+      ~ Configurable tab.
+      foreach pick in hero from BaseSpell where "CfgSpell.cfg5CStrxInt"
+        ~ Pull the spell level selected and the deny tags so that
+        ~ we can set the message and selection list corretly.
+        perform eachpick.pulltags[ClsDenySp.?]
+        ~ If we are a cantrip add the helper cantrip tag
+        if (eachpick.tagis[sLevel.0] = 1) then
+          perform eachpick.assign[Helper.Cantrip]
+        ~.. otherwise we are level 1+ spell so make us a
+        ~   racial spell so we can limit its use to 1/longrest
+        else
+          perform eachpick.assign[Helper.SpellLike]
+          perform eachpick.assign[Usage.LongRest]
+		  eachpick.field[sNameMod].text = "spell slot or"
+          eachpick.field[trkMax].value += 1
+        endif
+      nexteach
+
+      ~ If we have Class Deny Spells then remove those from the list. This
+      ~ prevents the same spell from being added twice. This way we act
+      ~ like the normal spell portal does.
+      if (tagcount[ClsDenySp.?] <> 0) then
+        field[cfgAllwSp1].text &= " & !(" & tagids[ClsDenySp.?,"|"] & ")"
+      endif]]></eval>
+    </thing>
+  <thing id="f5CStrxInit" name="Strixhaven Initiate" description="Choose one college: Lorehold, Prismari, Quandrix, Silverquill, or Witherbloom. Based on your choice, you learn two cantrips and one 1st-level spell based on the college you choose. You can cast the chosen 1st-level spell without a spell slot, and you must complete a long rest before you can cast it in this manner again. You can also cast the spell using any spell slots you have.\n\nWhen you gain this feat, choose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells.\n\nSee the Strixhaven Initiate tab to choose your spells. Choose two cantrips from the three listed (in the tab), and a 1st-level spell from among the spell lists of the two listed classes (the list in the tab pulls from these classes).\n\n{font Courier New}{b}College       Classes{/b}\n{back FFFFFF}Lorehold      cleric, wizard\n{back 010101}Prismari      bard, sorcerer\n{back FFFFFF}Quandrix      druid, wizard\n{back 010101}Silverquill   bard, cleric\n{back FFFFFF}Witherbloom   druid, wizard\n{back 010101}{revert}" compset="Feat" uniqueness="useronce">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <arrayval field="usrArray" index="1" value="Prismari"/>
+    <arrayval field="usrArray" index="2" value="Quandrix"/>
+    <arrayval field="usrArray" index="3" value="Silverquill"/>
+    <arrayval field="usrArray" index="4" value="Witherbloom"/>
+    <arrayval field="usrArray" index="0" value="Lorehold"/>
+    <usesource source="5eSACoCA"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="NoAutoName"/>
+    <bootstrap thing="cfg5CStrxInt"></bootstrap>
+    <eval phase="First" priority="500"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.childfound[cfg5CStrxInt].setfocus
+
+if (field[usrIndex].value = 0) then
+    focus.field[cfgAllwSp1].text = "thingid.spLight | thingid.spSacrFlam | thingid.spThaumatu"
+    focus.field[cfgAllwSp2].text = "sLevel.1 & (sClass.cHelpClr | sClass.cHelpWiz)"
+
+elseif (field[usrIndex].value = 1) then
+    focus.field[cfgAllwSp1].text = "thingid.sp5CFireBo | thingid.spPrestidi | thingid.spRayFros"
+    focus.field[cfgAllwSp2].text = "sLevel.1 & (sClass.cHelpBrd | sClass.cHelpSor)"
+
+elseif (field[usrIndex].value = 2) then
+    focus.field[cfgAllwSp1].text = "thingid.spDruidcra | thingid.spGuidance | thingid.spMageHand"
+    focus.field[cfgAllwSp2].text = "sLevel.1 & (sClass.cHelpDrd | sClass.cHelpWiz)"
+
+elseif (field[usrIndex].value = 3) then
+    focus.field[cfgAllwSp1].text = "thingid.spSacrFlam | thingid.spThaumatu | thingid.spViciMock"
+    focus.field[cfgAllwSp2].text = "sLevel.1 & (sClass.cHelpBrd | sClass.cHelpClr)"
+
+elseif (field[usrIndex].value = 4) then
+    focus.field[cfgAllwSp1].text = "thingid.spChilTouc | thingid.spDruidcra | thingid.spSparDyi"
+    focus.field[cfgAllwSp2].text = "sLevel.1 & (sClass.cHelpDrd | sClass.cHelpWiz)"
+
+endif]]></eval>
+    </thing>
+  <thing id="f5CStrxMsct" name="Strixhaven Mascot" description="You can summon a mascot to help you:\n• You can cast {i}find familiar{/i} as a ritual. Your choice of college (in the Strixhaven Initiate feat) determines the form of your mascot: a spirit statue mascot (Lorehold), an art elemental mascot (Prismari), a fractal mascot (Quandrix), an inkling mascot (Silverquill), or a pest mascot (Witherbloom).\n• When you take the Attack action on your turn, you can replace one attack to allow your mascot familiar to use its reaction to make one attack of its own.\n• If your mascot familiar is within 60 feet of you, you can use an action to teleport, switching places with the familiar. If your destination space is too small for you to occupy, the teleportation fails and is wasted. Once you teleport in this way, you can&apos;t do so again until you complete a long rest." compset="Feat" uniqueness="useronce">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eSACoCA"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="fShowWhat" tag="Classes"/>
+    <bootstrap thing="spFindFami">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="sNameMod" value="Mascot, ritual only"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000">if (hero.childfound[f5CStrxInit].field[usrIndex].value = 0) then
+     perform hero.childfound[cFamiliar].assign[Race.r5CSprtMsct]
+
+elseif (hero.childfound[f5CStrxInit].field[usrIndex].value = 1) then
+     perform hero.childfound[cFamiliar].assign[Race.r5CArtEleMsct]
+
+elseif (hero.childfound[f5CStrxInit].field[usrIndex].value = 2) then
+     perform hero.childfound[cFamiliar].assign[Race.r5CFrctMsct]
+
+elseif (hero.childfound[f5CStrxInit].field[usrIndex].value = 3) then
+     perform hero.childfound[cFamiliar].assign[Race.r5CInkMsct]
+
+elseif (hero.childfound[f5CStrxInit].field[usrIndex].value = 4) then
+     perform hero.childfound[cFamiliar].assign[Race.r5CPstMsct]
+
+endif</eval>
+    <eval phase="First" index="2"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      perform field[usrChosen1].chosen.assign[CompAvail.Familiar]]]></eval>
+    <pickreq thing="f5CStrxInit"/>
+    <exprreq message="Requires Level 4"><![CDATA[#totallevelcount[] >= 4]]></exprreq>
+    </thing>
+  <thing id="bck5CStrLrh" name="Lorehold Student" description="{b}Lorehold Initiate{/b}\nYou gain the Strixhaven Initiate feat, and must choose Lorehold as your college.\n\nAdditionally, if you have the Spellcasting or Pact Magic feature, the spells list below are added to the spell list(s) of any class you have.\n\n{b}1st-Level{/b}: Comprehend Languages, Identify\n{b}2nd-Level{/b}: Borrowed Knowledge, Locate Object\n{b}3rd-Level{/b}: Speak With Dead, Spirit Guardians\n{b}4th-Level{/b}: Arcane Eye, Stone Shape\n{b}5th-Level{/b}: Flame Strike, Legend Lore" compset="Background" uniqueness="unique">
+    <fieldval field="StartGear" value="A bottle of black ink, an ink pen, a hammer, a hooded lantern, a tinderbox, a history book, your school uniform, and 15 gp in a pouch"/>
+    <fieldval field="StartAll" value="A bottle of black ink, an ink pen, a hammer, a hooded lantern, a tinderbox, a history book, your school uniform, and 15 gp in a pouch"/>
+    <fieldval field="StartLang" value="2"/>
+    <usesource source="5eSACoCA"/>
+    <tag group="ClsAllowSp" tag="sp5CBrwdKnw"/>
+    <tag group="ClsAllowSp" tag="spLocaObje"/>
+    <tag group="ClsAllowSp" tag="spSpeaDead"/>
+    <tag group="ClsAllowSp" tag="spSpirGuar"/>
+    <tag group="ClsAllowSp" tag="spArcaEye"/>
+    <tag group="ClsAllowSp" tag="spStonShap"/>
+    <tag group="ClsAllowSp" tag="spFlamStri"/>
+    <tag group="ClsAllowSp" tag="spLegeLore"/>
+    <tag group="ClsAllowSp" tag="spIdentify"/>
+    <tag group="AbilFunc" tag="Background" name="Background Feature" abbrev="Background Feature"/>
+    <tag group="ClsAllowSp" tag="spCompLang"/>
+    <tag group="ProfSkill" tag="skHistory"/>
+    <tag group="ProfSkill" tag="skReligion"/>
+    <bootstrap thing="ab5CStrLrh"></bootstrap>
+    <eval phase="First">foreach pick in hero from Class
+    perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach</eval>
+    </thing>
+  <thing id="ab5CStrLrh" name="Lorehold Initiate" description="You gain the Strixhaven Initiate feat, and must choose Lorehold as your college. See the In-Play tab to select the college.\n\nAdditionally, if you have the Spellcasting or Pact Magic feature, the spells list below are added to the spell list(s) of any class you have.\n\n{b}1st-Level{/b}: Comprehend Languages, Identify\n{b}2nd-Level{/b}: Borrowed Knowledge, Locate Object\n{b}3rd-Level{/b}: Speak With Dead, Spirit Guardians\n{b}4th-Level{/b}: Arcane Eye, Stone Shape\n{b}5th-Level{/b}: Flame Strike, Legend Lore" compset="Ability">
+    <tag group="AbilFunc" tag="Background"/>
+    <bootstrap thing="f5CStrxInit"></bootstrap>
+    <evalrule phase="First" priority="10000" message="Must choose Lorehold in the Strixhaven Initiate Feat" summary="Must choose Lorehold in the Strixhaven Initiate Feat">@valid = 0
+
+if (hero.childfound[f5CStrxInit].field[usrIndex].value = 0) then
+  @valid = 1
+  endif</evalrule>
+    </thing>
+  <thing id="bck5CStrPrs" name="Prismari Student" description="{b}Prismari Initiate{/b}\nYou gain the Strixhaven Initiate feat, and must choose Prismari as your college.\n\nAdditionally, if you have the Spellcasting or Pact Magic feature, the spells list below are added to the spell list(s) of any class you have.\n\n{b}1st-Level{/b}: Chromatic Orb, Thunderwave\n{b}2nd-Level{/b}: Flaming Sphere, Kinetic Jaunt\n{b}3rd-Level{/b}: Haste, Water Walk\n{b}4th-Level{/b}: Freedom Of Movement, Wall Of Fire\n{b}5th-Level{/b}: Cone Of Cold, Conjure Elemental" compset="Background" uniqueness="unique">
+    <fieldval field="cToolMax" value="1"/>
+    <fieldval field="StartGear" value="A bottle of black ink, an ink pen, a set of artisan&apos;s tools or a musical instrument (one of your choice), you school uniform, and 10 gp in a pouch"/>
+    <fieldval field="StartLang" value="1"/>
+    <fieldval field="StartAll" value="A bottle of black ink, an ink pen, a set of artisan&apos;s tools or a musical instrument (one of your choice), you school uniform, and 10 gp in a pouch"/>
+    <usesource source="5eSACoCA"/>
+    <tag group="ClsAllowSp" tag="sp5CKinJnt"/>
+    <tag group="ClsAllowSp" tag="spHaste"/>
+    <tag group="ClsAllowSp" tag="spWateWalk"/>
+    <tag group="ClsAllowSp" tag="spFreeMove"/>
+    <tag group="ClsAllowSp" tag="spWallFire"/>
+    <tag group="ClsAllowSp" tag="spConeCold"/>
+    <tag group="ClsAllowSp" tag="spConjElem"/>
+    <tag group="ProfSkill" tag="skAcrobat"/>
+    <tag group="ProfSkill" tag="skPerform"/>
+    <tag group="ClsAllowSp" tag="spFlamSphe"/>
+    <tag group="AllowTool1" tag="Artisan"/>
+    <tag group="AllowTool1" tag="Instrument"/>
+    <tag group="AbilFunc" tag="Background" name="Background Feature" abbrev="Background Feature"/>
+    <tag group="ClsAllowSp" tag="sp5CChroO"/>
+    <tag group="ClsAllowSp" tag="spThunderw"/>
+    <bootstrap thing="ab5CStrPrs"></bootstrap>
+    <eval phase="First">foreach pick in hero from Class
+    perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach</eval>
+    </thing>
+  <thing id="ab5CStrPrs" name="Prismari Initiate" description="You gain the Strixhaven Initiate feat, and must choose Prismari as your college. See the In-Play tab to select the college.\n\nAdditionally, if you have the Spellcasting or Pact Magic feature, the spells list below are added to the spell list(s) of any class you have.\n\n{b}1st-Level{/b}: Chromatic Orb, Thunderwave\n{b}2nd-Level{/b}: Flaming Sphere, Kinetic Jaunt\n{b}3rd-Level{/b}: Haste, Water Walk\n{b}4th-Level{/b}: Freedom Of Movement, Wall Of Fire\n{b}5th-Level{/b}: Cone Of Cold, Conjure Elemental" compset="Ability">
+    <tag group="AbilFunc" tag="Background"/>
+    <bootstrap thing="f5CStrxInit"></bootstrap>
+    <evalrule phase="First" priority="10000" message="Must choose Prismari in the Strixhaven Initiate Feat" summary="Must choose Prismari in the Strixhaven Initiate Feat">@valid = 0
+
+if (hero.childfound[f5CStrxInit].field[usrIndex].value = 1) then
+  @valid = 1
+  endif</evalrule>
+    </thing>
+  <thing id="bck5CStrQnd" name="Quandrix Student" description="{b}Quandrix Initiate{/b}\nYou gain the Strixhaven Initiate feat, and must choose Quandrix as your college.\n\nAdditionally, if you have the Spellcasting or Pact Magic feature, the spells list below are added to the spell list(s) of any class you have.\n\n{b}1st-Level{/b}: Entangle, Guiding Bolt\n{b}2nd-Level{/b}: Enlarge/Reduce, Vortex Warp\n{b}3rd-Level{/b}: Aura Of Vitality, Haste\n{b}4th-Level{/b}: Control Water, Freedom Of Movement\n{b}5th-Level{/b}: Circle Of Power, Passwall" compset="Background" uniqueness="unique">
+    <fieldval field="cToolMax" value="1"/>
+    <fieldval field="StartLang" value="1"/>
+    <fieldval field="StartGear" value="A bottle of black ink, an ink pen, an abacus, a tome of arcane theory, your school uniform, and 15 gp in a pouch"/>
+    <fieldval field="StartAll" value="A bottle of black ink, an ink pen, an abacus, a tome of arcane theory, your school uniform, and 15 gp in a pouch"/>
+    <usesource source="5eSACoCA"/>
+    <tag group="ClsAllowSp" tag="sp5CVrtxWrp"/>
+    <tag group="ClsAllowSp" tag="sp5CAurVit"/>
+    <tag group="ClsAllowSp" tag="spHaste"/>
+    <tag group="ClsAllowSp" tag="spContWate"/>
+    <tag group="ClsAllowSp" tag="spFreeMove"/>
+    <tag group="ClsAllowSp" tag="sp5CCircPo"/>
+    <tag group="ClsAllowSp" tag="spPasswall"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skNature"/>
+    <tag group="ClsAllowSp" tag="spEnlargeR"/>
+    <tag group="AllowTool1" tag="Artisan"/>
+    <tag group="AbilFunc" tag="Background" name="Background Feature" abbrev="Background Feature"/>
+    <tag group="ClsAllowSp" tag="spEntangle"/>
+    <tag group="ClsAllowSp" tag="spGuidBolt"/>
+    <bootstrap thing="ab5CStrQnd"></bootstrap>
+    <eval phase="First">foreach pick in hero from Class
+    perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach</eval>
+    </thing>
+  <thing id="ab5CStrQnd" name="Quandrix Initiate" description="You gain the Strixhaven Initiate feat, and must choose Quandrix as your college. See the In-Play tab to select the college.\n\nAdditionally, if you have the Spellcasting or Pact Magic feature, the spells list below are added to the spell list(s) of any class you have.\n\n{b}1st-Level{/b}: Entangle, Guiding Bolt\n{b}2nd-Level{/b}: Enlarge/Reduce, Vortex Warp\n{b}3rd-Level{/b}: Aura Of Vitality, Haste\n{b}4th-Level{/b}: Control Water, Freedom Of Movement\n{b}5th-Level{/b}: Circle Of Power, Passwall" compset="Ability">
+    <tag group="AbilFunc" tag="Background"/>
+    <bootstrap thing="f5CStrxInit"></bootstrap>
+    <evalrule phase="First" priority="10000" message="Must choose Quandrix in the Strixhaven Initiate Feat" summary="Must choose Quandrix in the Strixhaven Initiate Feat">@valid = 0
+
+if (hero.childfound[f5CStrxInit].field[usrIndex].value = 2) then
+  @valid = 1
+  endif</evalrule>
+    </thing>
+  <thing id="bck5CStrSlv" name="Silverquill Student" description="{b}Silverquill Initiate{/b}\nYou gain the Strixhaven Initiate feat, and must choose Silverquill as your college.\n\nAdditionally, if you have the Spellcasting or Pact Magic feature, the spells list below are added to the spell list(s) of any class you have.\n\n{b}1st-Level{/b}: Dissonant Whispers, Silvery Barbs\n{b}2nd-Level{/b}: Calm Emotions, Darkness\n{b}3rd-Level{/b}: Beacon Of Hope, Daylight\n{b}4th-Level{/b}: Compulsion, Confusion\n{b}5th-Level{/b}: Dominate Person, Rary&apos;S Telepathic Bond" compset="Background" uniqueness="unique">
+    <fieldval field="StartLang" value="2"/>
+    <fieldval field="StartGear" value="A bottle of black ink, an ink pen, a poetry book, your school uniform, and 15 gp in a pouch"/>
+    <fieldval field="StartAll" value="A bottle of black ink, an ink pen, a poetry book, your school uniform, and 15 gp in a pouch"/>
+    <usesource source="5eSACoCA"/>
+    <tag group="ClsAllowSp" tag="spCalmEmot"/>
+    <tag group="ClsAllowSp" tag="spDarkness"/>
+    <tag group="ClsAllowSp" tag="spBeacHope"/>
+    <tag group="ClsAllowSp" tag="spDaylight"/>
+    <tag group="ClsAllowSp" tag="sp5CCompul"/>
+    <tag group="ClsAllowSp" tag="spConfusio"/>
+    <tag group="ClsAllowSp" tag="spDomiPers"/>
+    <tag group="ClsAllowSp" tag="spTeleBond"/>
+    <tag group="ProfSkill" tag="skIntim"/>
+    <tag group="ProfSkill" tag="skPersuas"/>
+    <tag group="ClsAllowSp" tag="sp5CSlvryBrbs"/>
+    <tag group="AbilFunc" tag="Background" name="Background Feature" abbrev="Background Feature"/>
+    <tag group="ClsAllowSp" tag="sp5CDissW"/>
+    <bootstrap thing="ab5CStrSlv"></bootstrap>
+    <eval phase="First">foreach pick in hero from Class
+    perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach</eval>
+    </thing>
+  <thing id="ab5CStrSlv" name="Silverquill Initiate" description="You gain the Strixhaven Initiate feat, and must choose Silverquill as your college. See the In-Play tab to select the college.\n\nAdditionally, if you have the Spellcasting or Pact Magic feature, the spells list below are added to the spell list(s) of any class you have.\n\n{b}1st-Level{/b}: Dissonant Whispers, Silvery Barbs\n{b}2nd-Level{/b}: Calm Emotions, Darkness\n{b}3rd-Level{/b}: Beacon Of Hope, Daylight\n{b}4th-Level{/b}: Compulsion, Confusion\n{b}5th-Level{/b}: Dominate Person, Rary&apos;S Telepathic Bond" compset="Ability">
+    <tag group="AbilFunc" tag="Background"/>
+    <bootstrap thing="f5CStrxInit"></bootstrap>
+    <evalrule phase="First" priority="10000" message="Must choose Silverquill in the Strixhaven Initiate Feat" summary="Must choose Silverquill in the Strixhaven Initiate Feat">@valid = 0
+
+if (hero.childfound[f5CStrxInit].field[usrIndex].value = 3) then
+  @valid = 1
+  endif</evalrule>
+    </thing>
+  <thing id="bck5CStrWth" name="Witherbloom Student" description="{b}Witherbloom Initiate{/b}\nYou gain the Strixhaven Initiate feat, and must choose Witherbloom as your college.\n\nAdditionally, if you have the Spellcasting or Pact Magic feature, the spells list below are added to the spell list(s) of any class you have.\n\n{b}1st-Level{/b}: Cure Wounds, Inflict Wounds\n{b}2nd-Level{/b}: Lesser Restoration, Wither And Bloom\n{b}3rd-Level{/b}: Revivify, Vampiric Touch\n{b}4th-Level{/b}: Blight, Death Ward\n{b}5th-Level{/b}: Antilife Shell, Greater Restoration" compset="Background" uniqueness="unique">
+    <fieldval field="StartLang" value="1"/>
+    <fieldval field="StartGear" value="A bottle of black ink, an ink pen, a plant identification guidebook, an iron pot, an herbalism kit, your school uniform, and 15 gp in a pouch"/>
+    <fieldval field="StartAll" value="A bottle of black ink, an ink pen, a plant identification guidebook, an iron pot, an herbalism kit, your school uniform, and 15 gp in a pouch"/>
+    <usesource source="5eSACoCA"/>
+    <tag group="ClsAllowSp" tag="spLessRest"/>
+    <tag group="ClsAllowSp" tag="sp5CWthrBlm"/>
+    <tag group="ClsAllowSp" tag="spRevivify"/>
+    <tag group="ClsAllowSp" tag="spVampTouc"/>
+    <tag group="ClsAllowSp" tag="spBlight"/>
+    <tag group="ClsAllowSp" tag="spDeatWard"/>
+    <tag group="ClsAllowSp" tag="spAntiShel"/>
+    <tag group="ClsAllowSp" tag="spGreaRest"/>
+    <tag group="ProfSkill" tag="skNature"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="ClsAllowSp" tag="spInflWoun"/>
+    <tag group="AbilFunc" tag="Background" name="Background Feature" abbrev="Background Feature"/>
+    <tag group="ClsAllowSp" tag="spCureWoun"/>
+    <bootstrap thing="ab5CStrWth"></bootstrap>
+    <bootstrap thing="gKitHerbal">
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <eval phase="First">foreach pick in hero from Class
+    perform eachpick.pushtags[ClsAllowSp.?]
+    nexteach</eval>
+    </thing>
+  <thing id="ab5CStrWth" name="Witherbloom Initiate" description="You gain the Strixhaven Initiate feat, and must choose Witherbloom as your college. See the In-Play tab to select the college.\n\nAdditionally, if you have the Spellcasting or Pact Magic feature, the spells list below are added to the spell list(s) of any class you have.\n\n{b}1st-Level{/b}: Cure Wounds, Inflict Wounds\n{b}2nd-Level{/b}: Lesser Restoration, Wither And Bloom\n{b}3rd-Level{/b}: Revivify, Vampiric Touch\n{b}4th-Level{/b}: Blight, Death Ward\n{b}5th-Level{/b}: Antilife Shell, Greater Restoration" compset="Ability">
+    <tag group="AbilFunc" tag="Background"/>
+    <bootstrap thing="f5CStrxInit"></bootstrap>
+    <evalrule phase="First" priority="10000" message="Must choose Witherbloom in the Strixhaven Initiate Feat" summary="Must choose Witherbloom in the Strixhaven Initiate Feat">@valid = 0
+
+if (hero.childfound[f5CStrxInit].field[usrIndex].value = 4) then
+  @valid = 1
+  endif</evalrule>
+    </thing>
+  <thing id="bt5CLrhPrT1" name="Lore" description="I love the esoteric. The more I can reference obscure historical facts in normal conversation, the better." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="1"/>
+    <tag group="Background" tag="bck5CStrLrh"/>
+    </thing>
+  <thing id="bt5CLrhPrT2" name="Searching" description="I hope that my search for lost artifacts will lead to finding my own self." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="2"/>
+    <tag group="Background" tag="bck5CStrLrh"/>
+    </thing>
+  <thing id="bt5CLrhPrT3" name="Knowledgeable" description="I can barely go a minute without discussing my research. I know so much, I have to let it out!" compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="3"/>
+    <tag group="Background" tag="bck5CStrLrh"/>
+    </thing>
+  <thing id="bt5CLrhPrT4" name="Dead speaker" description="I prefer speaking with the dead over speaking with the living." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="4"/>
+    <tag group="Background" tag="bck5CStrLrh"/>
+    </thing>
+  <thing id="bt5CLrhPrT5" name="Facts over figures" description="Historical knowledge? I&apos;ve got you covered. Simple double-digit addition? Uh..." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="5"/>
+    <tag group="Background" tag="bck5CStrLrh"/>
+    </thing>
+  <thing id="bt5CLrhPrT6" name="Entropy" description="Everything falls apart eventually." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="6"/>
+    <tag group="Background" tag="bck5CStrLrh"/>
+    </thing>
+  <thing id="bt5CPrsPrT1" name="Party animal" description="I expect to turn heads the moment I enter the room. I&apos;m the life of the party." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="1"/>
+    <tag group="Background" tag="bck5CStrPrs"/>
+    </thing>
+  <thing id="bt5CPrsPrT2" name="Fickle" description="I was obsessed with my project a few weeks ago. Now I realize it&apos;s garbage and useless." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="2"/>
+    <tag group="Background" tag="bck5CStrPrs"/>
+    </thing>
+  <thing id="bt5CPrsPrT3" name="Artful" description="Art is the best expression of anyone&apos;s true self, and I want to help bring that out in everyone." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="3"/>
+    <tag group="Background" tag="bck5CStrPrs"/>
+    </thing>
+  <thing id="bt5CPrsPrT4" name="People pleaser" description="Everyone has an opinion, and I make sure they&apos;re all positive of me." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="4"/>
+    <tag group="Background" tag="bck5CStrPrs"/>
+    </thing>
+  <thing id="bt5CPrsPrT5" name="Ennui" description="Nothing really captures my passion anymore. My art fills me with an overwhelming ennui." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="5"/>
+    <tag group="Background" tag="bck5CStrPrs"/>
+    </thing>
+  <thing id="bt5CPrsPrT6" name="Explosive" description="I don&apos;t ignore my negative feelings, I just channel them into explosive art." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="6"/>
+    <tag group="Background" tag="bck5CStrPrs"/>
+    </thing>
+  <thing id="bt5CQndPrT1" name="Focused" description="When I stumble into an interesting subject, I&apos;ll spend all day and night studying it until I know everything." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="1"/>
+    <tag group="Background" tag="bck5CStrQnd"/>
+    </thing>
+  <thing id="bt5CQndPrT2" name="Faking" description="Much of this doesn&apos;t make sense. But I&apos;ll fake it until I make it." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="2"/>
+    <tag group="Background" tag="bck5CStrQnd"/>
+    </thing>
+  <thing id="bt5CQndPrT3" name="Book-smart" description="I wish friendship came as easy to me as equations and patterns do." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="3"/>
+    <tag group="Background" tag="bck5CStrQnd"/>
+    </thing>
+  <thing id="bt5CQndPrT4" name="Smartest" description="I&apos;m pretty sure I&apos;m the smartest person in the room. And I&apos;ll go out of my way to prove it, even if I&apos;m not asked." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="4"/>
+    <tag group="Background" tag="bck5CStrQnd"/>
+    </thing>
+  <thing id="bt5CQndPrT5" name="Nihilist" description="If I&apos;ve learned anything, it&apos;s that nothing matters and everything&apos;s a lie. So why care?" compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="5"/>
+    <tag group="Background" tag="bck5CStrQnd"/>
+    </thing>
+  <thing id="bt5CQndPrT6" name="Legacy" description="I have to leave a legacy before I graduate, like solving something impossible." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="6"/>
+    <tag group="Background" tag="bck5CStrQnd"/>
+    </thing>
+  <thing id="bt5CSlvPrT1" name="Status" description="My social status is important to me, and I&apos;ll say whatever I must to maintain it." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="1"/>
+    <tag group="Background" tag="bck5CStrSlv"/>
+    </thing>
+  <thing id="bt5CSlvPrT2" name="Blunt" description="Blunt truths are better than small lies, and it&apos;s not my fault if that hurts someone&apos;s feelings." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="2"/>
+    <tag group="Background" tag="bck5CStrSlv"/>
+    </thing>
+  <thing id="bt5CSlvPrT3" name="Uplifting" description="Success is gained by lifting up those around me." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="3"/>
+    <tag group="Background" tag="bck5CStrSlv"/>
+    </thing>
+  <thing id="bt5CSlvPrT4" name="Humor" description="Humor is my defense mechanism. I always have a quip or joke ready to go." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="4"/>
+    <tag group="Background" tag="bck5CStrSlv"/>
+    </thing>
+  <thing id="bt5CSlvPrT5" name="Analyzing" description="I think before I speak, analyzing the situation for whatever stance works best for me." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="5"/>
+    <tag group="Background" tag="bck5CStrSlv"/>
+    </thing>
+  <thing id="bt5CSlvPrT6" name="Perfectionist" description="I&apos;ve pulled a lot of all-nighters to keep my magical skills looking perfect, but I&apos;m not going to let anyone find out about it." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="6"/>
+    <tag group="Background" tag="bck5CStrSlv"/>
+    </thing>
+  <thing id="bt5CWthPrT1" name="Brewer" description="I love creating new brews, even if the ingredients or product are repulsive." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="1"/>
+    <tag group="Background" tag="bck5CStrWth"/>
+    </thing>
+  <thing id="bt5CWthPrT2" name="Darkling" description="I like my clothes like I like my garden: dark, dead, and weird." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="2"/>
+    <tag group="Background" tag="bck5CStrWth"/>
+    </thing>
+  <thing id="bt5CWthPrT3" name="Friendly" description="Every monster in this swamp is going to become my friend, whether they like it or not." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="3"/>
+    <tag group="Background" tag="bck5CStrWth"/>
+    </thing>
+  <thing id="bt5CWthPrT4" name="Death" description="Nothing last forever, and death is assured. So what do you do with your short time here?" compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="4"/>
+    <tag group="Background" tag="bck5CStrWth"/>
+    </thing>
+  <thing id="bt5CWthPrT5" name="Collector" description="I simply must have your body parts for my research. Only once you die, of course." compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="5"/>
+    <tag group="Background" tag="bck5CStrWth"/>
+    </thing>
+  <thing id="bt5CWthPrT6" name="Brooding" description="Don&apos;t talk to me. I&apos;m...I&apos;m thinking. " compset="BackPerTrt" uniqueness="unique">
+    <usesource source="5eSACoCA"/>
+    <tag group="Roll" tag="6"/>
+    <tag group="Background" tag="bck5CStrWth"/>
+    </thing>
+  </document>
