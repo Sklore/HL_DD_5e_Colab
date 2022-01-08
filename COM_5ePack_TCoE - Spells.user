@@ -414,6 +414,14 @@
         searchexpr &= "thingid.r5CSumUnd"
         endif
 
+      if (hero.childfound[5CSummon].tagcount[SpInfo.sp5CSumDra] <> 0) then
+        total += 1
+        if (total > 1) then
+          searchexpr &= " | "
+          endif
+        searchexpr &= "thingid.r5CSumDra"
+        endif
+
       searchexpr &= ")"
 
       minion.childfound[Totals].field[tRaceExpr].text = searchexpr]]></eval>
@@ -510,17 +518,18 @@ hero.childfound[ArmorClass].field[Bonus].value += hero.childfound[ra5CSumSplLvl]
       ~Tell the spell level thing that our minimum spell level is 4
      hero.childfound[ra5CSumSplLvl].field[actUserMin].value = 4]]></eval>
     </thing>
-  <thing id="5CSummon" name="Summoned Creature" description="Add this to add one of these creatures to your hero, based on which Summon spell you have:\n• Aberrant Spirit\n• Bestial Spirit\n• Celestial Spirit\n• Construct Spirit\n• Elemental Spirit\n• Fey Spirit\n• Fiendish Spirit\n• Shadow Spirit\n• Undead Spirit" compset="CompClHelp" uniqueness="unique">
+  <thing id="5CSummon" name="Summoned Creature" description="Add this to add one of these creatures to your hero, based on which Summon spell you have:\n• Aberrant Spirit\n• Bestial Spirit\n• Celestial Spirit\n• Construct Spirit\n• Draconic Spirit\n• Elemental Spirit\n• Fey Spirit\n• Fiendish Spirit\n• Shadow Spirit\n• Undead Spirit" compset="CompClHelp" uniqueness="unique">
     <tag group="CompAvail" tag="c5CSummon" name="Summoned Creature" abbrev="Summoned Creature"/>
     <bootstrap thing="c5CSumCrt"></bootstrap>
     <link linkage="realcomp" thing="c5CSumCrt"/>
     </thing>
   <thing id="p5CSumCrt" name="Summon Creature" description="Add this to add a summoned creature to your character. This is usually used if a scroll or item grants you a casting of a Summon ____ spell." compset="InPlay">
     <usesource source="5eTCoE"/>
-    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <usesource source="5eFFToD"/>
     <tag group="Custom" tag="ScrollSum"/>
     <tag group="OthAdjCat" tag="UserBot6th"/>
     <tag group="Adjustment" tag="Class" name="Classes" abbrev="Classes"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
     <eval phase="First" priority="10000"><![CDATA[    doneif (field[pIsOn].value = 0)
     doneif (field[pChosen].ischosen = 0)
     perform field[pChosen].chosen.assign[CompAvail.c5CSummon]

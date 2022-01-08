@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CMGIHuman" name="Innistrad Human" compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5CPSInCP"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    </thing>
+  <thing id="sr5CInHGvny" name="Gavony" compset="SubRace" uniqueness="unique">
+    <fieldval field="rAttrAll" value="1"/>
+    <usesource source="5CPSInCP"/>
+    <tag group="SubRace" tag="r5CMGIHuman"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    </thing>
+  <thing id="sr5CInHKssg" name="Kessig" compset="SubRace" uniqueness="unique">
+    <fieldval field="rDEX" value="1"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rSpeed" value="40"/>
+    <usesource source="5CPSInCP"/>
+    <tag group="SubRace" tag="r5CMGIHuman"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <bootstrap thing="ra5CFltoF">
+      <assignval field="CustDesc" value="Your base walking speed is 40 ft."/>
+      </bootstrap>
+    <bootstrap thing="ra5CInHFrstFlk"></bootstrap>
+    <bootstrap thing="ra5CInHSrFootd"></bootstrap>
+    <bootstrap thing="ra5CInHSprngAtk"></bootstrap>
+    <eval phase="First">perform hero.childfound[r5CMGIHuman].assign[ProfSkill.skSurvival]
+
+perform hero.childfound[ra5CFltoF].delete[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="ra5CInHFrstFlk" name="Forest Folk" description="You are proficient in the Survival skill." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CInHSrFootd" name="Sure-footed" description="When you take the Dash action, you can ignore the extra movement cost of difficult terrain during that turn." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CInHSprngAtk" name="Spring Attack" description="When you melee attack a creature, regardless of whether you hit them or not, you don&apos;t provoke attacks of opportunity from that creature for the end of that turn." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CInHBrdthKnl" name="Breadth of Knowledge" description="You gain proficiency in any four skills, four tools, or combination of the two." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      var NumOfProf as number
+      ~ Increase or decrease the number of proficiencies 
+      NumOfProf = 4
+      call 5CAddProf]]></eval>
+    </thing>
+  <thing id="sr5CInHNphl" name="Nephalia" compset="SubRace" uniqueness="unique">
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rCHA" value="1"/>
+    <usesource source="5CPSInCP"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <tag group="SubRace" tag="r5CMGIHuman"/>
+    <bootstrap thing="ra5CInHBrdthKnl"></bootstrap>
+    </thing>
+  <thing id="sr5CInHStns" name="Stensia" compset="SubRace" uniqueness="unique">
+    <fieldval field="rSTR" value="1"/>
+    <fieldval field="rCHA" value="1"/>
+    <usesource source="5CPSInCP"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ClVaryName" tag="AppParen"/>
+    <tag group="SubRace" tag="r5CMGIHuman"/>
+    <bootstrap thing="ra5CInHDaunt"></bootstrap>
+    <bootstrap thing="ra5CInHTough"></bootstrap>
+    <eval phase="First">perform hero.childfound[r5CMGIHuman].assign[ProfSkill.skIntim]</eval>
+    </thing>
+  <thing id="ra5CInHDaunt" name="Daunting" description="You are proficient in the Intimidation skill." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CInHTough" name="Tough" description="Your maximum hitpoints increases by 2, and does so again every time you gain a level." compset="RaceSpec">
+    <eval phase="PostLevel" priority="15000" index="2"><![CDATA[
+      ~ if we've been disabled, get out now
+      doneif (tagis[Helper.Disable] = 1)
+
+      herofield[tBonusHP].value += field[abValue].value]]></eval>
+    <eval phase="PostLevel" priority="5000">field[abValue].value += maximum(herofield[tHitDice].value, 1)*2</eval>
+    </thing>
+  <thing id="bck5CInquis" name="Inquisitor" compset="Background" uniqueness="unique">
+    <fieldval field="cToolMax" value="1"/>
+    <fieldval field="StartAll" value="A holy symbol, a set of traveler&apos;s clothes, and 15 gp in a belt pouch"/>
+    <fieldval field="StartGear" value="A holy symbol, a set of traveler&apos;s clothes, and 15 gp in a belt pouch"/>
+    <usesource source="5CPSInCP"/>
+    <tag group="ProfSkill" tag="skInvestig"/>
+    <tag group="ProfSkill" tag="skReligion"/>
+    <tag group="AllowTool1" tag="Artisan"/>
+    <bootstrap thing="gTooThieve">
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <bootstrap thing="ab5CInLglAuth"></bootstrap>
+    </thing>
+  <thing id="ab5CInLglAuth" name="Legal Authority" description="As a religious inquisitor, you are authorized to arrest criminals. Without other authorities present, you may pass judgement and even carry out sentencing. However, abusing this power runs the risk of it being stripped from you." compset="Ability">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="r5CSkaab" name="Skaab" compset="Race">
+    <fieldval field="rHitDice" value="11"/>
+    <fieldval field="rHPStart" value="93"/>
+    <fieldval field="rCR" value="5.0"/>
+    <fieldval field="rMultiatt" value="The skaab makes two slam attacks."/>
+    <fieldval field="rSTR" value="9"/>
+    <fieldval field="rDEX" value="-1"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="-4"/>
+    <fieldval field="rCHA" value="-5"/>
+    <fieldval field="rLangPromp" value="Understands the languages of its creator but can&apos;t speak"/>
+    <usesource source="5CPSInCP"/>
+    <tag group="Helper" tag="CantSpeak" name="Cannot Speak" abbrev="Cannot Speak"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="NeutralGE" name="Neutral" abbrev="N"/>
+    <tag group="Alignment" tag="NeutralLC" name="Neutral" abbrev="N"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnExhaust" name="Exhaustion" abbrev="Exhaustion"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPetri" name="Petrified" abbrev="Petrified"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="DamComImm" tag="dcAtkNonAd" name="Bludgeoning, piercing, and slashing from nonmagical attacks that aren&apos;t adamantine" abbrev="Bludgeoning, piercing, and slashing from nonmagical attacks that aren&apos;t adamantine"/>
+    <tag group="DamageImm" tag="dtLightnin" name="Lightning" abbrev="Lightning"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raFGoBerse"></bootstrap>
+    <bootstrap thing="raFGoAvFir"></bootstrap>
+    <bootstrap thing="raCGoImFor"></bootstrap>
+    <bootstrap thing="raFGoLiAbs"></bootstrap>
+    <bootstrap thing="raCGoMaRes"></bootstrap>
+    <bootstrap thing="raCGoMaWea"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="wSlam">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="tpConst"></bootstrap>
+    <eval phase="Final"><![CDATA[foreach pick in hero from RaceAbil where "!thingid.xMultiatt"
+   eachpick.field[CustDesc].text = replace(eachpick.field[descript].text, "golem","skaab",0)
+nexteach]]></eval>
+    </thing>
+  <thing id="ra5CInSkbArm" name="Armor Plating" description="The skaab&apos;s AC increases to 14 and it&apos;s CR increases to 6." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="r5CSkaab"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="First">hero.childfound[r5CSkaab].field[rAC].value += 5
+hero.childfound[r5CSkaab].field[rCR].value += 1</eval>
+    </thing>
+  <thing id="ra5CInSkbSix" name="Six Arms" description="The skaab&apos;s CR increases to 6 and it can now make three slam attacks using its Multiattack." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="r5CSkaab"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <eval phase="First"><![CDATA[hero.childfound[r5CSkaab].field[rMultiatt].text = "The skaab makes three slam attacks."
+hero.childfound[r5CSkaab].field[rCR].value += 1]]></eval>
+    </thing>
+  <thing id="ra5CInSkbThr" name="Three Heads" description="The skaab has advantage on Wisdom (Perception) checks and on saves versus being blinded, deafened, stunned, and knocked unconscious." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="r5CSkaab"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="First"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svWIS],"Advantage vs. being blinded, deafened, stunned, and knocked unconscious",field[thingname].text]
+      #situational[hero.child[skPercep],"Advantage",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CInSkbGol" name="Skaab Goliath" description="The skaab has three heads, granting it advantage on Wisdom (Perception) checks and on saves versus being blinded, deafened, stunned, and knocked unconscious. Its six arms allow it to make three slam attacks using its Multiattack. It gains +5 to its AC. And its CR increases to 7." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="r5CSkaab"/>
+    <tag group="ClVaryName" tag="Replace"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="First"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svWIS],"Advantage vs. being blinded, deafened, stunned, and knocked unconscious",field[thingname].text]
+      #situational[hero.child[skPercep],"Advantage",field[thingname].text]
+
+hero.childfound[r5CSkaab].field[rMultiatt].text = "The skaab makes three slam attacks."
+hero.childfound[r5CSkaab].field[rCR].value += 2
+hero.childfound[r5CSkaab].field[rAC].value += 5]]></eval>
+    </thing>
+  <thing id="ra5CInSkbWng" name="Winged Skaab" description="The skaab has a flying speed of 30 feet." compset="VarRaceTrt" uniqueness="unique">
+    <tag group="AllowRCust" tag="r5CSkaab"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="ClVaryName" tag="Replace"/>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CCrDBodExc" name="Body Exchange" description="The creepy doll forces contested Intelligence check versus an incapacitated humanoid within 5 feet of it. If it wins the contest, the creepy doll&apos;s spirit inhabits the target&apos;s body while the target&apos;s spirit is placed into the creepy doll&apos;s body. The creepy doll controls the target&apos;s body, retaining its alignment, Intelligence, Wisdom, Charisma, and immunity to being charmed and frightened. It otherwise uses the possessed target&apos;s statistics, but doesn&apos;t gain access to the target&apos;s knowledge, class features, or proficiencies. The target keeps its alignment, Intelligence, Wisdom, and Charisma while inside the creepy doll&apos;s body. The body exchange lasts until the doll&apos;s spirit is forced out by magic, such as {i}dispel evil and good{/i}. The body and the doll must be within 5 feet of each other for such an effect to work. The target is immune to this doll&apos;s Body Exchange for 24 hours after winning the contested Intelligence check or after the exchange ends." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CCrDPsyAss" name="Psychic Assault" description="The creepy doll targets one creature it can see within 10 feet of it that has a brain. The target must make a DC 12 Intelligence save, taking 11 (2d10) psychic damage on a failure. Also on a failure, roll 3d6. If the total is greater than or equal to the target&apos;s Intelligence score, that score is reduced to 0. The target is stunned until it regains at least one point of Intelligence, via the {i}greater restoration{/i} spell or similar magic." compset="RaceSpec">
+    <fieldval field="abRange" value="10"/>
+    <fieldval field="wDieCount" value="2"/>
+    <fieldval field="wDieSize" value="10"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aDEX"/>
+    <tag group="abSave" tag="aINT"/>
+    <tag group="DamageType" tag="dtPsychic"/>
+    </thing>
+  <thing id="ra5CGstPosses" name="Possession" description="One creature visible to and within 5 feet of the geist must make a DC 13 Charisma save. On a failure, it is possessed by the geist. The target is incapacitated while the geist disappears and takes total control of its body, though the target remains aware. The geist cant be targeted by an attack, spell, or other effect (with the exception of turn undead effects), and it retains its alignment, Intelligence, Wisdom, Charisma, and immunities to being charmed and frightened. It does not gain access to the possessed target&apos;s knowledge, class features, or proficiencies, but otherwise it does use that target&apos;s statistics. The possession lasts until the target&apos;s body drops to 0 hit points, the geist ends it using a bonus action, or the geist is forced to exit by an effect, such as the {i}dispel evil and good{/i} spell. When the possession ends, the geist reappears in an unoccupied space within 5 feet of the target. Once the possession ends or if it succeeds on the initial saving throw, the target is immune to this geist&apos;s Possession for 24 hours. The geist can alternatively target a creature&apos;s corpse, animating said corpse as a zombie. It uses the zombie statistics and returns to death after the possession ends." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abSave" tag="aCHA"/>
+    <tag group="Recharge" tag="4"/>
+    </thing>
+  <thing id="ra5CSkbWngSkb" name="Skaab Characteristic: Winged Skaab" description="The skaab has 30 feet of flight speed." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CVmNAurSil" name="Aura of Silence" description="The vampire shrouds itself in a cloak of silence. Within a radius of 2 feet, the effect is the same as the {i}silence{/i} spell." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CVmNRegene" name="Regeneration" description="The vampire regains 10 hit points at the beginning of its turn if it has at least 1 hit point. If the vampire takes radiant damage or damage from holy water, this trait doesn&apos;t function at the beginning of the vampire&apos;s next turn." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CVmNVamGla" name="Vampiric Glamer" description="The vampire affects minds around it to make others see it as a beautiful human of the same size and shape. The illusion ends if the vampire takes a bonus action to end it or if the vampire dies. A creature that can see the vampire can take an action to visually inspect it, ending the mental effect on itself and seeing the vampire&apos;s true form with a successful DC 20 Wisdom (Perception) check." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    </thing>
+  <thing id="ra5CKWrShapec" name="Shapechanger" description="The werewolf polymorphs into a wolf-humanoid canid form, or back into its true human form. This change is determined by the moon, but can also be induced by trauma or by strong emotion. Its statistics, other than its AC, remain the same in each form. Any equipment it is wearing or carrying isn&apos;t transformed. It reverts to its true form if it dies." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CKWrVldRmp" name="Vildin Rampage (Canid Form Only)" description="When the werewolf reduces a creature to 0 hit points with a melee attack on its turn, it can use a bonus action to move up to half its speed and make a bite attack." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="r5CInnKpFthr" name="Keeper of the Feather" compset="Race">
+    <fieldval field="rHitDice" value="7"/>
+    <fieldval field="rHPStart" value="31"/>
+    <fieldval field="rCR" value="2.0"/>
+    <fieldval field="rMultiatt" value="(Human or Hybrid Form Only). The keeper makes two weapon attacks, one of which can be with its hand crossbow. "/>
+    <fieldval field="rDEX" value="5"/>
+    <fieldval field="rCON" value="1"/>
+    <fieldval field="rINT" value="3"/>
+    <fieldval field="rWIS" value="5"/>
+    <fieldval field="rCHA" value="4"/>
+    <fieldval field="rLangPromp" value="Common (can&apos;t speak in raven form)"/>
+    <fieldval field="rSpCastLev" value="4"/>
+    <usesource source="5CPSInCP"/>
+    <tag group="ProfDouble" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="ProfSkill" tag="skInsight" name="Insight" abbrev="Insight"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="WepProf" tag="wCrssbwHan" name="Crossbow, hand" abbrev="Crossbow, hand"/>
+    <tag group="WepProf" tag="wShortswor" name="Shortsword" abbrev="Shortsword"/>
+    <tag group="Alignment" tag="Good" name="Good" abbrev="G"/>
+    <tag group="DamComImm" tag="dcAtkNonSi" name="Bludgeoning, piercing, and slashing from nonmagical attacks that aren&apos;t silvered" abbrev="Bludgeoning, piercing, and slashing from nonmagical attacks that aren&apos;t silvered"/>
+    <tag group="Alignment" tag="Lawful" name="Lawful" abbrev="L"/>
+    <tag group="sClass" tag="cHelpDrd"/>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="50"/>
+      </bootstrap>
+    <bootstrap thing="ra5CWraMim"></bootstrap>
+    <bootstrap thing="ra5CKpFShpchg"></bootstrap>
+    <bootstrap thing="wBeak">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="wProperty" tag="Finesse"/>
+      <assignval field="livename" value="Beak (Raven Form)"/>
+      <assignval field="sbName" value="Beak (Raven Form)"/>
+      <assignval field="wDamBonus" value="-2"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="1"/>
+      </bootstrap>
+    <bootstrap thing="wBeak">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="wProperty" tag="Finesse"/>
+      <assignval field="livename" value="Beak (Hybrid Form)"/>
+      <assignval field="sbName" value="Beak (Hybrid Form)"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="xSpellcast"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="ttHuman"></bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
+    <eval phase="Render" priority="1000"><![CDATA[foreach pick in hero from BaseWep where "!wGroup.Natural"
+  eachpick.field[livename].text &= " (Humanoid or Hybrid Form Only)"
+  eachpick.field[sbName].text = eachpick.field[livename].text
+  nexteach
+
+hero.childfound[xFly].field[livename].text &= " (hybrid or raven form)"
+hero.childfound[xFly].field[shortname].text &= " (hybrid or raven form)"]]></eval>
+    </thing>
+  <thing id="ra5CKpFShpchg" name="Shapechanger" description="The keeper of the feather can use its action to polymorph into a raven-humanoid hybrid or into a raven, or back into its true form, which is humanoid. Its statistics, other than its size, are the same in each form. Any equipment it is wearing or carrying isn’t transformed. It reverts to its true form if it dies." compset="RaceSpec">
+    <fieldval field="actName" value="Bear or Hybrid Form"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Activation" name="Activation" abbrev="Activation"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <eval phase="First">doneif (field[abilActive].value = 0)
+      hero.child[Speed].field[tSpeed].value = 40
+      hero.child[mNatural].field[arAC].value = 1
+      perform hero.childfound[rWerebear].tagreplace[RaceSize.Medium0,RaceSize.Large1]</eval>
+    </thing>
+  <thing id="r5CInnAngel" name="Angel of Innistrad" compset="Race">
+    <fieldval field="rHitDice" value="16"/>
+    <fieldval field="rHPStart" value="136"/>
+    <fieldval field="rCR" value="10.0"/>
+    <fieldval field="rMultiatt" value="The angel makes two melee attacks."/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="8"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="7"/>
+    <fieldval field="rWIS" value="10"/>
+    <fieldval field="rCHA" value="10"/>
+    <fieldval field="rLangPromp" value="all"/>
+    <fieldval field="rAC" value="3"/>
+    <fieldval field="rSplHead" value="The #name#’s spellcasting ability is #abil# (spell save DC #dc#). The #name# can innately cast the following spells, requiring only verbal components:"/>
+    <usesource source="5CPSInCP"/>
+    <tag group="Alignment" tag="Good" name="Good" abbrev="G"/>
+    <tag group="Alignment" tag="Lawful" name="Lawful" abbrev="L"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnExhaust" name="Exhaustion" abbrev="Exhaustion"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="DamComRes" tag="dcAtkNonMa" name="Bludgeoning, piercing, and slashing from nonmagical attacks" abbrev="Bludgeoning, piercing, and slashing from nonmagical attacks"/>
+    <tag group="DamageRes" tag="dtRadiant" name="Radiant" abbrev="Radiant"/>
+    <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSkill" tag="skInsight" name="Insight" abbrev="Insight"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="WepProf" tag="wMace" name="Mace" abbrev="Mace"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="90"/>
+      </bootstrap>
+    <bootstrap thing="raDevAnWea">
+      <assignval field="CustDesc" value="The angel’s weapon attacks are magical. When the angel hits with any weapon, the weapon deals an extra 4d8 radiant damage (included in the attack)."/>
+      </bootstrap>
+    <bootstrap thing="xInnatSpel"></bootstrap>
+    <bootstrap thing="raDevMaRes">
+      <assignval field="CustDesc" value="The angel has advantage on saving throws against spells and other magical effects."/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="raDevHeTou">
+      <assignval field="CustDesc" value="The angel touches another creature. The target magically regains 20 (4d8 + 2) hit points and is freed from any curse, disease, poison, blindness, or deafness."/>
+      </bootstrap>
+    <bootstrap thing="raDevChSha">
+      <assignval field="CustDesc" value="The angel magically polymorphs into a humanoid or beast that has a challenge rating equal to or less than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the angel’s choice).\nIn a new form, the angel retains its game statistics and ability to speak, but its AC, movement modes, Strength, Dexterity, and special senses are replaced by those of the new form, and it gains any statistics and capabilities (except class features, legendary actions, and lair actions) that the new form has but that it lacks."/>
+      </bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="lAll"></bootstrap>
+    <bootstrap thing="spDeteEvil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spCommune">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spRaisDead">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="tpCelestia"></bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
+    </thing>
+  <thing id="r5CInnArAngl" name="Archangel of Innistrad" compset="Race">
+    <fieldval field="rHitDice" value="16"/>
+    <fieldval field="rHPStart" value="200"/>
+    <fieldval field="rCR" value="16.0"/>
+    <fieldval field="rMultiatt" value="The planetar makes two melee attacks."/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rSTR" value="14"/>
+    <fieldval field="rDEX" value="10"/>
+    <fieldval field="rCON" value="14"/>
+    <fieldval field="rINT" value="9"/>
+    <fieldval field="rWIS" value="12"/>
+    <fieldval field="rCHA" value="15"/>
+    <fieldval field="rLangPromp" value="all"/>
+    <fieldval field="rAC" value="4"/>
+    <usesource source="5CPSInCP"/>
+    <tag group="Alignment" tag="Good" name="Good" abbrev="G"/>
+    <tag group="Alignment" tag="Lawful" name="Lawful" abbrev="L"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnExhaust" name="Exhaustion" abbrev="Exhaustion"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="DamComRes" tag="dcAtkNonMa" name="Bludgeoning, piercing, and slashing from nonmagical attacks" abbrev="Bludgeoning, piercing, and slashing from nonmagical attacks"/>
+    <tag group="DamageRes" tag="dtRadiant" name="Radiant" abbrev="Radiant"/>
+    <tag group="ProfSave" tag="svCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="RaceSize" tag="Large1" name="Large" abbrev="Large"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="WepProf" tag="wGreatswrd" name="Greatsword" abbrev="Greatsword"/>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="raPlaAnWea">
+      <assignval field="CustDesc" value="The archangel’s weapon attacks are magical. When the archangel hits with any weapon, the weapon deals an extra 5d8 radiant damage (included in the attack)."/>
+      </bootstrap>
+    <bootstrap thing="raPlaDiAwa">
+      <assignval field="CustDesc" value="The archangel knows if it hears a lie."/>
+      </bootstrap>
+    <bootstrap thing="xInnatSpel"></bootstrap>
+    <bootstrap thing="raPlaMaRes">
+      <assignval field="CustDesc" value="The archangel has advantage on saving throws against spells and other magical effects."/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="raPlaHeTou">
+      <assignval field="CustDesc" value="The archangel touches another creature. The target magically regains 30 (6d8 + 3) hit points and is freed from any curse, disease, poison, blindness, or deafness."/>
+      </bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="lAll"></bootstrap>
+    <bootstrap thing="spDeteEvil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sNameMod" value="self only"/>
+      </bootstrap>
+    <bootstrap thing="spBladBarr">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spDispEvil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spFlamStri">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spRaisDead">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spCommune">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spContWeat">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spInsePlag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="tpCelestia"></bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
+    </thing>
+  <thing id="ra5CInnAlbWrd" name="Alabaster Wards" description="Angels of Flight Alabaster can use their Innate Spellcasting to cast these spells, once per day each: {i}protection from evil and good{/i}, {i}dispel evil and good{/i}." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5CPSInCP"/>
+    <tag group="AllowRCust" tag="r5CInnAngel"/>
+    <tag group="AllowRCust" tag="r5CInnArAngl"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="spDispEvil">
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spProtGoEv">
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="StandardDC" tag="aCHA"/>
+      <autotag group="Helper" tag="RaceSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CInnHrnPrt" name="Heron Protection" description="Whenever the Host of Herons angel or an allied creature within 10 feet of it makes a saving throw, the creature gains a bonus to the saving throw equal to the angel&apos;s Charisma modifier. The angel must be conscious to receive or grant this bonus." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5CPSInCP"/>
+    <tag group="AllowRCust" tag="r5CInnAngel"/>
+    <tag group="AllowRCust" tag="r5CInnArAngl"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CInnGldMen" name="Goldnight Menace" description="A Flight Goldnight angel can use an action to create fear in its enemies. Each creature of the angel&apos;s choice that is within 120 feet of it and is aware of it must succeed on a Wisdom save or become frightened for 1 minute. The DC for this saving throw equals its Innate Spellcasting trait&apos;s save DC. A creature can repeat the save at the end of each of its turns, ending the effect for itself on a success. If a creature&apos;s save is successful or the effect ends for it, the creature is immune to that angel&apos;s Goldnight Menace for the next 24 hours." compset="VarRaceTrt" uniqueness="unique">
+    <fieldval field="abRange" value="120"/>
+    <usesource source="5CPSInCP"/>
+    <tag group="AllowRCust" tag="r5CInnArAngl"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="AllowRCust" tag="r5CInnAngel"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    </thing>
+  <thing id="ra5CInnMnsSpr" name="Moonsilver Spear" description="A Moonsilver Flight angel wields a spear made from a shard of the Helvault. Hit points lost to this weapon&apos;s damage can be regained only through rest (short or long), rather than by regeneration, magic, or any other means. Once per turn, when the angel hits a creature with an attack that uses this weapon, it can wound the target. At the beginning of each of the wounded creature&apos;s turns, it takes 1d4 necrotic damage for each time the angel has wounded it, and it can then make a DC 15 Constitution save, ending the effect of all such wounds on itself on a success. Alternatively, the wounded creature, or a creature within 5 feet of it, can use an action to make a DC 15 Wisdom (Medicine) check, ending the effect of such wounds on it on a successful check." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5CPSInCP"/>
+    <tag group="AllowRCust" tag="r5CInnAngel"/>
+    <tag group="AllowRCust" tag="r5CInnArAngl"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="i5CInnHlvSpr"></bootstrap>
+    </thing>
+  <thing id="i5CInnHlvSpr" name="Helvault Shard Spear" description="Hit points lost to this weapon&apos;s damage can be regained only through rest (short or long), rather than by regeneration, magic, or any other means. Once per turn, when the angel hits a creature with an attack that uses this weapon, it can wound the target. At the beginning of each of the wounded creature&apos;s turns, it takes 1d4 necrotic damage for each time the angel has wounded it, and it can then make a DC 15 Constitution save, ending the effect of all such wounds on itself on a success. Alternatively, the wounded creature, or a creature within 5 feet of it, can use an action to make a DC 15 Wisdom (Medicine) check, ending the effect of such wounds on it on a successful check." compset="MagicWep" uniqueness="unique">
+    <fieldval field="miTypeDet" value="spear"/>
+    <usesource source="5CPSInCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wSpear"></bootstrap>
+      </child>
+    </thing>
+  </document>

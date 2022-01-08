@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CMnkWyDrgn" name="Way of the Ascendant Dragon" compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eFFToD"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpMnk" name="Monk" abbrev="Monk"/>
+    <tag group="abCategory" tag="MnkMonTrad" name="Monk Monastic Tradition" abbrev="Monk Monastic Tradition"/>
+    <tag group="Helper" tag="Primary" name="Primary" abbrev="Primary"/>
+    <bootstrap thing="c5CMnkAsWyrm">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkAscAsp">
+      <autotag group="ClSpecWhen" tag="17"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkDrcDis">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="io5CMercMsk"></bootstrap>
+    <bootstrap thing="c5CMnkBrtDrg">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CMnkWngUnf">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CMnkDrcDis" name="Draconic Disciple" description="Your draconic spirit grants you these benefits:\n\n{b}Draconic Presence.{/b} If you fail a Charisma (Intimidation) or Charisma (Persuasion) check, you can use your reaction to reroll the check, as you tap into the mighty presence of dragons. Once this feature turns a failure into a success, you can&apos;t use it again until you finish a long rest.\n\n{b}Draconic Strike.{/b} When you damage a target with an unarmed strike, you can alter the damage type to be acid, cold, fire, lightning, or poison damage.\n\n{b}Tongue of Dragons.{/b} You learn Draconic or another language of your choice." compset="ClSpecial" summary="Your draconic spirit grants several benefits.">
+    <fieldval field="usrLabelAr" value="Language"/>
+    <fieldval field="abValue2" value="1"/>
+    <arrayval field="usrArray" index="1" value="Other"/>
+    <arrayval field="usrArray" index="0" value="Draconic"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="lDraconic">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Monk > 2 & fieldval:usrIndex = 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CMnkDrcPrs">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Monk > 2]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CMnkDrcStr">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Monk > 2]]></containerreq>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      doneif (hero.tagcount[Classes.Monk] < 3)
+      doneif (field[usrIndex].value <> 1)
+      doneif (root.islinkage[table] = 0)
+
+      perform root.linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue2].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue2].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue2].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CMnkBrtDrg" name="Breath of the Dragon" description="When you take the Attack action on your turn, you can replace one of the attacks with breath weapon. Choose either a 20-foot cone or a 30-foot line that is 5 feet wide then choose your damage type from acid, cold, fire, lightning, or poison. Each creature in the area must make a Dexterity save versus your ki save DC, taking damage of the chosen type equal to two rolls of your Martial Arts die on a failure, or half as damage on a success.\n\nAt 11th level, the damage increases to three rolls of your Martial Arts die.\n\nYou can use this feature a number of times equal to your proficiency bonus, and you regain all spent uses when you complete a long rest. When you&apos;ve run out of uses, you can spend 2 ki point to use this feature again." compset="ClSpecial" summary="Replace an attack with a breath weapon.">
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="Final"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+if (hero.tagis[Classes.Monk] > 10) then
+   field[abValue].value = 3
+else
+   field[abValue].value = 2
+endif
+
+field[abText].text = field[abValue].value & "d" & hero.childfound[cMnkMarArt].field[wDieSize].value
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="c5CMnkWngUnf" name="Wings Unfurled" description="When you use your Step of the Wind, you can manifest spectral draconic wings from your back that vanish at the end of your turn. While the wings exist, you have a flight speed equal to your walking speed.\nYou can use this feature a number of times equal to your proficiency bonus, and you regain all spent uses when you complete a long rest." compset="ClSpecial" summary="Step of the wind briefly gives you the ability to fly.">
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="Final"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="c5CMnkAsWyrm" name="Aspect of the Wyrm" description="You can use a bonus action to create an aura of draconic power that radiates 30 feet from you for 1 minute. For the duration, you gain your choice of one of these effects:\n\n{b}Frightful Presence.{/b} When the aura activates and as a bonus action on subsequent turns, you can pick a creature within the aura. It must make a Wisdom save versus your ki save DC or become frightened of you for 1 minute. It can repeat the save at the end of each of its turns, ending its fear on a success.\n\n{b}Resistance.{/b} Choose a damage type when activating the aura from acid, cold, fire, lightning, or poison. You and your allies within the aura gain resistance to that damage.\n\nOnce you&apos;ve created this aura, you can&apos;t create it again until you complete a long rest or spend 3 ki to create it again." compset="ClSpecial" summary="Create a fear or damage resistance aura.">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Active (1 Minute)"/>
+    <fieldval field="abRange" value="30"/>
+    <arrayval field="usrArray" index="1" value="Resistance"/>
+    <arrayval field="usrArray" index="0" value="Frightful Presence"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <eval phase="First" priority="500"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (hero.tagcount[Classes.Monk] < 11)
+doneif (field[usrIndex].value <> 1)
+doneif (field[abilActive].value = 0)
+
+
+    field[usrCandid1].text = "thingid.dtAcid | thingid.dtCold | thingid.dtFire | thingid.dtLightnin | thingid.dtPoison"
+    perform assign[ChooseSrc1.Thing]
+    perform field[usrChosen1].chosen.pulltags[DamageRes.?]
+    perform hero.pushtags[DamageRes.?]]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (hero.tagcount[Classes.Monk] < 11)
+doneif (field[usrIndex].value <> 0)
+doneif (field[abilActive].value = 0)
+
+    perform assign[StandardDC.aWIS]
+    perform assign[abSave.aWIS]]]></eval>
+    </thing>
+  <thing id="c5CMnkAscAsp" name="Ascendant Aspect" description="You gain these additional benefits as your draconic spirit reaches its zenith:\n\n{b}Augment Breath.{/b} When you use Breath of the Dragon, you can spend 1 ki to further empower it. The breath becomes a 60-foot cone or a 90-foot line (still 5 feet wide), and the damage increases to four rolls of your Martial Arts Die on a failed save, half that on a successful save.\n\n{b}Blindsight.{/b} You gain blindsight out to 10 feet. Within that range, you can effectively see anything that not behind total cover, even if you&apos;re blinded or in darkness. Additionally, you can see an invisible creature within that range, unless the creature has successfully hidden from you.\n\n{b}Explosive Fury.{/b} When you activate Aspect of the Wyrm, choose any number of creatures you can see within your aura. Each of those creatures must make a Dexterity save versus your ki save DC. On a failure, it takes 3d10 damage; choose the type between acid, cold, fire, lightning, or poison." compset="ClSpecial" summary="Your draconic abilities get more powerful.">
+    <bootstrap thing="ab5CMnkAugBrt">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Monk > 16]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="raBlindSi">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Monk > 16]]></containerreq>
+      <autotag group="Value" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="ab5CMnkExpFry">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Monk > 16]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ab5CMnkDrcStr" name="Draconic Strike" description="When you damage a target with an unarmed strike, you can alter the damage type to be acid, cold, fire, lightning, or poison damage." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    </thing>
+  <thing id="ab5CMnkDrcPrs" name="Draconic Presence" description="If you fail a Charisma (Intimidation or Persuasion) check, you can take your reaction to reroll the check. Once this reaction has turned a failure into a success, you can&apos;t do it again until you complete a long rest." compset="Ability" summary="Reaction to reroll a failed Intimidation or Persuasion check.">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="ab5CMnkAugBrt" name="Augment Breath" description="When you use Breath of the Dragon, you can spend 1 ki to further empower it. The breath becomes a 60-foot cone or a 90-foot line (still 5 feet wide), and the damage increases to four rolls of your Martial Arts Die on a failed save, half that on a successful save." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+field[abText].text = "4d" & hero.childfound[cMnkMarArt].field[wDieSize].value]]></eval>
+    </thing>
+  <thing id="ab5CMnkExpFry" name="Explosive Fury" description="When you activate Aspect of the Wyrm, choose any number of creatures you can see within your aura. Each of those creatures must make a Dexterity save versus your ki save DC. On a failure, it takes 3d10 damage; choose the type between acid, cold, fire, lightning, or poison." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="c5CDrkComp" name="Drake Companion" compset="Companion" stacking="never" uniqueness="unique">
+    <fieldval field="CompType" value="Drake Companion"/>
+    <eval phase="First" priority="455" index="4"><![CDATA[~ Well, there's no way (afaik) to count the class levels from the hero
+~ at the minion, so we need to do it somewhere in the hero context and 
+~ send the info to be used at the minion. 
+~
+~ In this case, since all animal companions will receive the 
+~ companion bond racial ability to add their extra skills, we'll
+~ use it to bootstrap the extra HD as well. The tag expression used 
+~ in the condition for the bootstrap will test the value of the
+~ abValue5 field, which we set here.
+
+~ This must be done at the First stage, since the bootstraps happen
+~ there. Or so I'm told by the error messages.
+
+var level as number
+level = hero.tagcount[Classes.Ranger]
+minion.childfound[ra5CDrcEsnc].field[abValue5].value = level]]></eval>
+    <minion id="Familiar" isinherit="no">
+      <tag group="AllowRCust" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="CompIs" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="Hero" tag="FixedRace" name="FixedRace" abbrev="FixedRace"/>
+      <tag group="Hero" tag="NoAdvance" name="NoAdvance" abbrev="NoAdvance"/>
+      <tag group="Hero" tag="NoFamLvReq" name="No familiar Level requirements" abbrev="No familiar Level requirements"/>
+      <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+      <bootstrap thing="ra5CDrcEsnc"></bootstrap>
+      <bootstrap thing="r5CDrkComp"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="c5CRgrDrkCmp" name="Drake Companion" description="You can use an action to magically summon your bound drake. It appears in an available space of your choice within 30 feet of you.\n\nThe drake is friendly to you and your allies, and it obeys your commands. When you summon the drake, choose a damage type listed in its Draconic Essence trait. You can determine the cosmetic, non-statistical characteristics of the drake, like its color, its scale texture, or any visible effect of its Draconic Essence.\n\nThe drake shares your initiative, but takes its turn right after yours. It moves and uses its reaction without needing to be commanded. You can use a bonus action to command it to take an action, which can be from its stat block or any other action it is capable of doing. If you issue no such command, it takes the Dodge action. When you&apos;re incapacitated, it can use any of those actions, not just Dodge.\n\nThe drake remains until it is reduced to 0 hit points, until you use this feature to summon the drake again, or until you die. Anything it is wearing or carrying is left behind when it vanishes. Once you summon the drake, you can’t do so again until you complete a long rest. You can also spend a spell slot of 1st level or higher to summon it." compset="ClSpecial" summary="Action to summon your drake companion.">
+    <fieldval field="actName" value="Drake Summoned"/>
+    <tag group="User" tag="Activation"/>
+    <bootstrap thing="c5CDrkComp">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="r5CDrkComp" name="Drake Companion" compset="Race">
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rSTR" value="6"/>
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rINT" value="-2"/>
+    <fieldval field="rCHA" value="-2"/>
+    <fieldval field="rAC" value="3"/>
+    <fieldval field="rWIS" value="4"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="ProfSave" tag="svDEX" name="Dexterity" abbrev="Dexterity"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="livename" value="Bite"/>
+      <assignval field="sbName" value="Bite"/>
+      <assignval field="wDamBonus" value="-3"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDrkInfStr"></bootstrap>
+    <bootstrap thing="tpDragon"></bootstrap>
+    <eval phase="Final" priority="50000" index="2"><![CDATA[
+~ pull our STR and prof to determine what our attack bonus currently is
+
+var CrAt as number
+
+CrAt = (hero.childfound[aSTR].field[aModBonus].value + hero.childfound[ProfBonus].field[tProfBonus].value)
+
+~ add our spell attack (abValue4 of Steel Defender Bond) and subtract
+~ the current to attack bonus from any natural attacks. This way any 
+~ other additions to the bonus can still count
+
+foreach pick in hero from BaseWep where "wGroup.Natural"
+eachpick.field[wAttack].value += hero.childfound[ra5CDrcEsnc].field[abValue4].value - CrAt
+nexteach]]></eval>
+    <eval phase="First" priority="460" index="3"><![CDATA[      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (hero.childfound[ra5CDrcEsnc].field[abValue5].value > 14) then
+        perform delete[RaceSize.Small11]
+        perform assign[RaceSize.Large1]
+      elseif (hero.childfound[ra5CDrcEsnc].field[abValue5].value > 6) then
+        perform delete[RaceSize.Small11]
+        perform assign[RaceSize.Medium0]
+      endif]]></eval>
+    <eval phase="PostAttr" priority="11000">~Subtract out the CON bonus HP by finding the base bonus * # Hit Dice
+~Add back in the original 5 per the stat block, then remove it all
+~Add that entire thing to our total Bonus HP
+~We remove it from the total instead of just removing the total in case
+~something else is adding to that as well.
+
+var HPAdj as number
+HPAdj -= hero.childfound[aCON].field[aModBonus].value
+HPAdj *= (field[rHitDice].value)
+HPAdj += 5
+herofield[tBonusHP].value += HPAdj</eval>
+    </thing>
+  <thing id="ra5CDrcEsnc" name="Draconic Essence" description="When the drake is summoned, its summoner, chooses a damage type: acid, cold, fire, lightning, or poison. The chosen type determines the drake’s damage immunity and the damage of its Infused Strikes trait, as well as other features of their bond at higher levels." compset="RaceSpec">
+    <fieldval field="abValue" value="2"/>
+    <fieldval field="usrCandid1" value="thingid.dtAcid | thingid.dtCold | thingid.dtFire | thingid.dtLightnin | thingid.dtPoison"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <bootstrap thing="ra5CBndFngScl">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abValue5 > 6]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CDrksBrth">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abValue5 > 10]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CRgrRflRes">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abValue5 > 14]]></containerreq>
+      </bootstrap>
+    <eval phase="PostAttr" priority="12000" index="5"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+foreach pick in hero from BaseWep where "wGroup.Natural"
+   eachpick.field[dmmBonus].value += field[abValue2].value
+   eachpick.field[dmrBonus].value += field[abValue2].value
+   eachpick.field[wAttack].value += field[abValue2].value
+nexteach]]></eval>
+    <eval phase="Final" priority="500" index="7"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[usrChosen1].ischosen = 0)
+
+perform field[usrChosen1].chosen.pulltags[DamageImm.?]
+perform field[usrChosen1].chosen.pulltags[DamageRes.?]
+perform hero.pushtags[DamageImm.?]
+
+doneif (field[abValue5].value < 7)
+perform master.pushtags[DamageRes.?]]]></eval>
+    <eval phase="PostLevel" index="6"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+
+~ store the proficiency of the hero in abValue2:
+
+field[abValue2].value = master.childfound[ProfBonus].field[tProfBonus].value
+
+
+~ now we replace the prof bonus of the minion with the stored hero one
+
+hero.childfound[ProfBonus].field[tProfBonus].value = field[abValue2].value
+hero.childfound[ArmorClass].field[Bonus].value += field[abValue2].value]]></eval>
+    <eval phase="Final" priority="700" index="8"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrChosen1].ischosen = 0)
+      doneif (field[abValue5].value < 7)
+
+      var iDam as string
+      iDam = "1d6"
+
+      if (field[abValue5].value > 14) then
+         iDam = "2d6"
+         endif
+
+       iDam = " plus " & iDam & " " & lowercase(tagnames[DamageRes.?])
+       foreach pick in hero from BaseWep where "wGroup.Natural"
+         eachpick.field[wDamExtra].text &= iDam
+         nexteach]]></eval>
+    <eval phase="Final" priority="49000" index="4"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~Pull master's spell save DC into abValue3 for use in other features
+  field[abValue3].value = master.childfound[cHelpRgr].field[cSplSaveDC].value  
+
+
+      ~Pull master's spell attack into abValue4 for use in other features
+  field[abValue4].value = master.childfound[cHelpRgr].field[cSplAttack].value]]></eval>
+    <eval phase="First" priority="500"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      foreach pick in hero from BaseRace
+      eachpick.field[rHitDice].value = field[abValue5].value
+      nexteach]]></eval>
+    </thing>
+  <thing id="c5CRgrDrkwrdn" name="Drakewarden" compset="CustomSpec" uniqueness="unique">
+    <comment>Supersedes UA Ranger.</comment>
+    <usesource source="5eFFToD"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="SpecSource" tag="cHelpRgC" name="Ranger (Sept 2016)" abbrev="Ranger (Sept 2016)"/>
+    <tag group="SpecSource" tag="cHelpRgr" name="Ranger" abbrev="Ranger"/>
+    <tag group="abCategory" tag="RgrArchety" name="Ranger Archetype" abbrev="Ranger Archetype"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <bootstrap thing="c5CRgrDrkBrt">
+      <autotag group="ClSpecWhen" tag="11"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrPrfBnd">
+      <autotag group="ClSpecWhen" tag="15"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrDrkCmp">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrDrcGft">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CRgrBndFaS">
+      <autotag group="ClSpecWhen" tag="7"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CRgrDrcGft" name="Draconic Gift" description="Your bond to dragonkind grants you these features:\n\n{b}Thaumaturgy.{/b} You learn {i}thaumaturgy{/i} as a ranger spell.\n\n{b}Tongue of Dragons.{/b} You learn Draconic or another language of your choice." compset="ClSpecial" summary="Your draconic bond grants you thaumaturgy and another language.">
+    <fieldval field="usrLabelAr" value="Language"/>
+    <fieldval field="abValue2" value="1"/>
+    <arrayval field="usrArray" index="1" value="Other"/>
+    <arrayval field="usrArray" index="0" value="Draconic"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <bootstrap thing="lDraconic">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Ranger > 2 & fieldval:usrIndex = 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="spThaumatu">
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="SpellType" tag="cHelpRgr"/>
+      </bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      doneif (hero.tagcount[Classes.Ranger] < 3)
+      doneif (field[usrIndex].value <> 1)
+      doneif (root.islinkage[table] = 0)
+
+      perform root.linkage[table].setfocus
+
+      ~ Set our bonus languages in the first empty table we find
+      if (focus.field[cLangMax].value = 0) then
+        focus.field[cLangMax].value += field[abValue2].value
+        focus.field[cLaCandExp].text = "component.BaseLang"
+      elseif (focus.field[cLangMax2].value = 0) then
+        focus.field[cLangMax2].value += field[abValue2].value
+        focus.field[cLaCandEx2].text = "component.BaseLang"
+      elseif (focus.field[cLangMax3].value = 0) then
+        focus.field[cLangMax3].value += field[abValue2].value
+        focus.field[cLaCandEx3].text = "component.BaseLang"
+        endif]]></eval>
+    </thing>
+  <thing id="ra5CDrkInfStr" name="Infused Strikes" description="When another creature within 30 feet of the drake that the drake can see hits a target with a weapon attack, the drake can use its reaction to infuse the strike with its draconic essence, causing the target to take an additional 1d6 damage of the type determinde by its Draconic Essence." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <eval phase="Final" priority="600"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (hero.childfound[ra5CDrcEsnc].field[usrChosen1].ischosen = 0)
+
+perform hero.childfound[ra5CDrcEsnc].field[usrChosen1].chosen.setfocus
+perform focus.pulltags[DamageType.?]
+
+field[CustDesc].text = "When another creature within 30 feet of the drake that the drake can see hits a target with a weapon attack, the drake can use its reaction to infuse the strike with its draconic essence, causing the target to take an additional 1d6 " & lowercase(tagnames[DamageType.?]) & " damage."]]></eval>
+    </thing>
+  <thing id="c5CRgrBndFaS" name="Bond of Fang and Scale" description="Your bond with your companion intensifies. When you summon your drake, choose whether it can now swim or fly. If you choose swimming, it gains a swimming speed equal to its walking speed and can breathe both air and water. If you choose flight, it grows wings and gains a flying speed equal to its walking speed.\n\nIn addition, while your drake is summoned, you and the drake have these benefits:\n\n{b}Drake Mount.{/b} The drake becomes Medium size. You can use the drake as a mount even if your size is Medium. But while you&apos;re riding it, it can’t use its flying speed if it has one.\n\n{b}Magic Fang.{/b} The drake’s Bite attack deals an additional 1d6 damage of the type chosen for the drake’s Draconic Essence.\n\n{b}Resistance.{/b} You gain resistance to the damage type chosen for the drake’s Draconic Essence." compset="ClSpecial">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CBndFngScl" name="Bond of Fang and Scale" description="When its summoner reaches Ranger level 7, it and this drake&apos;s bond intensifies. When the drake is summoned, the ranger chooses whether it can now swim or fly. If swimming is chosen, the drake gains a swimming speed equal to its walking speed and can breathe both air and water. If flight is chosen, the drake grows wings and gains a flying speed equal to its walking speed." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Swimming"/>
+    <arrayval field="usrArray" index="1" value="Flight"/>
+    <bootstrap thing="ra5CMMAmph">
+      <containerreq phase="First" priority="1000">fieldval:usrIndex = 0</containerreq>
+      <assignval field="abText" value="drake"/>
+      </bootstrap>
+    <bootstrap thing="xSwim">
+      <containerreq phase="First" priority="1000">fieldval:usrIndex = 0</containerreq>
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="1000">fieldval:usrIndex = 1</containerreq>
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <eval phase="PostAttr" priority="10009"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+if (field[usrIndex].value = 0) then
+    hero.childfound[xSwim].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xSwim].field[abValue].value)
+elseif (field[usrIndex].value = 1) then
+    hero.childfound[xFly].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xFly].field[abValue].value)
+endif]]></eval>
+    </thing>
+  <thing id="c5CRgrDrkBrt" name="Drake’s Breath" description="As an action, you can cause yourself or your drake to exhale a damaging breath weapon. Choose acid, cold, fire, lightning, or poison damage (this choice is agnostic of your drake’s Draconic Essence.) Each creature in a 30-foot cone must make a Dexterity save versus your spell save DC, taking 8d6 damage on a failure or half that on a success.\n\nThis damage increases to 10d6 when you reach 15th level in this class.\n\nOnce you use this feature, you can’t do so again until you complete a long rest. You can also spend a spell slot of 3rd level or higher to do it again." compset="ClSpecial" summary="You and your drake gain a breath weapon.">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="Final" priority="12000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+field[abDC].value = hero.childfound[cHelpRgr].field[cSplSaveDC].value
+
+field[abText].text = "8d6 damage"
+
+if (hero.tagcount[Classes.Ranger] > 14) then
+   field[abText].text = "10d6 damage"
+   endif]]></eval>
+    </thing>
+  <thing id="ra5CDrksBrth" name="Drake&apos;s Breath (Requires Ranger&apos;s Action)" description="The ranger that summoned the drake can use its action to cause the drake to exhale a damaging breath weapon. The ranger chooses acid, cold, fire, lightning, or poison damage (this choice is agnostic of the drake’s Draconic Essence.) Each creature in a 30-foot cone must make a Dexterity save versus the ranger&apos;s spell save DC, taking 8d6 damage on a failure or half that on a success.\n\nThis damage increases to 10d6 when the ranger reaches ranger level 15.\n\nOnce the ranger has used this feature, it can’t do so again until it completes a long rest or spends a spell slot of 3rd level or higher to do it again." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final" priority="50000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+field[abDC].value = hero.childfound[ra5CDrcEsnc].field[abValue3].value
+
+
+field[abText].text = "8d6 damage"
+
+if (hero.childfound[ra5CDrcEsnc].field[abValue5].value > 14) then
+   field[abText].text = "10d6 damage"
+   endif]]></eval>
+    </thing>
+  <thing id="c5CRgrPrfBnd" name="Perfected Bond" description="Your bond to your drake reaches the its zenith. While your drake is summoned, you and the drake gain these benefits:\n\n{b}Empowered Bite.{/b} The drake’s Bite attack deals another 1d6 damage of the type chosen for its Draconic Essence (total of 2d6 extra damage).\n\n{b}Large Drake.{/b} The drake becomes Large size. When you ride your drake, it can now use its flight speed if it has one.\n\n{b}Reflexive Resistance.{/b} When either you or the drake takes damage while you’re within 30 feet of each other, you can use your reaction to grant yourself or the drake resistance to that instance of damage." compset="ClSpecial" summary="Your draconic bond grants even more benefits.">
+    <bootstrap thing="ab5CRgrRflRes">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.Ranger > 14]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ab5CRgrRflRes" name="Reflexive Resistance" description="When either you or the drake takes damage while you’re within 30 feet of each other, you can use your reaction to grant yourself or the drake resistance to that instance of damage." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="ra5CRgrRflRes" name="Reflexive Resistance (Requires Ranger&apos;s Reaction)" description="When the drake takes damage while within 30 feet of each of the ranger that summoned it, the ranger can use its reaction to grant the drake resistance to that instance of damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="Final" priority="50000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+field[abDC].value = hero.childfound[ra5CDrcEsnc].field[abValue3].value
+
+
+field[abText].text = "8d6 damage"
+
+if (hero.childfound[ra5CDrcEsnc].field[abValue5].value > 14) then
+   field[abText].text = "10d6 damage"
+   endif]]></eval>
+    </thing>
+  </document>

@@ -268,4 +268,154 @@
   elseif (focus.tagis[Helper.Proficient] <> 0) then
     perform focus.assign[Helper.ProfDouble]
   endif]]></procedure>
+  <procedure id="5CShowSpls" context="pick"><![CDATA[~This procedure is called to make spells display as useable by spell slots when
+~They are added by something (feat, racial, etc.). They're usually usable as
+~#/Long Rest and described as also castable if you have the appropriate spell slots.
+
+~First we set each spell slot level as a variable
+
+var i1st as number
+var i2nd as number
+var i3rd as number
+var i4th as number
+var i5th as number
+var i6th as number
+var i7th as number
+var i8th as number
+var i9th as number
+
+
+~Then we test for whether they're a warlock, and adjust the variables for what they
+~can cast
+
+if (#levelcount[Warlock] >= 1) then
+  i1st += 1
+  if (#levelcount[Warlock] >= 9) then
+    i5th += 1
+    i4th += 1
+    i3rd += 1
+    i2nd += 1
+  elseif (#levelcount[Warlock] >= 7) then
+    i4th += 1
+    i3rd += 1
+    i2nd += 1
+  elseif (#levelcount[Warlock] >= 5) then
+    i3rd += 1
+    i2nd += 1
+  elseif (#levelcount[Warlock] >= 3) then
+    i2nd += 1
+    endif
+  endif
+
+
+~Then we test standard spell slots, again adjusting for what we have available
+~Since upcasting is a thing, we just need to test for the highest
+
+if (hero.childfound[SlotHold9].field[MaxAllow].value > 0) then
+  i9th += 1
+  i8th += 1
+  i7th += 1
+  i6th += 1
+  i5th += 1
+  i4th += 1
+  i3rd += 1
+  i2nd += 1
+  i1st += 1
+elseif (hero.childfound[SlotHold8].field[MaxAllow].value > 0) then
+  i8th += 1
+  i7th += 1
+  i6th += 1
+  i5th += 1
+  i4th += 1
+  i3rd += 1
+  i2nd += 1
+  i1st += 1
+elseif (hero.childfound[SlotHold7].field[MaxAllow].value > 0) then
+  i7th += 1
+  i6th += 1
+  i5th += 1
+  i4th += 1
+  i3rd += 1
+  i2nd += 1
+  i1st += 1
+elseif (hero.childfound[SlotHold6].field[MaxAllow].value > 0) then
+  i6th += 1
+  i5th += 1
+  i4th += 1
+  i3rd += 1
+  i2nd += 1
+  i1st += 1
+elseif (hero.childfound[SlotHold5].field[MaxAllow].value > 0) then
+  i5th += 1
+  i4th += 1
+  i3rd += 1
+  i2nd += 1
+  i1st += 1
+elseif (hero.childfound[SlotHold4].field[MaxAllow].value > 0) then
+  i4th += 1
+  i3rd += 1
+  i2nd += 1
+  i1st += 1
+elseif (hero.childfound[SlotHold3].field[MaxAllow].value > 0) then
+  i3rd += 1
+  i2nd += 1
+  i1st += 1
+elseif (hero.childfound[SlotHold2].field[MaxAllow].value > 0) then
+  i2nd += 1
+  i1st += 1
+elseif (hero.childfound[SlotHold1].field[MaxAllow].value > 0) then
+  i1st += 1
+endif
+
+
+~Then we roll through the variables. If they're > 0, that means we have a spell slot
+~We already added the Custom.OnlyIfCaster# when the spell was bootstrapped to the 
+~thing that gave the spell. We delete the [Hide.Spell] tag that was also already added
+~with the bootstrap. Now the spell will show up as castable with slots.
+
+if (i1st > 0) then
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster1"
+  perform eachpick.delete[Hide.Spell]
+  nexteach
+  endif
+if (i2nd > 0) then
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster2"
+  perform eachpick.delete[Hide.Spell]
+  nexteach
+  endif
+if (i3rd > 0) then
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster3"
+  perform eachpick.delete[Hide.Spell]
+  nexteach
+  endif
+if (i4th > 0) then
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster4"
+  perform eachpick.delete[Hide.Spell]
+  nexteach
+  endif
+if (i5th > 0) then
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster5"
+  perform eachpick.delete[Hide.Spell]
+  nexteach
+  endif
+if (i6th > 0) then
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster6"
+  perform eachpick.delete[Hide.Spell]
+  nexteach
+  endif
+if (i7th > 0) then
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster7"
+  perform eachpick.delete[Hide.Spell]
+  nexteach
+  endif
+if (i8th > 0) then
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster8"
+  perform eachpick.delete[Hide.Spell]
+  nexteach
+  endif
+if (i9th > 0) then
+foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster9"
+  perform eachpick.delete[Hide.Spell]
+  nexteach
+  endif]]></procedure>
   </document>

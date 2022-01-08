@@ -1671,11 +1671,88 @@ perform field[usrChosen1].chosen.assign[Hide.Language]
 
 hero.childfound[cfg5CTashVar].field[cfgLaMax1].value += 1</eval>
     </thing>
-  <thing id="rc5CRFVArms" name="Replace Armor, Weapon, and Tool Proficiencies" description="You can replace armor, weapon, and tool proficiencies following this table:\n{font Courier New}\n{b}Proficiency         Replacement Proficiency{/b}\n{back FFFFFF}Armor               Simple/martial weapon or tool\n{back 010101}Simple weapon       Simple weapon or tool\n{back FFFFFF}Martial weapon      Simple/martial weapon or tool\n{back 010101}Tool                Simple weapon or tool{revert}\n\n\n\nNEED TO ADD A THING THAT ALLOWS YOU TO KEEP YOUR ARMOR PROFICIENCY WHILE REPLACING THE OTHERS FOR AT LEAST HOBGOBLIN" compset="RaceCustom" summary="Replace racial armor, weapon, and tool proficiencies." uniqueness="unique">
-    <tag group="abCategory" tag="5CRFV"/>
+  <thing id="rc5CRFVArms" name="Replace Armor, Weapon, and Tool Proficiencies" description="You can replace armor, weapon, and tool proficiencies following this table:\n{font Courier New}\n{b}Proficiency         Replacement Proficiency{/b}\n{back FFFFFF}Armor               Simple/martial weapon or tool\n{back 010101}Simple weapon       Simple weapon or tool\n{back FFFFFF}Martial weapon      Simple/martial weapon or tool\n{back 010101}Tool                Simple weapon or tool{revert}" compset="RaceCustom" summary="Replace racial armor, weapon, and tool proficiencies." uniqueness="unique">
+    <comment>NEED TO ADD A THING THAT ALLOWS YOU TO KEEP YOUR ARMOR PROFICIENCY WHILE REPLACING THE OTHERS FOR AT LEAST HOBGOBLIN</comment>
     <tag group="Helper" tag="Quaternary"/>
     <tag group="Helper" tag="SpecUp"/>
     <tag group="Helper" tag="UserAdjust"/>
+    <tag group="abCategory" tag="5CRFV"/>
+    <eval phase="Final" priority="51000" index="3">Var Totes as number
+Totes = field[abValue].value + field[abValue2].value
+
+var STleft as number
+STleft = Totes-hero.childfound[cfg5CTashVar].field[cfgRcSpen1].value-hero.childfound[cfg5CTashVar].field[cfgRcSpen2].value-hero.childfound[cfg5CTashVar].field[cToolCur].value
+hero.childfound[cfg5CTashVar].field[cfgRcLeft1].value = STleft
+hero.childfound[cfg5CTashVar].field[cToolMax].value = STleft + hero.childfound[cfg5CTashVar].field[cToolCur].value
+
+var Mleft as number
+Mleft = field[abValue2].value - hero.childfound[cfg5CTashVar].field[cfgRcSpen2].value
+
+hero.childfound[cfg5CTashVar].field[cfgRcLeft2].value = minimum(STleft,Mleft)</eval>
+    <eval phase="Final" priority="500" index="2"><![CDATA[
+Var Totes as number
+Totes = field[abValue].value + field[abValue2].value
+
+if (Totes > 0) then
+
+hero.childfound[cfg5CTashVar].field[cfgRcObj1].text = "Simple Weapon Proficiencies"
+hero.childfound[cfg5CTashVar].field[cfgRcAllo1].text = "abCategory.5CRFVSmpW"
+hero.childfound[cfg5CTashVar].field[cfgRcMax1].value = Totes
+
+perform hero.childfound[cfg5CTashVar].assign[AllowTool1.Any]
+hero.childfound[cfg5CTashVar].field[cToolMax].value = Totes
+
+hero.childfound[cfg5CTashVar].field[cfgRcObj2].text = "Martial Weapon Proficiencies"
+hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text = "abCategory.5CRFVMrtW"
+hero.childfound[cfg5CTashVar].field[cfgRcMax2].value = field[abValue2].value
+endif
+
+~need to add armor to the martial express if Hobgob, Mount Dwarf, or Githyanki
+~do a doneif any are present, otherwise add the thingid.___ of our "keep armor"]]></eval>
+    <eval phase="First" priority="9000" index="4"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+var iL as number
+var iM as number
+var iH as number
+var iS as number
+
+foreach pick in hero from BaseRace
+   iL += eachpick.tagcount[ArmProfGrp.ArmorLight]
+   iM += eachpick.tagcount[ArmProfGrp.ArmorMed]
+   iH += eachpick.tagcount[ArmProfGrp.ArmorHeavy]
+   iS += eachpick.tagcount[ArmProfGrp.Shields]
+   nexteach
+
+foreach pick in hero from SubRace
+   iL += eachpick.tagcount[ArmProfGrp.ArmorLight]
+   iM += eachpick.tagcount[ArmProfGrp.ArmorMed]
+   iH += eachpick.tagcount[ArmProfGrp.ArmorHeavy]
+   iS += eachpick.tagcount[ArmProfGrp.Shields]
+   nexteach
+
+foreach pick in hero from RaceAbil
+   iL += eachpick.tagcount[ArmProfGrp.ArmorLight]
+   iM += eachpick.tagcount[ArmProfGrp.ArmorMed]
+   iH += eachpick.tagcount[ArmProfGrp.ArmorHeavy]
+   iS += eachpick.tagcount[ArmProfGrp.Shields]
+   nexteach
+
+   field[abValue3].value = iL
+   field[abValue4].value = iM
+   field[abValue5].value = iH
+   field[abText].text = iS]]></eval>
+    <eval phase="Final" priority="1000" index="5"><![CDATA[if (field[abValue3].value > 0) then
+   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmL"
+   endif
+if (field[abValue4].value > 0) then
+   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmM"
+   endif
+if (field[abValue5].value > 0) then
+   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmH"
+   endif
+if (field[abText].text > 0) then
+   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmS"
+   endif]]></eval>
     <eval phase="First" priority="10000"><![CDATA[var Smp as number
 var Mrt as number
 
@@ -1765,82 +1842,6 @@ if (hero.childlives[ra5CMarTra] <> 0) then
 
 field[abValue].value = Smp
 field[abValue2].value = Mrt]]></eval>
-    <eval phase="Final" priority="51000" index="3">Var Totes as number
-Totes = field[abValue].value + field[abValue2].value
-
-var STleft as number
-STleft = Totes-hero.childfound[cfg5CTashVar].field[cfgRcSpen1].value-hero.childfound[cfg5CTashVar].field[cfgRcSpen2].value-hero.childfound[cfg5CTashVar].field[cToolCur].value
-hero.childfound[cfg5CTashVar].field[cfgRcLeft1].value = STleft
-hero.childfound[cfg5CTashVar].field[cToolMax].value = STleft + hero.childfound[cfg5CTashVar].field[cToolCur].value
-
-var Mleft as number
-Mleft = field[abValue2].value - hero.childfound[cfg5CTashVar].field[cfgRcSpen2].value
-
-hero.childfound[cfg5CTashVar].field[cfgRcLeft2].value = minimum(STleft,Mleft)</eval>
-    <eval phase="Final" priority="500" index="2"><![CDATA[
-Var Totes as number
-Totes = field[abValue].value + field[abValue2].value
-
-if (Totes > 0) then
-
-hero.childfound[cfg5CTashVar].field[cfgRcObj1].text = "Simple Weapon Proficiencies"
-hero.childfound[cfg5CTashVar].field[cfgRcAllo1].text = "abCategory.5CRFVSmpW"
-hero.childfound[cfg5CTashVar].field[cfgRcMax1].value = Totes
-
-perform hero.childfound[cfg5CTashVar].assign[AllowTool1.Any]
-hero.childfound[cfg5CTashVar].field[cToolMax].value = Totes
-
-hero.childfound[cfg5CTashVar].field[cfgRcObj2].text = "Martial Weapon Proficiencies"
-hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text = "abCategory.5CRFVMrtW"
-hero.childfound[cfg5CTashVar].field[cfgRcMax2].value = field[abValue2].value
-endif
-
-~need to add armor to the martial express if Hobgob, Mount Dwarf, or Githyanki
-~do a doneif any are present, otherwise add the thingid.___ of our "keep armor"]]></eval>
-    <eval phase="First" priority="9000" index="4"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
-
-var iL as number
-var iM as number
-var iH as number
-var iS as number
-
-foreach pick in hero from BaseRace
-   iL += eachpick.tagcount[ArmProfGrp.ArmorLight]
-   iM += eachpick.tagcount[ArmProfGrp.ArmorMed]
-   iH += eachpick.tagcount[ArmProfGrp.ArmorHeavy]
-   iS += eachpick.tagcount[ArmProfGrp.Shields]
-   nexteach
-
-foreach pick in hero from SubRace
-   iL += eachpick.tagcount[ArmProfGrp.ArmorLight]
-   iM += eachpick.tagcount[ArmProfGrp.ArmorMed]
-   iH += eachpick.tagcount[ArmProfGrp.ArmorHeavy]
-   iS += eachpick.tagcount[ArmProfGrp.Shields]
-   nexteach
-
-foreach pick in hero from RaceAbil
-   iL += eachpick.tagcount[ArmProfGrp.ArmorLight]
-   iM += eachpick.tagcount[ArmProfGrp.ArmorMed]
-   iH += eachpick.tagcount[ArmProfGrp.ArmorHeavy]
-   iS += eachpick.tagcount[ArmProfGrp.Shields]
-   nexteach
-
-   field[abValue3].value = iL
-   field[abValue4].value = iM
-   field[abValue5].value = iH
-   field[abText].text = iS]]></eval>
-    <eval phase="Final" priority="1000" index="5"><![CDATA[if (field[abValue3].value > 0) then
-   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmL"
-   endif
-if (field[abValue4].value > 0) then
-   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmM"
-   endif
-if (field[abValue5].value > 0) then
-   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmH"
-   endif
-if (field[abText].text > 0) then
-   hero.childfound[cfg5CTashVar].field[cfgRcAllo2].text &= " | thingid.rc5CRFVArmS"
-   endif]]></eval>
     </thing>
   <thing id="rc5CRFVSmpW" name="Martial Weapon Proficiency" description="Choose a martial weapon to become proficient with." compset="RaceCustom">
     <fieldval field="usrCandid1" value="component.BaseWep &amp; (wProfReq.Martial) &amp; !Helper.Helper &amp; !component.BaseMagicI &amp; !thingid.w5CSpellAt "/>

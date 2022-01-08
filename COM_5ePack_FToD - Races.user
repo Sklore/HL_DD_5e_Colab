@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CMDrgbrn" name="Metallic Dragonborn" compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eFFToD"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ra5CNewBrWp">
+      <assignval field="abText2" value="15-foot cone"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDrgMetAn"></bootstrap>
+    <bootstrap thing="ra5CNewDrRs"></bootstrap>
+    <bootstrap thing="ra5CMetBrWep"></bootstrap>
+    <eval phase="First">perform hero.childfound[ra5CDrgMetAn].setfocus
+
+if (focus.field[usrIndex].value = 0) then
+   perform assign[DamageType.dtFire]
+   perform assign[DamageRes.dtFire]
+elseif (focus.field[usrIndex].value = 1) then
+   perform assign[DamageType.dtLightnin]
+   perform assign[DamageRes.dtLightnin]
+elseif (focus.field[usrIndex].value = 2) then
+   perform assign[DamageType.dtAcid]
+   perform assign[DamageRes.dtAcid]
+elseif (focus.field[usrIndex].value = 3) then
+   perform assign[DamageType.dtFire]
+   perform assign[DamageRes.dtFire]
+elseif (focus.field[usrIndex].value = 4) then
+   perform assign[DamageType.dtCold]
+   perform assign[DamageRes.dtCold]
+endif</eval>
+    </thing>
+  <thing id="ra5CDrgMetAn" name="Metallic Ancestry" description="You have a metallic dragon ancestor. Choose which kind of dragon from the table below. This also determines the damage type for your other traits.\n\n{font Courier New}{b}Dragon    Damage Type{/b}\n{back FFFFFF}Brass     Fire\n{back 010101}Bronze    Lightning\n{back FFFFFF}Copper    Acid\n{back 010101}Gold      Fire\n{back FFFFFF}Silver    Cold\n{back 010101}" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Brass"/>
+    <arrayval field="usrArray" index="1" value="Bronze"/>
+    <arrayval field="usrArray" index="2" value="Copper"/>
+    <arrayval field="usrArray" index="3" value="Gold"/>
+    <arrayval field="usrArray" index="4" value="Silver"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CNewBrWp" name="Breath Weapon" description="When you take the attack action on your turn, you can replace one of the attacks with a magical breath weapon. Each creature in a [abText2] must make a Dexterity save (DC = 8 + your proficiency bonus + your Constitution modifer). A creature takes 1d10 damage on a failure or half that on a success. The damage type is determined by your ancestry.\n\nThe damage increases by 1d10 when you reach 5th level (2d10), 11th level (3d10), and 17th level (4d10).\n\nYou can use this attack a number of times equal to your proficiency bonus, and you regain all spent uses of it when you complete a long rest." compset="RaceSpec">
+    <fieldval field="abValue2" value="10"/>
+    <fieldval field="abValue" value="1"/>
+    <tag group="StandardDC" tag="aCON" name="Constitution" abbrev="Constitution"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
+    <tag group="abSave" tag="aDEX"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      if (#totallevelcount[] > 16) then
+        field[abValue].value += 3
+      elseif (#totallevelcount[] > 10) then
+        field[abValue].value += 2
+      elseif (#totallevelcount[] > 4) then
+        field[abValue].value += 1
+        endif
+
+      field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    <eval phase="First" priority="6000" index="3"><![CDATA[
+      perform root.pulltags[DamageType.?]
+
+field[CustDesc].text = "When you take the attack action on your turn, you can replace one of the attacks with a magical breath weapon. Each creature in a " & field[abText2].text & " must make a Dexterity save (DC = 8 + your proficiency bonus + your Constitution modifer). A creature takes 1d10 " & lowercase(tagnames[DamageType.?]) & " damage on a failure or half that on a success. \nThe damage increases by 1d10 when you reach 5th level (2d10), 11th level (3d10), and 17th level (4d10).\nYou can use this attack a number of times equal to your proficiency bonus, and you regain all spent uses of it when you complete a long rest."]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[
+      ~need to put the damage up front
+      field[abText].text = field[abValue].value & "d" & field[abValue2].value & " " & lowercase(tagnames[DamageType.?]) & ", " & field[abText2].text]]></eval>
+    </thing>
+  <thing id="ra5CNewDrRs" name="Draconic Resistance" description="Due to your ancestry, you have resistance to [abText] damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="First" priority="6000"><![CDATA[
+      perform root.pulltags[DamageType.?]
+
+field[CustDesc].text = "Due to your ancestry, you have resistance to " & lowercase(tagnames[DamageType.?]) & " damage."
+
+      field[abText].text = tagnames[DamageType.?]]]></eval>
+    </thing>
+  <thing id="r5CGDrgbrn" name="Gem Dragonborn" compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eFFToD"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ra5CNewBrWp">
+      <assignval field="abText2" value="15-foot cone"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDrgGemAn"></bootstrap>
+    <bootstrap thing="ra5CNewDrRs"></bootstrap>
+    <bootstrap thing="ra5CGDrgPsi"></bootstrap>
+    <bootstrap thing="ra5CGemFlght"></bootstrap>
+    <eval phase="First">perform hero.childfound[ra5CDrgGemAn].setfocus
+
+
+if (focus.field[usrIndex].value = 0) then
+   perform assign[DamageType.dtForce]
+   perform assign[DamageRes.dtForce]
+elseif (focus.field[usrIndex].value = 1) then
+   perform assign[DamageType.dtRadiant]
+   perform assign[DamageRes.dtRadiant]
+elseif (focus.field[usrIndex].value = 2) then
+   perform assign[DamageType.dtPsychic]
+   perform assign[DamageRes.dtPsychic]
+elseif (focus.field[usrIndex].value = 3) then
+   perform assign[DamageType.dtThunder]
+   perform assign[DamageRes.dtThunder]
+elseif (focus.field[usrIndex].value = 4) then
+   perform assign[DamageType.dtNecrotic]
+   perform assign[DamageRes.dtNecrotic]
+endif</eval>
+    </thing>
+  <thing id="ra5CDrgGemAn" name="Gem Ancestry" description="You have a gem dragon ancestor. Choose which kind of dragon from the table below. This also determines the damage type for your other traits.\n\n{font Courier New}{b}Dragon    Damage Type{/b}\n{back FFFFFF}Amethyst  Force\n{back 010101}Crystal   Radiant\n{back FFFFFF}Emerald   Psychic\n{back 010101}Sapphire  Thunder\n{back FFFFFF}Topaz     Necrotic\n{back 010101}" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Amethyst"/>
+    <arrayval field="usrArray" index="1" value="Crystal"/>
+    <arrayval field="usrArray" index="2" value="Emerald"/>
+    <arrayval field="usrArray" index="3" value="Sapphire"/>
+    <arrayval field="usrArray" index="4" value="Topaz"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="r5CCDrgbrn" name="Chromatic Dragonborn" compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eFFToD"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ra5CNewBrWp">
+      <assignval field="abText2" value="30 by 5 foot line"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDrgChrAn"></bootstrap>
+    <bootstrap thing="ra5CNewDrRs"></bootstrap>
+    <bootstrap thing="ra5CChrmWrd"></bootstrap>
+    <eval phase="First">perform hero.childfound[ra5CDrgChrAn].setfocus
+
+
+if (focus.field[usrIndex].value = 0) then
+   perform assign[DamageType.dtAcid]
+   perform assign[DamageRes.dtAcid]
+elseif (focus.field[usrIndex].value = 1) then
+   perform assign[DamageType.dtLightnin]
+   perform assign[DamageRes.dtLightnin]
+elseif (focus.field[usrIndex].value = 2) then
+   perform assign[DamageType.dtPoison]
+   perform assign[DamageRes.dtPoison]
+elseif (focus.field[usrIndex].value = 3) then
+   perform assign[DamageType.dtFire]
+   perform assign[DamageRes.dtFire]
+elseif (focus.field[usrIndex].value = 4) then
+   perform assign[DamageType.dtCold]
+   perform assign[DamageRes.dtCold]
+endif</eval>
+    </thing>
+  <thing id="ra5CDrgChrAn" name="Chromatic Ancestry" description="You have a chromatic dragon ancestor. Choose which kind of dragon from the table below. This also determines the damage type for your other traits.\n\n{font Courier New}{b}Dragon    Damage Type{/b}\n{back FFFFFF}Black     Acid\n{back 010101}Blue      Lightning\n{back FFFFFF}Green     Poison\n{back 010101}Red       Fire\n{back FFFFFF}White     Cold\n{back 010101}" compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Black"/>
+    <arrayval field="usrArray" index="1" value="Blue"/>
+    <arrayval field="usrArray" index="2" value="Green"/>
+    <arrayval field="usrArray" index="3" value="Red"/>
+    <arrayval field="usrArray" index="4" value="White"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CChrmWrd" name="Chromatic Warding" description="Beginning at 5th level, you can use an action to become immune to [damagetype] damage for 1 minute. Once you&apos;ve used this ability, you cannot do so again until you complete a long rest." compset="RaceSpec">
+    <comment>uses Helper.Disable to prevent it being active until 5th level. If you need to disable it later, apply Helper.Disable again to it after First 500.</comment>
+    <fieldval field="actName" value="Activated (1 minute)"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="Disable"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="First" priority="500"><![CDATA[
+      perform root.pulltags[DamageType.?]
+
+field[CustDesc].text = "Beginning at 5th level, you can use an action to become immune to " & lowercase(tagnames[DamageType.?]) & " damage for 1 minute. Once you've used this ability, you cannot do so again until you complete a long rest."
+
+      doneif (hero.tagcount[Classes.?] < 5)
+
+      perform assign[Helper.ShowSpec]
+      perform delete[Helper.Disable]
+
+      field[abText].text = tagnames[DamageType.?] & ", 1 minute"
+
+      if (field[abilActive].value <> 0) then
+         perform root.pushtags[DamageType.?,DamageImm]
+         endif]]></eval>
+    </thing>
+  <thing id="ra5CGDrgPsi" name="Psionic Mind" description="You can send telepathic messages to any creature visible to and within 30 feet of you. You don&apos;t need to share a language with the creature, but the creature must capable of understanding at least one language." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    </thing>
+  <thing id="ra5CGemFlght" name="Gem Flight" description="At 5th level, you can use a bonus action to temporarily summon spectral wings. For 1 minute, you gain a flying speed equal to your walking speed and can hover. Once you have used this ability, you can&apos;t do so again until you complete a long rest." compset="RaceSpec">
+    <comment>uses Helper.Disable to prevent it being active until 5th level. If you need to disable it later, apply Helper.Disable again to it after First 500.</comment>
+    <fieldval field="actName" value="Activated (1 minute)"/>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="Disable"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="1"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    <eval phase="First" priority="500"><![CDATA[
+
+
+      doneif (hero.tagcount[Classes.?] < 5)
+
+      perform assign[Helper.ShowSpec]
+      perform delete[Helper.Disable]
+
+      field[abText].text = "1 minute"]]></eval>
+    <eval phase="Final" priority="10001" index="2"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[xFly].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xFly].field[abValue].value)]]></eval>
+    </thing>
+  <thing id="ra5CMetBrWep" name="Metallic Breath Weapon" description="At 5th level, you gain an additional breath weapon. When you use the Attack action on your turn, you can replace one of your attacks with it. Each creature in a 15-foot cone must make a save (DC 8 + your Constitution modifier + your proficiency bonus). When you do so, choose which effect:\n\n{b}Enervating Breath.{/b} Each creature must succeed on a Constitution save or become incapacitated until the beginning of your next turn.\n\n{b}Repulsion Breath.{/b} Each creature must succeed on a Strength save or be pushed 20 feet away, knocked prone.\n\nOnce you have used this Metallic Breath Weapon, you must complete a long rest before doing so again." compset="RaceSpec">
+    <comment>uses Helper.Disable to prevent it being active until 5th level. If you need to disable it later, apply Helper.Disable again to it after First 500.</comment>
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="Helper" tag="Disable"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="1"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    <eval phase="First" priority="500"><![CDATA[
+
+
+      doneif (hero.tagcount[Classes.?] < 5)
+
+      perform assign[Helper.ShowSpec]
+      perform delete[Helper.Disable]]]></eval>
+    </thing>
+  </document>
