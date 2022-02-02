@@ -941,12 +941,9 @@ endif]]></eval>
     <tag group="OthAdjCat" tag="UserBot3rd"/>
     <tag group="Helper" tag="AdjInfo"/>
     <tag group="SpInfo" tag="spMageArmo"/>
-    <eval phase="PreAttr"><![CDATA[
-      ~ If we're not enabled, get out now
-      doneif (field[pIsOn].value = 0)
-      doneif (hero.tagcount[Hero.EquipArmor] <> 0)
-
-      hero.childfound[ArmorClass].field[tACBase].value = 13]]></eval>
+    <bootstrap thing="c5CAdjMgArm">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
     </thing>
   <thing id="pHd5CSpls" name="Specific Spells" compset="InPlay" uniqueness="unique" isshowonly="yes">
     <tag group="OthAdjCat" tag="UserBot3rd"/>
@@ -1601,32 +1598,6 @@ hero.findchild[TempHpPool,"Value.14"].field[thpMaxAllw].value = 12]]></eval>
          field[pMaximum].value = 995
       endif]]></eval>
     </thing>
-  <thing id="rSULTstVis" name="Vision Test" compset="Race">
-    <fieldval field="rHitDice" value="16"/>
-    <fieldval field="rHPStart" value="184"/>
-    <fieldval field="rCR" value="10"/>
-    <fieldval field="rMultiatt" value="The froghemoth makes two attacks with its tentacles. It can also use its tongue or bite. "/>
-    <fieldval field="rSTR" value="13"/>
-    <fieldval field="rDEX" value="3"/>
-    <fieldval field="rCON" value="10"/>
-    <fieldval field="rINT" value="-8"/>
-    <fieldval field="rWIS" value="2"/>
-    <fieldval field="rCHA" value="-5"/>
-    <fieldval field="rAC" value="3"/>
-    <tag group="DamageRes" tag="dtLightnin" name="Lightning" abbrev="Lightning"/>
-    <tag group="ProfDouble" tag="skPercep" name="Perception" abbrev="Perception"/>
-    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
-    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
-    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
-    <tag group="RaceSize" tag="Huge2" name="Huge" abbrev="Huge"/>
-    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
-    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
-    <tag group="DamageRes" tag="dtFire" name="Fire" abbrev="Fire"/>
-    <bootstrap thing="tpMonstros"></bootstrap>
-    <bootstrap thing="xTremorsen">
-      <autotag group="Value" tag="7"/>
-      </bootstrap>
-    </thing>
   <thing id="5CBlndBeyo" name="Blind beyond radius" compset="Simple"></thing>
   <thing id="5CNBlndBey" name="Not blind beyond radius" compset="Simple"></thing>
   <thing id="p5CAttrSwp" name="Ability Score (Swap)" description="Select this adjustment to subtract the chosen amount from one score and add it to another. This is useful for Tasha&apos;s variant features. Choose the score to decrement in the first drop-down and the score to increment in the second, and select the number of points to move." compset="InPlay">
@@ -1839,52 +1810,7 @@ field[pChosen].chosen.field[rHitDice].value += field[pAdjust].value</eval>
     <tag group="Custom" tag="5CWildshap" name="Wildshape" abbrev="Wildshape"/>
     <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
     <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
-    <eval phase="PreLevel" priority="10000" index="3"><![CDATA[    ~ If we're not enabled, get out now
-    doneif (field[pIsOn].value = 0)
-    doneif (hero.tagis[system_tag.minion] = 0)
-
-    ~ Get list of Proficient Skills from minion and save them for later
-    field[abText].text = hero.tagids[ProfSkill.?," | "]
-
-    ~ Get list of Proficient Skills from minion and save them for later
-    field[abText2].text = hero.tagids[ProfSave.?," | "]
-
-    ~ Pull proficient skill tags from Master and push to minion
-    perform master.hero.pulltags[ProfSkill.?]
-    perform hero.pushtags[ProfSkill.?]
-
-    ~ Pull proficient save tags from Master and push to minion
-    perform master.hero.pulltags[ProfSave.?]
-    perform hero.pushtags[ProfSave.?]
-
-    ~ Clear all tags from ourself
-    perform delete[ProfSave.?]
-    perform delete[ProfSkill.?]]]></eval>
-    <eval phase="PostAttr" priority="10000"><![CDATA[    ~ If we're not enabled, get out now
-    doneif (field[pIsOn].value = 0)
-    doneif (hero.tagis[system_tag.minion] = 0)
-
-   ~ Set Wild Shape creature's Intelligence
-
-    hero.child[aINT].field[aFinalVal].value = master.child[aINT].field[aFinalVal].value
-    hero.child[aINT].field[aModBonus].value = master.child[aINT].field[aModBonus].value
-
-    ~ Set Wild Shape creature's Wisdom
-    hero.child[aWIS].field[aFinalVal].value = master.child[aWIS].field[aFinalVal].value
-    hero.child[aWIS].field[aModBonus].value = master.child[aWIS].field[aModBonus].value
-
-    ~ Set Wild Shape creature's Charisma
-    hero.child[aCHA].field[aFinalVal].value = master.child[aCHA].field[aFinalVal].value
-    hero.child[aCHA].field[aModBonus].value = master.child[aCHA].field[aModBonus].value
-
-    ~ Intelligence saves
-    hero.child[svINT].field[svAttr].value = master.child[aINT].field[aModBonus].value
-
-    ~ Wisdom saves
-    hero.child[svWIS].field[svAttr].value = master.child[aWIS].field[aModBonus].value
-
-    ~ Charisma saves
-    hero.child[svCHA].field[svAttr].value = master.child[aCHA].field[aModBonus].value]]></eval>
+    <tag group="Custom" tag="NoMonk"/>
     <eval phase="Final" priority="28000" index="2"><![CDATA[    ~ If we're not enabled, get out now
     doneif (field[pIsOn].value = 0)
     doneif (hero.tagis[system_tag.minion] = 0)
@@ -1932,6 +1858,52 @@ debug "we're proficient"
       perform assign[Helper.SpecUp]
       perform delete[Helper.ShowSpec]
       nexteach]]></eval>
+    <eval phase="PreLevel" priority="10000" index="3"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+    doneif (hero.tagis[system_tag.minion] = 0)
+
+    ~ Get list of Proficient Skills from minion and save them for later
+    field[abText].text = hero.tagids[ProfSkill.?," | "]
+
+    ~ Get list of Proficient Skills from minion and save them for later
+    field[abText2].text = hero.tagids[ProfSave.?," | "]
+
+    ~ Pull proficient skill tags from Master and push to minion
+    perform master.hero.pulltags[ProfSkill.?]
+    perform hero.pushtags[ProfSkill.?]
+
+    ~ Pull proficient save tags from Master and push to minion
+    perform master.hero.pulltags[ProfSave.?]
+    perform hero.pushtags[ProfSave.?]
+
+    ~ Clear all tags from ourself
+    perform delete[ProfSave.?]
+    perform delete[ProfSkill.?]]]></eval>
+    <eval phase="PostAttr" priority="10000"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+    doneif (hero.tagis[system_tag.minion] = 0)
+
+   ~ Set Wild Shape creature's Intelligence
+
+    hero.child[aINT].field[aFinalVal].value = master.child[aINT].field[aFinalVal].value
+    hero.child[aINT].field[aModBonus].value = master.child[aINT].field[aModBonus].value
+
+    ~ Set Wild Shape creature's Wisdom
+    hero.child[aWIS].field[aFinalVal].value = master.child[aWIS].field[aFinalVal].value
+    hero.child[aWIS].field[aModBonus].value = master.child[aWIS].field[aModBonus].value
+
+    ~ Set Wild Shape creature's Charisma
+    hero.child[aCHA].field[aFinalVal].value = master.child[aCHA].field[aFinalVal].value
+    hero.child[aCHA].field[aModBonus].value = master.child[aCHA].field[aModBonus].value
+
+    ~ Intelligence saves
+    hero.child[svINT].field[svAttr].value = master.child[aINT].field[aModBonus].value
+
+    ~ Wisdom saves
+    hero.child[svWIS].field[svAttr].value = master.child[aWIS].field[aModBonus].value
+
+    ~ Charisma saves
+    hero.child[svCHA].field[svAttr].value = master.child[aCHA].field[aModBonus].value]]></eval>
     <exprreq message="Must be a minion"><![CDATA[tagis[system_tag.minion] <> 0]]></exprreq>
     <prereq message="Requires Wild Shape">
       <validate><![CDATA[@valid = 0
@@ -2175,5 +2147,31 @@ perform hero.pushtags[HideDeiCat.?]</eval>
           perform eachpick.assign[Helper.ProfDouble]
           nexteach
         endif]]></eval>
+    </thing>
+  <thing id="c5CAdjMgArm" name="Mage Armor" compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abBaseAC" value="13"/>
+    <tag group="CalcAC" tag="DexMod"/>
+    <tag group="Helper" tag="ArmorClass"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="CalcAC" tag="Shield"/>
+    </thing>
+  <thing id="p5COthrFam" name="Other Familiar/Ranger Companion" description="Adding this adjustment to a familiar or ranger&apos;s animal companion will allow you to select any creature as its race. Once it has been added, the race drop-down on the Minion tab will be populated with every monster available based on your selected sources.\n\n{b}Hero Lab Notes:{/b} Check with your DM before adding this, as this is not supported by the rules as written." compset="InPlay">
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
+    <tag group="OthAdjCat" tag="UserBot6th"/>
+    <tag group="Helper" tag="AdjNoPlus" name="AdjNoPlus" abbrev="AdjNoPlus"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <bootstrap thing="cTstRcPull"></bootstrap>
+    <eval phase="PostAttr" priority="11001"><![CDATA[doneif (field[pIsOn].value = 0)
+
+hero.childfound[Totals].field[tRaceExpr].text = "component.BaseRace & RaceType.NPC"]]></eval>
+    <prereq message="Must be a familiar or animal companion">
+      <validate>@valid = 0
+
+doneif (tagis[system_tag.minion] = 0)
+doneif (hero.tagcount[CompIs.Familiar] = 0)
+
+@valid = 1</validate>
+      </prereq>
     </thing>
   </document>
