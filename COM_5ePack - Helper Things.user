@@ -1,6 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
   <loadonce key="COM_5ePack - Helper Things"/>
+  <procedure id="5CRcSplHd" scripttype="eval"><![CDATA[
+    var attacks as number
+    var saves as number
+    var defheader as string
+
+
+    ~First, we make sure our focus is set to our root, and that we can get our info from it
+    perform state.clearfocus
+    if (isroot <> 0) then
+      if (root.tagis[component.RaceSplCst] <> 0) then
+        perform root.setfocus
+      else
+        perform hero.findchild[BaseRace].setfocus
+        endif
+      endif
+
+    if (state.isfocus <> 0) then
+
+      ~Go looking for our header, if it's not already set
+      if (field[CustDesc].isempty <> 0) then
+
+        ~Check the race
+        if (focus.field[rSplHead].isempty = 0) then
+          field[CustDesc].text = focus.field[rSplHead].text
+        else
+
+          ~Use the default we were sent
+          field[CustDesc].text = defheader
+          endif
+        endif
+
+      ~By default, the header uses the race name in its text. If we want
+      ~ something else, we set that in abText
+      var name as string
+      if (field[abText].isempty = 0) then
+        name = field[abText].text
+      else
+        name = focus.field[name].text
+        name = lowercase(name)
+        name = "The " & name
+        endif
+
+      var lev as number
+      lev = focus.field[rSpCastLev].value
+
+      ~Spellcasting attribute name
+      var aname as string
+      if (focus.islinkage[castattr] <> 0) then
+        aname = focus.linkage[castattr].field[name].text
+      else
+        aname = "Intelligence"
+        endif
+
+      var class as string
+      class = lowercase(focus.tagnames[sClass.cHelp?,"/"])
+
+      ~And now spell stats, DC and attack bonus
+      var dc as number
+      var atk as number
+      var splstats as string
+      dc = focus.field[rSpDC].value
+      atk = focus.field[rSpAtk].value
+      if (saves <> 0) then
+        splstats = splice(splstats, "spell save DC " & dc,", ")
+        endif
+      if (attacks <> 0) then
+        splstats = splice(splstats, signed(atk) & " to hit with spell attacks",", ")
+        endif
+
+      if (empty(splstats) = 0) then
+        splstats = " (" & splstats & ")"
+        endif
+
+      ~Substitute all our symbols in the header
+      ~ Note that splstats, dc, and atk are ignored if they don't appear in the
+      ~ header string (the substitution still happens, it just has nowhere to go)
+      field[CustDesc].text = replace(field[CustDesc].text,"#name#",name,0)
+      field[CustDesc].text = replace(field[CustDesc].text,"#lev#",ordinal(lev),0)
+      field[CustDesc].text = replace(field[CustDesc].text,"#abil#",aname,0)
+      field[CustDesc].text = replace(field[CustDesc].text,"#splstats#",splstats,0)
+      field[CustDesc].text = replace(field[CustDesc].text,"#dc#",dc,0)
+      field[CustDesc].text = replace(field[CustDesc].text,"#atk#",signed(atk),0)
+      field[CustDesc].text = replace(field[CustDesc].text,"#class#",class,0)
+      endif]]></procedure>
   <thing id="meh5C" name="5e Community Mechanic" description="This mechanic holds special bootstraps called Configurable&apos;s that allow for adding &quot;new&quot; tabs into Hero Lab.  Note that a Mechanic once made is ALWAYS live on the Hero allow one to bootsrap other Things or run a script always on every character." compset="Mechanics">
     <tag group="DeityCat" tag="5CDrow" name="Drow Pantheon" abbrev="Drow"/>
     <tag group="DeityCat" tag="5CForRealm" name="Forgotten Realms Pantheon" abbrev="For Realms"/>
@@ -42,16 +126,14 @@
     </thing>
   <thing id="5CJournal" name="Always Show Journal Tab" description="This simple thing forces the {b}Journal{/b} tab to appear which is useful on NPC&apos;s which has the tab hidden." compset="Simple" uniqueness="useronce">
     <usesource source="5eJournal"/>
-    <eval phase="PostAttr" priority="10000">
-      ~ If not a NPC get out now!
+    <eval phase="PostAttr" priority="10000">~ If not a NPC get out now!
       doneif (hero.tagis[CharType.typNPC] = 0)
 
       ~ Prevent the Journal Tab from being hidden for NPCs
       perform hero.delete[HideTab.journal]
       perform hero.delete[Hero.NoAdvance]
       ~perform hero.delete[Hero.ClsErLev?]</eval>
-    <eval phase="PostAttr" priority="50000" index="2">
-      ~ If not a NPC get out now!
+    <eval phase="PostAttr" priority="50000" index="2">~ If not a NPC get out now!
       doneif (hero.tagis[CharType.typNPC] = 0)
 
       perform hero.delete[Hero.ClsErLev?]</eval>
@@ -490,5 +572,295 @@
   <thing id="g5CAlchItm" name="Alchemical Items" description="Alchemists are masters of haphazard mprovisation and calculated improvement. Even lacking the right tool, the alchemist is almost always working up a new concoction. Here you’ll find a few new items to add to the alchemist’s arsenal, and a new variant rule for crafting them.\n\nOn an average day, a craftsman produces about 5 gp worth of marketable goods. Alchemy is no different—but oftentimes, alchemists lack\nthe required downtime. To quickly produce alchemical items, you may make a DC 10 Intelligence (Alchemist’s Tools) check. Your daily progress is doubled for every 5 points by which you exceed this DC. If you fail by 5 or more, you ruin the day’s ingredients, losing the day’s\nraw materials and 5 gp of progress. You may attempt to craft during an adventuring day, but doing so imposes disadvantage on your crafting\ncheck to represent various complications and interruptions" compset="Gear" isshowonly="yes">
     <tag group="GearType" tag="gt5CAlcItm" name="Alchemical Items"/>
     <tag group="explicit" tag="50"/>
+    </thing>
+  <thing id="x5CSpellCast" name="Spellcasting" description="A monster with the ability to cast spells as an action has the Spellcasting action.  Unless noted otherwise, an innate spell of 1st level or higher is always cast at its lowest possible level and can’t be cast at a higher level.  If a monster has a cantrip where its level matters and no level is given, use the monster’s challenge rating." compset="RaceSpec" summary="Has a spellcaster level and spell slots.">
+    <comment><![CDATA[This version of spellcasting was made to follow WotC's newer (2021 and later) method of displaying spellcasting as an action in creature stat blocks.]]></comment>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Helper" tag="Spellcast" name="Spellcast" abbrev="Spellcast"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <eval phase="Render" priority="120000" name="Spellcasting description"><![CDATA[
+
+      var spells as string
+      var period as string
+      var uses as number
+      var isnewline as number
+      var nl as string
+      var attacks as number
+      var saves as number
+      nl="{br}"
+
+      ~First, we get all the innate racial spells on the character
+      ~ These  are what used to be "spell-like abilities"
+      foreach pick in hero from BaseSpell where "Helper.RaceSpell" sortas SplLikeSB
+
+        ~we use two variables - period, and uses to detect whether the uses/period
+        ~has changed.  Each time it does change, we start a new line
+        isnewline = 0
+
+        ~on the initial run-through, nothing has been stored in the variables,
+        ~and we always want to start a new line to place the first ability on
+        if (empty(period) <> 0) then
+          isnewline = 1
+
+        elseif (eachpick.tagexpr[SBSortOver.Constant | SBSortOver.AtWill] <> 0) then
+          if (compare(eachpick.tagids[SBSortOver.?],period) <> 0) then
+            isnewline = 1
+            endif
+        else
+          ~if the usage period for this ability differs from the usage period of
+          ~our last ability, start a new line
+          if (compare(eachpick.tagids[Usage.?],period) <> 0) then
+            isnewline = 1
+
+          ~and if the usage period is the same, but the uses/period changes, we
+          ~also start a new line
+          elseif (eachpick.field[trkMax].value <> uses) then
+            isnewline = 1
+            endif
+          endif
+
+
+        var spellname as string
+        if (empty(eachpick.field[sNameOver].text) = 0) then
+          spellname =  "{i}" & lowercase(eachpick.field[sNameOver].text) & "{/i}"
+        else
+          spellname =  "{i}" & lowercase(eachpick.field[thingname].text) & "{/i}"
+          endif
+
+        ~Track how many spells have saves or need attack rolls
+        saves +=  eachpick.tagis[Helper.SplSave]
+        attacks +=  eachpick.tagis[Helper.SplAttack]
+        ~debug eachpick.field[name].text &", " & eachpick.tagnames[Helper.Spl?,"/"]
+
+        ~Any addons to the name
+        if (eachpick.field[sNameMod].isempty = 0) then
+          spellname &= " (" & eachpick.field[sNameMod].text & ")"
+          endif
+        if (isnewline <> 0) then
+          if (eachpick.field[trkMax].value > 0) then
+            spells &= nl & eachpick.field[trkMax].value & eachpick.tagnames[Usage.?] & " each:"
+          else
+            spells &= nl & eachpick.tagnames[Usage.?] & ":"
+            endif
+
+          if (eachpick.tagexpr[SBSortOver.Constant | SBSortOver.AtWill] <> 0) then
+            period = eachpick.tagids[SBSortOver.?]
+
+          else
+            period = eachpick.tagids[Usage.?]
+            uses = eachpick.field[trkMax].value
+            endif
+          spells = splice(spells, spellname, " ")
+        else
+          spells = splice(spells, spellname, ", ")
+          endif
+
+
+        nexteach
+
+      ~Set our default header string
+      var defheader as string
+      defheader = "#name# casts one of these spells, needing no material components and using #abil# as the spellcasting ability#splstats#:"
+
+      call 5CRcSplHd
+
+      field[CustDesc].text &= spells]]>
+      <after name="Calc cSpellOut"/>
+      </eval>
+    </thing>
+  <thing id="x5CSpellPsi" name="Spellcasting (Psionics)" description="A monster with the ability to cast spells psionically as an action has the Spellcasting (Psionics) action.  Unless noted otherwise, a spell of 1st level or higher is always cast at its lowest possible level and can’t be cast at a higher level.  If a monster has a cantrip where its level matters and no level is given, use the monster’s challenge rating." compset="RaceSpec" summary="Has a spellcaster level and spell slots.">
+    <comment><![CDATA[This version of spellcasting was made to follow WotC's newer (2021 and later) method of displaying spellcasting as an action in creature stat blocks.]]></comment>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Helper" tag="Spellcast" name="Spellcast" abbrev="Spellcast"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <eval phase="Render" priority="120000" name="Spellcasting description"><![CDATA[
+
+      var spells as string
+      var period as string
+      var uses as number
+      var isnewline as number
+      var nl as string
+      var attacks as number
+      var saves as number
+      nl="{br}"
+
+      ~First, we get all the innate racial spells on the character
+      ~ These  are what used to be "spell-like abilities"
+      foreach pick in hero from BaseSpell where "Helper.RaceSpell" sortas SplLikeSB
+
+        ~we use two variables - period, and uses to detect whether the uses/period
+        ~has changed.  Each time it does change, we start a new line
+        isnewline = 0
+
+        ~on the initial run-through, nothing has been stored in the variables,
+        ~and we always want to start a new line to place the first ability on
+        if (empty(period) <> 0) then
+          isnewline = 1
+
+        elseif (eachpick.tagexpr[SBSortOver.Constant | SBSortOver.AtWill] <> 0) then
+          if (compare(eachpick.tagids[SBSortOver.?],period) <> 0) then
+            isnewline = 1
+            endif
+        else
+          ~if the usage period for this ability differs from the usage period of
+          ~our last ability, start a new line
+          if (compare(eachpick.tagids[Usage.?],period) <> 0) then
+            isnewline = 1
+
+          ~and if the usage period is the same, but the uses/period changes, we
+          ~also start a new line
+          elseif (eachpick.field[trkMax].value <> uses) then
+            isnewline = 1
+            endif
+          endif
+
+
+        var spellname as string
+        if (empty(eachpick.field[sNameOver].text) = 0) then
+          spellname =  "{i}" & lowercase(eachpick.field[sNameOver].text) & "{/i}"
+        else
+          spellname =  "{i}" & lowercase(eachpick.field[thingname].text) & "{/i}"
+          endif
+
+        ~Track how many spells have saves or need attack rolls
+        saves +=  eachpick.tagis[Helper.SplSave]
+        attacks +=  eachpick.tagis[Helper.SplAttack]
+        ~debug eachpick.field[name].text &", " & eachpick.tagnames[Helper.Spl?,"/"]
+
+        ~Any addons to the name
+        if (eachpick.field[sNameMod].isempty = 0) then
+          spellname &= " (" & eachpick.field[sNameMod].text & ")"
+          endif
+        if (isnewline <> 0) then
+          if (eachpick.field[trkMax].value > 0) then
+            spells &= nl & eachpick.field[trkMax].value & eachpick.tagnames[Usage.?] & " each:"
+          else
+            spells &= nl & eachpick.tagnames[Usage.?] & ":"
+            endif
+
+          if (eachpick.tagexpr[SBSortOver.Constant | SBSortOver.AtWill] <> 0) then
+            period = eachpick.tagids[SBSortOver.?]
+
+          else
+            period = eachpick.tagids[Usage.?]
+            uses = eachpick.field[trkMax].value
+            endif
+          spells = splice(spells, spellname, " ")
+        else
+          spells = splice(spells, spellname, ", ")
+          endif
+
+
+        nexteach
+
+      ~Set our default header string
+      var defheader as string
+      defheader = "#name# casts one of these spells, needing no spell components and using #abil# as the spellcasting ability#splstats#:"
+
+      call 5CRcSplHd
+
+      field[CustDesc].text &= spells]]>
+      <after name="Calc cSpellOut"/>
+      </eval>
+    </thing>
+  <thing id="x5CSplCstMat" name="Spellcasting" description="A monster with the ability to cast spells as an action has the Spellcasting action.  Unless noted otherwise, an innate spell of 1st level or higher is always cast at its lowest possible level and can’t be cast at a higher level.  If a monster has a cantrip where its level matters and no level is given, use the monster’s challenge rating." compset="RaceSpec" summary="Has a spellcaster level and spell slots.">
+    <comment><![CDATA[This version of spellcasting was made to follow WotC's newer (2021 and later) method of displaying spellcasting as an action in creature stat blocks.
+
+This is the same as x5CSpellCast, except that one says they require no material components.]]></comment>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Helper" tag="Spellcast" name="Spellcast" abbrev="Spellcast"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <eval phase="Render" priority="120000" name="Spellcasting description"><![CDATA[
+
+      var spells as string
+      var period as string
+      var uses as number
+      var isnewline as number
+      var nl as string
+      var attacks as number
+      var saves as number
+      nl="{br}"
+
+      ~First, we get all the innate racial spells on the character
+      ~ These  are what used to be "spell-like abilities"
+      foreach pick in hero from BaseSpell where "Helper.RaceSpell" sortas SplLikeSB
+
+        ~we use two variables - period, and uses to detect whether the uses/period
+        ~has changed.  Each time it does change, we start a new line
+        isnewline = 0
+
+        ~on the initial run-through, nothing has been stored in the variables,
+        ~and we always want to start a new line to place the first ability on
+        if (empty(period) <> 0) then
+          isnewline = 1
+
+        elseif (eachpick.tagexpr[SBSortOver.Constant | SBSortOver.AtWill] <> 0) then
+          if (compare(eachpick.tagids[SBSortOver.?],period) <> 0) then
+            isnewline = 1
+            endif
+        else
+          ~if the usage period for this ability differs from the usage period of
+          ~our last ability, start a new line
+          if (compare(eachpick.tagids[Usage.?],period) <> 0) then
+            isnewline = 1
+
+          ~and if the usage period is the same, but the uses/period changes, we
+          ~also start a new line
+          elseif (eachpick.field[trkMax].value <> uses) then
+            isnewline = 1
+            endif
+          endif
+
+
+        var spellname as string
+        if (empty(eachpick.field[sNameOver].text) = 0) then
+          spellname =  "{i}" & lowercase(eachpick.field[sNameOver].text) & "{/i}"
+        else
+          spellname =  "{i}" & lowercase(eachpick.field[thingname].text) & "{/i}"
+          endif
+
+        ~Track how many spells have saves or need attack rolls
+        saves +=  eachpick.tagis[Helper.SplSave]
+        attacks +=  eachpick.tagis[Helper.SplAttack]
+        ~debug eachpick.field[name].text &", " & eachpick.tagnames[Helper.Spl?,"/"]
+
+        ~Any addons to the name
+        if (eachpick.field[sNameMod].isempty = 0) then
+          spellname &= " (" & eachpick.field[sNameMod].text & ")"
+          endif
+        if (isnewline <> 0) then
+          if (eachpick.field[trkMax].value > 0) then
+            spells &= nl & eachpick.field[trkMax].value & eachpick.tagnames[Usage.?] & " each:"
+          else
+            spells &= nl & eachpick.tagnames[Usage.?] & ":"
+            endif
+
+          if (eachpick.tagexpr[SBSortOver.Constant | SBSortOver.AtWill] <> 0) then
+            period = eachpick.tagids[SBSortOver.?]
+
+          else
+            period = eachpick.tagids[Usage.?]
+            uses = eachpick.field[trkMax].value
+            endif
+          spells = splice(spells, spellname, " ")
+        else
+          spells = splice(spells, spellname, ", ")
+          endif
+
+
+        nexteach
+
+      ~Set our default header string
+      var defheader as string
+      defheader = "#name# casts one of these spells, using #abil# as the spellcasting ability#splstats#:"
+
+      call 5CRcSplHd
+
+      field[CustDesc].text &= spells]]>
+      <after name="Calc cSpellOut"/>
+      </eval>
     </thing>
   </document>
