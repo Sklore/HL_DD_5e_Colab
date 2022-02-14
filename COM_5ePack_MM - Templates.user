@@ -1305,6 +1305,16 @@ endif]]></eval>
     <tag group="StandardDC" tag="aINT"/>
     <bootstrap thing="spIdentify"></bootstrap>
     <bootstrap thing="sp5CRaySi"></bootstrap>
+    <bootstrap thing="spHoldPers"></bootstrap>
+    <bootstrap thing="spLocaObje"></bootstrap>
+    <bootstrap thing="spBestCurs"></bootstrap>
+    <bootstrap thing="sp5CCounte"></bootstrap>
+    <bootstrap thing="spLighBolt"></bootstrap>
+    <bootstrap thing="spPhanKill"></bootstrap>
+    <bootstrap thing="spPolymorp"></bootstrap>
+    <bootstrap thing="spContOthe"></bootstrap>
+    <bootstrap thing="spScrying"></bootstrap>
+    <bootstrap thing="spEyebite"></bootstrap>
     <eval phase="Final" priority="20000"><![CDATA[var modtext as number 
 var dctext as number
 modtext = 4
@@ -1320,6 +1330,8 @@ field[CustDesc].text = "While all three members of a hag coven are within 30 fee
     <tag group="AllowRCust" tag="r5CVGMBheu"/>
     <tag group="AllowRCust" tag="rNightHag"/>
     <tag group="AllowRCust" tag="rSeaHag"/>
+    <tag group="AllowRCust" tag="r5CAnnHagR"/>
+    <tag group="AllowRCust" tag="r5CBheHagR"/>
     <bootstrap thing="ra5CHagEye"></bootstrap>
     <bootstrap thing="ra5CHagSpe"></bootstrap>
     <eval phase="Final" priority="10000">herofield[tCR].value += 2</eval>
@@ -1758,13 +1770,6 @@ field[CustDesc].text = "While all three members of a hag coven are within 30 fee
     <eval phase="First" index="2">perform assign[Hero.HasDarkvis]</eval>
     <eval phase="Final" priority="10000">hero.child[Speed].field[tSpeed].value += -5
 hero.child[Speed].field[tSpeedMod].value += -5</eval>
-    </thing>
-  <thing id="r5Cdwtest" name="test" compset="Race">
-    <tag group="RaceType" tag="NPC"/>
-    <tag group="RaceSize" tag="Medium0"/>
-    <bootstrap thing="tpHumanoid"></bootstrap>
-    <bootstrap thing="ttDwarf"></bootstrap>
-    <bootstrap thing="lDwarvish"></bootstrap>
     </thing>
   <thing id="ra5CvMoDwa" name="Mountain Dwarf" description="Some NPCs gain abilities from a base race." compset="VarRaceTrt" uniqueness="unique">
     <tag group="AllowRCust" tag="rAcolyte" name="Acolyte" abbrev="Acolyte"/>
@@ -2266,5 +2271,321 @@ field[CustDesc].text = "The dragonborn can use an action to breathe " & field[ab
   perform eachpick.assign[DamageRes.dtFire]
   nexteach</eval>
     <exprreq message="Requires humanoid"><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
+    </thing>
+  <thing id="ra5CPCWrwf" name="Werewolf Lycanthropy" description="You have been infected with werewolf lycanthropy. You gain the ability to shapeshift, as well as these features:\n\n• Your AC increases by 1 while shapeshifted.\n• Your walking speed becomes 40 while shapeshifted.\n• If it is not already higher, your Strength increases to 15.\n• You gain immunity to bludgeoning, piercing, and slashing damage from non-magical attacks that are not silvered.\n• You gain the Keen Hearing and Smell trait.\n• While shapeshifted, you gain a bite attack, which can infect other targets with your form of lycanthropy.\n• While shapeshifted, you gain a claws attack." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+perform hero.assign[DamComImm.dcAtkNonSi]]]></eval>
+    </thing>
+  <thing id="ra5CPCWlfLyc" name="Shapeshift" description="You can use your action to shapeshift into a wolf-humanoid hybrid, into a wolf, or back into your true form. Other the changes indicated in the description of your lycanthropy, your statistics are the same in each form. Any equipment you&apos;re wearing or carrying isn’t transformed. You revert to your true form if you die." compset="RaceSpec">
+    <fieldval field="actName" value="Wolf or Hybrid Form"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <bootstrap thing="ra5CMPKeHeSm"></bootstrap>
+    <bootstrap thing="wClaw">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="livename" value="Claws (Wolf or Hybrid Form)"/>
+      <assignval field="sbName" value="Claws (Wolf or Hybrid Form)"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="abSave" tag="aCON"/>
+      <autotag group="StandardDC" tag="aCON"/>
+      <assignval field="wAttackEff" value="If the target is a humanoid, it must succeed on a DC #StandardDC# #abSave# save or be cursed with werewolf lycanthropy. "/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="livename" value="Bite (Wolf or Hybrid Form)"/>
+      <assignval field="sbName" value="Bite (Wolf or Hybrid Form)"/>
+      </bootstrap>
+    <eval phase="First" priority="10000" index="2"><![CDATA[  doneif (field[abilActive].value = 0)
+  doneif (tagis[Helper.Disable] <> 0)
+
+  ~ Set the minimum STR to 15
+  hero.child[aSTR].field[Minimum].value = maximum(hero.child[aSTR].field[Minimum].value,15)]]></eval>
+    <eval phase="First" index="3"><![CDATA[  doneif (field[abilActive].value = 0)
+  doneif (tagis[Helper.Disable] <> 0)
+
+  hero.child[Speed].field[tSpeed].value = 40
+  hero.child[ArmorClass].field[Bonus].value += 1]]></eval>
+    </thing>
+  <thing id="p5CPCLycwf" name="Lycanthropy: Werewolf" compset="InPlay">
+    <usesource source="5eMMCP"/>
+    <tag group="OthAdjCat" tag="Misc"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <bootstrap thing="ra5CPCWrwf">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CPCWlfLyc">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CMPKeHeSm" name="Keen Hearing and Smell" description="You have advantage on Wisdom (Perception) checks based on hearing or smelling." compset="RaceSpec" summary="Advantage on Perception checks based on hearing and smell.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+   #situational[hero.child[skPercep],"Advantage with hearing or smell",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CPCWrtg" name="Weretiger Lycanthropy" description="You have been infected with weretiger lycanthropy. You gain the ability to shapeshift, as well as these features:\n\n• Your walking speed becomes 40 while shapeshifted.\n• If it is not already higher, your Strength increases to 17.\n• You gain immunity to bludgeoning, piercing, and slashing damage from non-magical attacks that are not silvered.\n• You gain the Keen Hearing and Smell trait.\n• While shapeshifted, you gain the Pounce trait.\n• While shapeshifted, you gain a bite attack, which can infect other targets with your form of lycanthropy.\n• While shapeshifted, you gain a claw attack." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <eval phase="First" priority="10000" index="2"><![CDATA[
+  doneif (tagis[Helper.Disable] <> 0)
+
+  ~ Set the minimum STR to 17
+  hero.child[aSTR].field[Minimum].value = maximum(hero.child[aSTR].field[Minimum].value,17)]]></eval>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+perform hero.assign[DamComImm.dcAtkNonSi]]]></eval>
+    </thing>
+  <thing id="ra5CPCTigLyc" name="Shapeshift" description="You can use your action to shapeshift into a tiger-humanoid hybrid, into a tiger, or back into your true form. Other the changes indicated in the description of your lycanthropy, your statistics are the same in each form. Any equipment you&apos;re wearing or carrying isn’t transformed. You revert to your true form if you die." compset="RaceSpec">
+    <fieldval field="actName" value="Tiger or Hybrid Form"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <bootstrap thing="ra5CMPKeHeSm"></bootstrap>
+    <bootstrap thing="ra5CMPPounce">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <assignval field="livename" value="Pounce (Tiger or Hybrid Form Only)"/>
+      <assignval field="sbName" value="Pounce (Tiger or Hybrid Form Only)"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="livename" value="Claw (Tiger or Hybrid Form)"/>
+      <assignval field="sbName" value="Claw (Tiger or Hybrid Form)"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="abSave" tag="aCON"/>
+      <autotag group="StandardDC" tag="aCON"/>
+      <assignval field="wAttackEff" value="If the target is a humanoid, it must succeed on a DC #StandardDC# #abSave# save or be cursed with weretiger lycanthropy. "/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Bite (Tiger or Hybrid Form)"/>
+      <assignval field="sbName" value="Bite (Tiger or Hybrid Form)"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[  doneif (field[abilActive].value = 0)
+  doneif (tagis[Helper.Disable] <> 0)
+
+  hero.child[Speed].field[tSpeed].value = 40]]></eval>
+    </thing>
+  <thing id="p5CPCLyctg" name="Lycanthropy: Weretiger" compset="InPlay">
+    <usesource source="5eMMCP"/>
+    <tag group="OthAdjCat" tag="Misc"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <bootstrap thing="ra5CPCWrtg">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CPCTigLyc">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CMPPounce" name="Pounce" description="If you move at least 15 feet directly toward a creature and then hit it with a claw attack on the same turn, that target must succeed on a DC #StandardDC# #abSave# save or be knocked prone. If the target is prone, you can use a bonus action to make one bite attack against it." compset="RaceSpec">
+    <fieldval field="abRange" value="15"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="StandardDC" tag="aSTR" name="Strength" abbrev="Strength"/>
+    <tag group="abSave" tag="aSTR" name="Strength" abbrev="Str"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="ra5CPCWrrt" name="Wererat Lycanthropy" description="You have been infected with wererat lycanthropy. You gain the ability to shapeshift, as well as these features:\n\n• If it is not already higher, your Dexterity increases to 15.\n• You gain immunity to bludgeoning, piercing, and slashing damage from non-magical attacks that are not silvered.\n• You gain the Keen Smell trait.\n• While shapeshifted, you gain a bite attack, which can infect other targets with your form of lycanthropy." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <eval phase="First" priority="10000" index="2"><![CDATA[
+  doneif (tagis[Helper.Disable] <> 0)
+
+  ~ Set the minimum DEX to 15
+  hero.child[aDEX].field[Minimum].value = maximum(hero.child[aDEX].field[Minimum].value,15)]]></eval>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+perform hero.assign[DamComImm.dcAtkNonSi]]]></eval>
+    </thing>
+  <thing id="ra5CPCRatLyc" name="Shapeshift" description="You can use your action to shapeshift into a rat-humanoid hybrid, into a rat, or back into your true form. Other the changes indicated in the description of your lycanthropy, your statistics are the same in each form. Any equipment you&apos;re wearing or carrying isn’t transformed. You revert to your true form if you die." compset="RaceSpec">
+    <fieldval field="actName" value="Rat or Hybrid Form"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <bootstrap thing="ra5CMPKeSm"></bootstrap>
+    <bootstrap thing="wBite">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="abSave" tag="aCON"/>
+      <autotag group="wProperty" tag="Finesse"/>
+      <autotag group="StandardDC" tag="aCON"/>
+      <assignval field="wAttackEff" value="If the target is a humanoid, it must succeed on a DC #StandardDC# #abSave# save or be cursed with wererat lycanthropy. "/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="livename" value="Bite (Rat or Hybrid Form)"/>
+      <assignval field="sbName" value="Bite (Rat or Hybrid Form)"/>
+      </bootstrap>
+    </thing>
+  <thing id="p5CPCLycrt" name="Lycanthropy: Wererat" compset="InPlay">
+    <usesource source="5eMMCP"/>
+    <tag group="OthAdjCat" tag="Misc"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <bootstrap thing="ra5CPCWrrt">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CPCRatLyc">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CMPKeSm" name="Keen Smell" description="You have advantage on Wisdom (Perception) checks based smell." compset="RaceSpec" summary="Advantage on Perception checks based on smell.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+   #situational[hero.child[skPercep],"Advantage with smell",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CWrBrRlnt" name="Relentless" description="If you take 14 or less damage that would otherwise reduce you to 0 hit points, you&apos;re instead reduced to 1 hit point. Once you&apos;ve used this feature, you must complete a short or long rest before you can do so again." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="ra5CWrBrChrg" name="Charge" description="If you move at least 15 feet directly toward a target and then hit it with a tusks attack on the same turn, that target suffers an extra 7 (2d6) slashing damage. If the target is a creature, it must succeed on a DC #StandardDC# #abSave# save or be knocked prone." compset="RaceSpec">
+    <fieldval field="abRange" value="15"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="StandardDC" tag="aSTR" name="Strength" abbrev="Strength"/>
+    <tag group="abSave" tag="aSTR" name="Strength" abbrev="Str"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="ra5CPCWrbo" name="Wereboar Lycanthropy" description="You have been infected with wereboar lycanthropy. You gain the ability to shapeshift, as well as these features:\n\n• Your AC increases by 1 while shapeshifted.\n• Your walking speed becomes 40 while shapeshifted.\n• If it is not already higher, your Strength increases to 17.\n• You gain immunity to bludgeoning, piercing, and slashing damage from non-magical attacks that are not silvered.\n• You gain the Relentless trait.\n• While shapeshifted, you gain the Charge trait.\n• While shapeshifted, you gain a tusks attack, which can infect other targets with your form of lycanthropy." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <eval phase="First" priority="10000" index="2"><![CDATA[
+  doneif (tagis[Helper.Disable] <> 0)
+
+  ~ Set the minimum STR to 17
+  hero.child[aSTR].field[Minimum].value = maximum(hero.child[aSTR].field[Minimum].value,17)]]></eval>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+perform hero.assign[DamComImm.dcAtkNonSi]]]></eval>
+    </thing>
+  <thing id="ra5CPCBoaLyc" name="Shapeshift" description="You can use your action to shapeshift into a boar-humanoid hybrid, into a boar, or back into your true form. Other the changes indicated in the description of your lycanthropy, your statistics are the same in each form. Any equipment you&apos;re wearing or carrying isn’t transformed. You revert to your true form if you die." compset="RaceSpec">
+    <fieldval field="actName" value="Boar or Hybrid Form"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <bootstrap thing="ra5CWrBrRlnt"></bootstrap>
+    <bootstrap thing="ra5CWrBrChrg">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <assignval field="livename" value="Charge (Boar or Hybrid Form Only)"/>
+      <assignval field="sbName" value="Charge (Boar or Hybrid Form Only)"/>
+      </bootstrap>
+    <bootstrap thing="wTusk">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="abSave" tag="aCON"/>
+      <autotag group="StandardDC" tag="aCON"/>
+      <assignval field="wAttackEff" value="If the target is a humanoid, it must succeed on a DC #StandardDC# #abSave# save or be cursed with wereboar lycanthropy. "/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="livename" value="Tusks (Boar or Hybrid Form)"/>
+      <assignval field="sbName" value="Tusks (Boar or Hybrid Form)"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[  doneif (field[abilActive].value = 0)
+  doneif (tagis[Helper.Disable] <> 0)
+
+  hero.child[Speed].field[tSpeed].value = 40
+  hero.child[ArmorClass].field[Bonus].value += 1]]></eval>
+    </thing>
+  <thing id="p5CPCLycbo" name="Lycanthropy: Wereboar" compset="InPlay">
+    <usesource source="5eMMCP"/>
+    <tag group="OthAdjCat" tag="Misc"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <bootstrap thing="ra5CPCWrbo">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CPCBoaLyc">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CPCWrbe" name="Werebear Lycanthropy" description="You have been infected with werebear lycanthropy. You gain the ability to shapeshift, as well as these features:\n\n• Your AC increases by 1 while shapeshifted.\n• Your walking speed becomes 40 while shapeshifted.\n• You have a climbing speed of 30 while shapeshifted.\n• If it is not already higher, your Strength increases to 19.\n• You gain immunity to bludgeoning, piercing, and slashing damage from non-magical attacks that are not silvered.\n• You gain the Keen Smell trait.\n• While shapeshifted, you gain a bite attack, which can infect other targets with your form of lycanthropy.\n• While shapeshifted, you gain a claw attack." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <eval phase="First" priority="10000" index="2"><![CDATA[
+  doneif (tagis[Helper.Disable] <> 0)
+
+  ~ Set the minimum STR to 19
+  hero.child[aSTR].field[Minimum].value = maximum(hero.child[aSTR].field[Minimum].value,19)]]></eval>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+perform hero.assign[DamComImm.dcAtkNonSi]]]></eval>
+    </thing>
+  <thing id="ra5CPCBeaLyc" name="Shapeshift" description="You can use your action to shapeshift into a bear-humanoid hybrid, into a bear, or back into your true form. Other the changes indicated in the description of your lycanthropy, your statistics are the same in each form. Any equipment you&apos;re wearing or carrying isn’t transformed. You revert to your true form if you die." compset="RaceSpec">
+    <fieldval field="actName" value="Bear or Hybrid Form"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <bootstrap thing="xClimb">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPKeSm"></bootstrap>
+    <bootstrap thing="wClaw">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="livename" value="Claw (Bear or Hybrid Form)"/>
+      <assignval field="sbName" value="Claw (Bear or Hybrid Form)"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="abSave" tag="aCON"/>
+      <autotag group="StandardDC" tag="aCON"/>
+      <assignval field="wAttackEff" value="If the target is a humanoid, it must succeed on a DC #StandardDC# #abSave# save or be cursed with werebear lycanthropy. "/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Bite (Bear or Hybrid Form)"/>
+      <assignval field="sbName" value="Bite (Bear or Hybrid Form)"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[  doneif (field[abilActive].value = 0)
+  doneif (tagis[Helper.Disable] <> 0)
+
+  hero.child[Speed].field[tSpeed].value = 40
+  hero.child[ArmorClass].field[Bonus].value += 1
+
+  foreach pick in hero from BaseRace 
+     perform eachpick.tagreplace[RaceSize.?,RaceSize.Large1]
+     nexteach]]></eval>
+    </thing>
+  <thing id="p5CPCLycbe" name="Lycanthropy: Werebear" compset="InPlay">
+    <usesource source="5eMMCP"/>
+    <tag group="OthAdjCat" tag="Misc"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <bootstrap thing="ra5CPCWrbe">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CPCBeaLyc">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CMPKeHe" name="Keen Hearing" description="You have advantage on Wisdom (Perception) checks based hearing." compset="RaceSpec" summary="Advantage on Perception checks based on hearing.">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+   #situational[hero.child[skPercep],"Advantage with hearing",field[thingname].text]]]></eval>
     </thing>
   </document>
