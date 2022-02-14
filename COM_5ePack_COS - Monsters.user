@@ -1181,4 +1181,58 @@ hero.childfound[xFly].field[shortname].text &= " (hybrid or raven form)"]]></eva
 hero.childfound[xFly].field[shortname].text &= " (hybrid or raven form)"]]></eval>
     <exprreq message="Humanoid required."><![CDATA[#hastype[tpHumanoid] <> 0]]></exprreq>
     </thing>
+  <thing id="ra5CPCWrrv" name="Wereraven Lycanthropy" description="You have been infected with wereraven lycanthropy. You gain the ability to shapeshift, as well as these features:\n\n• You have a flying speed of 50 while shapeshifted.\n• If it is not already higher, your Dexterity increases to 15.\n• You gain the Mimicry trait.\n• You gain the Regeneration trait.\n• While shapeshifted, you gain a beak attack, which can infect other targets with your form of lycanthropy." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="ttShapecha"></bootstrap>
+    <eval phase="First" priority="10000" index="2"><![CDATA[
+  doneif (tagis[Helper.Disable] <> 0)
+
+  ~ Set the minimum DEX to 15
+  hero.child[aDEX].field[Minimum].value = maximum(hero.child[aDEX].field[Minimum].value,15)]]></eval>
+    </thing>
+  <thing id="ra5CPCRavLyc" name="Shapeshift" description="You can use your action to shapeshift into a raven-humanoid hybrid, into a raven, or back into your true form. Other the changes indicated in the description of your lycanthropy, your statistics are the same in each form. Any equipment you&apos;re wearing or carrying isn’t transformed. You revert to your true form if you die." compset="RaceSpec">
+    <fieldval field="actName" value="Raven or Hybrid Form"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="50"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPMimicr"></bootstrap>
+    <bootstrap thing="ra5CWrRvReg"></bootstrap>
+    <bootstrap thing="wBeak">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="abSave" tag="aCON"/>
+      <autotag group="wProperty" tag="Finesse"/>
+      <autotag group="StandardDC" tag="aCON"/>
+      <assignval field="wAttackEff" value="If the target is a humanoid, it must succeed on a DC #StandardDC# #abSave# save or be cursed with wereraven lycanthropy. "/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      <assignval field="livename" value="Beak (Raven or Hybrid Form)"/>
+      <assignval field="sbName" value="Beak (Raven or Hybrid Form)"/>
+      <assignval field="wDamExtra" value=" piercing damage in hybrid form, or if in raven form, 1 piercing"/>
+      </bootstrap>
+    </thing>
+  <thing id="p5CPCLycrv" name="Lycanthropy: Wereraven" compset="InPlay">
+    <usesource source="p5eCOSCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="Misc"/>
+    <bootstrap thing="ra5CPCRavLyc">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CPCWrrv">
+      <containerreq phase="First" priority="10"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CWrRvReg" name="Regeneration" description="You regain 10 hit points at the beginning of your turn. If you take damage from a silvered weapon or a spell, this trait regeneration does not occur at the beginning of your turn. You die only if you begin your turn with 0 hit points and don&apos;t regenerate." compset="RaceSpec">
+    <fieldval field="abText" value="10 HP/turn"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    </thing>
   </document>
