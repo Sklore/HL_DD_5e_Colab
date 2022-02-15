@@ -1794,7 +1794,7 @@ field[pChosen].chosen.field[rHitDice].value += field[pAdjust].value</eval>
       hero.childfound[xMultiatt].field[CustDesc].text = field[pSource].text
       hero.childfound[xMultiatt].field[CustDesc].text &= field[pDuration].text]]></eval>
     </thing>
-  <thing id="p5CWldShp2" name="Druid: Wildshape" description="Add this adjustment to the beast that you are Wildshaped into, after you have added the beast through the Mounts &amp; Hirelings section of the Gear tab. This will carry over these proficiencies and bonuses to the Wildshape form, as per that ability:\n\n• You retain your Intelligence, Wisdom, and Charisma scores.\n• You retain all of your skill and saving throw proficiencies, in addition to gaining those of the creature. \n• If the creature has the same proficiency as you and the bonus in its stat block is higher than yours, use the creature&apos;s bonus instead of yours. \n• If the creature has any legendary or lair actions, you can&apos;t use them." compset="InPlay" replaces="p5CWildsha">
+  <thing id="p5CWldShp2" name="Druid: Wild Shape" description="Add this adjustment to the beast that you are Wildshaped into, after you have added the beast through the Mounts &amp; Hirelings section of the Gear tab. This will carry over these proficiencies and bonuses to the Wildshape form, as per that ability:\n\n• You retain your Intelligence, Wisdom, and Charisma scores.\n• You retain all of your skill and saving throw proficiencies, in addition to gaining those of the creature. \n• If the creature has the same proficiency as you and the bonus in its stat block is higher than yours, use the creature&apos;s bonus instead of yours. \n• If the creature has any legendary or lair actions, you can&apos;t use them." compset="InPlay" replaces="p5CWildsha">
     <comment>iValue = master.child[svINT].field[svTotal].value
     hero.child[svINT].field[svTotal].value = iValue
 
@@ -1821,7 +1821,12 @@ field[pChosen].chosen.field[rHitDice].value += field[pAdjust].value</eval>
     var iHBon as number   
     var iName as string
 
-    iSkls = "(" & field[abText].text & ") & !Hide.Skill"
+
+    if (empty(field[abText].text) = 1) then
+        iSkls = "!Hide.Skill"        
+      else
+        iSkls = "(" & field[abText].text & ") & !Hide.Skill"  
+      endif
     iSavs = field[abText2].text
 
     foreach pick in master from BaseSkill where iSkls
@@ -1835,11 +1840,9 @@ field[pChosen].chosen.field[rHitDice].value += field[pAdjust].value</eval>
        endif 
       nexteach
 
-debug iSavs
 
     foreach pick in master from BaseSave where iSavs
       if (eachpick.tagis[Helper.Proficient] <> 0) then
-debug "we're proficient"
        iMBon = eachpick.field[svTotal].value
        iName = eachpick.tagids[thingid.?,""]
        foreach pick in hero from BaseSave where iName
