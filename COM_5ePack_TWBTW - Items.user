@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="io5CChrmRose" name="Chromatic Rose" description="While this rose is being held, it has a harmless visual effect, based on its color.\n\nHolding the rose by its stem grants you resistance to a type of damage based on its color. If you take more than 10 damage of that type from a single source (after factoring in the resistance), the rose crumbles to dust, and you take no damage instead.\n\nYou can use an action to blow petals from the rose, creating a 20-foot cone. Each creature in that cone must make a DC 15 Constitution save, suffering 3d10 damage of that same type on a failure or half that on a success. Using this feature of the rose destroys it." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="usrLabelAr" value="Color"/>
+    <arrayval field="usrArray" index="0" value="Black - Acid"/>
+    <arrayval field="usrArray" index="1" value="Blue - Lightning"/>
+    <arrayval field="usrArray" index="2" value="Green - Poison"/>
+    <arrayval field="usrArray" index="3" value="Red - Fire"/>
+    <arrayval field="usrArray" index="4" value="White - Cold"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="First" priority="500"><![CDATA[    var iDam as string
+	
+	if (field[usrIndex].value = 0) then
+	   iDam = "acid"
+	   field[abText2].text = "drips a harmless acid."
+	   perform assign[DamageRes.dtAcid]
+           field[abText].text = "Black"
+	elseif (field[usrIndex].value = 1) then
+	   iDam = "lightning"
+	   field[abText2].text = "harmlessly crackles with lightning."
+	   perform assign[DamageRes.dtLightnin]
+           field[abText].text = "Blue"
+	elseif (field[usrIndex].value = 2) then
+	   iDam = "poison"
+	   field[abText2].text = "slowly expels green, harmless gas."
+	   perform assign[DamageRes.dtPoison]
+           field[abText].text = "Green"
+	elseif (field[usrIndex].value = 3) then
+	   iDam = "fire"
+	   field[abText2].text = "burns with a harmless fire."
+	   perform assign[DamageRes.dtFire]
+           field[abText].text = "Red"
+	elseif (field[usrIndex].value = 4) then
+	   iDam = "cold"
+	   field[abText2].text = "is covered in harmless frost."
+	   perform assign[DamageRes.dtCold]
+           field[abText].text = "White"
+	endif
+
+    if (field[trkUser].value = 0) then
+       field[abText].text &= ", DC 15 CON, 3d10 " & iDam
+      endif
+	
+	field[CustDesc].text = "While this rose is being held, it " & field[abText2].text & "\n\nHolding the rose by its stem grants you resistance to " & iDam & " damage. If you take more than 10 " & iDam & " damage from a single source (after factoring in this resistance), the rose crumbles to dust, and you take no damage instead.\n\nYou can use an action to blow petals from the rose, creating a 20-foot cone. Each creature in that cone must make a DC 15 Constitution save, suffering 3d10 " & iDam & " damage on a failure or half that on a success. Using this feature of the rose destroys it."
+	
+    perform hero.pushtags[DamageRes.?]]]></eval>
+    </thing>
+  <thing id="trk5CIggWine" name="Iggwilv&apos;s Cauldron Wine Elixir" description="If wine is poured into the cauldron and stirred for 10 minutes, it transforms into a magical elixir usable by up to four people per gallon of wine used. Any creature that drinks the elixir gains 10 temporary hit points. Any of the elixir that isn&apos;t consumed within 1 hour vanishes. Once used, this property of the cauldron can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CIggBrm" name="Iggwilv&apos;s Cauldron Broom" description="Dipping the bristles of an non-magicaly broom into the water-filled cauldron transforms the broom into a {i}broom of flying{/i} for 3 days. Once used, this property of the cauldron can&apos;t be used again until the following dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CIggBats" name="Iggwilv&apos;s Cauldron Swarm of Bats" description="You can use an action to scream into the empty cauldron, which magically summons a {b}swarm of bats{/b} that flies out of the cauldron and acts immediately after you in the initiative order. The swarm obeys your commands and disappears after 1 minute, if it hasn&apos;t already been destroyed by that point. Once used, this property of the cauldron can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CIggSmok" name="Iggwilv&apos;s Cauldron Smoke" description="If at least 1 gallon of blood is poured into the cauldron and stirred for 1 minute, it turns into a harmless, black smoke cloud that erupts from the cauldron and dissipates quickly. At the same time, all Humanoid creatures within a certain radius of the cauldron fall unconscious for 1 hour, with the exception of those that are attuned to the cauldron or that are immune to being charmed. The radius of the effect is 100 feet per gallon of blood used. An unconscious creature awakens if it takes damage or if someone uses an action to shake or slap it. Once used, this property of the cauldron can&apos;t be used again until the following dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CIggWnd" name="Iggwilv&apos;s Cauldron Polymorph Wand" description="Tying a dead frog or toad to the end of an ordinary branch and dipping it in the water-filled cauldron transforms the branch into a {i}wand of polymorph{/i} with 3 charges. This wand cannot recharge and turns to ash when its last charge is spent. Once used, this property of the cauldron can&apos;t be used again for 8 days." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="5C8Days" name="/8 days"/>
+    </thing>
+  <thing id="io5CBobLily" name="Bobbing Lily Pad" description="This 10-foot-diameter leaf is a magical vehicle. Its tendrils can propel it across land and across the water&apos;s surface (but not underwater), as well as through the air. It has a walking, flying, and swimming speed of 20 feet, and can hover. It moves according to your spoken instructions while you are riding it.\n\nThe lily pad can transport up to 300 pounds without being hindered. It can carry up to twice this weight, but carrying anything over 300 pounds slows it to half speed." compset="Wondrous">
+    <usesource source="5eWBtWA"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="io5CDstCorr" name="Dust of Corrosion" description="You can use an action to throw this dust into the air, filling a 10-foot cube extending out from you. Surfaces and objects made of nonmagical ferrous metal in the area immediately corrode to dust, becoming utterly useless. Any creature in the area that is made wholly or partly out of ferrous metal must make a DC 13 Constitution save, taking 4d8 necrotic damage on a failure or half that on a success.\n\nThis dust is typically found in small, single-use packets. It&apos;s made from finely ground antennae of rust monsters." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[field[abText].text = "DC 13 Con, 4d8 necrotic"]]></eval>
+    </thing>
+  <thing id="is5CEldrStf" name="Eldritch Staff" description="This staff can be used as a magic quarterstaff, with a +1 bonus to attack and damage rolls made with it.\n\nThe staff has 10 charges and regains 1d6 + 4 spent charges each dawn. If you spend the last charge, roll a d20. On a 1, the staff is destroyed in an otherwise harmless blast of eldritch magics.\n\n{b}Eldritch Attack.{/b} When you hit with a melee attack using the staff, you can spend up to 3 of its charges. For each charge you expend, the target takes an additional 1d8 lightning damage.\n\n{b}Eldritch Escape.{/b} If you take damage while holding the staff, you can use your reaction to spend 3 of the staff&apos;s charges. Doing so turns you invisible and teleports you and any of your worn and carried equipment up to 60 feet to an unoccupied space that you can see. You remain invisible until the beginning of your next turn or until you attack, cast a spell, or deal damage." compset="Staff">
+    <fieldval field="trkMax" value="10"/>
+    <fieldval field="gWeight" value="4"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <bootstrap thing="w5CBlkstff">
+      <containerreq phase="First" priority="100"><![CDATA[        fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      <assignval field="livename" value="Eldritch Staff"/>
+      <assignval field="sbName" value="Eldritch Staff"/>
+      <assignval field="shortname" value="Eldritch Staff"/>
+      <assignval field="Bonus" value="1"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[gIsEquip].value = 0)
+      field[abText].text = "regains 1d6+4 at dawn"]]></eval>
+    </thing>
+  <thing id="io5CIggCldrn" name="Iggwilv&apos;s Cauldron" description="This wondroud cauldron has two forms. Only Iggwilv or Baba Yaga can change the cauldron from one form to another (by using an action to touch it); neither needs to be attuned to it to do so. In one form, it appears to be solid gold and adorned with images of greenery and broomsticks. In the other, it is made of iron and has images of animals on the outside. In either form, the cauldron is about 3 feet in diameter with a 2-foot-wide mouth, a round lid with a molded handle at the top, and eight clawed feet for stability. The cauldron weighs 80 pounds when empty, and it can hold up to 100 gallons of liquid.\n\n{b}Attunement.{/b} Any Humanoid creature that attunes to the cauldron must succeed on a DC 15 Constitution save or be aged to the point of infirmity. In this state, the creature&apos;s speed is halved, the range of its vision and hearing is reduced to 30 feet, and it has disadvantage on all ability checks, attack rolls, and saving throws. The creature will reach the end of its natural life span in 3d8 days. Nothing short of the {i}wish{i} spell or divine intervention can reverse this aging effect on the creature.\nThree hags can attune to the cauldron simultaneously, so long as they have formed a coven. If the coven disbands, the attunement ends for all three hags.\n\n{b}Random Properties.{/b} Regardless of its form it takes, the cauldron has 1 minor beneficial property and 1 minor detrimental property.\n\n{b}Gold Cauldron.{/b} The gold cauldron has these properties:\n• If water is poured into the cauldron and stirred for 1 minute, it transforms into a hot, nourishing stew that provides one meal for up to four people per gallon of water used. The stew remains hot while in the cauldron, then cools naturally once removed. The outside of the cauldron remains safe to touch despite the heat.\n• If wine is poured into the cauldron and stirred for 10 minutes, it transforms into a magical elixir usable by up to four people per gallon of wine used. Any creature that drinks the elixir gains 10 temporary hit points. Any of the elixir that isn&apos;t consumed within 1 hour vanishes. Once used, this property of the cauldron can&apos;t be used again until the following dawn.\n• When the cauldron is filled with 90 gallons of water mixed with 10 gallons of wine, it can be used as the focus for the {i}scrying{/i} spell. When this spell is cast using the cauldron as its focus, the target of the spell automatically fails its save, and the spell works even if its caster and the target are on separate planes of existence. When the spell ends, all the liquid in the cauldron vanishes.\n• Dipping the bristles of an nonmagical broom into the water-filled cauldron transforms the broom into a {i}broom of flying{/i} for 3 days. Once used, this property of the cauldron can&apos;t be used again until the following dawn.\n\n{b}Iron Cauldron.{/b} The iron cauldron has the following properties:\n• You can use an action to scream into the empty cauldron, which magically summons a {b}swarm of bats{/b} that flies out of the cauldron and acts immediately after you in the initiative order. The swarm obeys your commands and disappears after 1 minute, if it hasn&apos;t already been destroyed by that point. Once used, this property of the cauldron can&apos;t be used again until the following dawn.\n• If at least 1 gallon of blood is poured into the cauldron and stirred for 1 minute, it turns into a harmless, black smoke cloud that erupts from the cauldron and dissipates quickly. At the same time, all Humanoid creatures within a certain radius of the cauldron fall unconscious for 1 hour, with the exception of those that are attuned to the cauldron or that are immune to being charmed. The radius of the effect is 100 feet per gallon of blood used. An unconscious creature awakens if it takes damage or if someone uses an action to shake or slap it. Once used, this property of the cauldron can&apos;t be used again until the following dawn.\n• Tying a dead frog or toad to the end of an ordinary branch and dipping it in the water-filled cauldron transforms the branch into a {i}wand of polymorph{/i} with 3 charges. This wand cannot recharge and turns to ash when its last charge is spent. Once used, this property of the cauldron can&apos;t be used again for 8 days.\n• If you spend 1 minute touching a unicorn horn to the cauldron while reciting the poem called &quot;The Witch Queen&apos;s Cauldron&quot; (see The Wild Beyond the Witchlight, page 210), all creatures within 1,000 feet of the cauldron, save for those that are attuned to it, become frozen in time. A time-frozen creature is incapacitated, cannot move or speak, does not age, and is unaware of its surroundings or the passage of time. Additionally, it can&apos;t be moved, harmed in any way, or affected by any other magic. All other conditions and effects on the creature are suppressed until it is no longer frozen. Destroying the cauldron, sending it to a different plane of existence, or touching it with a unicorn&apos;s horn for 1 minute while reciting &quot;The Witch Queen&apos;s Cauldron&quot; again ends the time-freezing effect on all creatures. The effect also ends on any creature that comes into contact with an antimagic field or that is touched by a unicorn&apos;s horn.\n\n{b}Destroying the Cauldron.{/b} The cauldron is a Medium object with AC 19, 80 hit points, and immunity to all damage, save for damage from a flame tongue or frost brand weapon. Reducing the cauldron to 0 hit points with such a weapon shatters the cauldron into eight pieces of roughly equal size. Shattering it causes all ongoing effects created by the cauldron to end, as it loses its magic.\nThe destruction of Iggwilv&apos;s Cauldron causes all hags across the multiverse to lose their Shared Spellcasting trait gained by being in a coven.\n\n{b}Reconstructing the Cauldron.{/b} If all eight pieces of the shattered cauldron are within 5 feet of one another, a {i}wish{/i} spell can reassemble them, restoring the cauldron and all its properties. The cauldron&apos;s reconstruction likewise restores the Shared Spellcasting trait of hag covens throughout the multiverse." compset="Wondrous">
+    <comment/>
+    <fieldval field="gWeight" value="80"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a spellcaster"/>
+    <arrayval field="usrArray" index="0" value="Gold Form"/>
+    <arrayval field="usrArray" index="1" value="Iron Form"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Custom" tag="5CAPEID" name="Minor Detrimental Artifact Properties Eligible"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="trk5CIggWine">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex = 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CIggWnd">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex = 1 & fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CIggSmok">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex = 1 & fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CIggBats">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex = 1 & fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="trk5CIggBrm">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex = 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="First">perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax1].value += 1
+focus.field[cfgMax3].value += 1</eval>
+    <eval phase="Final" index="3"><![CDATA[if (tagcount[Custom.5CAPIB] >= 1) then
+perform delete[Custom.5CAPEIB]
+endif
+if (tagcount[Custom.5CAPID] >= 1) then
+perform delete[Custom.5CAPEID]
+endif]]></eval>
+    </thing>
+  <thing id="io5COrnthp" name="Ornithopter of Flying" description="You can use this contraption to fly, so long as your total weight (including your worn and carried items) doesn&apos;t exceed 300 pounds. The ornithopter has a flying speed of 30 feet, and it moves according to your spoken instructions while you are riding it. It cannot hover. If the ornithopter loses its rider while in the air, it falls and cannot fly again for 1d6 + 4 days.\n\nThe ornithopter is 8 feet long, has a 14-foot wingspan, and weighs 25 pounds." compset="Wondrous">
+    <fieldval field="gWeight" value="25"/>
+    <fieldval field="actName" value="Fallen (1d6+4 days before usable again)"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    </thing>
+  <thing id="io5CPixDust" name="Pixie Dust" description="You can use an action to sprinkle this dust on yourself or another creature you can see within 5 feet of you. For 1 minute, the recipient gains a flying speed of 30 feet, and can hover. If the creature is airborne when this effect ends, it falls safely to the ground, taking no damage and landing on its feet.\n\nPixie dust comes in small, single-use packets." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    </thing>
+  <thing id="io5CScShdw" name="Scissors of Shadow Snipping" description="You can use an action to make a few snips with these iron shears, causing the shadow of a Humanoid creature you can see within 5 feet of you to detach from its source. If the creature is unwilling to give up its shadow, it can make a DC 15 Charisma save, keeping its shadow on a success. Whether or not the shadow is snipped, this property of the scissors can&apos;t be used again until the following dawn.\n\nThe detached shadow is stuck to the spot where it was snipped until you use a bonus action to cause it to behave in one of these ways, either of which is possible only if you can see the shadow:\n• You control the shadow&apos;s movements. You can make the shadow move up to 30 feet across a surface (be it solid or liquid), in any direction you choose, including along vertical surfaces. It must remain in your sight at all times. The shadow is harmless and cannot be harmed, and it is invisible in darkness. It can&apos;t speak, and it doesn&apos;t need air, sleep, or nourishment.\n• You can give up control of the shadow, at which point it becomes autonomous and acts however the DM dictates. It uses the {b}shadow{/b} stat block, but its creature type is Fey rather than Undead. A creature whose Strength is reduced to 0 by this shadow&apos;s Strength Drain attack does not die but instead falls unconscious. The creature regains consciousness and all its Strength after completing a short or long rest.\n\nA creature whose shadow has detached from it is cursed. If a shadowless creature is subjected to any spell that removes or ends a curse, or if its detached shadow is reduced to 0 hit points, the shadow disappears, and the creature immediately regains its normal shadow." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a fey or a spellcaster"/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="First"><![CDATA[doneif (field[gIsAttuned].value = 0)
+
+field[abText].text = "DC 15 CHA"]]></eval>
+    </thing>
+  <thing id="i5CSnkrSnk" name="Snicker-Snack" description="This magic, vorpal sword has a +3 bonus to attack and damage rolls and ignores resistance to slashing damage. When you use this weapon to attack a creature that has at least one head and roll a 20 on the attack roll, you cut off one of the creature&apos;s heads. The creature dies if it needs a head to survive. A creature is immune to this effect if it is immune to slashing damage, it doesn&apos;t have or need a head, it has legendary actions, or the DM decides that the creature is too big for its head to be cut off with this weapon. Such a creature instead takes an additional 6d8 slashing damage from the hit.\n\nWhile attuned to Snicker-Snack, you are proficient with greatswords, and you can use your Charisma modifier instead of your Strength modifier for attack and damage rolls made with the weapon.\n\n{b}Sentience.{/b} Snicker-Snack is a sentient, chaotic good greatsword. It has Intelligence 9, Wisdom 14, and Charisma 18. It has hearing and darkvision out to a range of 120 feet. It can speak, read, and understand Common, and has an almost musical voice. It hungers for the destruction of evil Dragons and urges you to seek out and slay them.\nIts personality however is fickle. It ends its attunement to you if you miss on attack rolls with the weapon three times in a row. Each time you complete a long rest after that happens, you can attempt to regain the sword&apos;s trust by making a contested Charisma check versus the sword. If you win the contest, you immediately re-attune to Snicker-Snack. You cannot restore your attunement to it any other way." compset="MagicWep">
+    <fieldval field="miAttunTxt" value="requires attunement by a non-evil creature"/>
+    <fieldval field="Bonus" value="3"/>
+    <fieldval field="gWeight" value="6"/>
+    <fieldval field="miTypeDet" value="Greatsword"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsAttuned].value = 0)
+   perform assign[MelAttOpt.aCHA]
+   perform assign[DamageOpt.aCHA]
+   perform hero.assign[WepProf.wGreatswrd]</eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wGreatswrd"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CSteel" name="Steel" description="This magic weapon has a +2 bonus to attack and damage rolls.\n\n{b}Revivify.{/b} You can use an action to cast {i}revivify{/i} from the sword. You must touch the sword to the target to cast the spell. Once this ability of the weapon is used, it can&apos;t be used again until the following dawn.\n\n{b}Sentience.{/b} Steel is a sentient, lawful good longsword with Intelligence 8, Wisdom 11, and Charisma 15. It can see and hear at a range of up to 60 feet. The sword can speak, read, and understand Common and Draconic. Once you&apos;re attuned to it, It worries for your well-being, though it doesn&apos;t like to run from a fight." compset="MagicWep">
+    <fieldval field="miAttunTxt" value="requires attunement by a good creature"/>
+    <fieldval field="Bonus" value="2"/>
+    <fieldval field="gWeight" value="3"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spRevivify">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wLongsword"></bootstrap>
+      </child>
+    </thing>
+  <thing id="io5CWtchVan" name="Witchlight Vane" description="This rod is ornately decorated, including butterfly wings at its top and red glass incorporated throughout its length.\n\n{b}Magic Weapon.{/b} When wielded by the creature it&apos;s attuned to, the vane can be used as a magic mace with a +3 bonus to attack and damage rolls. The vane deals an additional 1d8 radiant damage on a hit.\n\n{b}Sense Mood.{/b} While the vane is within the bounds of the Witchlight Carnival, it can sense the mood of every creature in the carnival with an Intelligence of 4 or higher. The creature attuned to the vane can use an action to pinpoint the location of the happiest creature in the carnival.\nThe butterfly shape at the top of the vane slowly spins clockwise when the general mood of the carnival is high. Conversely, if spirits are low, the top of the vane spins slowly counterclockwise.\n\n{b}Sentience.{/b} The vane is a sentient, chaotic good wondrous item with Intelligence 11, Wisdom 14, and Charisma 14. It has hearing and normal vision out to 30 feet, and it communicates through emotions, trasmitted to the creature attuned to it. Its true purpose is to ensure the patrons of the carnival are having a good time.\n\n{b}Additional Properties.{/b} The vane has these additional properties:\n• The creature holding the vane is vulnerable to lightning damage.\n• The creature attuned to the vane is immune to the blinded, deafened, petrified, and stunned conditions.\n• While carrying the vane, the creature attuned to it can use an action to cast one of these spells without needing any spell components and using Charisma as the spellcasting ability: {i}dancing lights{/i}, {i}polymorph{/i}, and {i}ray of frost{/i}. After the vane is used to cast {i}polymorph{/i}, roll a d8; on a roll of 3 or 8, the vane can&apos;t be used to cast this spell again until the following dawn." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement By Mister Light or his chosen successor"/>
+    <fieldval field="gWeight" value="3"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spRayFros">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    <bootstrap thing="spPolymorp">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="At will, see Witchlight Vane"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="w5CWtchVn">
+      <containerreq phase="First" priority="100"><![CDATA[        fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="spDancLigh">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsAttuned].value = 0)
+      perform assign[Helper.ShowSpec]
+      perform hero.assign[DamageVuln.dtLightnin]
+      perform hero.assign[CondImm.pcnBlind]
+      perform hero.assign[CondImm.pcnDeaf]
+      perform hero.assign[CondImm.pcnPetri]
+      perform hero.assign[CondImm.pcnStunned]</eval>
+    </thing>
+  <thing id="io5CWtchWat" name="Witchlight Watch" description="This ornate pocket watch is fastened to the end of a gold chain. When opened, it has a faint golden glow and softly ticks, a sound that is only audible to the creature holding it. The watchface is an ornate image of the carnival, with a circle of stones that tell the time.\n\n{b}Carnival Setup and Takedown.{/b} The creature attuned to the watch can use an action to initiate the packing up or the unpacking of the carnival, provided the creature and the carnival are on the same plane of existence. Over the course of an hour, all objects that are part of the carnival are magically moved around until everything is packed up and ready for travel, or unpacked and assembled. The watch does not affect creatures, which can move about freely and safely while the setup/unpacking process occurs. Once the process starts, it can&apos;t be halted until it is finished. Once the watch has been used to pack up or unpack the carnival, this property cannot be used again until 8 hours have passed.\n\n{b}Additional Properties.{/b} The pocket watch has these additional properties:\n• While carrying the watch, the creature attuned to it can use an action to cast one of the following spells, needing no spell components and using Intelligence as the spellcasting ability: {i}fire bolt{/i}, {i}invisibility{/i}, and {i}message{/i}. After the watch&apos;s {i}invisibility{/i} spell is cast, roll a d8; on a roll of 3 or 8, the watch can&apos;t be used to cast this spell again until the following dawn.\n• The creature attuned to the watch gains 30 pounds. This extra weight vanishes when the attunement ends.\n• The creature attuned to the watch must eat and drink eight times the normal amount every day." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement By Mister Witch or his chosen successor"/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="5C8Hours" name="/8 hours"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spMessage">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="At will, see Witchlight Watch"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="sp5CFireBo">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000">perform assign[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="i5CWdctrAx" name="Woodcutter&apos;s Axe" description="This magic weapon has a +1 bonus to attack and damage rolls.\n\nWhen you use this axe to attack a plant (an ordinary plant or a Plant-type creature) or a wooden object that isn&apos;t being worn or carried, the attack deals an additional 2d6 slashing damage on a hit." compset="MagicWep">
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="gWeight" value="7"/>
+    <usesource source="5eWBtWA"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wGreataxe"></bootstrap>
+      </child>
+    </thing>
+  <thing id="ip5CPotAdv" name="Potion of Advantage" description="This potion appears to be sparkling, golden mist, but pours and moves like water. When you drink it, you gain advantage on one ability check, attack roll, or saving throw of your choice that you make within the next hour." compset="Potion">
+    <usesource source="5eWBtWA"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    </thing>
+  <thing id="w5CWtchVn" name="Witchlight Vane" compset="Weapon">
+    <comment>+3 mace as a helper for an item that is both Wondrous and acts as a weapon.</comment>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="6"/>
+    <fieldval field="Bonus" value="3"/>
+    <tag group="EquipType" tag="Metal" name="Metal" abbrev="Metal"/>
+    <tag group="wCategory" tag="Melee" name="Melee Weapon" abbrev="Melee"/>
+    <tag group="IsWeapon" tag="wMace"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="wProfReq" tag="Simple" name="Simple" abbrev="Simple"/>
+    <tag group="DamageType" tag="dtBludgeon" name="Bludgeoning" abbrev="Bludgeoning"/>
+    </thing>
+  </document>
