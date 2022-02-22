@@ -33,10 +33,18 @@
       <assignval field="trkMax" value="1"/>
       <assignval field="abValue" value="30"/>
       </bootstrap>
-    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
-      doneif (tagis[Helper.Disable] <> 0)    
-      field[abValue].value += #attrmod[aCHA]
-      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <eval phase="PostAttr" priority="10000"><![CDATA[   doneif (field[gIsEquip].value = 0)
+   doneif (field[gIsAttuned].value = 0)
+   doneif (tagis[Helper.ShowSpec] = 0)
+   doneif (tagis[Helper.Disable] <> 0)
+
+   field[abValue].value += #attrmod[aCHA]
+
+   foreach pick in hero from BaseArmor where "( ArmorClass.Heavy | ArmorClass.Medium | ArmorClass.Light | ArmorClass.Shield ) & ( Helper.CurrArmor | Helper.CurrShield )"
+      field[abValue].value = 0
+    nexteach
+
+   hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
     <eval phase="Final" priority="10000" index="2"><![CDATA[~ grant resitance or immunity
 doneif (tagis[Helper.ShowSpec] = 0)
 doneif (tagis[Helper.Disable] <> 0) 
@@ -109,10 +117,18 @@ perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
       <assignval field="abValue" value="30"/>
       <assignval field="trkMax" value="1"/>
       </bootstrap>
-    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
-      doneif (tagis[Helper.Disable] <> 0)    
-      field[abValue].value += #attrmod[aCHA]
-      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <eval phase="PostAttr" priority="10000"><![CDATA[   doneif (field[gIsEquip].value = 0)
+   doneif (field[gIsAttuned].value = 0)
+   doneif (tagis[Helper.ShowSpec] = 0)
+   doneif (tagis[Helper.Disable] <> 0)
+
+   field[abValue].value += #attrmod[aCHA]
+
+   foreach pick in hero from BaseArmor where "( ArmorClass.Heavy | ArmorClass.Medium | ArmorClass.Light | ArmorClass.Shield ) & ( Helper.CurrArmor | Helper.CurrShield )"
+      field[abValue].value = 0
+    nexteach
+
+   hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
     <eval phase="Final" priority="10000" index="2"><![CDATA[~ grant resitance or immunity
 doneif (tagis[Helper.ShowSpec] = 0)
 doneif (tagis[Helper.Disable] <> 0) 
@@ -127,15 +143,15 @@ endif
 perform hero.childfound[raDraBrWea].assign[Recharge.6]
 perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
     </thing>
-  <thing id="io5CRTDMBl" name="Dragon Mask, Black" description="The dragon masks conforms to the wears and while you are wearing any dragon mask and attuned to it, you gain the following benefits.\n\n{b}{i}Damage Absorption.{/i}{/b} You have resistance against the mask’s damage type. If you already have resistance to that damage type from another source, you instead have immunity to that damage type. If you already have immunity to that damage type from another source, whenever you are subjected to damage of that type, you take none of that damage and regain a number of hit points equal to half the damage dealt of that type.\n{b}{i}Draconic Majesty.{/i}{/b} While you are wearing no armor, you can add your Charisma bonus to your Armor Class.\n{b}{i}Dragon Breath.{/i}{/b} If you have a breath weapon that requires rest to recharge, it gains a recharge of 6. \n{b}{i}Dragon Sight.{/i}{/b} You gain darkvision out to 60 feet, or to an additional 60 feet if you already have that sense. Once per day, you can gain blindsight out to 30 feet for 5 minutes.\n{b}{i}Dragon Tongue.{/i}{/b} You can speak and understand Draconic. You also have advantage on any Charisma check you make against dragons that share the mask’s color.\n{b}{i}Legendary Resistance (1/Day).{/i}{/b} If you fail a saving throw, you can choose to succeed instead.\n\n{b}Black Mask Special Abilities{/b}\n{b}{i}Damage Type.{/i}{/b} The mask’s damage type is acid.\n{b}{i}Water Breathing.{/i}{/b} You can breathe underwater." compset="Wondrous">
+  <thing id="io5CRTDMBl" name="Dragon Mask, Black" description="The dragon masks conforms to the wears and while you are wearing any dragon mask and attuned to it, you gain the following benefits.\n\n{b}{i}Damage Absorption.{/i}{/b} You have resistance against the mask’s damage type. If you already have resistance to that damage type from another source, you instead have immunity to that damage type. If you already have immunity to that damage type from another source, whenever you are subjected to damage of that type, you take none of that damage and regain a number of hit points equal to half the damage dealt of that type.\n{b}{i}Draconic Majesty.{/i}{/b} While you are wearing no armor, you can add your Charisma bonus to your Armor Class.\n{b}{i}Dragon Breath.{/i}{/b} If you have a breath weapon that requires rest to recharge, it gains a recharge of 6. \n{b}{i}Dragon Sight.{/i}{/b} You gain darkvision out to 60 feet, or to an additional 60 feet if you already have that sense. Once per day, you can gain blindsight out to 30 feet for 5 minutes.\n{b}{i}Dragon Tongue.{/i}{/b} You can speak and understand Draconic. You also have advantage on any Charisma check you make against dragons that share the mask’s color.\n{b}{i}Legendary Resistance (1/Day).{/i}{/b} If you fail a saving throw, you can choose to succeed instead.\n\n{b}Black Mask Special Abilities{/b}\n{b}{i}Damage Type.{/i}{/b} The mask’s damage type is acid.\n{b}{i}Water Breathing.{/i}{/b} You can breathe underwater." compset="Wondrous" replaces="i5CHDQBDM">
     <usesource source="5eROTCP"/>
-    <tag group="Helper" tag="ShowSpec"/>
+    <usesource source="5eHOTDQCP"/>
     <tag group="GearType" tag="gtWondrous"/>
     <tag group="Helper" tag="EquipAvail"/>
     <tag group="ItemRarity" tag="Legendary"/>
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="EquipMag"/>
-    <bootstrap thing="ra5CMILeRe"></bootstrap>
+    <tag group="Helper" tag="ShowSpec"/>
     <bootstrap thing="lDraconic"></bootstrap>
     <bootstrap thing="raDarkVis">
       <assignval field="abValue" value="60"/>
@@ -145,10 +161,7 @@ perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
       <assignval field="trkMax" value="1"/>
       <assignval field="abValue" value="30"/>
       </bootstrap>
-    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
-      doneif (tagis[Helper.Disable] <> 0)    
-      field[abValue].value += #attrmod[aCHA]
-      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <bootstrap thing="ra5CMILeRe"></bootstrap>
     <eval phase="Final" priority="10000" index="2"><![CDATA[~ grant resitance or immunity
 doneif (tagis[Helper.ShowSpec] = 0)
 doneif (tagis[Helper.Disable] <> 0) 
@@ -163,6 +176,18 @@ endif
 ~ if the hero is a dragonborn, change the recharge on the breath
 perform hero.childfound[raDraBrWea].assign[Recharge.6]
 perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
+    <eval phase="PostAttr" priority="10000"><![CDATA[   doneif (field[gIsEquip].value = 0)
+   doneif (field[gIsAttuned].value = 0)
+   doneif (tagis[Helper.ShowSpec] = 0)
+   doneif (tagis[Helper.Disable] <> 0)
+
+   field[abValue].value += #attrmod[aCHA]
+
+   foreach pick in hero from BaseArmor where "( ArmorClass.Heavy | ArmorClass.Medium | ArmorClass.Light | ArmorClass.Shield ) & ( Helper.CurrArmor | Helper.CurrShield )"
+      field[abValue].value = 0
+    nexteach
+
+   hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
     </thing>
   <thing id="io5CRTDMGn" name="Dragon Mask, Green" description="The dragon masks conforms to the wears and while you are wearing any dragon mask and attuned to it, you gain the following benefits.\n\n{b}{i}Damage Absorption.{/i}{/b} You have resistance against the mask’s damage type. If you already have resistance to that damage type from another source, you instead have immunity to that damage type. If you already have immunity to that damage type from another source, whenever you are subjected to damage of that type, you take none of that damage and regain a number of hit points equal to half the damage dealt of that type.\n{b}{i}Draconic Majesty.{/i}{/b} While you are wearing no armor, you can add your Charisma bonus to your Armor Class.\n{b}{i}Dragon Breath.{/i}{/b} If you have a breath weapon that requires rest to recharge, it gains a recharge of 6. \n{b}{i}Dragon Sight.{/i}{/b} You gain darkvision out to 60 feet, or to an additional 60 feet if you already have that sense. Once per day, you can gain blindsight out to 30 feet for 5 minutes.\n{b}{i}Dragon Tongue.{/i}{/b} You can speak and understand Draconic. You also have advantage on any Charisma check you make against dragons that share the mask’s color.\n{b}{i}Legendary Resistance (1/Day).{/i}{/b} If you fail a saving throw, you can choose to succeed instead.\n\n{b}Green Mask Special Abilities{/b}\n\n{b}{i}Damage Type.{/i}{/b} The mask’s damage type is poison.\n{b}{i}Water Breathing.{/i}{/b} You can breathe underwater." compset="Wondrous">
     <usesource source="5eROTCP"/>
@@ -182,10 +207,18 @@ perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
       <assignval field="trkMax" value="1"/>
       <assignval field="abValue" value="30"/>
       </bootstrap>
-    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
-      doneif (tagis[Helper.Disable] <> 0)    
-      field[abValue].value += #attrmod[aCHA]
-      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <eval phase="PostAttr" priority="10000"><![CDATA[   doneif (field[gIsEquip].value = 0)
+   doneif (field[gIsAttuned].value = 0)
+   doneif (tagis[Helper.ShowSpec] = 0)
+   doneif (tagis[Helper.Disable] <> 0)
+
+   field[abValue].value += #attrmod[aCHA]
+
+   foreach pick in hero from BaseArmor where "( ArmorClass.Heavy | ArmorClass.Medium | ArmorClass.Light | ArmorClass.Shield ) & ( Helper.CurrArmor | Helper.CurrShield )"
+      field[abValue].value = 0
+    nexteach
+
+   hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
     <eval phase="Final" priority="10000" index="2"><![CDATA[~ grant resitance or immunity
 doneif (tagis[Helper.ShowSpec] = 0)
 doneif (tagis[Helper.Disable] <> 0) 
@@ -219,10 +252,18 @@ perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
       <assignval field="trkMax" value="1"/>
       <assignval field="abValue" value="30"/>
       </bootstrap>
-    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
-      doneif (tagis[Helper.Disable] <> 0)    
-      field[abValue].value += #attrmod[aCHA]
-      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <eval phase="PostAttr" priority="10000"><![CDATA[   doneif (field[gIsEquip].value = 0)
+   doneif (field[gIsAttuned].value = 0)
+   doneif (tagis[Helper.ShowSpec] = 0)
+   doneif (tagis[Helper.Disable] <> 0)
+
+   field[abValue].value += #attrmod[aCHA]
+
+   foreach pick in hero from BaseArmor where "( ArmorClass.Heavy | ArmorClass.Medium | ArmorClass.Light | ArmorClass.Shield ) & ( Helper.CurrArmor | Helper.CurrShield )"
+      field[abValue].value = 0
+    nexteach
+
+   hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
     <eval phase="Final" priority="10000" index="2"><![CDATA[~ grant resitance or immunity
 doneif (tagis[Helper.ShowSpec] = 0)
 doneif (tagis[Helper.Disable] <> 0) 
@@ -256,10 +297,18 @@ perform hero.childfound[raDraBrWea].delete[Usage.ShortRest]]]></eval>
       <assignval field="trkMax" value="1"/>
       <assignval field="abValue" value="30"/>
       </bootstrap>
-    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.ShowSpec] = 0)
-      doneif (tagis[Helper.Disable] <> 0)    
-      field[abValue].value += #attrmod[aCHA]
-      hero.child[ArmorClass].field[tACUnarDef].value = maximum(hero.child[ArmorClass].field[tACUnarDef].value,field[abValue].value)]]></eval>
+    <eval phase="PostAttr" priority="10000"><![CDATA[   doneif (field[gIsEquip].value = 0)
+   doneif (field[gIsAttuned].value = 0)
+   doneif (tagis[Helper.ShowSpec] = 0)
+   doneif (tagis[Helper.Disable] <> 0)
+
+   field[abValue].value += #attrmod[aCHA]
+
+   foreach pick in hero from BaseArmor where "( ArmorClass.Heavy | ArmorClass.Medium | ArmorClass.Light | ArmorClass.Shield ) & ( Helper.CurrArmor | Helper.CurrShield )"
+      field[abValue].value = 0
+    nexteach
+
+   hero.childfound[ArmorClass].field[Bonus].value += field[abValue].value]]></eval>
     <eval phase="Final" priority="10000" index="2"><![CDATA[~ grant resitance or immunity
 doneif (tagis[Helper.ShowSpec] = 0)
 doneif (tagis[Helper.Disable] <> 0) 

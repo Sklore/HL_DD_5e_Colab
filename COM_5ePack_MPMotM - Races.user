@@ -1,0 +1,2326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="r5CMPAarak" name="Aarakocra" description="The Aarakocra are a race of bird-like monstrous humanoids dwelling in high mountains." compset="Race" summary="Feathery winged humanoid">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="WepProf" tag="wUnarmed" name="Unarmed strike" abbrev="Unarmed strike"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CAarWndCal"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="sbName" value="Talon"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wShortName" value="Talon (Aarakocra)"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFryFlght"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the 
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CEEAarak]
+      perform hero.assign[IsRace.r5CEEAarak]
+      perform hero.assign[RaceEquip.r5CEEAarak]]]></eval>
+    </thing>
+  <thing id="ra5CAarWndCal" name="Windcaller" description="At 3rd level, you learn {i}gust of wind{/i}. You can cast it once per long rest without expending any spell slots. You can also cast it using any spell slots of 2nd level or higher. \n\nChoose from Intelligence, Wisdom, or Charisma as your spellcasting ability for this spells." compset="RaceSpec">
+    <comment>2nd level spell @ 3rd level</comment>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <bootstrap thing="spGustWind">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spGustWind">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
+    </thing>
+  <thing id="r5CMPAasimar" name="Aasimar" description="Aasimar are mortals with a small portion of the celestial powers of the Upper Planes." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="SplAttr" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <tag group="DamageRes" tag="dtRadiant"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="ra5CMPAasRes"></bootstrap>
+    <bootstrap thing="ra5CLightB"></bootstrap>
+    <bootstrap thing="ra5CMPAasHH"></bootstrap>
+    <bootstrap thing="ra5CMPCelRev"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CAasimar]
+      perform hero.assign[IsRace.r5CAasimar]
+      perform hero.assign[RaceEquip.r5CAasimar]
+      perform hero.assign[Race.r5CVGMAasi]
+      perform hero.assign[IsRace.r5CVGMAasi]
+      perform hero.assign[RaceEquip.r5CVGMAasi]]]></eval>
+    </thing>
+  <thing id="ra5CMPAasRes" name="Celestial Resistance" description="You have resistance to necrotic damage and radiant damage." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CMPAasHH" name="Healing Hands" description="As an action, you can touch a creature roll a number of d4&apos;s equal to your profieciency bonus, allowing the touched creature to regain hit points equal to the total rolled. Once you use this trait, you can&apos;t use it again until you complete a long rest." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="abRange" tag="Touch" name="Touch" abbrev="tch"/>
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="User" tag="Tracker"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+      field[abText].text = hero.childfound[ProfBonus].field[tProfBonus].value & "d4 healing"]]></eval>
+    </thing>
+  <thing id="ra5CMPNecShr" name="Necrotic Shroud" description="You use a bonus action to turn your eyes turn into pools of darkness and cause two skeletal, ghostly, flightless wings to sprout from your back. The instant you transform, creatures that are within 10 feet of you, that are not your allies, and that can see you must each succeed on a Charisma saving throw (DC 8 + your proficiency bonus + your Charisma modifier) or become frightened of you until the end of your next turn.\n\nUntil this transformation ends, once on each of your turns, you can deal extra necrotic damage equaling your proficiency bonus to one target when you deal damage to that target with an attack or a spell.\n\nThe transformation lasts for 1 minute or until you use your bonus action to end it. Once you&apos;ve used it, you cannot do so again until you complete a long rest." compset="RaceSpec">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="10"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abSave" tag="aCHA"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <tag group="Helper" tag="Disable"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+field[abText].text = hero.childfound[ProfBonus].field[tProfBonus].value & " necrotic/turn"]]></eval>
+    <eval phase="First" priority="500" index="2"><![CDATA[
+
+
+      doneif (hero.tagcount[Classes.?] < 5)
+
+      perform assign[Helper.ShowSpec]
+      perform delete[Helper.Disable]]]></eval>
+    </thing>
+  <thing id="ra5CMPRadCns" name="Radiant Consumption" description="You use a bonus action to unleash the divine energy within yourself, causing a searing light to radiate from you, pour out of your eyes and mouth.\n\nUntil this transformation ends, you shed bright light in a 10-foot radius and dim light for an another 10 feet, and at the end of each of your turns, each creature within 10 feet of you suffers radiant damage equal to your proficiency bonus. In addition, once on each of your turns, you can deal extra radiant damage equaling your proficiency bonus to one target when you deal damage to that target with an attack or a spell.\n\nThe transformation lasts for 1 minute or until you use your bonus action to end it. Once you&apos;ve used it, you cannot do so again until you complete a long rest." compset="RaceSpec">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="10"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="Helper" tag="Disable"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+field[abText].text = hero.childfound[ProfBonus].field[tProfBonus].value & " radiant"]]></eval>
+    <eval phase="First" priority="500" index="2"><![CDATA[
+
+
+      doneif (hero.tagcount[Classes.?] < 5)
+
+      perform assign[Helper.ShowSpec]
+      perform delete[Helper.Disable]]]></eval>
+    </thing>
+  <thing id="ra5CMPRadSol" name="Radiant Soul" description="You use a bonus action to unleash the divine energy within yourself, causing your eyes to glimmer and two luminous, incorporeal wings to sprout from your back.\n\nUntil this transformation ends, you have a flying speed equal to your walking speed. Additionally, once on each of your turns, you can deal extra radiant damage equaling your proficiency bonus to one target when you deal damage to to that target with an attack or a spell.\n\nThe transformation lasts for 1 minute or until you use your bonus action to end it. Once you&apos;ve used it, you cannot do so again until you complete a long rest." compset="RaceSpec">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Active (1 minute)"/>
+    <tag group="abDuration" tag="Minute" name="Minute" abbrev="min"/>
+    <tag group="Helper" tag="Disable"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncDurati"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+
+field[abText].text = hero.childfound[ProfBonus].field[tProfBonus].value & " radiant"
+
+doneif (field[abilActive].value = 0)
+
+hero.childfound[xFly].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xFly].field[abValue].value)]]></eval>
+    <eval phase="First" priority="500" index="2"><![CDATA[
+
+
+      doneif (hero.tagcount[Classes.?] < 5)
+
+      perform assign[Helper.ShowSpec]
+      perform delete[Helper.Disable]]]></eval>
+    </thing>
+  <thing id="ra5CMPCelRev" name="Celestial Revelation" description="When you reach third level, choose one of the options below. Going forward, you can use a bonus action to access and unleash the celestial energies inside you, transforming for 1 minute or until you end it with another bonus action. You gain the benefits of the chosen option. Once you&apos;ve used this tranformation, you cannot do so until you complete a long rest.\n\n{b}Necrotic Shroud{/b}. Your eyes turn into pools of darkness and two skeletal, ghostly, flightless wings sprout from your back. The instant you transform, creatures that are within 10 feet of you, that are not your allies, and that can see you must each succeed on a Charisma saving throw (DC 8 + your proficiency bonus + your Charisma modifier) or become frightened of you until the end of your next turn. Until this transformation ends, once on each of your turns, you can deal extra necrotic damage equaling your proficiency bonus to one target when you deal damage to that target with an attack or a spell.\n\n{b}Radiant Consumption{/b}. You unleash the divine energy within yourself, causing a searing light to radiate from you, pour out of your eyes and mouth. During the transformation, you shed bright light in a 10-foot radius and dim light for an another 10 feet, and at the end of each of your turns, each creature within 10 feet of you suffers radiant damage equal to your proficiency bonus. In addition, once on each of your turns, you can deal extra radiant damage equaling your proficiency bonus to one target when you deal damage to that target with an attack or a spell.\n\n{b}Radiant Soul{/b}. You unleash the divine energy within yourself, causing your eyes to glimmer and two luminous, incorporeal wings to sprout from your back. Until this transformation ends, you have a flying speed equal to your walking speed. Additionally, once on each of your turns, you can deal extra radiant damage equaling your proficiency bonus to one target when you deal damage to to that target with an attack or a spell." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Necrotic Shroud"/>
+    <arrayval field="usrArray" index="1" value="Radiant Consumption"/>
+    <arrayval field="usrArray" index="2" value="Radiant Soul"/>
+    <bootstrap thing="ra5CMPNecShr">
+      <containerreq phase="First" priority="499">fieldval:usrIndex = 0</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CMPRadCns">
+      <containerreq phase="First" priority="499">fieldval:usrIndex = 1</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CMPRadSol">
+      <containerreq phase="First" priority="499">fieldval:usrIndex = 2</containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="r5CMPBugbear" name="Bugbear" description="A bugbear is a larger humanoid distantly related to, but larger and stronger than, goblins and hobgoblins." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <bootstrap thing="ra5CVGMSuA">
+      <assignval field="CustDesc" value="Ifyou hit a creature with an attack roll, and that creature hasn&apos;t taken its turn in the current combat yet, you deal an extra 2d6 damage to it."/>
+      </bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLongLi"></bootstrap>
+    <bootstrap thing="ra5CVGMPoB"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttGoblinoi"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CMPBgbSnky"></bootstrap>
+    <bootstrap thing="ra5CFeyAncPC"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CVGMBugB]
+      perform hero.assign[IsRace.r5CVGMBugB]
+      perform hero.assign[RaceEquip.r5CVGMBugB]]]></eval>
+    </thing>
+  <thing id="ra5CMPBgbSnky" name="Sneaky" description="You have proficiency in the Stealth skill. Additionally, without squeezing, you can move through and stop in spaces large enough for a Small creature." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CFeyAncPC" name="Fey Ancestry" description="You have advantage on saving throws to avoid or end the charmed condition on yourself." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svAll],"Advantage vs. being charmed",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="r5CMPCentaur" name="Centaur" description="These Fey creatures resemble elves from the waist up and horses from the waist down. As Fey, they have a connection to the natural world." compset="Race">
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="cSkillMax" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="AllowSkl1" tag="skAnimHand"/>
+    <tag group="AllowSkl1" tag="skMedicine"/>
+    <tag group="AllowSkl1" tag="skNature"/>
+    <tag group="AllowSkl1" tag="skSurvival"/>
+    <bootstrap thing="wHooves">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPCntNtA"></bootstrap>
+    <bootstrap thing="tpFey"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CEquiBui"></bootstrap>
+    <bootstrap thing="ra5CMPCenChar"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CGGRCent]
+      perform hero.assign[IsRace.r5CGGRCent]
+      perform hero.assign[RaceEquip.r5CGGRCent]]]></eval>
+    </thing>
+  <thing id="ra5CMPCenChar" name="Charge" description="If you hit a target with a melee attack after moving 30 feet straight towards it on the same turn, you can immediately follow that attack with a bonus action to attack that same target once with your hooves." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="ra5CMPCntNtA" name="Natural Affinity" description="Your connection to the Fey and the natural world grants you proficiency in one of these skills, chosen by you: Animal Handling, Medicine, Nature, or Survival." compset="RaceSpec"></thing>
+  <thing id="r5CMPChnglng" name="Changeling" description="Changelings are subtle shapeshifters capable of disguising their appearance." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="cSkillMax" value="2"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="AllowSkl1" tag="skPersuas" name="Persuasion" abbrev="Persuasion"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="AllowSkl1" tag="skDecept" name="Deception" abbrev="Deception"/>
+    <tag group="AllowSkl1" tag="skInsight" name="Insight" abbrev="Insight"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="AllowSkl1" tag="skPerform"/>
+    <tag group="AllowSkl1" tag="skIntim" name="Intimidation" abbrev="Intimidation"/>
+    <bootstrap thing="ra5CMPChglShp"></bootstrap>
+    <bootstrap thing="tpFey"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="ra5CMPChngIns"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CEbChang]
+      perform hero.assign[IsRace.r5CEbChang]
+      perform hero.assign[RaceEquip.r5CEbChang]]]></eval>
+    </thing>
+  <thing id="ra5CMPChngIns" name="Changeling Instincts" description="You gain proficiency with two of the following skills of your choice: Deception, Intimidation, Insight, Performance, or Persuasion." compset="RaceSpec">
+    <tag group="ChooseSrc2" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    </thing>
+  <thing id="ra5CMPChglShp" name="Shapechanger" description="As an action, you can transform your appearance and voice. You decide what changes, including color, length of hair, and sex. You can alter your height and weight, ranging between Small and Medium size. You can also appear to be of a different race, though your statistics remain the same. You must have seen a creature to duplicate its appearance, and you have to retain the same general number and arrangement of limbs. Nothing you&apos;re wearing or carrying changes. You can remain in this form until you use another action to shift back to your true form, and you revert to it when you die." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="Action" name="Action" abbrev="Act"/>
+    </thing>
+  <thing id="r5CMPDeepGnm" name="Deep Gnome" description="Deep gnomes, also known as svirfneblin, are gnomes that typically reside in the depths of the earth, and are thus infused with the magics of that realm." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="RaceType" tag="Normal"/>
+    <bootstrap thing="ttGnome"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPGnMgRs"></bootstrap>
+    <bootstrap thing="ra5CMPSvfCamo"></bootstrap>
+    <bootstrap thing="ra5CMPGftSvrf"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    </thing>
+  <thing id="ra5CMPGnMgRs" name="Gnomish Magic Resistance" description="You have advantage on all Intelligence, Wisdom, and Charisma saving throws against spells." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svINT],"Advantage vs. spells",field[thingname].text]
+      #situational[hero.child[svWIS],"Advantage vs. spells",field[thingname].text]
+      #situational[hero.child[svCHA],"Advantage vs. spells",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CMPSvfCamo" name="Svirfneblin Camouflage" description="When you make a Dexterity (Stealth) check, you can grant yourself advantage on the roll. You can use this feature a number of times equaling your proficiency bonus, and regain all spent uses of it when you complete a long rest." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="ra5CMPCntArW" name="Control Air and Water" description="At 1st level, 3rd level, and 5th level, you learn {i}fog cloud{/i}, {i}gust of wind{/i} and {i}water walk{/i}, respectively. You can cast each once per long rest without expending any spell slots, needing no material components. You can also cast them using any spell slots you have, so long as those spell slots are the appropriate level. \n\nChoose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <comment>1st level sp @ 3rd
+2nd level sp @ 5th</comment>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="OnlyIfCaster1" name="OnlyIfCaster1" abbrev="OnlyIfCaster1"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <bootstrap thing="spGustWind">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spWateWalk">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spWateWalk">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spGustWind">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spFogClou">
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spFogClou">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
+    </thing>
+  <thing id="r5CMPDuergar" name="Duergar" description="Duergar, also known as gray dwarves, are a subterranean race. Their kinship to surface dwarves can be compared to that of the drow to surface elves." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="DamageRes" tag="dtPoison"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPDuerMgc"></bootstrap>
+    <bootstrap thing="ra5CMPPsiFrt"></bootstrap>
+    <bootstrap thing="ra5CMPDwrvRes"></bootstrap>
+    <bootstrap thing="ttDwarf"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    </thing>
+  <thing id="ra5CMPDuerMgc" name="Duergar Magic" description="At 3rd level and 5th level, you learn {i}enlarge/reduce{/i} and {i}invisibility{/i}, respectively. You can cast each once per long rest without expending any spell slots, needing no material components. You can also cast them using any spell slots you have, so long as those spell slots are the appropriate level. \n\nChoose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <comment>1st level sp @ 3rd
+2nd level sp @ 5th</comment>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="OnlyIfCaster1" name="OnlyIfCaster1" abbrev="OnlyIfCaster1"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <bootstrap thing="spEnlargeR">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spEnlargeR">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
+    </thing>
+  <thing id="ra5CMPDwrvRes" name="Dwarven Resilience" description="You have advantage on saving throws to avoid or end the poisoned condition on yourself. You&apos;re also resistant to poison damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+
+      #situational[hero.child[svAll],"Advantage vs. poison",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CMPPsiFrt" name="Psionic Fortitude" description="You have advantage on saving throws to avoid or end the charmed or stunned condition on yourself." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svAll],"Advantage vs. being charmed or stunned",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="r5CMPFirbolg" name="Firbolg" description="Firbolgs, a distant cousin of the giants, walked in forests when the worlds were young. These long-lived gentle giants are so close to nature that they can even speak with them." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="ra5CSpBeLe"></bootstrap>
+    <bootstrap thing="ra5CVGMPoB"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CMPFirMgc"></bootstrap>
+    <bootstrap thing="ra5CMPHdnStp"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CVGMFirb]
+      perform hero.assign[IsRace.r5CVGMFirb]
+      perform hero.assign[RaceEquip.r5CVGMFirb]]]></eval>
+    </thing>
+  <thing id="ra5CMPFirMgc" name="Firbolg Magic" description="You can cast {i}detect magic{/i} and {i}disguise self{/i}. You can cast each once per long rest without expending any spell slots. You can also cast them using any spell slots you have, so long as those spell slots are the appropriate level. When you cast {i}disguise self{/i}, you can change your height, taller or shorter, by up to 3 feet. \n\nChoose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <comment>2 1st level sps @ 1st level</comment>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="OnlyIfCaster1" name="OnlyIfCaster1" abbrev="OnlyIfCaster1"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="up to 3 ft. taller/shorter"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      <assignval field="sNameMod" value="up to 3 ft. taller/shorter"/>
+      </bootstrap>
+    <bootstrap thing="spDeteMagi">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
+    </thing>
+  <thing id="ra5CMPHdnStp" name="Hidden Step" description="As a bonus action, you can magically turn invisible until the start of your next turn or until you attack, make a damage roll, or force someone to make a saving throw. You can do this a number of times equaling your proficiency bonus, and regain all spent uses of it when you complete a long rest." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Action" name="Action" abbrev="Action"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="r5CMPGenasi" name="Genasi" description="Genasi are planetouched, tracing their lineage to the elemental genies. Physically powerful and cunning, genasi are a varied race with abilities that varied depending on their lineage and individual experience." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CEEGenas]
+      perform hero.assign[IsRace.r5CEEGenas]
+      perform hero.assign[RaceEquip.r5CEEGenas]]]></eval>
+    </thing>
+  <thing id="sr5CMPAirGen" name="Air Genasi" compset="SubRace" uniqueness="unique">
+    <fieldval field="rSpeed" value="35"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="SubRace" tag="r5CMPGenasi"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <bootstrap thing="ra5CMPMngWnd"></bootstrap>
+    <bootstrap thing="ra5CEEUnBr"></bootstrap>
+    <bootstrap thing="ra5CMPLitRes"></bootstrap>
+    <eval phase="First">perform hero.childfound[r5CMPGenasi].assign[DamageRes.dtLightnin]</eval>
+    </thing>
+  <thing id="ra5CMPLitRes" name="Lightning Resistance" description="You are resistant to lightning damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CMPMngWnd" name="Mingle with the Wind" description="You know the {i}shocking grasp{/i} cantrip.\n\nAt 3rd level and 5th level, you learn {i}feather fall{/i} and {i}levitate{/i}, respectively. You can cast {i}feather fall{/i}  and {i}levitate{/i} once each per long rest without expending any spell slots and without needing material components. You can also cast them using any spell slots you have, so long as those spell slots are the appropriate level. \n\nChoose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <comment>cantrip
+1st level sp @ 3rd
+2nd level sp @ 5th</comment>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="OnlyIfCaster1" name="OnlyIfCaster1" abbrev="OnlyIfCaster1"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <bootstrap thing="spFeatFall">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spShocGras">
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    <bootstrap thing="spFeatFall">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
+    </thing>
+  <thing id="sr5CMPEarGen" name="Earth Genasi" compset="SubRace" uniqueness="unique">
+    <usesource source="5eMPMotM"/>
+    <tag group="SubRace" tag="r5CMPGenasi"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <bootstrap thing="ra5CMPEarWlk"></bootstrap>
+    <bootstrap thing="ra5CMPMrgStn"></bootstrap>
+    </thing>
+  <thing id="ra5CMPEarWlk" name="Earth Walk" description="If using your walking speed to move across difficult terrain on the ground or floor, it costs you no extra movement." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CMPMrgStn" name="Merge with Stone" description="You know the {i}blade ward{/i} cantrip. In addition to casting it normally, you can also cast it as a bonus action a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest.\n\nAt 5th level, you learn {i}pass without trace{/i}. You can cast it once per long rest without expending any spell slots and without needing material components. You can also cast it using any 2nd-level or greater spell slots you have. \n\nChoose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="OnlyIfCaster1" name="OnlyIfCaster1" abbrev="OnlyIfCaster1"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <bootstrap thing="sp5CBladeW">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="2"/>
+      <assignval field="sNameMod" value="as bonus action"/>
+      </bootstrap>
+    <bootstrap thing="spPassTrac">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spPassTrac">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="sp5CBladeW">
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
+    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+      foreach pick in hero where "thingid.sp5CBladeW"
+          if (eachpick.field[trkMax].value = 2) then
+             eachpick.field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+             endif
+          nexteach]]></eval>
+    </thing>
+  <thing id="sr5CMPFirGen" name="Fire Genasi" compset="SubRace" uniqueness="unique">
+    <usesource source="5eMPMotM"/>
+    <tag group="SubRace" tag="r5CMPGenasi"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <bootstrap thing="ra5CMPRchBlz"></bootstrap>
+    <bootstrap thing="ra5CMPFirRes"></bootstrap>
+    <eval phase="First">perform hero.childfound[r5CMPGenasi].assign[DamageRes.dtFire]</eval>
+    </thing>
+  <thing id="ra5CMPFirRes" name="Fire Resistance" description="You are resistant to fire damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CMPRchBlz" name="Reach to the Blaze" description="You know the {i}produce flame{/i} cantrip. \n\nAt 3rd level and 5th level, you learn {i}burning hands{/i} and {i}flame blade{/i}, respectively. You can cast {i}burning hands{/i}  and {i}flame blade{/i} once each per long rest without expending any spell slots and without needing material components. You can also cast them using any spell slots you have, so long as those spell slots are the appropriate level. \n\nChoose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <comment>cantrip
+1st level sp @ 3rd
+2nd level sp @ 5th</comment>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="OnlyIfCaster1" name="OnlyIfCaster1" abbrev="OnlyIfCaster1"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <bootstrap thing="spBurnHand">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spFlamBlad">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spFlamBlad">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spProdFlam">
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    <bootstrap thing="spBurnHand">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
+    </thing>
+  <thing id="sr5CMPWtrGen" name="Water Genasi" compset="SubRace" uniqueness="unique">
+    <usesource source="5eMPMotM"/>
+    <tag group="SubRace" tag="r5CMPGenasi"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <bootstrap thing="ra5CMPClToWv"></bootstrap>
+    <bootstrap thing="ra5CMPAcdRes"></bootstrap>
+    <bootstrap thing="ra5CMPAmphib"></bootstrap>
+    <eval phase="First">perform hero.childfound[r5CMPGenasi].assign[DamageRes.dtAcid]</eval>
+    </thing>
+  <thing id="ra5CMPAcdRes" name="Acid Resistance" description="You are resistant to acid damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CMPClToWv" name="Call to the Wave" description="You know the {i}acid splash{/i} cantrip. \n\nAt 3rd level and 5th level, you learn {i}create or destroy water{/i} and {i}water walk{/i}, respectively. You can cast {i}create or destroy water{/i}  and {i}water walk{/i} once each per long rest without expending any spell slots and without needing material components. You can also cast them using any spell slots you have, so long as those spell slots are the appropriate level. \n\nChoose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <comment>cantrip
+1st level sp @ 3rd
+2nd level sp @ 5th</comment>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="OnlyIfCaster1" name="OnlyIfCaster1" abbrev="OnlyIfCaster1"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <bootstrap thing="spCreaor">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spWateWalk">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spWateWalk">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spAcidSpla">
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    <bootstrap thing="spCreaor">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
+    </thing>
+  <thing id="ra5CMPAmphib" name="Amphibious" description="You can breathe air and water. Also, you have a swim speed equal to your walking speed." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[xSwim].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xSwim].field[abValue].value)]]></eval>
+    </thing>
+  <thing id="r5CMPGith" name="Gith" description="Gith are descended from peoples that escaped servitude under mind flayers and fled to the Astral Plane. They now possess psionic powers." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal"/>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CMPPsyRes"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CToFGith]
+      perform hero.assign[IsRace.r5CToFGith]
+      perform hero.assign[RaceEquip.r5CToFGith]]]></eval>
+    </thing>
+  <thing id="ra5CMPPsyRes" name="Psychic Resilience" description="You are resistant to psychic damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="sr5CMPGthynk" name="Githyanki" compset="SubRace" uniqueness="unique">
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="SubRace" tag="r5CMPGith"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <bootstrap thing="ra5CMPAstKnw"></bootstrap>
+    <bootstrap thing="ra5CMPGthyPsi"></bootstrap>
+    </thing>
+  <thing id="ra5CMPAstKnw" name="Astral Knowledge" description="Each time you complete a long rest, choose one skill and either one weapon or one tool. Until the end of your next long rest, you have proficiency with your chosen options.\n\n{b}Hero Lab note:{/b} The text of this feature limits the choices to only options available in the Player&apos;s Handbook. Due to programming limitations, options from any chosen source will display as available. Either ensure your choice is from the PHB or ask your DM if you can choose something else." compset="RaceSpec">
+    <fieldval field="abText" value="resets on long rest"/>
+    <arrayval field="usrArray" index="0" value="Weapon"/>
+    <arrayval field="usrArray" index="1" value="Tool"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="cfg5CMPAsKn"></bootstrap>
+    <eval phase="First"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      
+
+      if (field[usrIndex].value = 1) then 
+         hero.childfound[cfg5CMPAsKn].field[cToolMax].value += 1
+      elseif (field[usrIndex].value = 0) then 
+         field[usrCandid1].text = "component.BaseWep & (wProfReq.Martial|wProfReq.Simple) & !Helper.Helper & !thingid.w5CSpellAt"
+         perform assign[ChooseSrc1.Thing]
+      endif]]></eval>
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, or tools are picked, do nothing & 
+      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrIndex].value <> 0)
+
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull all the selected weapon proficiency tags to ourself 
+      perform field[usrChosen1].chosen.pulltags[WepProf.?]
+    
+      ~ Now push both tags to the hero
+      perform hero.pushtags[WepProf.?]]]></eval>
+    </thing>
+  <thing id="cfg5CMPAsKn" name="Astral Knowledge" compset="Configure" uniqueness="unique">
+    <fieldval field="cSkillMax" value="1"/>
+    <tag group="AllowSkl1" tag="Any"/>
+    <tag group="AllowTool1" tag="Any"/>
+    </thing>
+  <thing id="ra5CMPGthyPsi" name="Githyanki Psionics" description="You know the {i}mage hand{/i} cantrip, needing no spell components. The hand is invisible. \n\nAt 3rd level and 5th level, you learn {i}jump{/i} and {i}misty step{/i}, respectively. You can cast {i}jump{/i}  and {i}misty step{/i} once each per long rest without expending any spell slots and without needing any spell components. You can also cast them using any spell slots you have, so long as those spell slots are the appropriate level. \n\nChoose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <comment>cantrip
+1st level sp @ 3rd
+2nd level sp @ 5th</comment>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="OnlyIfCaster1" name="OnlyIfCaster1" abbrev="OnlyIfCaster1"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <bootstrap thing="spJump">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMistStep">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spMistStep">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="sNameMod" value="invisible hand"/>
+      </bootstrap>
+    <bootstrap thing="spJump">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
+    </thing>
+  <thing id="sr5CMPGthzri" name="Githzerai" compset="SubRace" uniqueness="unique">
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="SubRace" tag="r5CMPGith"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <bootstrap thing="ra5CMPMntDis"></bootstrap>
+    <bootstrap thing="ra5CMPGthzPsi"></bootstrap>
+    </thing>
+  <thing id="ra5CMPGthzPsi" name="Githzerai Psionics" description="You know the {i}mage hand{/i} cantrip, needing no spell components. The hand is invisible. \n\nAt 3rd level and 5th level, you learn {i}shield{/i} and {i}detect thoughts{/i}, respectively. You can cast {i}shield{/i}  and {i}detect thoughts{/i} once each per long rest without expending any spell slots and without needing any spell components. You can also cast them using any spell slots you have, so long as those spell slots are the appropriate level. \n\nChoose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <comment>cantrip
+1st level sp @ 3rd
+2nd level sp @ 5th</comment>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="OnlyIfCaster1" name="OnlyIfCaster1" abbrev="OnlyIfCaster1"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <bootstrap thing="spShield">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDeteThou">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spDeteThou">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="sNameMod" value="invisible hand"/>
+      </bootstrap>
+    <bootstrap thing="spShield">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
+    </thing>
+  <thing id="ra5CMPMntDis" name="Mental Discipline" description="You have advantage on saving throws to avoid or end the charmed or frightened condition on yourself." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svAll],"Advantage vs. being charmed or frightened",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="r5CMPGoblin" name="Goblin" description="Goblins are a race of small and numerous goblinoids common throughout the multiverse. In their distant past, they were Fey servants, though this fact has been lost to the ages." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceSize" tag="Small11" name="Small" abbrev="Small"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CNmbEsc">
+      <assignval field="abText" value="You"/>
+      <assignval field="abText2" value="your"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttGoblinoi"></bootstrap>
+    <bootstrap thing="ra5CMPFrySml"></bootstrap>
+    <bootstrap thing="ra5CFeyAncPC"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CVGMGobl]
+      perform hero.assign[IsRace.r5CVGMGobl]
+      perform hero.assign[RaceEquip.r5CVGMGobl]]]></eval>
+    </thing>
+  <thing id="ra5CMPFrySml" name="Fury of the Small" description="When you damage a creature with an attack or a spell and the creature&apos;s size is larger than yours, you can cause the attack or spell to deal extra damage equaling your proficiency bonus to the creature. You can use it no more than once per turn. \n\nYou can use this feature a number of times equaling your proficiency bonus, and regain all spent uses when you complete a long rest." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+
+field[abText].text = hero.childfound[ProfBonus].field[tProfBonus].value & " damage"]]></eval>
+    </thing>
+  <thing id="r5CMPGoliath" name="Goliath" description="Distantly related to giants, goliaths live among the tallest peaks." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="DamageRes" tag="dtCold" name="Cold" abbrev="Cold"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <bootstrap thing="ra5CEEMBor"></bootstrap>
+    <bootstrap thing="ra5CMPLilGnt"></bootstrap>
+    <bootstrap thing="ra5CMPStnEnd"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CEEGolia]
+      perform hero.assign[IsRace.r5CEEGolia]
+      perform hero.assign[RaceEquip.r5CEEGolia]]]></eval>
+    </thing>
+  <thing id="ra5CMPStnEnd" name="Stone&apos;s Endurance" description="You can focus yourself to occasionally shrug off injury. When you take damge, you can use your reaction to roll a d12. Add your Constitution modifier to the number rolled, and reduce the damage by that total. You can use this reaction a number of times equaling your proficiency bonus, and regain all spent uses when you compete a long rest." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Reaction" name="Reaction" abbrev="Reaction"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+field[abText].text = "1d12+" & hero.childfound[aCON].field[aModBonus].value]]></eval>
+    </thing>
+  <thing id="ra5CMPLilGnt" name="Little Giant" description="You count as one size larger when determining your carrying capacity and the weight you can push, drag, or lift. You&apos;re also proficient in the Athletics skill." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+
+    herofield[tEncumLgt].value = herofield[tEncumLgt].value * 2
+    herofield[tEncumHvy].value = herofield[tEncumHvy].value * 2
+    herofield[tEncumMax].value = herofield[tEncumMax].value * 2]]></eval>
+    </thing>
+  <thing id="r5CMPHobgob" name="Hobgoblin" description="Though their ancient history lies in the Fey courts, hobgoblins are now known as a larger, stronger, smarter, and more menacing form of goblinoids than goblins." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPFrtMny"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ttGoblinoi"></bootstrap>
+    <bootstrap thing="ra5CFeyAncPC"></bootstrap>
+    <bootstrap thing="ra5CMPFeyGft"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CVGMHobG]
+      perform hero.assign[IsRace.r5CVGMHobG]
+      perform hero.assign[RaceEquip.r5CVGMHobG]]]></eval>
+    </thing>
+  <thing id="ra5CMPFeyGft" name="Fey Gift" description="You can use this trait to take the Help action as a bonus action. You can do this a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest.\nBeginning at level 3, you can choose one of the below options when using this version of the Help action:\n\n{b}Hospitality.{/b} You and the creature you&apos;re helping each gain temporary hitpoints equal to 1d6 + your proficiency bonus.\n{b}Passage.{/b} You and the creature you&apos;re helping each increase your walking speeds by 10 feet until the beginning of your next turn.\n{b}Spite.{/b} Until the beginning of your next turn, the first time the creature you&apos;re helping hits a target with an attack roll, that target gains disadvantage on the next attack roll it it makes within the next minute." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+      field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="ra5CMPFrtMny" name="Fortune from the Many" description="If you miss with an attack roll or fail an ability check or a saving throw, you can gain a bonus to the roll equal to the number of allies you can see within 30 feet of you (maximum bonus of +3). You can use this trait a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+      field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="r5CMPKenku" name="Kenku" description="Kenkus were a race of flightless avian humanoids with keen observational skills and supernaturally accurate memories." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="cSkillMax" value="2"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="AllowSkl1" tag="Any"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="ra5CMPMimicr"></bootstrap>
+    <bootstrap thing="ra5CMPExpDup"></bootstrap>
+    <bootstrap thing="ra5CMPKnkRcl"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CVGMKenk]
+      perform hero.assign[IsRace.r5CVGMKenk]
+      perform hero.assign[RaceEquip.r5CVGMKenk]]]></eval>
+    </thing>
+  <thing id="ra5CMPMimicr" name="Mimicry" description="You can accurately mimic sounds you have heard, including voices. A creature that hears the sounds you make can tell they are imitations with a successful Wisdom (Insight) check, with the DC equaling 8 + your proficiency bonus + your Charisma modifier." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CMPExpDup" name="Expert Duplication" description="You can duplicate your and other creatures&apos; handwriting and craftwork. You have advantage on all checks made to produce forgeries or duplicates of existing objects." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CMPKnkRcl" name="Kenku Recall" description="Thanks to your expert recall, you&apos;re proficient in two skills of your choice. \n\nAdditionally, whenever you make an ability check with a skill with which you&apos;re proficient, youcan grant yourself advantage before rolling the d20. You can do this a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="r5CMPKobold" name="Kobold" description="Kobolds are small, dragon-like humanoids, and are often found serving the dragons as minions." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceSize" tag="Small11" name="Small" abbrev="Small"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="AllowSkl1" tag="skArcana"/>
+    <tag group="AllowSkl1" tag="skInvestig"/>
+    <tag group="AllowSkl1" tag="skMedicine"/>
+    <tag group="AllowSkl1" tag="skSleight"/>
+    <tag group="AllowSkl1" tag="skSurvival"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPDrcCry"></bootstrap>
+    <bootstrap thing="ra5CMPKobLeg"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CVGMKobo]
+      perform hero.assign[IsRace.r5CVGMKobo]
+      perform hero.assign[RaceEquip.r5CVGMKobo]]]></eval>
+    </thing>
+  <thing id="ra5CMPDrcCry" name="Draconic Cry" description="As an bonus action, you can yell at your enemies within 10 feet of you. Until the beginning of your next turn, you and your allies gain advantage on attack rolls against any of those enemies who were able to hear you. You can use this trait a number of times equaling your proficiency bonus, and you regain all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="abRange" value="10"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="ra5CMPKobLeg" name="Kobold Legacy" description="Choose one of these options, which is an expression of your legacy connection to dragons:\n\n{b}Craftiness.{/b} You are proficient in one of these skills of your choice: Arcana, Investigation, Medicine, Sleight of Hand, or Survival.\n{b}Defiance.{/b} You have advantage on saving throws to avoid or end the frightened condition on yourself.\n{b}Draconic Sorcery.{/b} You know one cantrip of your choice from the sorcerer spell list. Choose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Craftiness"/>
+    <arrayval field="usrArray" index="1" value="Defiance"/>
+    <arrayval field="usrArray" index="2" value="Draconic Sorcery"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <bootstrap thing="cfg5CMPDrSrc">
+      <containerreq phase="First" priority="300">fieldval:usrIndex = 2</containerreq>
+      </bootstrap>
+    <eval phase="First" priority="1000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrIndex].value <> 0)
+
+      hero.childfound[r5CMPKobold].field[cSkillMax].value += 1
+      field[abText].text = "Craftiness"]]></eval>
+    <eval phase="First" priority="1000" index="3"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrIndex].value <> 2)
+
+      field[abText].text = "Draconic Sorcery"      
+      field[usrCandid1].text = "component.BaseAttr & (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"
+      perform assign[ChooseSrc1.Hero]
+      
+      doneif (field[usrChosen1].ischosen = 0)
+
+      perform field[usrChosen1].chosen.pulltags[StandardDC.?]
+      perform hero.childfound[cfg5CMPDrSrc].pushtags[StandardDC.?]
+      perform delete[StandardDC.?]]]></eval>
+    <eval phase="Final" priority="10000" index="2"><![CDATA[
+
+
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrIndex].value <> 1)
+      #situational[hero.child[svAll],"Advantage vs. being frightened",field[thingname].text]
+      field[abText].text = "Defiance"]]></eval>
+    </thing>
+  <thing id="cfg5CMPDrSrc" name="Draconic Sorcery" compset="Configure" uniqueness="unique">
+    <fieldval field="cfgMaxSp1" value="1"/>
+    <fieldval field="cfgSpell1" value="Sorcerer Cantrip"/>
+    <fieldval field="cfgAllwSp1" value="sClass.cHelpSor &amp; sLevel.0 &amp; !Helper.Helper"/>
+    <eval phase="Final" priority="50000"><![CDATA[foreach pick in hero from BaseSpell where "CfgSpell.cfg5CMPDrSrc"
+    perform eachpick.assign[Helper.Cantrip]
+    perform eachpick.assign[Helper.Free]
+    perform eachpick.assign[Helper.SpellLike]
+    nexteach]]></eval>
+    </thing>
+  <thing id="r5CMPLzrdflk" name="Lizardfolk" description="Lizardfolk, also known as lizard men, were a race of reptilian humanoids. Their physical defenses and connection to nature make them great survivors." compset="Race">
+    <fieldval field="rAC" value="3"/>
+    <fieldval field="cSkillMax" value="2"/>
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="AllowSkl1" tag="skSurvival" name="Survival" abbrev="Survival"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="AllowSkl1" tag="skAnimHand" name="Animal Handling" abbrev="Animal Handling"/>
+    <tag group="AllowSkl1" tag="skNature" name="Nature" abbrev="Nature"/>
+    <tag group="AllowSkl1" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="AllowSkl1" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="AllowSkl1" tag="skMedicine"/>
+    <bootstrap thing="ra5CMPHngJws"></bootstrap>
+    <bootstrap thing="ra5CNatArm"></bootstrap>
+    <bootstrap thing="ra5CHldBre"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CMPNatInt"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[xSwim].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xSwim].field[abValue].value)]]></eval>
+    <eval phase="First" priority="10" index="2"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CLizFlk]
+      perform hero.assign[IsRace.r5CLizFlk]
+      perform hero.assign[RaceEquip.r5CLizFlk]]]></eval>
+    </thing>
+  <thing id="ra5CMPHngJws" name="Hungry Jaws" description="As a bonus action, you can make a special attack with your bite. If the attack hits, it deals its normal damage, and you gain temporary hit points equal to your proficiency bonus. You can do this a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest.\n\n{b}Note:{/b} Add Temporary Hit Poits via In-Play tab manually." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr" priority="10001"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+field[abText].text = hero.childfound[ProfBonus].field[tProfBonus].value & " temp HP"]]></eval>
+    </thing>
+  <thing id="ra5CMPNatInt" name="Nature&apos;s Intuition" description="Your connection to the natural world grants you proficiency in two of these skills, chosen by you: Animal Handling, Medicine, Nature, Perception, Stealth, or Survival." compset="RaceSpec"></thing>
+  <thing id="r5CMPMntaur" name="Minotaur" compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="ra5CMPGorRsh"></bootstrap>
+    <bootstrap thing="ra5CMPHmrHrn"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <assignval field="livename" value="Horns"/>
+      <assignval field="sbName" value="Horns"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CMPLbyRcl"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CGGRMinot]
+      perform hero.assign[IsRace.r5CGGRMinot]
+      perform hero.assign[RaceEquip.r5CGGRMinot]]]></eval>
+    </thing>
+  <thing id="ra5CMPHmrHrn" name="Hammering Horns" description="Right after you successfully hit with a melee attack as part of the Attack action during your turn, you can attempt to shove a creature with your horns as a bonus action. The target must succeed on a Strength saving throw of DC 8 + your Strength modifier + your proficiency bonus or they will be pushed up to 10 feet from you. They must be within 5 feet of you and no larger than one size larger than you." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="StandardDC" tag="aSTR"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    </thing>
+  <thing id="ra5CMPGorRsh" name="Goring Rush" description="Right after you use the Dash action during your turn to move at least 20 feet, you can use a bonus action to make a melee attack with your horns." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    </thing>
+  <thing id="ra5CMPLbyRcl" name="Labyrinthine Recall" description="You always know which way is North. You also have advantage on any Wisdom (Survival) checks made to navigate or track." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[skSurvival],"Advantage to navigate and/or track",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="r5CMPOrc" name="Orc" description="Orcs are a race of humanoids that have been known for their tenacity and toughness for ages." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPAdrRsh"></bootstrap>
+    <bootstrap thing="ra5CVGMPoB"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CMPRelEnd"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <eval phase="First"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CVGMOrc]
+      perform hero.assign[IsRace.r5CVGMOrc]
+      perform hero.assign[RaceEquip.r5CVGMOrc]]]></eval>
+    </thing>
+  <thing id="ra5CMPAdrRsh" name="Adrenaline Rush" description="You can take the Dash action as a bonus action. Whenever you do so, you gain temporary hit points equaling your proficiency bonus." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <eval phase="PostAttr" priority="10001"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+field[abText].text = hero.childfound[ProfBonus].field[tProfBonus].value & " temp HP"]]></eval>
+    </thing>
+  <thing id="ra5CMPRelEnd" name="Relentless Endurance" description="When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead. You can&apos;t use this feature again until you finish a long rest." compset="RaceSpec" summary="When you are reduced to 0 HP but not slain, you are reduced to 1 HP instead.">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="LongRest" name="/long rest" abbrev="/long rest"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="r5CMPSatyr" name="Satyr" compset="Race">
+    <fieldval field="rSpeed" value="35"/>
+    <fieldval field="cToolMax" value="1"/>
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="AllowTool1" tag="Instrument" name="Musical instrument" abbrev="Musical instrument"/>
+    <tag group="ProfSkill" tag="skPerform" name="Performance" abbrev="Performance"/>
+    <tag group="ProfSkill" tag="skPersuas" name="Persuasion" abbrev="Persuasion"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CReveler"></bootstrap>
+    <bootstrap thing="ra5CMrthLps"></bootstrap>
+    <bootstrap thing="wRam">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="tpFey"></bootstrap>
+    <bootstrap thing="ra5CMgRsSpPC"></bootstrap>
+    <eval phase="First"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CSatyr]
+      perform hero.assign[IsRace.r5CSatyr]
+      perform hero.assign[RaceEquip.r5CSatyr]]]></eval>
+    </thing>
+  <thing id="ra5CMgRsSpPC" name="Magic Resistance" description="You have advantage on saving throws against spells." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svAll],"Advantage vs. spells",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="r5CMPSeaElf" name="Sea Elf" description="Sea elves are descended from elves that fell in love with the oceans and seas of the many worlds, even including the water elemental plane." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="AllowTool1" tag="Any"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CMPChdSea"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFeyAncPC"></bootstrap>
+    <bootstrap thing="ra5CMPKeenSn"></bootstrap>
+    <bootstrap thing="ra5CMPTrance"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPFrdSea"></bootstrap>
+    <bootstrap thing="ttElf"></bootstrap>
+    </thing>
+  <thing id="ra5CMPChdSea" name="Child of the Sea" description="You can breathe air and water and are resistant to cold damage. Also, you have a swim speed equal to your walking speed." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Universal" tag="Universal" name="Universal Monster Ability" abbrev="Universal Monster Ability"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[xSwim].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xSwim].field[abValue].value)]]></eval>
+    </thing>
+  <thing id="ra5CMPKeenSn" name="Keen Senses" description="You are proficient in the Perception skill." compset="RaceSpec"></thing>
+  <thing id="ra5CMPTrance" name="Trance" description="You do not need to sleep, nor can magic put you to sleep. You can complete a long rest in 4 hours, so long as you spend that time in trancelike meditation. You retain consciousness during this meditation.\n\nWhenever you complete a long rest, you can gain two proficiencies, with weapons and/or tools, that you do not currently have. You maintain these proficiencies until you complete a long rest.\n\n{b}Hero Lab note:{/b} The text of this feature limits the choices to only options available in the Player&apos;s Handbook. Due to programming limitations, options from any chosen source will display as available. Either ensure your choice is from the PHB or ask your DM if you can choose something else." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="2 Tools"/>
+    <arrayval field="usrArray" index="1" value="1 Each"/>
+    <arrayval field="usrArray" index="2" value="2 Weapons"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="User" tag="NoAutoName"/>
+    <bootstrap thing="ra5CMPTrncWp">
+      <containerreq phase="First" priority="500"><![CDATA[fieldval:usrIndex > 0]]></containerreq>
+      </bootstrap>
+    <eval phase="First"><![CDATA[   doneif (tagis[Helper.Disable] <> 0)
+   doneif (field[usrIndex].value = 2)
+
+   foreach pick in hero from BaseRace
+      if (field[usrIndex].value = 0) then
+         eachpick.field[cToolMax].value += 2
+      elseif (field[usrIndex].value = 1) then
+         eachpick.field[cToolMax].value += 1
+       endif
+     nexteach]]></eval>
+    </thing>
+  <thing id="ra5CMPTrncWp" name="Trance Weapons" description="Whenever you complete a long rest, you can gain two proficiencies, with weapons and/or tools, that you do not currently have. You maintain these proficiencies until you complete a long rest.\n\n{b}Hero Lab note:{/b} The text of this feature limits the choices to only options available in the Player&apos;s Handbook. Due to programming limitations, options from any chosen source will display as available. Either ensure your choice is from the PHB or ask your DM if you can choose something else. Also note that if you are proficient in all simple and martial weapons, like a member of the Fighter class, there will be no options to choose from." compset="RaceSpec">
+    <eval phase="Final" priority="90000"><![CDATA[   doneif (tagis[Helper.Disable] <> 0)
+
+   var iIndWep as string
+
+   iIndWep = hero.tagids[WepProf.?," & !"]
+
+   if (empty(iIndWep) = 0) then
+     iIndWep = " & !" & iIndWep
+     endif
+
+   if (hero.tagis[ArmProfGrp.WepSimple] <> 0) then
+      iIndWep &= " & !wProfReq.Simple"
+      endif
+
+   if (hero.tagis[ArmProfGrp.WepMartial] <> 0) then
+      iIndWep &= " & !wProfReq.Martial"
+      endif
+      
+   field[usrCandid1].text = "component.BaseWep & (wProfReq.Martial|wProfReq.Simple) & !Helper.Helper & !thingid.w5CSpellAt" & iIndWep
+   perform assign[ChooseSrc1.Thing]
+
+   if (hero.childfound[ra5CMPTrance].field[usrIndex].value = 2) then
+      field[usrCandid2].text = field[usrCandid1].text
+      perform assign[ChooseSrc2.Thing]
+      endif]]></eval>
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[
+      ~ If we're disabled, or tools are picked, do nothing & 
+      doneif (tagis[Helper.Disable] <> 0)
+
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      ~ Pull all the selected weapon proficiency tags to ourself 
+      perform field[usrChosen1].chosen.pulltags[WepProf.?]]]></eval>
+    <eval phase="PreLevel" priority="10001" index="3"><![CDATA[
+      ~ If we're disabled, or tools are picked, do nothing & 
+      doneif (tagis[Helper.Disable] <> 0)
+      doneif (hero.childfound[ra5CMPTrance].field[usrIndex].value <> 2)
+
+      ~ If nothing chosen then get out now!
+      doneif (field[usrChosen2].ischosen = 0)
+      
+      ~ Pull all the selected weapon proficiency tags to ourself 
+      perform field[usrChosen2].chosen.pulltags[WepProf.?]]]></eval>
+    <eval phase="PreLevel" priority="10002" index="4"><![CDATA[      ~ If we're disabled, or tools are picked, do nothing & 
+      doneif (tagis[Helper.Disable] <> 0)
+
+      perform hero.pushtags[WepProf.?]]]></eval>
+    </thing>
+  <thing id="ra5CMPFrdSea" name="Friend of the Sea" description="You can communicate simple ideas to any Beast that possesses a swimming speed. Though they can understand your words, you have no special ability to understand them in kind." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="r5CMPShdKai" name="Shadar-Kai" description="Shadar-kai are elves that were originally drawn to the Shadowfell, ususally by the Raven Queen." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="AllowTool1" tag="Any"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFeyAncPC"></bootstrap>
+    <bootstrap thing="ra5CMPKeenSn"></bootstrap>
+    <bootstrap thing="ra5CMPTrance"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ttElf"></bootstrap>
+    <bootstrap thing="ra5CMPNecRes"></bootstrap>
+    <bootstrap thing="ra5CMPBlsRvn"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    </thing>
+  <thing id="ra5CMPNecRes" name="Necrotic Resistance" description="You are resistant to necrotic damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CMPBlsRvn" name="Blessing of the Raven Queen" description="As a bonus action, you can magically teleport up to 30 feet to an unoccupied space you can see. You can do this a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest.\n\nBeginning at 3rd level, you also become resistant to all damage when you use this teleportation. The resistance lasts until the beginning of your next turn. Until then, you appear ghostly and translucent." compset="RaceSpec">
+    <fieldval field="abDuration" value="Start of your next turn"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+
+field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="r5CMPTabaxi" name="Tabaxi" description="Tabaxi were created by the Cat Lord as a feline people. Some populations of them express the natural curiosity and playfulness of felines more than others." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPCtTlnt"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="livename" value="Cat&apos;s Claws"/>
+      <assignval field="sbName" value="Cat&apos;s Claws"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="ra5CMPFelAgl"></bootstrap>
+    <eval phase="Final" priority="10001"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[xClimb].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xClimb].field[abValue].value)]]></eval>
+    <eval phase="First" priority="10" index="2"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CTabaxi]
+      perform hero.assign[IsRace.r5CTabaxi]
+      perform hero.assign[RaceEquip.r5CTabaxi]]]></eval>
+    </thing>
+  <thing id="ra5CMPFelAgl" name="Feline Agility" description="When you move on your tum in combat, you can double your speed until the end of the tum. Once you use this trait, you can&apos;t use it again until you move 0 feet on one of your turns." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="UsedUp"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CMPCtTlnt" name="Cat&apos;s Talent" description="You are proficient in the Perception and Stealth skills." compset="RaceSpec"></thing>
+  <thing id="r5CMPTortle" name="Tortle" description="Tortles are a race of intelligent turtle-like humanoids with a connection to the natural world. They&apos;re known to say &quot;we wear our homes on our backs.&quot;" compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="cSkillMax" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="AllowSkl1" tag="skAnimHand"/>
+    <tag group="AllowSkl1" tag="skMedicine"/>
+    <tag group="AllowSkl1" tag="skNature"/>
+    <tag group="AllowSkl1" tag="skPercep"/>
+    <tag group="AllowSkl1" tag="skStealth"/>
+    <tag group="AllowSkl1" tag="skSurvival"/>
+    <bootstrap thing="ra5CMPShlDef"></bootstrap>
+    <bootstrap thing="ra5CMPHldBrt">
+      <assignval field="abValue" value="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPTrtNAr"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="sbName" value="Claws"/>
+      <assignval field="livename" value="Claws"/>
+      </bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPNatInt">
+      <assignval field="CustDesc" value="Your connection to the natural world grants you proficiency in one of these skills, chosen by you: Animal Handling, Medicine, Nature, Perception, Stealth, or Survival."/>
+      </bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CTortle]
+      perform hero.assign[IsRace.r5CTortle]
+      perform hero.assign[RaceEquip.r5CTortle]]]></eval>
+    </thing>
+  <thing id="ra5CMPTrtNAr" name="Natural Armor" description="Your shell provides you a base AC of 17 (this is unaffected by your Dexterity modifier). You cannot wear light, medium, or heavy armor. However, shields can still provide their bonus to you as normal." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="PostAttr" priority="5000" index="2"><![CDATA[~ If we're not shown, just get out now
+doneif (tagis[Helper.Disable] <> 0)
+
+var dexmod as number
+
+dexmod = #attrmod[aDEX]
+~ turn it into a penalty
+dexmod *= -1
+
+     hero.child[ArmorClass].field[tACUnarDef].value += dexmod]]></eval>
+    <eval phase="Final" priority="1000"><![CDATA[~ If we're not shown, just get out now
+doneif (tagis[Helper.Disable] <> 0)
+
+        hero.child[ArmorClass].field[tACNatural].value = 7]]></eval>
+    <eval phase="Render" priority="100000" index="3"><![CDATA[~ If we're not shown, just get out now
+doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseArmor where "ArmorClass.Light | ArmorClass.Medium | ArmorClass.Heavy"
+     perform eachpick.delete[Helper.AllowEquip]
+     nexteach]]></eval>
+    </thing>
+  <thing id="ra5CMPHldBrt" name="Hold Breath" description="You can hold your breath for up to {abValue} minutes." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text = "You can hold your breath for up to " & field[abValue].value & " minutes."]]></eval>
+    </thing>
+  <thing id="ra5CMPShlDef" name="Shell Defense" description="You can use an action to withdraw into your shell. While withdrawn, you have a +4 bonus to your AC and you make Strength and Constitution saves with advantage. However, you are prone, you have disadvantage on your Dexterity saves, your speed is 0 (it cannot be increased), you cannot take reactions, and you cannot take any actions except for a bonus action to emerge from the shell." compset="RaceSpec">
+    <fieldval field="actName" value="Withdrawn (action to withdraw)"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="1001"><![CDATA[~ If we're not shown, just get out now
+doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abilActive].value = 0)
+
+hero.child[ArmorClass].field[tACNatural].value += 4
+field[actName].text = "Withdrawn (bonus action to emerge)"
+
+#situational[hero.child[svSTR],"Advantage",field[thingname].text]
+#situational[hero.child[svCON],"Advantage",field[thingname].text]
+#situational[hero.child[svDEX],"Disadvantage",field[thingname].text]]]></eval>
+    <eval phase="First" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abilActive].value = 0)
+
+hero.childfound[Speed].field[tSpeed].value = 0]]></eval>
+    <eval phase="Final" priority="200000" index="3"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abilActive].value = 0)
+
+hero.childfound[Speed].field[tSpeedMod].value = 0]]></eval>
+    </thing>
+  <thing id="r5CMPTriton" name="Triton" description="Tritons originate from the Elemental Plane of Water, but have migrated to the Material Planes. They are sea dwellers, adapted to both the warm surface seas as well as the dark, cold depths." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="DamageRes" tag="dtCold" name="Cold" abbrev="Cold"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="Alignment" tag="Good" name="Good" abbrev="G"/>
+    <tag group="Alignment" tag="Lawful" name="Lawful" abbrev="L"/>
+    <bootstrap thing="ra5CMPCntArW"></bootstrap>
+    <bootstrap thing="ra5CMPGrdDpt"></bootstrap>
+    <bootstrap thing="ra5CMPEmsSea"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CMPAmphib"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CTriton]
+      perform hero.assign[IsRace.r5CTriton]
+      perform hero.assign[RaceEquip.r5CTriton]]]></eval>
+    </thing>
+  <thing id="ra5CMPEmsSea" name="Emissary of the Sea" description="You can communicate simple ideas to any Beast, Elemental, or Monstrosity that possesses a swimming speed. Though they can understand your words, you have no special ability to understand them in kind." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CMPGrdDpt" name="Guardian of the Depths" description="You have resistance to cold damage, as you are well-adapted to the frigid depths of the ocean." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CMPGftSvrf" name="Gift of the Svirfneblin" description="At 3rd level, and 5th level, you learn {i}disguise self{/i} and {i}nondetection{/i}, respectively. You can cast each once per long rest without expending any spell slots, needing no material components. You can also cast them using any spell slots you have, so long as those spell slots are the appropriate level. \n\nChoose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <comment>1st level sp @ 3rd
+2nd level sp @ 5th</comment>
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="OnlyIfCaster1" name="OnlyIfCaster1" abbrev="OnlyIfCaster1"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <bootstrap thing="spDisgSelf">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spNondetec">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="spNondetec">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 5]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster1"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
+    </thing>
+  <thing id="r5CMPYuanti" name="Yuan-Ti" description="Yuan-ti were once humanoids that transformed themselves into serpentfolk. While most became corrupted, the most pure-blooded are a people of humanoids with snake-like features." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="SplAttr" tag="aCHA" name="Charisma" abbrev="Charisma"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="DamageRes" tag="dtPoison"/>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="ra5CLinSize"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMgRsSpPC"></bootstrap>
+    <bootstrap thing="ra5CMPSrpSpl"></bootstrap>
+    <bootstrap thing="ra5CMPPsnRes"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CVGMYuaT]
+      perform hero.assign[IsRace.r5CVGMYuaT]
+      perform hero.assign[RaceEquip.r5CVGMYuaT]]]></eval>
+    </thing>
+  <thing id="ra5CMPSrpSpl" name="Serpentine Spellcasting" description="You know the {i}poison spray{/i} cantrip. You also know {i}animal friendship{/i}, and can cast it at will but only targeting snakes.\n\nAt 3rd level you learn {i}suggestion{/i}. You can cast it once per long rest without expending any spell slot. You can also cast it using any 2nd level or higher spell slot you have.\n\nChoose from Intelligence, Wisdom, or Charisma as your spellcasting ability for these spells." compset="RaceSpec">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <tag group="Custom" tag="OnlyIfCaster2" name="OnlyIfCaster2" abbrev="OnlyIfCaster2"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="OnlyIfCaster1" name="OnlyIfCaster1" abbrev="OnlyIfCaster1"/>
+    <tag group="ChooseSrc1" tag="Hero" name="All Picks on Hero" abbrev="All Picks on Hero"/>
+    <bootstrap thing="spSuggesti">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="sp5CPoisoS">
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    <bootstrap thing="spSuggesti">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      </bootstrap>
+    <bootstrap thing="sp5CAnimFr">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sNameMod" value="snakes only"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
+    </thing>
+  <thing id="ra5CMPPsnRes" name="Poison Resilience" description="You have advantage on saving throws to avoid or end the poisoned condition on yourself. You are also resistant to poison damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svAll],"Advantage vs. being poisoned",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="r5CMPShfter" name="Shifter" description="Sometimes known as weretouched, shifters are the descendants of lycanthropes. While they cannot fully change their shape into beasts, they can briefly augment their animalian features." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="cSkillMax" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="AllowSkl1" tag="skAcrobat"/>
+    <tag group="AllowSkl1" tag="skAthletic"/>
+    <tag group="AllowSkl1" tag="skIntim"/>
+    <tag group="AllowSkl1" tag="skSurvival"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ra5CMPShftng"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPBstIns"></bootstrap>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      ~ We need to make this updated race look just like the
+      ~ original version. So push Race, IsRace & RaceEquip
+      ~ tags to the hero.
+      perform hero.assign[Race.r5CEbShift]
+      perform hero.assign[IsRace.r5CEbShift]
+      perform hero.assign[RaceEquip.r5CEbShift]]]></eval>
+    </thing>
+  <thing id="ra5CMPBstIns" name="Bestial Instincts" description="You are proficient in one of these skills, chosen by you: Acrobatics, Athletics, Intimidation, or Survival." compset="RaceSpec"></thing>
+  <thing id="r5CMPEladrin" name="Eladrin" description="Eladrin are elves with a strong connection to the Feywild, using its magics to step between spaces instantly. Their forms express their emotions as seasons." compset="Race">
+    <fieldval field="rLanguages" value="1"/>
+    <usesource source="5eMPMotM"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="AllowTool1" tag="Any"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <bootstrap thing="ra5CLnA111"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFeyAncPC"></bootstrap>
+    <bootstrap thing="ra5CMPKeenSn"></bootstrap>
+    <bootstrap thing="ra5CMPTrance"></bootstrap>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ttElf"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CMPFeyStp"></bootstrap>
+    <bootstrap thing="ra5CMPSeason"></bootstrap>
+    </thing>
+  <thing id="ra5CMPShftng" name="Shifting" description="As a bonus action, you can shift into a more bestial form. The shift lasts for 1 minute, until you die, or until you change back as a bonus action. \n\nWhen you shift, you gain temporary hit points equal to twice your proficiency bonus. You can shift a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest.\n\nWhen you choose the shifter race, choose what kind of shifter you are from the options below. The chosen option grants you an additional benefit every time you shift:\n\n{b}Beasthide.{/b} Whenever you shift, you gain 1d6 additional temporary hit points, and while shifted, you have a +1 bonus to your AC.\n\n{b}Longtooth.{/b} Whenever you shift, you can use your longer fangs to make an unarmed strike as a bonus action, dealing 1d6 plus your Strength modifier piercing damage on a hit.\n\n{b}Swiftstrider.{/b} Whenever you shift, your walking speed increases by an additional 10 feet. Additionally, you can move up to 10 feet as a reaction when an enemy ends its turn within 5 feet of you. This movement doesn&apos;t provoke opportunity attacks.\n\n{b}Wildhunt.{/b} While shifted, you have advantage on Wisdom checks and no creatures within 30 feet of you can attack you with advantage unless you&apos;re incapacitated." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Beasthide"/>
+    <arrayval field="usrArray" index="1" value="Longtooth"/>
+    <arrayval field="usrArray" index="2" value="Swiftstride"/>
+    <arrayval field="usrArray" index="3" value="Wildhunt"/>
+    <bootstrap thing="ra5CMPShfBst">
+      <containerreq phase="First" priority="450">fieldval:usrIndex = 0</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CMPShfLng">
+      <containerreq phase="First" priority="450">fieldval:usrIndex = 1</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CMPShfSwf">
+      <containerreq phase="First" priority="450">fieldval:usrIndex = 2</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CMPShfWld">
+      <containerreq phase="First" priority="450">fieldval:usrIndex = 3</containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="ra5CMPShfBst" name="Beasthide Shifting" description="As a bonus action, you can shift into a more bestial form. The shift lasts for 1 minute, until you die, or until you change back as a bonus action. \n\nWhen you shift, you gain temporary hit points equal to twice your proficiency bonus + 1d6. Also while shifted, you have a +1 bonus to your AC. \n\nYou can shift a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="actIncrNam" value="+1d6 temp HP"/>
+    <fieldval field="actUserMin" value="1"/>
+    <fieldval field="actUserMax" value="6"/>
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="actName" value="Shifted (bonus action, 1 min)"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="Helper" tag="UserAdjust" name="UserAdjust" abbrev="UserAdjust"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <bootstrap thing="thp5CEbShtTmpHP"></bootstrap>
+    <eval phase="PreAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] <> 0)
+
+      doneif (field[abilActive].value = 0)
+
+      hero.childfound[ArmorClass].field[Bonus].value += 1]]></eval>
+    <eval phase="Final" priority="500" index="3"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+      field[abValue].value += field[trkMax].value * 2     
+
+      hero.childfound[thp5CEbShtTmpHP].field[thpMinAllw].value = field[abValue].value + field[actUser].value
+      hero.childfound[thp5CEbShtTmpHP].field[thpMaxAllw].value = field[abValue].value + field[actUser].value
+      ~hero.childfound[thp5CEbShtTmpHP].field[thpCurr].value = field[abValue].value]]></eval>
+    </thing>
+  <thing id="ra5CMPShfLng" name="Longtooth Shifting" description="As a bonus action, you can shift into a more bestial form. The shift lasts for 1 minute, until you die, or until you change back as a bonus action. \n\nWhen you shift, you gain temporary hit points equal to twice your proficiency bonus. Also while shifted, you can use your longer fangs to make an unarmed strike as a bonus action, dealing piercing damage equal to 1d6 + your Strength modifier on a hit.\n\nYou can shift a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="actName" value="Shifted (bonus action, 1 min)"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="abAction" tag="Bonus" name="Bonus" abbrev="Bon"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <bootstrap thing="thp5CEbShtTmpHP"></bootstrap>
+    <bootstrap thing="wBite">
+      <containerreq phase="First" priority="495"><![CDATA[fieldval:abValue2 <> 0]]></containerreq>
+      <autotag group="abAction" tag="Bonus"/>
+      <autotag group="wCategory" tag="Unarmed"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <assignval field="livename" value="Elongated Fangs (bonus action)"/>
+      <assignval field="sbName" value="Elongated Fangs (bonus action)"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wShortName" value="Elongated Fangs (bonus action)"/>
+      <assignval field="CustDesc" value="Whenever you shift, you can use your longer fangs to make an unarmed strike as a bonus action, dealing 1d6 plus your Strength modifier piercing damage on a hit."/>
+      </bootstrap>
+    <eval phase="First" priority="490"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      doneif (field[abilActive].value = 0)
+
+      field[abValue2].value += 1]]></eval>
+    <eval phase="Final" priority="500" index="2"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+      field[abValue].value += field[trkMax].value * 2     
+
+      hero.childfound[thp5CEbShtTmpHP].field[thpMinAllw].value = field[abValue].value
+      hero.childfound[thp5CEbShtTmpHP].field[thpMaxAllw].value = field[abValue].value
+      ~hero.childfound[thp5CEbShtTmpHP].field[thpCurr].value = field[abValue].value]]></eval>
+    </thing>
+  <thing id="ra5CMPShfSwf" name="Swiftstrider Shifting" description="As a bonus action, you can shift into a more bestial form. The shift lasts for 1 minute, until you die, or until you change back as a bonus action. \n\nWhen you shift, you gain temporary hit points equal to twice your proficiency bonus and your walking speed increases by an additional 10 feet. Also while shifted, you can move up to 10 feet as a reaction when an enemy ends its turn within 5 feet of you. This movement doesn&apos;t provoke opportunity attacks.\n\n You can shift a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="actName" value="Shifted (bonus action, 1 min)"/>
+    <fieldval field="abText" value="bonus action"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <bootstrap thing="thp5CEbShtTmpHP"></bootstrap>
+    <eval phase="First" priority="490"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      doneif (field[abilActive].value = 0)
+
+      hero.child[Speed].field[tSpeed].value += 10
+      field[abText].text = "bonus action/reaction"]]></eval>
+    <eval phase="Final" priority="500" index="2"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+      field[abValue].value += field[trkMax].value * 2     
+
+      hero.childfound[thp5CEbShtTmpHP].field[thpMinAllw].value = field[abValue].value
+      hero.childfound[thp5CEbShtTmpHP].field[thpMaxAllw].value = field[abValue].value
+      ~hero.childfound[thp5CEbShtTmpHP].field[thpCurr].value = field[abValue].value]]></eval>
+    </thing>
+  <thing id="ra5CMPShfWld" name="Wildhunt Shifting" description="As a bonus action, you can shift into a more bestial form. The shift lasts for 1 minute, until you die, or until you change back as a bonus action. \n\nWhen you shift, you gain temporary hit points equal to twice your proficiency bonus, you have advantage on Wisdom checks, and no creatures within 30 feet of you can attack you with advantage unless you&apos;re incapacitated.\n\nYou can shift a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="abDuration" value="1"/>
+    <fieldval field="actName" value="Shifted (bonus action, 1 min)"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Personal"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abDuration" tag="Minute"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <bootstrap thing="thp5CEbShtTmpHP"></bootstrap>
+    <eval phase="PreAttr" priority="10000"><![CDATA[      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      doneif (field[abilActive].value = 0)
+
+      foreach pick in hero from BaseSkill where "SkillAbil.aWIS"
+        #situational[eachpick,"Advantage on Wisdom checks.",field[thingname].text]
+        nexteach]]></eval>
+    <eval phase="Final" priority="500" index="2"><![CDATA[
+      ~ If we're not shown, just get out now
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      ~ If we're disabled, do nothing
+      doneif (tagis[Helper.Disable] <> 0)
+
+      field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+      field[abValue].value += field[trkMax].value * 2     
+
+      hero.childfound[thp5CEbShtTmpHP].field[thpMinAllw].value = field[abValue].value
+      hero.childfound[thp5CEbShtTmpHP].field[thpMaxAllw].value = field[abValue].value
+      ~hero.childfound[thp5CEbShtTmpHP].field[thpCurr].value = field[abValue].value]]></eval>
+    </thing>
+  <thing id="ra5CMPSeason" name="Season" description="An eladrin is associated with one of the four seasons and has coloration reminiscent of that season, which can also affect the eladrin&apos;s mood:\n\n{b}Autumn{/b} a season of peace and goodwill, when the harvest is shared\n{b}Winter{/b} a season of contemplation and sorrow, when the world slumbers\n{b}Spring{/b} a season of joy, celebrating the winter&apos;s end\n{b}Summer{/b} a season of boldness and aggression, a time for action\n\nSome eladrin remain associated with a particular season for their entire lives, whereas other eladrin transform, adopting characteristics of a new season. When you complete a long rest, you can change your season. Your season may reflect the world around you, or your own internal emotional state." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Autumn"/>
+    <arrayval field="usrArray" index="1" value="Winter"/>
+    <arrayval field="usrArray" index="2" value="Spring"/>
+    <arrayval field="usrArray" index="3" value="Summer"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <eval phase="First" priority="50"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      hero.child[ra5CMPFeyStp].field[abValue5].value = field[usrIndex].value]]></eval>
+    </thing>
+  <thing id="ra5CMPFeyStp" name="Fey Step" description=" As a bonus action, you can magically teleport up to 30 feet to an open space you can see. You can do this a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest.\n\n When you reach 3rd level, your Fey Step gains an additional effect based on your season; if the effect requires a saving throw, the DC equals 8 +your proficiency bonus+ either your Intelligence, Wisdom, or Charisma modifier (chosen when you select this race):\n\n{b}Autumn.{/b} Immediately after you use your Fey Step, up to two creatures of your choice that you can see within 10 feet of you must succeed on a Wisdom save or be charmed by you for 1 minute, or until you or your allies deal any damage to it.\n\n{b}Winter.{/b} When you use your Fey Step, one creature of your choice that you can see within 5 feet of you before you teleport must succeed on a Wisdom save or be frightened of you until the end of your next turn.\n\n{b}Spring.{/b} When you use your Fey Step, you can touch one willing creature within 5 feet of you. That creature then teleports instead of you, appearing in an open space of your choice that you can see within 30 feet of you.\n\n{b}Summer.{/b} Immediately after you use your Fey Step, each creature of your choice that you can see within 5 feet of you suffers fire damage equal to your proficiency bonus." compset="RaceSpec">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <fieldval field="abValue4" value="1"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="NoAutoName"/>
+    <bootstrap thing="ra5CMPFyStAu">
+      <containerreq phase="First" priority="5000"><![CDATA[fieldval:abValue5 = 0 & fieldval:abValue4 = 1]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CMPFyStSu">
+      <containerreq phase="First" priority="5000"><![CDATA[fieldval:abValue5 = 3 & fieldval:abValue4 = 1]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CMPFyStWi">
+      <containerreq phase="First" priority="5000"><![CDATA[fieldval:abValue5 = 1 & fieldval:abValue4 = 1]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CMPFyStSp">
+      <containerreq phase="First" priority="5000"><![CDATA[fieldval:abValue5 = 2 & fieldval:abValue4 = 1]]></containerreq>
+      </bootstrap>
+    <eval phase="First" priority="500"><![CDATA[   doneif (tagis[Helper.Disable] <> 0)
+   doneif (hero.tagcount[Classes.?] > 2)
+
+   perform assign[Helper.ShowSpec]
+   perform assign[abAction.Bonus]
+   perform assign[FeatureTyp.Special]
+   perform assign[User.Tracker]
+   perform assign[Usage.LongRest]
+   perform assign[abRange.Feet]
+   perform assign[LvNamePar.IncAction]
+   perform assign[LvNamePar.IncRange]
+   field[abValue4].value = 0
+   field[abRange].value = 30]]></eval>
+    <eval phase="PostAttr" priority="20000" index="2"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrChosen1].ischosen = 0)
+
+      perform field[usrChosen1].chosen.pulltags[StandardDC.?]
+      perform hero.childfound[ra5CMPFyStWi].pushtags[StandardDC.?]
+      perform hero.childfound[ra5CMPFyStAu].pushtags[StandardDC.?]
+      perform delete[StandardDC.?]]]></eval>
+    <eval phase="PostAttr" priority="10000" index="3"><![CDATA[   doneif (tagis[Helper.Disable] <> 0)
+   doneif (hero.tagcount[Classes.?] > 2)
+
+   field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="ra5CMPFyStAu" name="Fey Step, Autumn" description="As a bonus action, you can magically teleport up to 30 feet to an open space you can see. Immediately after you do this, up to two creatures of your choice that you can see within 10 feet of you must succeed on a Wisdom save (DC 8 + your proficiency bonus + your chosen ability modifier) or be charmed by you for 1 minute, or until you or your allies deal any damage to it.\n\nYou can do this a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[   doneif (tagis[Helper.Disable] <> 0)
+
+   field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="ra5CMPFyStWi" name="Fey Step, Winter" description="As a bonus action, you can magically teleport up to 30 feet to an open space you can see. When you do this, one creature of your choice that you can see within 5 feet of you before you teleport must succeed on a Wisdom save (DC 8 + your proficiency bonus + your chosen ability modifier) or be frightened of you until the end of your next turn.\n\nYou can do this a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[   doneif (tagis[Helper.Disable] <> 0)
+
+   field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="ra5CMPFyStSp" name="Fey Step, Spring" description="As a bonus action, you can magically teleport up to 30 feet to an open space you can see. Alternatively, you can touch one willing creature within 5 feet of you. That creature then teleports instead of you, appearing in an open space of your choice that you can see within 30 feet of you.\n\nYou can do this a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[   doneif (tagis[Helper.Disable] <> 0)
+
+   field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eval>
+    </thing>
+  <thing id="ra5CMPFyStSu" name="Fey Step, Summer" description="As a bonus action, you can magically teleport up to 30 feet to an open space you can see. Immediately after doing so, each creature of your choice that you can see within 5 feet of you suffers fire damage equal to your proficiency bonus.\n\nYou can do this a number of times equaling your proficiency bonus, regaining all spent uses when you complete a long rest." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[   doneif (tagis[Helper.Disable] <> 0)
+
+   field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value
+   field[abText].text = field[trkMax].value & " fire"]]></eval>
+    </thing>
+  <preclude id="r5CVGMGobl" source="5eMPMotM"/>
+  <preclude id="r5CEEGolia" source="5eMPMotM"/>
+  <preclude id="r5CVGMHobG" source="5eMPMotM"/>
+  <preclude id="r5CVGMKenk" source="5eMPMotM"/>
+  <preclude id="r5CVGMKobo" source="5eMPMotM"/>
+  <preclude id="r5CLizFlk" source="5eMPMotM"/>
+  <preclude id="r5CGGRMinot" source="5eMPMotM"/>
+  <preclude id="r5CVGMOrc" source="5eMPMotM"/>
+  <preclude id="r5CSatyr" source="5eMPMotM"/>
+  <preclude id="sr5CToFSea" source="5eMPMotM"/>
+  <preclude id="sr5CToFShk" source="5eMPMotM"/>
+  <preclude id="r5CEbShift" source="5eMPMotM"/>
+  <preclude id="r5CTabaxi" source="5eMPMotM"/>
+  <preclude id="r5CTortle" source="5eMPMotM"/>
+  <preclude id="r5CTriton" source="5eMPMotM"/>
+  <preclude id="r5CVGMYuaT" source="5eMPMotM"/>
+  <preclude id="r5CAasimar" source="5eMPMotM"/>
+  <preclude id="r5CVGMAasi" source="5eMPMotM"/>
+  <preclude id="r5CToFGith" source="5eMPMotM"/>
+  <preclude id="sr5CToFGya" source="5eMPMotM"/>
+  <preclude id="sr5CToFGza" source="5eMPMotM"/>
+  <preclude id="r5CEEGenas" source="5eMPMotM"/>
+  <preclude id="sr5CEEGAir" source="5eMPMotM"/>
+  <preclude id="sr5CEEGEea" source="5eMPMotM"/>
+  <preclude id="sr5CEEGFir" source="5eMPMotM"/>
+  <preclude id="sr5CEEDWat" source="5eMPMotM"/>
+  <preclude id="sr5CToFDGn" source="5eMPMotM"/>
+  <preclude id="sr5CDeeGno" source="5eMPMotM"/>
+  <preclude id="sr5CToFDue" source="5eMPMotM"/>
+  <preclude id="sr5CDuerga" source="5eMPMotM"/>
+  <preclude id="sr5CToMEld" source="5eMPMotM"/>
+  <preclude id="sr5CEladr" source="5eMPMotM"/>
+  <preclude id="sr5CEbWildh" source="5eMPMotM"/>
+  <preclude id="sr5CEbBeast" source="5eMPMotM"/>
+  <preclude id="sr5CEbLongt" source="5eMPMotM"/>
+  <preclude id="sr5CEbSwift" source="5eMPMotM"/>
+  <preclude id="r5CEEAarak" source="5eMPMotM"/>
+  <preclude id="r5CVGMBugB" source="5eMPMotM"/>
+  <preclude id="r5CGGRCent" source="5eMPMotM"/>
+  <preclude id="r5CEbChang" source="5eMPMotM"/>
+  <preclude id="r5CVGMFirb" source="5eMPMotM"/>
+  <preclude id="sr5CVGMFal" source="5eMPMotM"/>
+  <preclude id="sr5CVGMPro" source="5eMPMotM"/>
+  <preclude id="sr5CVGMSco" source="5eMPMotM"/>
+  </document>

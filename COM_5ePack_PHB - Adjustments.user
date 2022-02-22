@@ -941,12 +941,9 @@ endif]]></eval>
     <tag group="OthAdjCat" tag="UserBot3rd"/>
     <tag group="Helper" tag="AdjInfo"/>
     <tag group="SpInfo" tag="spMageArmo"/>
-    <eval phase="PreAttr"><![CDATA[
-      ~ If we're not enabled, get out now
-      doneif (field[pIsOn].value = 0)
-      doneif (hero.tagcount[Hero.EquipArmor] <> 0)
-
-      hero.childfound[ArmorClass].field[tACBase].value = 13]]></eval>
+    <bootstrap thing="c5CAdjMgArm">
+      <containerreq phase="First" priority="100">fieldval:pIsOn = 1</containerreq>
+      </bootstrap>
     </thing>
   <thing id="pHd5CSpls" name="Specific Spells" compset="InPlay" uniqueness="unique" isshowonly="yes">
     <tag group="OthAdjCat" tag="UserBot3rd"/>
@@ -1601,32 +1598,6 @@ hero.findchild[TempHpPool,"Value.14"].field[thpMaxAllw].value = 12]]></eval>
          field[pMaximum].value = 995
       endif]]></eval>
     </thing>
-  <thing id="rSULTstVis" name="Vision Test" compset="Race">
-    <fieldval field="rHitDice" value="16"/>
-    <fieldval field="rHPStart" value="184"/>
-    <fieldval field="rCR" value="10"/>
-    <fieldval field="rMultiatt" value="The froghemoth makes two attacks with its tentacles. It can also use its tongue or bite. "/>
-    <fieldval field="rSTR" value="13"/>
-    <fieldval field="rDEX" value="3"/>
-    <fieldval field="rCON" value="10"/>
-    <fieldval field="rINT" value="-8"/>
-    <fieldval field="rWIS" value="2"/>
-    <fieldval field="rCHA" value="-5"/>
-    <fieldval field="rAC" value="3"/>
-    <tag group="DamageRes" tag="dtLightnin" name="Lightning" abbrev="Lightning"/>
-    <tag group="ProfDouble" tag="skPercep" name="Perception" abbrev="Perception"/>
-    <tag group="ProfSave" tag="svCON" name="Constitution" abbrev="Constitution"/>
-    <tag group="ProfSave" tag="svWIS" name="Wisdom" abbrev="Wisdom"/>
-    <tag group="ProfSkill" tag="skStealth" name="Stealth" abbrev="Stealth"/>
-    <tag group="RaceSize" tag="Huge2" name="Huge" abbrev="Huge"/>
-    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
-    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
-    <tag group="DamageRes" tag="dtFire" name="Fire" abbrev="Fire"/>
-    <bootstrap thing="tpMonstros"></bootstrap>
-    <bootstrap thing="xTremorsen">
-      <autotag group="Value" tag="7"/>
-      </bootstrap>
-    </thing>
   <thing id="5CBlndBeyo" name="Blind beyond radius" compset="Simple"></thing>
   <thing id="5CNBlndBey" name="Not blind beyond radius" compset="Simple"></thing>
   <thing id="p5CAttrSwp" name="Ability Score (Swap)" description="Select this adjustment to subtract the chosen amount from one score and add it to another. This is useful for Tasha&apos;s variant features. Choose the score to decrement in the first drop-down and the score to increment in the second, and select the number of points to move." compset="InPlay">
@@ -1823,7 +1794,7 @@ field[pChosen].chosen.field[rHitDice].value += field[pAdjust].value</eval>
       hero.childfound[xMultiatt].field[CustDesc].text = field[pSource].text
       hero.childfound[xMultiatt].field[CustDesc].text &= field[pDuration].text]]></eval>
     </thing>
-  <thing id="p5CWldShp2" name="Druid: Wildshape" description="Add this adjustment to the beast that you are Wildshaped into, after you have added the beast through the Mounts &amp; Hirelings section of the Gear tab. This will carry over these proficiencies and bonuses to the Wildshape form, as per that ability:\n\n• You retain your Intelligence, Wisdom, and Charisma scores.\n• You retain all of your skill and saving throw proficiencies, in addition to gaining those of the creature. \n• If the creature has the same proficiency as you and the bonus in its stat block is higher than yours, use the creature&apos;s bonus instead of yours. \n• If the creature has any legendary or lair actions, you can&apos;t use them." compset="InPlay" replaces="p5CWildsha">
+  <thing id="p5CWldShp2" name="Druid: Wild Shape" description="Add this adjustment to the beast that you are Wildshaped into, after you have added the beast through the Mounts &amp; Hirelings section of the Gear tab. This will carry over these proficiencies and bonuses to the Wildshape form, as per that ability:\n\n• You retain your Intelligence, Wisdom, and Charisma scores.\n• You retain all of your skill and saving throw proficiencies, in addition to gaining those of the creature. \n• If the creature has the same proficiency as you and the bonus in its stat block is higher than yours, use the creature&apos;s bonus instead of yours. \n• If the creature has any legendary or lair actions, you can&apos;t use them." compset="InPlay" replaces="p5CWildsha">
     <comment>iValue = master.child[svINT].field[svTotal].value
     hero.child[svINT].field[svTotal].value = iValue
 
@@ -1839,6 +1810,57 @@ field[pChosen].chosen.field[rHitDice].value += field[pAdjust].value</eval>
     <tag group="Custom" tag="5CWildshap" name="Wildshape" abbrev="Wildshape"/>
     <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
     <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <tag group="Custom" tag="NoMonk"/>
+    <eval phase="Final" priority="28000" index="2"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+    doneif (hero.tagis[system_tag.minion] = 0)
+
+    var iSkls as string
+    var iSavs as string
+    var iMBon as number
+    var iHBon as number   
+    var iName as string
+
+
+    if (empty(field[abText].text) = 1) then
+        iSkls = "!Hide.Skill"        
+      else
+        iSkls = "(" & field[abText].text & ") & !Hide.Skill"  
+      endif
+    iSavs = field[abText2].text
+
+    foreach pick in master from BaseSkill where iSkls
+      if (eachpick.tagis[Helper.Proficient] <> 0) then
+       iMBon = eachpick.field[skTotal].value
+       iName = eachpick.tagids[thingid.?,""]
+       foreach pick in hero from BaseSkill where iName
+        iHBon = eachpick.field[skTotal].value
+        eachpick.field[skTotal].value = maximum(iMBon,iHBon)
+        nexteach
+       endif 
+      nexteach
+
+
+    foreach pick in master from BaseSave where iSavs
+      if (eachpick.tagis[Helper.Proficient] <> 0) then
+       iMBon = eachpick.field[svTotal].value
+       iName = eachpick.tagids[thingid.?,""]
+       foreach pick in hero from BaseSave where iName
+        iHBon = eachpick.field[svTotal].value
+        eachpick.field[svTotal].value = maximum(iMBon,iHBon)
+        nexteach
+       endif 
+      nexteach]]></eval>
+    <eval phase="First" index="4"><![CDATA[    ~ If we're not enabled, get out now
+    doneif (field[pIsOn].value = 0)
+    doneif (hero.tagis[system_tag.minion] = 0)
+
+    ~ Find all legendary actions and disable them
+    foreach pick in hero where "FeatureTyp.Legendary | FeatureTyp.Lair | FeatureTyp.LairHeader"
+      perform assign[Helper.Disable]
+      perform assign[Helper.SpecUp]
+      perform delete[Helper.ShowSpec]
+      nexteach]]></eval>
     <eval phase="PreLevel" priority="10000" index="3"><![CDATA[    ~ If we're not enabled, get out now
     doneif (field[pIsOn].value = 0)
     doneif (hero.tagis[system_tag.minion] = 0)
@@ -1885,53 +1907,6 @@ field[pChosen].chosen.field[rHitDice].value += field[pAdjust].value</eval>
 
     ~ Charisma saves
     hero.child[svCHA].field[svAttr].value = master.child[aCHA].field[aModBonus].value]]></eval>
-    <eval phase="Final" priority="28000" index="2"><![CDATA[    ~ If we're not enabled, get out now
-    doneif (field[pIsOn].value = 0)
-    doneif (hero.tagis[system_tag.minion] = 0)
-
-    var iSkls as string
-    var iSavs as string
-    var iMBon as number
-    var iHBon as number   
-    var iName as string
-
-    iSkls = "(" & field[abText].text & ") & !Hide.Skill"
-    iSavs = field[abText2].text
-
-    foreach pick in master from BaseSkill where iSkls
-      if (eachpick.tagis[Helper.Proficient] <> 0) then
-       iMBon = eachpick.field[skTotal].value
-       iName = eachpick.tagids[thingid.?,""]
-       foreach pick in hero from BaseSkill where iName
-        iHBon = eachpick.field[skTotal].value
-        eachpick.field[skTotal].value = maximum(iMBon,iHBon)
-        nexteach
-       endif 
-      nexteach
-
-debug iSavs
-
-    foreach pick in master from BaseSave where iSavs
-      if (eachpick.tagis[Helper.Proficient] <> 0) then
-debug "we're proficient"
-       iMBon = eachpick.field[svTotal].value
-       iName = eachpick.tagids[thingid.?,""]
-       foreach pick in hero from BaseSave where iName
-        iHBon = eachpick.field[svTotal].value
-        eachpick.field[svTotal].value = maximum(iMBon,iHBon)
-        nexteach
-       endif 
-      nexteach]]></eval>
-    <eval phase="First" index="4"><![CDATA[    ~ If we're not enabled, get out now
-    doneif (field[pIsOn].value = 0)
-    doneif (hero.tagis[system_tag.minion] = 0)
-
-    ~ Find all legendary actions and disable them
-    foreach pick in hero where "FeatureTyp.Legendary | FeatureTyp.Lair | FeatureTyp.LairHeader"
-      perform assign[Helper.Disable]
-      perform assign[Helper.SpecUp]
-      perform delete[Helper.ShowSpec]
-      nexteach]]></eval>
     <exprreq message="Must be a minion"><![CDATA[tagis[system_tag.minion] <> 0]]></exprreq>
     <prereq message="Requires Wild Shape">
       <validate><![CDATA[@valid = 0
@@ -2175,5 +2150,30 @@ perform hero.pushtags[HideDeiCat.?]</eval>
           perform eachpick.assign[Helper.ProfDouble]
           nexteach
         endif]]></eval>
+    </thing>
+  <thing id="c5CAdjMgArm" name="Mage Armor" compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abBaseAC" value="13"/>
+    <tag group="CalcAC" tag="DexMod"/>
+    <tag group="Helper" tag="ArmorClass"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="CalcAC" tag="Shield"/>
+    </thing>
+  <thing id="p5COthrFam" name="Other Familiar/Ranger Companion" description="Adding this adjustment to a familiar or ranger&apos;s animal companion will allow you to select any creature as its race. Once it has been added, the race drop-down on the Minion tab will be populated with every monster available based on your selected sources.\n\n{b}Hero Lab Notes:{/b} Check with your DM before adding this, as this is not supported by the rules as written." compset="InPlay">
+    <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
+    <usesource source="5ePHBCP" parent="p5ePack" name="5e Players Handbook"/>
+    <tag group="OthAdjCat" tag="UserBot6th"/>
+    <tag group="Helper" tag="AdjNoPlus" name="AdjNoPlus" abbrev="AdjNoPlus"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <eval phase="PostAttr" priority="11001"><![CDATA[doneif (field[pIsOn].value = 0)
+
+hero.childfound[Totals].field[tRaceExpr].text = "component.BaseRace & RaceType.NPC & !(hasbootstrap:tp5CObject) &  !(hasbootstrap:tp5CVehicle)"]]></eval>
+    <prereq message="Must be a familiar or animal companion">
+      <validate>@valid = 0
+
+doneif (tagis[system_tag.minion] = 0)
+doneif (hero.tagcount[CompIs.Familiar] = 0)
+
+@valid = 1</validate>
+      </prereq>
     </thing>
   </document>

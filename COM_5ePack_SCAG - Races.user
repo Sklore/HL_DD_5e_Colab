@@ -304,14 +304,24 @@
       <assignval field="trkMax" value="1"/>
       </bootstrap>
     </thing>
-  <thing id="ra5CWinged" name="Winged" description="You have bat-like wings growing from your back. You have a flying speed of 30 feet. This trait replaces the Infernal Legacy trait." compset="VarRaceTrt" uniqueness="unique">
+  <thing id="ra5CWinged" name="Winged" description="Bat-like wings growing from your back grant you a flying speed of 30 feet when not wearing heavy armor. This trait replaces the Infernal Legacy trait." compset="VarRaceTrt" summary="Winged flight when not heavily armored." uniqueness="unique">
     <usesource source="5eSCAGCP"/>
     <tag group="AllowRCust" tag="r5CTieflin"/>
     <tag group="RaReplace" tag="raTiLegacy"/>
     <tag group="RaReplace" tag="ra5CInfLeg"/>
+    <tag group="Custom" tag="TfWngRmv"/>
     <bootstrap thing="xFly">
-      <autotag group="Value" tag="30"/>
+      <autotag group="Value" tag="1"/>
+      <autotag group="Custom" tag="TfWngRmv"/>
       </bootstrap>
+    <eval phase="First" priority="10002" index="4"><![CDATA[foreach pick in hero where "thingid.xFly & Custom.TfWngRmv"
+         perform eachpick.delete[Value.1]
+   if (hero.tagcount[Hero.HeavyArmor] <> 0) then
+         perform eachpick.assign[Value.0]
+   else
+         perform eachpick.assign[Value.30]
+   endif
+  nexteach]]></eval>
     </thing>
   <thing id="ra5CAppear" name="Appearance" description="Your tiefling does not look like common tieflings" compset="VarRaceTrt">
     <fieldval field="usrLabelAr" value="Choose:"/>
@@ -357,7 +367,7 @@
       <containerreq phase="First" priority="500"><![CDATA[fieldval:usrIndex >= 5]]></containerreq>
       </bootstrap>
     </thing>
-  <thing id="f5CEESvMag" name="Svirfneblin Magic" description="This ability allows you to cast  {i}nondetection{/i} on yourself at will, without needing a material component. \n\nYou can also cast each of the following spells once with this ability: \n\n {i}blindness/deafness{/i}\n {i}blur{/i}\n {i}disguise self{/i}\n\nYou regain the ability to cast these spells when you finish a long rest." compset="Feat" uniqueness="useronce">
+  <thing id="f5CEESvMag" name="Deprecated - Svirfneblin Magic" description="This ability allows you to cast  {i}nondetection{/i} on yourself at will, without needing a material component. \n\nYou can also cast each of the following spells once with this ability: \n\n {i}blindness/deafness{/i}\n {i}blur{/i}\n {i}disguise self{/i}\n\nYou regain the ability to cast these spells when you finish a long rest." compset="Feat" uniqueness="useronce">
     <usesource source="5eEEPCCP" parent="p5ePOTA" name="Elemental Evil Player&apos;s Companion"/>
     <usesource source="5eSCAGCP"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
@@ -384,23 +394,17 @@
       <autotag group="Usage" tag="Day"/>
       <assignval field="trkMax" value="1"/>
       </bootstrap>
-    <pickreq thing="sr5CDeeGno"/>
-    </thing>
-  <thing id="ra5CElveKS" name="Keen Senses" description="You have proficiency in the Perception skill." compset="VarRaceTrt" uniqueness="unique">
-    <usesource source="5eSCAGCP"/>
-    <tag group="AllowRCust" tag="rHalfElf"/>
-    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
-    <tag group="RaReplace" tag="ra5CSkiVe"/>
-    <eval phase="First" priority="11000"><![CDATA[
-      ~if we've been disabled, get out now
-      doneif (tagis[Helper.Disable] <> 0)
+    <prereq message="Prerequisite: Deep Gnome">
+      <validate><![CDATA[@valid = 0
 
-      ~we set these to zero to make the field disappear.
-      hero.childfound[rHalfElf].field[cSkillMax].value=0
-      perform hero.childfound[rHalfElf].delete[AllowSkl1.Any]
+var iDeep as number
 
-      ~assign our weapon proficiencies to the hero
-      perform hero.pushtags[ProfSkill.?]]]></eval>
+iDeep = hero.childlives[sr5CToFDGn] + hero.childlives[r5CMPDeepGnm] + hero.childlives[sr5CDeeGno]
+
+if (iDeep <> 0) then
+   @valid = 1
+   endif]]></validate>
+      </prereq>
     </thing>
   <thing id="ra5CElvWT" name="Elf Weapon Training" description="You have proficiency with the longsword, shortsword, shortbow, and longbow." compset="VarRaceTrt" uniqueness="unique">
     <usesource source="5eSCAGCP"/>
