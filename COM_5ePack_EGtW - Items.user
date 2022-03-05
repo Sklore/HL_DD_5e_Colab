@@ -1,0 +1,2303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="i5CAchBld" name="Acheron Blade" description="While this +1 magic sword is on your person, you are immune to turn undead effects.\n\n{b}Dark Blessing{/b}. While holding the sword, you can use an action to grant yourself 1d4 + 4 temporary hit points. This property can&apos;t be used again until the next dusk.\n\n{b}Disheartening Strike{/b}. When you hit a creature with an attack using this weapon, you can give it disadvantage on the next saving throw it makes before the end of your next turn. The creature ignores this effect if it&apos;s immune to the frightened condition. Once you have used this property, you can&apos;t do so again until the next dusk." compset="MagicWep">
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="miTypeDet" value="any sword"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <bootstrap thing="trk5CDrkBlsg"></bootstrap>
+    <bootstrap thing="trk5CDshrtSt"></bootstrap>
+    <eval phase="Final" priority="20000" index="7"><![CDATA[
+      ~restrict the list of weapons to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & (wGroup.Sword)"
+
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Acheron "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Blade"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="trk5CDrkBlsg" name="Dark Blessing" description="While holding the acheron blade, you can use an action to grant yourself 1d4 + 4 temporary hit points. This property can&apos;t be used again until the next dusk." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CDshrtSt" name="Disheartening Strike" description="When you hit a creature with an attack using the acheron blade, you can give it disadvantage on the next saving throw it makes before the end of your next turn. The creature ignores this effect if it&apos;s immune to the frightened condition. Once you have used this property, you can&apos;t do so again until the next dusk." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="io5CAmDrnk" name="Amulet of the Drunkard" description="While wearing this amulet, you can regain 4d4 + 4 hit points when you drink a pint of beer, ale, mead, or wine. Once the amulet has restored hit points in this way, it can&apos;t do so again until the next dawn." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
+
+
+
+      perform assign[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="io5CArcCan" name="Arcane Cannon" description="This Large, magical cannon needs no ammunition and doesn&apos;t need to be loaded. It requires one action to aim the cannon and another action to fire it. After the cannon has fired, it must recharge for 5 minutes before it can be fired again.\n\nWhen a creature fires the cannon, it can choose one effect from these options:\n\n{b}Acid Jet{/b}. Each creature in a 300 foot long, 5 foot wide line emanating from the cannon&apos;s muzzle must make a DC 15 Dexterity save, suffering 22 (4d10) acid damage on a failure or half that on a success. Additionally, a creature that fails its saving throw takes 11 (2d10) acid damage at the beginning of each of its turns. A creature can end this damage by using its action to wash off the acid with a pint or more of water.\n\n{b}Fire Jet{/b}. Each creature in a 300 foot long, 5 foot wide line emanating from the cannon&apos;s muzzle must make a DC 15 Dexterity save, suffering 33 (6d10) fire damage on a failure or half that on a success. The fire ignites any flammable objects in that area that aren&apos;t being worn or carried.\n\n{b}Frost Shot{/b}. The cannon fires a ball of frost to a point you can see within 1,200 feet of the cannon. The ball then expands to form a 30-foot-radius sphere centered on that point. Every creature in that area must make a DC 15 Constitution save. On a failure, a creature takes 22 (4d10) cold damage, and its speed is reduced by 10 feet for 1 minute. On a successful save, the creature takes half that damage, and its speed isn&apos;t reduced. A creature whose speed is reduced by this effect can repeat the saving throw at the end of each of its turns, ending the effect for itself on a success.\n\n{b}Lightning Shot{/b}. The cannon shoots a ball of lightning to a point you can see within 1,200 feet of the cannon. The lightning then expands to form a 20-foot-radius sphere centered on that point. Every creature in that area must make a DC 15 Dexterity save, suffering 33 (6d10) lightning damage on a failure, or half that on a success. Creatures wearing metal armor have disadvantage on the save.\n\n{b}Poison Spray{/b}. Each creature in a 60-foot cone emanating from the cannon&apos;s muzzle must make a DC 15 Constitution save. On a failure, the creature takes 22 (4d10) poison damage and is poisoned for 1 minute. On a success, the creature takes that damage and isn&apos;t poisoned. A creature poisoned in this way can repeat the save at the end of each of its turns, ending the effect for itself on a success." compset="Wondrous">
+    <usesource source="5eEGtWCP"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="i5CBtrgSh" name="Battering Shield" description="While holding this iron tower shield, you gain a +1 bonus to AC, in addition to the shield&apos;s standard bonus AC.\n\nThe shield also has 3 charges, regaining 1d3 spent charges each dawn. If you are holding the shield and push a creature within your reach at least 5 feet away, you can spend 1 charge to push that creature an extra 10 feet, knock it prone, or both." compset="MagicArmor">
+    <fieldval field="trkMax" value="3"/>
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="gWeight" value="6"/>
+    <fieldval field="miTypeDet" value="shield"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="User" tag="Tracker"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[gIsEquip].value = 0)
+      field[abText].text = "regains 1d3 at dawn"]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="mShield"></bootstrap>
+      </child>
+    </thing>
+  <thing id="g5CBlkSap" name="Black Sap" description="This tarry intoxicant can be smoked as a concentrate or injected directly into the bloodstream. A creature subjected to a dose of black sap is immune to the charmed and frightened conditions for 1d6 hours.\n\nFor each dose of black sap consumed, a creature must make a DC 15 Constitution save. On a failure, it is poisoned for 2d4 hour. Multiple doses add to the total hours of poisoning." compset="Gear">
+    <fieldval field="gCost" value="300"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gtPoison"/>
+    </thing>
+  <thing id="g5CBlstPwd" name="Blasting Powder" description="When ignited by an open flame or a fuse, the volatile powder in this small pouch explodes. Every creature within 5 feet of the exploding pouch must make a DC 13 Dexterity save, suffering 3d6 bludgeoning damage on a failure or half than on a success.\n\nA character can bind multiple pouches of blasting powder together, allowing them to explode at simultaneously. Each additional pouch increases the damage by 1d6 (to a maximum of 10d6) and the blast radius by 5 feet (to a maximum of 20 feet)." compset="Gear">
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gt5CAlcItm"/>
+    <tag group="explicit" tag="51"/>
+    </thing>
+  <thing id="g5CBltIch" name="Blight Ichor" description="A non-construct, non-undead creature subjected to a dose of this sickly concoction gains advantage on Intelligence and Wisdom checks, as well as vulnerability to psychic damage, for 1 hour. For each dose of blight ichor consumed, the creature must make a DC 15 Constitution save. On a failure, it becomes poisoned for 1d6 hours and suffers the effects of a {i}confusion{/i} spell for 1 minute. An undead creature subjected to a dose of blight ichor gains advantage on all Dexterity checks and is immune to the frightened condition for 1 hour." compset="Gear">
+    <fieldval field="gCost" value="200"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gtPoison"/>
+    </thing>
+  <thing id="i5CBldaxe" name="Bloodaxe" description="This magic, +2 axe deals an extra 1d6 necrotic damage to non-Construct and non-Undead creatures. If you reduce such a creature to 0 hit points with an attack using this axe, you gain 10 temporary hit points." compset="MagicWep">
+    <fieldval field="Bonus" value="2"/>
+    <fieldval field="gWeight" value="7"/>
+    <fieldval field="wDamExtra" value=" plus 1d6 necrotic*"/>
+    <fieldval field="miTypeDet" value="greataxe"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wGreataxe"></bootstrap>
+      </child>
+    </thing>
+  <thing id="io5CBrthBl" name="Breathing Bubble" description="This bubble must be worn on the head to function. It contains enough air within the bubble to breathe for 1 hour. It regains all its expended air each dawn." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Usage" tag="Day"/>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
+    </thing>
+  <thing id="io5CBrchLv" name="Brooch of Living Essence" description="While wearing this unremarkable brooch, spells and anything else that would detect or reveal your creature type see you as humanoid, and those that would reveal your alignment see it as neutral." compset="Wondrous">
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
+
+
+
+      perform assign[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="io5CBtchBb" name="Butcher&apos;s Bib" description="You gain these benefits while wearing this perpetually-bloodstained apron:\n\n• Once per turn when you roll damage for a melee attack with a weapon, you can reroll the weapon&apos;s damage dice. You must use the second total.\n• Your weapon attacks that deal slashing damage score a critical hit on a roll of 19 or 20 on the d20." compset="Wondrous">
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
+
+
+
+      perform assign[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="io5CCnDelv" name="Coin of Delving" description="This scintillating copper coin sheds dim light in a 5-foot radius. If dropped a distance greater than 5 feet, the coin issues a pleasant ringing sound when it hits a surface. The tone of that chime allows any creature that can hear it to determine the distance the coin fell." compset="Wondrous">
+    <usesource source="5eEGtWCP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="i5CCrpsSl" name="Corpse Slayer" description="When you hit an undead creature with an attack using this +1 magical weapon, the attack deals an extra 1d8 damage of the weapon&apos;s damage type, and the creature has disadvantage on saving throws versus turn undead effects until the beginning of your next turn." compset="MagicWep">
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="wDamExtra" value=" + 1d8"/>
+    <fieldval field="miTypeDet" value="any"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <bootstrap thing="w5CImRaWe"></bootstrap>
+    <eval phase="Final" priority="20000" index="7"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Corpse Slayer "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Weapon"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="io5CDspStn" name="Dispelling Stone" description="This smooth, rainbow-colored, egg-shaped stone can be thrown up to 30 feet. On impact, it explodes in a 10-foot-radius sphere of magical energy, destroying the stone and ending any active spell of 5th level or lower within that sphere." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    </thing>
+  <thing id="id5CDskcrsh" name="Duskcrusher" description="While holding this rod, you can use a bonus action to cause a radiant warhammer to appear on it. The head emits bright light in a 15-foot radius and dim light for another 15 feet. This light is sunlight. You can use an action to make the head disappear.\n\nWhile the radiant head is active, you gain a +2 bonus to attack and damage rolls made with this magic weapon, and attacks with the weapon deal radiant damage instead of bludgeoning damage. An undead creature struck by the weapon takes an extra 1d8 radiant damage.\n\nWhile you are holding the activated warhammer, you can use an action to cast {i}sunbeam{/i} (save DC 15) from the weapon. Once used, this action can&apos;t be used again until the next dawn." compset="Rod">
+    <fieldval field="gWeight" value="2"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <bootstrap thing="spSunbeam">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="Save DC 15"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="w5CDskcrsh">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="First"><![CDATA[doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+
+field[actName].text = "Activated (bonus action)"]]></eval>
+    </thing>
+  <thing id="io5CDstDel" name="Dust of Deliciousness" description="Anyone eating food treated with this dust finds the food much more tasty, but has disadvantage on Wisdom ability checks and Wisdom saving throws for 1 hour. There is enough dust in one batch to flavor six servings." compset="Wondrous">
+    <fieldval field="trkMax" value="6"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="Usage" tag="UsedUp"/>
+    </thing>
+  <thing id="g5CExplSd" name="Explosive Seed" description="This tiny, brass sphere can be thrown up to 30 feet as an action, detonating blasting powder within on impact. Each creature within 5 feet of the exploding seed must make a DC 10 Dexterity save, suffering 1d8 bludgeoning damage on a failure or half that on a success." compset="Gear">
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gt5CAlcItm"/>
+    <tag group="explicit" tag="51"/>
+    </thing>
+  <thing id="io5CGgObRd" name="Goggles of Object Reading" description="While wearing these leather framed, purple lensed goggles, you have advantage on Intelligence (Arcana) checks made to reveal information about a creature or object you are able to see. You can also cast {i}identify{/i} using the goggles, and regain the ability to do so the next dawn." compset="Wondrous">
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <bootstrap thing="spIdentify">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+
+      #situational[hero.child[skArcana],"Advantage to reveal information on a visible creature or object",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="i5CHntrCt" name="Hunter&apos;s Coat" description="You have a +1 bonus to AC while wearing this armor.\n\nThe coat has 3 charges, regaining 1d3 spent charges each dawn. When you hit a creature with an attack and that creature doesn&apos;t have all its hit points, you can spend 1 charge to deal an extra 1d10 necrotic damage to the target." compset="MagicArmor">
+    <fieldval field="gCost" value="10"/>
+    <fieldval field="trkMax" value="3"/>
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="gWeight" value="10"/>
+    <fieldval field="miTypeDet" value="leather"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="User" tag="Tracker"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[gIsEquip].value = 0)
+      field[abText].text = "regains 1d3 at dawn"
+
+
+      perform assign[Helper.ShowSpec]]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="mLeather"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CLstStnd" name="Last Stand Armor" description="You have a +1 bonus to AC while wearing this shimmering armor. If you die while wearing it, it is destroyed. At that time, every celestial, fey, and fiend with 30 feet of you must make a DC 15 Charisma save, being banished to its home plane of existence (unless it is already there) on a failure." compset="MagicArmor">
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="miTypeDet" value="any"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="HideActChk"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <eval phase="Final" priority="20000" index="7"><![CDATA[
+      ~restrict the list to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & (ArmorClass.Light | ArmorClass.Medium | ArmorClass.Heavy)"
+
+      ~set our name based on the type of armor chosen
+      ~field[livename].text = "Last Stand "
+      ~perform gizmo.findchild[BaseArmor].setfocus
+      ~if (state.isfocus <> 0) then
+      ~  field[livename].text &= titlecase(focus.field[name].text)
+      ~else
+      ~  field[livename].text &= "Armor"
+      ~  endif
+      ~field[shortname].text = field[livename].text
+      ~field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagArmor"></child>
+    </thing>
+  <thing id="io5CLxnBcn" name="Luxon Beacon" description="Handles are affixed to the sides of this heavy, glowing, crystal dodecahedron.\n\n{b}Fragment of Possibility{/b}. A creature that touches this beacon and concentrates for 1 minute receives a Fragment of Possibility. Such a fragment appears as a Tiny, gray bead of energy. Fragments follow you around, staying within 1 foot of you at all times. Each fragment lasts for 8 hours or until used. Once the beacon grants a Fragment of Possibility, it can&apos;t grant another until the next dawn. A creature with a Fragment of Possibility from a Luxon Beacon can&apos;t gain another Fragment of Possibility from any source.\nWhen you make an attack roll, an ability check, or a saving throw, you can spend a fragment to roll an additional d20 and choose which of the d20s to use. Alternatively, when an attack roll is made against you, you can spend a fragment to roll a d20 and choose which of the d20s to use, the one you rolled or the one the attacker rolled.\nIf the original d20 roll was made with advantage or disadvantage, you roll your d20 after that advantage or disadvantage has been applied to the original roll.\n\n{b}Soul Snare{/b}. If a follower of the Luxon who has undergone a ritual of consecution dies within 100 miles of once of these beacons, their soul is taken in by it. That soul will be reincarnated within the body of a random humanoid baby gestating within 100 miles of the beacon." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Fragment"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="trk5CFrgPoss">
+      <containerreq phase="First" priority="150"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="g5CMrsBlmF" name="Muroosa Balm (Full Application)" description="After spending 1 minute applying a quarter pint of this pasty balm to your skin, you gain resistance against fire damage for 1 hour. An application sufficient for this effect costs 100 gp.\n\nIt is also helpful for treating sunburns, with one sufficient dose costing 1 gp." compset="Gear">
+    <fieldval field="gCost" value="100"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gt5CHerbs"/>
+    <tag group="explicit" tag="10"/>
+    </thing>
+  <thing id="i5CNdlMnd" name="Needle of Mending" description="This magic, +1 dagger is disguised as a sewing needle. When you holding it, you can use a bonus action to speak its command word, causing it to transform into a dagger or back into its needle form. Also while holding it, you can use an action to cast {i}mending{/i} from it." compset="MagicWep">
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="gWeight" value="1"/>
+    <fieldval field="miTypeDet" value="dagger"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <bootstrap thing="spMending">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)</eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wDagger"></bootstrap>
+      </child>
+    </thing>
+  <thing id="io5CNflPrl" name="Nightfall Pearl" description="You can spend 10 minutes activating this six-inch black orb, which causes the area within 10 miles of it at the moment of activation to become night, even if it is daytime. This night lasts for 24 hours, until you cancel it as an action, or until your attunement to the pearl ends. Once used, the pearl can&apos;t be used again for 24 hours." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="g5COlsbLf" name="Olisuba Leaf" description="If you drink the dried leaves of the Olisuba tree during a long rest, your exhaustion is reduced by 2 levels at the end of that long rest, rather than the usual 1 level reduction." compset="Gear">
+    <fieldval field="gCost" value="50"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gt5CHerbs"/>
+    <tag group="explicit" tag="10"/>
+    </thing>
+  <thing id="io5COrbVeil" name="Orb of the Veil" description="This onyx sphere bears deep, spiraling grooves and dangles from an iron chain. While this chain-hung onyx sphere is on your person, you gain these benefits:\n\n• Your Wisdom score and maximum Wisdom score increase by 2.\n• You gain 60 feet of darkvision. If you already have darkvision, its range increases by 60.\n• You have advantage on Wisdom checks to find hidden doors and paths.\n\n{b}Curse{/b}. Becoming attune to the orb extends its curse to you. As long as you remain cursed, you are unwilling to part with the orb, keeping it on your person at all times. All nonmagical flames within 30 feet of you are automatically extinguished, and fire damage dealt by you is halved." compset="Wondrous">
+    <fieldval field="gWeight" value="3"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="CursedItem"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="502">fieldval:abValue2 = 1</containerreq>
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <eval phase="First" priority="501" index="3"><![CDATA[doneif (field[gIsAttuned].value = 0)
+
+doneif (hero.childexists[raDarkVis] <> 0)
+
+field[abValue2].value = 1]]></eval>
+    <eval phase="Final" priority="10001" index="4"><![CDATA[doneif (field[gIsAttuned].value = 0)
+
+doneif (field[abValue2].value <> 0)
+
+hero.childfound[raDarkVis].field[abValue].value += 60]]></eval>
+    <eval phase="PreAttr" priority="10000" index="2">doneif (field[gIsAttuned].value = 0)
+
+~ Add to our chosen attribute
+hero.childfound[aWIS].field[aStartMod].value += 2
+hero.childfound[aWIS].field[aMaxValue].value += 2</eval>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (field[gIsAttuned].value = 0)
+
+foreach pick in hero from BaseSkill where "SkillAbil.aWIS"
+   #situational[eachpick,"Advantage to find hidden doors and paths",field[livename].text]
+   nexteach]]></eval>
+    </thing>
+  <thing id="g5CPrdSlk" name="Pride Silk" description="This processed and woven silk is incredibly flexible, but durable as worked leather. It is expensive as a raw material, but outfits made of it are even more costly, thanks to the high skill required by its tailors. One square yard costs 100 gp." compset="Gear">
+    <fieldval field="gCost" value="100"/>
+    <fieldval field="gWeight" value="1"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gtAdventGe"/>
+    </thing>
+  <thing id="i5CPrdSlkO" name="Pride Silk Outfit" description="This processed and woven silk is incredibly flexible, but durable as worked leather. An outfit crafted from pride silk weighs 4 pounds and costs 500 gp. \n\nWhile wearing a pride silk outfit and not wearing armor, your base Armor Class is 11 + your Dexterity modifier." compset="MagicArmor">
+    <fieldval field="gCost" value="500"/>
+    <fieldval field="gWeight" value="4"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <bootstrap thing="c5CPrdSilk">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="io5CRncDst" name="Reincarnation Dust" description="When this small pouch of purple dust is sprinkled on a dead humanoid or a piece of a dead humanoid, the dust is absorbed by the remains. If the dead creature&apos;s spirit is willing, it comes back to life with a new body as if {i}reincarnate{/i} had been cast on it." compset="Wondrous">
+    <usesource source="5eEGtWCP"/>
+    <tag group="SpInfo" tag="spReincarn"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="ir5CRngObs" name="Ring of Obscuring" description="This cold, skull-shaped band of iron has 3 charges and regains 1d3 expended charges each dawn. As an action while wearing the ring, you can spend 1 of its charges to cast {i}fog cloud{/i} from it, with these changes: the cloud is centered on you when it first appears, and the spell lasts for 1 minute without any concentration needed." compset="Ring">
+    <fieldval field="trkMax" value="3"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <bootstrap thing="spFogClou">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <assignval field="sNameMod" value="Ring of Obscuring"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[gIsEquip].value = 0)
+      field[abText].text = "regains 1d3 at dawn"]]></eval>
+    </thing>
+  <thing id="ir5CTmpSlv" name="Ring of Temporal Salvation" description="If you die while wearing this gray crystal ring, you disappear, then reappear in an open space within 5 feet of the space you left (or the nearest unoccupied space). You have a hit points equaling 3d6 + your Constitution modifier. If your hit point maximum is lower than the number of hit points you regain, your hit point maximum rises to the same amount. Reduce your level of exhaustion, if any, by 1. Once the ring is used, it crumbles to dust, destroyed." compset="Ring">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    </thing>
+  <thing id="id5CRdRtrb" name="Rod of Retribution" description="When a creature visible to and within 60 feet of you damages you while you are holding this rod, you can use your reaction to spend 1 of the rod&apos;s charges to force the creature to make a DC 13 Dexterity save. The creature suffers 2d10 lightning damage on a failure or half that on a success.\n\nThis crystal-topped adamantine rod has 3 charges and regains all its spent charges each dawn." compset="Rod">
+    <fieldval field="trkMax" value="3"/>
+    <fieldval field="gWeight" value="2"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <eval phase="PreLevel" priority="10000"></eval>
+    </thing>
+  <thing id="g5CSkyshp" name="Skyship" description="{b}Speed:{/b} 10 mph\n{b}Max Cargo:{/b} 10 tons\n{b}Crew:{/b} 6-10\n{b}Max Passengers:{/b} 30\n\nA magical flying ship, held aloft and guided via three or more special crystals." compset="Gear">
+    <fieldval field="gCost" value="100000"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gt5CVehAir"/>
+    <tag group="explicit" tag="5"/>
+    </thing>
+  <thing id="g5CSthSlt" name="Soothsalts" description="A creature subjected to a dose of these lozenge-sized, red crystals, taken orally, gains advantage on all Intelligence checks for 1d4 hours.\n\nFor each dose of soothsalts consumed, the creature must make a DC 15 Constitution save. On a failure, it gains one level of exhaustion. Multiple doses can add to the total levels of exhaustion imposed." compset="Gear">
+    <fieldval field="gCost" value="150"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gtPoison"/>
+    </thing>
+  <thing id="io5CSplBtl" name="Spell Bottle" description="This glass bottle can store a single spell of up to 5th level at a time. When found, roll a 1d6-1. The total equals the level of spell already in the bottle (chosen by the DM). A total of 0 means no spell is in the bottle. While it contains a spell, a swirling blue vapor fills the bottle.\n\nWhen the bottle is empty, any creature can cast a spell of up to 5th level (no cantrips) into it by touching it while casting. At that time of casting, the spell has no effect other than to be stored in the bottle.\n\nWhile holding the bottle, you can cast the spell stored in it. The spell uses the slot level, spell save DC, spell attack bonus, and spellcasting ability of the original caster, but is otherwise treated as if you cast the spell. The bottle is then empty once the spell is cast.\n\nIf you&apos;re holding the empty bottle when you see a creature casting a spell within 60 feet of you, you use a reaction to open the bottle, attempting to interrupt the spell. Spells of 3rd or lower level have no effect, and are automatically stored in the bottle. If the creature is casting a spell of 4th level or higher, make an Intelligence check, with a DC equaling 10 + the spell&apos;s level. On a success, the spell has no effect, and it is stored in the bottle.\n\n{b}Hero Lab Note:{/b} The drop-downs on the Magic tab are bugged, so use the In-Play tab. Select the level of spell in the bottle, then select the spell." compset="Wondrous">
+    <arrayval field="usrArray" index="0" value="Empty"/>
+    <arrayval field="usrArray" index="1" value="Level 1 Spell"/>
+    <arrayval field="usrArray" index="2" value="Level 2 Spell"/>
+    <arrayval field="usrArray" index="3" value="Level 3 Spell"/>
+    <arrayval field="usrArray" index="4" value="Level 4 Spell"/>
+    <arrayval field="usrArray" index="5" value="Level 5 Spell"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="First"><![CDATA[doneif (field[gIsAttuned].value = 0)
+doneif (field[usrIndex].value = 0)
+
+perform assign[ChooseSrc1.Thing]
+field[usrCandid1].text = "component.BaseSpell"
+
+if (field[usrIndex].value = 1) then
+   field[usrCandid1].text &= " & sLevel.1"
+elseif (field[usrIndex].value = 2) then
+   field[usrCandid1].text &= " & sLevel.2"
+elseif (field[usrIndex].value = 3) then
+   field[usrCandid1].text &= " & sLevel.3"
+elseif (field[usrIndex].value = 4) then
+   field[usrCandid1].text &= " & sLevel.4"
+elseif (field[usrIndex].value = 5) then
+   field[usrCandid1].text &= " & sLevel.5"
+endif]]></eval>
+    </thing>
+  <thing id="is5CStfDnm" name="Staff of Dunamancy" description="This staff of polished gray wood bears numerous runes carved along its length. This polished, grey, wooden staff has 10 charges and regains 1d6 + 4 spent charges each dawn. If you spend the last charge, roll a d20. On a 1, the staff crumbles to dust and is destroyed.\n\nWhile holding the staff, you can use an action to spend 2 or more of its charges to cast one of these spells from it, using your spell save DC and spell attack bonus: fortune&apos;s favor (2 charges), pulse wave (3 charges), or gravity sinkhole (4 charges).\n\n{b}New Possibility{/b}. If you are holding the staff and fail a saving throw against a spell that targets only you, you can turn your failed save into a successful one. This property can&apos;t be used again until the next dawn." compset="Staff">
+    <fieldval field="miAttunTxt" value="requires attunement by a wizard"/>
+    <fieldval field="trkMax" value="10"/>
+    <fieldval field="gWeight" value="4"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="sp5CWldPuW">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="ChargeUse" tag="3"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    <bootstrap thing="sp5CWldGrS">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="ChargeUse" tag="4"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    <bootstrap thing="trk5CNewPsbl">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="wQtrstaff">
+      <assignval field="livename" value="Staff of Dunamancy"/>
+      <assignval field="sbName" value="Staff of Dunamancy"/>
+      </bootstrap>
+    <bootstrap thing="sp5CWldFoF">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="ChargeUse" tag="2"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000"><![CDATA[field[abText].text = "regains 1d6+4 at dawn"]]></eval>
+    </thing>
+  <thing id="trk5CNewPsbl" name="New Possibility" description="If you are holding the Staff of Dunamancy and fail a saving throw against a spell that targets only you, you can turn your failed save into a successful one. This property can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="is5CStfIvry" name="Staff of the Ivory Claw" description="While holding this staff, you gain a +1 bonus to spell attack rolls. Whenever you critically hit with a spell attack, the target takes an additional 3d6 radiant damage." compset="Staff">
+    <fieldval field="miAttunTxt" value="requires attunement by a spellcaster"/>
+    <fieldval field="gWeight" value="4"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="wQtrstaff">
+      <assignval field="livename" value="Staff of the Ivory Claw"/>
+      <assignval field="sbName" value="Staff of the Ivory Claw"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+
+      foreach pick in hero from Spellcast
+        eachpick.field[cSplAttack].value += 1
+        nexteach</eval>
+    </thing>
+  <thing id="g5CThkiRt" name="Theki Root" description="When you use an action to consume a dose of this bitter marsh root, you gain advantage on saves versus the effects of poisonous or toxic substances for 8 hours." compset="Gear">
+    <fieldval field="gCost" value="3"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gt5CHerbs"/>
+    <tag group="explicit" tag="10"/>
+    </thing>
+  <thing id="io5CVoxSeek" name="Vox Seeker" description="You can use an action to wind up this clockwork, crab-like device. Each action used allows it to operate for 1 minute, up to a maximum of 10 minutes. While active, it uses the Vox Seeker stat block, and is an automaton controlled by the DM. It is destroyed if it is reduced to 0 hit points.\n\n{b}Hero Lab Note:{/b} You can add a Vox Seeker to the portfolio via the Encounter Builder." compset="Wondrous">
+    <usesource source="5eEGtWCP"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="i5CWpCrtD" name="Weapon of Certain Death" description="When you damage a creature with an attack using this magic weapon, that target can&apos;t regain hit points until the beginning of your next turn." compset="MagicWep">
+    <fieldval field="miTypeDet" value="any"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <eval phase="Final" priority="20000" index="7"><![CDATA[      ~set our name based on the type of weapon chosen
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text = titlecase(focus.field[name].text) & " of Certain Death"
+      else
+        field[livename].text = "Weapon of Certain Death"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="g5CWlwshd" name="Willowshade Oil" description="A creature can use its action to apply this rare oil to another creature that has been petrified within the last minute, causing the petrified condition on that creature to end at the beginning of what would be that creature&apos;s next turn." compset="Gear">
+    <fieldval field="gCost" value="30"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gt5CHerbs"/>
+    <tag group="explicit" tag="10"/>
+    </thing>
+  <thing id="g5CAlchItmH" name="Alchemical Items" compset="Gear" isshowonly="yes">
+    <tag group="GearType" tag="gt5CAlcItm"/>
+    <tag group="explicit" tag="51"/>
+    </thing>
+  <thing id="w5CDskcrsh" name="Duskcrusher" description="While holding this rod, you can use a bonus action to cause a radiant warhammer to appear on it. The head emits bright light in a 15-foot radius and dim light for another 15 feet. This light is sunlight. You can use an action to make the head disappear.\n\nWhile the radiant head is active, you gain a +2 bonus to attack and damage rolls made with this magic weapon, and attacks with the weapon deal radiant damage instead of bludgeoning damage. An undead creature struck by the weapon takes an extra 1d8 radiant damage.\n\nWhile you are holding the activated warhammer, you can use an action to cast {i}sunbeam{/i} (save DC 15) from the weapon. Once used, this action can&apos;t be used again until the next dawn." compset="Weapon">
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="8"/>
+    <fieldval field="wDCntVers" value="1"/>
+    <fieldval field="wDSizVers" value="10"/>
+    <fieldval field="Bonus" value="2"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="wProfReq" tag="Martial" name="Martial" abbrev="Martial"/>
+    <tag group="wProperty" tag="Versatile" name="Versatile" abbrev="Versatile"/>
+    <tag group="wCategory" tag="Melee" name="Melee Weapon" abbrev="Melee"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="DamageType" tag="dtRadiant"/>
+    <tag group="EquipType" tag="Metal" name="Metal" abbrev="Metal"/>
+    <tag group="Helper" tag="NoSelect"/>
+    </thing>
+  <thing id="min5CMrbndr" name="Moorbounder" description="Moorbounders are faster and more expensive than typical riding animals, but can be dangerous to even their rider if not properly trained. Their cost ranges from 300 to 500 gp each." compset="Minion" stacking="never">
+    <fieldval field="gCost" value="500"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gtMounts" name="Mounts" abbrev="Mounts"/>
+    <minion id="Mount">
+      <tag group="Hero" tag="FixedRace" name="FixedRace" abbrev="FixedRace"/>
+      <bootstrap thing="r5CMoorbnd"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="g5CMrsBlmS" name="Muroosa Balm (Single Dose)" description="This pasty balm is helpful for treating sunburns, with one sufficient dose costing 1 gp." compset="Gear">
+    <fieldval field="gCost" value="1"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gt5CHerbs"/>
+    <tag group="explicit" tag="10"/>
+    </thing>
+  <thing id="ip5CMxPwrP" name="Potion of Maximum Power" description="The first time you cast a damage-dealing spell of 4th level or lower within 1 minute of drinking this potion, use the highest possible number for each damage die (rather than rolling them)." compset="Potion">
+    <usesource source="5eEGtWCP"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    </thing>
+  <thing id="ip5CPtPoss" name="Potion of Possibility" description="When you drink this clear potion, you gain two Fragments of Possibility. Each fragment appears as a Tiny, gray bead of energy. They follow you around, staying within 1 foot of you at all times. Each fragment lasts for 8 hours or until used.\n\nWhen you make an attack roll, an ability check, or a saving throw, you can spend a fragment to roll an additional d20 and choose which of the d20s to use. Alternatively, when an attack roll is made against you, you can spend a fragment to roll a d20 and choose which of the d20s to use, the one you rolled or the one the attacker rolled.\n\nIf the original d20 roll was made with advantage or disadvantage, you roll your d20 after that advantage or disadvantage has been applied to the original roll.\n\nWhile you have one or more Fragments of Possibility available from this potion, you can&apos;t gain another Fragment of Possibility from any source." compset="Potion">
+    <fieldval field="actName" value="Imbibed"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="User" tag="Activation"/>
+    <bootstrap thing="trk5CFrgPoss">
+      <containerreq phase="First" priority="150"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    </thing>
+  <thing id="trk5CFrgPoss" name="Fragment of Possibility" description="Each fragment appears as a Tiny, gray bead of energy. They follow you around, staying within 1 foot of you at all times. Each fragment lasts for 8 hours or until used.\n\nWhen you make an attack roll, an ability check, or a saving throw, you can spend a fragment to roll an additional d20 and choose which of the d20s to use. Alternatively, when an attack roll is made against you, you can spend a fragment to roll a d20 and choose which of the d20s to use, the one you rolled or the one the attacker rolled.\n\nIf the original d20 roll was made with advantage or disadvantage, you roll your d20 after that advantage or disadvantage has been applied to the original roll." compset="Tracker" uniqueness="unique">
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="UsedUp"/>
+    </thing>
+  <thing id="c5CPrdSilk" name="Pride Silk Outfit" compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abBaseAC" value="11"/>
+    <tag group="CalcAC" tag="Shield" name="Shield" abbrev="Shield"/>
+    <tag group="Helper" tag="ArmorClass" name="Armor Class Calcualtion" abbrev="Armor Class Calcualtion"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="CalcAC" tag="DexMod" name="Dexterity Modifier" abbrev="Dexterity Modifier"/>
+    </thing>
+  <thing id="r5CSthlmst" name="Stahlmaster" compset="Race">
+    <fieldval field="rHitDice" value="9"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="67"/>
+    <fieldval field="rMultiatt" value="The Stahlmaster makes one melee attack and either another melee attack or a ranged attack."/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rAC" value="6"/>
+    <tag group="DamageImm" tag="dtPsychic" name="Psychic" abbrev="Psychic"/>
+    <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal" name="journal" abbrev="journal"/>
+    <tag group="HideTab" tag="personal" name="personal" abbrev="personal"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="CondImm" tag="pcnBlind" name="Blinded" abbrev="Blinded"/>
+    <tag group="CondImm" tag="pcnCharmed" name="Charmed" abbrev="Charmed"/>
+    <tag group="CondImm" tag="pcnDeaf" name="Deafened" abbrev="Deafened"/>
+    <tag group="CondImm" tag="pcnFright" name="Frightened" abbrev="Frightened"/>
+    <tag group="CondImm" tag="pcnParaly" name="Paralyzed" abbrev="Paralyzed"/>
+    <tag group="CondImm" tag="pcnPetri" name="Petrified" abbrev="Petrified"/>
+    <tag group="CondImm" tag="pcnPoison" name="Poisoned" abbrev="Poisoned"/>
+    <tag group="CondImm" tag="pcnUnconc" name="Unconscious" abbrev="Unconscious"/>
+    <tag group="DamageImm" tag="dtPoison" name="Poison" abbrev="Poison"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="livename" value="Slam"/>
+      <assignval field="sbName" value="Slam"/>
+      </bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDieSize" value="12"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wRangeNorm" value="30"/>
+      <assignval field="wRangeLong" value="120"/>
+      <assignval field="livename" value="Shoulder-Mounted Crossbow"/>
+      <assignval field="sbName" value="Shoulder-Mounted Crossbow"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSthlPlt"></bootstrap>
+    <eval phase="PostLevel" index="3">hero.childfound[ProfBonus].field[tProfBonus].value = 2
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="4">hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="ra5CSthlPlt" name="Pilot" description="The Stahlmaster needs a Medium humanoid piloting it. While the pilot is inside the Stahlmaster, it uses the vehicle&apos;s speed and action options, it can&apos;t use reactions or bonus actions, and it has total cover. If the Stahlmaster drops to 0 hit points, the pilot is ejected from it. The pilot lands prone in an open space within 5 feet of the vehicle." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="g5CSthlmstr" name="Stahlmaster" compset="Gear">
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="GearType" tag="gtVehLand"/>
+    <bootstrap thing="c5CStahl"></bootstrap>
+    </thing>
+  <thing id="c5CStahl" name="Stahlmaster" compset="Companion" stacking="never">
+    <fieldval field="CompType" value="Vehicle"/>
+    <usesource source="5eEGtWCP"/>
+    <minion id="Vehicle" isinherit="no">
+      <tag group="Hero" tag="FixedRace" name="FixedRace" abbrev="FixedRace"/>
+      <bootstrap thing="r5CSthlmst"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="i5CBldBrkM" name="Blade of Broken Mirrors" description="A maze with no start or end is carved into the blade of this jagged stone dagger.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this dagger grants these benefits:\n• You can speak, read, and write Abyssal.\n• You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n• Immediately after you make a ranged attack with this weapon, it returns back to your hand.\n• Whenever you kill a humanoid with an attack using this blade, the blade remembers that creature&apos;s appearance. While holding the dagger, you can use an action to alter your form to match any humanoid in the blade&apos;s memory. Your statistics, other than your size, don&apos;t change. Any equipment you are wearing or carrying isn&apos;t transformed. You can use an action to revert to your true appearance, which also happens automatically when you die. If the blade is attuned to a new wielder, it forgets all appearances in its memory.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the dagger grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +2.\n• While holding the weapon, you can use an action to cast one of these spells from it (save DC 15): {i}fabricate{/i}, {i}hallucinatory terrain{/i}, {i}major image{/i}, or {i}phantasmal killer{/i}. Once a particular spell has been cast using the weapon, that spell can&apos;t be cast from the weapon again until the next dawn.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the dagger grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +3.\n• The save DC for spells cast from the dagger becomes 17.\n• While holding the dagger, you can use an action to turn invisible. Anything you are wearing or carrying is also made invisible. You remain invisible until you let go of the dagger, until you attack, until you cast a spell that forces a creature to make a saving throw, or until you use a bonus action to become visible again.\n\n{b}Sentience{/b}. The Blade of Broken Mirrors is a sentient chaotic evil weapon. It has Intelligence 21, Wisdom 24, and Charisma 24. It has hearing and darkvision with a range of 120 feet.\nThe weapon is able to communicate telepathically with whoever is wielding it. It can speak, read, and understand these languages: Abyssal and Common.\n\n{b}Personality{/b}. An insane glabrezu named Ragazuu lives within the blade, using its wielder&apos;s own principles against them to encourage and cause chaos." compset="MagicWep">
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="gWeight" value="1"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a humanoid"/>
+    <fieldval field="miTypeDet" value="dagger"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAB" name="Major Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEID" name="Minor Detrimental Artifact Properties Eligible"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Custom" tag="BldBrkn"/>
+    <bootstrap thing="lAbyssal">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="spHallTerr">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Custom" tag="BldBrkn"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="DC 15"/>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="spFabricat">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Custom" tag="BldBrkn"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="DC 15"/>
+      </bootstrap>
+    <bootstrap thing="spMajoImag">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Custom" tag="BldBrkn"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="DC 15"/>
+      </bootstrap>
+    <bootstrap thing="spPhanKill">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Custom" tag="BldBrkn"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="DC 15"/>
+      </bootstrap>
+    <eval phase="First" priority="2" index="4">perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax1].value += field[abValue].value
+focus.field[cfgMax2].value += field[abValue2].value
+focus.field[cfgMax3].value += field[abValue3].value
+
+field[Bonus].value = field[usrIndex].value + 1</eval>
+    <eval phase="Final" index="5"><![CDATA[
+if (tagcount[Custom.5CAPIB] >= field[abValue].value) then
+perform delete[Custom.5CAPEIB]
+endif
+if (tagcount[Custom.5CAPAB] >= field[abValue2].value) then
+perform delete[Custom.5CAPEAB]
+endif
+if (tagcount[Custom.5CAPID] >= field[abValue3].value) then
+perform delete[Custom.5CAPEID]
+endif]]></eval>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[usrIndex].value < 2)
+
+foreach pick in hero from BaseSpell where "Custom.BldBrkn"
+    eachpick.field[sNameMod].text = "DC 17"
+    nexteach]]></eval>
+    <eval phase="First" priority="1" index="2"><![CDATA[
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 1)
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 2)
+field[abValue2].value += 1]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wDagger"></bootstrap>
+      </child>
+    </thing>
+  <thing id="io5CDnthVs" name="Danoth&apos;s Visor" description="{b}Dormant{/b}\nWhile wearing these mithral-framed goggles, you can see normally in magical and nonmagical darkness, to a distance of 60 feet. Also, you have advantage on Intelligence (Investigation) and Wisdom (Perception) checks that rely on sight.\n\n{b}Awakened{/b}\nWhen Danoth&apos;s Visor reaches an awakened state, it gains these properties:\n• You see invisible creatures and objects within 60 feet of you as if they were visible, and you can see into the Ethereal Plane. Creatures and objects in that plane appear ghostly and translucent.\n• You can use a bonus action to speak a command word and use the goggles to see into and through solid matter. This vision has a radius of 60 feet and lasts for 1 minute. Solid objects in that range appear transparent to you. The vision can penetrate 1 foot of stone, 1 inch of common metal, or up to 3 feet of wood or dirt. Thicker substances or a thin sheet of lead block the vision. Once used, this property can&apos;t be used again until the next dawn.\n• You can use a bonus action to speak a command word to switch the goggles into spyglass mode. While in this mode, creatures and objects viewed through the goggles appear to be twice the size, as they are magnified. The command word can be spoken again to switch the goggles back.\n\n{b}Exalted{/b}\nWhen Danoth&apos;s Visor reaches an exalted state, it gains these properties:\n• You automatically detect illusions you can see and automatically succeed on saving throws against them.\n• You see a bright aura around any creature that isn&apos;t in its true form.\n• You can use an action to cast {i}antimagic field{/i} from the visor. Once this property is used, it can&apos;t be used again until the next dawn." compset="Wondrous">
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <bootstrap thing="spAntiFiel">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abValue > 2]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="trk5CDnthXry">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abValue > 1]]></containerreq>
+      </bootstrap>
+    <eval phase="First" priority="10" index="2">doneif (field[gIsAttuned].value = 0)
+field[abValue].value = field[usrIndex].value + 1</eval>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      doneif (field[gIsAttuned].value = 0)
+      doneif (field[gIsEquip].value = 0)
+
+      #situational[hero.child[skPercep],"Advantage on checks relying on sight",field[thingname].text]
+      #situational[hero.child[skInvestig],"Advantage on checks relying on sight",field[thingname].text]
+
+      doneif (field[abValue].value < 3)
+      #situational[hero.child[svAll],"automatically succeed versus illusions",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="io5CGrmInf" name="Grimoire Infinitus" description="This gilded paged, silver-plated spellbook has an infinite number of pages. It is three inches thick, eight inches wide, twelve inches long, and weighs three pounds.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this grimoire grants these benefits:\n• These spells are recorded in the first few pages of the book: {i}alarm{/i}, {i}antimagic field{/i}, {i}arcane hand{/i}, {i}blight{/i}, {i}charm person{/i}, {i}confusion{/i}, {i}control weather{/i}, {i}create undead{/i}, {i}detect thoughts{/i}, {i}enlarge/reduce{/i}, {i}fear{/i}, {i}foresight{/i}, {i}gaseous form{/i}, {i}glyph of warding{/i}, {i}legend lore{/i}, {i}mage&apos;s faithful hound{/i}, {i}mass suggestion{/i}, {i}mislead{/i}, {i}misty step{/i}, {i}prismatic spray{/i}, {i}ray of enfeeblement{/i}, {i}silent image{/i}, {i}teleport{/i}, {i}thunderwave{/i}, and {i}tiny hut{/i}. The remaining pages are blank.\n• You can use this grimoire as your spellbook, and you can scribe new spells into it like any other spellbook.\n• When you prepare wizard spells using the grimoire, the total number of wizard spells you can prepare is increased by 1.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the grimoire grants these benefits:\n• While you carry this spellbook, you have advantage on saves versus spells and magical effects.\n• When you prepare wizard spells using the grimoire as your spellbook, the total number of wizard spells you can prepare is increased again by 1 (for a total increase of 2).\n\n{b}Exalted{/b}. Once it reaches its exalted state, the grimoire grants these benefits:\n• You can now use Arcane Recovery twice between long rests, rather than just once.\n• When you prepare wizard spells using the grimoire as your spellbook, the total number of wizard spells you can prepare is increased again by 1 (for a total increase of 3)." compset="Wondrous">
+    <fieldval field="gWeight" value="3"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a wizard"/>
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spAlarm">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spAntiFiel">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spArcaHand">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spBlight">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spCharPers">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spConfusio">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spContWeat">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spCreaUnde">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spDeteThou">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spEnlargeR">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spFear">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spForesigh">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spGaseForm">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spGlypWard">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spLegeLore">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spTinyHut">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spMassSugg">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spMislead">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spMistStep">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spFaitHoun">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spPrisSpra">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spRayEnfe">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spSileImag">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spTeleport">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <bootstrap thing="spThunderw">
+      <autotag group="Hide" tag="SpellMain"/>
+      <autotag group="CasterType" tag="MemBook"/>
+      <autotag group="Spellbook" tag="cHelpWiz"/>
+      </bootstrap>
+    <eval phase="First" priority="10"><![CDATA[      doneif (field[gIsAttuned].value = 0)
+      field[abValue].value = field[usrIndex].value + 1
+
+
+      doneif (field[abValue].value < 3)
+      hero.childfound[cWizArcRec].field[trkMax].value += 1]]></eval>
+    <eval phase="PostAttr" priority="150" index="2">hero.childfound[cHelpWiz].field[cMaxSpMem].value += field[abValue].value</eval>
+    <eval phase="PreLevel" priority="10000" index="3"><![CDATA[
+      doneif (field[gIsAttuned].value = 0)
+      doneif (field[abValue].value < 2)
+
+      #situational[hero.child[svAll],"advtange vs spells and other magical effects",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="i5CGrvlThr" name="Grovelthrash" description="The images of faces and their painful screams are carved into this obsidian warhammer.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this warhammer grants these benefits:\n• You can speak, read, and write Abyssal and Infernal.\n• You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n•  When you hit with an attack using this warhammer, you can deal an additional 2d6 bludgeoning damage to the target. Doing so inflicts 1d6 psychic damage to you.\n• The warhammer deals double damage to objects and structures.\n• While holding this weapon, you have advantage on Wisdom (Insight) checks made to discern a lie spoken in a language you understand.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the warhammer grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +2.\n• You gain a burrowing speed equal to your walking speed. You cannot move through solid rock, but you can use this burrowing speed to move through sand, loose earth, mud, or ice.\n• When a creature you can see within 30 feet of you hits you with an attack while you are wielding this weapon, you can take your reaction to deal psychic damage to that creature equal to the damage you took from their attack. This property of the warhammer then can&apos;t be used again until the next dawn.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the warhammer grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +3.\n• When you have fewer hit points than half your hit point maximum, the warhammer deals an additional 2d6 bludgeoning damage when it hits.\n• You can now burrow through solid rock at half your burrowing speed. You leave a 5-foot-diameter tunnel in your wake.\n• You can use an action to use the warhammer to cast one of these spells from it (save DC 17): {i}earthquake{/i}, {i}meld into stone{/i}, or {i}stone shape{/i}. Once a particular spell has been cast using the weapon, that spell can&apos;t be cast from the weapon again until the next dawn.\n\n{b}Sentience{/b}. Grovelthrash is a sentient neutral evil weapon. It has Intelligence 18, Wisdom 15, and Charisma 19. It has hearing and darkvision with a range of 120 feet.\nThe weapon is able to communicate telepathically with whoever is wielding it. It can speak, read, and understand these languages: Abyssal, Common, and Infernal.\n\n{b}Personality{/b}. A covetous ultroloth named Ciria lives within this warhammer. It enjoys inflicting pain and the accumulation of treasures, complimenting its wielder when they do either." compset="MagicWep">
+    <fieldval field="gWeight" value="2"/>
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="miTypeDet" value="warhammer"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAB" name="Major Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEID" name="Minor Detrimental Artifact Properties Eligible"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <bootstrap thing="lAbyssal">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="lInfernal">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="ab5CGrvlBrw">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="spMeldSton">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 1]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="DC 17"/>
+      </bootstrap>
+    <bootstrap thing="trk5CGrvlPsy">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="spEarthqua">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 1]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="DC 17"/>
+      </bootstrap>
+    <bootstrap thing="spStonShap">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 1]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="DC 17"/>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <eval phase="First" priority="1" index="2"><![CDATA[
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 1)
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 2)
+field[abValue2].value += 1]]></eval>
+    <eval phase="Final" priority="60000" index="7"><![CDATA[doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+doneif (field[usrIndex].value < 2)
+
+var iTHP as number
+var iCHP as number
+
+iTHP = hero.childfound[Totals].field[tHP].value
+iCHP = hero.childfound[Totals].field[tCurrentHP].value
+
+iTHP /= 2
+
+if (iCHP < iTHP) then
+    field[wDamExtra].text = " + 2d6 bludgeoning"
+endif]]></eval>
+    <eval phase="First" priority="2" index="8">perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax1].value += field[abValue].value
+focus.field[cfgMax2].value += field[abValue2].value
+focus.field[cfgMax3].value += field[abValue3].value
+
+field[Bonus].value = field[usrIndex].value + 1</eval>
+    <eval phase="Final" index="5"><![CDATA[
+if (tagcount[Custom.5CAPIB] >= field[abValue].value) then
+perform delete[Custom.5CAPEIB]
+endif
+if (tagcount[Custom.5CAPAB] >= field[abValue2].value) then
+perform delete[Custom.5CAPEAB]
+endif
+if (tagcount[Custom.5CAPID] >= field[abValue3].value) then
+perform delete[Custom.5CAPEID]
+endif
+
+doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+
+      #situational[hero.child[skInsight],"Advantage to discern lies spoken in a language you understand",field[thingname].text]]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wWarhammer"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CHdFrlG" name="Hide of the Feral Guardian" description="This polished and gorgeously detailed leather armor is believed to have been gifted to an archdruid by their goddess.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this armor grants these benefits when worn:\n• The armor grants a +1 bonus to your AC.\n• While you are transformed by an effect that replaces any of your game statistics with those of another creature, you have a +1 bonus to melee attack and damage rolls. You also retain the benefits of this armor while transformed by such an effect.\n• You can use an action to use this armor to cast {i}polymorph{/i} on yourself, transforming into a giant owl. You retain your Intelligence, Wisdom, and Charisma scores. This ability of the armor then can&apos;t be used again until the next dawn.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the armor grants these benefits when worn:\n• The AC bonus of the armor becomes +2.\n• While you are transformed by an effect that replaces any of your game statistics with those of another creature, you have another  +1 bonus to melee attack and damage rolls (a total of +2).\n• When you cast {i}polymorph{/i} using this armor, you are also now able to transform into a cave bear.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the armor grants these benefits when worn:\n• The AC bonus of the armor becomes +3.\n• While you are transformed by an effect that replaces any of your game statistics with those of another creature, you have another  +1 bonus to melee attack and damage rolls (a total of +3).\n• When you cast the {i}polymorph{/i} spell using this armor, you can transform into a guardian wolf." compset="MagicArmor">
+    <fieldval field="gCost" value="45"/>
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="gWeight" value="13"/>
+    <fieldval field="actName" value="Polymorphed"/>
+    <fieldval field="miTypeDet" value="leather"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <bootstrap thing="c5CFrlGrdn">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0 & fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="spPolymorp">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="User" tag="Tracker"/>
+      <assignval field="sNameMod" value="Feral Guardian"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First" priority="10"><![CDATA[doneif (field[gIsAttuned].value = 0)
+
+  field[abValue].value += 1
+
+if (field[usrIndex].value > 0) then
+   field[abValue].value += 1
+   endif
+
+if (field[usrIndex].value > 1) then
+   field[abValue].value += 1
+   endif
+
+field[Bonus].value = field[abValue].value]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="mLeather"></bootstrap>
+      </child>
+    </thing>
+  <thing id="io5CInfKey" name="Infiltrator&apos;s Key" description="This mirthal skeleton key was forged in the blood of twelve executed master thieves.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this key grants these benefits:\n• While using the key, you are considered proficient in thieves&apos; tools and you have advantage on ability checks made to open locks. The key can be used as thieves&apos; tools for opening locks.\n• While holding the key, you have advantage on Dexterity (Stealth) checks made to move silently.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the key grants these benefits:\n• While holding the key, you can use a bonus action to transform the key into a +1 magical dagger or back into a key. If used to make a ranged attack, the dagger immediately returns to your hand after the attack.\n• While holding the key, you can use an action to cast one of these spells from it: {i}alter self{/i}, {i}invisibility{/i}, {i}knock{/i}, or {i}pass without trace{/i}. Once a particular spell has been cast using the key, that spell can&apos;t be cast from the key again until the next dawn.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the key grants these benefits:\n• You can use a bonus action to touch the key to a floor, wall, or ceiling that is no more than 5 feet thick. This causes a magical opening to appear in the surface. When you create the opening, you choose its length and width, up to 10 feet for each dimension. The opening lasts until the key goes through it to the other side, then disappears (if a creature is in the opening when the it closes, the creature is safely pushed to the nearest open space). The key then can&apos;t be used to create another opening until the next dawn.\n• While holding the key, you can use an action to cast one of these spells from it: {i}dimension door{/i}, {i}gaseous form{/i}, or {i}mislead{/i}. Once a particular spell has been cast using the key, it can&apos;t be used to cast that spell again until the next dawn." compset="Wondrous">
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <bootstrap thing="spAlteSelf">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex > 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spPassTrac">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex > 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex > 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spKnock">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex > 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDimeDoor">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex > 1 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spGaseForm">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex > 1 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMislead">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex > 1 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="wDagger">
+      <containerreq phase="First" priority="200"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <assignval field="livename" value="Infiltrator&apos;s Key Dagger (+1)"/>
+      <assignval field="sbName" value="Infiltrator&apos;s Key Dagger (+1)"/>
+      <assignval field="Bonus" value="1"/>
+      </bootstrap>
+    <bootstrap thing="trk5CInflKey">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex > 1 & fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="gTooThieve">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[doneif (field[gIsAttuned].value = 0)
+doneif (field[usrIndex].value < 1)
+
+field[actName].text = "Dagger activated (bonus)"
+perform assign[User.Activation]]]></eval>
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[      doneif (field[gIsAttuned].value = 0)
+      doneif (field[gIsEquip].value = 0)
+
+      #situational[hero.child[skStealth],"Advantage when trying to move silently",field[thingname].text]]]></eval>
+    <eval phase="Render" index="3"><![CDATA[     ~ If we're disabled, do nothing & 
+     doneif (tagis[Helper.Disable] = 1)
+     doneif (field[gIsAttuned].value = 0)
+
+     foreach pick in hero from Tool where "thingid.gTooThieve"
+       #situational[eachpick,"Advantage when picking locks.",field[thingname].text]
+       eachpick.field[CustDesc].text = "{b}Infiltrator's Key{/b}: Advantage when picking locks.\n\n" & eachpick.field[descript].text 
+
+      nexteach]]></eval>
+    </thing>
+  <thing id="i5CLshShdw" name="Lash of Shadows" description="Five animated serpent heads tip the ends of this snakeskin whip.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this whip grants these benefits:\n• You can speak, read, and write Abyssal and Draconic.\n• You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n• You gain the Dead Eyes and Serpent Venom poisons. See the Poisons section below.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the whip grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +2.\n• The save DC for the weapon&apos;s poisons increases to 15.\n• The weapon gains the Ghoul&apos;s Blood poison. See the Poisons section below.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the whip grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +3.\n• The save DC for the weapon&apos;s poisons increases to 17.\n• The weapon gains the Cockatrice Tears poison. See the Poisons section below.\n\n{b}Poisons{/b}. You can try to poison any creature that is hit by the whip, choosing from one of these poisons. The creature must succeed on a DC 13 Constitution saving throw or suffer the effect of the chosen poison. Once a poison other than Serpent Venom has been used, that poison can&apos;t be used again until the next dawn. You gain new poisons as this weapon gains power, as indicated on the poison:\n{i}{b}Dormant - Dead Eyes.{/b}{/i} A creature that fails the saving throw against this poison is poisoned and blinded for 1 hour. The blinded condition ends if the poisoned condition ends.\n{i}{b}Dormant - Serpent Venom.{/b}{/i} A creature suffers 3d6 poison damage when failing the save against this poison, or half that damage when it succeeds.\n{i}{b}Awakened - Ghoul&apos;s Blood.{/b}{/i} A creature that fails the save against this poison is poisoned for 1 minute. While so poisoned, the creature is paralyzed. The creature can repeat the saving throw at the end of each of its turns, ending the effect for itself on a success.\n{i}{b}Exalted - Cockatrice Tears.{/b}{/i} A creature that fails the save against this poison begins to turn to stone and is restrained. It must repeat the saving throw at the end of its next turn. On a success, the effect ends. On a failure, the creature is petrified for 24 hours.\n\n{b}Sentience{/b}. The Lash of Shadows is a sentient chaotic evil weapon. It has Intelligence 18, Wisdom 16, and Charisma 20. It has hearing and darkvision with a range of 120 feet.\nThe weapon is able to communicate telepathically with whoever is wielding it. It can speak, read, and understand these languages: Abyssal, Common, and Draconic.\n\n{b}Personality{/b}. An insane, short-tempered marilith named Sizlifeth lives within this whip. It is happiest when causing harm, and only experiences emotions in extremes. It is" compset="MagicWep">
+    <fieldval field="gWeight" value="3"/>
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="miTypeDet" value="whip"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAB" name="Major Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEID" name="Minor Detrimental Artifact Properties Eligible"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <bootstrap thing="lDraconic">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CLshDE">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="trk5CLshGB">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CLshCT">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 1]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="lAbyssal">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="First" index="7">field[Bonus].value = field[usrIndex].value + 1</eval>
+    <eval phase="Final" index="5"><![CDATA[
+if (tagcount[Custom.5CAPIB] >= field[abValue].value) then
+perform delete[Custom.5CAPEIB]
+endif
+if (tagcount[Custom.5CAPAB] >= field[abValue2].value) then
+perform delete[Custom.5CAPEAB]
+endif
+if (tagcount[Custom.5CAPID] >= field[abValue3].value) then
+perform delete[Custom.5CAPEID]
+endif]]></eval>
+    <eval phase="First" priority="1" index="2"><![CDATA[
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 1)
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 2)
+field[abValue2].value += 1]]></eval>
+    <eval phase="First" priority="2" index="6">perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax1].value += field[abValue].value
+focus.field[cfgMax2].value += field[abValue2].value
+focus.field[cfgMax3].value += field[abValue3].value</eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wWhip"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CMcBlkC" name="Mace of the Black Crown" description="This mace has a haft of black iron and a ruby head with a devilish face.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this mace grants these benefits:\n• You can speak, read, and write Infernal.\n• You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n• While holding the mace, you can use a bonus action to speak its Infernal command word. Flames erupt from the head, shedding bright light in a 40-foot radius and dim light for another 40 feet. While the mace is ignited, it deals an extra 1d6 fire damage to any target it hits. The flames last until you use a bonus action to speak the command word again or until you let go of the mace.\n• While holding the mace, you can use an action to summon an imp for 10 minutes. Any devil you summon with this mace is friendly to you and your allies for the duration, and they obey any of your verbal commands. One the 10 minutes end, it returns to the hells from whence it came. This property of the mace can&apos;t be used again until the next dawn.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the mace grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +2.\n• The additional fire damage dealt by the weapon while it is ignited increases to 2d6.\n• The weapon can also summon a bearded devil with its Summon Devil feature.\n• You are resistant to poison damage while you are holding this mace.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the mace grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +3.\n• The additional fire damage dealt by the weapon while it is ignited increases to 3d6. This fire damage ignores resistance to fire damage.\n• The weapon can also summon a barbed devil with its Summon Devil feature.\n• You are resistant to fire damage while you are holding this mace.\n\n{b}Sentience{/b}. The Mace of the Black Crown is a sentient lawful evil weapon. It has Intelligence 20, Wisdom 12, and Charisma 18. It has hearing and darkvision with a range of 120 feet.\nThe weapon is able to communicate telepathically with whoever is wielding it. It can speak, read, and understand these languages: Common and Infernal.\n\n{b}Personality{/b}. A greedy erinyes named Xartaza lives within this mace. It manipulates its wielder&apos;s dreams, pushing them towards lawful evil actions. It enjoys crafting plans for battle, particularly against demons, and seeks to recruit more souls for the devil legions." compset="MagicWep">
+    <fieldval field="gWeight" value="4"/>
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="miTypeDet" value="mace"/>
+    <fieldval field="actName" value="Ignited (bonus action)"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAB" name="Major Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEID" name="Minor Detrimental Artifact Properties Eligible"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="lInfernal">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CSumDvl">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <eval phase="Final" index="5"><![CDATA[
+if (tagcount[Custom.5CAPIB] >= field[abValue].value) then
+perform delete[Custom.5CAPEIB]
+endif
+if (tagcount[Custom.5CAPAB] >= field[abValue2].value) then
+perform delete[Custom.5CAPEAB]
+endif
+if (tagcount[Custom.5CAPID] >= field[abValue3].value) then
+perform delete[Custom.5CAPEID]
+endif]]></eval>
+    <eval phase="First" index="6"><![CDATA[doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+
+var iDam as number
+
+iDam = 1
+
+
+if (field[usrIndex].value > 0) then
+    iDam += 1
+    perform hero.assign[DamageRes.dtPoison]
+  endif
+
+if (field[usrIndex].value > 1) then
+    iDam += 1
+    perform hero.assign[DamageRes.dtFire]
+  endif
+
+
+doneif (field[abilActive].value = 0)
+field[wDamExtra].text = " + " & iDam & "d6 fire"]]></eval>
+    <eval phase="First" priority="1" index="2"><![CDATA[
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 1)
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 2)
+field[abValue2].value += 1]]></eval>
+    <eval phase="First" priority="2" index="4">perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax1].value += field[abValue].value
+focus.field[cfgMax2].value += field[abValue2].value
+focus.field[cfgMax3].value += field[abValue3].value
+
+field[Bonus].value = field[usrIndex].value + 1</eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wMace"></bootstrap>
+      </child>
+    </thing>
+  <thing id="trk5CSumDvl" name="Summon Devil" description="While holding the Mace of the Black Crown, you can use an action to summon an {i}imp{/i} for 10 minutes. You can also summon a {i}bearded devil{/i} when the mace is Awakened, and a {i}barbed devil{/i} when it&apos;s Exlated. Any devil you summon with this mace is friendly to you and your allies for the duration, and they obey any of your verbal commands. One the 10 minutes end, it returns to the hells from whence it came. This property of the mace can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="i5CRuinWk" name="Ruin&apos;s Wake" description="An ancient orcish hymn to their god is carved into this spear, which is itself made from the ivory bone of an ancient gold dragon.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this spear grants these benefits:\n• You can speak, read, and write Abyssal and Orc.\n• You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n• The weapon deals an additional 1d8 piercing damage to any target it hits.\n• Immediately after you make a ranged attack with this weapon, it returns back to your hand.\n• When you are hit by a melee attack, you can use your reaction to make a melee attack with this weapon with advantage against the attacker. You can&apos;t use this property again until you complete a short or long rest.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the spear grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +2.\n• The additional piercing damage dealt by the weapon increases to 2d8.\n• When you throw the spear and speak a command word, it transforms into a bolt of lightning. Each creature in a 5 foot wide by 120 foot line extending from you to the creature, excluding you, must make a DC 15 Dexterity save. A creature takes 8d6 lightning damage on a failure or half that on a success. The spear then returns to your hand. This property of the spear then can&apos;t be used again until the next dawn.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the spear grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +3.\n• While holding the spear, you can use a bonus action to shout a battle cry. Each creature of your choice within 30 feet of you gains advantage on attack rolls until the  beginning of your next turn. This property of the spear then can&apos;t be used again until the next dawn.\n• When you reduce a creature to 0 hit points with an attack using the spear, you can regain hit points equal to the damage you dealt with the attack. This property of the spear then can&apos;t be used again until the next dawn.\n\n{b}Sentience{/b}. Ruin&apos;s Wake is a sentient chaotic evil weapon. It has Intelligence 20, Wisdom 16, and Charisma 22. It has hearing and darkvision with a range of 120 feet.\nThe weapon is able to communicate telepathically with whoever is wielding it. It can speak, read, and understand these languages: Abyssal, Common, and Orc.\n\n{b}Personality{/b}. A balor named Yarrowish lives within this spear. It loves bloodshed, pushing its wielder towards solving all problems with violence." compset="MagicWep">
+    <fieldval field="gWeight" value="3"/>
+    <fieldval field="miTypeDet" value="spear"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAB" name="Major Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEID" name="Minor Detrimental Artifact Properties Eligible"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="lAbyssal">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="lOrc">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="trk5CRnWkRet">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CRnWkLgt">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CRnWkBtC">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 1]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CRnWkStl">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 1]]></containerreq>
+      </bootstrap>
+    <eval phase="First"><![CDATA[doneif (field[gIsAttuned].value = 0)
+
+var iDam as number
+
+iDam = 1
+
+
+if (field[usrIndex].value > 0) then
+    iDam += 1
+  endif
+
+field[wDamExtra].text = " + " & iDam & "d8 piercing"]]></eval>
+    <eval phase="First" priority="1" index="2"><![CDATA[
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 1)
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 2)
+field[abValue2].value += 1]]></eval>
+    <eval phase="First" priority="2" index="4">perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax1].value += field[abValue].value
+focus.field[cfgMax2].value += field[abValue2].value
+focus.field[cfgMax3].value += field[abValue3].value
+
+field[Bonus].value = field[usrIndex].value + 1</eval>
+    <eval phase="Final" index="5"><![CDATA[
+if (tagcount[Custom.5CAPIB] >= field[abValue].value) then
+perform delete[Custom.5CAPEIB]
+endif
+if (tagcount[Custom.5CAPAB] >= field[abValue2].value) then
+perform delete[Custom.5CAPEAB]
+endif
+if (tagcount[Custom.5CAPID] >= field[abValue3].value) then
+perform delete[Custom.5CAPEID]
+endif]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wSpear"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CSlkSpt" name="Silken Spite" description="The blade of this rapier is made of spider silk. Its black gem pommel sports a ruby cut in the shape of a spider.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this rapier grants these benefits:\n• You can speak, read, and write Abyssal, Elvish, and Undercommon.\n• You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n• You gain darkvision out to a range of 60 feet. If you already have darkvision, attuning to the rapier increases its range by 60 feet.\n• You can use an action to cause poison to coat the blade. The poison remains for 1 minute or until an attack using this weapon hits a creature. That creature must make a DC 13 Constitution save, becoming poisoned for 1 hour on a failure. If the saving throw fails by 5 or more, the creature is also unconscious while poisoned by this weapon. The creature wakes up if it is damaged or if another creature uses its action to shake the creature awake.\n• While carrying the rapier, you can move up, down, and across vertical surfaces and upside down along ceilings, all while keeping your hands free. You have a climbing speed equal to your walking speed. Additionally, you can&apos;t be caught in webs of any sort and can move through any webs, treating them as difficult terrain.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the rapier grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +2.\n• The save DC for the weapon&apos;s poisons increases to 15.\n• While holding the weapon, you can use an action to cast one of these spells from it (save DC 15): {i}cloudkill{/i}, {i}darkness{/i}, {i}levitate{/i}, or {i}web{/i}. Once a particular spell has been cast using the weapon, that spell can&apos;t be cast from the weapon again until the next dawn.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the rapier grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +3.\n• The save DC for the weapon&apos;s poison and for spells cast from it increases to 17.\n• Your darkvision can now see through magical darkness.\n• While holding the weapon in dim light or darkness, you can use a bonus action to teleport up to 60 feet to an open space you can see that is also in dim light or darkness. This ability of the weapon then can&apos;t be used again until the next dawn.\n\n{b}Sentience{/b}. Silken Spite is a sentient chaotic evil weapon. It has Intelligence 13, Wisdom 15, and Charisma 15. It has hearing and darkvision with a range of 120 feet.\nThe weapon is able to communicate telepathically with whoever is wielding it. It can speak, read, and understand these languages: Abyssal, Common, Elvish, and Undercommon.\n\n{b}Personality{/b}. A yochlol named Sinnafex lives within this rapier. It whispers to its wielder, telling them to trust no one and to slaughter everyone for even the smallest offense." compset="MagicWep">
+    <comment>+1 Dorm, +2 Awake, +3 exalt
+
+60 feet of darkvision or +60 feet 
+
+Awakened - 1/day each save DC 15): cloudkill, darkness, levitate, or web. DC 17 at exalted</comment>
+    <fieldval field="gWeight" value="2"/>
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="miTypeDet" value="rapier"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAB" name="Major Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEID" name="Minor Detrimental Artifact Properties Eligible"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="Custom" tag="SlkSpt"/>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="lAbyssal">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="lElvish">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="lUndercomm">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Value" tag="60"/>
+      <assignval field="abValue2" value="60"/>
+      </bootstrap>
+    <bootstrap thing="ab5CSlkSpt">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="spWeb">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      <autotag group="Custom" tag="SlkSpt"/>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="DC 15"/>
+      </bootstrap>
+    <bootstrap thing="spCloudkil">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      <autotag group="Custom" tag="SlkSpt"/>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="DC 15"/>
+      </bootstrap>
+    <bootstrap thing="spDarkness">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      <autotag group="Custom" tag="SlkSpt"/>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="DC 15"/>
+      </bootstrap>
+    <bootstrap thing="spLevitate">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      <autotag group="Custom" tag="SlkSpt"/>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="DC 15"/>
+      </bootstrap>
+    <bootstrap thing="trk5CSlknSpt">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 1]]></containerreq>
+      </bootstrap>
+    <eval phase="Final" index="5"><![CDATA[
+if (tagcount[Custom.5CAPIB] >= field[abValue].value) then
+perform delete[Custom.5CAPEIB]
+endif
+if (tagcount[Custom.5CAPAB] >= field[abValue2].value) then
+perform delete[Custom.5CAPEAB]
+endif
+if (tagcount[Custom.5CAPID] >= field[abValue3].value) then
+perform delete[Custom.5CAPEID]
+endif]]></eval>
+    <eval phase="First" priority="1" index="2"><![CDATA[
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 1)
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 2)
+field[abValue2].value += 1]]></eval>
+    <eval phase="First" priority="2" index="4">perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax1].value += field[abValue].value
+focus.field[cfgMax2].value += field[abValue2].value
+focus.field[cfgMax3].value += field[abValue3].value
+
+field[Bonus].value = field[usrIndex].value + 1</eval>
+    <eval phase="PreLevel" priority="10000" index="6"><![CDATA[doneif (field[usrIndex].value < 2)
+
+foreach pick in hero from BaseSpell where "Custom.SlkSpt"
+    eachpick.field[sNameMod].text = "DC 17"
+    nexteach]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wRapier"></bootstrap>
+      </child>
+    </thing>
+  <thing id="io5CStrmgrd" name="Stormgirdle" description="This wide belt is made of thick leather and has clasps of dragon ivory.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this belt grants these benefits when worn:\n• You are resistant to lightning and thunder damage.\n• If your Strength is not already 21 or higher, it becomes 21.\n• You can use an action to become a Storm Avatar for 1 minute. See Storm Avatar below. Once you&apos;ve used this avatar ability, you cannot use it again until the following dawn.\n\n{b}Storm Avatar{/b}. While Storm Avatar is active, you have these benefits:\n• You are immune to lightning and thunder damage.\n• When you hit with a weapon attack that normally deals bludgeoning damage, it instead deals thunder damage.\n• When you hit with a weapon attack that normally deals piercing or slashing damage, it instead deals lightning damage.\n• You can use a bonus action to cause one creature of your choice that is visible to and within 30 feet of you to be struck by lightning. The target must make a DC 15 Dexterity save, taking 3d6 lightning damage on a failure or half that on a success.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the belt grants these benefits when worn:\n• If your Strength is not already 23 or higher, it becomes 23.\n• Your Storm Avatar&apos;s lightning strike damage increases to 4d6 lightning damage.\n• While transformed into a Storm Avatar, you gain are able hover and fly with a speed of 30 feet.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the belt grants these benefits when worn:\n• If your Strength is not already 25 or higher, it becomes 25.\n• Your Storm Avatar&apos;s lightning strike damage increases to 5d6 lightning damage.\n• You can cast {i}control weather{/i} from the girdle. This ability of the girdle then can&apos;t be used again until the next dawn." compset="Wondrous">
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="c5CStrmAvtr">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="spContWeat">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:usrIndex > 0 & fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+
+    perform hero.assign[DamageRes.dtLightnin]
+    perform hero.assign[DamageRes.dtThunder]
+
+var iSTR as number
+
+if (field[usrIndex].value = 0) then
+    iSTR = 21
+elseif (field[usrIndex].value = 1) then
+    iSTR = 23
+elseif (field[usrIndex].value = 2) then
+    iSTR = 25
+endif
+
+      hero.child[aSTR].field[Minimum].value = maximum(hero.child[aSTR].field[Minimum].value,iSTR)
+      hero.child[aSTR].field[aMaxValue].value = maximum(hero.child[aSTR].field[aMaxValue].value,iSTR)</eval>
+    </thing>
+  <thing id="i5CBldyNd" name="The Bloody End" description="This adamantine morningstar has foot-long spikes and a jagged blade on its pommel.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this morningstar grants these benefits:\n• You can speak, read, and write Infernal.\n• You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n• While holding the morningstar, you can use an action to cast one of these spells from it (save DC 13): {i}charm person{/i}, {i}dominate person{/i}, or {i}fear{/i}. Once a particular spell has been cast using the morningstar, that spell can&apos;t be cast from it again until the next dawn.\n• While holding this weapon, your Charisma (Intimidation) checks are made with advantage.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the morningstar grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +2.\n• The save DC for spells cast from the morningstar becomes 15.\n• When you reduce a creature to 0 hit points with an attack using The Bloody End, you can force each creature of your choice within 15 feet of you to make a DC 15 Wisdom save. On a failure, such a creature becomes frightened of you until the end of your next turn. This property can&apos;t be used again until the next dawn.\n• When a creature hits you with a melee attack, you can take your reaction to deal 1d6 psychic damage to that attacker.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the morningstar grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +3.\n• You can also cast {i}dominate monster{/i} from the morningstar, with the same DC and once per day limitations as the other spells.\n• The save DC for spells cast from the morningstar, and for creatures trying to avoid being frightened of it, increases to 17.\n• When you use your reaction to deal psychic damage to a creature that has hit you with a melee attack, the psychic damage is now 2d6.\n\n{b}Sentience{/b}. The Bloody End is a sentient lawful evil weapon. It has Intelligence 22, Wisdom 18, and Charisma 24. It has hearing and darkvision with a range of 120 feet.\nThe weapon is able to communicate telepathically with whoever is wielding it. It can speak, read, and understand these languages: Common and Infernal.\n\n{b}Personality{/b}. A pit fiend named Izeelzee lives within this morningstar. It desires for all to bow down to its wielder, even demanding as much if the wielder itself does not." compset="MagicWep">
+    <fieldval field="gWeight" value="4"/>
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="miTypeDet" value="morningstar"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAB" name="Major Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEID" name="Minor Detrimental Artifact Properties Eligible"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Custom" tag="BldEnd"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spFear">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Custom" tag="BldEnd"/>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="DC 13"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDomiPers">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Custom" tag="BldEnd"/>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="DC 13"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCharPers">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Custom" tag="BldEnd"/>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="DC 13"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spDomiMons">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex = 2]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="DC 17"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="lInfernal">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="trk5CFrBldEnd">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:usrIndex > 0]]></containerreq>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000"><![CDATA[if (field[usrIndex].value = 1) then
+  foreach pick in hero from BaseSpell where "Custom.BldEnd"
+    eachpick.field[sNameMod].text = "DC 15"
+    nexteach
+elseif (field[usrIndex].value = 2) then
+  foreach pick in hero from BaseSpell where "Custom.BldEnd"
+    eachpick.field[sNameMod].text = "DC 17"
+    nexteach
+endif]]></eval>
+    <eval phase="First" priority="1" index="2"><![CDATA[
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 1)
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 2)
+field[abValue2].value += 1]]></eval>
+    <eval phase="First" priority="2" index="4">perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax1].value += field[abValue].value
+focus.field[cfgMax2].value += field[abValue2].value
+focus.field[cfgMax3].value += field[abValue3].value
+
+field[Bonus].value = field[usrIndex].value + 1</eval>
+    <eval phase="Final" index="5"><![CDATA[
+if (tagcount[Custom.5CAPIB] >= field[abValue].value) then
+perform delete[Custom.5CAPEIB]
+endif
+if (tagcount[Custom.5CAPAB] >= field[abValue2].value) then
+perform delete[Custom.5CAPEAB]
+endif
+if (tagcount[Custom.5CAPID] >= field[abValue3].value) then
+perform delete[Custom.5CAPEID]
+endif
+
+doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+
+      #situational[hero.child[skIntim],"Advantage",field[thingname].text]]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wMornStar"></bootstrap>
+      </child>
+    </thing>
+  <thing id="io5CVrmshr" name="Verminshroud" description="The bloated corpses of magically preserved insects decorate the seams of this patchwork cloak, made from the pets of rats.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this cloak grants these benefits when worn:\n• You have advantage on Wisdom (Perception) checks that are based on smell.\n• You are immune to disease.\n• You gain darkvision out to a range of 60 feet. If you already have darkvision, wearing the cloak increases its range by 60 feet.\n• You can use an action to use this cloak to cast {i}polymorph{/i} on yourself, transforming into a rat or a giant rat. You retain your Intelligence, Wisdom, and Charisma scores, as well as the cloak&apos;s properties. This ability of the cloak then can&apos;t be used again until the next dawn.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the cloak grants these benefits when worn:\n• You are resistant to poison damage.\n• You can use an action to cast {i}insect plague{/i} (save DC 15) from the cloak, needing no material components. This property can&apos;t be used again until the next dawn.\n• When you cast {i}polymorph{/i} using this cloak, you are also now able to transform into a giant wasp.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the cloak grants these benefits when worn:\n• You gain a climbing speed equal to your walking speed.\n• Your teeth become sharpened, and you can use them as natural weapons to make unarmed strikes. If you hit with them, you deal piercing damage equal to 1d6 + your Strength modifier. You can use a bonus action to make this attack. When you bite a creature and deal damage to it, the creature must make a DC 17 Constitution save. On a failure, it is poisoned for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the condition for itself on a success.\n• When you cast {i}polymorph{/i} using this cloak, you are also now able to transform into a giant scorpion." compset="Wondrous">
+    <fieldval field="actName" value="Polymorphed"/>
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="DamageRes" tag="dtPoison"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="502"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      <autotag group="Value" tag="60"/>
+      <assignval field="abValue2" value="60"/>
+      </bootstrap>
+    <bootstrap thing="spPolymorp">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Verminshroud"/>
+      </bootstrap>
+    <bootstrap thing="ab5CVrmshrd">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CVrmnshrd">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0 & fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex > 1]]></containerreq>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="livename" value="Bite (bonus action)"/>
+      <assignval field="sbName" value="Bite (bonus action)"/>
+      <assignval field="wAttackEff" value="The target must succeed on a DC 17 Constitution save or become poisoned for 1 minute. It can repeat the save at the end of each of its turns, ending its poisoning on a success."/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDieCount" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spInsePlag">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="DC 15"/>
+      </bootstrap>
+    <eval phase="First" priority="10"><![CDATA[doneif (field[gIsAttuned].value = 0)
+
+field[abValue].value += 1
+
+if (field[usrIndex].value > 0) then
+   field[abValue].value += 1
+   endif
+
+if (field[usrIndex].value > 1) then
+   field[abValue].value += 1
+   endif]]></eval>
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[      doneif (field[gIsAttuned].value = 0)
+      doneif (field[gIsEquip].value = 0)
+
+      #situational[hero.child[skPercep],"Advantage on smell-based checks",field[thingname].text]
+
+      doneif (field[usrIndex].value < 1)
+
+      perform hero.pushtags[DamageRes.?]]]></eval>
+    </thing>
+  <thing id="i5CWlTln" name="Will of the Talon" description="Gems representing the five chromatic dragons and their queen adorn this war pick.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this war pick grants these benefits:\n• You can speak, read, and write Draconic and Infernal.\n• You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n• While holding the war pick, you can use a bonus action to force each creature of your choice that is within 30 feet of you and that is aware of you to make a DC 13 Wisdom save. On a failure, a creature becomes frightened of you for 1 minute. The creature can repeat the saving throw at the end of each of its turns, ending the effect for itself on a success. If a creature&apos;s saving throw is successful or the effect ends for it, the creature is immune to this property of the cloak for the next 24 hours. Once this property of the cloak has been used, it can&apos;t be used again until the next dawn.\n• While holding the war pick, you can use an action to make a breath weapon attack. Pick a damage type from the Will of the Talon Breath Weapons table. Each creature in the area of the exhalation must make a DC 13 save of the type specified in the table. A creature suffers 3d6 damage on a failure or half that on a success. Once you&apos;ve used a breath weapon of a particular damage type, you cannot use the war pick for that type again until the next dawn.\n\n{b}Will of the Talon Breath Weapons{/b}\n{font Courier New}{b}Dam. Type    Area                    Saving Throw{/b}{back FFFFFF}\nAcid         5 ft. by 30 ft. line    Dexterity{back 010101}\nCold         15 ft. cone             Constitution{back FFFFFF}\nFire         15 ft. cone             Dexterity{back 010101}\nLightning    5 ft. by 30 ft. line    Dexterity{back FFFFFF}\nPoison       15 ft. cone             Constitution{back 010101}{revert}\n\n{b}Awakened{/b}. Once it reaches its awakened state, the war pick grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +2.\n• The save DC for the war pick&apos;s Breath Weapon increases to 15, and that breath weapon now deals 4d6 damage on a failure, or half that on success.\n• The save DC for the war pick&apos;s Frightful Presence ability increases to 15.\n• While carrying the war pick, you are resistant to acid, cold, fire, lightning, and poison damage.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the war pick grants these benefits:\n• The weapon&apos;s attack and damage roll bonuses increase to +3.\n• The save DC for the war pick&apos;s Breath Weapon increases to 17, and that breath weapon now deals 5d6 damage on a failure, or half that on success.\n• The save DC for the war pick&apos;s Frightful Presence ability increases to 17.\n\n{b}Sentience{/b}. Will of the Talon is a sentient lawful evil weapon. It has Intelligence 14, Wisdom 15, and Charisma 19. It has hearing and darkvision with a range of 120 feet.\nThe weapon is able to communicate telepathically with whoever is wielding it. It can speak, read, and understand these languages: Common, Draconic, and Infernal.\n\n{b}Personality{/b}. A short-tempered bone devil named Ashtyrlon lives within this war pick. Its greed and desire for strong leadership see it push its wielder to take decisive actions, along with its portion of the spoils." compset="MagicWep">
+    <fieldval field="gWeight" value="2"/>
+    <fieldval field="Bonus" value="1"/>
+    <fieldval field="miTypeDet" value="war pick"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAB" name="Major Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEID" name="Minor Detrimental Artifact Properties Eligible"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="DamageRes" tag="dtAcid"/>
+    <tag group="DamageRes" tag="dtCold"/>
+    <tag group="DamageRes" tag="dtFire"/>
+    <tag group="DamageRes" tag="dtLightnin"/>
+    <tag group="DamageRes" tag="dtPoison"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="lInfernal">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="trk5CWlTlnAcd">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CWlTlnCld">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CWlTlnFir">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CWlTlnLgt">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CWlTlnPsn">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="lDraconic">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CWlTlnFrt">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="Final" index="6"><![CDATA[doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+doneif (field[usrIndex].value < 1)
+
+perform hero.pushtags[DamageRes.?]]]></eval>
+    <eval phase="First" priority="2" index="4">perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax1].value += field[abValue].value
+focus.field[cfgMax2].value += field[abValue2].value
+focus.field[cfgMax3].value += field[abValue3].value
+
+field[Bonus].value = field[usrIndex].value + 1</eval>
+    <eval phase="Final" index="5"><![CDATA[
+if (tagcount[Custom.5CAPIB] >= field[abValue].value) then
+perform delete[Custom.5CAPEIB]
+endif
+if (tagcount[Custom.5CAPAB] >= field[abValue2].value) then
+perform delete[Custom.5CAPEAB]
+endif
+if (tagcount[Custom.5CAPID] >= field[abValue3].value) then
+perform delete[Custom.5CAPEID]
+endif]]></eval>
+    <eval phase="First" priority="1" index="2"><![CDATA[
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 1)
+field[abValue].value += 1
+field[abValue3].value += 1
+
+doneif (field[usrIndex].value < 2)
+field[abValue2].value += 1]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wWarPick"></bootstrap>
+      </child>
+    </thing>
+  <thing id="io5CWrthPrs" name="Wreath of the Prism" description="Dozens of gems representing the five chromatic dragons and their queen adorn this golden loops of thorns.\n\n{b}Dormant{/b}. In it&apos;s dormant state, this wreath grants these benefits:\n• When you hit a beast, dragon, or monstrosity of CR 5 or lower with an attack, or when you grapple it, you can use this wreath to cast {i}dominate monster{/i} on that creature (save DC 13). On a successful save, the target is immune to the power of the wreath for 24 hours. On a failure, a shining, golden image of the wreath appears either as a collar around the target&apos;s neck or as a crown on its head (your choice) until it is no longer charmed by the spell. If you use the wreath to charm a second creature, the first spell immediately ends. When the spell ends, the target is aware it was charmed by you.\n• You gain darkvision out to a range of 60 feet. If you already have darkvision, wearing the wreath increases its range by 60 feet.\n\n{b}Awakened{/b}. Once it reaches its awakened state, the wreath grants these benefits:\n• Creatures of challenge rating 10 or lower now can be affected by the wreath.\n• The save DC of the wreath&apos;s spell becomes 15.\n\n{b}Exalted{/b}. Once it reaches its exalted state, the wreath grants these benefits:\n• Creatures of challenge rating 15 or lower now can be affected by the wreath.\n• The save DC of the wreath&apos;s spell becomes 17." compset="Wondrous">
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="SpInfo" tag="spDomiMons"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0]]></containerreq>
+      <autotag group="Value" tag="60"/>
+      <assignval field="abValue2" value="60"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CFrlGrdn" name="Feral Guardian" compset="Companion" stacking="never" uniqueness="unique">
+    <fieldval field="CompType" value="Feral Guardian Form"/>
+    <eval phase="PostAttr" priority="11000"><![CDATA[
+      var searchexpr as string
+
+      searchexpr = "thingid.rGiantOwl"
+
+      if (hero.childfound[i5CHdFrlG].field[abValue].value > 1) then
+        searchexpr &= " | thingid.r5CMMCavBe"
+        endif
+
+      if (hero.childfound[i5CHdFrlG].field[abValue].value > 2) then
+        searchexpr &= " | thingid.r5CGrdWlf"
+        endif
+
+      minion.childfound[Totals].field[tRaceExpr].text = searchexpr]]></eval>
+    <minion id="Familiar" isinherit="no">
+      <tag group="AllowRCust" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="CompIs" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="Hero" tag="NoAdvance" name="NoAdvance" abbrev="NoAdvance"/>
+      <tag group="Hero" tag="NoFamLvReq" name="No familiar Level requirements" abbrev="No familiar Level requirements"/>
+      <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+      <tag group="HideTab" tag="race" name="race" abbrev="race"/>
+      <bootstrap thing="ra5CHdFrlGrd"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="ra5CHdFrlGrd" name="Hide of the Feral Guardian" description="While you are transformed by an effect that replaces any of your game statistics with those of another creature, the Hide of the Feral Guardian grants you a bonus to your AC, melee attacks and damage rolls. This bonus starts at +1, and increases by 1 each when the item is Awakened and Exalted.\n\nWhile polymorphed using the hide, you retain your Intelligence, Wisdom, and Charisma scores." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[
+
+   ~ Set Wild Shape creature's Intelligence
+
+    hero.child[aINT].field[aFinalVal].value = master.child[aINT].field[aFinalVal].value
+    hero.child[aINT].field[aModBonus].value = master.child[aINT].field[aModBonus].value
+
+    ~ Set Wild Shape creature's Wisdom
+    hero.child[aWIS].field[aFinalVal].value = master.child[aWIS].field[aFinalVal].value
+    hero.child[aWIS].field[aModBonus].value = master.child[aWIS].field[aModBonus].value
+
+    ~ Set Wild Shape creature's Charisma
+    hero.child[aCHA].field[aFinalVal].value = master.child[aCHA].field[aFinalVal].value
+    hero.child[aCHA].field[aModBonus].value = master.child[aCHA].field[aModBonus].value
+
+    ~ Intelligence saves
+    hero.child[svINT].field[svAttr].value = master.child[aINT].field[aModBonus].value
+
+    ~ Wisdom saves
+    hero.child[svWIS].field[svAttr].value = master.child[aWIS].field[aModBonus].value
+
+    ~ Charisma saves
+    hero.child[svCHA].field[svAttr].value = master.child[aCHA].field[aModBonus].value]]></eval>
+    <eval phase="First" index="2">field[abValue].value = master.childfound[i5CHdFrlG].field[abValue].value</eval>
+    <eval phase="PreLevel" priority="5000" index="3"><![CDATA[hero.child[ArmorClass].field[Bonus].value += field[abValue].value
+
+foreach pick in hero from BaseWep where "wCategory.Melee"
+   eachpick.field[wAttack].value += field[abValue].value
+   eachpick.field[wDamBonus].value += field[abValue].value
+nexteach]]></eval>
+    </thing>
+  <thing id="p5CHideFeral" name="Druid: Wild Shape - Feral Guardian" description="Add this adjustment to your Wild Shape if you currently have the Hide of the Feral Guardian equipped on your character. It will pull the bonuses of that armor over." compset="InPlay">
+    <fieldval field="pSource" value="This minion is actually a wildshape."/>
+    <usesource source="5eEGtWCP"/>
+    <tag group="OthAdjCat" tag="Class"/>
+    <tag group="Custom" tag="5CWildshap" name="Wildshape" abbrev="Wildshape"/>
+    <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
+    <tag group="Helper" tag="NoIncr" name="NoIncr" abbrev="NoIncr"/>
+    <bootstrap thing="ra5CHdFrlGrd">
+      <containerreq phase="First" priority="50"><![CDATA[fieldval:pIsOn <> 0]]></containerreq>
+      </bootstrap>
+    <exprreq message="Must be a minion"><![CDATA[tagis[system_tag.minion] <> 0]]></exprreq>
+    <prereq message="Requires Wild Shape">
+      <validate><![CDATA[@valid = 0
+
+doneif (tagis[system_tag.minion] = 0)
+
+if (master.childlives[cDrdWilSha] <>0) then
+@valid = 1
+endif]]></validate>
+      </prereq>
+    </thing>
+  <thing id="trk5CDnthXry" name="Danoth&apos;s X-Ray Vision" description="While wearing an Awakened Danoth&apos;s Visor, you can use a bonus action to speak a command word and use the goggles to see into and through solid matter. This vision has a radius of 60 feet and lasts for 1 minute. Solid objects in that range appear transparent to you. The vision can penetrate 1 foot of stone, 1 inch of common metal, or up to 3 feet of wood or dirt. Thicker substances or a thin sheet of lead block the vision. Once used, this property can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CInflKey" name="Infiltrator&apos;s Key Create Opening (bonus)" description="You can use a bonus action to touch the Infiltrator&apos;s Key to a floor, wall, or ceiling that is no more than 5 feet thick. This causes a magical opening to appear in the surface. When you create the opening, you choose its length and width, up to 10 feet for each dimension. The opening lasts until the key goes through it to the other side, then disappears (if a creature is in the opening when the it closes, the creature is safely pushed to the nearest open space). The key then can&apos;t be used to create another opening until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="c5CStrmAvtr" name="Storm Avatar" description="While wearing the Stormgirdle, you can use an action to become a Storm Avatar for 1 minute. Once you have done so, you cannot do it again until the following dawn.\n\nWhile Storm Avatar is active, you have these benefits:\n• You are immune to lightning and thunder damage.\n• When you hit with a weapon attack that normally deals bludgeoning damage, it instead deals thunder damage.\n• When you hit with a weapon attack that normally deals piercing or slashing damage, it instead deals lightning damage.\n• You can use a bonus action to cause one creature of your choice that is visible to and within 30 feet of you to be struck by lightning. The target must make a DC 15 Dexterity save, taking 3d6 lightning damage on a failure or half that on a success." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Active (action, 1 minute)"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="DamageImm" tag="dtLightnin"/>
+    <tag group="DamageImm" tag="dtThunder"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="300"><![CDATA[fieldval:abValue > 0 & fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="30"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    <eval phase="First" priority="250" index="2">field[abValue].value = hero.childfound[io5CStrmgrd].field[usrIndex].value</eval>
+    <eval phase="Final" priority="10000">doneif (tagis[Helper.Disable] &lt;&gt; 0)
+
+field[abValue2].value = field[abValue].value + 3
+
+field[CustDesc].text = &quot;While wearing the Stormgirdle, you can use an action to become a Storm Avatar for 1 minute. Once you have done so, you cannot do it again until the following dawn.\n\nWhile Storm Avatar is active, you have these benefits:\n• You are immune to lightning and thunder damage.\n• When you hit with a weapon attack that normally deals bludgeoning damage, it instead deals thunder damage.\n• When you hit with a weapon attack that normally deals piercing or slashing damage, it instead deals lightning damage.\n• You can use a bonus action to cause one creature of your choice that is visible to and within 30 feet of you to be struck by lightning. The target must make a DC 15 Dexterity save, taking &quot; &amp; field[abValue2].value &amp; &quot;d6 lightning damage on a failure or half that on a success.&quot;
+
+if (field[abValue].value &gt; 0) then
+field[CustDesc].text &amp;= &quot;\n• While transformed into a Storm Avatar, you gain are able hover and fly with a speed of 30 feet.&quot;
+endif
+
+doneif (field[abilActive].value = 0)
+
+
+perform hero.pushtags[DamageImm.?]
+
+foreach pick in hero from BaseWep where &quot;DamageType.dtBludgeon&quot;
+     perform eachpick.tagreplace[DamageType.dtBludgeon,DamageType.dtThunder]
+   nexteach
+
+foreach pick in hero from BaseWep where &quot;DamageType.dtPiercing&quot;
+     perform eachpick.tagreplace[DamageType.dtPiercing,DamageType.dtLightnin]
+   nexteach
+
+foreach pick in hero from BaseWep where &quot;DamageType.dtSlashing&quot;
+     perform eachpick.tagreplace[DamageType.dtSlashing,DamageType.dtLightnin]
+   nexteach</eval>
+    </thing>
+  <thing id="c5CVrmnshrd" name="Verminshroud" compset="Companion" stacking="never" uniqueness="unique">
+    <fieldval field="CompType" value="Verminshroud Form"/>
+    <eval phase="PostAttr" priority="11000"><![CDATA[
+      var searchexpr as string
+
+      searchexpr = "thingid.rRat | thingid.rGiantRat"
+
+      if (hero.childfound[io5CVrmshr].field[abValue].value > 1) then
+        searchexpr &= " | thingid.rGiantWasp"
+        endif
+
+      if (hero.childfound[io5CVrmshr].field[abValue].value > 2) then
+        searchexpr &= " | thingid.rGiantScor"
+        endif
+
+      minion.childfound[Totals].field[tRaceExpr].text = searchexpr]]></eval>
+    <minion id="Familiar" isinherit="no">
+      <tag group="AllowRCust" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="CompIs" tag="Familiar" name="Familiar" abbrev="Familiar"/>
+      <tag group="Hero" tag="NoAdvance" name="NoAdvance" abbrev="NoAdvance"/>
+      <tag group="Hero" tag="NoFamLvReq" name="No familiar Level requirements" abbrev="No familiar Level requirements"/>
+      <tag group="HideTab" tag="background" name="background" abbrev="background"/>
+      <tag group="HideTab" tag="race" name="race" abbrev="race"/>
+      <bootstrap thing="ra5CVrmshrd"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="ra5CVrmshrd" name="Verminshroud" description="While polymorphed using the Verminshroud, you retain your Intelligence, Wisdom, and Charisma scores, as well as the other benefits of the cloak:\n\n{b}Dormant{/b}\n• You have advantage on Wisdom (Perception) checks that are based on smell.\n• You are immune to disease.\n• You gain darkvision out to a range of 60 feet. If you already have darkvision, wearing the cloak increases its range by 60 feet.\n\n{b}Awakened{/b}\n• You are resistant to poison damage.\n\n{b}Exalted{/b}\n• You gain a climbing speed equal to your walking speed.\n• Your teeth become sharpened, and you can use them as natural weapons to make unarmed strikes. If you hit with them, you deal piercing damage equal to 1d6 + your Strength modifier. You can use a bonus action to make this attack. When you bite a creature and deal damage to it, the creature must make a DC 17 Constitution save. On a failure, it is poisoned for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the condition for itself on a success." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="DamageRes" tag="dtPoison"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      <assignval field="abValue2" value="60"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <containerreq phase="First" priority="101"><![CDATA[fieldval:abValue > 2]]></containerreq>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="livename" value="Bite (bonus action)"/>
+      <assignval field="sbName" value="Bite (bonus action)"/>
+      <assignval field="wAttackEff" value="The target must succeed on a DC 17 Constitution save or become poisoned for 1 minute. It can repeat the save at the end of each of its turns, ending its poisoning on a success."/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDieCount" value="1"/>
+      </bootstrap>
+    <bootstrap thing="xClimb">
+      <containerreq phase="First" priority="101"><![CDATA[fieldval:abValue > 2]]></containerreq>
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <eval phase="First" index="3">field[abValue].value = master.childfound[io5CVrmshr].field[abValue].value</eval>
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[
+
+      #situational[hero.child[skPercep],"Advantage on smell-based checks",field[thingname].text]
+
+      doneif (field[abValue].value < 2)
+
+      perform hero.pushtags[DamageRes.?]]]></eval>
+    <eval phase="Final" priority="10001" index="4"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value < 3)
+
+
+hero.childfound[xClimb].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xClimb].field[abValue].value)]]></eval>
+    <eval phase="PostAttr" priority="10000"><![CDATA[
+
+   ~ Set Wild Shape creature's Intelligence
+
+    hero.child[aINT].field[aFinalVal].value = master.child[aINT].field[aFinalVal].value
+    hero.child[aINT].field[aModBonus].value = master.child[aINT].field[aModBonus].value
+
+    ~ Set Wild Shape creature's Wisdom
+    hero.child[aWIS].field[aFinalVal].value = master.child[aWIS].field[aFinalVal].value
+    hero.child[aWIS].field[aModBonus].value = master.child[aWIS].field[aModBonus].value
+
+    ~ Set Wild Shape creature's Charisma
+    hero.child[aCHA].field[aFinalVal].value = master.child[aCHA].field[aFinalVal].value
+    hero.child[aCHA].field[aModBonus].value = master.child[aCHA].field[aModBonus].value]]></eval>
+    </thing>
+  <thing id="ab5CVrmshrd" name="Verminshroud" description="You are immune to disease." compset="Ability">
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="xClimb">
+      <containerreq phase="First" priority="200">fieldval:abValue = 1</containerreq>
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value <> 1)
+
+
+hero.childfound[xClimb].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xClimb].field[abValue].value)]]></eval>
+    <eval phase="First"><![CDATA[field[abValue].value = 0
+
+doneif (hero.childfound[io5CVrmshr].field[usrIndex].value < 2)
+
+field[abValue].value = 1]]></eval>
+    </thing>
+  <thing id="ab5CGrvlBrw" name="Grovelthrash Burrowing" compset="Ability">
+    <bootstrap thing="xBurrow">
+      <containerreq phase="First" priority="200">fieldval:abValue = 1</containerreq>
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value <> 1)
+
+
+hero.childfound[xBurrow].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xBurrow].field[abValue].value)]]></eval>
+    <eval phase="First"><![CDATA[field[abValue].value = 0
+
+doneif (hero.childfound[i5CGrvlThr].field[usrIndex].value < 1)
+
+field[abValue].value = 1]]></eval>
+    </thing>
+  <thing id="trk5CGrvlPsy" name="Grovelthrash&apos;s Retaliation" description="• When a creature you can see within 30 feet of you hits you with an attack while you are wielding this weapon, you can take your reaction to deal psychic damage to that creature equal to the damage you took from their attack. This property of the warhammer then can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CLshDE" name="Lash of Shadows Dead Eyes" description="You can try to poison any creature that is hit by the Lash of Shadows. The creature must succeed on a DC 13 Constitution save (15 when the Lash is Awakened, 17 when Exalted) or be poisoned and blinded for 1 hour. The blinded condition ends if the poisoned condition ends." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <eval phase="First" priority="500"><![CDATA[var iDC as string
+
+if (hero.childfound[i5CLshShdw].field[usrIndex].value = 0) then
+    iDC = "13"
+elseif (hero.childfound[i5CLshShdw].field[usrIndex].value = 1) then
+    iDC = "15"
+elseif (hero.childfound[i5CLshShdw].field[usrIndex].value = 2) then
+    iDC = "17"
+endif
+
+field[livename].text = field[name].text & " (DC " & iDC & ")"]]></eval>
+    </thing>
+  <thing id="trk5CLshGB" name="Lash of Shadows Ghoul&apos;s Blood" description="You can try to poison any creature that is hit by the Lash of Shadows. The creature must succeed on a DC 15 Constitution save (17 when the Lash is Exalted) or be poisoned for 1 minute. While so poisoned, the creature is paralyzed. The creature can repeat the saving throw at the end of each of its turns, ending the effect for itself on a success." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <eval phase="First" priority="500"><![CDATA[var iDC as string
+
+if (hero.childfound[i5CLshShdw].field[usrIndex].value = 1) then
+    iDC = "15"
+elseif (hero.childfound[i5CLshShdw].field[usrIndex].value = 2) then
+    iDC = "17"
+endif
+
+field[livename].text = field[name].text & " (DC " & iDC & ")"]]></eval>
+    </thing>
+  <thing id="trk5CLshCT" name="Lash of Shadows Cockatrice Tears (DC 17)" description="You can try to poison any creature that is hit by the Lash of Shadows. The creature must succeed on a DC 17 Constitution save or begin to turn to stone and be restrained. It must repeat the saving throw at the end of its next turn. On a success, the effect ends. On a failure, the creature is petrified for 24 hours." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CRnWkRet" name="Ruin&apos;s Wake Retaliation" description="When you are hit by a melee attack, you can use your reaction to make a melee attack with Ruin&apos;s Wake with advantage against the attacker. You can&apos;t use this property again until you complete a short or long rest." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="trk5CRnWkLgt" name="Ruin&apos;s Wake Lightning Throw" description="When you throw Ruin&apos;s Wake and speak a command word, it transforms into a bolt of lightning. Each creature in a 5 foot wide by 120 foot line extending from you to the creature, excluding you, must make a DC 15 Dexterity save. A creature takes 8d6 lightning damage on a failure or half that on a success. The spear then returns to your hand. This property of the spear then can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CRnWkBtC" name="Ruin&apos;s Wake Battle Cry" description="While holding Ruin&apos;s Wake, you can use a bonus action to shout a battle cry. Each creature of your choice within 30 feet of you gains advantage on attack rolls until the  beginning of your next turn. This property of the spear then can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CRnWkStl" name="Ruin&apos;s Wake Steal Life" description="When you reduce a creature to 0 hit points with an attack using Ruin&apos;s Wake, you can regain hit points equal to the damage you dealt with the attack. This property of the spear then can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ab5CSlkSpt" name="Silken Spite Climbing" compset="Ability">
+    <bootstrap thing="xClimb">
+      <containerreq phase="First" priority="200">fieldval:abValue = 1</containerreq>
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value <> 1)
+
+
+hero.childfound[xClimb].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xClimb].field[abValue].value)]]></eval>
+    <eval phase="First">field[abValue].value = 0
+
+doneif (hero.childfound[i5CSlkSpt].field[gIsAttuned].value = 0)
+
+field[abValue].value = 1</eval>
+    </thing>
+  <thing id="trk5CSlknSpt" name="Silken Spite Shadow Step (bonus)" description="While holding Silken Spite and in dim light or darkness, you can use a bonus action to teleport up to 60 feet to an open space you can see that is also in dim light or darkness. This ability of the weapon then can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="trk5CFrBldEnd" name="Fear of the Bloody End" description="When you reduce a creature to 0 hit points with an attack using The Bloody End, you can force each creature of your choice within 15 feet of you to make a DC 15 Wisdom save (17 when it&apos;s Exalted). On a failure, such a creature becomes frightened of you until the end of your next turn. This property can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <eval phase="First"><![CDATA[var iDC as string
+
+if (hero.childfound[i5CBldyNd].field[usrIndex].value = 1) then
+    iDC = "15"
+elseif (hero.childfound[i5CBldyNd].field[usrIndex].value = 2) then
+    iDC = "17"
+endif
+
+field[livename].text = field[name].text & " (DC " & iDC & ")"]]></eval>
+    </thing>
+  <thing id="trk5CWlTlnAcd" name="Talon Acid Breath" description="While holding the Will of the Talon, you can use an action to make a breath weapon attack. Each creature in a 5 foot wide, 30 foot long  must make a DC 13 Dexterity save. It takes 3d6 acid damage on a failure or half that on a success. Once you have used this damage type&apos;s breath, you cannot do so again until the following dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <eval phase="First" priority="500"><![CDATA[var iDCn as number
+var iDC as number
+
+iDCn = 3
+iDC = 13
+
+if (hero.childfound[i5CWlTln].field[usrIndex].value > 0) then
+   iDCn += 1
+   iDC += 2
+  endif
+  
+if (hero.childfound[i5CWlTln].field[usrIndex].value > 1) then
+   iDCn += 1
+   iDC += 2
+  endif
+  
+field[CustDesc].text = "While holding the Will of the Talon, you can use an action to make a breath weapon attack. Each creature in a 5 foot wide, 30 foot long  must make a DC " & iDC & " Dexterity save. It takes " & iDCn & "d6 acid damage on a failure or half that on a success. Once you have used this damage type's breath, you cannot do so again until the following dawn."
+
+field[livename].text = field[name].text & " (DC " & iDC & " DEX, " & iDCn & "d6, 30ft line)"]]></eval>
+    </thing>
+  <thing id="trk5CWlTlnCld" name="Talon Cold Breath" description="While holding the Will of the Talon, you can use an action to make a breath weapon attack. Each creature in a 15 foot cone must make a DC 13 Constitution save. It takes 3d6 cold damage on a failure or half that on a success. Once you have used this damage type&apos;s breath, you cannot do so again until the following dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <eval phase="First" priority="500"><![CDATA[var iDCn as number
+var iDC as number
+
+iDCn = 3
+iDC = 13
+
+if (hero.childfound[i5CWlTln].field[usrIndex].value > 0) then
+   iDCn += 1
+   iDC += 2
+  endif
+  
+if (hero.childfound[i5CWlTln].field[usrIndex].value > 1) then
+   iDCn += 1
+   iDC += 2
+  endif
+  
+field[CustDesc].text = "While holding the Will of the Talon, you can use an action to make a breath weapon attack. Each creature in a 15 foot cone must make a DC " & iDC & " Constitution save. It takes " & iDCn & "d6 cold damage on a failure or half that on a success. Once you have used this damage type's breath, you cannot do so again until the following dawn."
+
+field[livename].text = field[name].text & " (DC " & iDC & " CON, " & iDCn & "d6, 15ft cone)"]]></eval>
+    </thing>
+  <thing id="trk5CWlTlnFir" name="Talon Fire Breath" description="While holding the Will of the Talon, you can use an action to make a breath weapon attack. Each creature in a 15 foot cone must make a DC 13 Dexterity save. It takes 3d6 fire damage on a failure or half that on a success. Once you have used this damage type&apos;s breath, you cannot do so again until the following dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <eval phase="First" priority="500"><![CDATA[var iDCn as number
+var iDC as number
+
+iDCn = 3
+iDC = 13
+
+if (hero.childfound[i5CWlTln].field[usrIndex].value > 0) then
+   iDCn += 1
+   iDC += 2
+  endif
+  
+if (hero.childfound[i5CWlTln].field[usrIndex].value > 1) then
+   iDCn += 1
+   iDC += 2
+  endif
+  
+field[CustDesc].text = "While holding the Will of the Talon, you can use an action to make a breath weapon attack. Each creature in a 15 foot cone must make a DC " & iDC & " Dexterity save. It takes " & iDCn & "d6 fire damage on a failure or half that on a success. Once you have used this damage type's breath, you cannot do so again until the following dawn."
+
+field[livename].text = field[name].text & " (DC " & iDC & " DEX, " & iDCn & "d6, 15ft cone)"]]></eval>
+    </thing>
+  <thing id="trk5CWlTlnLgt" name="Talon Lightning Breath" description="While holding the Will of the Talon, you can use an action to make a breath weapon attack. Each creature in a 5 foot wide, 30 foot long  must make a DC 13 Dexterity save. It takes 3d6 lightning damage on a failure or half that on a success. Once you have used this damage type&apos;s breath, you cannot do so again until the following dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <eval phase="First" priority="500"><![CDATA[var iDCn as number
+var iDC as number
+
+iDCn = 3
+iDC = 13
+
+if (hero.childfound[i5CWlTln].field[usrIndex].value > 0) then
+   iDCn += 1
+   iDC += 2
+  endif
+  
+if (hero.childfound[i5CWlTln].field[usrIndex].value > 1) then
+   iDCn += 1
+   iDC += 2
+  endif
+  
+field[CustDesc].text = "While holding the Will of the Talon, you can use an action to make a breath weapon attack. Each creature in a 5 foot wide, 30 foot long  must make a DC " & iDC & " Dexterity save. It takes " & iDCn & "d6 lightning damage on a failure or half that on a success. Once you have used this damage type's breath, you cannot do so again until the following dawn."
+
+field[livename].text = field[name].text & " (DC " & iDC & " DEX, " & iDCn & "d6, 30ft line)"]]></eval>
+    </thing>
+  <thing id="trk5CWlTlnPsn" name="Talon Poison Breath" description="While holding the Will of the Talon, you can use an action to make a breath weapon attack. Each creature in a 15 foot cone must make a DC 13 Constitution save. It takes 3d6 poison damage on a failure or half that on a success. Once you have used this damage type&apos;s breath, you cannot do so again until the following dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <eval phase="First" priority="500"><![CDATA[var iDCn as number
+var iDC as number
+
+iDCn = 3
+iDC = 13
+
+if (hero.childfound[i5CWlTln].field[usrIndex].value > 0) then
+   iDCn += 1
+   iDC += 2
+  endif
+  
+if (hero.childfound[i5CWlTln].field[usrIndex].value > 1) then
+   iDCn += 1
+   iDC += 2
+  endif
+  
+field[CustDesc].text = "While holding the Will of the Talon, you can use an action to make a breath weapon attack. Each creature in a 15 foot cone must make a DC " & iDC & " Constitution save. It takes " & iDCn & "d6 poison damage on a failure or half that on a success. Once you have used this damage type's breath, you cannot do so again until the following dawn."
+
+field[livename].text = field[name].text & " (DC " & iDC & " CON, " & iDCn & "d6, 15ft cone)"]]></eval>
+    </thing>
+  <thing id="trk5CWlTlnFrt" name="Talon Frightful Presence" description="While holding the Will of the Talon, you can use a bonus action to force each creature of your choice that is within 30 feet of you and that is aware of you to make a DC 13 Wisdom save. On a failure, a creature becomes frightened of you for 1 minute. The creature can repeat the saving throw at the end of each of its turns, ending the effect for itself on a success. If a creature&apos;s saving throw is successful or the effect ends for it, the creature is immune to this property of the cloak for the next 24 hours. Once this property of the cloak has been used, it can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <eval phase="First" priority="500"><![CDATA[var iDCn as number
+var iDC as number
+
+iDC = 13
+
+if (hero.childfound[i5CWlTln].field[usrIndex].value > 0) then
+   iDC += 2
+  endif
+  
+if (hero.childfound[i5CWlTln].field[usrIndex].value > 1) then
+   iDC += 2
+  endif
+  
+field[CustDesc].text = "While holding the Will of the Talon, you can use a bonus action to force each creature of your choice that is within 30 feet of you and that is aware of you to make a DC " & iDC & " Wisdom save. On a failure, a creature becomes frightened of you for 1 minute. The creature can repeat the saving throw at the end of each of its turns, ending the effect for itself on a success. If a creature's saving throw is successful or the effect ends for it, the creature is immune to this property of the cloak for the next 24 hours. Once this property of the cloak has been used, it can't be used again until the next dawn."
+
+field[livename].text = field[name].text & " (bonus, DC " & iDC & " WIS)"]]></eval>
+    </thing>
+  </document>
