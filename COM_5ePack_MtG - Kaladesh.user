@@ -177,4 +177,142 @@
       perform hero.delete[DamageRes.dtFire]
       perform hero.assign[DamageImm.dtFire]]]></eval>
     </thing>
+  <thing id="r5CKldDwarf" name="Dwarf of Kaladesh" compset="Race">
+    <fieldval field="rSpeed" value="25"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="cToolMax" value="2"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="AllowTool1" tag="Artisan"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raDwfResil"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="raDwfTough"></bootstrap>
+    <bootstrap thing="lDwarvish"></bootstrap>
+    <bootstrap thing="ra5CDwArtExp"></bootstrap>
+    <eval phase="PreLevel" priority="10000">perform hero.assign[Hero.Sturdy]</eval>
+    </thing>
+  <thing id="ra5CDwArtExp" name="Artisan&apos;s Expertise" description="You are proficienct with two artisan&apos;s tools of your choice. Your proficiency bonus is doubled for any ability check you make that uses either of those tool proficiencies. \n\nAdditionally, whenever you make an Intelligence (History) check related to the origin of any architectural construction, you are considered proficient in the History skill and you add double your proficiency bonus to the check, instead of your normal proficiency bonus." compset="RaceSpec" summary="Double tool proficiencies, and proficient in architecture.">
+    <comment>postlev 10000
+
+ProfTooDbl
+
+portal.RacTlPrim
+
+component.Tool</comment>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="PostLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from Tool where "portal.RacTlPrim"
+    perform eachpick.pulltags[ProfTooDbl.?]
+    nexteach
+
+perform hero.pushtags[ProfTooDbl.?]]]></eval>
+    </thing>
+  <thing id="r5CKldVedlk" name="Vedalken of Kaladesh" compset="Race">
+    <fieldval field="rINT" value="2"/>
+    <fieldval field="rWIS" value="1"/>
+    <usesource source="5CPSKCP"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="ra5CVedCnnng"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="l5CLandVeld"></bootstrap>
+    <bootstrap thing="ra5CAethLore"></bootstrap>
+    </thing>
+  <thing id="ra5CVedCnnng" name="Vedalken Cunning" description="You have advantage on all Intelligence, Wisdom, and Charisma saving throws against magic." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="10000"><![CDATA[
+      ~if we've been replaced, get out now
+      doneif (tagis[Helper.Disable] <> 0)
+      #situational[hero.child[svINT],"Advantage vs. magic",field[thingname].text]
+      #situational[hero.child[svWIS],"Advantage vs. magic",field[thingname].text]
+      #situational[hero.child[svCHA],"Advantage vs. magic",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CAethLore" name="Aether Lore" description="Whenever you make an Intelligence (History) check related to magic items or aether-powered technology, you can add twice your proficiency bonus, rather than any applicable proficiency bonus." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="r5CKldshElf" name="Elf of Kaladesh" compset="Race">
+    <fieldval field="rDEX" value="2"/>
+    <fieldval field="rWIS" value="1"/>
+    <usesource source="5CPSKCP"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="raFeyAnces"></bootstrap>
+    <bootstrap thing="raElfTranc"></bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="wUnarmed"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raKeenSens"></bootstrap>
+    <bootstrap thing="raHiElfWep"></bootstrap>
+    </thing>
+  <thing id="sr5CKElfBnT" name="Bishtahar/Tirahar Elf" compset="SubRace" uniqueness="unique">
+    <fieldval field="rSpeed" value="35"/>
+    <fieldval field="rHeightMin" value="54"/>
+    <fieldval field="rWeightMin" value="90"/>
+    <usesource source="5CPSKCP"/>
+    <tag group="SubRace" tag="r5CKldshElf"/>
+    <tag group="ClVaryName" tag="Replace"/>
+    <bootstrap thing="ra5CMskWld"></bootstrap>
+    <bootstrap thing="ra5CFltoF"></bootstrap>
+    </thing>
+  <thing id="sr5CKElfVhd" name="Vahadar Elf" description="{b}Cantrip.{/b} You know one cantrip of your choice from the Druid spell list, and use Wisdom as its spellcasting ability.\n{b}Extra Language.{/b} You learn one extra language." compset="SubRace" uniqueness="unique">
+    <fieldval field="rLanguages" value="1"/>
+    <fieldval field="rSpExLst" value="sClass.cHelpDrd &amp; sLevel.0"/>
+    <fieldval field="rSpExLstNm" value="Druid Cantrips"/>
+    <fieldval field="rSpExAllw" value="1"/>
+    <usesource source="5CPSKCP"/>
+    <tag group="SplAttr" tag="aWIS" name="Intelligence" abbrev="Intelligence"/>
+    <tag group="SubRace" tag="r5CKldshElf"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    </thing>
+  <thing id="r5CAethbrn" name="Aetherborn" compset="Race">
+    <fieldval field="rCHA" value="2"/>
+    <fieldval field="rLanguages" value="2"/>
+    <usesource source="5CPSKCP"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <tag group="ProfSkill" tag="skIntim"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CBrnAeth"></bootstrap>
+    <bootstrap thing="raHOMenace"></bootstrap>
+    <bootstrap thing="raHElfAbil"></bootstrap>
+    </thing>
+  <thing id="ra5CBrnAeth" name="Born of Aether" description="You are resistant to necrotic damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="ra5CGftAeth" name="Gift of the Aetherborn" description="Gifted aetherborn have the ability to drain the life essence of other beings by touching them.\n\nAt the DM&apos;s option, an aetherborn character can discover a method to achieve this dark &quot;gift.&quot;\n\nAn aetherborn with this gift gains the Drain Life ability: a natural attack that deals 1d6 necrotic damage and heals the aetherborn for a number of hit points equal to the damage dealt. However, if the aetherborn goes for 7 days without dealing this damage, their hit point maximum is reduced by 1d6 each week. This reduction can&apos;t be removed until the aetherborn has used their Drain Life ability and completed a long rest." compset="VarRaceTrt" uniqueness="unique">
+    <usesource source="5CPSKCP"/>
+    <tag group="AllowRCust" tag="r5CAethbrn"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtNecrotic"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wFixDamage" value="1d6 necrotic"/>
+      <assignval field="wAttackEff" value="The aetherborn is healed for a number of hit points equal to the damage dealt."/>
+      <assignval field="livename" value="Drain Life"/>
+      <assignval field="sbName" value="Drain Life"/>
+      </bootstrap>
+    </thing>
   </document>
