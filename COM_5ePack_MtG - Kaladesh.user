@@ -315,4 +315,118 @@ perform hero.pushtags[ProfTooDbl.?]]]></eval>
       <assignval field="sbName" value="Drain Life"/>
       </bootstrap>
     </thing>
+  <thing id="g5CQcksmth" name="Quicksmith&apos;s tools" compset="Tools">
+    <comment><![CDATA[cost and weight are not in the supplement; they're added here for balance and are based on Tinker's Tools, the closest equivalent in official 5e]]></comment>
+    <fieldval field="gCost" value="50"/>
+    <fieldval field="gWeight" value="10"/>
+    <usesource source="5CPSKCP"/>
+    <tag group="GearType" tag="gtTools" name="Tools" abbrev="Tools"/>
+    <tag group="ToolCat" tag="Artisan" name="Artisan&apos;s tools" abbrev="Artisan&apos;s tools"/>
+    </thing>
+  <thing id="cfg5CQksmth" name="Quicksmithing" compset="Configure" uniqueness="unique">
+    <comment>Helper.Allow1Abil
+
+Helper.Has1Spell
+
+Helper.Allow1Spl</comment>
+    <fieldval field="cfgMax1" value="3"/>
+    <fieldval field="cfgSpell1" value="Spell Schematics"/>
+    <fieldval field="cfgAllwSp1" value="component.BaseSpell &amp; Helper.RitualSpel &amp; sLevel.1"/>
+    <fieldval field="cfgMaxSp1" value="2"/>
+    <fieldval field="cfgObject1" value="Clockwork Devices"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="Helper" tag="Allow1Abil"/>
+    <eval phase="PostAttr"><![CDATA[doneif (field[cfgSpenSp1].value < 2)
+
+var iLev as string
+
+iLev = "& (sLevel.1"
+
+if (hero.tagcount[Classes.?] > 2) then
+    iLev &= " | sLevel.2"
+    endif
+if (hero.tagcount[Classes.?] > 4) then
+    iLev &= " | sLevel.3"
+    endif
+if (hero.tagcount[Classes.?] > 6) then
+    iLev &= " | sLevel.4"
+    endif
+if (hero.tagcount[Classes.?] > 8) then
+    iLev &= " | sLevel.5"
+    endif
+if (hero.tagcount[Classes.?] > 10) then
+    iLev &= " | sLevel.6"
+    endif
+if (hero.tagcount[Classes.?] > 12) then
+    iLev &= " | sLevel.7"
+    endif
+if (hero.tagcount[Classes.?] > 14) then
+    iLev &= " | sLevel.8"
+    endif
+if (hero.tagcount[Classes.?] > 16) then
+    iLev &= " | sLevel.9"
+    endif
+
+iLev &= ")"
+
+perform assign[Helper.Allow1Spl]
+field[cfgAllwSp1].text = "component.BaseSpell & Helper.RitualSpel" & iLev]]></eval>
+    <eval phase="Final" index="3"><![CDATA[doneif (field[cfgSpent1].value < 3)
+
+perform delete[Helper.Allow1Abil]]]></eval>
+    <eval phase="First" index="2"><![CDATA[foreach pick in hero from BaseSpell where "hasagent.cfg5CQksmth"
+    eachpick.field[sNameMod].text = "Schematic/Ritual Only"
+    perform eachpick.assign[Helper.Free]
+    perform eachpick.assign[Helper.SpellLike]
+    nexteach]]></eval>
+    </thing>
+  <thing id="f5CQcksmth" name="Quicksmithing" description="When you take this feat, you master two magical effects, each of which is effectively a recreation of an existing 1st-level spell that has the ritual tag. These spells can come from any class list, but use Intelligence as their spellcasting ability.\n\nIf you come across a quicksmithing schematic or study with another quicksmith, you may be able to add another spell to the effects you have mastered. The spell’s level can be no greater than half your level (rounded up), and it must have the ritual tag. The process of mastering the spell requires 2 hours per level of the spell, and costs 50 gp per level. The cost represents aether you use to experiment with the spell effect.\n\nAdditionally, you are proficienct with artisan’s tools (quicksmith’s tools). \n\nYou can create Tiny clockwork devices. Each device is contructed with your quicksmith&apos;s tools, costing 1 hour of time and 10 gp worth of materials. It has AC 5 and 1 HP. Unless you spend 1 hour of maintenance on it, it ceases to function after 24 hours. You can use an action to dismantle it, reclaiming the materials used in its creation. You can have no more than three such devices active at a time.\n\nWhen you create a device, choose between a clockwork toy, a fire starter, or a music box.\n\n{b}Note:{/b} Use the Quicksmithing tab to select your spells and devices. Additional details on each device can be found there." compset="Feat" uniqueness="useronce">
+    <usesource source="5CPSKCP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <bootstrap thing="g5CQcksmth"></bootstrap>
+    <bootstrap thing="cfg5CQksmth"></bootstrap>
+    <eval phase="PostLevel" priority="10000"><![CDATA[
+    ~ If we're disabled, do nothing & 
+    doneif (tagis[Helper.Disable] = 1)
+
+    perform hero.assign[ProfTool.g5CQcksmth]
+    perform hero.child[g5CQcksmth].assign[Helper.TrainTool]
+    perform hero.child[g5CQcksmth].assign[Hide.Tool]
+    perform hero.child[g5CQcksmth].assign[Proficienc.Tool]]]></eval>
+    <exprreq message="Intelligence 13 required."><![CDATA[#attrvalue[aINT] >= 13]]></exprreq>
+    </thing>
+  <thing id="c5CQSmClck" name="Clockwork Toy" description="This device is a clockwork toy in the shape on an animal, monster, or person, like a toad, rat, bird, dragon, or soldier. When placed on the ground, the toy moves 5 feet across the ground on each of your turns in a random direction. It makes noises that mimic the creature it represents.\n\nThis Tiny clockwork device is contructed with your quicksmith&apos;s tools, costing 1 hour of time and 10 gp worth of materials. It has AC 5 and 1 HP. Unless you spend 1 hour of maintenance on it, it ceases to function after 24 hours. You can use an action to dismantle it, reclaiming the materials used in its creation." compset="CustomSpec" summary="A small clockwork toy.">
+    <tag group="AllowRCust" tag="cfg5CQksmth"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Primary"/>
+    </thing>
+  <thing id="c5CQSmFrstrt" name="Fire Starter" description="This device creates a miniature flame, which can be used to light a candle, torch, or campfire. Doing so requires your action.\n\nThis Tiny clockwork device is contructed with your quicksmith&apos;s tools, costing 1 hour of time and 10 gp worth of materials. It has AC 5 and 1 HP. Unless you spend 1 hour of maintenance on it, it ceases to function after 24 hours. You can use an action to dismantle it, reclaiming the materials used in its creation." compset="CustomSpec" summary="A miniature firestarter.">
+    <tag group="AllowRCust" tag="cfg5CQksmth"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Primary"/>
+    </thing>
+  <thing id="c5CQSmMscBox" name="Music Box" description="When opened, this music box plays a single song at a moderate volume. The box continues to play until closed or until the song ends.\n\nThis Tiny clockwork device is contructed with your quicksmith&apos;s tools, costing 1 hour of time and 10 gp worth of materials. It has AC 5 and 1 HP. Unless you spend 1 hour of maintenance on it, it ceases to function after 24 hours. You can use an action to dismantle it, reclaiming the materials used in its creation." compset="CustomSpec" summary="A simple, single-tune music box.">
+    <tag group="AllowRCust" tag="cfg5CQksmth"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Primary"/>
+    </thing>
+  <thing id="f5CSrvoCrf" name="Servo Crafting" description="You can create Tiny, personal assistant constructs known as servos. You can cast {i}find familiar{/i} as a ritual, creating a servo instead of an animal. A servo familiar otherwise functions in the same manner as a normal familiar, per the spell.\n\nYou can communicate telepathically with your servo familiar and perceive through its senses so long as you&apos;re on the same plane of existence. You can speak through your servo in your own voice. In addition, when you take the Attack action, you can forgo one of your own attacks to allow your servo familiar to make one attack of its own." compset="Feat" uniqueness="useronce">
+    <usesource source="5CPSKCP"/>
+    <tag group="fShowWhat" tag="Classes" name="Classes" abbrev="Classes"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <bootstrap thing="sp5CFndFam">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="sNameMod" value="Servo, ritual only"/>
+      </bootstrap>
+    <eval phase="First" index="2"><![CDATA[      doneif (tagis[Helper.Disable] <> 0)
+      doneif (field[usrChosen1].ischosen = 0)
+      
+      perform field[usrChosen1].chosen.assign[CompAvail.Familiar]]]></eval>
+    <eval phase="PostLevel" priority="10000">
+     perform hero.childfound[cFamiliar].assign[Race.r5CServo]</eval>
+    <exprreq message="Intelligence 13 required."><![CDATA[#attrvalue[aINT] >= 13]]></exprreq>
+    </thing>
   </document>
