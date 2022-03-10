@@ -988,4 +988,150 @@
       <bootstrap thing="r5CIxHmrskl"></bootstrap>
       </minion>
     </thing>
+  <thing id="sr5CPSMrfGrn" name="Green Merfolk" description="A merfolk from Ixalan, you are a part of the green subrace.\n\n{b}Cantrip.{/b} You know one cantrip of your choice from the Druid spell list, and use Wisdom as its spellcasting ability." compset="SubRace" uniqueness="unique">
+    <fieldval field="rSpExLst" value="sClass.cHelpDrd &amp; sLevel.0"/>
+    <fieldval field="rSpExLstNm" value="Druid Cantrips"/>
+    <fieldval field="rSpExAllw" value="1"/>
+    <fieldval field="rWIS" value="2"/>
+    <usesource source="5CPSIxCP"/>
+    <tag group="ClVaryName" tag="Replace"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="SubRace" tag="r5CMerfol" name="Merfolk" abbrev="Merfolk"/>
+    <tag group="SplAttr" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
+    <bootstrap thing="ra5CMskWld"></bootstrap>
+    </thing>
+  <thing id="sr5CPSMrfBlu" name="Blue Merfolk" description="A merfolk from Ixalan, you are a part of the blue subrace.\n\n{b}Cantrip.{/b} You know one cantrip of your choice from the Wizard spell list, and use Intelligence as its spellcasting ability." compset="SubRace" uniqueness="unique">
+    <fieldval field="rSpExLst" value="sClass.cHelpWiz &amp; sLevel.0"/>
+    <fieldval field="rSpExLstNm" value="Wizard Cantrips"/>
+    <fieldval field="rSpExAllw" value="1"/>
+    <fieldval field="rINT" value="2"/>
+    <usesource source="5CPSIxCP"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="SubRace" tag="r5CMerfol" name="Merfolk" abbrev="Merfolk"/>
+    <tag group="SplAttr" tag="aWIS" name="Wisdom" abbrev="Wisdom"/>
+    <tag group="ClVaryName" tag="Replace"/>
+    <bootstrap thing="ra5CMrfLrWtrs"></bootstrap>
+    </thing>
+  <thing id="ra5CMrfLrWtrs" name="Lore of the Waters" description="You are proficienct in the History and Nature skills." compset="RaceSpec">
+    <eval phase="First" priority="1000">~ Mark our chosen skill as proficient
+      perform hero.child[skHistory].assign[Helper.Proficient]
+      perform hero.child[skNature].assign[Helper.Proficient]</eval>
+    </thing>
+  <thing id="sr5CPSGobIx" name="Goblin of Ixalan" description="You hail from the plane of Ixalan." compset="SubRace" uniqueness="unique">
+    <fieldval field="rDEX" value="2"/>
+    <usesource source="5CPSIxCP"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="SubRace" tag="r5CGoblinZ" name="Goblin (Plane Shift)" abbrev="Goblin (Plane Shift)"/>
+    <tag group="RaceSize" tag="Small11" name="Small" abbrev="Small"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <bootstrap thing="ra5CAgClmb"></bootstrap>
+    </thing>
+  <thing id="ra5CAgClmb" name="Agile Climber" description="You have a climbing speed of 25 feet, usable only if you&apos;re not wearing medium or heavy armor." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="ClimbRemove"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="0"/>
+      <autotag group="Custom" tag="ClimbRemove"/>
+      </bootstrap>
+    <eval phase="First" priority="10001"><![CDATA[var iIsOn as number
+
+if (hero.tagis[Hero.MedArmor] <> 0) then
+   iIsOn += 1
+   endif
+if (hero.tagis[Hero.HeavyArmor] <> 0) then
+   iIsOn += 1
+   endif
+
+if (iIsOn = 0) then
+  foreach pick in hero where "thingid.xClimb & Custom.ClimbRemove"
+     perform eachpick.tagreplace[Value.0,Value.25]
+     nexteach
+  field[abValue].value += 1
+  endif]]></eval>
+    </thing>
+  <thing id="ra5CSrnFly" name="Flight" description="You have a climbing speed of 30 feet, usable only if you&apos;re not wearing medium or heavy armor." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="Custom" tag="FlyRemove"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="0"/>
+      <autotag group="Custom" tag="FlyRemove"/>
+      </bootstrap>
+    <eval phase="First" priority="10001"><![CDATA[var iIsOn as number
+
+if (hero.tagis[Hero.MedArmor] <> 0) then
+   iIsOn += 1
+   endif
+if (hero.tagis[Hero.HeavyArmor] <> 0) then
+   iIsOn += 1
+   endif
+
+if (iIsOn = 0) then
+  foreach pick in hero where "thingid.xFly & Custom.FlyRemove"
+     perform eachpick.tagreplace[Value.0,Value.30]
+     nexteach
+  field[abValue].value += 1
+  endif]]></eval>
+    </thing>
+  <thing id="r5CIxSiren" name="Siren" compset="Race">
+    <fieldval field="rCHA" value="2"/>
+    <fieldval field="rSpeed" value="25"/>
+    <tag group="RaceType" tag="Normal"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="wUnarmed">
+      <autotag group="AttackTarg" tag="1Target"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSrnFly"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="l5CSirenIx"></bootstrap>
+    <bootstrap thing="sp5CFriend">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="Free"/>
+      </bootstrap>
+    <bootstrap thing="ra5CIxSrnSng"></bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    </thing>
+  <thing id="l5CSirenIx" name="Siren" compset="Language" uniqueness="useronce">
+    <usesource source="5CPSIxCP"/>
+    <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
+    <tag group="LangCat" tag="Monster" name="Monster Languages" abbrev="Monster"/>
+    </thing>
+  <thing id="ra5CIxSrnSng" name="Siren&apos;s Song" description="You know the {i}friends{/i} cantrip, and can cast it without needing material components." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="sr5CIxlVamp" name="Ixalan Vampire" compset="SubRace" uniqueness="unique">
+    <fieldval field="rINT" value="1"/>
+    <usesource source="5CPSIxCP"/>
+    <tag group="RaceType" tag="Normal" name="Normal (Player) Race" abbrev="Normal (Player) Race"/>
+    <tag group="SubRace" tag="r5CVampir" name="Vampire (Plane Shift)" abbrev="Vampire (Plane Shift)"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <tag group="RaceSize" tag="Medium0" name="Medium" abbrev="Medium"/>
+    <bootstrap thing="ra5CFstoBld"></bootstrap>
+    </thing>
+  <thing id="ra5CFstoBld" name="Feast of Blood" description="For 1 minute after draining blood using your Bloodthirst ability, your speed increases by 10 feet and you gain advantage on Strength and Dexterity checks and saves." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    </thing>
+  <thing id="f5CIxVmpEx" name="Vampiric Exultation" description="You can use an action to transform the lower half of your body into an inky black mist, allowing you to float through the air. While transformed, you have a flying speed of 30 feet.\n\nYou can maintain this transformation for up to 10 minutes. Once you have used this ability, you cannot do so again until you complete a short or long rest." compset="Feat" uniqueness="useronce">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="actName" value="Misty form (action, 10 minutes)"/>
+    <usesource source="5CPSIxCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="ShortRest"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="User" tag="Activation"/>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <pickreq thing="sr5CIxlVamp"/>
+    </thing>
   </document>
