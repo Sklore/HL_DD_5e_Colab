@@ -828,7 +828,7 @@ if (field[pChosen].chosen.field[aMaxValue].value > 30) then
   field[pChosen].chosen.field[aMaxValue].value = 30
 endif]]></eval>
     </thing>
-  <thing id="p5CChallen" name="Challenge" description="Select this adjustment to adjust your challenge value." compset="InPlay" replaces="pChallenge">
+  <thing id="p5CChallen" name="Challenge Rating" description="Select this adjustment to adjust your challenge value." compset="InPlay" replaces="pChallenge">
     <tag group="OthAdjCat" tag="UserBot5th" name="User 5th Bottom Group" abbrev="User 5th Bottom Group"/>
     <eval phase="PreLevel" priority="10000"><![CDATA[
       ~ If we're not enabled, get out now
@@ -934,21 +934,24 @@ endif]]></eval>
   <thing id="pHd5CCmpSm" name="Companions and Summons" compset="InPlay" uniqueness="unique" isshowonly="yes">
     <tag group="OthAdjCat" tag="UserBot6th"/>
     </thing>
-  <thing id="p5CSplMgArm" name="Mage Armor" compset="InPlay" uniqueness="unique">
+  <thing id="p5CSplMgArm" name="Mage Armor" description="Add this adjustment to apply the effects of the {i}mage armor{/i} spell to your character.\n\n{b}Hero Lab Note:{/b} Due to a bug, your AC will not reset when this adjustment is unchecked. Use the incremeter, switching it from 1 to 2 and back, to reset your AC when this bug occurs." compset="InPlay" uniqueness="unique">
     <fieldval field="pDuration" value="8 Hours"/>
+    <fieldval field="pMinimum" value="1"/>
+    <fieldval field="pMaximum" value="2"/>
     <usesource source="5ePHBCP"/>
-    <tag group="Helper" tag="NoIncr"/>
-    <tag group="OthAdjCat" tag="UserBot3rd"/>
-    <tag group="Helper" tag="AdjInfo"/>
     <tag group="SpInfo" tag="spMageArmo"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
     <bootstrap thing="c5CAdjMgArm">
       <containerreq phase="First" priority="100">fieldval:pIsOn = 1</containerreq>
       </bootstrap>
+    <eval phase="First">  hero.child[ArmorClass].field[Penalty].value -= (field[pAdjust].value - 1)</eval>
     </thing>
   <thing id="pHd5CSpls" name="Specific Spells" compset="InPlay" uniqueness="unique" isshowonly="yes">
     <tag group="OthAdjCat" tag="UserBot3rd"/>
     </thing>
-  <thing id="p5CSplAwkn" name="Awaken" compset="InPlay" uniqueness="unique">
+  <thing id="p5CSplAwkn" name="Awaken" description="Add this creature to a creature that has had the Awaken spell cast on it to apply the benefits of that spell." compset="InPlay" uniqueness="unique">
     <usesource source="5ePHBCP"/>
     <tag group="Helper" tag="NoIncr"/>
     <tag group="OthAdjCat" tag="UserBot3rd"/>
@@ -1209,7 +1212,7 @@ field[pChosen].chosen.field[sbName].text &= " (Shillelagh)"]]></eval>
     <tag group="wCategory" tag="RangeThrow" name="Thrown Weapon" abbrev="Thrown"/>
     <tag group="Helper" tag="Proficient"/>
     </thing>
-  <thing id="p5CSplMgcStn" name="Magic Stone" description="Select the your spellcasting ability and the number of stones. You can also select a sling to apply this bonus to that weapon when using one of the stones." compset="InPlay" uniqueness="unique">
+  <thing id="p5CSplMgcStn" name="Magic Stone" description="Select your spellcasting ability and the number of stones. You can also select a sling to apply this bonus to that weapon when using one of the stones." compset="InPlay" uniqueness="unique">
     <fieldval field="pCandExpr" value="thingid.wSling | thingid.w5CSplMgcStn"/>
     <fieldval field="pDuration" value="1 minute"/>
     <fieldval field="pMinimum" value="0"/>
@@ -2154,9 +2157,9 @@ perform hero.pushtags[HideDeiCat.?]</eval>
   <thing id="c5CAdjMgArm" name="Mage Armor" compset="CustomSpec" uniqueness="unique">
     <fieldval field="abBaseAC" value="13"/>
     <tag group="CalcAC" tag="DexMod"/>
+    <tag group="CalcAC" tag="Shield"/>
     <tag group="Helper" tag="ArmorClass"/>
     <tag group="Helper" tag="SpecUp"/>
-    <tag group="CalcAC" tag="Shield"/>
     </thing>
   <thing id="p5COthrFam" name="Other Familiar/Ranger Companion" description="Adding this adjustment to a familiar or ranger&apos;s animal companion will allow you to select any creature as its race. Once it has been added, the race drop-down on the Minion tab will be populated with every monster available based on your selected sources.\n\n{b}Hero Lab Notes:{/b} Check with your DM before adding this, as this is not supported by the rules as written." compset="InPlay">
     <usesource source="5eMMCP" parent="p5ePack" name="5e Monsters Manual"/>
