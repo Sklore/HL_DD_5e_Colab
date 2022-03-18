@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="io5CRuidElph" name="Figurine of Wondrous Power, Ruidium Elephant" description="A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn’t enough space for the creature, the figurine doesn’t become a creature.\n\nUnlike most figurines of wondrous power, the creature this one creates is uncontrollable.\n\nThe creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can’t be used again until a certain amount of time has passed, as specified in the figurine’s description.\n\n{b}{i}Ruidium Elephant.{/b}{/i} This marble statuette is about 4 inches high and long. It can become a ruidium elephant for up to 24 hours. Once it has been used, it can’t be used again until 7 days have passed. Under certain circumstances, this figurine may lose its corruption and become a regular marble elephant figurine of wondrous power. (Call of the Netherdeep details the particular circumstance; consult your DM as it may be a spoiler)." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eCotNA"/>
+    <tag group="Usage" tag="5C7Days"/>
+    <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare" name="Rare" abbrev="Rare"/>
+    </thing>
+  <thing id="c5CNthFrgAbh" name="Fragment of Abhorrence" description="{b}Benefit.{/b} Once on each of your turns when you hit a creature with a weapon attack roll, you can force that target to move up to 10 feet away from you (you choose the direction). A creature that is immune to the frightened condition is immune to this effect.\n\n{b}Drawback.{/b} If you begin your turn frightened, you take 2d6 psychic damage." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eCotNA"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Custom" tag="NthFrgSuf"/>
+    </thing>
+  <thing id="c5CNthFrgAtt" name="Fragment of Attachment" description="{b}Benefit.{/b} While you are within 10 feet of an ally, you cannot be frightened. If you are already frightened, you can move within that range of an ally, automatically ending the frightened condition for yourself.\n\n{b}Drawback.{/b} While not within 10 feet of an ally, you make your Wisdom and Charisma saves with disadvantage." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eCotNA"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Custom" tag="NthFrgSuf"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+#situational[hero.child[svWIS], "Disadvantage when more than 10 feet from allies.", field[name].text]
+#situational[hero.child[svCHA], "Disadvantage when more than 10 feet from allies.", field[name].text]]]></eval>
+    </thing>
+  <thing id="c5CNthFrgDcp" name="Fragment of Deception" description="{b}Benefit.{/b} When you take damage, you can use a reaction to teleport up to 60 feet to an open space you can see. You also become invisible until the beginning of your next turn, or until you make a damage roll or cast a spell.\n\n{b}Drawback.{/b} Your Wisdom checks are made with disadvantage." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="abRange" value="60"/>
+    <usesource source="5eCotNA"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="Custom" tag="NthFrgSuf"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "SkillAbil.aWIS"
+   #situational[eachpick,"Disadvantage",field[name].text]
+   nexteach]]></eval>
+    </thing>
+  <thing id="c5CNthFrgDsp" name="Fragment of Despondence" description="{b}Benefit.{/b} You have immunity to the charmed condition.\n\n{b}Drawback.{/b} You cannot take the Help action." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eCotNA"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Custom" tag="NthFrgSuf"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.assign[CondImm.pcnCharmed]]]></eval>
+    </thing>
+  <thing id="c5CNthFrgInt" name="Fragment of Intransigence" description="{b}Benefit.{/b} Unless you want to, no creature can force you to move.\n\n{b}Drawback.{/b} You cannot use the Disengage or Dodge actions." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eCotNA"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Custom" tag="NthFrgSuf"/>
+    </thing>
+  <thing id="c5CNthFrgLth" name="Fragment of Loathing" description="{b}Benefit.{/b} When a creature damages you with a weapon attack or a spell, you can center your hatred on that creature. Until your next turn ends, your attack rolls against that creature have advantage. You can only focus this way on one creature at a time.\n\n{b}Drawback.{/b} Your Charisma checks are made with disadvantage." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eCotNA"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Custom" tag="NthFrgSuf"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+foreach pick in hero from BaseSkill where "SkillAbil.aCHA"
+   #situational[eachpick, "Disadvantage", field[name].text]
+   nexteach]]></eval>
+    </thing>
+  <thing id="c5CNthFrgMln" name="Fragment of Melancholy" description="{b}Benefit.{/b} When you fail a Wisdom or Charisma save, you can reroll it with advantage, which may turn it into a success. After you use this benefit, you must complete a long rest before doing so again.\n\n{b}Drawback.{/b} If you this fragment&apos;s benefit but still fail that save, you are incapacitated until the end of your next turn." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eCotNA"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Custom" tag="NthFrgSuf"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="c5CNthFrgPty" name="Fragment of Pity" description="{b}Benefit.{/b} Every time you spend a Hit Die to regain hit points, you regain an additional number equaling your proficiency bonus.\n\n{b}Drawback.{/b} You make your death saves with disadvantage." compset="CustomSpec" uniqueness="unique">
+    <usesource source="5eCotNA"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Custom" tag="NthFrgSuf"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+field[abText].text = "+" & hero.childfound[ProfBonus].field[tProfBonus].value & " HP/spent HD"]]></eval>
+    </thing>
+  <thing id="c5CNthFrgRnc" name="Fragment of Rancor" description="{b}Benefit.{/b} When you hit a creature with an attack, you can deal extra psychic damage; either 2d6 to that creature or 4d6 to each other creature within 5 feet of it. After you use this benefit, you must complete a short or long rest before doing so again.\n\n{b}Drawback.{/b} Whenever you are not unconscious and you fail a saving throw, you suffer 2d6 psychic damage." compset="CustomSpec" uniqueness="unique">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eCotNA"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Custom" tag="NthFrgSuf"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Usage" tag="ShortRest"/>
+    </thing>
+  <thing id="p5CFrgSuffr" name="Netherdeep: Fragment of Suffering" description="Choose which Fragment of Suffering you have received to add it to your character. \n\nYou can have a maximum of three fragments at any one time; add this adjustment again to a second or third fragment." compset="InPlay">
+    <comment>make the MAXIMUMS all at least 3</comment>
+    <fieldval field="pCandExpr" value="!component.BaseAdjust &amp; Custom.NthFrgSuf"/>
+    <usesource source="5eCotNA"/>
+    <tag group="Helper" tag="AdjInfo" name="Adjustment Information" abbrev="Adjustment Information"/>
+    <tag group="ChooseSrc1" tag="Thing" name="All Things" abbrev="All Things"/>
+    <tag group="OthAdjCat" tag="Misc"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="Custom" tag="NthFrgSuf"/>
+    <bootstrap thing="c5CNthFrgAbh">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 3</containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CNthFrgAtt">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 4</containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CNthFrgDcp">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 5</containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CNthFrgDsp">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 6</containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CNthFrgInt">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 7</containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CNthFrgLth">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 8</containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CNthFrgMln">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 9</containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CNthFrgPty">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 10</containerreq>
+      </bootstrap>
+    <bootstrap thing="c5CNthFrgRnc">
+      <containerreq phase="First" priority="101">fieldval:pMaximum = 11</containerreq>
+      </bootstrap>
+    <eval phase="First" index="2"><![CDATA[    field[pMinimum].value = 0
+
+
+foreach pick in hero from BaseAdjust where "Custom.NthFrgSuf"
+    field[pMinimum].value += 1
+    nexteach]]></eval>
+    <eval phase="First"><![CDATA[doneif (field[pIsOn].value = 0)
+doneif (field[pChosen].ischosen = 0)
+
+if (field[pChosen].chosen.tagis[thingid.c5CNthFrgAbh] <> 0) then
+  field[pMaximum].value = 3
+elseif (field[pChosen].chosen.tagis[thingid.c5CNthFrgAtt] <> 0) then
+  field[pMaximum].value = 4
+elseif (field[pChosen].chosen.tagis[thingid.c5CNthFrgDcp] <> 0) then
+  field[pMaximum].value = 5
+elseif (field[pChosen].chosen.tagis[thingid.c5CNthFrgDsp] <> 0) then
+  field[pMaximum].value = 6
+elseif (field[pChosen].chosen.tagis[thingid.c5CNthFrgInt] <> 0) then
+  field[pMaximum].value = 7
+elseif (field[pChosen].chosen.tagis[thingid.c5CNthFrgLth] <> 0) then
+  field[pMaximum].value = 8
+elseif (field[pChosen].chosen.tagis[thingid.c5CNthFrgMln] <> 0) then
+  field[pMaximum].value = 9
+elseif (field[pChosen].chosen.tagis[thingid.c5CNthFrgPty] <> 0) then
+  field[pMaximum].value = 10
+elseif (field[pChosen].chosen.tagis[thingid.c5CNthFrgRnc] <> 0) then
+  field[pMaximum].value = 11
+endif]]></eval>
+    <evalrule phase="First" priority="200" message="Cannot have more than 3 Fragments of Suffering" summary="Cannot have more than 3 Fragments of Suffering"><![CDATA[    @valid = 1   
+
+if (field[pMinimum].value > 3) then
+    @valid = 0
+endif]]></evalrule>
+    </thing>
+  <thing id="p5CRuidTrk" name="Netherdeep: Ruidium Corruption" description="Use this adjustment to track your level of Ruidium Corruption. It increases whenever you reach further levels of exhaustion, but does not decrease when your exhausting decreases." compset="InPlay">
+    <fieldval field="pMinimum" value="0"/>
+    <fieldval field="pMaximum" value="6"/>
+    <usesource source="5eCotNA"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="OthAdjCat" tag="Misc"/>
+    </thing>
+  <thing id="io5CMdlHrzn" name="Medal of the Horizonback" description="When you would be hit by an attack, you can take your reaction to gain a +5 to your AC until the beginning of your next turn, including against the triggering attack. You must be wearing the medal and be able to see the creature that made the triggering attack to use this property. Once this property has been used, it can&apos;t be used again, and the medal becomes nonmagical." compset="Wondrous">
+    <fieldval field="actName" value="Used (reaction)"/>
+    <usesource source="5eCotNA"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="io5CMdlMusc" name="Medal of Muscle" description="You can use an action to squeeze this medal into your palm. Doing so grants you advantage on Strength checks and Strength saves for 1 hour. Once this property has been used, it can&apos;t be used again, and the medal becomes nonmagical." compset="Wondrous">
+    <comment>io5CMdlWit
+Medal of Wit</comment>
+    <fieldval field="actName2" value="Used"/>
+    <fieldval field="actName" value="Active (1 hour, action)"/>
+    <usesource source="5eCotNA"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Activation"/>
+    <eval phase="PostLevel"><![CDATA[doneif (field[abilAct2].value <> 0)
+doneif (field[abilActive].value = 0)
+
+foreach pick in hero from BaseSkill where "SkillAbil.aSTR"
+   #situational[eachpick,"Advantage",field[name].text]
+   nexteach
+
+#situational[hero.child[svSTR],"Advantage",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="io5CMdlCnch" name="Medal of the Conch" description="You can use an action to rub this medal, granting you a swimming speed equal to your walking speed for 1 hour. Once this property has been used, it can&apos;t be used again, and the medal becomes nonmagical." compset="Wondrous">
+    <fieldval field="actName" value="Active (1 hour, action)"/>
+    <fieldval field="actName2" value="Used"/>
+    <usesource source="5eCotNA"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Custom" tag="SwmRemove"/>
+    <bootstrap thing="xSwim">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:abilAct2 = 0 & fieldval:abilActive <> 0]]></containerreq>
+      <autotag group="Value" tag="0"/>
+      <autotag group="Custom" tag="SwmRemove"/>
+      </bootstrap>
+    <eval phase="First" priority="10001" index="2"><![CDATA[doneif (field[abilAct2].value <> 0)
+doneif (field[abilActive].value = 0)
+
+  foreach pick in hero where "thingid.xSwim & Custom.SwmRemove"
+     perform eachpick.tagreplace[Value.0,Value.1]
+     nexteach]]></eval>
+    <eval phase="Final" priority="10001"><![CDATA[doneif (field[abilAct2].value <> 0)
+doneif (field[abilActive].value = 0)
+
+     hero.childfound[xSwim].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xSwim].field[abValue].value)]]></eval>
+    </thing>
+  <thing id="io5CMdlMaze" name="Medal of the Maze" description="You can use an action to trace the maze inscribed on this medal, granting you advantage on Wisdom checks and know the quickest route to the end of any nonmagical path or maze for 1 hour. Once this property has been used, it can&apos;t be used again, and the medal becomes nonmagical." compset="Wondrous">
+    <fieldval field="actName" value="Active (1 hour, action)"/>
+    <fieldval field="actName2" value="Used"/>
+    <usesource source="5eCotNA"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="PostLevel"><![CDATA[doneif (field[abilAct2].value <> 0)
+doneif (field[abilActive].value = 0)
+
+foreach pick in hero from BaseSkill where "SkillAbil.aWIS"
+   #situational[eachpick,"Advantage to find the quickest route to the end of a nonmagical path or maze.",field[name].text]
+   nexteach]]></eval>
+    </thing>
+  <thing id="io5CMdlWtld" name="Medal of the Wetlands" description="You can use an action to trace the edge of this medal. For 1 hour, difficult terrain doesn&apos;t cost you extra movement. Once this property has been used, it can&apos;t be used again, and the medal becomes nonmagical." compset="Wondrous">
+    <fieldval field="actName" value="Active (1 hour, active)"/>
+    <fieldval field="actName2" value="Used"/>
+    <usesource source="5eCotNA"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="io5CMdlMeat" name="Medal of the Meat Pie" description="You can use an action to press this medal to your mouth, granting you 2d4 + 2 temporary hit points. Once this property has been used, it can&apos;t be used again, and the medal becomes nonmagical.\n\nWhile still magical, this medal is slightly warm to the touch and has a faint, baked-pie-crust smell.\n\n{b}Hero Lab Note:{/b} Use the In-Play tab to add temporary hit points to your hero." compset="Wondrous">
+    <fieldval field="actName" value="Used"/>
+    <usesource source="5eCotNA"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    </thing>
+  <thing id="io5CMdlWit" name="Medal of Wit" description="You can use an action to touch this medal to your temple. Doing so grants you advantage on Intelligence checks and Intelligence saves for 1 hour. Once this property has been used, it can&apos;t be used again, and the medal becomes nonmagical." compset="Wondrous">
+    <fieldval field="actName" value="Active (1 hour, action)"/>
+    <fieldval field="actName2" value="Used"/>
+    <usesource source="5eCotNA"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="PostLevel"><![CDATA[doneif (field[abilAct2].value <> 0)
+doneif (field[abilActive].value = 0)
+
+foreach pick in hero from BaseSkill where "SkillAbil.aINT"
+   #situational[eachpick,"Advantage",field[name].text]
+   nexteach
+
+#situational[hero.child[svINT],"Advantage",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ir5CRedFury" name="Ring of Red Fury" description="While wearing this ruidium-striped ring, you gain these benefits:\n• You can breathe water.\n• You gain a swimming speed that equals your walking speed.\n\n{b}Ruidium Rage.{/b} You can use a bonus action to cause the ring to grant these benefits, which last for 1 minute or until you are incapacitated:\n• You have advantage on Strength checks and Strength saves.\n• When you hit with an attack, you can add your proficiency bonus to the damage roll.\n• Difficult terrain costs you no extra movement.\n• You are immune to the paralyzed and restrained conditions.\nYou can&apos;t use this property of the ring again until you complete a long rest.\n\n{b}Ruidium Corruption.{/b} When you use the Ruidium Rage property of the ring, you must make a DC 20 Charisma save. On a failure, you take 1 level of exhaustion. If you are not already suffering from ruidium corruption, you become corrupted when you fail this save.\n\n{b}If Ruidium Is Destroyed.{/b} If events transpire such that all ruidium in the world is destroyed, this ring becomes a {i}ring of free action{/i}." compset="Ring">
+    <fieldval field="actName" value="Activated (bonus action, 1 minute)"/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eCotNA"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="ab5CSwmMtch"></bootstrap>
+    <eval phase="First" index="2">doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+
+hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
+    <eval phase="Final" priority="5000"><![CDATA[doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+doneif (field[abilActive].value = 0)
+
+foreach pick in hero from BaseSkill where "SkillAbil.aSTR"
+   #situational[eachpick,"Advantage",field[name].text]
+   nexteach
+
+#situational[hero.child[svSTR],"Advantage",field[thingname].text]
+
+foreach pick in hero from BaseWep
+   eachpick.field[wDamBonus].value += hero.childfound[ProfBonus].field[tProfBonus].value
+   nexteach
+
+perform hero.assign[CondImm.pcnParaly]
+perform hero.assign[CondImm.pcnRestr]]]></eval>
+    </thing>
+  <thing id="ab5CSwmMtch" name="Swimming Matcher" compset="Ability" uniqueness="unique">
+    <comment><![CDATA[When bootstrapped to an ability, item, etc., this thing will automatically give the hero a swimming score equal to their walking speed.
+
+On that ability/item/whatever, use an eval script to test for anything that must be active (attunement, equipped, abilActive, etc.) and set this ability's abValue field to 1 to turn it on.]]></comment>
+    <tag group="Custom" tag="SwmRemove"/>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="0"/>
+      <autotag group="Custom" tag="SwmRemove"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001" index="2">doneif (field[abValue].value = 0)
+
+hero.childfound[xSwim].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xSwim].field[abValue].value)</eval>
+    <eval phase="First" priority="10001"><![CDATA[doneif (field[abValue].value = 0)
+
+  foreach pick in hero where "thingid.xSwim & Custom.SwmRemove"
+     perform eachpick.tagreplace[Value.0,Value.1]
+     nexteach]]></eval>
+    </thing>
+  <thing id="i5CRuidArmr" name="Ruidium Armor" description="While wearing this ruidium-veined armor, you gain these benefits:\n• You are resistant to psychic damage.\n• You can breathe water.\n• You gain a swimming speed that equals your walking speed.\n\n{b}Ruidium Corruption.{/b} When you roll a 1 on a save while wearing this armor, you must make a DC 15 Charisma save. On a failure, you take 1 level of exhaustion. If you are not already suffering from ruidium corruption, you become corrupted when you fail this save.\n\n{b}If Ruidium Is Destroyed.{/b} If events transpire such that all ruidium in the world is destroyed, this armor becomes {i}+1 armor{/i}." compset="MagicArmor" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="light, medium, or heavy"/>
+    <usesource source="5eCotNA"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <bootstrap thing="ab5CSwmMtch"></bootstrap>
+    <eval phase="First" index="2">doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+
+hero.childfound[ab5CSwmMtch].field[abValue].value += 1
+perform hero.assign[DamageRes.dtPsychic]</eval>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~restrict the list of armor to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & (ArmorClass.Light | ArmorClass.Medium | ArmorClass.Heavy)"
+
+      ~set our name based on the type of armor chosen
+      field[livename].text = "Ruidium "
+      perform gizmo.findchild[BaseArmor].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Armor"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagArmor"></child>
+    </thing>
+  <thing id="i5CRuidShld" name="Ruidium Shield" description="While carrying this ruidium-tendriled shield, you gain these benefits:\n• You are resistant to psychic damage.\n• You can breathe water.\n• You gain a swimming speed that equals your walking speed.\n\n{b}Psychic Reflection.{/b} When you take psychic damage while holding this shield, you can take your reaction to choose another creature you can see within 30 feet of you. That creature takes the psychic damage instead of you.\n\n{b}Ruidium Corruption.{/b} When you use this shield&apos;s Psychic Reflection feature, you must make a DC 20 Charisma save. On a failure, you take 1 level of exhaustion. If you are not already suffering from ruidium corruption, you become corrupted when you fail this save.\n\n{b}If Ruidium Is Destroyed.{/b} If events transpire such that all ruidium in the world is destroyed, this shield becomes a {i}+2 shield{/i}." compset="MagicArmor">
+    <fieldval field="miTypeDet" value="shield"/>
+    <usesource source="5eCotNA"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <bootstrap thing="ab5CSwmMtch"></bootstrap>
+    <eval phase="First">doneif (field[gIsAttuned].value = 0)
+
+hero.childfound[ab5CSwmMtch].field[abValue].value += 1
+perform hero.assign[DamageRes.dtPsychic]</eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="mShield"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CRuidWeap" name="Ruidium Weapon" description="While carrying this ruidium-veined weapon, you gain these benefits:\n• You can breathe water.\n• You gain a swimming speed that equals your walking speed.\n\n{b}Ruidium Strike.{/b} Creatures his by this weapon take and additional 2d6 psychic damage.\n\n{b}Ruidium Corruption.{/b} When you roll a 1 on an attack roll made with this weapon, you must make a DC 20 Charisma save. On a failure, you take 1 level of exhaustion. If you are not already suffering from ruidium corruption, you become corrupted when you fail this save.\n\n{b}If Ruidium Is Destroyed.{/b} If events transpire such that all ruidium in the world is destroyed, this weapon becomes a {i}+2 weapon{/i}." compset="MagicWep" buytemplate="BuyMoney" xactspecial="2">
+    <fieldval field="miTypeDet" value="any"/>
+    <fieldval field="wDamExtra" value=" + 2d6 psychic"/>
+    <usesource source="5eCotNA"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <bootstrap thing="ab5CSwmMtch"></bootstrap>
+    <eval phase="First" index="2">doneif (field[gIsAttuned].value = 0)
+
+hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
+    <eval phase="Final" priority="20000"><![CDATA[
+      ~set our name based on the type of weapon chosen
+      field[livename].text = "Ruidium "
+      perform gizmo.findchild[BaseWep].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Weapon"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <child entity="gMagWeapon"></child>
+    </thing>
+  <thing id="io5CTelpTab" name="Teleportation Tablet" description="This clay tablet is eight inches long, four inches wide, and half an inch thick. After spending 10 minutes studying the sigil sequence on it, a creature can make a DC 21 Intelligence (Arcana) check to determine the location of the permanent teleportation circle that sequence belongs to.\n\nYou can use an action to snap the tablet in half, turning it to dust. If the tablet is broken while it is on the same plane of existence its associated teleportation circle, a 10-foot-diameter teleportation circle of glowing blue light appears on the ground in an open space you choose within 30 feet of you. This teleportation circle has the characteristics of one created using the {i}teleportation circle{/i} spell, except that it connects to the teleportation circle whose sigil sequence appears on the tablet.\n\nThe teleportation circle the tablet creates lasts until the end of your next turn, at which point it disappears." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eCotNA"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="SpInfo" tag="spTeleCirc"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    </thing>
+  <thing id="io5CErngMsg" name="Earring of Message" description="This copper-wrapped blue crystal earring has 5 charges. While wearing it, you can use an action to spend 1 charge, casting the {i}message{/i} spell. The earring regains 1d4 + 1 spent charges each dawn." compset="Wondrous">
+    <fieldval field="trkMax" value="5"/>
+    <usesource source="5eCotNA"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="ItemRarity" tag="Common"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <bootstrap thing="spMessage">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <autotag group="Usage" tag="Charges"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[gIsEquip].value = 0)
+      field[abText].text = "regains 1d4+1 at dawn"]]></eval>
+    </thing>
+  <thing id="io5CJwl3Pryrs" name="Jewel of Three Prayers" description="{b}Dormant.{/b} In this state, the jewel is a golden disk. It is attached to a fine golden chain, which magically resizes to function as a necklace for its wearer. \n\nIn this state, the jewel has these properties:\n\n• You gain a +1 to your AC while wearing the jewel.\n• While wearing or holding the jewel, you can use an action to cause it to shine bright light in a 15-foot radius and dim light for another 15 feet. The light lasts until you extinguish it (no action needed).\n• The jewel has 3 charges, regaining all spent charges each dawn. While holding the jewel, you can spend 1 charge from it to cast {i}invisibility{/i}.\n\n{b}Awakened.{/b} In this state, three delicate spires on the jewel&apos;s center have unfurled, not unlike a blossoming flower. Three lapis lazuli stones sit on these spires. \n\nThese benefits of the jewel improve:\n• Its AC bonus increases to +2.\n• Its total charges increases to 5.\n\nThe jewel gains these additional properties, which you can use while wearing or holding it:\n\n• You can spend 1 of the jewel&apos;s charges (no action needed) to end one of the grappled, paralyzed, or restrained condition on yourself.\n• When another creature you can see within 60 feet of you fails a saving throw, you can spend 1 of the jewel&apos;s charges as a reaction. This enables that creature to reroll the save, potentially turning a failure into a success. The creature must use the new roll.\n\n\n{b}Exalted.{/b} In this state, a gleaming emerald surrounded by a golden halo appears on the jewel. \n\nThese benefits of the jewel improve:\n• Its AC bonus increases to +3.\n• Its total charges increases to 7.\n\nThe jewel gains these additional properties, which you can use while wearing or holding it:\n\n• Both you and each of your allies within 30 feet of you are now able to breathe water, and you each gain swimming speeds that equal your own walking speeds.\n• You can spend 1 of the jewel&apos;s charges to target yourself or one willing creature you can see within 15 feet of yourself. The target teleports to an open space of your choice within 15 feet of yourself, along with any equipment the target is wearing or carrying. The target appears in a golden, radiant flash, and each creature of your choice within 5 feet of the target&apos;s new location must make a DC 18 Constitution save. On a failure, the creature takes 4d10 radiant damage and is blinded until the beginning of your next turn. On a successful save, the creature takes half the damage and isn&apos;t blinded." compset="Wondrous">
+    <fieldval field="trkMax" value="3"/>
+    <arrayval field="usrArray" index="0" value="Dormant"/>
+    <arrayval field="usrArray" index="1" value="Awakened"/>
+    <arrayval field="usrArray" index="2" value="Exalted"/>
+    <usesource source="5eCotNA"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="User" tag="Tracker"/>
+    <bootstrap thing="spInvisibi">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="ChargeUse" tag="1"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      </bootstrap>
+    <bootstrap thing="ab5CSwmMtch"></bootstrap>
+    <eval phase="PreLevel" priority="5000">
+      doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      hero.child[ArmorClass].field[Bonus].value += 1
+      hero.child[ArmorClass].field[Bonus].value += field[usrIndex].value
+      
+      var iTrk as number
+
+      iTrk = field[usrIndex].value
+      iTrk *= 2
+
+      field[trkMax].value += iTrk</eval>
+    <eval phase="First" index="2"><![CDATA[doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+doneif (field[usrIndex].value <> 2)
+
+hero.childfound[ab5CSwmMtch].field[abValue].value += 1]]></eval>
+    </thing>
+  </document>
