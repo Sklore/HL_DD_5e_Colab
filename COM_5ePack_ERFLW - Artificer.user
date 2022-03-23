@@ -4142,6 +4142,28 @@ minion.childfound[ra5CAtfMigM].field[abValue5].value = level]]></eval>
     <usesource source="p5eArtV2UACP"/>
     <tag group="OthAdjCat" tag="UserBot7th"/>
     </thing>
+  <thing id="p5CPrntInf" name="Artificer Infusions - Make Printable" description="By default, Artificer Infusions don&apos;t show up when printing your hero. Using this adjustment will cause them to show on your hero&apos;s various output options. Select 1-3, corresponding the the options below, for which infusions you want to print.\n\n1 - Make Known Infusions print\n2 - Make Active Infusions print\n3 - Make all your Infusions print" compset="InPlay">
+    <fieldval field="pMinimum" value="1"/>
+    <fieldval field="pMaximum" value="3"/>
+    <usesource source="5eRftLWCP"/>
+    <usesource source="5eTCoE"/>
+    <tag group="Helper" tag="AdjNoPlus"/>
+    <tag group="OthAdjCat" tag="UserBot7th"/>
+    <eval phase="First" index="2"><![CDATA[doneif (field[pIsOn].value = 0)
+doneif (field[pAdjust].value = 1)
+
+foreach pick in hero from BaseCustSp where "abCategory.5CArtInf & Custom.Infus"
+   perform eachpick.delete[Helper.SpecUp]
+   eachpick.field[livename].text = "Infusion Active - " & eachpick.field[name].text
+   nexteach]]></eval>
+    <eval phase="First"><![CDATA[doneif (field[pIsOn].value = 0)
+doneif (field[pAdjust].value = 2)
+
+foreach pick in hero from BaseCustSp where "abCategory.5CArtInf & Custom.InfKnw"
+   perform eachpick.delete[Helper.SpecUp]
+   eachpick.field[livename].text = "Infusion Known - " & eachpick.field[name].text
+   nexteach]]></eval>
+    </thing>
   <extthing thing="spResiSphe" group="sClass" tag="cHelpAtf"/>
   <extthing thing="spStonShap" group="sClass" tag="cHelpAtf"/>
   <extthing thing="spStoneski" group="sClass" tag="cHelpAtf"/>
