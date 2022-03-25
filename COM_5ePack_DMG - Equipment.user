@@ -91,6 +91,10 @@
     <tag group="ProductId" tag="Wizards"/>
     <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
     <tag group="Helper" tag="EquipAvail"/>
+    <bootstrap thing="ab5CSwmMtch"></bootstrap>
+    <eval phase="First" index="2">doneif (field[gIsEquip].value = 0)
+
+hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <eval phase="Final" priority="20000"><![CDATA[
       ~restrict the list of armor to valid ones only
       gizmo.child[gCustMagic].field[gItemExpr].text = #magicgearexpr[] & " & (ArmorClass.Light | ArmorClass.Medium | ArmorClass.Heavy)"
@@ -3128,6 +3132,53 @@ hero.childfound[ArmorClass].field[tACMisc].value += iAC</eval>
     <bootstrap thing="xSwim">
       <containerreq phase="First" priority="100">fieldval:gIsEquip = 1</containerreq>
       <autotag group="Value" tag="60"/>
+      </bootstrap>
+    </thing>
+  <thing id="iw5CWarMage1" name="Wand of the War Mage, +1" description="While holding this wand, you gain a bonus to spell attack rolls determined by the wand’s rarity. In addition, you ignore half cover when making a spell attack." compset="Wand" replaces="waWarMage1">
+    <fieldval field="miAttunTxt" value="requires attunement by a spellcaster"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <eval phase="PreLevel" priority="5000">doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      foreach pick in hero from Spellcast
+        eachpick.field[cSplAttack].value += 1
+        nexteach</eval>
+    <eval phase="Final" priority="50000" index="2">perform delete[User.Tracker]</eval>
+    </thing>
+  <thing id="iw5CWarMage2" name="Wand of the War Mage, +2" description="While holding this wand, you gain a bonus to spell attack rolls determined by the wand’s rarity. In addition, you ignore half cover when making a spell attack." compset="Wand" replaces="waWarMage2">
+    <fieldval field="miAttunTxt" value="requires attunement by a spellcaster"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare" name="Rare" abbrev="Rare"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <eval phase="PreLevel" priority="5000">doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      foreach pick in hero from Spellcast
+        eachpick.field[cSplAttack].value += 2
+        nexteach</eval>
+    <eval phase="Final" priority="50000" index="2">perform delete[User.Tracker]</eval>
+    </thing>
+  <thing id="iw5CWarMage3" name="Wand of the War Mage, +3" description="While holding this wand, you gain a bonus to spell attack rolls determined by the wand’s rarity. In addition, you ignore half cover when making a spell attack." compset="Wand" replaces="waWarMage3">
+    <fieldval field="miAttunTxt" value="requires attunement by a spellcaster"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="VeryRare" name="Very Rare" abbrev="Very Rare"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <eval phase="PreLevel" priority="5000">doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      foreach pick in hero from Spellcast
+        eachpick.field[cSplAttack].value += 3
+        nexteach</eval>
+    <eval phase="Final" priority="50000" index="2">perform delete[User.Tracker]</eval>
+    </thing>
+  <thing id="ir5CSwim" name="Ring of Swimming" description="You have a swimming speed of 40 feet while wearing this ring." compset="Ring" replaces="riSwimming">
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
+    <bootstrap thing="xSwim">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0]]></containerreq>
+      <autotag group="Value" tag="40"/>
       </bootstrap>
     </thing>
   </document>

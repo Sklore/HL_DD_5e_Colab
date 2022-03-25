@@ -849,4 +849,122 @@
     <tag group="Helper" tag="SplMatAtLe"/>
     <tag group="sClass" tag="cHelpWiz" name="Wizard" abbrev="Wizard"/>
     </thing>
+  <thing id="io5CChpCrtn" name="Chip of Creation" description="This hand-sized piece of rock is a small piece of the {i}Stone of Creation{/i}, and carries a small part of its power.\n\n{b}Linked Room.{/b} Each chip is directly linked to its own specific demiplanar room, similar to the {i}demiplane{/i} spell. So long as the chip and the {i}Stone of Creation{/i} exist, so does this chip&apos;s room. Only the {i}demiplane{/i} spell can create a door to the room, though that spell doesn&apos;t have to be cast exclusively from a chip.\n\n{b}Demiplane.{/b} While attuned to a chip, you can cast the {i}demiplane{/i} spell at will, but only to reach either the demiplane associated with that chip or another demiplane that you are fully familiar with. Even in the latter case, that demiplane must have been created by another piece of the {i}Stone of Creation{/i}.\n\n{b}Destroying a Chip.{/b} A chip is itself an artifact, and is immune to most damage. However, a {i}disintegrate{/i} spell can destroy it. After it has been attuned to at least once, the chip will turn to a powerless chunk of rock if it goes 1d4+1 days unattuned.\nIf the {i}Stone of Creation{/i} is destroyed, all its chips become unattuned and become non-magical rocks. Any linked demiplanar rooms immediately cease to exist, expelling any creatures or objects within them into the immediate area surrounding their linked and now non-magical chip.\nIf a chip is taken to the Elemental Chaos or is hit by a forked, metal rod attuned to the Elemental Chaos (like the forks described in the {i}plane shift{/i} spell), the chip is destroyed." compset="Wondrous">
+    <usesource source="5CAitFR"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="spDemiplan">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="Chip of Creation"/>
+      </bootstrap>
+    <eval phase="Final" index="3"><![CDATA[if (tagcount[Custom.5CAPIB] >= 1) then
+perform delete[Custom.5CAPEIB]
+endif]]></eval>
+    <eval phase="First">perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax1].value += 1</eval>
+    </thing>
+  <thing id="io5CKysCrtn" name="Keystone of Creation" description="This piece of the {i}Stone of Creation{/i} is usually between 6 to 10 inches per side.\n\n{b}Random Properties.{/b} The stone has 1 random minor beneficial property. It also has 1 random beneficial manifestation and 1 random detrimental manifestation (see In-Play tab to review and select).\n\n{b}Extradimensional Places.{/b} You can use the keystone to conjure an extradimensional space, like that of the {i}magnificent mansion{/i} spell. The easiest way is to simply cast that spell using the artifact, which can be done without spell slots or material components. Each time you cast a spell with the artifact, the subsequent casting replaces the prior one. See &quot;Construction Details&quot; below regarding more detailed control of your conjuration.\n\n{b}Raising Structures.{/b} You can also use the keystone to conjure a physical structure on the Material Plane. The easiest way is to simply cast the {i}mighty fortress{/i} spell using the artifact&apos;s power, which can be done without spell slots or material components. Each time you cast a spell with the artifact, the subsequent casting replaces the prior one. See &quot;Construction Details&quot; below regarding more detailed control of your conjuration. Locations created by the keystone cannot become permanent through repeated spell castings.\n\n{b}Connected Spaces.{/b} You can use multiple keystones to create larger spaces, be they adjacent to each other or even interlinked. You can even combine structures on the Material Plane and extradimensional spaces this way. If you are attuned to one keystone when you attune to a second keystone, the keystones combine to become a single artifact (utilizing a single attunement slot), combining their existence, features, and future. You cannot attune to, and thus combine, more than three keystones at once.\n\n{b}Destroying a Keystone.{/b} A keystone is an artifact in its own right. Though it is impervious to most damage, the {i}disintegrate{/i} spell can destroy an unattuned keystone.\nAfter it has been attuned at least once, a given keystone needs ongoing attunement to maintain its magic. Otherwise, its Material Plane creations gradually rot and decay over 1d12 + 1 days, and a demiplane relying on the keystone collapses in 1d20 + 10 minutes. Other destructive forces like fire may further the destruction. A demiplane created or maintained by a keystone ejects all creatures within it to their home planes when it collapses.\nWhen a keystone&apos;s creation is totally destroyed, the keystone becomes an inert, powerless rock. If the Stone of Creation is destroyed, all its keystones break attunement, lose all magic, and their creations decay or collapse to nothing.\n\n{b}{i}Construction Details{/i}{/b}\nYou can cosmetically customize a keystone&apos;s creation. You can also rearrange the floorplans and structural details of your creations as described here.\n\n{b}Demiplane Design.{/b} With a single keystone, you can create an extradimensional space, shaped like a dome or a pyramid, up to 1 mile on each side, with whatever terrain you wish. The edges of this space are solid and impassable, but may be invisible, such that your space can appear to go on forever if you wish. With additional keystones, you can add an additional square mile to your creation, adding or combining terrain types.\nEach square mile can include a single structure up to the size of {i}magnificent mansion{/i}, with all that spell&apos;s attendant servants and feasts, or any number of smaller structures that together equal the same total area.\nYou cannot create creatures or plants that deal damage or otherwise harm creatures. If you create cliffs, waters, or other natural features, however, creatures in the space can fall, drown, or otherwise be harmed.\n\n{b}Physical Structure Design.{/b} With a single keystone, you can create a structure like a {i}mighty fortress{/i} with the added flexibility to customize the fortress not only for cosmetic details but for substantive effects. With a single keystone, you can rearrange the walls, open spaces, floors, doors, and other features of the mighty fortress, so long as you do not exceed 150 10-foot-wide cubes of interior space. Your fortress can span a creek, river, or other waters. It can take reckless or even dangerous shapes, like deep pits, flooded chambers, etc. Your design, once conjured, is not automatically capable of supporting its own weight or surviving the stresses of attacks, weather, or time.\nYou may use any number of your structure&apos;s servants as guards, if you wish. They have statistics identical to an {i}unseen servant{/i} except their passive Perception score equals your own, though you cannot perceive through their senses. The servants can sound an alarm by ringing bells or by otherwise manipulating the environment." compset="Wondrous">
+    <comment>INCOMPLETE</comment>
+    <usesource source="5CAitFR"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="c5CKystDet">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="sp5CXGEMiF">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="Keystone of Creation"/>
+      </bootstrap>
+    <bootstrap thing="spMagnMans">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="AtWill"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="Keystone of Creation"/>
+      </bootstrap>
+    <bootstrap thing="c5CKystBen">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    </thing>
+  <thing id="io5CPlnrKey" name="Planar Key" description="This key is etched with sigils.\n\nThis sigil-etched key has 1d4 + 1 charges (use the In-Play tab to set this number),  and it cannot regain any of those charges. When the key&apos;s last charge is spent, the key&apos;s sigils and magic fade away, though the non-magical key remains.\n\nWhile touching the key, you can use an action to spend 1 charge to have the key cast {i}plane shift{/i}. This casting of the spell is limited to the key&apos;s predefined destination only. Each planar key links to a single destination, which is defined when the key is made. You can use the text box to note this destination." compset="Wondrous">
+    <fieldval field="actIncrNam" value="Charges (1d4+1)"/>
+    <fieldval field="actUserMin" value="2"/>
+    <fieldval field="actUserMax" value="5"/>
+    <usesource source="5CAitFR"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="User" tag="NeedDomain"/>
+    <tag group="User" tag="OptDomain"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spPlanShif">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <autotag group="Usage" tag="Charges"/>
+      <assignval field="sNameMod" value="Planar Key"/>
+      </bootstrap>
+    <eval phase="First">field[trkMax].value = field[actUser].value</eval>
+    </thing>
+  <thing id="io5CStnCrtn" name="Stone of Creation" description="{b}Random Properties.{/b} The stone has 2 random minor beneficial properties and 1 random major beneficial properties.\n\n{b}Stone Smithing.{/b} While attuned to the stone, you have proficiency in mason&apos;s tools, and are able to use them to cut pieces from the stone slab to create lesser artifacts.\n\n{b}Cut into Pieces.{/b} The stone is source of power for smaller artifacts. You can cut pieces into either a {i}chip of creation{/i} or a {i}keystone of creation{/i}. These lesser artifacts require their own attunement.\nUp to eleven chips and nine keystones can be created from the existing slab. A chip is a flake of rock about the size of an adult human&apos;s hand. A keystone is at least five times thicker.\nWhen all chips and keystones have been cut away, a portion of the Stone remains but is impervious to further attempts to cut or chisel pieces from it. This smallest version of the Stone is the same size as a Tiny creature.\n\n{b}Raze or Reshape Creations.{/b} The stone cannot create structures or demiplanes of its own. However, while attuned to it, you can revise or renovate any structure or demiplane created by a keystone or chip, so long as you are within 1 mile of the stone and you can see or otherwise perceive the structure or demiplane. For example, you might add doors, seal windows, alter the arrangement of rooms, or even dispel a structure created by a keystone. You must concentrate for 1 minute, as if on a spell, while picturing the changes you wish to make in your mind; during that minute, the changes slowly happen. These changes cannot deal damage or directly harm a creature. A dispelled structure gradually recedes and diminishes to nothing, leaving creatures unharmed.\n\n{b}Destroying the Stone.{/b} Though the stone can be divided into smaller artifacts, it is impervious to most damage. Only the smith attuned to the stone can carve it. Destroying the lesser artifacts (and their creations) does not damage the stone itself.\n\nIf the stone is taken to the Elemental Chaos or is hit by a forked, metal rod attuned to the Elemental Chaos (like the forks described in the {i}plane shift{/i} spell), the chip is destroyed. The stone then shatters into harmless, ordinary rock shards. Places created by the slab&apos;s chips and keystones crumble, decay, or fade away to nothing when the stone is destroyed." compset="Wondrous">
+    <usesource source="5CAitFR"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAB" name="Major Beneficial Artifact Properties Eligible"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="gTooMason">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <eval phase="First">perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax1].value += 2
+focus.field[cfgMax2].value += 1</eval>
+    <eval phase="Final" index="3"><![CDATA[if (tagcount[Custom.5CAPIB] >= 2) then
+perform delete[Custom.5CAPEIB]
+endif
+if (tagcount[Custom.5CAPAB] >= 1) then
+perform delete[Custom.5CAPEAB]
+endif]]></eval>
+    </thing>
+  <thing id="c5CKystBen" name="Keystone Beneficial Manifestations" description="Each place or structure conjured by a Keystone of Creation has special, unforeseen manifestations that affect its makeup and appearance. These manifestations may be beneficial or detrimental. They change each time a keystone is used to conjure a structure or place. The DM may roll or choose from the options available, or create unique manifestations based on the specific creations being conjured.\n\n{b}Beneficial Manifestations{/b}{font Courier New}\n{b}d100    Manifestation{/b}{back FFFFFF}\n01-20   Your creation has a pleasant smell, even with no actual source.{back 010101}\n21-30   You can take 1 minute to dispel any lightly obscuring conditions within 120 feet in your creation.{back FFFFFF}\n31-40   Within your creation, you can cast the {i}create food and water{/i} once per day, needing no spell slot.{back 010101}\n41-50   While within the creation, you can understand any language spoken within 30 feet of you.{back FFFFFF}\n51-60   You can decide whether beasts find your creation appealing or off-putting.{back 010101}\n61-70   At the time of its creation, you can decide what weather is possible within your creation.{back FFFFFF}\n71-80   While within your creation, you are immune to the charmed and frightened conditions.{back 010101}\n81-90   All structures in your creation have an extra 2 AC.{back FFFFFF}\n91-00   You have advantage on your passive Perception score while within your creation.{back 010101}{revert}" compset="CustomSpec" uniqueness="unique">
+    <arrayval field="usrArray" index="0" value="Pleasant smell"/>
+    <arrayval field="usrArray" index="1" value="Dispel obscurement"/>
+    <arrayval field="usrArray" index="2" value="Create food and water"/>
+    <arrayval field="usrArray" index="3" value="Understand languages"/>
+    <arrayval field="usrArray" index="4" value="Beasts&apos; reaction"/>
+    <arrayval field="usrArray" index="5" value="Weather"/>
+    <arrayval field="usrArray" index="6" value="Charm and fright immune"/>
+    <arrayval field="usrArray" index="7" value="+2 AC"/>
+    <arrayval field="usrArray" index="8" value="Passive perception"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    </thing>
+  <thing id="c5CKystDet" name="Keystone Detrimental Manifestations" description="Each place or structure conjured by a Keystone of Creation has special, unforeseen manifestations that affect its makeup and appearance. These manifestations may be beneficial or detrimental. They change each time a keystone is used to conjure a structure or place. The DM may roll or choose from the options available, or create unique manifestations based on the specific creations being conjured.\n\n{b}Detrimental Manifestations{/b}{font Courier New}\n{b}d100    Manifestation{/b}\n{back FFFFFF}01-20   Your creation has an unpleasant smell, even with no actual source.\n{back 010101}21-30   Your creation tends to have haze, fog, and other lightly obscuring conditions.\n{back FFFFFF}31-40   Your creation has uncommonly long days or nights (decided by the DM).\n{back 010101}41-50   Structures in your creation have no windows, only arrow loops.\n{back FFFFFF}51-60   Beasts either infest or avoid your creation (decided by the DM).\n{back 010101}61-70   Your creation has strange weather patterns (DM determines what and when).\n{back FFFFFF}71-80   All DCs to detect or track creatures within your creation have a +2.\n{back 010101}81-90   All structures in your creation have a -2 AC.\n{back FFFFFF}91-00   You have disadvantage on your passive Perception score while within your creation.\n{back 010101}{revert}" compset="CustomSpec" uniqueness="unique">
+    <arrayval field="usrArray" index="0" value="Unpleasant smell"/>
+    <arrayval field="usrArray" index="1" value="Obscurement"/>
+    <arrayval field="usrArray" index="2" value="Long days"/>
+    <arrayval field="usrArray" index="3" value="Long nights"/>
+    <arrayval field="usrArray" index="4" value="Arrow loops"/>
+    <arrayval field="usrArray" index="5" value="Beast infestation"/>
+    <arrayval field="usrArray" index="6" value="Beast avoidance"/>
+    <arrayval field="usrArray" index="7" value="Strange weather"/>
+    <arrayval field="usrArray" index="8" value="+2 creature finding DC"/>
+    <arrayval field="usrArray" index="9" value="-2 AC"/>
+    <arrayval field="usrArray" index="10" value="Passive perc. disadvantage"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    </thing>
   </document>

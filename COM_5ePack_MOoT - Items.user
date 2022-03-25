@@ -1,0 +1,907 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="io5CMgcFlc" name="Magic Fleece" description="This garment is made from the carefully-sheared fleece of a Nyx-fleece ram. Once attuned to and worn, it provides one of the following benefits:\n\n{b}Protection.{/b} You gain a +1 bonus to your AC and saving throws.\n{b}Power of Nyx.{/b} You have advantage on all Charisma (Persuasion) checks.\n{b}Calming Presence.{/b} You can cast {i}calm emotions{/i} once per day (with a save DC of 13).\n{b}Trail of Flowers.{/b} Wherever you walk, flowers sprout up magically behind you. They wilt away after 1 hour.\n{b}Animal Affinity.{/b} Unless you are evil, you can cast {i}animal friendship{/i} once per day (with a save DC of 13).\n{b}Abundance of Food.{/b} You can cast {i}create food and water{/i} once per day." compset="Wondrous">
+    <fieldval field="usrLabelAr" value="Benefit"/>
+    <arrayval field="usrArray" index="0" value="(not selected)"/>
+    <arrayval field="usrArray" index="1" value="1 - Protection"/>
+    <arrayval field="usrArray" index="2" value="2 - Power of Nyx"/>
+    <arrayval field="usrArray" index="3" value="3 - Calming Presence"/>
+    <arrayval field="usrArray" index="4" value="4 - Trail of Flowers"/>
+    <arrayval field="usrArray" index="5" value="5 - Animal Affinity"/>
+    <arrayval field="usrArray" index="6" value="6 - Abundance of Food"/>
+    <usesource source="5eMOoTCP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="User" tag="NoAutoName"/>
+    <bootstrap thing="spCalmEmot">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex = 3]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="save DC 13"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spAnimFrie">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex = 5]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="save DC 13"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCreaFood">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0 & fieldval:usrIndex = 6]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[doneif (field[usrIndex].value = 0)
+
+field[CustDesc].text = "This garment is made from the carefully-sheared fleece of a Nyx-fleece ram. Once attuned to and worn, it provides this benefit:\n\n"
+
+if (field[usrIndex].value = 1) then
+    field[CustDesc].text &= "{b}Protection.{/b} You gain a +1 bonus to your AC and saving throws."
+
+elseif (field[usrIndex].value = 2) then
+    field[CustDesc].text &= "{b}Power of Nyx.{/b} You have advantage on all Charisma (Persuasion) checks."
+
+elseif (field[usrIndex].value = 3) then
+    field[CustDesc].text &= "{b}Calming Presence.{/b} You can cast {i}calm emotions{/i} once per day (with a save DC of 13)."
+
+elseif (field[usrIndex].value = 4) then
+    field[CustDesc].text &= "{b}Trail of Flowers.{/b} Wherever you walk, flowers sprout up magically behind you. They wilt away after 1 hour."
+
+elseif (field[usrIndex].value = 5) then
+    field[CustDesc].text &= "{b}Animal Affinity.{/b} Unless you are evil, you can cast {i}animal friendship{/i} once per day (with a save DC of 13)."
+
+elseif (field[usrIndex].value = 6) then
+    field[CustDesc].text &= "{b}Abundance of Food.{/b} You can cast {i}create food and water{/i} once per day."
+
+    endif]]></eval>
+    <eval phase="PreLevel" priority="5000" index="2"><![CDATA[
+      doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      if (field[usrIndex].value = 1) then
+        hero.child[ArmorClass].field[Bonus].value += 1
+        hero.child[svAll].field[Bonus].value += 1
+        endif
+
+      if (field[usrIndex].value = 2) then      
+        #situational[hero.child[skPersuas],"Advantage",field[thingname].text]
+        endif]]></eval>
+    </thing>
+  <thing id="i5CAkmon" name="Akmon, Hammer of Purphoros" description="{b}Hammer of the Forge{/b}. This magic warhammer grants a +3 bonus to attack and damage rolls made with it. When you hit with an attack using it, the target takes an additional 3d10 fire damage.\n\n{b}Blessing of the Forge{/b}. If you aren&apos;t a worshiper of Purphoros, the hammer has 2 randomly determined minor detrimental properties. If you are a worshiper of Purphoros, you gain all the below piety benefits, so long as you have the piety required:\n{b}Piety 10+{/b}. The hammer has 1 randomly determined minor beneficial property.\n{b}Piety 25+{/b}. The hammer has 1 randomly determined major beneficial property.\n{b}Piety 50+{/b}. The hammer has another randomly determined major beneficial property.\nSee the Artifacts section in chapter 7 of the DMG for more information on randomly determined properties. Use the Artifact Properties tab to select the properties, and associate each property with this artifact once selected.\n\n{b}Reforged{/b}. While holding the hammer, you are resistant to fire damage and immune to exhaustion. Also, you are proficient with smith&apos;s tools and have advantage on all ability checks made using them.\n\n{b}Spells{/b}. While the hammer is on you, you can use an action to cast one of these spells (save DC 18): {i}animate objects{/i}, {i}heat metal{/i}, {i}fabricate{/i}, {i}magic weapon{/i}, {i}mending{/i}, {i}shatter{/i}. Once you use the hammer to cast a spell, that spell can&apos;t be cast from it again until the next dusk.\n\n{b}Destroying the Hammer{/b}. Consult your DM or the Mythic Odysseys of Theros sourcebook for details on destroying this artifact.\n\n\n{b}{i}Hero Lab Note{/i}{/b}. If your DM is allowing you to gain the Piety benefits of this weapon without worshipping its deity, add the &quot;Ignore Theros Artifact Restrictions&quot; adjustment to your character." compset="MagicWep">
+    <fieldval field="Bonus" value="3"/>
+    <fieldval field="wDamExtra" value=" + 3d10 fire"/>
+    <fieldval field="miTypeDet" value="warhammer"/>
+    <usesource source="5eMOoTCP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <bootstrap thing="ab5CPiety"></bootstrap>
+    <bootstrap thing="gTooSmith">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Proficienc" tag="Tool"/>
+      </bootstrap>
+    <bootstrap thing="spShatter">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Save DC 18"/>
+      </bootstrap>
+    <bootstrap thing="spAnimObje">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spHeatMeta">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Save DC 18"/>
+      </bootstrap>
+    <bootstrap thing="spFabricat">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMagiWeap">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMending">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <eval phase="First" priority="10"><![CDATA[doneif (hero.childlives[dei5CThPurp] <> 0)
+
+field[abValue].value = 1]]></eval>
+    <eval phase="Render" index="2"><![CDATA[
+     ~ If we're disabled, do nothing & 
+     doneif (tagis[Helper.Disable] = 1)
+     doneif (field[gIsAttuned].value = 0)
+
+     foreach pick in hero from Tool where "thingid.gTooSmith"
+       #situational[eachpick,"Advantage",field[thingname].text]
+       eachpick.field[CustDesc].text = "{b}Akmon, Hammer of Purphoros{/b}: Advantage\n\n" & eachpick.field[descript].text 
+
+      nexteach]]></eval>
+    <eval phase="First" priority="102" index="5"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value = 0)
+
+
+perform hero.childfound[cfg5CArtPrp].setfocus
+
+focus.field[cfgMax3].value += 2]]></eval>
+    <eval phase="First" index="4"><![CDATA[     ~ If we're disabled, do nothing & 
+     doneif (tagis[Helper.Disable] = 1)
+     doneif (field[gIsEquip].value = 0)
+     doneif (field[gIsAttuned].value = 0)
+
+     perform hero.assign[DamageRes.dtFire]
+     perform hero.assign[CondImm.pcnExhaust]]]></eval>
+    <eval phase="First" priority="102" index="6"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value <> 0)
+perform hero.childfound[cfg5CArtPrp].setfocus
+
+if (hero.tagis[5CPiety.10] <> 0) then
+     perform assign[Custom.5CAPEIB]
+     focus.field[cfgMax1].value += 1
+     endif
+if (hero.tagis[5CPiety.25] <> 0) then
+     perform assign[Custom.5CAPEAB]
+     focus.field[cfgMax2].value += 1
+     endif
+if (hero.tagis[5CPiety.50] <> 0) then
+     focus.field[cfgMax2].value += 1
+     endif]]></eval>
+    <eval phase="Final" index="7"><![CDATA[var MaBe as number
+Var MiBe as number
+
+if (hero.tagis[5CPiety.10] <> 0) then
+     MiBe += 1
+     endif
+if (hero.tagis[5CPiety.25] <> 0) then
+     MaBe += 1
+     endif
+if (hero.tagis[5CPiety.50] <> 0) then
+     MaBe += 1
+     endif
+if (tagcount[Custom.5CAPAB] >= MaBe) then
+    perform delete[Custom.5CAPEAB]
+    endif
+if (tagcount[Custom.5CAPIB] >= MiBe) then
+    perform delete[Custom.5CAPEIB]
+    endif]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wWarhammer"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CDekella" name="Dekella, Bident of Thassa" description="{b}Bident of the Deep{/b}. This weapon functions as a trident that grants a +3 bonus to attack and damage rolls made with it. When you hit with an attack using the bident, the target takes an additional 2d10 cold damage.\n\n{b}Blessing of the Deep{/b}. If you aren&apos;t a worshiper of Thassa, the bident has 1 minor detrimental property and 1 major detrimental property, both randomly determined. If you are a worshiper of Thassa, you gain all the below piety benefits, so long as you have the piety required:\n{b}Piety 10+{/b}. You can breathe underwater, and you gain a swimming speed of 60 feet.\n{b}Piety 25+{/b}. The bident has 1 randomly determined minor beneficial property.\n{b}Piety 50+{/b}. The bident has 1 randomly determined major beneficial property.\nSee the Artifacts section in chapter 7 of the DMG for more information on randomly determined properties. Use the Artifact Properties tab to select the properties, and associate each property with this artifact once selected.\n\n{b}Command the Deep{/b}. You can use an action to change the condition of the sea within 1 mile of you, such as creating a violent, roiling storm or calming one. Regardless, the unnatural weather lasts for 1 hour before returning to normal. Once used, this property of the bident can&apos;t be used again until the next dusk.\nAdditionally, you can cast {i}dominate monster{/i} spell from the bident, but only on beasts and monstrosities with innate swimming speeds. Once used, this property of the bident can&apos;t be used again until the next dusk.\n\n{b}Aquatic Metamorphosis{/b}. You can cast {i}true polymorph{/i} (save DC 18) from the bident, but you must use it to turn the target creature into another creature with an innate swimming speed. Once used, this property of the bident can&apos;t be used again until the next dusk.\n\n\n{b}{i}Hero Lab Note{/i}{/b}. If your DM is allowing you to gain the Piety benefits of this weapon without worshipping its deity, add the &quot;Ignore Theros Artifact Restrictions&quot; adjustment to your character." compset="MagicWep">
+    <fieldval field="Bonus" value="3"/>
+    <fieldval field="miTypeDet" value="trident"/>
+    <fieldval field="wDamExtra" value=" + 2d10 cold"/>
+    <usesource source="5eMOoTCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spDomiMons">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="see Dekella"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="trk5CCmdDp">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="xSwim">
+      <containerreq phase="First" priority="200"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:abValue = 0 & hero#5CPiety.10 <> 0]]></containerreq>
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="ra5CEEAmph">
+      <containerreq phase="First" priority="200"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:abValue = 0 & hero#5CPiety.10 <> 0]]></containerreq>
+      <assignval field="sbName" value="Blessing of the Deep"/>
+      <assignval field="livename" value="Blessing of the Deep"/>
+      </bootstrap>
+    <bootstrap thing="spTruePoly">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="see Dekella, Save DC 18"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="ab5CPiety"></bootstrap>
+    <eval phase="First" priority="102" index="4"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value <> 0)
+perform hero.childfound[cfg5CArtPrp].setfocus
+
+
+if (hero.tagis[5CPiety.25] <> 0) then
+     perform assign[Custom.5CAPEIB]
+     focus.field[cfgMax1].value += 1
+     endif
+if (hero.tagis[5CPiety.50] <> 0) then
+     perform assign[Custom.5CAPEAB]
+     focus.field[cfgMax2].value += 1
+     endif]]></eval>
+    <eval phase="Final" index="5"><![CDATA[var MaBe as number
+Var MiBe as number
+
+if (hero.tagis[5CPiety.25] <> 0) then
+     MiBe += 1
+     endif
+if (hero.tagis[5CPiety.50] <> 0) then
+     MaBe += 1
+     endif
+if (tagcount[Custom.5CAPAB] >= MaBe) then
+    perform delete[Custom.5CAPEAB]
+    endif
+if (tagcount[Custom.5CAPIB] >= MiBe) then
+    perform delete[Custom.5CAPEIB]
+    endif]]></eval>
+    <eval phase="First" priority="10" index="2"><![CDATA[doneif (hero.childlives[dei5CThThas] <> 0)
+
+field[abValue].value = 1]]></eval>
+    <eval phase="First" priority="102" index="3"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value = 0)
+
+perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax3].value += 1
+focus.field[cfgMax4].value += 1]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wTrident"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CEphixis" name="Ephixis, Bow of Nylea" description="{b}{/b}Bow of the Wild. This divine weapon includes a shortbow and a quiver with four arrows, each one representing a different season. You gain a +3 bonus to attack and damage rolls made with this bow, and attacking at the weapon&apos;s long range imposes no disadvantage. Additionally, the bow scores a critical hit on a d20 roll of 19 or 20.\n\n{b}Blessing of the Wild{/b}. If you aren&apos;t a worshiper of Nylea, the bow has 1 randomly determined major detrimental property. If you are a worshiper of Nylea, you gain all the below piety benefits, so long as you have the piety required:\n{b}Piety 10+{/b}. The bow has 1 randomly determined minor beneficial property.\n{b}Piety 25+{/b}. The bow has 1 randomly determined major beneficial property.\nSee the Artifacts section in chapter 7 of the DMG for more information on randomly determined properties. Use the Artifact Properties tab to select the properties, and associate each property with this artifact once selected.\n\n{b}Arrows of the Seasons{/b}. The four arrows that accompany this bow cannot be fired from any other bow. Each arrow disappears immediately after it&apos;s used, and it reappears in the quiver at the next dusk. The arrows&apos; spell save DC is 18. Each arrow represents a season, and each has a unique property:\n{b}Spring.{/b} You can use an action to fire this arrow at a beast or a plant creature you can see within 320 feet of you. On a hit, the arrow deals no damage, and the target gains the benefits of the {i}awaken{/i} spell for 8 hours.\n{b}Summer.{/b} You can use an action to fire this arrow at an open space on the ground that you can see within 320 feet of you, requiring no attack roll. A Nyxborn lynx is summoned in that space (you can add this creature through the Encounter Builder). The lynx understands your verbal commands and obeys them as best it can, and it takes its turns immediately after yours. It fades away after 1 hour.\n{b}Autumn.{/b} You can use an action to fire this arrow at a space on the ground that you can see within 320 feet of you, requiring no attack roll. Doing so casts {i}wall of thorns{/i} in that spot.\n{b}Winter.{/b} You can use an action to fire this arrow at a space that you can see within 320 feet of you, requiring no attack roll. Doing so casts {i}ice storm{/i} in that spot.\n\n\n{b}{i}Hero Lab Note{/i}{/b}. If your DM is allowing you to gain the Piety benefits of this weapon without worshipping its deity, add the &quot;Ignore Theros Artifact Restrictions&quot; adjustment to your character." compset="MagicWep">
+    <fieldval field="Bonus" value="3"/>
+    <fieldval field="miTypeDet" value="shortbow"/>
+    <usesource source="5eMOoTCP"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="trk5CEphxWi">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CEphxSu">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CEphxAu">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="trk5CEphxSp">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="g5CEphxQvr"></bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="ab5CPiety"></bootstrap>
+    <eval phase="First" priority="102" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value = 0)
+
+perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax4].value += 1]]></eval>
+    <eval phase="First" priority="102" index="3"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value <> 0)
+perform hero.childfound[cfg5CArtPrp].setfocus
+
+if (hero.tagis[5CPiety.10] <> 0) then
+     perform assign[Custom.5CAPEIB]
+     focus.field[cfgMax1].value += 1
+     endif
+if (hero.tagis[5CPiety.25] <> 0) then
+     perform assign[Custom.5CAPEAB]
+     focus.field[cfgMax2].value += 1
+     endif]]></eval>
+    <eval phase="Final" index="4"><![CDATA[var MaBe as number
+Var MiBe as number
+
+if (hero.tagis[5CPiety.10] <> 0) then
+     MiBe += 1
+     endif
+if (hero.tagis[5CPiety.25] <> 0) then
+     MaBe += 1
+     endif
+
+if (tagcount[Custom.5CAPAB] >= MaBe) then
+    perform delete[Custom.5CAPEAB]
+    endif
+if (tagcount[Custom.5CAPIB] >= MiBe) then
+    perform delete[Custom.5CAPEIB]
+    endif]]></eval>
+    <eval phase="First" priority="10"><![CDATA[doneif (hero.childlives[dei5CThNyle] <> 0)
+
+field[abValue].value = 1]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wShortbow">
+        <assignval field="wRangeNorm" value="320"/>
+        </bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CKhrusor" name="Khrusor, Spear of Heliod" description="{b}Spear of the Sun{/b}. This spear grants a +3 bonus to attack and damage rolls made with it. When you hit with an attack using this spear, the target takes an additional 2d8 radiant damage.\n\n{b}Blessing of the Sun{/b}Blessing of the Sun. If you aren&apos;t a worshiper of Heliod, the spear has 2 randomly determined major detrimental properties. If you are a worshiper of Heliod, you gain all the below piety benefits, so long as you have the piety required:\n{b}Piety 3+{/b}. You gain 15 temporary hit points each dawn.\n{b}Piety 10+{/b}. The spear has 1 randomly determined minor beneficial property.\n{b}Piety 25+{/b}. The spear has another randomly determined minor beneficial property.\n{b}Piety 50+{/b}. The spear has 1 randomly determined major beneficial property.\nSee the Artifacts section in chapter 7 of the DMG for more information on randomly determined properties. Use the Artifact Properties tab to select the properties, and associate each property with this artifact once selected.\n\n{b}Luminous{/b}. The spear sheds bright sunlight in a 30-foot radius and dim sunlight for another 30 feet.\n\n{b}Sun&apos;s Retaliation{/b}. When you suffer damage from a creature within 5 feet of you, you can take a reaction to make a melee attack with the spear against that creature. On a hit, the spear deals its normal damage, and the creature is blinded until the beginning of its next turn. This property of the spear can&apos;t be used again until the next dawn.\n\n{b}Spells{/b}. The spear has 10 charges, regaining 1d6+4 spent charges each dawn. While holding it, you can use an action to spend 1 or more of its charges to cast one of these spells (save DC 18) from it: guiding bolt (1 charge), daylight (3 charges, targeting the tip of the spear only), sunbeam (6 charges).\n\n\n{b}{i}Hero Lab Note{/i}{/b}. If your DM is allowing you to gain the Piety benefits of this weapon without worshipping its deity, add the &quot;Ignore Theros Artifact Restrictions&quot; adjustment to your character." compset="MagicWep">
+    <fieldval field="Bonus" value="3"/>
+    <fieldval field="miTypeDet" value="spear"/>
+    <fieldval field="trkMax" value="9"/>
+    <fieldval field="wDamExtra" value=" + 2d8 radiant"/>
+    <usesource source="5eMOoTCP"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <bootstrap thing="spGuidBolt">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="spDaylight">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <autotag group="ChargeUse" tag="3"/>
+      <assignval field="sNameMod" value="Khrusor&apos;s tip"/>
+      </bootstrap>
+    <bootstrap thing="spSunbeam">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      <autotag group="ChargeUse" tag="6"/>
+      <assignval field="sNameMod" value="Save DC 18"/>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="trk5CSunRet">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <bootstrap thing="PoolWlkBls">
+      <containerreq phase="First" priority="105"><![CDATA[fieldval:abValue = 0 & hero#5CPiety.3 <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Value" tag="16"/>
+      <assignval field="livename" value="Blessing of the Sun"/>
+      </bootstrap>
+    <bootstrap thing="ab5CPiety"></bootstrap>
+    <eval phase="First" priority="102" index="3"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value = 0)
+
+perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax3].value += 2]]></eval>
+    <eval phase="First" priority="102" index="4"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value <> 0)
+perform hero.childfound[cfg5CArtPrp].setfocus
+
+if (hero.tagis[5CPiety.10] <> 0) then
+     perform assign[Custom.5CAPEIB]
+     focus.field[cfgMax1].value += 1
+     endif
+if (hero.tagis[5CPiety.25] <> 0) then
+     focus.field[cfgMax1].value += 1
+     endif
+if (hero.tagis[5CPiety.50] <> 0) then
+     perform assign[Custom.5CAPEAB]
+     focus.field[cfgMax2].value += 1
+     endif]]></eval>
+    <eval phase="Final" index="5"><![CDATA[var MaBe as number
+Var MiBe as number
+
+if (hero.tagis[5CPiety.10] <> 0) then
+     MiBe += 1
+     endif
+if (hero.tagis[5CPiety.25] <> 0) then
+     MiBe += 1
+     endif
+if (hero.tagis[5CPiety.50] <> 0) then
+     MaBe += 1
+     endif
+if (tagcount[Custom.5CAPAB] >= MaBe) then
+    perform delete[Custom.5CAPEAB]
+    endif
+if (tagcount[Custom.5CAPIB] >= MiBe) then
+    perform delete[Custom.5CAPEIB]
+    endif]]></eval>
+    <eval phase="Final" priority="500" index="6"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+doneif (field[abValue].value <> 0)
+
+doneif (hero.tagis[5CPiety.3] = 0)
+
+hero.findchild[TempHpPool,"Value.16"].field[thpMinAllw].value = 15
+hero.findchild[TempHpPool,"Value.16"].field[thpMaxAllw].value = 15]]></eval>
+    <eval phase="PreLevel" priority="10000" index="2"><![CDATA[      doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      field[abText].text = "regains 1d6+4 at dawn"]]></eval>
+    <eval phase="First" priority="10"><![CDATA[doneif (hero.childlives[dei5CThHeli] <> 0)
+
+field[abValue].value = 1]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wSpear"></bootstrap>
+      </child>
+    </thing>
+  <thing id="i5CMastix" name="Mastix, Whip of Erebos" description="{b}Whip of the Dead{/b}. This magic whip grants a +3 bonus to attack and damage rolls made with it. When you hit with an attack using it, the target takes an additional 2d8 necrotic damage and you regain hit points equal to half the amount of necrotic damage dealt.\nAdditionally, when you make an attack with the whip on your turn, you can increase the range of the attack to 300 feet. This property of the weapon can&apos;t be used again until the next dusk.\n\n{b}Blessing of the Dead{/b}. If you aren&apos;t a worshiper of Erebos, the whip has 2 randomly determined major detrimental properties. If you are a worshiper of Erebos, you gain all the below piety benefits, so long as you have the piety required:\n{b}Piety 1+{/b}. The whip has 1 randomly determined minor detrimental property.\n{b}Piety 25+{/b}. The whip has 1 randomly determined major beneficial property.\n{b}Piety 50+{/b}. The whip has another randomly determined major beneficial property.\nSee the Artifacts section in chapter 7 of the DMG for more information on randomly determined properties. Use the Artifact Properties tab to select the properties, and associate each property with this artifact once selected.\n\n{b}Erebos&apos;s Claim{/b}. While carrying the whip, you can use an action to cast either {i}circle of death{/i} or {i}dominate monster{/i} (targeting only undead) from the whip (both with save DC 18). Once you have used the whip to cast a spell, that spell can&apos;t be cast from the whip again until the next dusk.\n\n{b}Destroying the Whip{/b}. Consult your DM or the Mythic Odysseys of Theros sourcebook for details on destroying this artifact.\n\n\n{b}{i}Hero Lab Note{/i}{/b}. If your DM is allowing you to gain the Piety benefits of this weapon without worshipping its deity, add the &quot;Ignore Theros Artifact Restrictions&quot; adjustment to your character." compset="MagicWep">
+    <fieldval field="Bonus" value="3"/>
+    <fieldval field="miTypeDet" value="whip"/>
+    <fieldval field="wDamExtra" value=" + 2d8 necrotic"/>
+    <usesource source="5eMOoTCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <bootstrap thing="spDomiMons">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="Undead only, save DC 18"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCircDeat">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="Save DC 18"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="ab5CPiety"></bootstrap>
+    <bootstrap thing="trk5CMstxExt">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:gIsAttuned <> 0]]></containerreq>
+      </bootstrap>
+    <eval phase="First" priority="10"><![CDATA[doneif (hero.childlives[dei5CThEreb] <> 0)
+
+field[abValue].value = 1]]></eval>
+    <eval phase="First" priority="102" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value = 0)
+
+perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax3].value += 2]]></eval>
+    <eval phase="First" priority="102" index="3"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[abValue].value <> 0)
+
+perform hero.childfound[cfg5CArtPrp].setfocus
+if (hero.tagis[5CPiety.1] <> 0) then
+     perform assign[Custom.5CAPEID]
+     focus.field[cfgMax3].value += 1
+     endif
+
+if (hero.tagis[5CPiety.25] <> 0) then
+     perform assign[Custom.5CAPEAB]
+     focus.field[cfgMax2].value += 1
+     endif
+if (hero.tagis[5CPiety.50] <> 0) then
+     focus.field[cfgMax2].value += 1
+     endif]]></eval>
+    <eval phase="Final" index="4"><![CDATA[var MaBe as number
+var MiDe as number
+
+if (hero.tagis[5CPiety.1] <> 0) then
+     MiDe += 1
+     endif
+if (hero.tagis[5CPiety.25] <> 0) then
+     MaBe += 1
+     endif
+if (hero.tagis[5CPiety.50] <> 0) then
+     MaBe += 1
+     endif
+if (tagcount[Custom.5CAPAB] >= MaBe) then
+    perform delete[Custom.5CAPEAB]
+    endif
+if (tagcount[Custom.5CAPID] >= MiDe) then
+    perform delete[Custom.5CAPEID]
+    endif]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wWhip"></bootstrap>
+      </child>
+    </thing>
+  <thing id="io5CHlmGds" name="Helm of the Gods" description="While wearing this helm, you know whether there is a celestial or fiend within 30 feet of you, including its location, unless the creature is behind total cover.\nWhenever you complete a long rest while wearing the helm, you can pray to one of the gods listed in the table below, storing the corresponding spell in the helm. Any spell already stored there is replaced.\nThe helm has 3 charges, regaining 1d3 charges each dawn. To cast a spell from the helm (save DC 13), you must spend 1 charge.\n{back FFFFFF}\n{font Courier New}{b}God         Spell{/b}{back 010101}\nAthreos     protection from evil and good{back FFFFFF}\nEphara      sanctuary{back 010101}\nErebos      inflict wounds{back FFFFFF}\nHeliod      guiding bolt{back 010101}\nIroas       heroism{back FFFFFF}\nKarametra   goodberry{back 010101}\nKeranos     thunderous smite{back FFFFFF}\nKlothys     entangle{back 010101}\nKruphix     dissonant whispers{back FFFFFF}\nMogis       hellish rebuke{back 010101}\nNylea       faerie fire{back FFFFFF}\nPharika     lesser restoration{back 010101}\nPhenax      charm person{back FFFFFF}\nPurphoros   searing smite{back 010101}\nThassa      identify\n{revert}" compset="Wondrous">
+    <fieldval field="trkMax" value="3"/>
+    <arrayval field="usrArray" index="0" value="Athreos"/>
+    <arrayval field="usrArray" index="1" value="Ephara"/>
+    <arrayval field="usrArray" index="2" value="Erebos"/>
+    <arrayval field="usrArray" index="3" value="Heliod"/>
+    <arrayval field="usrArray" index="4" value="Iroas"/>
+    <arrayval field="usrArray" index="5" value="Karametra"/>
+    <arrayval field="usrArray" index="6" value="Keranos"/>
+    <arrayval field="usrArray" index="7" value="Klothys"/>
+    <arrayval field="usrArray" index="8" value="Kruphix"/>
+    <arrayval field="usrArray" index="9" value="Mogis"/>
+    <arrayval field="usrArray" index="10" value="Nylea"/>
+    <arrayval field="usrArray" index="11" value="Pharika"/>
+    <arrayval field="usrArray" index="12" value="Phenax"/>
+    <arrayval field="usrArray" index="13" value="Purphoros"/>
+    <arrayval field="usrArray" index="14" value="Thassa"/>
+    <usesource source="5eMOoTCP"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Charges"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="User" tag="NoAutoName"/>
+    <bootstrap thing="spSanctuar">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 1]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <assignval field="sNameMod" value="save DC 13"/>
+      </bootstrap>
+    <bootstrap thing="spInflWoun">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 2]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="spGuidBolt">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 3]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="spHeroism">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 4]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="spGoodberr">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 5]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="sp5CThunSm">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 6]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="spEntangle">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 7]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <assignval field="sNameMod" value="save DC 13"/>
+      </bootstrap>
+    <bootstrap thing="sp5CDissW">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 8]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <assignval field="sNameMod" value="save DC 13"/>
+      </bootstrap>
+    <bootstrap thing="sp5CHelliR">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 9]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <assignval field="sNameMod" value="save DC 13"/>
+      </bootstrap>
+    <bootstrap thing="spFaerFire">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 10]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <assignval field="sNameMod" value="save DC 13"/>
+      </bootstrap>
+    <bootstrap thing="spLessRest">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 11]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="spCharPers">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 12]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <assignval field="sNameMod" value="save DC 13"/>
+      </bootstrap>
+    <bootstrap thing="sp5CSearSm">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 13]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <assignval field="sNameMod" value="save DC 13"/>
+      </bootstrap>
+    <bootstrap thing="spIdentify">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 14]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="spProtGoEv">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0 & fieldval:gIsEquip <> 0 & fieldval:usrIndex = 0]]></containerreq>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      </bootstrap>
+    <eval phase="PreLevel" priority="10000"><![CDATA[doneif (field[gIsEquip].value = 0)
+      field[abText].text = "regains 1d3 at dawn"
+
+
+      perform assign[Helper.ShowSpec]]]></eval>
+    </thing>
+  <thing id="io5CPyxis" name="Pyxis of Pandemonium" description="A creature that touches this ornate wooden vessel for 1 minute gains the benefits of a short rest. That creature also gains the effects of the {i}bless{/i} spell until the creature completes a short or long rest. Once a creature has gained these benefits, it cannot do so again until it completes a long rest.\n\nIf the vessel is opened, roll a d8. The numbered effect below corresponding to the number rolled occurs. Any spells cast by the vessel have a spell save DC of 17. One minute after the vessel is opened, it disappears, then reappears, sealed, in a random location on the same plane of existence once 24 hours have passed.\n\n{b}Curse{/b}. Any creature that gains the short rest benefit from the vessel hears whispers in their mind, emanating from the vessel. That creature must make a DC 17 Wisdom save. On a failure, the creature is charmed by the vessel for 1 hour. The charmed creature does everything it can to open the vessel as soon as possible. On a successful save, the creature is immune to the vessel&apos;s whispers for 24 hours.\n\n{b}Calamity{/b}\n{b}1 - Androphagia{/b}. Each creature within 60 feet of the vessel must make a DC 17 Wisdom save, going berserk for 1 minute on a failure. A berserk creature must start its turn using the Attack action to make one melee or ranged attack (its choice) against the closest creature. The berserk creature can repeat the save at the end of its turn, ending the effect for itself on a success.\n{b}2 - Bile Blight{/b}. The vessel casts {i}harm{/i} on every creature within 30 feet of it.\n{b}3 - Flood{/b}. The vessel casts {i}tsunami{/i} at a point within 120 feet of it, chosen by the DM.\n{b}4 - Medusa&apos;s Gaze{/b}. The vessel casts {i}flesh to stone{/i} on every creature within 30 feet of it.\n{b}5 - Labyrinth{/b}. The vessel casts {i}maze{/i} on every creature within 30 feet of it.\n{b}6 - Nightmare{/b}. Shadowy tendrils reach out of the vessel and coalesce into 1d4 hostile shadow demons (see the MM for their stats), which appear in open spaces within 30 feet of it.\n{b}7 - Swarming Insects{/b}. The vessel casts {i}insect plague{/i}, centered on itself and with a radius of 30 feet.\n{b}8 - Unbridled Revel{/b}. The vessel casts {i}irresistible dance{/i} on every creature within 30 feet of it." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eMOoTCP"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="CursedItem"/>
+    <tag group="Usage" tag="LongRest"/>
+    </thing>
+  <thing id="io5CSrnSngL" name="Siren Song Lyre" description="You can use an action to play this lyre and cast one these spells from it: {i}animal friendship{/i}, {i}charm person{/i}, {i}enthrall{/i}, {i}suggestion{/i}. If the spell requires a saving throw, its spell save DC is 13.\n\nOnce a spell has been cast from the instrument, that spell cannot be cast from it again until the next dawn." compset="Wondrous">
+    <usesource source="5eMOoTCP"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spEnthrall">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="Save DC 13"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spSuggesti">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="Save DC 13"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="sp5CAnimFr">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="Save DC 13"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCharPers">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsAttuned <> 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="Save DC 13"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="i5C2BrdSlg" name="Two-Birds Sling" description="You have a +1 bonus to attack and damage rolls made with this sling. When you make a ranged attack with it and hit a target, you can cause the ammunition to ping off the target toward a second target within 10 feet of the first. You then make a ranged attack against the second target." compset="MagicWep">
+    <comment>s</comment>
+    <fieldval field="miTypeDet" value="sling"/>
+    <fieldval field="Bonus" value="1"/>
+    <usesource source="5eMOoTCP"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wSling"></bootstrap>
+      </child>
+    </thing>
+  <thing id="ip5CPtAqFrm" name="Potion of Aqueous Form" description="Drinking this potion transforms you into a pool of water. You return to your true form after 10 minutes or if you are incapacitated or die.\n\nYou&apos;re under the following effects while in this form:\n• {b}Liquid Movement{/b}. You have a swimming speed of 30 feet. You can move over or through other liquids. You can enter and occupy the space of another creature. You can rise up to your normal height, and you can pass through even Tiny openings. You extinguish nonmagical flames in any space you enter.\n• {b}Watery Resilience{/b}. You are resistant to nonmagical damage. You also have advantage on Strength, Dexterity, and Constitution saves.\n• {b}Limitations{/b}. You can&apos;t talk, attack, cast spells, or activate magic items. Any objects you were carrying or wearing meld into your new form and are not useable, though you continue to be affected by anything you&apos;re wearing, such as armor." compset="Potion">
+    <tag group="ItemRarity" tag="Rare"/>
+    </thing>
+  <thing id="io5CFlyChrt" name="Flying Chariot" description="Both the riders of the chariot and the creatures pulling it gain a +1 bonus to their AC. It can fly if one or more flying creatures is pulling it.\n\n{b}Chariots{/b}. Chariots and the creatures pulling them function like controlled mounts (see Mounted Combat in Chapter 9 of the PHB), but with these differences:\n• Mounting or dismounting a chariot costs you 5 feet of movement instead of half your speed.\n• The chariot grants you half cover while you&apos;re mounted on it.\n• The chariot&apos;s speed equals the speed of the slowest creature pulling it.\n• If multiple creatures are pulling the chariot, they all act on the same initiative, and they must take the same action on their turn." compset="Wondrous">
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipAvail"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <eval phase="PreLevel" priority="5000">doneif (field[gIsEquip].value = 0)
+
+      hero.child[ArmorClass].field[Bonus].value += 1</eval>
+    </thing>
+  <thing id="i5CMltBrnz" name="Molten Bronze Skin" description="This magical armor comes as a jug of molten bronze. The bronze adheres and contours to your skin when you attune to it. The armor can be worn under normal clothes without impeding bodily functions. Once you put it on, it can&apos;t be removed unless you choose to do so.\n\nWearing the armor grants you resistance to fire damage. The armor also doesn&apos;t impose disadvantage on Dexterity (Stealth) checks." compset="MagicArmor">
+    <fieldval field="gWeight" value="20"/>
+    <usesource source="5eMOoTCP"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <eval phase="Final" priority="20000" index="7"><![CDATA[
+      ~restrict the list to valid ones only
+      gizmo.child[gCustMagic].field[gItemExpr].text = "(thingid.mBrstplate | thingid.mHalfplate | thingid.mPlate)"
+
+
+      ~set our name based on the type of armor chosen
+      field[livename].text = "Molten Bronze "
+      perform gizmo.findchild[BaseArmor].setfocus
+      if (state.isfocus <> 0) then
+        field[livename].text &= titlecase(focus.field[name].text)
+      else
+        field[livename].text &= "Skin"
+        endif
+      field[shortname].text = field[livename].text
+      field[sbName].text = field[livename].text]]>
+      <after name="gItemExpr Set"/>
+      </eval>
+    <eval phase="PreLevel" priority="10000">doneif (field[gIsEquip].value = 0)
+doneif (field[gIsAttuned].value = 0)
+
+      perform hero.assign[DamageRes.dtFire]</eval>
+    <eval phase="Final" priority="20000" index="8">doneif (field[gIsAttuned].value = 0)
+
+~ remove the stealth disadvantage
+      perform delete[Helper.StealthDis]</eval>
+    <child entity="gMagArmor"></child>
+    </thing>
+  <thing id="c5CAlthBull1" name="1 - Banishment" description="A creature that takes damage from this bullet must make a DC 15 Charisma save. On a failure, it is banished as if affected by the {i}banishment{/i} spell.\n\nAfter the bullet hits the target and its effect occurs, the bullet loses its magic. If it misses the target, the effect does not occur and the bullet teleports back to the pouch." compset="CustomSpec" summary="DC 15 CHA save or be banished.">
+    <arrayval field="usrArray" index="0" value="Unused"/>
+    <arrayval field="usrArray" index="1" value="Used"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="AllowRCust" tag="cfg5CAlthBull"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Primary"/>
+    <eval phase="First"><![CDATA[if (field[usrIndex].value <> 0) then
+   field[abText].text = "(Used) "
+   endif
+
+field[livename].text = field[abText].text &  "Banishment"
+field[shortname].text = field[livename].text]]></eval>
+    </thing>
+  <thing id="cfg5CAlthBull" name="Althemone&apos;s Bullets" compset="Configure" uniqueness="unique">
+    <fieldval field="cfgMax1" value="1"/>
+    <fieldval field="cfgObject1" value="Bullets"/>
+    </thing>
+  <thing id="c5CAlthBull2" name="2 - Fulguration" description="On a hit, this bullet deals an additional 2d8 lightning damage to its target. All other creatures within 10 feet of the target must each make a DC 15 Constitution save, taking 1d8 thunder damage on a failure.\n\nAfter the bullet hits the target and its effect occurs, the bullet loses its magic. If it misses the target, the effect does not occur and the bullet teleports back to the pouch." compset="CustomSpec" summary="Extra lightning and thunder damage.">
+    <arrayval field="usrArray" index="0" value="Unused"/>
+    <arrayval field="usrArray" index="1" value="Used"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="AllowRCust" tag="cfg5CAlthBull"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Primary"/>
+    <eval phase="First"><![CDATA[if (field[usrIndex].value <> 0) then
+   field[abText].text = "(Used) "
+   endif
+
+field[livename].text = field[abText].text &  "Fulguration"
+field[shortname].text = field[livename].text]]></eval>
+    </thing>
+  <thing id="c5CAlthBull3" name="3 - Stunning" description="On a hit, this bullet deals an additional 1d10 force damage. The hit target is also stunned until the end of your next turn.\n\nAfter the bullet hits the target and its effect occurs, the bullet loses its magic. If it misses the target, the effect does not occur and the bullet teleports back to the pouch." compset="CustomSpec" summary="Force damage and stunning for a turn.">
+    <arrayval field="usrArray" index="0" value="Unused"/>
+    <arrayval field="usrArray" index="1" value="Used"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="AllowRCust" tag="cfg5CAlthBull"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Primary"/>
+    <eval phase="First"><![CDATA[if (field[usrIndex].value <> 0) then
+   field[abText].text = "(Used) "
+   endif
+
+field[livename].text = field[abText].text & "Stunning"
+field[shortname].text = field[livename].text]]></eval>
+    </thing>
+  <thing id="c5CAlthBull4" name="4 - Tracking" description="A creature that takes damage from this bullet is marked for 24 hours with a glowing rune in the spot where it was struck. While the creature is marked, you always know the direction to it.\n\nAfter the bullet hits the target and its effect occurs, the bullet loses its magic. If it misses the target, the effect does not occur and the bullet teleports back to the pouch." compset="CustomSpec" summary="Marks the target for easy tracking.">
+    <arrayval field="usrArray" index="0" value="Unused"/>
+    <arrayval field="usrArray" index="1" value="Used"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="AllowRCust" tag="cfg5CAlthBull"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="Primary"/>
+    <eval phase="First"><![CDATA[if (field[usrIndex].value <> 0) then
+   field[abText].text = "(Used) "
+   endif
+
+field[livename].text = field[abText].text & "Tracking"
+field[shortname].text = field[livename].text]]></eval>
+    </thing>
+  <thing id="io5CSlngAlth" name="Sling Bullets of Althemone" description="The sling bullets come in a pouch containing 1d4 + 4 bullets. \n\nSet the number of bullets from the In-Play tab. Roll a d4 for each bullet, using the Althemone&apos;s Bullets tab to choose the rolled property.\n\nYou have a +2 bonus to attack and damage rolls made with each of these bullets. If a bullet misses its target, that bullet teleports back into the pouch. Once a bullet has hit a target, the bullet loses its magic." compset="Wondrous">
+    <fieldval field="miTypeDet" value="sling bullet"/>
+    <fieldval field="actIncrNam" value="Bullets"/>
+    <fieldval field="actUserMin" value="5"/>
+    <fieldval field="actUserMax" value="8"/>
+    <usesource source="5eMOoTCP" parent="p5eBooks" name="Mythic Odysseys of Theros"/>
+    <tag group="ItemRarity" tag="VeryRare" name="Very Rare" abbrev="Very Rare"/>
+    <tag group="Helper" tag="UserAdjust" name="UserAdjust" abbrev="UserAdjust"/>
+    <tag group="Helper" tag="Ammo"/>
+    <bootstrap thing="cfg5CAlthBull"></bootstrap>
+    <eval phase="First">hero.childfound[cfg5CAlthBull].field[cfgMax1].value = field[actUser].value</eval>
+    </thing>
+  <thing id="p5CMootArtf" name="Ignore Theros Artifact Restrictions" description="Adding this adjustment causes the Artifact weapons from Mythic Odysseys of Theros to ignore their deity-specific requirements. They will still advance using your Piety score, regardless of your chosen deity." compset="InPlay">
+    <usesource source="5eMOoTCP"/>
+    <tag group="OthAdjCat" tag="Equipment"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <eval phase="First" priority="20">doneif (field[pIsOn].value = 0)
+
+hero.childfound[i5CAkmon].field[abValue].value = 0
+hero.childfound[i5CDekella].field[abValue].value = 0
+hero.childfound[i5CEphixis].field[abValue].value = 0
+hero.childfound[i5CKhrusor].field[abValue].value = 0
+hero.childfound[i5CMastix].field[abValue].value = 0</eval>
+    </thing>
+  <thing id="trk5CCmdDp" name="Command the Deep" description="You can use an action to change the condition of the sea within 1 mile of you, such as creating a violent, roiling storm or calming one. Regardless, the unnatural weather lasts for 1 hour before returning to normal. Once used, this property of the bident can&apos;t be used again until the next dusk." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CEphxSp" name="Ephixis Spring Arrow" description="You can use an action to fire this arrow at a beast or a plant creature you can see within 320 feet of you. On a hit, the arrow deals no damage, and the target gains the benefits of the {i}awaken{/i} spell for 8 hours.\n\nThis arrow cannot be fired from any bow save Ephixis. Once fired, it disappears immediately. It reappears in the quiver at the next dusk." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="SpInfo" tag="spAwaken"/>
+    </thing>
+  <thing id="trk5CEphxSu" name="Ephixis Summer Arrow" description="You can use an action to fire this arrow at an open space on the ground that you can see within 320 feet of you, requiring no attack roll. A Nyxborn lynx is summoned in that space (you can add this creature through the Encounter Builder). The lynx understands your verbal commands and obeys them as best it can, and it takes its turns immediately after yours. It fades away after 1 hour.\n\nThis arrow cannot be fired from any bow save Ephixis. Once fired, it disappears immediately. It reappears in the quiver at the next dusk." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CEphxAu" name="Ephixis Autumn Arrow" description="You can use an action to fire this arrow at a space on the ground that you can see within 320 feet of you, requiring no attack roll. Doing so casts {i}wall of thorns{/i} in that spot (save DC 18).\n\nThis arrow cannot be fired from any bow save Ephixis. Once fired, it disappears immediately. It reappears in the quiver at the next dusk." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="SpInfo" tag="spWallThor"/>
+    </thing>
+  <thing id="trk5CEphxWi" name="Ephixis Winter Arrow" description="You can use an action to fire this arrow at a space that you can see within 320 feet of you, requiring no attack roll. Doing so casts {i}ice storm{/i} in that spot (save DC 18).\n\nThis arrow cannot be fired from any bow save Ephixis. Once fired, it disappears immediately. It reappears in the quiver at the next dusk." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="SpInfo" tag="spIceStor"/>
+    </thing>
+  <thing id="g5CEphxQvr" name="Ephixis Quiver" description="A quiver can hold up to 20 arrows." compset="Gear">
+    <fieldval field="gWeight" value="1"/>
+    <tag group="thing" tag="holder" name="Holder" abbrev="???"/>
+    <tag group="GearType" tag="gtAdventGe" name="Adventuring Gear" abbrev="Adventuring"/>
+    <tag group="Helper" tag="Helper"/>
+    </thing>
+  <thing id="r5CNyxLynx" name="Nyxborn Lynx" compset="Race">
+    <fieldval field="rHitDice" value="5"/>
+    <fieldval field="rHPStart" value="37"/>
+    <fieldval field="rCR" value="1.0"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rSTR" value="7"/>
+    <fieldval field="rDEX" value="5"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="-7"/>
+    <fieldval field="rWIS" value="2"/>
+    <fieldval field="rCHA" value="-2"/>
+    <usesource source="5eMOoTCP"/>
+    <tag group="RaceType" tag="NPC" name="NPC Race" abbrev="NPC Race"/>
+    <tag group="Alignment" tag="Unaligned" name="Unaligned" abbrev="UN"/>
+    <tag group="Helper" tag="CantSpeak" name="Cannot Speak" abbrev="Cannot Speak"/>
+    <tag group="ProfDouble" tag="skStealth" name="Stealth" abbrev="Stealth"/>
+    <tag group="ProfSkill" tag="skPercep" name="Perception" abbrev="Perception"/>
+    <tag group="RaceSize" tag="Large1" name="Large" abbrev="Large"/>
+    <bootstrap thing="ra5CPounce2">
+      <assignval field="abText" value="lynx"/>
+      <assignval field="abValue" value="20"/>
+      <assignval field="abValue2" value="13"/>
+      <assignval field="abText2" value="bite"/>
+      </bootstrap>
+    <bootstrap thing="wBite">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="10"/>
+      </bootstrap>
+    <bootstrap thing="wClaw">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="tpBeast"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CYetKeS">
+      <assignval field="abText" value="lynx"/>
+      </bootstrap>
+    </thing>
+  <thing id="trk5CSunRet" name="Sun&apos;s Retaliation" description="When you suffer damage from a creature within 5 feet of you, you can take a reaction to make a melee attack with the spear against that creature. On a hit, the spear deals its normal damage, and the creature is blinded until the beginning of its next turn. This property of the spear can&apos;t be used again until the next dawn." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="trk5CMstxExt" name="Mastix Extended Reach" description="When you make an attack with Mastix, the Whip of Erebos on your turn, you can increase the range of the attack to 300 feet. This property of the weapon can&apos;t be used again until the next dusk." compset="Tracker">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  </document>

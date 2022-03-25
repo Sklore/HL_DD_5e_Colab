@@ -571,7 +571,7 @@
   <thing id="gt5CAlcItm" name="Alchemical Items" compset="GearType" summary="Alchemical Items" isshowonly="yes"></thing>
   <thing id="g5CAlchItm" name="Alchemical Items" description="Alchemists are masters of haphazard mprovisation and calculated improvement. Even lacking the right tool, the alchemist is almost always working up a new concoction. Here you’ll find a few new items to add to the alchemist’s arsenal, and a new variant rule for crafting them.\n\nOn an average day, a craftsman produces about 5 gp worth of marketable goods. Alchemy is no different—but oftentimes, alchemists lack\nthe required downtime. To quickly produce alchemical items, you may make a DC 10 Intelligence (Alchemist’s Tools) check. Your daily progress is doubled for every 5 points by which you exceed this DC. If you fail by 5 or more, you ruin the day’s ingredients, losing the day’s\nraw materials and 5 gp of progress. You may attempt to craft during an adventuring day, but doing so imposes disadvantage on your crafting\ncheck to represent various complications and interruptions" compset="Gear" isshowonly="yes">
     <tag group="GearType" tag="gt5CAlcItm" name="Alchemical Items"/>
-    <tag group="explicit" tag="50"/>
+    <tag group="explicit" tag="51"/>
     </thing>
   <thing id="x5CSpellCast" name="Spellcasting" description="A monster with the ability to cast spells as an action has the Spellcasting action.  Unless noted otherwise, an innate spell of 1st level or higher is always cast at its lowest possible level and can’t be cast at a higher level.  If a monster has a cantrip where its level matters and no level is given, use the monster’s challenge rating." compset="RaceSpec" summary="Has a spellcaster level and spell slots.">
     <comment><![CDATA[This version of spellcasting was made to follow WotC's newer (2021 and later) method of displaying spellcasting as an action in creature stat blocks.]]></comment>
@@ -869,5 +869,47 @@ This is the same as x5CSpellCast, except that one says they require no material 
 
       minion.childfound[Totals].field[tRaceExpr].text = "component.BaseRace & RaceType.NPC & !RaceSize.Tiny12 & !RaceSize.Small11 & !(hasbootstrap:tp5CObject) &  !(hasbootstrap:tp5CVehicle) & !(hasbootstrap:tpHumanoid) "]]></eval>
     <minion id="Mount"></minion>
+    </thing>
+  <thing id="ra5CMPLrVar" name="Lair Actions" description="The creature is in its lair, allowing it to take lair actions." compset="VarRaceTrt" summary="The creature can use its lair actions." uniqueness="unique">
+    <fieldval field="abText" value="the creature"/>
+    <tag group="AllowRCust" tag="r5CBalhanR"/>
+    <tag group="AllowRCust" tag="r5CBaphomR"/>
+    <tag group="AllowRCust" tag="r5CDemogoR"/>
+    <tag group="AllowRCust" tag="r5CDroMatR"/>
+    <tag group="AllowRCust" tag="r5CEldBraR"/>
+    <tag group="AllowRCust" tag="r5CGitAnaR"/>
+    <tag group="AllowRCust" tag="r5CGrazztR"/>
+    <tag group="AllowRCust" tag="r5CKirinR"/>
+    <tag group="AllowRCust" tag="r5COrcusR"/>
+    <tag group="AllowRCust" tag="r5CZarielR"/>
+    <tag group="AllowRCust" tag="r5CZuggtmR"/>
+    <tag group="Custom" tag="LairActions"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="r5CMerrenR"/>
+    <tag group="AllowRCust" tag="r5CStnQntR"/>
+    <tag group="AllowRCust" tag="r5CArasta"/>
+    <tag group="AllowRCust" tag="r5CHython"/>
+    <tag group="AllowRCust" tag="r5CAlyxAbs"/>
+    <tag group="AllowRCust" tag="r5CAlyxCal"/>
+    <tag group="AllowRCust" tag="r5CAlyxDsp"/>
+    <tag group="AllowRCust" tag="r5CAlyxTrm"/>
+    <eval phase="First" priority="10">perform hero.assign[Custom.LairActions]</eval>
+    </thing>
+  <thing id="ra5CMPLrVarCR" name="Lair Actions" description="The creature is in its lair, allowing it to take lair actions. Being in its lair causes the creature&apos;s CR to increase by 1." compset="VarRaceTrt" summary="The creature can use its lair actions." uniqueness="unique">
+    <fieldval field="abText" value="the creature"/>
+    <tag group="Custom" tag="LairActions"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="AllowRCust" tag="r5CFrzUrbR"/>
+    <tag group="AllowRCust" tag="r5CGeryonR"/>
+    <tag group="AllowRCust" tag="r5CJuibleR"/>
+    <tag group="AllowRCust" tag="r5CMorkotR"/>
+    <tag group="AllowRCust" tag="r5CYeenogR"/>
+    <eval phase="First" priority="10">perform hero.assign[Custom.LairActions]</eval>
+    <eval phase="Final" priority="10000" index="2">herofield[tCR].value += 1</eval>
+    </thing>
+  <thing id="ra5CMPLrHdr" name="Lair Actions" compset="RaceSpec">
+    <tag group="FeatureTyp" tag="LairHeader" name="Lair Actions Header" abbrev="Lair Actions Header"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final"><![CDATA[field[CustDesc].text = "On initiative count 20, " & field[abText].text & " can use one of the following lair actions. The same action cannot be used two rounds in a row."]]></eval>
     </thing>
   </document>
