@@ -84,6 +84,9 @@
       <autotag group="Helper" tag="Memorized"/>
       <autotag group="SpellType" tag="cHelpClr"/>
       </bootstrap>
+    <bootstrap thing="c5CClrDiSD">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
     <eval phase="PostLevel" priority="10000"><![CDATA[
       ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
@@ -183,13 +186,9 @@
     <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
     <tag group="LvNamePar" tag="AppValue3" name="Append &quot;field[abValue3].value&quot;" abbrev="Append &quot;field[abValue3].value&quot;"/>
     <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
-    <eval phase="PostLevel" priority="10000">field[abValue].value += field[xCount].value</eval>
+    <eval phase="Final" priority="10000">field[abValue].value += field[xCount].value</eval>
     <eval phase="Render" priority="10000" index="2"><![CDATA[
-      if (field[xIndex].value >= 2) then
-        field[listname].text = field[thingname].text & " (2d8 necrotic damage)"
-      else
-        field[listname].text = field[thingname].text & " (1d8 necrotic damage)"
-        endif]]></eval>
+      field[listname].text = "Divine Strike (" & field[xIndex].value & "d8 necrotic damage)"]]></eval>
     </thing>
   <thing id="c5CClrImpR" name="Improved Reaper" description="Starting at 17th level, when the cleric casts a necromancy spell of 1st through 5th level that targets only one creature, the spell can instead target two creatures within range and within 5 feet of each other. If the spell consumes its material components, the cleric must provide them for each target." compset="ClSpecial" summary="You 1st - 5th necromancy spells can hit two targets instead of one.">
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
