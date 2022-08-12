@@ -5153,7 +5153,7 @@ foreach pick in hero from BaseWep where "IsWeapon.wLongbow"
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="abSave" tag="aCON"/>
     <tag group="StandardDC" tag="aCON"/>
-    <eval phase="Final" priority="20000"><![CDATA[field[CustDesc].text = "The myconid ejects spores at one creature it can see within 5 feet of it. The target must succeed on a DC " & field[abDC].value & " Constitution saving throw or be stunned for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."]]></eval>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text = "The myconid ejects spores at one creature it can see within 5 feet of it. The target must succeed on a DC " & field[abDC].value & " Constitution saving throw or be stunned for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."]]></eval>
     </thing>
   <thing id="ra5CMycHaS" name="Hallucination Spores" description="The myconid ejects spores at one creature it can see within 5 feet of it. The target must succeed on a DC 12 Constitution saving throw or be poisoned for 1 minute. The poisoned target is incapacitated while it hallucinates. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success." compset="RaceSpec">
     <tag group="Helper" tag="ShowSpec"/>
@@ -9057,8 +9057,18 @@ has 1 natural armor in wolf and hybrid form]]></comment>
       perform hero.assign[IsRace.rFireElem]
       perform hero.assign[RaceEquip.rFireElem]]]></eval>
     </thing>
+  <thing id="ra5CMulBeBur" name="Beast of Burden" description="The mule is considered to be a Large animal for the purpose of determining its carrying capacity." compset="RaceSpec" replaces="raMulBeBur">
+    <comment>raMulBeBur</comment>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <eval phase="PostAttr" priority="10000"><![CDATA[
+    ~if we've been replaced, get out now
+    doneif (tagis[Helper.Disable] <> 0)
+    herofield[tEncumLgt].value = herofield[tEncumLgt].value * 2
+    herofield[tEncumHvy].value = herofield[tEncumHvy].value * 2
+    herofield[tEncumMax].value = herofield[tEncumMax].value * 2]]></eval>
+    </thing>
   <hidden id="t5CDraLich"/>
-  <preclude id="rBrownBear" source="5ePHBCP"/>
   <preclude id="rBlackBear" source="5eMMCP"/>
   <preclude id="rBrownBear" source="5eMMCP"/>
   <preclude id="rLich" source="5eMMCP"/>
@@ -9068,4 +9078,5 @@ has 1 natural armor in wolf and hybrid form]]></comment>
   <preclude id="rAirElem" source="5eMMCP"/>
   <preclude id="rFireElem" source="5eMMCP"/>
   <preclude id="rBlackBear" source="5ePHBCP"/>
+  <preclude id="rBrownBear" source="5ePHBCP"/>
   </document>
