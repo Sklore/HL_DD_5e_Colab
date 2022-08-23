@@ -2677,4 +2677,18 @@ foreach pick in hero from BaseSkill where "SkillAbil.aWIS"
     <tag group="Background" tag="5CNoBckgr" name="Not available to any backgrounds" abbrev="None"/>
     <eval phase="First" priority="10000">hero.childfound[BackCheck].field[FlawCurr].value -= 1</eval>
     </thing>
+  <thing id="g5CCanoe" name="Canoe" description="{b}Speed:{/b} 2 mph\n{b}Carrying Capacity:{/b} 6 passengers\n{b}Crew:{/b} 1\n{b}AC:{/b} 11\n{b}HP:{/b} 50\n\n\nA canoe can be purchased in port for 50 gp. It holds up to six Medium creatures and has a maximum speed of 2 mph. It is otherwise the same as a rowboat.\n\n\n{b}Crew.{/b} To function, a ship needs a skilled crew. As per the Player&apos;s Handbook, a single skilled hireling costs a minimum of 2 gp per day. The minimum number of skilled hirelings needed to crew a ship is dependant on the type of vessel.\nChapter 4 of the Dungeon Master&apos;s Guide offers optional rules to track the loyalty of individual crew members (or of the crew as a whole). If at least half the crew becomes disloyal during a voyage, they stage a mutiny. If the ship is berthed, disloyal crew leave the ship permanently.\n\n{b}Passengers.{/b} The given number of passengers indicates how many Small and Medium passengers the ship can accommodate.\n\n{b}Ship Repair.{/b} Repairs to a damaged ship can be made while the vessel is berthed. Repairing 1 hit point of damage requires 1 day and costs 20 gp, to pay for materials and labor." compset="Gear" holdable="no">
+    <fieldval field="gCost" value="50"/>
+    <usesource source="p5eToAP"/>
+    <tag group="GearType" tag="gtVehWater"/>
+    <tag group="thing" tag="holder_top"/>
+    <tag group="Helper" tag="GearNoSize"/>
+    <bootstrap thing="c5CCanoe"></bootstrap>
+    <eval phase="First"><![CDATA[doneif (hero.childlives[c5CCanoe] <> 0)
+
+field[actIncrNam].text = "AC 11 | HP 50 | Damage Taken:"
+field[actUserMin].value = 0
+field[actUserMax].value = 50
+perform assign[Helper.UserAdjust]]]></eval>
+    </thing>
   </document>
