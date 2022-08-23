@@ -1,0 +1,1848 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="w5CVehAttk2" name="Vehicle Attack" compset="Weapon" holdable="no">
+    <tag group="Helper" tag="NoOutGear"/>
+    <tag group="Helper" tag="NoSelect"/>
+    <tag group="Helper" tag="FixSizeDmg"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="Helper" tag="NoPrereq"/>
+    <tag group="Helper" tag="Proficient"/>
+    <tag group="wProperty" tag="Siege"/>
+    <tag group="Helper" tag="NoAttrDam"/>
+    </thing>
+  <thing id="ra5CSJCrew" name="Crew" compset="RaceSpec" summary="The crew required by the ship.">
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Render"><![CDATA[field[CustDesc].text = "{b}Crew{/b}: " & field[abText].text]]></eval>
+    </thing>
+  <thing id="ra5CSJCrgCap" name="Cargo" compset="RaceSpec" summary="The cargo the ship can carry.">
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Render"><![CDATA[field[CustDesc].text = "{b}Cargo{/b}: " & field[abValue].value & " tons"]]></eval>
+    </thing>
+  <thing id="ra5CSJmph" name="Travel Pace" compset="RaceSpec" summary="The ship&apos;s speed.">
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Render"><![CDATA[
+field[CustDesc].text = "{b}Speed (mph){/b}: " & field[abText].text & "fly " & field[abValue].value]]></eval>
+    </thing>
+  <thing id="ra5CSJKlBm" name="Dimensions" compset="RaceSpec" summary="The keel and beam of the ship.">
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Render"><![CDATA[
+field[CustDesc].text = "{b}Keel/Beam{/b}: " & field[abValue].value & " ft./" & field[abValue2].value & " ft."]]></eval>
+    </thing>
+  <thing id="gtSpcVeh" name="Vehicles, Space" compset="GearType" isshowonly="yes">
+    <usesource source="5eAstAdv"/>
+    <usesource source="5eBooAst"/>
+    <usesource source="5eLgtXry"/>
+    </thing>
+  <thing id="g5CVehSpcH" name="Space Vehicles" compset="Gear" isshowonly="yes">
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="explicit" tag="25"/>
+    </thing>
+  <thing id="ra5CSJBall" name="Ballista" description="{b}Crew{/b}: 3 per ballista\n{b}Armor Class{/b}: 15\n{b}Hit Points{/b}: 50\n{b}Weapon Cost:{/b} 50 gp\n{b}Ammo Cost:{/b} 5 gp (bolt)\n\nIt takes 1 action each to load, aim, and fire the ballista. See the Bolt attack." compset="RaceSpec" summary="Ship-mounted weapon(s).">
+    <comment><![CDATA[Add this to the ship "race" a number of times equal to the number of copies of this weapon it has.]]></comment>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actIncrNam" value="AC 15 | HP 50 | Damage Taken:"/>
+    <fieldval field="actUserMax" value="50"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="Custom" tag="SJWep"/>
+    <bootstrap thing="w5CVehAttk2">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:actUser < 50 & Helper.Disable = 0]]></containerreq>
+      <autotag group="DamageType" tag="dtPiercing"/>
+      <autotag group="wCategory" tag="RangeProj"/>
+      <assignval field="wRangeNorm" value="120"/>
+      <assignval field="wRangeLong" value="480"/>
+      <assignval field="atrBonus" value="9"/>
+      <assignval field="gSizeCost" value="50"/>
+      <assignval field="wDieCount" value="3"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Bolt"/>
+      <assignval field="sbName" value="Bolt"/>
+      <assignval field="CustDesc" value="{b}Crew{/b}: 3\n{b}Armor Class{/b}: 15\n{b}Hit Points{/b}: 50\n{b}Weapon Cost:{/b} 50 gp\n{b}Ammo Cost:{/b} 5 gp (bolt)\n\nIt takes 1 action each to load, aim, and fire the ballista."/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBallT">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      </bootstrap>
+    <eval phase="First" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[ra5CSJBallT].field[abValue].value += 1]]></eval>
+    </thing>
+  <thing id="ra5CSJBallT" name="Ballista" description="\n{b}Crew{/b}: 3 per ballista\n{b}Armor Class{/b}: 15\n{b}Hit Points{/b}: 50\n{b}Weapon Cost:{/b} 50 gp\n{b}Ammo Cost:{/b} 5 gp (bolt)\n\nIt takes 1 action each to load, aim, and fire the ballista. See the Bolt attack." compset="RaceSpec" summary="Ship-mounted weapon(s)." uniqueness="unique">
+    <comment><![CDATA[Don't add this to the race; it's added automatically.]]></comment>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="Final"><![CDATA[doneif (field[abValue].value < 2)
+
+field[livename].text = "Ballistae " & "(" & field[abValue].value & ")"
+field[sbName].text = "Ballistae " & "(" & field[abValue].value & ")"]]></eval>
+    </thing>
+  <thing id="ra5CSJMang" name="Mangonel" description="{b}Crew{/b}: 5 per mangonel\n{b}Armor Class{/b}: 15\n{b}Hit Points{/b}: 100\n{b}Weapon Cost:{/b} 100 gp\n{b}Ammo Cost:{/b} — (stone)\n\nIt takes 2 actions each to load and aim a mangonel, and 1 action to fire it. See the Mangonel Stone attack." compset="RaceSpec">
+    <comment><![CDATA[Add this to the ship "race" a number of times equal to the number of copies of this weapon it has.]]></comment>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actIncrNam" value="AC 15 | HP 100 | Damage Taken:"/>
+    <fieldval field="actUserMax" value="100"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="Custom" tag="SJWep"/>
+    <bootstrap thing="w5CVehAttk2">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:actUser < 100 & Helper.Disable = 0]]></containerreq>
+      <autotag group="DamageType" tag="dtBludgeon"/>
+      <autotag group="wCategory" tag="RangeProj"/>
+      <assignval field="wRangeNorm" value="200"/>
+      <assignval field="wRangeLong" value="800"/>
+      <assignval field="atrBonus" value="8"/>
+      <assignval field="gSizeCost" value="100"/>
+      <assignval field="wDieCount" value="5"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Mangonel Stone"/>
+      <assignval field="sbName" value="Mangonel Stone"/>
+      <assignval field="CustDesc" value="{b}Crew{/b}: 5 per mangonel\n{b}Armor Class{/b}: 15\n{b}Hit Points{/b}: 100\n{b}Weapon Cost:{/b} 100 gp\n{b}Ammo Cost:{/b} — (stone)\n\nIt takes 2 actions each to load and aim a mangonel, and 1 action to fire it."/>
+      <assignval field="wTarget" value="one target 60 feet or more away"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJMangT">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      </bootstrap>
+    <eval phase="First" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[ra5CSJMangT].field[abValue].value += 1]]></eval>
+    </thing>
+  <thing id="ra5CSJMangT" name="Mangonel" description="\n{b}Crew{/b}: 5 per mangonel\n{b}Armor Class{/b}: 15\n{b}Hit Points{/b}: 100\n{b}Weapon Cost:{/b} 100 gp\n{b}Ammo Cost:{/b} — (stone)\n\nIt takes 2 actions each to load and aim a mangonel, and 1 action to fire it. See the Mangonel Stone attack." compset="RaceSpec" summary="Ship-mounted weapon(s)." uniqueness="unique">
+    <comment><![CDATA[Don't add this to the race; it's added automatically.]]></comment>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="Final"><![CDATA[doneif (field[abValue].value < 2)
+
+field[livename].text = "Mangonels " & "(" & field[abValue].value & ")"
+field[sbName].text = "Mangonels " & "(" & field[abValue].value & ")"]]></eval>
+    </thing>
+  <thing id="ra5CSJGiCn" name="Giant Cannon" description="{b}Crew{/b}: 4 per cannon\n{b}Armor Class{/b}: 19\n{b}Hit Points{/b}: 250\n{b}Weapon Cost:{/b} — \n{b}Ammo Cost:{/b} 1,000 gp (giant cannon ball)\n\nIt takes 3 actions to load a giant cannon and 1 to fire it. See the Cannon Ball attack." compset="RaceSpec">
+    <comment><![CDATA[Add this to the ship "race" a number of times equal to the number of copies of this weapon it has.]]></comment>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actIncrNam" value="AC 19 | HP 250 | Damage Taken:"/>
+    <fieldval field="actUserMax" value="250"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="Custom" tag="SJWep"/>
+    <bootstrap thing="w5CVehAttk2">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:actUser < 250 & Helper.Disable = 0]]></containerreq>
+      <autotag group="DamageType" tag="dtBludgeon"/>
+      <autotag group="wCategory" tag="RangeProj"/>
+      <assignval field="wRangeNorm" value="600"/>
+      <assignval field="wRangeLong" value="2400"/>
+      <assignval field="atrBonus" value="9"/>
+      <assignval field="wDieCount" value="16"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Cannon Ball"/>
+      <assignval field="sbName" value="Cannon Ball"/>
+      <assignval field="CustDesc" value="{b}Crew{/b}: 4 per cannon\n{b}Armor Class{/b}: 19\n{b}Hit Points{/b}: 250\n{b}Weapon Cost:{/b} —\n{b}Ammo Cost:{/b} 1,000 gp (giant cannon ball)\n\nIt takes 3 actions to load a giant cannon and 1 to fire it."/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJGiCnT">
+      <containerreq phase="First" priority="450"><![CDATA[Helper.Disable  = 0 & Custom.SJDisWep = 0]]></containerreq>
+      </bootstrap>
+    <eval phase="First" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[ra5CSJGiCnT].field[abValue].value += 1]]></eval>
+    </thing>
+  <thing id="ra5CSJGiCnT" name="Giant Cannon" description="\n{b}Crew{/b}: 4 per cannon\n{b}Armor Class{/b}: 19\n{b}Hit Points{/b}: 250\n{b}Weapon Cost:{/b} —\n{b}Ammo Cost:{/b} 1,000 gp (giant cannon ball)\n\nIt takes 3 actions to load a giant cannon and 1 to fire it. See the Cannon Ball attack." compset="RaceSpec" summary="Ship-mounted weapon(s)." uniqueness="unique">
+    <comment><![CDATA[Don't add this to the race; it's added automatically.]]></comment>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="Final"><![CDATA[doneif (field[abValue].value < 2)
+
+field[livename].text = "Giant Cannons " & "(" & field[abValue].value & ")"
+field[sbName].text = "Giant Cannons " & "(" & field[abValue].value & ")"]]></eval>
+    </thing>
+  <thing id="ra5CSJMngD" name="Mangonel" description="{b}Crew{/b}: 4 per mangonel\n{b}Armor Class{/b}: 15\n{b}Hit Points{/b}: 100\n{b}Weapon Cost:{/b} 100 gp\n{b}Ammo Cost:{/b} — (stone)\n\nIt takes 2 actions each to load a mangonel, 1 to aim it (with the assistance of a turret rotator), and 1 action to fire it. See the Mangonel Stone attack." compset="RaceSpec">
+    <comment><![CDATA[Add this to the ship "race" a number of times equal to the number of copies of this weapon it has.]]></comment>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actIncrNam" value="AC 15 | HP 100 | Damage Taken:"/>
+    <fieldval field="actUserMax" value="100"/>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <bootstrap thing="ra5CSJMngDT">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      </bootstrap>
+    <bootstrap thing="w5CVehAttk2">
+      <containerreq phase="First" priority="450"><![CDATA[fieldval:actUser < 100 & Helper.Disable = 0]]></containerreq>
+      <autotag group="DamageType" tag="dtBludgeon"/>
+      <autotag group="wCategory" tag="RangeProj"/>
+      <assignval field="wRangeNorm" value="200"/>
+      <assignval field="wRangeLong" value="800"/>
+      <assignval field="atrBonus" value="8"/>
+      <assignval field="gSizeCost" value="100"/>
+      <assignval field="wDieCount" value="5"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Mangonel Stone"/>
+      <assignval field="sbName" value="Mangonel Stone"/>
+      <assignval field="CustDesc" value="{b}Crew{/b}: 4 per mangonel\n{b}Armor Class{/b}: 15\n{b}Hit Points{/b}: 100\n{b}Weapon Cost:{/b} 100 gp\n{b}Ammo Cost:{/b} — (stone)\n\nIt takes 2 actions each to load a mangonel, 1 to aim it (with the assistance of a turret rotator), and 1 action to fire it."/>
+      <assignval field="wTarget" value="one target 60 feet or more away"/>
+      </bootstrap>
+    <eval phase="First" index="2">hero.childfound[ra5CSJMngDT].field[abValue].value += 1</eval>
+    </thing>
+  <thing id="ra5CSJMngDT" name="Mangonel" description="\n{b}Crew{/b}: 4 per mangonel\n{b}Armor Class{/b}: 15\n{b}Hit Points{/b}: 100\n{b}Weapon Cost:{/b} 100 gp\n{b}Ammo Cost:{/b} — (stone)\n\nIt takes 2 actions each to load a mangonel, 1 to aim it (with the assistance of a turret rotator), and 1 action to fire it. See the Mangonel Stone attack." compset="RaceSpec" summary="Ship-mounted weapon(s)." uniqueness="unique">
+    <comment><![CDATA[Don't add this to the race; it's added automatically.]]></comment>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="Final"><![CDATA[doneif (field[abValue].value < 2)
+
+field[livename].text = "Mangonels " & "(" & field[abValue].value & ")"
+field[sbName].text = "Mangonels " & "(" & field[abValue].value & ")"]]></eval>
+    </thing>
+  <thing id="ra5CSJEyes" name="Eyestalk Cannon" description="{b}Crew{/b}: 1 per cannon\n{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included in ship&apos;s cost)\n\nThis weapon looks like an eyestalk-mounted eye. A beholder within one of the ship&apos;s meditation pods can see through the eye while concentrating on it (like a spell) and can use an action to make the Destructive Ray attack." compset="RaceSpec">
+    <comment><![CDATA[Add this to the ship "race" a number of times equal to the number of copies of this weapon it has.]]></comment>
+    <tag group="Custom" tag="SJWep"/>
+    <bootstrap thing="w5CVehAttk2">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      <autotag group="wCategory" tag="RangeProj"/>
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="DamageType" tag="dtForce"/>
+      <assignval field="atrBonus" value="11"/>
+      <assignval field="wDieCount" value="10"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="livename" value="Destructive Ray"/>
+      <assignval field="sbName" value="Destructive Ray"/>
+      <assignval field="CustDesc" value="{b}Crew{/b}: 1 per cannon\n{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included in ship&apos;s cost)\n\nThis weapon looks like an eyestalk-mounted eye. A beholder within one of the ship&apos;s meditation pods can see through the eye while concentrating on it (like a spell) and can use an action to make the Destructive Ray attack."/>
+      <assignval field="wRangeNorm" value="120"/>
+      <assignval field="wRangeLong" value="480"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJEyesT">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      </bootstrap>
+    <eval phase="First" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[ra5CSJEyesT].field[abValue].value += 1]]></eval>
+    </thing>
+  <thing id="ra5CSJEyesT" name="Eyestalk Cannon" description="\n{b}Crew{/b}: 1 per cannon\n{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included in ship&apos;s cost)\n\nThis weapon looks like an eyestalk-mounted eye. A beholder within one of the ship&apos;s meditation pods can see through the eye while concentrating on it (like a spell) and can use an action to make the Destructive Ray attack." compset="RaceSpec" summary="Ship-mounted weapon(s)." uniqueness="unique">
+    <comment><![CDATA[Don't add this to the race; it's added automatically.]]></comment>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="Final"><![CDATA[doneif (field[abValue].value < 2)
+
+field[livename].text = "Eyestalk Cannons " & "(" & field[abValue].value & ")"
+field[sbName].text = "Eyestalk Cannons " & "(" & field[abValue].value & ")"]]></eval>
+    </thing>
+  <thing id="ra5CSJClaw" name="Claw" description="{b}Crew{/b}: 1 per claw\n{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included with ship&apos;s cost)\n\nIt takes 1 action to attack with a Claw." compset="RaceSpec">
+    <comment><![CDATA[Add this to the ship "race" a number of times equal to the number of copies of this weapon it has.]]></comment>
+    <tag group="Helper" tag="SpecUp"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Custom" tag="SJWep"/>
+    <bootstrap thing="w5CVehAttk2">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      <autotag group="wCategory" tag="Melee"/>
+      <autotag group="DamageType" tag="dtBludgeon"/>
+      <assignval field="wTarget" value="one target"/>
+      <assignval field="atmBonus" value="6"/>
+      <assignval field="gSizeCost" value="0"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Claw"/>
+      <assignval field="sbName" value="Claw"/>
+      <assignval field="CustDesc" value="{b}Crew{/b}: 1 per claw\n{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included with ship&apos;s cost)"/>
+      <assignval field="wAttackEff" value="If the target is a Huge or smaller creature, it is also grappled with an escape DC of 13. Until the grapple ends, the creature takes 11 (2d10) bludgeoning damage at the beginning of each of its turns."/>
+      <assignval field="wReach" value="20"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJClawT">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      </bootstrap>
+    <eval phase="First" index="2"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+hero.childfound[ra5CSJClawT].field[abValue].value += 1]]></eval>
+    </thing>
+  <thing id="ra5CSJClawT" name="Claw" description="\n{b}Crew{/b}: 1 per claw\n{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included with ship&apos;s cost)\n\nIt takes 1 action to attack with a Claw." compset="RaceSpec" summary="Ship-mounted weapon(s)." uniqueness="unique">
+    <comment><![CDATA[Don't add this to the race; it's added automatically.]]></comment>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <eval phase="Final"><![CDATA[doneif (field[abValue].value < 2)
+
+field[livename].text = "Claws " & "(" & field[abValue].value & ")"
+field[sbName].text = "Claws " & "(" & field[abValue].value & ")"]]></eval>
+    </thing>
+  <thing id="ra5CSJBlnt" name="Blunt Ram" description="\n{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included in ship&apos;s cost)\n\nWhen the ship&apos;s spelljammer runs into another object or into a Gargantuan creature, it can make this attack." compset="RaceSpec" summary="Ship-mounted weapon(s).">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Custom" tag="SJWep"/>
+    <bootstrap thing="w5CVehAttk2">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      <autotag group="wCategory" tag="Melee"/>
+      <autotag group="DamageType" tag="dtBludgeon"/>
+      <assignval field="wTarget" value="one object or Gargantuan creature"/>
+      <assignval field="atmBonus" value="11"/>
+      <assignval field="wDieCount" value="16"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Blunt Ram"/>
+      <assignval field="sbName" value="Blunt Ram"/>
+      <assignval field="CustDesc" value="{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included in ship&apos;s cost)\n\nWhen the ship&apos;s spelljammer runs into another object or into a Gargantuan creature, it can make this attack."/>
+      <assignval field="wAttackEff" value="This ship takes half as much damage and comes to a complete stop. On a miss, the attack deals no damage and the target moves into the nearest open space that isn&apos;t within this ship&apos;s path. This ship can continue moving if it has any remaining movement."/>
+      <assignval field="wReach" value="0"/>
+      </bootstrap>
+    <eval phase="First">doneif (tagis[Helper.Disable] = 0)
+
+perform delete[FeatureTyp.Special]
+perform delete[abAction.None]
+perform delete[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="ra5CSJPrcR" name="Piercing Ram" description="\n{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included in ship&apos;s cost)\n\nWhen the ship&apos;s spelljammer runs into another object or into a Gargantuan creature, it can make this attack." compset="RaceSpec" summary="Ship-mounted weapon(s).">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Custom" tag="SJWep"/>
+    <bootstrap thing="w5CVehAttk2">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      <autotag group="wCategory" tag="Melee"/>
+      <autotag group="DamageType" tag="dtPiercing"/>
+      <assignval field="wTarget" value="one object or Gargantuan creature"/>
+      <assignval field="atmBonus" value="11"/>
+      <assignval field="wDieCount" value="16"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Piercing Ram"/>
+      <assignval field="sbName" value="Piercing Ram"/>
+      <assignval field="CustDesc" value="{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included in ship&apos;s cost)\n\nWhen the ship&apos;s spelljammer runs into another object or into a Gargantuan creature, it can make this attack."/>
+      <assignval field="wAttackEff" value="This ship takes half as much damage and comes to a complete stop. On a miss, the attack deals no damage and the target moves into the nearest open space that isn&apos;t within this ship&apos;s path. This ship can continue moving if it has any remaining movement."/>
+      <assignval field="wReach" value="0"/>
+      </bootstrap>
+    <eval phase="First">doneif (tagis[Helper.Disable] = 0)
+
+perform delete[FeatureTyp.Special]
+perform delete[abAction.None]
+perform delete[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="ra5CSJGrpJ" name="Grappling Jaws" description="\n{b}Crew{/b}: 1\n{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included in ship&apos;s cost)\n\nIt takes 1 action to make a grappling jaws attack." compset="RaceSpec" summary="Ship-mounted weapon(s).">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Custom" tag="SJWep"/>
+    <bootstrap thing="w5CVehAttk2">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      <autotag group="wCategory" tag="Melee"/>
+      <autotag group="DamageType" tag="dtPiercing"/>
+      <assignval field="wTarget" value="one ship or Gargantuan creature"/>
+      <assignval field="atmBonus" value="9"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Grappling Jaws"/>
+      <assignval field="sbName" value="Grappling Jaws"/>
+      <assignval field="CustDesc" value="{b}Crew{/b}: 1\n{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included in ship&apos;s cost)\n\nIt takes 1 action to make a grappling jaws attack."/>
+      <assignval field="wAttackEff" value="The speed of this ship and the target become 0 until this grapple ends. A creature can use an action to release the jaws, using its controls and thereby releasing the target. Otherwise the grapple ends when the target or this ship is reduced to 0 hit points."/>
+      <assignval field="wReach" value="10"/>
+      </bootstrap>
+    <eval phase="First">doneif (tagis[Helper.Disable] = 0)
+
+perform delete[FeatureTyp.Special]
+perform delete[abAction.None]
+perform delete[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="ra5CSJTent" name="Tentacles" description="\n{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included in ship&apos;s cost)\n\nThe ship&apos;s spelljammer can use an action to make the Grappling Tentacles or Teleport attack with the ship&apos;s tentacles." compset="RaceSpec" summary="Ship-mounted weapon(s).">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Custom" tag="SJWep"/>
+    <bootstrap thing="w5CVehAttk2">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="wCategory" tag="Melee"/>
+      <assignval field="atmBonus" value="11"/>
+      <assignval field="wDieCount" value="0"/>
+      <assignval field="wDieSize" value="0"/>
+      <assignval field="livename" value="Teleport"/>
+      <assignval field="sbName" value="Teleport"/>
+      <assignval field="CustDesc" value="{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included in ship&apos;s cost)\n\nThe ship&apos;s spelljammer can use an action to make either the Grappling Tentacles or Teleport attack with the ship&apos;s tentacles."/>
+      <assignval field="wAttackEff" value="The target must make a DC 15 Constitution save. On a failure, it is teleported to an open space aboard this ship that this ship&apos;s spelljammer can see."/>
+      <assignval field="wReach" value="30"/>
+      <assignval field="wTarget" value="one creature"/>
+      </bootstrap>
+    <bootstrap thing="w5CVehAttk2">
+      <containerreq phase="First" priority="450">Helper.Disable = 0</containerreq>
+      <autotag group="wCategory" tag="Melee"/>
+      <autotag group="DamageType" tag="dtBludgeon"/>
+      <assignval field="wTarget" value="one Huge or Gargantuan target"/>
+      <assignval field="atmBonus" value="11"/>
+      <assignval field="wDieCount" value="4"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Grappling Tentacles"/>
+      <assignval field="sbName" value="Grappling Tentacles"/>
+      <assignval field="CustDesc" value="{b}Armor Class{/b}: —\n{b}Hit Points{/b}: —\n{b}Weapon Cost:{/b} — (included in ship&apos;s cost)\n\nThe ship&apos;s spelljammer can use an action to make either the Grappling Tentacles or Teleport attack with the ship&apos;s tentacles."/>
+      <assignval field="wAttackEff" value="The speed of this ship becomes 0 until its spelljammer uses an action to release the target. If the target is a creature, it&apos;s grappled with an escape DC of 16. If the target is a ship, its speed becomes 0 until it is released, or until it or this ship are reduced to 0 hit points."/>
+      <assignval field="wReach" value="30"/>
+      </bootstrap>
+    <eval phase="First">doneif (tagis[Helper.Disable] = 0)
+
+perform delete[FeatureTyp.Special]
+perform delete[abAction.None]
+perform delete[Helper.ShowSpec]</eval>
+    </thing>
+  <thing id="r5CSJBombrd" name="Bombard" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="10"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Wood, Dmg Threshold 20"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 150 tons\n{b}Crew:{/b} 12\n{b}Keel/Beam:{/b} 140 ft./30 ft.\n{b}Speed:{/b} fly 4 mph\n{b}Cost:{/b} 50,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="140"/>
+      <assignval field="abValue2" value="30"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="12"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="150"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="35"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJGiCn"></bootstrap>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 299
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    </thing>
+  <thing id="g5CSJBombrd" name="Bombard" description="{b}AC:{/b} 15 (wood)\n{b}Cargo:{/b} 150 tons\n{b}Hit Points:{/b} 300\n{b}Crew:{/b} 12\n{b}Damage Threshold:{/b} 20\n{b}Keel/Beam:{/b} 140 ft./30 ft.\n{b}Speed:{/b} fly 35 ft. (4 mph)" compset="Gear">
+    <fieldval field="gCost" value="50000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJBombrd"></bootstrap>
+    </thing>
+  <thing id="c5CSJBombrd" name="Bombard" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJBombrd"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJScrpSh" name="Scorpion Ship" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="14"/>
+    <fieldval field="rArmText" value="Metal, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 12 tons\n{b}Crew:{/b} 12\n{b}Keel/Beam:{/b} 75 ft./25 ft.\n{b}Speed:{/b} 3.5 mph, fly 3.5 mph\n{b}Cost:{/b} 25,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="3.5"/>
+      <assignval field="abText" value="3.5, "/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="75"/>
+      <assignval field="abValue2" value="25"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="12"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="12"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJClaw"></bootstrap>
+    <bootstrap thing="ra5CSJClaw"></bootstrap>
+    <bootstrap thing="ra5CSJMang"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 249
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJScrpSh" name="Scorpion Ship" description="{b}AC:{/b} 19 (metal)\n{b}Cargo:{/b} 12 tons\n{b}Hit Points:{/b} 250\n{b}Crew:{/b} 12\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 75 ft./20 ft.\n{b}Speed:{/b} fly 30 ft. (3.5 mph)" compset="Gear">
+    <fieldval field="gCost" value="25000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJScrpSh"></bootstrap>
+    </thing>
+  <thing id="c5CSJScrpSh" name="Scorpion Ship" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJScrpSh"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJLmpryS" name="Lamprey Ship" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="10"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Wood, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 6 tons\n{b}Crew:{/b} 15\n{b}Keel/Beam:{/b} 115 ft./25 ft.\n{b}Speed:{/b} fly 4 mph\n{b}Cost:{/b} 20,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="115"/>
+      <assignval field="abValue2" value="25"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="15"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="6"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="35"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJGrpJ"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 249
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJLmpryS" name="Lamprey Ship" description="{b}AC:{/b} 15 (wood)\n{b}Cargo:{/b} 6 tons\n{b}Hit Points:{/b} 250\n{b}Crew:{/b} 15\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 115 ft./25 ft.\n{b}Speed:{/b} fly 35 ft. (4 mph)" compset="Gear">
+    <fieldval field="gCost" value="20000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJLmpryS"></bootstrap>
+    </thing>
+  <thing id="c5CSJLmpryS" name="Lamprey Ship" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJLmpryS"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJStrMth" name="Star Moth" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="8"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Ceramic, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 30 tons\n{b}Crew:{/b} 13\n{b}Keel/Beam:{/b} 200 ft./20 ft.\n{b}Speed:{/b} fly 5.5 mph\n{b}Cost:{/b} 40,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="5.5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="200"/>
+      <assignval field="abValue2" value="20"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="13"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="30"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="50"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJMang"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 399
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJStrMth" name="Star Moth" description="{b}AC:{/b} 13 (ceramic)\n{b}Cargo:{/b} 30 tons\n{b}Hit Points:{/b} 400\n{b}Crew:{/b} 13\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 200 ft./20 ft.\n{b}Speed:{/b} fly 50 ft. (5.5 mph)" compset="Gear">
+    <fieldval field="gCost" value="40000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJStrMth"></bootstrap>
+    </thing>
+  <thing id="c5CSJStrMth" name="Star Moth" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJStrMth"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJFlyFsh" name="Flying Fish Ship" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="10"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Wood, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 13 tons\n{b}Crew:{/b} 10\n{b}Keel/Beam:{/b} 120 ft./30 ft.\n{b}Speed:{/b} fly 4.5 mph\n{b}Cost:{/b} 20,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="4.5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="120"/>
+      <assignval field="abValue2" value="30"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="13"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJMang"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 249
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJFlyFsh" name="Flying Fish Ship" description="{b}AC:{/b} 15 (wood)\n{b}Cargo:{/b} 13 tons\n{b}Hit Points:{/b} 250\n{b}Crew:{/b} 10\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 120 ft./30 ft.\n{b}Speed:{/b} fly 40 ft. (4.5 mph)" compset="Gear">
+    <fieldval field="gCost" value="20000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJFlyFsh"></bootstrap>
+    </thing>
+  <thing id="c5CSJFlyFsh" name="Flying Fish Ship" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJFlyFsh"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJSpcGal" name="Space Galleon" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="10"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Wood, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 20 tons\n{b}Crew:{/b} 20\n{b}Keel/Beam:{/b} 130 ft./30 ft.\n{b}Speed:{/b} fly 4 mph\n{b}Cost:{/b} 30,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="130"/>
+      <assignval field="abValue2" value="30"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="20"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="20"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="35"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJMang"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 399
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJSpcGal" name="Space Galleon" description="{b}AC:{/b} 15 (wood)\n{b}Cargo:{/b} 20 tons\n{b}Hit Points:{/b} 400\n{b}Crew:{/b} 20\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 130 ft./30 ft.\n{b}Speed:{/b} fly 35 ft. (4 mph)" compset="Gear">
+    <fieldval field="gCost" value="30000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJSpcGal"></bootstrap>
+    </thing>
+  <thing id="c5CSJSpcGal" name="Space Galleon" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJSpcGal"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJNtild" name="Nautiloid" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="10"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Wood, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 17 tons\n{b}Crew:{/b} 20\n{b}Keel/Beam:{/b} 180 ft./30 ft.\n{b}Speed:{/b} fly 4.5 mph\n{b}Cost:{/b} 50,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="4.5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="180"/>
+      <assignval field="abValue2" value="30"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="20"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="17"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJMang"></bootstrap>
+    <bootstrap thing="ra5CSJTent"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 399
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJNtild" name="Nautiloid" description="{b}AC:{/b} 15 (wood)\n{b}Cargo:{/b} 17 tons\n{b}Hit Points:{/b} 400\n{b}Crew:{/b} 20\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 180 ft./30 ft.\n{b}Speed:{/b} fly 40 ft. (4.5 mph)" compset="Gear">
+    <fieldval field="gCost" value="50000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJNtild"></bootstrap>
+    </thing>
+  <thing id="c5CSJNtild" name="Nautiloid" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJNtild"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJTyrntS" name="Tyrant Ship" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="12"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Stone, Dmg Threshold 20"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 20 tons\n{b}Crew:{/b} 10 (beholders)\n{b}Keel/Beam:{/b} 100 ft./100 ft.\n{b}Speed:{/b} fly 4.5 mph"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="4.5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="100"/>
+      <assignval field="abValue2" value="100"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="10 (beholders)"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="20"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJEyes"></bootstrap>
+    <bootstrap thing="ra5CSJEyes"></bootstrap>
+    <bootstrap thing="ra5CSJEyes"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 299
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJTyrntS" name="Tyrant Ship" description="{b}AC:{/b} 17 (stone)\n{b}Cargo:{/b} 20 tons\n{b}Hit Points:{/b} 300\n{b}Crew:{/b} 10 (beholders)\n{b}Damage Threshold:{/b} 20\n{b}Keel/Beam:{/b} 100 ft./100 ft.\n{b}Speed:{/b} fly 40 ft. (4.5 mph)" compset="Gear">
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJTyrntS"></bootstrap>
+    </thing>
+  <thing id="c5CSJTyrntS" name="Tyrant Ship" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJTyrntS"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJDmslfl" name="Damselfly Ship" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="14"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Metal, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 5 tons\n{b}Crew:{/b} 9\n{b}Keel/Beam:{/b} 100 ft./20 ft.\n{b}Speed:{/b} fly 8 mph\n{b}Cost:{/b} 20,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="8"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="100"/>
+      <assignval field="abValue2" value="20"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="9"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="5"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="70"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJMngD"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 199
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJDmslfl" name="Damselfly Ship" description="{b}AC:{/b} 19 (metal)\n{b}Cargo:{/b} 5 tons\n{b}Hit Points:{/b} 200\n{b}Crew:{/b} 9\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 100 ft./20 ft.\n{b}Speed:{/b} fly 70 ft. (8 mph)" compset="Gear">
+    <fieldval field="gCost" value="20000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJDmslfl"></bootstrap>
+    </thing>
+  <thing id="c5CSJDmslfl" name="Damselfly Ship" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJDmslfl"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJShrkSh" name="Shrike Ship" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="10"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Wood, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 20 tons\n{b}Crew:{/b} 11\n{b}Keel/Beam:{/b} 100 ft./20 ft.\n{b}Speed:{/b} fly 8 mph\n{b}Cost:{/b} 20,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="8"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="100"/>
+      <assignval field="abValue2" value="20"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="11"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="20"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="70"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJPrcR"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 249
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJShrkSh" name="Shrike Ship" description="{b}AC:{/b} 15 (wood)\n{b}Cargo:{/b} 20 tons\n{b}Hit Points:{/b} 250\n{b}Crew:{/b} 11\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 100 ft./20 ft.\n{b}Speed:{/b} fly 70 ft. (8 mph)" compset="Gear">
+    <fieldval field="gCost" value="20000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJShrkSh"></bootstrap>
+    </thing>
+  <thing id="c5CSJShrkSh" name="Shrike Ship" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJShrkSh"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJLvngSh" name="Living Ship" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="10"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Wood, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 10 tons\n{b}Crew:{/b} 5 (plus its resident treant)\n{b}Keel/Beam:{/b} 80 ft./20 ft.\n{b}Speed:{/b} fly 4.5 mph\n{b}Cost:{/b} 25,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="4.5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="80"/>
+      <assignval field="abValue2" value="20"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="5 (plus its resident treant)"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="10"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 249
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJLvngSh" name="Living Ship" description="{b}AC:{/b} 15 (wood)\n{b}Cargo:{/b} 10 tons\n{b}Hit Points:{/b} 250\n{b}Crew:{/b} 5 (plus its resident treant)\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 80 ft./20 ft.\n{b}Speed:{/b} fly 40 ft. (4.5 mph)" compset="Gear">
+    <fieldval field="gCost" value="25000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJLvngSh"></bootstrap>
+    </thing>
+  <thing id="c5CSJLvngSh" name="Living Ship" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJLvngSh"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJTrtShp" name="Turtle Ship" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="14"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Metal, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 30 tons\n{b}Crew:{/b} 16\n{b}Keel/Beam:{/b} 95 ft./70 ft.\n{b}Speed:{/b} swim 3 mph, fly 3 mph\n{b}Cost:{/b} 40,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="3"/>
+      <assignval field="abText" value="swim 3, "/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="95"/>
+      <assignval field="abValue2" value="70"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="16"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="30"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="25"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJMang"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="25"/>
+      </bootstrap>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 299
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    </thing>
+  <thing id="g5CSJTrtShp" name="Turtle Ship" description="{b}AC:{/b} 19 (metal)\n{b}Cargo:{/b} 30 tons\n{b}Hit Points:{/b} 300\n{b}Crew:{/b} 16\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 95 ft./70 ft.\n{b}Speed:{/b} swim 25 ft. (3 mph), fly 25 ft. (3 mph)" compset="Gear">
+    <fieldval field="gCost" value="40000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJTrtShp"></bootstrap>
+    </thing>
+  <thing id="c5CSJTrtShp" name="Turtle Ship" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJTrtShp"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJHHShip" name="Hammerhead Ship" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="10"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Wood, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 30 tons\n{b}Crew:{/b} 15\n{b}Keel/Beam:{/b} 250 ft./25 ft.\n{b}Speed:{/b} fly 4 mph\n{b}Cost:{/b} 40,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="250"/>
+      <assignval field="abValue2" value="25"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="15"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="30"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="35"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBlnt"></bootstrap>
+    <bootstrap thing="ra5CSJMang"></bootstrap>
+    <bootstrap thing="ra5CSJMang"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 399
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJHHShip" name="Hammerhead Ship" description="{b}AC:{/b} 15 (wood)\n{b}Cargo:{/b} 30 tons\n{b}Hit Points:{/b} 400\n{b}Crew:{/b} 15\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 250 ft./25 ft.\n{b}Speed:{/b} fly 35 ft. (4 mph)" compset="Gear">
+    <fieldval field="gCost" value="40000"/>
+    <usesource source="5eAstAdv"/>
+    <usesource source="5eDDBSJm"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <bootstrap thing="c5CSJHHShip"></bootstrap>
+    </thing>
+  <thing id="c5CSJHHShip" name="Hammerhead Ship" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <usesource source="5eDDBSJm"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJHHShip"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJSqdShp" name="Squid Ship" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="10"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Wood, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 20 tons\n{b}Crew:{/b} 13\n{b}Keel/Beam:{/b} 250 ft./25 ft.\n{b}Speed:{/b} fly 3.5 mph\n{b}Cost:{/b} 25,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="3.5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="250"/>
+      <assignval field="abValue2" value="25"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="13"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="20"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJMang"></bootstrap>
+    <bootstrap thing="ra5CSJPrcR"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 299
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJSqdShp" name="Squid Ship" description="{b}AC:{/b} 15 (wood)\n{b}Cargo:{/b} 20 tons\n{b}Hit Points:{/b} 300\n{b}Crew:{/b} 13\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 250 ft./25 ft.\n{b}Speed:{/b} fly 30 ft. (3.5 mph)" compset="Gear">
+    <fieldval field="gCost" value="25000"/>
+    <usesource source="5eAstAdv"/>
+    <usesource source="5eDDBSJm"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <bootstrap thing="c5CSJSqdShp"></bootstrap>
+    </thing>
+  <thing id="c5CSJSqdShp" name="Squid Ship" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <usesource source="5eDDBSJm"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJSqdShp"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJNgtspd" name="Nightspider" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="14"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Metal, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 50 tons\n{b}Crew:{/b} 25\n{b}Keel/Beam:{/b} 175 ft./50 ft.\n{b}Speed:{/b} fly 4.5 mph\n{b}Cost:{/b} 50,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="4.5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="175"/>
+      <assignval field="abValue2" value="50"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="25"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="50"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <bootstrap thing="ra5CSJMang"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 299
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJNgtspd" name="Nightspider" description="{b}AC:{/b} 19 (metal)\n{b}Cargo:{/b} 50 tons\n{b}Hit Points:{/b} 300\n{b}Crew:{/b} 25\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 175 ft./50 ft.\n{b}Speed:{/b} fly 40 ft. (4.5 mph)" compset="Gear">
+    <fieldval field="gCost" value="50000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJNgtspd"></bootstrap>
+    </thing>
+  <thing id="c5CSJNgtspd" name="Nightspider" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJNgtspd"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="r5CSJWspShp" name="Wasp Ship" compset="Race">
+    <fieldval field="rINT" value="-9"/>
+    <fieldval field="rWIS" value="-9"/>
+    <fieldval field="rCHA" value="-9"/>
+    <fieldval field="rHPStart" value="400"/>
+    <fieldval field="rHitDice" value="1"/>
+    <fieldval field="rHDSides" value="1"/>
+    <fieldval field="rAC" value="10"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rArmText" value="Wood, Dmg Threshold 15"/>
+    <fieldval field="rMultiatt" value="The ship itself does not take actions; rather, its crew take their own individual actions using the ship&apos;s weapons and implements."/>
+    <fieldval field="rDescript" value="{b}Cargo:{/b} 10 tons\n{b}Crew:{/b} 5\n{b}Keel/Beam:{/b} 80 ft./20 ft.\n{b}Speed:{/b} fly 5.5 mph\n{b}Cost:{/b} 20,000 gp"/>
+    <fieldval field="rSTR" value="-9"/>
+    <fieldval field="rDEX" value="-9"/>
+    <fieldval field="rCON" value="-9"/>
+    <tag group="HideTab" tag="personal"/>
+    <tag group="HideTab" tag="classes" name="classes" abbrev="classes"/>
+    <tag group="HideTab" tag="journal"/>
+    <tag group="Alignment" tag="Unaligned"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Gargant3"/>
+    <tag group="HideTab" tag="background"/>
+    <bootstrap thing="ra5CSJmph">
+      <assignval field="abValue" value="5.5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJKlBm">
+      <assignval field="abValue" value="80"/>
+      <assignval field="abValue2" value="20"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt">
+      <autotag group="Helper" tag="SpecUp"/>
+      <assignval field="shortname" value="Actions"/>
+      <assignval field="livename" value="Actions"/>
+      <assignval field="sbName" value="Actions"/>
+      </bootstrap>
+    <bootstrap thing="tp5CVehicle"></bootstrap>
+    <bootstrap thing="ra5CSJCrew">
+      <assignval field="abText" value="5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJCrgCap">
+      <assignval field="abValue" value="10"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="50"/>
+      </bootstrap>
+    <bootstrap thing="ra5CSJBall"></bootstrap>
+    <eval phase="PostAttr" priority="11000" index="2">var HPAdj as number
+
+~Subtract out the CON bonus 
+
+
+~then add in the total of the vehicle (minus 1since it has 1d1 HD)
+
+HPAdj += 249
+
+herofield[tBonusHP].value += HPAdj
+
+~push our hidetabs to the hero
+perform hero.pushtags[HideTab.?]</eval>
+    <eval phase="Validation" priority="11000" index="3">hero.childfound[aSTR].field[aFinalVal].value -= 1
+hero.childfound[aDEX].field[aFinalVal].value -= 1
+hero.childfound[aCON].field[aFinalVal].value -= 1
+hero.childfound[aINT].field[aFinalVal].value -= 1
+hero.childfound[aWIS].field[aFinalVal].value -= 1
+hero.childfound[aCHA].field[aFinalVal].value -= 1</eval>
+    </thing>
+  <thing id="g5CSJWspShp" name="Wasp Ship" description="{b}AC:{/b} 15 (wood)\n{b}Cargo:{/b} 10 tons\n{b}Hit Points:{/b} 250\n{b}Crew:{/b} 5\n{b}Damage Threshold:{/b} 15\n{b}Keel/Beam:{/b} 80 ft./20 ft.\n{b}Speed:{/b} fly 50 ft. (5.5 mph)" compset="Gear">
+    <fieldval field="gCost" value="20000"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="thing" tag="holder_top" name="Top Holder" abbrev="???"/>
+    <tag group="explicit" tag="25"/>
+    <tag group="GearType" tag="gtSpcVeh"/>
+    <tag group="Helper" tag="GearNoSize" name="GearNoSize" abbrev="GearNoSize"/>
+    <bootstrap thing="c5CSJWspShp"></bootstrap>
+    </thing>
+  <thing id="c5CSJWspShp" name="Wasp Ship" compset="Companion">
+    <fieldval field="CompType" value="Spelljammer"/>
+    <usesource source="5eAstAdv"/>
+    <minion id="Spelljammer" isinherit="no">
+      <tag group="Hero" tag="FixedRace"/>
+      <bootstrap thing="r5CSJWspShp"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="cfg5CSJUpg" name="Ship Weapons Test" compset="Configure" uniqueness="unique">
+    <comment>Not fully implemented. Cannot get the disable to stop the ____T versions from showing. Urgh.</comment>
+    <fieldval field="cfgRcAllo2" value="Custom.SJRmvWep"/>
+    <fieldval field="cfgRcAllo1" value="Custom.SJWep"/>
+    <tag group="Helper" tag="Allow1RcAb"/>
+    <tag group="Helper" tag="Allow2RcAb"/>
+    </thing>
+  <thing id="ra5CSJRmvWep" name="Remove Weapon" compset="RaceSpec">
+    <comment>Not fully implemented. Cannot get the disable to stop the ____T versions from showing. Urgh.</comment>
+    <fieldval field="usrCandid1" value="Custom.SJWep"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="Custom" tag="SJRmvWep"/>
+    <tag group="Custom" tag="SJDisWep"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <eval phase="First" priority="50"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+doneif (field[usrChosen1].ischosen = 0)
+
+perform field[usrChosen1].chosen.assign[Helper.Disable]
+perform field[usrChosen1].chosen.assign[Custom.SJDisWep]]]></eval>
+    </thing>
+  <thing id="io5CFishSuit" name="Fish Suit" description="This bulky suit completely encases your head and body. It takes 1 minute to don or doff. While worn, it enables you to breathe in an airless environment and renders you immune to the harmful effects of any surrounding gas. \n\nWhile you&apos;re underwater, the suit grants you a swimming speed equal to your walking speed. While you&apos;re in an environment without gravity, it grants you a flying speed equal to your walking speed." compset="Wondrous">
+    <fieldval field="usrLabelAr" value="Environment"/>
+    <arrayval field="usrArray" index="0" value="Normal"/>
+    <arrayval field="usrArray" index="1" value="Underwater"/>
+    <arrayval field="usrArray" index="2" value="No Gravity"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <bootstrap thing="xSwim">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:usrIndex = 1]]></containerreq>
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <containerreq phase="First" priority="100"><![CDATA[fieldval:gIsEquip <> 0 & fieldval:usrIndex = 2]]></containerreq>
+      <autotag group="Value" tag="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10001"><![CDATA[
+doneif (tagis[Helper.Disable] <> 0)
+doneif (field[gIsEquip].value = 0)
+doneif (field[usrIndex].value = 0)
+
+
+if (field[usrIndex].value = 1) then
+   hero.childfound[xSwim].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xSwim].field[abValue].value)
+   endif
+
+if (field[usrIndex].value = 2) then
+   hero.childfound[xFly].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xFly].field[abValue].value)
+   endif]]></eval>
+    </thing>
+  <thing id="io5CWldsOry" name="Wildspace Orrery" description="While in a Wildspace system, this portable magical device automatically tracks the positions and movements of all suns, planets, moons, and comets within that system. It projects a display of all such bodies in the space above its current location. Within that display is a white, pulsating pinprick of light, which marks the orrery&apos;s location." compset="Wondrous">
+    <usesource source="5eAstAdv"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    </thing>
+  <thing id="g5CFshngEq" name="Basic Fishing Equipment" description="A basic set of fishing equipment includes a pole, a line, a hook, and either a lure or some bait.\n\nFishing isn&apos;t possible while aboard a ship that is moving faster than its flying speed. At the end of each hour spent fishing, a character can make a DC 15 Wisdom (Survival) check. On a failure, no fish was caught during that hour. On a success, roll a d10 to determine what was caught, as indicated:\n\n{b}1-2:{/b} A Tiny, inedible fish (a creature that consumes it is poisoned for 1 hour)\n{b}3-5:{/b} Tiny, edible fish (enough to feed one person)\n{b}6-8:{/b} Small, edible fish (enough to feed up to four people)\n{b}9:{/b} A hostile space eel (can feed up to twelve people)\n{b}10:{/b} A hostile gray scavver (feeds up to twenty people), some other creature chosen by the DM, or a Tiny object chosen by the DM" compset="Gear">
+    <fieldval field="gCost" value=".1"/>
+    <usesource source="5eAstAdv"/>
+    <tag group="GearType" tag="gtAdventGe"/>
+    </thing>
+  <thing id="io5CSpjmHlm" name="Spelljamming Helm" description="This ornate chair is used to propel and maneuver a ship on which it has been installed through air and space. If the ship is designed for travel on or under water, the helm can also be used for that as well. A ship must weigh at least 1 ton to have a {i}spelljamming helm{/i} working on it.\n\nWhile attuned to a {i}spelljamming helm{/i} and sitting in it, you gain these abilities for as long as you maintain concentration (as if you are concentrating on a spell):\n\n• You can use the {i}spelljamming helm{/i} to move the ship through space, air, or water up to the ship&apos;s speed. If the ship is in space and no other objects weighing 1 ton or more are within a mile of it, you can use the {i}spelljamming helm{/i} to move the vessel fast enough to travel 100 million miles per 24 hours.\n• You can steer the vessel, albeit somewhat clumsily, in a manner similar to the rudder or oars of a seafaring ship.\n• At any time, you can see and hear what&apos;s happening on and around the vessel as if you were standing in a location of your choice aboard it.\n\n{b}Transfer Attunement.{/b} You can use an action to touch a willing spellcaster. That creature immediately attunes to the {i}spelljamming helm{/i}, and your attunement to it ends.\n\n{b}Cost.{/b} The material components to create a {i}spelljamming helm{/i} cost 5,000 gp, therefore that is the minimum expected price. Other vendors may charge much more, depending on the environment and circumstances." compset="Wondrous">
+    <fieldval field="gCost" value="5000"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a spellcaster"/>
+    <usesource source="5eAstAdv"/>
+    <usesource source="5eLgtXry"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    </thing>
+  <thing id="io5CTalrith" name="Talarith" description="The reigar who creates this jewelry chooses its form: bracelet, brooch, diadem, or necklace. While the reigar wears the talarith, any weapon wielded by the reigar deals an additional 1d6 force damage when it hits.\n\nUsing its talarith, the reigar can use an action to summon a golem-like duplicate of itself. The duplicate obeys the reigar&apos;s commands and uses the reigar&apos;s statistics, except it is an unaligned Construct with no talarith of its own. The duplicate takes its turn immediately after the reigar. It vanishes after 1 hour or when it is reduced to 0 hit points. After summoning this golem, the reigar must complete a short or long rest before this property can be used again." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by the reigar who made it"/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eBooAst"/>
+    <usesource source="5eLgtXry"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Usage" tag="LongRest"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    </thing>
+  <thing id="g5CKgAlchFr" name="Keg of Alchemist&apos;s Fire" description="A keg of alchemist&apos;s fire thrown at a creature or an object deals 21 (6d6) fire damage on a hit. \n\nFurthermore, the target is set ablaze and takes the damage again every round (in the case of a creature, at the beginning of each of its turns) until the fire is put out. A creature within reach of the flame can use an action to smother the flames using a blanket or carpet, reducing the fire damage by 2d6. Three such actions are needed to completely extinguish the fire." compset="Gear">
+    <usesource source="5eLgtXry"/>
+    <tag group="explicit" tag="51"/>
+    <tag group="Helper" tag="UsesQty"/>
+    <tag group="GearType" tag="gt5CAlcItm"/>
+    </thing>
+  </document>
