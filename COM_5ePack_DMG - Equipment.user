@@ -35,16 +35,18 @@
     <tag group="ProductId" tag="Wizards"/>
     <tag group="Helper" tag="EquipMag" name="EquipMag" abbrev="EquipMag"/>
     </thing>
-  <thing id="io5CDriftg" name="Driftglobe" description="Speak its command word within 60 feet of it to make it emanate the Light or Daylight spell.\nAnother command word once lit makes it float no more than 5 feet off the ground, following you once you move beyond 60 feet from it. It sinks to the ground and stops glowing if stopped from moving." compset="Wondrous">
-    <fieldval field="gWeight" value="1"/>
+  <thing id="io5CDriftg" name="Driftglobe" description="Speak its command word within 60 feet of it to make it emanate the Light or Daylight spell.\n\nAnother command word once lit makes it float no more than 5 feet off the ground, following you once you move beyond 60 feet from it. It sinks to the ground and stops glowing if stopped from moving." compset="Wondrous">
+    <comment>Needs update (daylight is 1/day) to include spells</comment>
     <fieldval field="trkMax" value="1"/>
+    <fieldval field="gWeight" value="1"/>
     <usesource source="5eDMGCP"/>
-    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
     <tag group="Usage" tag="Day"/>
     <tag group="GearType" tag="gtWondrous"/>
     <tag group="Helper" tag="AlwaysAvl"/>
     <tag group="ProductId" tag="Wizards"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
     </thing>
   <thing id="i5CEfrChai" name="Efreeti Chain" description="You gain a +3 bonus to AC while you wear this armor, become immune to fire damage, can understand and speak Primordial and can walk on molten rock as if it were solid ground." compset="MagicArmor">
     <fieldval field="miTypeDet" value="chain mail"/>
@@ -69,7 +71,7 @@
     <tag group="ItemRarity" tag="Rare"/>
     <tag group="ProductId" tag="Wizards"/>
     </thing>
-  <thing id="io5CGloThi" name="Gloves of Thievery" description="Gives +5 do Dexterity (Sleight of Hand) checks to pick locks. Invisible while worn." compset="Wondrous">
+  <thing id="io5CGloThi" name="Gloves of Thievery" description="While worn, gives +5 to Dexterity (Sleight of Hand) checks and Dexterity checks made to pick locks. Invisible while worn." compset="Wondrous">
     <usesource source="5eDMGCP"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
@@ -78,9 +80,9 @@
     <tag group="Helper" tag="EquipMag" name="EquipMag" abbrev="EquipMag"/>
     <eval phase="PreLevel" priority="10000"><![CDATA[
       doneif (field[gIsEquip].value = 0)
-      doneif (field[gIsAttuned].value = 0)
 
-      #situational[hero.child[skSleight],"+5 to checks made to pick locks",field[thingname].text]]]></eval>
+      #situational[hero.child[skSleight],"+5 to checks made to pick locks",field[thingname].text]
+      hero.child[skSleight].field[Bonus].value += 5]]></eval>
     </thing>
   <thing id="i5cMariArm" name="Mariner&apos;s Armor" description="You gain a swimming speed equal to your walking speed while wearing this armor. If at the start of your turn you have 0 hit points the armor makes you rise 60 feet." compset="MagicArmor" buytemplate="BuyMoney" xactspecial="2">
     <fieldval field="miTypeDet" value="light, medium, or heavy"/>
@@ -123,14 +125,17 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <tag group="ItemRarity" tag="Common" name="Common" abbrev="Common"/>
     </thing>
   <thing id="ioSendSton" name="Sending Stones" description="Always come in  pairs. Touch one and spend an action to establish a Sending to the other stone (if no one holds the other stone you know it and the spell is not spent.) Recharges next dawn. If one stone is destroyed the other is dispelled permanently." compset="Wondrous">
-    <fieldval field="trkMax" value="1"/>
     <usesource source="5eDMGCP"/>
     <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
     <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
-    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
     <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spSending">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
     </thing>
   <thing id="iJSentiShi" name="Sentinel Shield" description="You have advantage on Wisdom (Perception) rolls and initiative while it is equipped." compset="MagicArmor">
     <fieldval field="miTypeDet" value="shield"/>
@@ -296,18 +301,17 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Custom" tag="5CEbArcFoc"/>
     </thing>
   <thing id="io5CAnsHar" name="Instrument of the Bard (Anstruth Harp)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <comment>Needs spells listed</comment>
     <fieldval field="gCost" value="109000"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
     <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="ItemRarity" tag="VeryRare"/>
     <tag group="GearType" tag="gtWondrous"/>
-    <bootstrap thing="spFly">
-      <autotag group="Usage" tag="AtWill"/>
-      </bootstrap>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -327,18 +331,19 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <bootstrap thing="spWallThor">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
-    </thing>
-  <thing id="io5CCanMan" name="Instrument of the Bard (Canaith Mandolin)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
-    <fieldval field="gCost" value="30000"/>
-    <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Rare"/>
-    <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    </thing>
+  <thing id="io5CCanMan" name="Instrument of the Bard (Canaith Mandolin)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
+    <comment>Needs spells listed</comment>
+    <fieldval field="gCost" value="30000"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -359,18 +364,19 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
       <autotag group="Usage" tag="AtWill"/>
       <assignval field="CustDesc" value="For the duration, the willing creature you touch has resistance to lightning damage type. "/>
       </bootstrap>
-    </thing>
-  <thing id="io5CFocBan" name="Instrument of the Bard (Fochulan Bandlore)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
-    <fieldval field="gCost" value="26500"/>
-    <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Uncommon"/>
-    <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    </thing>
+  <thing id="io5CFocBan" name="Instrument of the Bard (Fochulan Bandlore)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
+    <comment>Needs spells listed</comment>
+    <fieldval field="gCost" value="26500"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -392,18 +398,19 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <bootstrap thing="spSpeaAnim">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
-    </thing>
-  <thing id="io5CMaFuCi" name="Instrument of the Bard (Mac-Fuirmidh Cittern)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
-    <fieldval field="gCost" value="27000"/>
-    <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Uncommon"/>
-    <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    </thing>
+  <thing id="io5CMaFuCi" name="Instrument of the Bard (Mac-Fuirmidh Cittern)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
+    <comment>Needs spells listed</comment>
+    <fieldval field="gCost" value="27000"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -422,18 +429,19 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <bootstrap thing="spFogClou">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
-    </thing>
-  <thing id="io5CDosLut" name="Instrument of the Bard (Doss Lute)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
-    <fieldval field="gCost" value="28500"/>
-    <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Uncommon"/>
-    <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    </thing>
+  <thing id="io5CDosLut" name="Instrument of the Bard (Doss Lute)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
+    <comment>Needs spells listed</comment>
+    <fieldval field="gCost" value="28500"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -453,18 +461,19 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <bootstrap thing="spProtPois">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
-    </thing>
-  <thing id="io5CCliLyr" name="Instrument of the Bard (Cli Lyre)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
-    <fieldval field="gCost" value="35000"/>
-    <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Rare"/>
-    <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    </thing>
+  <thing id="io5CCliLyr" name="Instrument of the Bard (Cli Lyre)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
+    <comment>Needs spells listed</comment>
+    <fieldval field="gCost" value="35000"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -483,18 +492,19 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <bootstrap thing="spWindWall">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
-    </thing>
-  <thing id="io5COllHar" name="Instrument of the Bard (Ollamh Harp)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
-    <fieldval field="gCost" value="125000"/>
-    <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Rare"/>
-    <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    </thing>
+  <thing id="io5COllHar" name="Instrument of the Bard (Ollamh Harp)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
+    <comment>Needs spells listed</comment>
+    <fieldval field="gCost" value="125000"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -511,6 +521,9 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
     <bootstrap thing="spFireStor">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
     </thing>
@@ -551,10 +564,11 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
       </child>
     </thing>
   <thing id="mw5CDMGWav" name="Wave" description="{i}Weapon (trident), legendary (requires attunement by a creature that worships a god of the sea){/i}\n\nHeld in the dungeon of White Plume Mountain, this trident is an exquisite weapon engraved with images of waves, shells, and sea creatures. Although you must worship a god of the sea to attune to this weapon, {i}Wave{/i} happily accepts new converts. \n\nYou gain a +3 bonus to attack and damage rolls made with this magic weapon. If you score a critical hit with it, the target takes extra necrotic damage equal to half its hit point maximum. \n\nThe weapon also functions as a {i}trident of fish command{/i} and a {i}weapon of warning{/i}. It can confer the benefit of a {i}cap of water breathing{/i} while you hold it, and you can use it as a cube of force by choosing the effect, instead of pressing cube sides to select it. \n\n{b}Sentience{/b}. {i}Wave{/i} is a sentient weapon of neutral alignment, with an Intelligence of 14, a Wisdom of 10, and a Charisma of 18. It has hearing and darkvision out to a range of 120 feet.\n\nThe weapon communicates telepathically with its wielder and can speak, read, and understand Aquan. It can also speak with aquatic animals as if using a speak with animals spell, using telepathy to involve its wielder in the conversation.\n\n{b}Personality{/b}. When it grows restless, {i}Wave{/i} has a habit  of humming tunes that vary from sea chanteys to sacred hymns of the sea gods. \n\n{i}Wave{/i} zealously desires to convert mortals to the worship of one or more sea gods, or else to consign the faithless to death. Conflict arises if the wielder fails to further the weapon&apos;s objectives in the world. \n\nThe trident has a nostalgic attachment to the place where it was forged, a desolate island called Thunderforge. A sea god imprisoned a family of storm giants there, and the giants forged Wave in an act of devotion to-or rebellion against-that god. \n\n{i}Wave{/i} harbors a secret doubt about its own nature and purpose. For all its devotion to the sea gods, {i}Wave{/i} fears that it was intended to bring about a particular sea god&apos;s demise. This destiny is something {i}Wave{/i} might not be able to avert." compset="MagicWep">
+    <comment>Needs to get all the benefits of the mentioned items.</comment>
     <fieldval field="Bonus" value="3"/>
-    <tag group="IsWeapon" tag="wTrident"/>
     <tag group="ItemRarity" tag="Legendary"/>
     <tag group="Helper" tag="NeedAttune"/>
+    <tag group="IsWeapon" tag="wTrident"/>
     <child entity="wSpecMagic">
       <bootstrap thing="wTrident"></bootstrap>
       </child>
@@ -3123,13 +3137,14 @@ hero.childfound[ArmorClass].field[tACMisc].value += iAC</eval>
     <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
     </thing>
   <thing id="io5CWingBoot" name="Winged Boots" description="While you wear these boots, you have a flying speed equal to your walking speed. You can use the boots to fly for up to 4 hours, all at once or in several shorter flights, each one using a minimum of 1 minute from the duration. If you are flying when the duration expires, you descend at a rate of 30 feet per round until you land.{br}The boots regain 2 hours of flying capability for every 12 hours they aren’t in use." compset="Wondrous" replaces="miWingBoot">
+    <comment>Need to implement flying speed</comment>
     <fieldval field="trkMax" value="240"/>
-    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
     <tag group="Usage" tag="MinuteAbs"/>
     <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
     <tag group="Helper" tag="EquipMag" name="Magic Armor" abbrev="Magic Armor"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
     </thing>
   <thing id="io5CClkMntRy" name="Cloak of the Manta Ray" description="While wearing this cloak with its hood up, you can breathe underwater, and you have a swimming speed of 60 feet. Pulling the hood up or down requires an action." compset="Wondrous" replaces="miCloaMant">
     <tag group="Helper" tag="EquipMag" name="Magic Armor" abbrev="Magic Armor"/>
@@ -3375,10 +3390,20 @@ field[CustDesc].text = "You can use an action to read the scroll, enclosing you 
     <tag group="GearType" tag="gtVehWater"/>
     <tag group="thing" tag="holder_top"/>
     </thing>
-  <preclude id="gGalley" source="5eDMGCP"/>
+  <thing id="io5CSlpSpd" name="Slippers of Spider Climbing" description="While you wear these light shoes, you can move up, down, and across vertical surfaces and upside down along ceilings, while leaving your hands free. You have a climbing speed equal to your walking speed. However, the slippers don’t allow you to move this way on a slippery surface, such as one covered by ice or oil." compset="Wondrous" replaces="miSlipSpid">
+    <tag group="Helper" tag="EquipMag" name="Magic Armor" abbrev="Magic Armor"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
+    <eval phase="Final" priority="10001">      doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+     hero.childfound[xClimb].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xClimb].field[abValue].value)</eval>
+    </thing>
   <preclude id="gKeelboat" source="5eDMGCP"/>
   <preclude id="gLongship" source="5eDMGCP"/>
   <preclude id="gRowboat" source="5eDMGCP"/>
   <preclude id="gSailShip" source="5eDMGCP"/>
   <preclude id="gWarship" source="5eDMGCP"/>
+  <preclude id="gGalley" source="5eDMGCP"/>
   </document>
