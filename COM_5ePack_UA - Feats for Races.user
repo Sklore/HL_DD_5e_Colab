@@ -67,8 +67,9 @@ endif]]></eval>
     <bootstrap thing="wClaw">
       <autotag group="AttackTarg" tag="1Target"/>
       <autotag group="DamTypeOvr" tag="dtSlashing"/>
-      <assignval field="wDieCount" value="1"/>
+      <autotag group="IsWeapon" tag="wUnarmed"/>
       <assignval field="wDieSize" value="4"/>
+      <assignval field="wDieCount" value="1"/>
       </bootstrap>
     <eval phase="PostAttr" priority="10000" index="2"><![CDATA[
       ~ If we're not shown, just get out now
@@ -88,7 +89,7 @@ endif]]></eval>
       elseif (field[usrIndex].value = 1) then
         hero.child[aCHA].field[aStartMod].value += 1
       endif]]></eval>
-    <pickreq thing="rDragonbor"/>
+    <exprreq message="Prerequisite: Dragonborn"><![CDATA[#hasrace[rDragonbor] + hero.tagis[TypeTag.ttDragonbo] <> 0]]></exprreq>
     </thing>
   <thing id="f5CDraWin" name="Dragon Wings" description="You sprout wings that grant you a flying speed of 20 feet as long as you are not wearing heavy armor and aren&apos;t exceeding your maximum carrying capacity." compset="Feat" uniqueness="useronce">
     <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
@@ -108,7 +109,7 @@ endif]]></eval>
       doneif (herofield[tEncum].value > herofield[tEncumMax].value)
  
      hero.child[xFly].field[abValue].value = 20]]></eval>
-    <pickreq thing="rDragonbor"/>
+    <exprreq message="Prerequisite: Dragonborn"><![CDATA[#hasrace[rDragonbor] + hero.tagis[TypeTag.ttDragonbo] <> 0]]></exprreq>
     </thing>
   <thing id="f5CDroHiMa" name="Drow High Magic" description="You can cast the {i}detect magic{/i} spell at will without expending a spell slot. \n* You can cast {i}levitate{/i} and {i}dispel magic{/i} once each between long rests.\n\nYour spellcasting ability is Charisma for these spells (Spell save DC #StandardDC#)." compset="Feat" uniqueness="useronce">
     <usesource source="p5eRFeUACP"/>
@@ -139,6 +140,7 @@ endif]]></eval>
 
       hero.child[aCON].field[aStartMod].value += 1]]></eval>
     <pickreq thing="rDwarf"/>
+    <exprreq message="Prerequisite: Dwarf"><![CDATA[#hasrace[rDwarf] + hero.tagis[TypeTag.ttDwarf] <> 0]]></exprreq>
     </thing>
   <thing id="f5CElvAcc" name="Elven Accuracy" description="Increase your Dexterity score by 1, to a maximum of 20.\n* Whenever you have advantage on an attack roll, you can reroll one of the dice once. The new roll must be used." compset="Feat" uniqueness="useronce">
     <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
@@ -148,7 +150,7 @@ endif]]></eval>
       doneif (tagis[Helper.Disable] = 1)
 
       hero.child[aDEX].field[aStartMod].value += 1]]></eval>
-    <exprreq message="Requires an elf or half-elf."><![CDATA[#hasrace[rElf] + #hasrace[rHalfElf] <> 0]]></exprreq>
+    <exprreq message="Prerequisite: Elf of Half-Elf"><![CDATA[#hasrace[rElf] + #hasrace[rHalfElf] + #hasrace[r5CEbHalfElf] + hero.tagis[TypeTag.ttElf] <> 0]]></exprreq>
     </thing>
   <thing id="f5CEveFri" name="Everybody&apos;s Friend" description="Increase your Charisma score by 1, to a maximum of 20.\n* You gain proficiency in the Deception and Persuasion skills. If you already have proficiency in those skills, your proficiency bonus becomes doubled when you use those skills." compset="Feat" uniqueness="useronce">
     <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
@@ -186,6 +188,7 @@ endif]]></eval>
 
       hero.child[aINT].field[aStartMod].value += 1]]></eval>
     <pickreq thing="rGnome"/>
+    <exprreq message="Prerequisite: Gnome"><![CDATA[#hasrace[rGnome] + hero.tagis[TypeTag.ttGnome] <> 0]]></exprreq>
     </thing>
   <thing id="f5CFeyTel" name="Fey Teleportation" description="Increase your Intelligence score by 1, to a maximum of 20.\n* You can cast the {i}misty step{/i} spell once between short or long rests. Intelligence is your spellcasting ability for this spell." compset="Feat" uniqueness="useronce">
     <usesource source="p5eRFeUACP" parent="p5eUneArc" name="5e Unearthed Arcana - Feats for Races"/>
@@ -223,7 +226,6 @@ endif]]></eval>
     </thing>
   <thing id="f5CGruBea" name="Grudge-Bearer" description="Choose a type of creature or two humanoid types that are your chosen enemy.\n\n* Increase your Strength, Constitution, or Wisdom score by 1, up to a maximum of 20. \n* During the first round of combat versus your chosen foes, your attacks are made at advantage.\n* When any of your chosen foes make an opportunity attack against you, they have disadvantage.\n* Whenever you make an Intelligence (Arcana, History, Nature, or Religion) check to recall information about your chosen foes, you may double the proficiency bonus to the check even if you are not proficient." compset="Feat" summary="Choose enemies to have bonuses against." uniqueness="useronce">
     <fieldval field="usrCandid1" value="thingid.aSTR | thingid.aCON | thingid.aWIS"/>
-    <arrayval field="usrArray" index="0" value="Aberrations"/>
     <arrayval field="usrArray" index="1" value="Beasts"/>
     <arrayval field="usrArray" index="2" value="Celestials"/>
     <arrayval field="usrArray" index="3" value="Constructs"/>
@@ -237,15 +239,11 @@ endif]]></eval>
     <arrayval field="usrArray" index="11" value="Oozes"/>
     <arrayval field="usrArray" index="12" value="Plants"/>
     <arrayval field="usrArray" index="13" value="Undead"/>
+    <arrayval field="usrArray" index="0" value="Aberrations"/>
     <usesource source="p5eRFeUACP"/>
-    <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="User" tag="NoAutoName"/>
-    <eval phase="First"><![CDATA[
-      ~ If we're disabled, do nothing & 
-      doneif (tagis[Helper.Disable] = 1)
-~ add 1 to chosen ability
-field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
+    <tag group="ChooseSrc1" tag="Hero"/>
     <eval phase="PostAttr" priority="10000" index="2"><![CDATA[~ If we're disabled, do nothing & 
 doneif (tagis[Helper.Disable] = 1)
 
@@ -253,7 +251,12 @@ doneif (tagis[Helper.Disable] = 1)
       #situational[hero.child[skHistory], "Double your proficiency when using this to remember things about your chosen foe.",field[thingname].text]
       #situational[hero.child[skReligion], "Double your proficiency when using this to remember things about your chosen foe.",field[thingname].text]
       #situational[hero.child[skNature], "Double your proficiency when using this to remember things about your chosen foe.",field[thingname].text]]]></eval>
-    <pickreq thing="rDwarf"/>
+    <eval phase="First"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+~ add 1 to chosen ability
+field[usrChosen1].chosen.field[aStartMod].value += 1]]></eval>
+    <exprreq message="Prerequisite: Dwarf"><![CDATA[#hasrace[rDwarf] + hero.tagis[TypeTag.ttDwarf] <> 0]]></exprreq>
     </thing>
   <thing id="f5CHumDet" name="Human Determination" description="Increase one ability score of your choice by 1, up to 20.\n* Once between short rests, when you make an attack roll, saving throw, or ability check, you do so with advantage." compset="Feat" uniqueness="useronce">
     <fieldval field="trkMax" value="1"/>
@@ -389,7 +392,7 @@ call 5CAddProf</eval>
       endif
 
       hero.child[Speed].field[tSpeed].value += 5]]></eval>
-    <exprreq message="Requires a dwarf, gnome or halfling."><![CDATA[#hasrace[rDwarf] + #hasrace[rGnome] + #hasrace[rHalfling] <> 0]]></exprreq>
+    <exprreq message="Requires a dwarf, gnome or halfling."><![CDATA[#hasrace[rDwarf] + #hasrace[rGnome] + #hasrace[rHalfling] + hero.tagis[TypeTag.ttDwarf] + hero.tagis[TypeTag.ttGnome] <> 0]]></exprreq>
     </thing>
   <thing id="f5CWonMak" name="Wonder Maker" description="* Increase your Dexterity or Intelligence score by 1 to a maximum of 20.\n* When you make a skill check with your Tinker&apos;s tools, you add double your proficiency bonus.\n* When you make a device with your Tinker trait, the following options are available for your creations:\n\n{i}Alarm{/i}. This device emits an alarm audible to 300 feet, lasting for 1 minute, if a creature approaches within 15 feet of it and doesn&apos;t speak the password set for it. \n{i}Calculator{/i}. The device can add up sums.\n{i}Lifter{/i}. The device works as a block and tackle, allowing you to lift up to five times what you could normally lift.  \n{i}Timekeeper{/i}. The device works as a pocketwatch, keeping accurate time.\n{i}Weather Sensor{/i}. Used as an action, the device provides weather conditions for a 1-mile radius, predicting the weather for the next 4 hours in hour intervals with simple symbols." compset="Feat" uniqueness="useronce">
     <arrayval field="usrArray" index="0" value="Dexterity"/>
@@ -459,6 +462,6 @@ call 5CAddProf</eval>
       elseif (field[usrIndex].value = 1) then
         hero.child[aCHA].field[aStartMod].value += 1
       endif]]></eval>
-    <pickreq thing="rDragonbor"/>
+    <exprreq message="Prerequisite: Dragonborn"><![CDATA[#hasrace[rDragonbor] + hero.tagis[TypeTag.ttDragonbo] <> 0]]></exprreq>
     </thing>
   </document>
