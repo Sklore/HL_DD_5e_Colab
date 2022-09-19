@@ -51,9 +51,11 @@
     <fieldval field="rHeightMin" value="36"/>
     <fieldval field="rWeightMin" value="80"/>
     <usesource source="5eEEPCCP"/>
+    <usesource source="5eEGtWCP"/>
+    <usesource source="5eEEPCCPR"/>
+    <tag group="SubRace" tag="r5CEEGenas"/>
     <tag group="RaceSize" tag="Medium0"/>
     <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
-    <tag group="SubRace" tag="r5CEEGenas"/>
     <bootstrap thing="ra5CEEUnBr"></bootstrap>
     <bootstrap thing="ra5CEEMiWi"></bootstrap>
     </thing>
@@ -62,28 +64,32 @@
     <fieldval field="rWeightMin" value="80"/>
     <fieldval field="rSTR" value="1"/>
     <usesource source="5eEEPCCP"/>
+    <usesource source="5eEGtWCP"/>
+    <usesource source="5eEEPCCPR"/>
+    <tag group="RaceSize" tag="Medium0"/>
     <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
     <tag group="SubRace" tag="r5CEEGenas"/>
-    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="ra5CEEMeSt"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="120"/>
       </bootstrap>
     <bootstrap thing="ra5CEEEaWa"></bootstrap>
-    <bootstrap thing="ra5CEEMeSt"></bootstrap>
     </thing>
   <thing id="sr5CEEGFir" name="Fire Genasi" compset="SubRace" uniqueness="unique">
     <fieldval field="rHeightMin" value="36"/>
     <fieldval field="rWeightMin" value="80"/>
     <fieldval field="rINT" value="1"/>
     <usesource source="5eEEPCCP"/>
+    <usesource source="5eEGtWCP"/>
+    <usesource source="5eEEPCCPR"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
     <tag group="SubRace" tag="r5CEEGenas"/>
     <tag group="RaceSize" tag="Medium0"/>
-    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
+    <bootstrap thing="ra5CEEFiRe"></bootstrap>
     <bootstrap thing="ra5CEEReBl"></bootstrap>
     <bootstrap thing="raDarkVis">
       <autotag group="Value" tag="60"/>
       </bootstrap>
-    <bootstrap thing="ra5CEEFiRe"></bootstrap>
     <eval phase="First" priority="10000">doneif (tagis[Helper.Disable] = 1)
 
 perform hero.assign[DamageRes.dtFire]</eval>
@@ -93,15 +99,17 @@ perform hero.assign[DamageRes.dtFire]</eval>
     <fieldval field="rWeightMin" value="80"/>
     <fieldval field="rWIS" value="1"/>
     <usesource source="5eEEPCCP"/>
+    <usesource source="5eEGtWCP"/>
+    <usesource source="5eEEPCCPR"/>
+    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
     <tag group="SubRace" tag="r5CEEGenas"/>
     <tag group="RaceSize" tag="Medium0"/>
-    <tag group="ClVaryName" tag="Replace" name="Replace" abbrev="Replace"/>
-    <bootstrap thing="ra5CEEAmph"></bootstrap>
-    <bootstrap thing="ra5CEECaWa"></bootstrap>
     <bootstrap thing="xSwim">
       <autotag group="Value" tag="30"/>
       </bootstrap>
     <bootstrap thing="ra5CEEAcRe"></bootstrap>
+    <bootstrap thing="ra5CEEAmph"></bootstrap>
+    <bootstrap thing="ra5CEECaWa"></bootstrap>
     <eval phase="First" priority="10000">doneif (tagis[Helper.Disable] = 1)
 
 perform hero.assign[DamageRes.dtAcid]</eval>
@@ -130,19 +138,6 @@ perform hero.assign[DamageRes.dtAcid]</eval>
       <autotag group="Helper" tag="Memorized"/>
       </bootstrap>
     </thing>
-  <thing id="ra5CEEReBl" name="Reach to the Blaze" description="You know the produce flame cantrip. Once you reach 3rd level , you can cast the burning hands spell once with this trait as a 1st-level spell, and you regain the ability to cast it this way when you finish a long rest. Constitution is your spellcasting ability for these spells." compset="RaceSpec">
-    <tag group="FeatureTyp" tag="Special"/>
-    <tag group="Helper" tag="ShowSpec"/>
-    <bootstrap thing="spProdFlam">
-      <autotag group="Helper" tag="Free"/>
-      <autotag group="Helper" tag="Memorized"/>
-      </bootstrap>
-    <bootstrap thing="spBurnHand">
-      <autotag group="Helper" tag="Free"/>
-      <autotag group="Helper" tag="Memorized"/>
-      <autotag group="BonusSplAt" tag="3"/>
-      </bootstrap>
-    </thing>
   <thing id="ra5CEEAmph" name="Amphibious" description="You can breathe air and water." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="Helper" tag="ShowSpec"/>
@@ -150,15 +145,22 @@ perform hero.assign[DamageRes.dtAcid]</eval>
   <thing id="ra5CEECaWa" name="Call to the Wave" description="You know the shape water cantrip. When you reach 3rd level, you can cast the create or destroy water spell as a 2nd-level spell once with this trait, and you regain the ability to cast it this way when you finish a long rest. Constritution is your spellcasting ability for these spells." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="Helper" tag="ShowSpec"/>
-    <bootstrap thing="sp5CEPCSha">
+    <bootstrap thing="sp5CXGEShW">
       <autotag group="Helper" tag="Free"/>
-      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="SpellLike"/>
       </bootstrap>
     <bootstrap thing="spCreaor">
-      <autotag group="BonusSplAt" tag="3"/>
-      <autotag group="Helper" tag="Free"/>
-      <autotag group="Helper" tag="Memorized"/>
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="2nd level"/>
       </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
     </thing>
   <thing id="r5CEEGolia" name="Goliath" description="Goliaths were massive. They averaged between 7 and 8 feet tall (2.1 to 2.4 meters), making them even taller than dragonborn and half-orcs.\nGoliaths had noticeably bony or prominent supraorbital ridges above their eyes. Goliath eyes were often a bright blue or green and sometimes glowed a little.\n\nGoliath skin was often gray or brown and was extremely tough (often compared to stone). One of the most distinctive features of the goliath was the darker (often vertically symmetrical) patches of skin that covered their entire bodies. Goliaths believed that these markings somehow explained or controlled their fate or destiny. For this reason, goliaths never tattooed themselves as this could affect their future.\nGoliath skin was littered with bony growths called &quot;lithoderms&quot;. These growths were roughly the size of a coin and appeared like studded pebbles on their arms, shoulders, torso or head." compset="Race">
     <fieldval field="rHeightMin" value="84"/>
@@ -214,5 +216,24 @@ perform hero.assign[DamageRes.dtAcid]</eval>
     </thing>
   <thing id="ra5CEEAcRe" name="Acid Resistance" description="You are resistant to acid damage." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    </thing>
+  <thing id="ra5CEEReBl" name="Reach to the Blaze" description="You know the produce flame cantrip. Once you reach 3rd level , you can cast the burning hands spell once with this trait as a 1st-level spell, and you regain the ability to cast it this way when you finish a long rest. Constitution is your spellcasting ability for these spells." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="spProdFlam">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Cantrip"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    <bootstrap thing="spBurnHand">
+      <containerreq phase="First" priority="500"><![CDATA[count:Classes.? >= 3]]></containerreq>
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <eval phase="Final" priority="10000"><![CDATA[
+      doneif (tagis[Helper.Disable] <> 0)
+
+call 5CShowSpls]]></eval>
     </thing>
   </document>

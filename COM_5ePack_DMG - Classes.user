@@ -84,6 +84,9 @@
       <autotag group="Helper" tag="Memorized"/>
       <autotag group="SpellType" tag="cHelpClr"/>
       </bootstrap>
+    <bootstrap thing="c5CClrDiSD">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
     <eval phase="PostLevel" priority="10000"><![CDATA[
       ~ If we're disabled, do nothing
       doneif (tagis[Helper.Disable] <> 0)
@@ -183,18 +186,14 @@
     <tag group="LvNamePar" tag="AppText" name="Append &quot;field[abText].text&quot;" abbrev="Append &quot;field[abText].text&quot;"/>
     <tag group="LvNamePar" tag="AppValue3" name="Append &quot;field[abValue3].value&quot;" abbrev="Append &quot;field[abValue3].value&quot;"/>
     <tag group="LvNamePar" tag="DieCntVal" name="&quot;field[abValue].value&quot; dY" abbrev="&quot;field[abValue].value&quot; dY"/>
-    <eval phase="PostLevel" priority="10000">field[abValue].value += field[xCount].value</eval>
+    <eval phase="Final" priority="10000">field[abValue].value += field[xCount].value</eval>
     <eval phase="Render" priority="10000" index="2"><![CDATA[
-      if (field[xIndex].value >= 2) then
-        field[listname].text = field[thingname].text & " (2d8 necrotic damage)"
-      else
-        field[listname].text = field[thingname].text & " (1d8 necrotic damage)"
-        endif]]></eval>
+      field[listname].text = "Divine Strike (" & field[xIndex].value & "d8 necrotic damage)"]]></eval>
     </thing>
   <thing id="c5CClrImpR" name="Improved Reaper" description="Starting at 17th level, when the cleric casts a necromancy spell of 1st through 5th level that targets only one creature, the spell can instead target two creatures within range and within 5 feet of each other. If the spell consumes its material components, the cleric must provide them for each target." compset="ClSpecial" summary="You 1st - 5th necromancy spells can hit two targets instead of one.">
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
     </thing>
-  <thing id="c5CPOathbr" name="Oathbreaker" description="Paladins who break their oaths may take this class when they change from their original class." compset="CustomSpec" summary="Paladins who break their oaths may take this class when they change from their original class." uniqueness="unique">
+  <thing id="c5CPOathbr" name="Oathbreaker" description="Paladins who break their oaths may take this class when they change from their original class.\n\n{b}Oathbreaker Spells{/b}\nYou gain spells at the paladin levels listed below.\n\n{b}Level   Spells{/b}\n{b}3rd{/b}       {i}hellish rebuke{/i},{i} inflict wounds{/i}\n{b}5th{/b}       {i}crown of madness{/i},{i} darkness{/i}\n{b}9th{/b}       {i}animate dead{/i},{i} bestow curse{/i}\n{b}13th{/b}     {i}blight{/i},{i} confusion{/i}\n{b}17th{/b}     {i}contagion{/i},{i} dominate person{/i}" compset="CustomSpec" summary="Paladins who break their oaths may take this class when they change from their original class." uniqueness="unique">
     <usesource source="5eDMGCP"/>
     <tag group="SpecSource" tag="cHelpPal" name="Paladin" abbrev="Paladin"/>
     <tag group="abCategory" tag="PalSacOath" name="Paladin Sacred Oath" abbrev="Paladin Sacred Oath"/>
@@ -317,7 +316,7 @@
     <tag group="abAction" tag="Bonus"/>
     <tag group="Usage" tag="LongRest"/>
     </thing>
-  <thing id="c5CCleAuHa" name="Aura of Hate" description="Starting at 7th level, the paladin, as well any fiends and undead within 10 feet of the paladin, gains a bonus to melee weapon damage rolls equal to the paladin&apos;s Charisma modifier (minimum of +1). A creature can benefit from this feature from only one paladin at a time. \n\n18th level, the range of this aura increases to 30 feet." compset="ClSpecial" summary="Paladin, fiends and undead gain your Cha modifier as bonus to melee damage.">
+  <thing id="c5CCleAuHa" name="Aura of Hate" description="Starting at 7th level, the paladin, as well any fiends and undead within 10 feet of the paladin, gains a bonus to melee weapon damage rolls equal to the paladin&apos;s Charisma modifier (minimum of +1). A creature can benefit from this feature from only one paladin at a time. \n\n18th level, the range of this aura increases to 30 feet." compset="ClSpecial" summary="Paladin, fiends and undead gain your CHA modifier as bonus to melee damage.">
     <fieldval field="abRange" value="10"/>
     <tag group="LvNamePar" tag="SignAppVal" name="Sign appended value" abbrev="Sign appended value"/>
     <tag group="abAction" tag="None" name="No action" abbrev="None"/>
@@ -352,12 +351,5 @@
 
       ~ We get damage bonus to melee attacks
       hero.childfound[Damage].field[dmmBonus].value += field[abValue].value]]></eval>
-    <eval phase="PostAttr" priority="10000" index="2"><![CDATA[      ~ If we're not shown, just get out now
-      doneif (tagis[Helper.ShowSpec] = 0)
-      ~ if we've been disabled, get out now
-      doneif (tagis[Helper.Disable] = 1)
-
-~ Add our charisma bonus to the melee attack bonus
-hero.child[Attack].field[tAtkMelee].value = hero.child[Attack].field[tAtkMelee].value + hero.child[aCHA].field[aModBonus].value]]></eval>
     </thing>
   </document>

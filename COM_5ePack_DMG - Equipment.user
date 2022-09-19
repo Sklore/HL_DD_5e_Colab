@@ -35,16 +35,18 @@
     <tag group="ProductId" tag="Wizards"/>
     <tag group="Helper" tag="EquipMag" name="EquipMag" abbrev="EquipMag"/>
     </thing>
-  <thing id="io5CDriftg" name="Driftglobe" description="Speak its command word within 60 feet of it to make it emanate the Light or Daylight spell.\nAnother command word once lit makes it float no more than 5 feet off the ground, following you once you move beyond 60 feet from it. It sinks to the ground and stops glowing if stopped from moving." compset="Wondrous">
-    <fieldval field="gWeight" value="1"/>
+  <thing id="io5CDriftg" name="Driftglobe" description="Speak its command word within 60 feet of it to make it emanate the Light or Daylight spell.\n\nAnother command word once lit makes it float no more than 5 feet off the ground, following you once you move beyond 60 feet from it. It sinks to the ground and stops glowing if stopped from moving." compset="Wondrous">
+    <comment>Needs update (daylight is 1/day) to include spells</comment>
     <fieldval field="trkMax" value="1"/>
+    <fieldval field="gWeight" value="1"/>
     <usesource source="5eDMGCP"/>
-    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
     <tag group="Usage" tag="Day"/>
     <tag group="GearType" tag="gtWondrous"/>
     <tag group="Helper" tag="AlwaysAvl"/>
     <tag group="ProductId" tag="Wizards"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
     </thing>
   <thing id="i5CEfrChai" name="Efreeti Chain" description="You gain a +3 bonus to AC while you wear this armor, become immune to fire damage, can understand and speak Primordial and can walk on molten rock as if it were solid ground." compset="MagicArmor">
     <fieldval field="miTypeDet" value="chain mail"/>
@@ -65,10 +67,11 @@
     </thing>
   <thing id="ip5CEliHea" name="Elixir of Health" description="Drinking this cures any disease and removes blided, deafened, paralyzed and poisoned conditions." compset="Potion" stacking="merge">
     <usesource source="5eDMGCP"/>
-    <tag group="ProductId" tag="Wizards"/>
+    <usesource source="5eDoSIA"/>
     <tag group="ItemRarity" tag="Rare"/>
+    <tag group="ProductId" tag="Wizards"/>
     </thing>
-  <thing id="io5CGloThi" name="Gloves of Thievery" description="Gives +5 do Dexterity (Sleight of Hand) checks to pick locks. Invisible while worn." compset="Wondrous">
+  <thing id="io5CGloThi" name="Gloves of Thievery" description="While worn, gives +5 to Dexterity (Sleight of Hand) checks and Dexterity checks made to pick locks. Invisible while worn." compset="Wondrous">
     <usesource source="5eDMGCP"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
@@ -77,9 +80,9 @@
     <tag group="Helper" tag="EquipMag" name="EquipMag" abbrev="EquipMag"/>
     <eval phase="PreLevel" priority="10000"><![CDATA[
       doneif (field[gIsEquip].value = 0)
-      doneif (field[gIsAttuned].value = 0)
 
-      #situational[hero.child[skSleight],"+5 to checks made to pick locks",field[thingname].text]]]></eval>
+      #situational[hero.child[skSleight],"+5 to checks made to pick locks",field[thingname].text]
+      hero.child[skSleight].field[Bonus].value += 5]]></eval>
     </thing>
   <thing id="i5cMariArm" name="Mariner&apos;s Armor" description="You gain a swimming speed equal to your walking speed while wearing this armor. If at the start of your turn you have 0 hit points the armor makes you rise 60 feet." compset="MagicArmor" buytemplate="BuyMoney" xactspecial="2">
     <fieldval field="miTypeDet" value="light, medium, or heavy"/>
@@ -122,14 +125,17 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <tag group="ItemRarity" tag="Common" name="Common" abbrev="Common"/>
     </thing>
   <thing id="ioSendSton" name="Sending Stones" description="Always come in  pairs. Touch one and spend an action to establish a Sending to the other stone (if no one holds the other stone you know it and the spell is not spent.) Recharges next dawn. If one stone is destroyed the other is dispelled permanently." compset="Wondrous">
-    <fieldval field="trkMax" value="1"/>
     <usesource source="5eDMGCP"/>
     <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
     <tag group="ProductId" tag="Wizards" name="Wizards of the Coast, LLC" abbrev="Wizards of the Coast, LLC"/>
-    <tag group="Usage" tag="Day" name="/day" abbrev="/day"/>
     <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spSending">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
     </thing>
   <thing id="iJSentiShi" name="Sentinel Shield" description="You have advantage on Wisdom (Perception) rolls and initiative while it is equipped." compset="MagicArmor">
     <fieldval field="miTypeDet" value="shield"/>
@@ -295,18 +301,17 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Custom" tag="5CEbArcFoc"/>
     </thing>
   <thing id="io5CAnsHar" name="Instrument of the Bard (Anstruth Harp)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <comment>Needs spells listed</comment>
     <fieldval field="gCost" value="109000"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
     <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="ItemRarity" tag="VeryRare"/>
     <tag group="GearType" tag="gtWondrous"/>
-    <bootstrap thing="spFly">
-      <autotag group="Usage" tag="AtWill"/>
-      </bootstrap>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -326,18 +331,19 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <bootstrap thing="spWallThor">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
-    </thing>
-  <thing id="io5CCanMan" name="Instrument of the Bard (Canaith Mandolin)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
-    <fieldval field="gCost" value="30000"/>
-    <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Rare"/>
-    <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    </thing>
+  <thing id="io5CCanMan" name="Instrument of the Bard (Canaith Mandolin)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
+    <comment>Needs spells listed</comment>
+    <fieldval field="gCost" value="30000"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -358,18 +364,19 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
       <autotag group="Usage" tag="AtWill"/>
       <assignval field="CustDesc" value="For the duration, the willing creature you touch has resistance to lightning damage type. "/>
       </bootstrap>
-    </thing>
-  <thing id="io5CFocBan" name="Instrument of the Bard (Fochulan Bandlore)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
-    <fieldval field="gCost" value="26500"/>
-    <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Uncommon"/>
-    <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    </thing>
+  <thing id="io5CFocBan" name="Instrument of the Bard (Fochulan Bandlore)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
+    <comment>Needs spells listed</comment>
+    <fieldval field="gCost" value="26500"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -391,18 +398,19 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <bootstrap thing="spSpeaAnim">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
-    </thing>
-  <thing id="io5CMaFuCi" name="Instrument of the Bard (Mac-Fuirmidh Cittern)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
-    <fieldval field="gCost" value="27000"/>
-    <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Uncommon"/>
-    <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    </thing>
+  <thing id="io5CMaFuCi" name="Instrument of the Bard (Mac-Fuirmidh Cittern)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
+    <comment>Needs spells listed</comment>
+    <fieldval field="gCost" value="27000"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -421,18 +429,19 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <bootstrap thing="spFogClou">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
-    </thing>
-  <thing id="io5CDosLut" name="Instrument of the Bard (Doss Lute)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
-    <fieldval field="gCost" value="28500"/>
-    <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Uncommon"/>
-    <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    </thing>
+  <thing id="io5CDosLut" name="Instrument of the Bard (Doss Lute)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
+    <comment>Needs spells listed</comment>
+    <fieldval field="gCost" value="28500"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -452,18 +461,19 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <bootstrap thing="spProtPois">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
-    </thing>
-  <thing id="io5CCliLyr" name="Instrument of the Bard (Cli Lyre)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
-    <fieldval field="gCost" value="35000"/>
-    <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Rare"/>
-    <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    </thing>
+  <thing id="io5CCliLyr" name="Instrument of the Bard (Cli Lyre)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
+    <comment>Needs spells listed</comment>
+    <fieldval field="gCost" value="35000"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -482,18 +492,19 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <bootstrap thing="spWindWall">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
-    </thing>
-  <thing id="io5COllHar" name="Instrument of the Bard (Ollamh Harp)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
-    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
-    <fieldval field="gCost" value="125000"/>
-    <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="NeedAttune"/>
-    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
-    <tag group="ItemRarity" tag="Rare"/>
-    <tag group="GearType" tag="gtWondrous"/>
     <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
+    </thing>
+  <thing id="io5COllHar" name="Instrument of the Bard (Ollamh Harp)" description="An instrument of the bards is an exquisite example of it kind, superior to an ordinary instrument in every way. Seven types of these instruments exist, each named after a legendary bard college. The following table lists the spells common to all instruments, as well as the spells specific to each one and its rarity. A creature that attempts to play the instrument without being attuned to it must succeed on a DC 15 Wisdom saving throw or take 2d4 psychic damage.\n\nYou can use an action to play the instrument and cast one of its spells. Once the instrument has been used to cast a spell, it can&apos;t be used to cast that spell again until the next dawn. The spells use your spellcasting ability and spell save DC.\n\nYou can play the instrument while casting a spell that forces any of its targets to be charmed on a failed save, thereby imposing disadvantage on that save. This only applies if the spell in question has a material or somatic component." compset="Wondrous">
+    <comment>Needs spells listed</comment>
+    <fieldval field="gCost" value="125000"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a bard"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
     <bootstrap thing="spInvisibi">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
@@ -510,6 +521,9 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
     <bootstrap thing="spFireStor">
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spFly">
       <autotag group="Usage" tag="AtWill"/>
       </bootstrap>
     </thing>
@@ -550,10 +564,11 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
       </child>
     </thing>
   <thing id="mw5CDMGWav" name="Wave" description="{i}Weapon (trident), legendary (requires attunement by a creature that worships a god of the sea){/i}\n\nHeld in the dungeon of White Plume Mountain, this trident is an exquisite weapon engraved with images of waves, shells, and sea creatures. Although you must worship a god of the sea to attune to this weapon, {i}Wave{/i} happily accepts new converts. \n\nYou gain a +3 bonus to attack and damage rolls made with this magic weapon. If you score a critical hit with it, the target takes extra necrotic damage equal to half its hit point maximum. \n\nThe weapon also functions as a {i}trident of fish command{/i} and a {i}weapon of warning{/i}. It can confer the benefit of a {i}cap of water breathing{/i} while you hold it, and you can use it as a cube of force by choosing the effect, instead of pressing cube sides to select it. \n\n{b}Sentience{/b}. {i}Wave{/i} is a sentient weapon of neutral alignment, with an Intelligence of 14, a Wisdom of 10, and a Charisma of 18. It has hearing and darkvision out to a range of 120 feet.\n\nThe weapon communicates telepathically with its wielder and can speak, read, and understand Aquan. It can also speak with aquatic animals as if using a speak with animals spell, using telepathy to involve its wielder in the conversation.\n\n{b}Personality{/b}. When it grows restless, {i}Wave{/i} has a habit  of humming tunes that vary from sea chanteys to sacred hymns of the sea gods. \n\n{i}Wave{/i} zealously desires to convert mortals to the worship of one or more sea gods, or else to consign the faithless to death. Conflict arises if the wielder fails to further the weapon&apos;s objectives in the world. \n\nThe trident has a nostalgic attachment to the place where it was forged, a desolate island called Thunderforge. A sea god imprisoned a family of storm giants there, and the giants forged Wave in an act of devotion to-or rebellion against-that god. \n\n{i}Wave{/i} harbors a secret doubt about its own nature and purpose. For all its devotion to the sea gods, {i}Wave{/i} fears that it was intended to bring about a particular sea god&apos;s demise. This destiny is something {i}Wave{/i} might not be able to avert." compset="MagicWep">
+    <comment>Needs to get all the benefits of the mentioned items.</comment>
     <fieldval field="Bonus" value="3"/>
-    <tag group="IsWeapon" tag="wTrident"/>
     <tag group="ItemRarity" tag="Legendary"/>
     <tag group="Helper" tag="NeedAttune"/>
+    <tag group="IsWeapon" tag="wTrident"/>
     <child entity="wSpecMagic">
       <bootstrap thing="wTrident"></bootstrap>
       </child>
@@ -706,7 +721,7 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <fieldval field="wDieSize" value="12"/>
     <fieldval field="wRangeLong" value="120"/>
     <usesource source="5eDMGCP"/>
-    <tag group="wCategory" tag="Firearm"/>
+    <usesource source="5eLgtXry"/>
     <tag group="wGroup" tag="Firearm"/>
     <tag group="EquipType" tag="Metal" name="Metal" abbrev="Metal"/>
     <tag group="wCategory" tag="RangeProj" name="Projectile Weapon" abbrev="Projectile"/>
@@ -716,6 +731,7 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <tag group="wProperty" tag="TwoHanded"/>
     <tag group="DamageType" tag="dtPiercing" name="Piercing" abbrev="Piercing"/>
     <tag group="Helper" tag="Always2H"/>
+    <tag group="wCategory" tag="Firearm"/>
     </thing>
   <thing id="w5CPstl" name="Pistol" compset="Weapon">
     <fieldval field="wRangeNorm" value="30"/>
@@ -725,7 +741,7 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <fieldval field="wDieCount" value="1"/>
     <fieldval field="wDieSize" value="10"/>
     <usesource source="5eDMGCP"/>
-    <tag group="wGroup" tag="Firearm"/>
+    <usesource source="5eLgtXry"/>
     <tag group="EquipType" tag="Metal" name="Metal" abbrev="Metal"/>
     <tag group="wCategory" tag="RangeProj" name="Projectile Weapon" abbrev="Projectile"/>
     <tag group="wProfReq" tag="Special"/>
@@ -733,6 +749,7 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <tag group="DamageType" tag="dtPiercing" name="Piercing" abbrev="Piercing"/>
     <tag group="wProperty" tag="Loading"/>
     <tag group="wCategory" tag="Firearm"/>
+    <tag group="wGroup" tag="Firearm"/>
     </thing>
   <thing id="w5CRvlvr" name="Revolver" compset="Weapon">
     <fieldval field="wRangeNorm" value="40"/>
@@ -756,14 +773,17 @@ hero.childfound[ab5CSwmMtch].field[abValue].value += 1</eval>
     <fieldval field="gWeight" value="0.2"/>
     <fieldval field="gCost" value=".3"/>
     <usesource source="5eDMGCP"/>
-    <tag group="Helper" tag="UsesQty" name="UsesQty" abbrev="UsesQty"/>
+    <usesource source="5eLgtXry"/>
     <tag group="GearType" tag="gtAmmo" name="Ammo" abbrev="Ammo"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="UsesQty" name="UsesQty" abbrev="UsesQty"/>
     </thing>
   <thing id="g5CModBlt" name="Modern Bullets" compset="Gear" lotsize="10" stacking="merge">
     <fieldval field="gWeight" value="0.1"/>
     <usesource source="5eDMGCP"/>
     <tag group="GearType" tag="gtAmmo" name="Ammo" abbrev="Ammo"/>
     <tag group="Helper" tag="UsesQty" name="UsesQty" abbrev="UsesQty"/>
+    <tag group="User" tag="Tracker"/>
     </thing>
   <thing id="wHdrSpecR" name="Special Ranged Weapons" compset="Weapon" isshowonly="yes">
     <tag group="wProfReq" tag="Special"/>
@@ -3117,13 +3137,14 @@ hero.childfound[ArmorClass].field[tACMisc].value += iAC</eval>
     <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
     </thing>
   <thing id="io5CWingBoot" name="Winged Boots" description="While you wear these boots, you have a flying speed equal to your walking speed. You can use the boots to fly for up to 4 hours, all at once or in several shorter flights, each one using a minimum of 1 minute from the duration. If you are flying when the duration expires, you descend at a rate of 30 feet per round until you land.{br}The boots regain 2 hours of flying capability for every 12 hours they aren’t in use." compset="Wondrous" replaces="miWingBoot">
+    <comment>Need to implement flying speed</comment>
     <fieldval field="trkMax" value="240"/>
-    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
     <tag group="Usage" tag="MinuteAbs"/>
     <tag group="User" tag="Tracker" name="tracker" abbrev="tracker"/>
     <tag group="Helper" tag="EquipMag" name="Magic Armor" abbrev="Magic Armor"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
     </thing>
   <thing id="io5CClkMntRy" name="Cloak of the Manta Ray" description="While wearing this cloak with its hood up, you can breathe underwater, and you have a swimming speed of 60 feet. Pulling the hood up or down requires an action." compset="Wondrous" replaces="miCloaMant">
     <tag group="Helper" tag="EquipMag" name="Magic Armor" abbrev="Magic Armor"/>
@@ -3181,4 +3202,208 @@ hero.childfound[ArmorClass].field[tACMisc].value += iAC</eval>
       <autotag group="Value" tag="40"/>
       </bootstrap>
     </thing>
+  <thing id="g5CErngCell" name="Energy Cell" description="Futuristic ammunition." compset="Gear" stacking="merge">
+    <fieldval field="gWeight" value="0.3125"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="UsesQty" name="UsesQty" abbrev="UsesQty"/>
+    <tag group="GearType" tag="gtAmmo" name="Ammo" abbrev="Ammo"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="g5CExplosH" name="Explosives" compset="Gear" isshowonly="yes">
+    <tag group="explicit" tag="52" name="52" abbrev="52"/>
+    <tag group="GearType" tag="gt5CExplos"/>
+    </thing>
+  <thing id="g5CExpBomb" name="Bomb" description="{i}Renaissance{/i}\n\nA character can use an action to light this bomb and throw it at a point up to 60 feet away. Each creature within 5 feet of that point must succeed on a DC 12 Dexterity save or take 3d6 fire damage." compset="Gear" stacking="merge">
+    <fieldval field="gCost" value="150"/>
+    <fieldval field="gWeight" value="1"/>
+    <usesource source="5eDMGCP"/>
+    <usesource source="5eLgtXry"/>
+    <tag group="Helper" tag="UsesQty"/>
+    <tag group="explicit" tag="52"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="GearType" tag="gt5CExplos"/>
+    </thing>
+  <thing id="g5CExpDyn" name="Dynamite (stick)" description="{i}Modern{/i}\n\nA character can use an action to light a stick of dynamite and throw it at a point up to 60 feet away. Each creature within 5 feet of that point must make a DC 12 Dexterity save, taking 3d6 bludgeoning damage on a failure or half that on a success.\n\nA character can bind sticks of dynamite together so they explode at the same time. Each additional stick increases the damage by 1d6 (to a maximum of 10d6) and the burst radius by 5 feet (to a maximum of 20 feet).\n\nDynamite can be rigged with a longer fuse to explode after a set amount of time, usually 1 to 6 rounds. Roll initiative for the dynamite. After the appropriate number of rounds have passed, the dynamite explodes on that initiative." compset="Gear" stacking="merge">
+    <fieldval field="gWeight" value="1"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="GearType" tag="gt5CExplos"/>
+    <tag group="Helper" tag="UsesQty"/>
+    <tag group="explicit" tag="52"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="g5CExpFrag" name="Fragmentation Grenade" description="{i}Modern{/i}\n\nA character can use an action to throw a grenade at a point up to 60 feet away. With the aide of a grenade launcher, the character can propel the grenade up to 120 feet away.\n\nEach creature within 20 feet of an exploding fragmentation grenade must make a DC 15 Dexterity save, taking 5d6 piercing damage on a failure or half that on a success." compset="Gear" stacking="merge">
+    <fieldval field="gWeight" value="1"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="GearType" tag="gt5CExplos"/>
+    <tag group="Helper" tag="UsesQty"/>
+    <tag group="explicit" tag="52"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="g5CExpSmkG" name="Smoke Grenade" description="{i}Modern{/i}\n\nA character can use an action to throw a grenade at a point up to 60 feet away. With the aide of a grenade launcher, the character can propel the grenade up to 120 feet away.\n\nOne round after a smoke grenade lands, it spews a cloud of smoke that creates a heavily obscured area in a 20-foot radius. A moderate wind (minimum 10 miles per hour) disperses the smoke in 4 rounds; a strong wind (20 or more miles per hour) disperses it in 1 round." compset="Gear" stacking="merge">
+    <fieldval field="gWeight" value="2"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="GearType" tag="gt5CExplos"/>
+    <tag group="Helper" tag="UsesQty"/>
+    <tag group="explicit" tag="52"/>
+    <tag group="User" tag="Tracker"/>
+    </thing>
+  <thing id="g5CExpGnKg" name="Gunpowder Keg" description="{i}Renaissance{/i}\n\nGunpowder is mostly used to propel a bullet out of the barrel of a pistol or rifle, or as the propellant for a bomb. Gunpowder is sold in small wooden kegs or in water-resistant powder horns.\n\nSetting fire to a keg full of gunpowder can cause it to explode. Creatures within 10 feet of it must make a DC 12 Dexterity save, taking 7d6 fire damage on a failure or half that on a success.\n\nSetting fire to an ounce of gunpowder causes it to flare for 1 round, shedding bright light in a 30-foot radius and dim light for an another 30 feet." compset="Gear">
+    <fieldval field="gCost" value="250"/>
+    <fieldval field="gWeight" value="20"/>
+    <usesource source="5eDMGCP"/>
+    <usesource source="5eLgtXry"/>
+    <tag group="Helper" tag="UsesQty"/>
+    <tag group="explicit" tag="52"/>
+    <tag group="GearType" tag="gt5CExplos"/>
+    </thing>
+  <thing id="g5CExpGnHr" name="Gunpowder Horn" description="{i}Renaissance{/i}\n\nGunpowder is mostly used to propel a bullet out of the barrel of a pistol or rifle, or as the propellant for a bomb. Gunpowder is sold in small wooden kegs or in water-resistant powder horns.\n\nSetting fire to a horn full of gunpowder can cause it to explode. Creatures within 10 feet of it must make a DC 12 Dexterity save, taking 3d6 fire damage on a failure or half that on a success.\n\nSetting fire to an ounce of gunpowder causes it to flare for 1 round, shedding bright light in a 30-foot radius and dim light for an another 30 feet." compset="Gear">
+    <fieldval field="gCost" value="35"/>
+    <fieldval field="gWeight" value="2"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="GearType" tag="gt5CExplos"/>
+    <tag group="Helper" tag="UsesQty"/>
+    <tag group="explicit" tag="52"/>
+    </thing>
+  <thing id="g5CGrnLnch" name="Grenade Launcher" description="{i}Modern{/i}\n\nA character can use an action to throw a grenade at a point up to 60 feet away. With the aide of a grenade launcher, the character can propel the grenade up to 120 feet away." compset="Gear">
+    <fieldval field="gWeight" value="7"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="GearType" tag="gtAdventGe"/>
+    <tag group="Helper" tag="EquipMag"/>
+    </thing>
+  <thing id="io5CScrProt" name="Scroll of Protection" description="You can use an action to read the scroll, enclosing you in an invisible barrier that extends from you to form a 5-foot-radius, 10-foot-high cylinder. For 5 minutes, this barrier prevents creatures of the chosen type from entering or affecting anything within the cylinder. The cylinder matches your movement, keeping itself centered on you. However, moving in a way that causes a creature of the chosen type to be inside the cylinder ends the effect. A creature can try to breach the barrier by using an action to make a DC 15 Charisma check. On a success, the creature is no longer affected by the barrier." compset="Wondrous">
+    <comment>usrChosen1</comment>
+    <fieldval field="usrCandid1" value="Type.tpAberr | Type.tpBeast | Type.tpCelestia | Type.tpElementa | Type.tpFey | Type.tpFiend | Type.tpPlant | Type.tpUndead"/>
+    <fieldval field="actName" value="Activated (5 minutes)"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="GearType" tag="gtScroll"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="Final" priority="10000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
+
+field[CustDesc].text = "You can use an action to read the scroll, enclosing you in an invisible barrier that extends from you to form a 5-foot-radius, 10-foot-high cylinder. For 5 minutes, this barrier prevents creatures of the " & field[usrChosen1].chosen.field[name].text & " type from entering or affecting anything within the cylinder. The cylinder matches your movement, keeping itself centered on you. However, moving in a way that causes a creature of the " & field[usrChosen1].chosen.field[name].text & " type to be inside the cylinder ends the effect. A creature can try to breach the barrier by using an action to make a DC 15 Charisma check. On a success, the creature is no longer affected by the barrier."]]></eval>
+    </thing>
+  <thing id="ip5CLngvty" name="Potion of Longevity" description="When you drink this potion, your physical age is reduced by 1d6 + 6 years, to a minimum of 13 years. However, each subsequent time you drink a potion of longevity, there is a cumulative 10 percent chance that you instead age by 1d6 + 6 years. \n\nThe myriad ingredients suspended in the potion vanish when the potion is opened." compset="Potion" stacking="merge">
+    <usesource source="5eDMGCP"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    </thing>
+  <thing id="ro5CRsrctn" name="Rod of Resurrection" description="The rod has 5 charges. While holding it, you can use an action to cast one of these spells from it: {i}heal{/i} (1 charge) or {i}resurrection{/i} (5 charges).\n\nThe rod regains 1 spent charge each dawn. If the rod is reduced to 0 charges, roll a d20. On a 1, the rod disappears in a radiant burst." compset="Rod">
+    <fieldval field="gWeight" value="2"/>
+    <fieldval field="miAttunTxt" value="requires attunement by a cleric, druid, or paladin"/>
+    <fieldval field="trkMax" value="5"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Usage" tag="Charges"/>
+    <bootstrap thing="spResurrec">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="5"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      </bootstrap>
+    <bootstrap thing="spHeal">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="Charges"/>
+      <autotag group="ChargeUse" tag="1"/>
+      <autotag group="Helper" tag="StaffSpell"/>
+      </bootstrap>
+    </thing>
+  <thing id="gt5CExplos" name="Explosives" compset="GearType"></thing>
+  <thing id="g5CDMGAirshp" name="Airship" description="{b}Speed:{/b} 8 mph\n{b}Crew:{/b} 10\n{b}Passengers:{/b} 10\n{b}Cargo:{/b} 1 ton\n{b}AC:{/b} 13\n{b}HP:{/b} 300\n\n{b}Crew.{/b} To function, a ship needs a skilled crew. As per the Player&apos;s Handbook, a single skilled hireling costs a minimum of 2 gp per day. The minimum number of skilled hirelings needed to crew a ship is dependant on the type of vessel.\nChapter 4 of the Dungeon Master&apos;s Guide offers optional rules to track the loyalty of individual crew members (or of the crew as a whole). If at least half the crew becomes disloyal during a voyage, they stage a mutiny. If the ship is berthed, disloyal crew leave the ship permanently.\n\n{b}Passengers.{/b} The given number of passengers indicates how many Small and Medium passengers the ship can accommodate.\nPassenger accommodations consist of shared hammocks in tight quarters. A ship that provides private accommodations can carry one-fifth the listed number of passengers.\nA passenger is typically expected to pay 5 sp per day for a hammock, but prices can vary depending on the ship. A small private cabin usually costs 2 gp per day.\n\n{b}Cargo.{/b} The cargo indicates the maximum tonnage the ship can carry.\n\n{b}Ship Repair.{/b} Repairs to a damaged ship can be made while the vessel is berthed. Repairing 1 hit point of damage requires 1 day and costs 20 gp, to pay for materials and labor." compset="Gear" holdable="no">
+    <fieldval field="gCost" value="20000"/>
+    <fieldval field="gHeldMaxWt" value="2000"/>
+    <fieldval field="actIncrNam" value="AC 13 | HP 300 | Damage Taken:"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="300"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="GearType" tag="gt5CVehAir"/>
+    <tag group="thing" tag="holder_top"/>
+    <tag group="explicit" tag="20"/>
+    </thing>
+  <thing id="g5CDMGKlboat" name="Keelboat" description="{b}Speed:{/b} 1 mph\n{b}Crew:{/b} 1\n{b}Passengers:{/b} 6\n{b}Cargo:{/b} 0.5 tons\n{b}AC:{/b} 15\n{b}HP:{/b} 100\n{b}Damage Threshold:{/b} 10\n\n\nKeelboats and rowboats are normally used on lakes and rivers. If going downstream, add the speed of the current (usually 3 miles per hour) to the speed of the vehicle. These vehicles can&apos;t be rowed against any significant current, but draft animals on the shore can can pull them upstream.\n\n\n{b}Crew.{/b} To function, a ship needs a skilled crew. As per the Player&apos;s Handbook, a single skilled hireling costs a minimum of 2 gp per day. The minimum number of skilled hirelings needed to crew a ship is dependant on the type of vessel.\nChapter 4 of the Dungeon Master&apos;s Guide offers optional rules to track the loyalty of individual crew members (or of the crew as a whole). If at least half the crew becomes disloyal during a voyage, they stage a mutiny. If the ship is berthed, disloyal crew leave the ship permanently.\n\n{b}Passengers.{/b} The given number of passengers indicates how many Small and Medium passengers the ship can accommodate.\nPassenger accommodations consist of shared hammocks in tight quarters. A ship that provides private accommodations can carry one-fifth the listed number of passengers.\nA passenger is typically expected to pay 5 sp per day for a hammock, but prices can vary depending on the ship. A small private cabin usually costs 2 gp per day.\n\n{b}Cargo.{/b} The cargo indicates the maximum tonnage the ship can carry.\n\n{b}Damage Threshold.{/b} If a ship has a Damage Threshold, it is immune to all damage unless it takes an amount of damage equal to or greater than that damage threshold, in which case it takes damage as normal. Any damage that doesn&apos;t meet or exceed the damage threshold is considered superficial and doesn&apos;t reduce the ship&apos;s hit points.\n\n{b}Ship Repair.{/b} Repairs to a damaged ship can be made while the vessel is berthed. Repairing 1 hit point of damage requires 1 day and costs 20 gp, to pay for materials and labor." compset="Gear" holdable="no">
+    <fieldval field="gCost" value="3000"/>
+    <fieldval field="gHeldMaxWt" value="1000"/>
+    <fieldval field="actIncrNam" value="AC 15 | HP 100 | Dmg Thresh 10 | Damage Taken:"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="100"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="GearType" tag="gtVehWater"/>
+    <tag group="thing" tag="holder_top"/>
+    </thing>
+  <thing id="g5CDMGRowboa" name="Rowboat" description="{b}Speed:{/b} 1.5 mph\n{b}Crew:{/b} 1\n{b}Passengers:{/b} 3\n{b}AC:{/b} 11\n{b}HP:{/b} 50\n\n\nKeelboats and rowboats are normally used on lakes and rivers. If going downstream, add the speed of the current (usually 3 miles per hour) to the speed of the vehicle. These vehicles can&apos;t be rowed against any significant current, but draft animals on the shore can can pull them upstream. A rowboat weighs 100 pounds when carried over land.\n\n\n{b}Crew.{/b} To function, a ship needs a skilled crew. As per the Player&apos;s Handbook, a single skilled hireling costs a minimum of 2 gp per day. The minimum number of skilled hirelings needed to crew a ship is dependant on the type of vessel.\nChapter 4 of the Dungeon Master&apos;s Guide offers optional rules to track the loyalty of individual crew members (or of the crew as a whole). If at least half the crew becomes disloyal during a voyage, they stage a mutiny. If the ship is berthed, disloyal crew leave the ship permanently.\n\n{b}Passengers.{/b} The given number of passengers indicates how many Small and Medium passengers the ship can accommodate.\n\n{b}Ship Repair.{/b} Repairs to a damaged ship can be made while the vessel is berthed. Repairing 1 hit point of damage requires 1 day and costs 20 gp, to pay for materials and labor." compset="Gear" holdable="no">
+    <fieldval field="gCost" value="50"/>
+    <fieldval field="actIncrNam" value="AC 11 | HP 50 | Damage Taken:"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="50"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="GearType" tag="gtVehWater"/>
+    <tag group="thing" tag="holder_top"/>
+    </thing>
+  <thing id="g5CDMGWrship" name="Warship" description="{b}Speed:{/b} 2.5 mph\n{b}Crew:{/b} 60\n{b}Passengers:{/b} 60\n{b}Cargo:{/b} 200 tons\n{b}AC:{/b} 15\n{b}HP:{/b} 500\n{b}Damage Threshold:{/b} 20\n\n{b}Crew.{/b} To function, a ship needs a skilled crew. As per the Player&apos;s Handbook, a single skilled hireling costs a minimum of 2 gp per day. The minimum number of skilled hirelings needed to crew a ship is dependant on the type of vessel.\nChapter 4 of the Dungeon Master&apos;s Guide offers optional rules to track the loyalty of individual crew members (or of the crew as a whole). If at least half the crew becomes disloyal during a voyage, they stage a mutiny. If the ship is berthed, disloyal crew leave the ship permanently.\n\n{b}Passengers.{/b} The given number of passengers indicates how many Small and Medium passengers the ship can accommodate.\nPassenger accommodations consist of shared hammocks in tight quarters. A ship that provides private accommodations can carry one-fifth the listed number of passengers.\nA passenger is typically expected to pay 5 sp per day for a hammock, but prices can vary depending on the ship. A small private cabin usually costs 2 gp per day.\n\n{b}Cargo.{/b} The cargo indicates the maximum tonnage the ship can carry.\n\n{b}Damage Threshold.{/b} If a ship has a Damage Threshold, it is immune to all damage unless it takes an amount of damage equal to or greater than that damage threshold, in which case it takes damage as normal. Any damage that doesn&apos;t meet or exceed the damage threshold is considered superficial and doesn&apos;t reduce the ship&apos;s hit points.\n\n{b}Ship Repair.{/b} Repairs to a damaged ship can be made while the vessel is berthed. Repairing 1 hit point of damage requires 1 day and costs 20 gp, to pay for materials and labor." compset="Gear" holdable="no">
+    <fieldval field="gCost" value="25000"/>
+    <fieldval field="gHeldMaxWt" value="400000"/>
+    <fieldval field="actIncrNam" value="AC 15 | HP 500 | Dmg Thresh 20 | Damage Taken:"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="500"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="GearType" tag="gtVehWater"/>
+    <tag group="thing" tag="holder_top"/>
+    </thing>
+  <thing id="g5CDMGGalley" name="Galley" description="{b}Speed:{/b} 4 mph\n{b}Crew:{/b} 80\n{b}Cargo:{/b} 150 tons\n{b}AC:{/b} 15\n{b}HP:{/b} 500\n{b}Damage Threshold:{/b} 20\n\n\n{b}Crew.{/b} To function, a ship needs a skilled crew. As per the Player&apos;s Handbook, a single skilled hireling costs a minimum of 2 gp per day. The minimum number of skilled hirelings needed to crew a ship is dependant on the type of vessel.\nChapter 4 of the Dungeon Master&apos;s Guide offers optional rules to track the loyalty of individual crew members (or of the crew as a whole). If at least half the crew becomes disloyal during a voyage, they stage a mutiny. If the ship is berthed, disloyal crew leave the ship permanently.\n\n{b}Cargo.{/b} The cargo indicates the maximum tonnage the ship can carry.\n\n{b}Damage Threshold.{/b} If a ship has a Damage Threshold, it is immune to all damage unless it takes an amount of damage equal to or greater than that damage threshold, in which case it takes damage as normal. Any damage that doesn&apos;t meet or exceed the damage threshold is considered superficial and doesn&apos;t reduce the ship&apos;s hit points.\n\n{b}Ship Repair.{/b} Repairs to a damaged ship can be made while the vessel is berthed. Repairing 1 hit point of damage requires 1 day and costs 20 gp, to pay for materials and labor." compset="Gear" holdable="no">
+    <fieldval field="gCost" value="30000"/>
+    <fieldval field="gHeldMaxWt" value="300000"/>
+    <fieldval field="actIncrNam" value="AC 15 | HP 500 | Dmg Thresh 20 | Damage Taken:"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="500"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="GearType" tag="gtVehWater"/>
+    <tag group="thing" tag="holder_top"/>
+    </thing>
+  <thing id="g5CDMGLngshp" name="Longship" description="{b}Speed:{/b} 3 mph\n{b}Crew:{/b} 40\n{b}Passengers:{/b} 150\n{b}Cargo:{/b} 10 tons\n{b}AC:{/b} 15\n{b}HP:{/b} 300\n{b}Damage Threshold:{/b} 15\n\n\n\n\n{b}Crew.{/b} To function, a ship needs a skilled crew. As per the Player&apos;s Handbook, a single skilled hireling costs a minimum of 2 gp per day. The minimum number of skilled hirelings needed to crew a ship is dependant on the type of vessel.\nChapter 4 of the Dungeon Master&apos;s Guide offers optional rules to track the loyalty of individual crew members (or of the crew as a whole). If at least half the crew becomes disloyal during a voyage, they stage a mutiny. If the ship is berthed, disloyal crew leave the ship permanently.\n\n{b}Passengers.{/b} The given number of passengers indicates how many Small and Medium passengers the ship can accommodate.\nPassenger accommodations consist of shared hammocks in tight quarters. A ship that provides private accommodations can carry one-fifth the listed number of passengers.\nA passenger is typically expected to pay 5 sp per day for a hammock, but prices can vary depending on the ship. A small private cabin usually costs 2 gp per day.\n\n{b}Cargo.{/b} The cargo indicates the maximum tonnage the ship can carry.\n\n{b}Damage Threshold.{/b} If a ship has a Damage Threshold, it is immune to all damage unless it takes an amount of damage equal to or greater than that damage threshold, in which case it takes damage as normal. Any damage that doesn&apos;t meet or exceed the damage threshold is considered superficial and doesn&apos;t reduce the ship&apos;s hit points.\n\n{b}Ship Repair.{/b} Repairs to a damaged ship can be made while the vessel is berthed. Repairing 1 hit point of damage requires 1 day and costs 20 gp, to pay for materials and labor." compset="Gear" holdable="no">
+    <fieldval field="gCost" value="10000"/>
+    <fieldval field="gHeldMaxWt" value="20000"/>
+    <fieldval field="actIncrNam" value="AC 15 | HP 300 | Dmg Thresh 15 | Damage Taken:"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="300"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="GearType" tag="gtVehWater"/>
+    <tag group="thing" tag="holder_top"/>
+    </thing>
+  <thing id="g5CDMGSlShip" name="Sailing Ship" description="{b}Speed:{/b} 2 mph\n{b}Crew:{/b} 20\n{b}Passengers:{/b} 20\n{b}Cargo:{/b} 100 tons\n{b}AC:{/b} 15\n{b}HP:{/b} 300\n{b}Damage Threshold:{/b} 15\n\n{b}Crew.{/b} To function, a ship needs a skilled crew. As per the Player&apos;s Handbook, a single skilled hireling costs a minimum of 2 gp per day. The minimum number of skilled hirelings needed to crew a ship is dependant on the type of vessel.\nChapter 4 of the Dungeon Master&apos;s Guide offers optional rules to track the loyalty of individual crew members (or of the crew as a whole). If at least half the crew becomes disloyal during a voyage, they stage a mutiny. If the ship is berthed, disloyal crew leave the ship permanently.\n\n{b}Passengers.{/b} The given number of passengers indicates how many Small and Medium passengers the ship can accommodate.\nPassenger accommodations consist of shared hammocks in tight quarters. A ship that provides private accommodations can carry one-fifth the listed number of passengers.\nA passenger is typically expected to pay 5 sp per day for a hammock, but prices can vary depending on the ship. A small private cabin usually costs 2 gp per day.\n\n{b}Cargo.{/b} The cargo indicates the maximum tonnage the ship can carry.\n\n{b}Damage Threshold.{/b} If a ship has a Damage Threshold, it is immune to all damage unless it takes an amount of damage equal to or greater than that damage threshold, in which case it takes damage as normal. Any damage that doesn&apos;t meet or exceed the damage threshold is considered superficial and doesn&apos;t reduce the ship&apos;s hit points.\n\n{b}Ship Repair.{/b} Repairs to a damaged ship can be made while the vessel is berthed. Repairing 1 hit point of damage requires 1 day and costs 20 gp, to pay for materials and labor." compset="Gear" holdable="no">
+    <fieldval field="gCost" value="10000"/>
+    <fieldval field="gHeldMaxWt" value="200000"/>
+    <fieldval field="actIncrNam" value="AC 15 | HP 300 | Dmg Thresh 15 | Damage Taken:"/>
+    <fieldval field="actUserMin" value="0"/>
+    <fieldval field="actUserMax" value="300"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Helper" tag="UserAdjust"/>
+    <tag group="GearType" tag="gtVehWater"/>
+    <tag group="thing" tag="holder_top"/>
+    </thing>
+  <thing id="io5CSlpSpd" name="Slippers of Spider Climbing" description="While you wear these light shoes, you can move up, down, and across vertical surfaces and upside down along ceilings, while leaving your hands free. You have a climbing speed equal to your walking speed. However, the slippers don’t allow you to move this way on a slippery surface, such as one covered by ice or oil." compset="Wondrous" replaces="miSlipSpid">
+    <tag group="Helper" tag="EquipMag" name="Magic Armor" abbrev="Magic Armor"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
+    <eval phase="Final" priority="10001">      doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+     hero.childfound[xClimb].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xClimb].field[abValue].value)</eval>
+    </thing>
+  <preclude id="gKeelboat" source="5eDMGCP"/>
+  <preclude id="gLongship" source="5eDMGCP"/>
+  <preclude id="gRowboat" source="5eDMGCP"/>
+  <preclude id="gSailShip" source="5eDMGCP"/>
+  <preclude id="gWarship" source="5eDMGCP"/>
+  <preclude id="gGalley" source="5eDMGCP"/>
   </document>

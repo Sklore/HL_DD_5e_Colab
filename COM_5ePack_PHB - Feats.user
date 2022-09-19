@@ -280,9 +280,22 @@ hero.findchild[TempHpPool,"Value.2"].field[thpMaxAllw].value = temphp]]></eval>
     <fieldval field="usrCandid1" value="component.Class &amp; CasterSrc.? &amp; (Helper.FullCaster|Helper.WarlocCast)"/>
     <fieldval field="abValue5" value="2"/>
     <usesource source="5ePHBCP"/>
-    <tag group="ChooseSrc1" tag="Thing"/>
+    <usesource source="5eAstAdv"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
     <bootstrap thing="cfg5CMagIn"></bootstrap>
+    <eval phase="Final" priority="51000" index="2"><![CDATA[foreach pick in hero from BaseSpell where "CfgSpell.cfg5CMagIn"
+~ loop through all the spells added by the configurable for Magic Initiate
+     if (eachpick.tagis[thingid.sp5CFndFam] <> 0) then
+     ~ if one of those spells is Find Familiar then 
+           foreach pick in hero from Class where "Helper.FirstLevel"
+           ~ loop through the class helpers until we find the one chosen at first level
+           ~ assign it this tag, which grants the Add a Familiar link on the correct page
+                perform eachpick.assign[CompAvail.Familiar]
+           nexteach
+     endif
+nexteach]]></eval>
     <eval phase="First" priority="10000"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
@@ -306,17 +319,6 @@ hero.findchild[TempHpPool,"Value.2"].field[thpMaxAllw].value = temphp]]></eval>
       
       ~ Remove the Staandard DC tag from this feat
       perform delete[StandardDC.?]]]></eval>
-    <eval phase="Final" priority="51000" index="2"><![CDATA[foreach pick in hero from BaseSpell where "CfgSpell.cfg5CMagIn"
-~ loop through all the spells added by the configurable for Magic Initiate
-     if (eachpick.tagis[thingid.sp5CFndFam] <> 0) then
-     ~ if one of those spells is Find Familiar then 
-           foreach pick in hero from Class where "Helper.FirstLevel"
-           ~ loop through the class helpers until we find the one chosen at first level
-           ~ assign it this tag, which grants the Add a Familiar link on the correct page
-                perform eachpick.assign[CompAvail.Familiar]
-           nexteach
-     endif
-nexteach]]></eval>
     <exprreq message="Must have at least one class level to select this feat. "><![CDATA[tagcount[FirstClass.?] <> 0]]></exprreq>
     </thing>
   <thing id="ft5CMartiA" name="Martial Adept" description="You learn two maneuvers of your choice from among those available to the Battle Master archetype in the fighter class. If a maneuver you use requires your target to make a saving throw to resist the maneuver’s effects, the saving throw DC equals 8 + your proficiency bonus + your Strength or Dexterity modifier (your choice).\n• You gain one d6 superiority die, which is added to any superiority dice you have from another source, if any. This die is expended when you use one of your maneuvers. You regain your expended superiority dice when you finish a short or long rest." compset="Feat" summary="Gain 2 maneuvers from the Battle Master archetype." uniqueness="useronce">
@@ -550,13 +552,14 @@ nexteach]]></eval>
     </thing>
   <thing id="ft5CTough" name="Tough" description="Your hit point maximum increases by an amount equal to twice your level when you gain this feat. Whenever you gain a level thereafter, your hit point maximum increases by an additional 2 hit points." compset="Feat" summary="Your hit point maximum increases by an amount equal to twice your level when you gain this feat. Whenever you gain a level thereafter, your hit point maximum increases by an additional 2 hit points." uniqueness="useronce">
     <usesource source="5ePHBCP"/>
+    <usesource source="5eAstAdv"/>
     <tag group="Helper" tag="ShowSpec"/>
+    <eval phase="PostLevel" priority="5000">field[abValue].value += maximum(herofield[tHitDice].value, 1)*2</eval>
     <eval phase="PostLevel" priority="15000" index="2"><![CDATA[
       ~ if we've been disabled, get out now
       doneif (tagis[Helper.Disable] = 1)
 
       herofield[tBonusHP].value += field[abValue].value]]></eval>
-    <eval phase="PostLevel" priority="5000">field[abValue].value += maximum(herofield[tHitDice].value, 1)*2</eval>
     </thing>
   <thing id="ft5CWaCast" name="War Caster" description="You have advantage on Constitution saving throws that you make to maintain your concentration on a spell when you take damage.\n• You can perform the somatic components of spells even when you have weapons or a shield in one or both hands.\n• When a hostile creature’s movement provokes an opportunity attack from you, you can use your reaction to cast a spell at the creature, rather than making an opportunity attack. The spell must have a casting time of 1 action and must target only that creature.\n\nPrerequisite: The ability to cast at least one spell" compset="Feat" uniqueness="useronce">
     <usesource source="5ePHBCP"/>

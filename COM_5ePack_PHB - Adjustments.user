@@ -946,7 +946,7 @@ endif]]></eval>
     <bootstrap thing="c5CAdjMgArm">
       <containerreq phase="First" priority="100">fieldval:pIsOn = 1</containerreq>
       </bootstrap>
-    <eval phase="First">  hero.child[ArmorClass].field[Penalty].value -= (field[pAdjust].value - 1)</eval>
+    <eval phase="First">hero.child[ArmorClass].field[Penalty].value -= (field[pAdjust].value - 1)</eval>
     </thing>
   <thing id="pHd5CSpls" name="Specific Spells" compset="InPlay" uniqueness="unique" isshowonly="yes">
     <tag group="OthAdjCat" tag="UserBot3rd"/>
@@ -2178,5 +2178,19 @@ doneif (hero.tagcount[CompIs.Familiar] = 0)
 
 @valid = 1</validate>
       </prereq>
+    </thing>
+  <thing id="p5CSplWrdBnd" name="Warding Bond" compset="InPlay" uniqueness="unique">
+    <usesource source="5ePHBCP"/>
+    <tag group="Helper" tag="NoIncr"/>
+    <tag group="OthAdjCat" tag="UserBot3rd"/>
+    <tag group="Helper" tag="AdjInfo"/>
+    <tag group="SpInfo" tag="spWardBond"/>
+    <eval phase="Final"><![CDATA[
+      ~ If we're not enabled, get out now
+      doneif (field[pIsOn].value = 0)
+
+      hero.childfound[ArmorClass].field[Bonus].value += 1
+      hero.child[svAll].field[Bonus].value += 1
+      perform hero.assign[DamComRes.dcAll]]]></eval>
     </thing>
   </document>
