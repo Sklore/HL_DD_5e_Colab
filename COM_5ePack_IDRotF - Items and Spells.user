@@ -538,4 +538,38 @@ doneif (field[usrIndex].value = 0)
     <usesource source="p5eIDRotFP"/>
     <tag group="GearType" tag="gtWondrous"/>
     </thing>
+  <thing id="c5CBlsFrst" name="Blessing of the Frostmaiden" description="Your eyes become frosty. You are now immune to cold damage. In addition, you can cast {i}cone of cold{/i} spell (save DC 15) once. You cast cast this spell again when you finish a long rest." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eIDRotFP"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <bootstrap thing="spConeCold">
+      <autotag group="Usage" tag="LongRest"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="Save DC 15"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.assign[DamageImm.dtCold]]]></eval>
+    </thing>
+  <thing id="c5CBlsMrng" name="Blessing of the Morninglord" description="You gain 10 temporary hit points each day at dawn." compset="CustomSpec" uniqueness="unique">
+    <usesource source="p5eIDRotFP"/>
+    <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
+    <tag group="Helper" tag="Secondary" name="Secondary" abbrev="Secondary"/>
+    <bootstrap thing="PoolWlkBls">
+      <autotag group="Value" tag="17"/>
+      <assignval field="livename" value="Blessing of the Morninglord"/>
+      </bootstrap>
+    <eval phase="Final" priority="500"><![CDATA[
+doneif (tagis[Helper.ShowSpec] = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+~do the math here
+var temphp as number
+temphp = 10
+
+~Use this to add the result to the pool
+hero.findchild[TempHpPool,"Value.17"].field[thpMinAllw].value = temphp
+hero.findchild[TempHpPool,"Value.17"].field[thpMaxAllw].value = temphp]]></eval>
+    </thing>
   </document>
