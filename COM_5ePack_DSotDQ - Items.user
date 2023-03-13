@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="g5CBoildrk" name="Boilerdrak" description="{i}Large object{/i}\n\n{b}AC:{/b} 15\n{b}HP:{/b} 100\n{b}Damage Immunities:{/b} poison, psychic\n\nThis wagon-sized device looks somewhat like a dragon. Before it can be used, the boilerdrak must be lit and aimed. It takes 1 action to light the weapon, 1 action to aim it, and 1 action to fire it. When you use your action to fire it, roll a d20. If you roll a 2 or higher, use the Flames action. If you roll a 1, use the Explosion action.\n\n{b}{i}Flames.{/b} The boilerdrak blasts flames in a 60-foot cone. Each creature in that area must make a DC 15 Dexterity save, taking 27 (5d10) fire damage on a failure or half that on a success.\n\n{b}{i}Explosion.{/b} The boilerdrak explodes in a 30-foot-radius sphere and is destroyed. Each creature in that area must make a DC 15 Dexterity save, taking 27 (5d10) fire damage on a failure or half that on a success." compset="Gear">
+    <usesource source="5eDSotDQA"/>
+    <tag group="explicit" tag="60" name="60" abbrev="60"/>
+    <tag group="GearType" tag="gt5CSiege" name="Siege Weapons" abbrev="Siege Weapons"/>
+    </thing>
+  <thing id="g5CGnmflng" name="Gnomeflinger" description="{i}Large object{/i}\n\n{b}AC:{/b} 15\n{b}HP:{/b} 100\n{b}Damage Immunities:{/b} poison, psychic\n\nThe gnomeflinger is a catapult designed to throw creatures rather than projectiles. The device can hold one Medium or smaller creature. Before it can be used, the gnomeflinger must be loaded and aimed. It takes 1 action to load the gnomeflinger, 1 action to aim it, and 1 action to fire it.\n\nWhile using the aiming action, you set the maximum horizontal distance of the Fling Personnel action to 60 feet, 150 feet, or 300 feet.\n\n{b}{i}Fling Personnel.{/b} The gnomeflinger launches a Medium or smaller creature at least 60 feet away horizontally, with a maximum horizontal distance of 60 feet, 150 feet, or 300 feet. During this trajectory, the creature always reaches a vertical height of 60 feet.\nA creature that collides with another creature or an object during this trajectory takes 3 (1d6) bludgeoning damage for every 10 feet away from the gnomeflinger it is." compset="Gear">
+    <usesource source="5eDSotDQA"/>
+    <tag group="explicit" tag="60" name="60" abbrev="60"/>
+    <tag group="GearType" tag="gt5CSiege" name="Siege Weapons" abbrev="Siege Weapons"/>
+    </thing>
+  <thing id="g5CFargab" name="Fargab" description="These backpack-sized devices are created in matching, numbered pairs, and allow long-distance communication through radio waves. While wearing a fargab, you can use an action to speak into the device&apos;s mouthpiece and send a short message of up to twenty-five words to another creature wearing the matched fargab while it is within 18 miles of you. The message emits from the speakers of the receiving device and can be heard up to 10 feet away from that device. If no creature is wearing the fargab, the speakers make static noises instead." compset="Gear">
+    <usesource source="5eDSotDQA"/>
+    <tag group="GearType" tag="gtAdventGe" name="Adventuring Gear" abbrev="Adventuring"/>
+    </thing>
+  <thing id="g5CNrycrsh" name="Narycrash" description="This backpack-sized device holds a balloon-based parachute. If you fall while wearing this device, you can take your reaction to deploy the parachute. Once deployed, the parachute quickly inflates, and you descend 60 feet per round and take no damage from falling. When you are 10 feet away from the ground, roll a d20. On a roll of 5 or less, the parachute gives out, and you begin falling normally." compset="Gear">
+    <usesource source="5eDSotDQA"/>
+    <tag group="GearType" tag="gtAdventGe" name="Adventuring Gear" abbrev="Adventuring"/>
+    </thing>
+  <thing id="w5CHoopak" name="Hoopak" description="A hoopak is a sturdy stick with a sling at one end and a pointed tip at the other.\n\n{b}Special.{/b} When you make a melee attack with this weapon, you ignore its ammunition property. You can also use the hoopak as a martial ranged weapon. If you do, it uses its ammunition property, uses sling bullets, and deals 1d4 bludgeoning damage on a hit.\n\n{i}Hero Lab Note: The hoopak will default to being used as a melee weapon. You can switch it to a ranged weapon from the In-Play screen.{/i}" compset="Weapon">
+    <fieldval field="gWeight" value="2"/>
+    <fieldval field="gSizeCost" value="1"/>
+    <fieldval field="wDieCount" value="1"/>
+    <fieldval field="wDieSize" value="6"/>
+    <fieldval field="wRangeNorm" value="40"/>
+    <fieldval field="wRangeLong" value="160"/>
+    <usesource source="5eDSotDQA"/>
+    <tag group="wCategory" tag="Melee" name="Melee Weapon" abbrev="Melee"/>
+    <tag group="wProfReq" tag="Martial" name="Martial" abbrev="Martial"/>
+    <tag group="wProperty" tag="Special"/>
+    <tag group="wProperty" tag="TwoHanded"/>
+    <tag group="wProperty" tag="Ammunition"/>
+    <tag group="wCategory" tag="RangeProj"/>
+    <tag group="DamageType" tag="dtPiercing" name="Piercing" abbrev="Piercing"/>
+    <tag group="wProperty" tag="Finesse" name="Finesse" abbrev="Finesse"/>
+    <bootstrap thing="c5CHpkHlp"></bootstrap>
+    <eval phase="First">if (hero.childfound[c5CHpkHlp].field[usrIndex].value = 0) then
+   perform delete[wProperty.Ammunition]
+   perform delete[wCategory.RangeProj]
+   field[wRangeNorm].value = 0
+   field[wRangeLong].value = 0
+elseif (hero.childfound[c5CHpkHlp].field[usrIndex].value = 1) then
+   perform delete[DamageType.dtPiercing]
+   perform assign[DamageType.dtBludgeon]
+   field[wDieSize].value = 4
+   perform delete[wCategory.Melee]
+endif</eval>
+    </thing>
+  <thing id="c5CHpkHlp" name="Hoopak Usage" description="Use this toggle to switch your hoopak between being used as a melee or ranged weapon." compset="CustomSpec" uniqueness="unique">
+    <arrayval field="usrArray" index="1" value="Ranged"/>
+    <arrayval field="usrArray" index="0" value="Melee"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <eval phase="First" priority="10000"></eval>
+    </thing>
+  <thing id="io5CFlyCit" name="Flying Citadel Helm" description="This ornate chair is used to propel and maneuver a flying citadel on which it has been installed. The chair has AC 15 and 18 hit points, and is immune to poison and psychic damage. It is destroyed if reduced to 0 hit points.\n\nBeing attuned to a {i}flying citadel helm{/i} feels like a less intense version the pins-and-needles effect when one&apos;s limb has fallen asleep.\n\nWhile attuned to a {i}flying citadel helm{/i} and sitting in it, you gain these abilities for as long as you maintain concentration (as if you are concentrating on a spell):\n• You can use the {i}flying citadel helm{/i} to move the ship through the air, up to 80 feet per round or 8 mph.\n• You can steer the citadel, albeit somewhat clumsily, in a manner similar to the rudder or oars of a seafaring ship.\n• At any time, you can see and hear from the highest point outside the citadel, as if you were standing in that spot.\n\nIf no creature attuned to the helm is maintaining its concentration, the citadel sits motionless in its space.\n\n{b}Transfer Attunement.{/b} You can use an action or bonus action to touch a willing spellcaster. That creature immediately attunes to the {i}flying citadel helm{/i}, and your attunement to it ends.\n\n{b}Crash.{/b} If the flying citadel helm is destroyed, the citadel it is installed on loses power and begins crumbling. If the crumbling citadel is in the air, it descends at a rate of 30 feet/round, or 300 feet/. Any creature on the citadel or on the ground within 120 feet of the citadel when it lands must make a DC 20 Dexterity save, taking 39 (6d12) bludgeoning damage on a failure or half that on a success." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a spellcaster"/>
+    <usesource source="5eDSotDQA"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    <tag group="Helper" tag="AlwaysAvl" name="AlwaysAvl" abbrev="AlwaysAvl"/>
+    </thing>
+  <thing id="io5CKagFrSh" name="Kagonesti Forest Shroud" description="This cloak looks like fallen leaves woven together. While wearing this cloak, you have advantage on Dexterity (Stealth) checks.\n\nAlso while wearing it, you can use a bonus action to magically teleport, along with any of your worn and/or carried equipment, to an unoccupied space you can see within 30 feet of yourself. You then have advantage on the next attack roll you make before the end of the turn. Once this bonus action is used, it can&apos;t be used again until the next dawn." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eDSotDQA"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="ItemRarity" tag="Rare"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Usage" tag="Day"/>
+    <eval phase="PreLevel" priority="10000"><![CDATA[
+      doneif (field[gIsEquip].value = 0)
+      doneif (field[gIsAttuned].value = 0)
+
+      #situational[hero.child[skStealth],"Advantage",field[thingname].text]]]></eval>
+    </thing>
+  <thing id="io5CMirRefl" name="Mirror of Reflected Pasts" description="This elven mirror is 3 feet tall, weighs 25 pounds, and has AC 11, 10 hit points, and vulnerability to bludgeoning damage. It shatters and is destroyed if reduced to 0 hit points.\n\nWhile holding the mirror upright, you can use an action to speak its command word, activating it. While activated, the mirror hovers in the air, and it can be destroyed but is immovable. It remains activated until you use an action to speak the command word again or until your attunement to the mirror ends, at which point the mirror harmlessly floats to the ground. Once the mirror has been deactivated, it can&apos;t be activated again until the next dawn.\n\nIf a non-Construct creature other than you sees its reflection in the activated mirror while within 30 feet of it, that creature must succeed on a DC 15 Wisdom save or become paralyzed until the mirror is deactivated or until that creature is no longer able to see the mirror. A creature paralyzed by the mirror can repeat the save at the end of each of its turns, ending the effect for itself on a success. If a creature&apos;s saving throw is successful or the effect ends for it, the creature is immune to this mirror&apos;s effect for the next 24 hours.\n\nWhile paralyzed by the mirror, the creature sees events from their past reflected in the mirror&apos;s glass. These memories aren&apos;t real, but rather idealized versions of those occurrences. Nearby observers can see brief flashes of these memories in the mirror, but only when not looking directly at it." compset="Wondrous">
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eDSotDQA"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="ItemRarity" tag="VeryRare"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    </thing>
+  </document>
