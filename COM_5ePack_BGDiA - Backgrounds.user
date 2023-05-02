@@ -453,17 +453,22 @@ perform hero.assign[ProfDouble.skPersuas]]]></eval>
   <thing id="c5CChrmAdmt" name="Charm of the Adamant" description="This charm has 9 charges. You can use an action to spend 1 charge from the charm to gain 30 temporary hit points. For the next hour, your eyes become black voids, and you cannot be charmed or frightened. Once all its charges have been spent, the charm vanishes from you." compset="CustomSpec" uniqueness="unique">
     <fieldval field="trkMax" value="9"/>
     <fieldval field="actName" value="Active (1 Hour)"/>
-    <usesource source="p5eIDRotFP" parent="p5eIDRotF" name="Icewind Dale: Rime of the Frostmaiden"/>
-    <tag group="User" tag="Tracker"/>
+    <usesource source="p5eBGDiAP"/>
     <tag group="AllowRCust" tag="cfg5CSupGif" name="Supernatural Gifts" abbrev="Supernatural Gifts"/>
     <tag group="Usage" tag="Charges"/>
     <tag group="User" tag="Activation"/>
     <tag group="Helper" tag="Tertiary"/>
+    <tag group="User" tag="Tracker"/>
     <bootstrap thing="PoolWlkBls">
       <containerreq phase="First" priority="250"><![CDATA[fieldval:abilActive <> 0]]></containerreq>
       <autotag group="Value" tag="18"/>
       <assignval field="livename" value="Charm of the Adamant"/>
       </bootstrap>
+    <eval phase="First" index="2"><![CDATA[doneif (field[abilActive].value = 0)
+doneif (tagis[Helper.Disable] <> 0)
+
+perform hero.assign[CondImm.pcnCharmed]
+perform hero.assign[CondImm.pcnFright]]]></eval>
     <eval phase="Final" priority="500"><![CDATA[doneif (field[abilActive].value = 0)
 doneif (tagis[Helper.Disable] <> 0)
 
@@ -474,10 +479,5 @@ temphp = 30
 ~Use this to add the result to the pool
 hero.findchild[TempHpPool,"Value.18"].field[thpMinAllw].value = temphp
 hero.findchild[TempHpPool,"Value.18"].field[thpMaxAllw].value = temphp]]></eval>
-    <eval phase="First" index="2"><![CDATA[doneif (field[abilActive].value = 0)
-doneif (tagis[Helper.Disable] <> 0)
-
-perform hero.assign[CondImm.pcnCharmed]
-perform hero.assign[CondImm.pcnFright]]]></eval>
     </thing>
   </document>
