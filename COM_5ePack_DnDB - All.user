@@ -1029,4 +1029,70 @@
     <tag group="Helper" tag="ShowSpec"/>
     <tag group="abRange" tag="Feet"/>
     </thing>
+  <thing id="io5CTbltRwk" name="Tablet of Reawakening" description="This Tiny stone tablet counters the necromancy of red wizards. As an action, you can cast {i}true resurrection{/i} from the tablet. Once used in this way, the tablet crumbles to dust and is destroyed." compset="Wondrous">
+    <usesource source="5eHATLMI"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    <bootstrap thing="spTrueResu">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="UsedUp"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="i5CRdWzBld" name="Red Wizard Blade" description="When you hit a creature with a melee attack using this magic dagger, the target takes an additional 3d12 necrotic damage.\n\nA creature reduced to 0 hit points by this weapon dies and cannot be raised from the dead except by a deity or by a creature using a tablet of reawakening to cast {i}true resurrection{/i}." compset="MagicWep" uniqueness="unique">
+    <fieldval field="miTypeDet" value="dagger"/>
+    <fieldval field="wDamExtra" value=" + 3d12 necrotic"/>
+    <usesource source="5eHATLMI"/>
+    <tag group="Helper" tag="EquipAvail" name="EquipAvail" abbrev="EquipAvail"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Legendary" name="Legendary" abbrev="Legendary"/>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wDagger"></bootstrap>
+      </child>
+    </thing>
+  <thing id="io5ChrnBckD" name="Horn of Beckoning Death" description="While holding this horn, you can use an action to invoke the necromancy called the Beckoning Death.\n\nThe Beckoning Death arrives at the beginning of your next turn and manifests as a crimson cloud of smoke that fills a 30-foot-radius sphere centered on the horn. The sphere doesn&apos;t move with the horn. At the beginning of each of your turns, the sphere&apos;s radius increases by 30 feet. The cloud disappears after 10 minutes or when your concentration on the effect ends. Any creature (including you) that has 9 or fewer hit points when it ends its turn inside the cloud is killed by the Beckoning Death. A Humanoid killed in this way instantly transforms into a zombie (see the Monster Manual). The zombie obeys the commands of the horn&apos;s lich creator.\n\nOnce you use the horn&apos;s property, it can&apos;t be used again for 1 year." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a sorcerer"/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eHATLMI"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Usage" tag="Year"/>
+    </thing>
+  <thing id="is5CHthrThr" name="Hither-Thither Staff" description="This staff has 4 charges and regains 1d4 spent charges each dawn.\n\nAs an action, you can spend 1 charge from the staff to create two linked teleportation portals, each one appearing on a flat surface of your choice that you can see within 1,500 feet of yourself. Alternatively, you can spend 1 charge as an action to relocate one or both portals, within the same range. The surface on which a portal appears must be large enough to accommodate it. Each portal is a two-dimensional, glowing oval ring, and together they create an open doorway up to 6 feet high and 4 feet wide. Any creature or object entering one portal exits from the other as if the two portals were a single opening connecting their locations.\n\nA portal can appear on a moving surface, but the effect ends when the two portals are mored than 1 mile apart. As a bonus action while holding the staff, you can close both portals, ending the effect, or suppress one portal, causing it to disappear until you relocate it as described above, during which time the remaining portal can&apos;t be used. The portals otherwise last for 24 hours." compset="Staff">
+    <fieldval field="trkMax" value="4"/>
+    <usesource source="5eHATLMI"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="Charges" name=" charges" abbrev=" charges"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Custom" tag="Hither"/>
+    <bootstrap thing="wQtrstaff">
+      <autotag group="Custom" tag="Hither"/>
+      <assignval field="sbName" value="Hither-Thither Staff"/>
+      <assignval field="livename" value="Hither-Thither Staff"/>
+      </bootstrap>
+    <eval phase="Final" priority="20000"><![CDATA[      field[abText].text = "regains 1d4 at dawn"
+
+      foreach pick in hero where "thingid.wQtrstaff & Custom.Hither"
+        eachpick.field[CustDesc].text = "This staff has 4 charges and regains 1d4 spent charges each dawn.\n\nAs an action, you can spend 1 charge from the staff to create two linked teleportation portals, each one appearing on a flat surface of your choice that you can see within 1,500 feet of yourself. Alternatively, you can spend 1 charge as an action to relocate one or both portals, within the same range. The surface on which a portal appears must be large enough to accommodate it. Each portal is a two-dimensional, glowing oval ring, and together they create an open doorway up to 6 feet high and 4 feet wide. Any creature or object entering one portal exits from the other as if the two portals were a single opening connecting their locations.\n\nA portal can appear on a moving surface, but the effect ends when the two portals are mored than 1 mile apart. As a bonus action while holding the staff, you can close both portals, ending the effect, or suppress one portal, causing it to disappear until you relocate it as described above, during which time the remaining portal can't be used. The portals otherwise last for 24 hours."
+        nexteach]]></eval>
+    </thing>
+  <thing id="io5CHlmDsjnt" name="Helm of Disjunction" description="You can use an action while wearing this helm it to emit an antimagic pulse in a 300-foot-radius sphere centered on yourself. The pulse has these effects:\n\n{b}Magic Item Disjunction.{/b} Potions and scrolls in the area are destroyed. The magic of all other magic items in the area is suppressed for 1 minute. Artifacts are unaffected by this property, as are magic items on your person.\n{b}Spell Disjunction.{/b} Any ongoing spell ends if the creature, object, or area affected by it is even partially in the pulse&apos;s area.\n{b}Wave of Force.{/b} The antimagic pulse is strong enough to knock down creatures close to you. Each creature within 30 feet of you must succeed on a DC 15 Strength save or be knocked prone.\n\nOnce you use the helm&apos;s property, it can&apos;t be used again until 1d4 days have passed." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a sorcerer"/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eHATLMI"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Usage" tag="Usage5Cd4D"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    </thing>
   </document>
