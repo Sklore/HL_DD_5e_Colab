@@ -3395,10 +3395,74 @@ field[CustDesc].text = "You can use an action to read the scroll, enclosing you 
     <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
     <tag group="ItemRarity" tag="Uncommon" name="Uncommon" abbrev="Uncommon"/>
-    <eval phase="Final" priority="10001">      doneif (field[gIsEquip].value = 0)
+    <eval phase="Final" priority="10001">doneif (field[gIsEquip].value = 0)
       doneif (field[gIsAttuned].value = 0)
 
      hero.childfound[xClimb].field[abValue].value = maximum(hero.childfound[Speed].field[tSpeedMod].value,hero.childfound[xClimb].field[abValue].value)</eval>
+    </thing>
+  <thing id="io5CBkVlDrk" name="Book of Vile Darkness" description="This book, believed to be the work of the most vile lich-god, contains untold horrors that invite insanity upon all who open it. Nonmagical plants wither around it, and animals avoid it. The book gradually destroys anything that touches it; even stone cracks and eventually turns to powder when the book rests upon it.\nIn order to gain its benefits, a creature attuned to the book must spend 80 hours reading it. If a non-evil creature attunes to the book, it must make a DC 17 Charisma save. On a failure, that creature&apos;s alignment changes to neutral evil. The book is yours so long as you are committed to evil. If you go 10 days without committing an evil act, or if you willingly do an act of good, the book disappears. If you die while attuned to the book, an entity of great evil takes your soul. While your soul is so imprisoned, nothing can restore you to life.\n\n{b}Random Properties.{/b} The Book of Vile Darkness has these random properties:\n• 3 Minor Beneficial Properties\n• 1 Major Beneficial Properties\n• 3 Minor Detrimental Properties\n• 2 Major Detrimental Properties\n\n{b}Adjusted Ability Scores.{/b} After you spend the 80 hours reading and studying the book, one ability score of your choice increases by 2, to a maximum of 24. Another ability score of your choice decreases by 2, to a minimum of 3. The book cannot change your ability scores in this way again.\n\n{b}Mark of Darkness.{/b} Also after you spend the 80 hours studying the book, you acquire a physical disfigurement, a horrible sign of your devotion to evil. An evil rune might appear on your face, your eyes might become a shiny black, or you may grow horns. Or you might become aged and ugly, lose all facial features, gain a forked tongue, or some other feature the DM dictates. The mark of darkness grants you advantage on Charisma (Persuasion) checks made with evil creatures and Charisma (Intimidation) checks made with non-evil creatures.\n\n{b}Command Evil.{/b} While you are attuned to the book and holding it, you can use an action to cast {i}dominate monster{/i} on an evil target (spell save DC 18). You can&apos;t use this property again until the next dawn.\n\n{b}Dark Lore.{/b} You can reference the book whenever you make an Intelligence check regarding some aspect of evil, such as fiendish lore. When you do so, double your proficiency bonus on that check.\n\n{b}Dark Speech.{/b} While you carry the book and are attuned to it, you can use an action to recite word from its pages in a foul language called Dark Speech. Each time you do so, you suffer 1d12 psychic damage, and each non-evil creature within 15 feet of you takes 3d6 psychic damage.\n\n{b}Destroying the Book.{/b} The Book of Vile Darkness allows pages to be ripped out of it, but any evil knowledge from those pages finds its way back into the book eventually, most commonly when a new author adds new pages.\nIf a solar tears the book in two, the book is destroyed for 1d100 years, after which it reforms in the shadows of the multiverse. \nA creature attuned to the book for one hundred years can discover a secret phrase hidden in the original. This phrase, when translated to Celestial and spoken aloud, destroys both the speaker and the book in a blinding, radiant flash. However, as long as evil exists in the multiverse, the book reforms 1d100 years later.\nIf all evil in the multiverse is destroyed, the book crumbles to dust, destroyed forever." compset="Wondrous">
+    <fieldval field="gWeight" value="5"/>
+    <usesource source="5eDMGCP"/>
+    <tag group="Custom" tag="5CAPEIB" name="Minor Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAB" name="Major Beneficial Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEID" name="Minor Detrimental Artifact Properties Eligible"/>
+    <tag group="Custom" tag="5CAPEAD" name="Major Detrimental Artifact Properties Eligible"/>
+    <tag group="ItemRarity" tag="Artifact"/>
+    <tag group="GearType" tag="gtWondrous"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="spDomiMons">
+      <containerreq phase="First" priority="600"><![CDATA[fieldval:gIsAttuned > 0]]></containerreq>
+      <autotag group="Usage" tag="Day"/>
+      <autotag group="Helper" tag="ItemSpell"/>
+      <assignval field="sNameMod" value="save DC 18"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="cfg5CArtPrp"></bootstrap>
+    <eval phase="Final" index="3"><![CDATA[if (tagcount[Custom.5CAPIB] >= 3) then
+perform delete[Custom.5CAPEIB]
+endif
+if (tagcount[Custom.5CAPAB] >= 1) then
+perform delete[Custom.5CAPEAB]
+endif
+if (tagcount[Custom.5CAPID] >= 3) then
+perform delete[Custom.5CAPEID]
+endif
+if (tagcount[Custom.5CAPAD] >= 2) then
+perform delete[Custom.5CAPEAD]
+endif]]></eval>
+    <eval phase="First" priority="500" index="4"><![CDATA[doneif (field[gIsAttuned].value = 0)
+
+#situational[hero.child[skPersuas],"Advantage vs evil creatures",field[thingname].text]
+#situational[hero.child[skIntim],"Advantage vs good creatures",field[thingname].text]
+#situational[hero.child[skArcana],"Can use double proficiency bonus when consulting the book about an aspect of evil.",field[thingname].text]
+#situational[hero.child[skHistory],"Can use double proficiency bonus when consulting the book about an aspect of evil.",field[thingname].text]
+#situational[hero.child[skInvestig],"Can use double proficiency bonus when consulting the book about an aspect of evil.",field[thingname].text]
+#situational[hero.child[skNature],"Can use double proficiency bonus when consulting the book about an aspect of evil.",field[thingname].text]
+#situational[hero.child[skReligion],"Can use double proficiency bonus when consulting the book about an aspect of evil.",field[thingname].text]
+
+perform assign[ChooseSrc1.Hero]
+field[usrCandid1].text = "component.BaseAttr"
+
+doneif (field[usrChosen1].ischosen = 0)
+
+perform assign[ChooseSrc2.Hero]
+field[usrCandid2].text = "component.BaseAttr & !" & field[usrChosen1].chosen.tagids[thingid.?]]]></eval>
+    <eval phase="PreLevel" priority="5000" index="5">doneif (field[gIsAttuned].value = 0)
+doneif (field[usrChosen1].ischosen = 0)
+
+field[usrChosen1].chosen.field[Bonus].value += 2
+field[usrChosen1].chosen.field[aMaxValue].value = maximum(field[usrChosen1].chosen.field[aMaxValue].value,24)
+
+doneif (field[usrChosen2].ischosen = 0)
+
+field[usrChosen2].chosen.field[Bonus].value -= 2
+field[usrChosen2].chosen.field[aNormMin].value = maximum(field[usrChosen2].chosen.field[aNormMin].value,3)</eval>
+    <eval phase="First">perform hero.childfound[cfg5CArtPrp].setfocus
+focus.field[cfgMax1].value += 3
+focus.field[cfgMax2].value += 1
+focus.field[cfgMax3].value += 3
+focus.field[cfgMax4].value += 2</eval>
     </thing>
   <preclude id="gKeelboat" source="5eDMGCP"/>
   <preclude id="gLongship" source="5eDMGCP"/>

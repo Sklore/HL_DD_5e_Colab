@@ -837,4 +837,1141 @@
     <bootstrap thing="ra5CYggLgtCndt"></bootstrap>
     <bootstrap thing="ra5CYggLgtDsch"></bootstrap>
     </thing>
+  <thing id="ra5CAlwThN" name="Always Thinking Ahead" description="[abText] has advantage on initiative rolls." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text =  field[abText].text & " has advantage on initiative rolls."]]></eval>
+    <eval phase="PostLevel" priority="10000" index="2"><![CDATA[
+      doneif (tagis[Helper.ShowSpec] = 0)
+
+      doneif (tagis[Helper.Disable] <> 0)
+
+#situational[hero.child[Initiative], "Advantage", field[thingname].text]]]></eval>
+    </thing>
+  <thing id="ra5CCntFall" name="Controlled Fall" description="If [abText] falls and is not incapacitated, it subtracts up to [abValue] feet from the fall when calculating the fall&apos;s damage." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text =  "If " & field[abText].text & " falls and is not incapacitated, it subtracts up to " & field[abValue].value & " feet from the fall when calculating the fall's damage."]]></eval>
+    </thing>
+  <thing id="ra5CDreEngNit" name="Engulfing Nightmare (Bonus)" description="The dream eater uses a bonus action, targeting one creature within 5 feet of itself. The target must succeed on a DC 16 Wisdom save or be engulfed by the dream eater, as the dream eater surrounds the creature in its worst fears.\nWhen the dream eater engulfs a target, the dream eater enters its space, and the target immediately takes 10 (3d6) psychic damage. An engulfed target is restrained and blinded, and it suffers a further 10 (3d6) psychic damage at the beginning of each of the dream eater&apos;s turns. When the dream eater moves, the engulfed target moves with it.\nThe dream eater can have only one target engulfed at a time. An engulfed target escapes at the beginning of its turn by making a DC 16 Wisdom save. On a successful save, the target escapes; the target is no longer engulfed, and it enters a space of its choice within 5 feet of the dream eater. A creature within 15 feet of the dream eater also can use its action to attempt to free an engulfed target. Doing so requires the creature to use its action to make a DC 16 Charisma (Persuasion) check to convince the engulfed target the nightmares aren&apos;t real, with the target escaping on a success. The creature making the check takes 10 (3d6) psychic damage, regardless of the check&apos;s success or failure, as its mind touches the nightmare." compset="RaceSpec">
+    <fieldval field="abRange" value="5"/>
+    <fieldval field="wDieCount" value="3"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="DamageType" tag="dtPsychic"/>
+    </thing>
+  <thing id="ra5CDreGhsVis" name="Ghastly Visions" description="Each creature that begins its turn within 30 feet of the dream eater must make a DC 16 Wisdom save. On a failed save, the creature is frightened of the dream eater until the beginning of the creature&apos;s next turn. If a creature&apos;s saving throw is successful, the creature is immune to this dream eater&apos;s Ghastly Visions trait for the next 24 hours." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abSave" tag="aWIS"/>
+    </thing>
+  <thing id="ra5CEmbAltShp" name="Alter Shape (Bonus)" description="Ember uses a bonus action to magically transform into a vulture or a mage, retaining his alignment, damage immunities, hit points, and Hit Dice, as well as his Intelligence, Wisdom, and Charisma scores. This transformation ends if Ember is reduced to 0 hit points or if he uses another bonus action to end it." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="ra5CEmbCalAur" name="Calescent Aura" description="At the beginning of Ember&apos;s turn, Ember can force any number of creatures of his choice within 10 feet of himself to make a DC 22 Constitution save. On a failure, a creature takes 7 (2d6) fire damage and is frightened of Ember until the beginning of its next turn." compset="RaceSpec">
+    <fieldval field="abRange" value="10"/>
+    <fieldval field="wDieCount" value="2"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="DamageType" tag="dtFire"/>
+    </thing>
+  <thing id="ra5CEmbFrsBrt" name="Firestorm Breath" description="Ember exhales fire and ash. Each creature in a 90-foot cone must make a DC 22 Dexterity save. On a failed save, a creature suffers 56 (16d6) fire damage and is pushed up to 30 feet away from Ember and knocked prone. On a successful save, a creature takes half the damage with no other effects. If a creature is reduced to 0 hit points by this effect, the creature immediately dies, and its body is reduced to ash." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="90"/>
+    <fieldval field="wDieCount" value="16"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Recharge" tag="5"/>
+    <tag group="DamageType" tag="dtFire"/>
+    </thing>
+  <thing id="ra5CEmbPursui" name="Pursuit" description="Ember moves up to 40 feet in a straight line directly toward one creature he can see, ignoring attacks of opportunity." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LegenAct" tag="1"/>
+    </thing>
+  <thing id="ra5CEmbSrngBt" name="Searing Bite" description="Ember makes a Bite attack, dealing an extra 7 (2d6) fire damage if it hits." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LegenAct" tag="2"/>
+    </thing>
+  <thing id="ra5CFrsErpBrs" name="Erupting Briars (Bonus)" description="The Forest Master uses a bonus action to touch his horn to the earth, causing a 5-foot-tall wall of briars to erupt in a 90-foot line that is 10 feet wide. When the wall appears, each creature in its area is pushed into the nearest unoccupied space adjacent to the wall and must make a DC 15 Dexterity save, suffering 27 (6d8) piercing damage on a failure or half that on a success.\nThe wall of briars lasts until the beginning of the Forest Master&apos;s next turn. The wall blocks line of sight and counts as difficult terrain for all creatures except the Forest Master. The first time a creature enters the wall&apos;s area on a turn, that creature must succeed on a DC 15 Dexterity save or take 13 (3d8) piercing damage." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="wDieCount" value="6"/>
+    <fieldval field="wDieSize" value="8"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Recharge" tag="4"/>
+    <tag group="DamageType" tag="dtPiercing"/>
+    </thing>
+  <thing id="ra5CFrsMstBst" name="Master of Beasts" description="The Forest Master can understand and communicate with any Beast, regardless of whether or not the Beast knows no languages." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CFrsMstyEs" name="Misty Escape" description="If the Forest Master takes damage from a melee attack, he teleports himself and his worn and carried equipment to an unoccupied space within 30 feet that he can see." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="ra5CFswDtyBnd" name="Duty-Bound" description="The foresworn is bound to enacting one specific duty that it pledged itself to in life. While that duty is incomplete, whenever the foresworn is destroyed, it re-forms at its previous location after 3 (1d6) days, with all its hit points restored." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CFswPhnBat" name="Phantasmic Battalion (Bonus)" description="The foresworn uses a bonus action to summon ghostly soldiers to its aid. The ghostly soldiers fill a 10-foot-cube centered on the foresworn, move with the foresworn when the foresworn moves, and last until the beginning of the foresworn&apos;s next turn. While the ghostly soldiers are present, the area they occupy is considered difficult terrain for all creatures except the foresworn, and the foresworn&apos;s reach for melee weapon attacks increases by 10 feet." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Recharge" tag="5"/>
+    </thing>
+  <thing id="ra5CIdSAugPhy" name="Augment Physicality" description="For 1 minute, the seeker magically heightens its physical ability and increases in size, along with anything it is wearing or carrying. While augmented, the seeker is Large, and has advantage on its Strength and Dexterity saves. If the seeker lacks the room to become Large, it grows to the maximum size possible in the space available." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CIdSChgShp" name="Change Shape" description="The seeker magically transforms to look and feel like a Medium Humanoid it has seen. Any of its worn and carried equipment isn&apos;t transformed, and the seeker&apos;s statistics don&apos;t change. The seeker reverts to its true form if the seeker is reduced to 0 hit points or if the seeker uses an action to end the transformation." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CIdSVeilWk" name="Veil Walk (Bonus)" description="The seeker uses a bonus action to turn invisible and to teleport, bringing along any equipment it is wearing or carrying, to an unoccupied space it can see within 30 feet of itself. The seeker remains invisible until the beginning of its next turn or until immediately after the seeker makes an attack roll, whichever comes first." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Recharge" tag="4"/>
+    </thing>
+  <thing id="ra5CIdVAugPhy" name="Augment Physicality" description="For 1 minute, the veil keeper magically obscures it location, heightens its physical ability, and increases in size, along with anything it is wearing or carrying. While the veil keeper is augmented, attack rolls against it have disadvantage, it is Large, and has advantage on its Strength and Dexterity saves. If the veil keeper lacks the room to become Large, it grows to the maximum size possible in the space available. These augmentations end if the veil keeper is incapacitated." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CIdVChgShp" name="Change Shape" description="The veil keeper magically transforms to look and feel like a Medium Humanoid it has seen. Any of its worn and carried equipment isn&apos;t transformed, and the veil keeper&apos;s statistics don&apos;t change. The veil keeper reverts to its true form if the veil keeper is reduced to 0 hit points or if the veil keeper uses an action to end the transformation." compset="RaceSpec">
+    <fieldval field="trkMax" value="3"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CIdVObsMst" name="Obscuring Mist" description="If a creature that the veil keeper can see within 30 feet of itself is targeted by an attack, the veil keeper surrounds the creature with a misty illusion, granting the creature half cover until the beginning of the veil keeper&apos;s next turn." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="ra5CNGIFlshPw" name="Flash Powder" description="If the inventor is damaged by a creature it can see within 15 feet of itself, the inventor retaliates by tossing explosive powder at the creature. The creature must succeed on a DC 14 Dexterity save or be blinded until the end of its next turn." compset="RaceSpec">
+    <fieldval field="abRange" value="15"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abSave" tag="aDEX"/>
+    </thing>
+  <thing id="ra5CNGIThnGgt" name="Thunderscream Gadget" description="The inventor produces a gadget that screeches sound in a 30-foot cone originating from the inventor. Each creature in that area must make a DC 14 Constitution save, taking 10 (3d6) thunder damage on a failure or half that on a success." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="wDieCount" value="3"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="Recharge" tag="5"/>
+    <tag group="DamageType" tag="dtThunder"/>
+    </thing>
+  <thing id="ra5CNGMGenGgt" name="Generate Gadget" description="The mastermind quickly assembles a clockwork gadget, producing one of these effects (chosen by the mastermind:\n{b}Chattergrab.{/b} This gadget, which resembles metal teeth, hurtles toward a creature the mastermind can see within 60 feet of itself. The creature must succeed on a DC 16 Dexterity save or take 31 (7d8) piercing damage and be incapacitated until the beginning of the mastermind&apos;s next turn.\n{b}Phasmoball.{/b} The mastermind launches this gadget to a point the mastermind can see within 30 feet of itself, where the gadget unleashes a gas cloud in a 10-foot-radius sphere. Each creature within the sphere must succeed on a DC 16 Wisdom save or take 11 (2d10) psychic damage and be frightened of the mastermind until the beginning of the mastermind&apos;s next turn." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Recharge" tag="5"/>
+    </thing>
+  <thing id="ra5CNGMSpiCli" name="Spider Climb" description="The mastermind can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check. This trait doesn&apos;t function if the mastermind has creatures grappled in each of its clockwork claws." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CNGMThndsc" name="Thunderscream" description="This gadget screeches a wave of sound in a 30-foot cone originating from the mastermind. Each creature in that area must make a DC 16 Constitution save, taking 21 (6d6) thunder damage on a failure or half that on a success." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <fieldval field="wDieCount" value="6"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abSave" tag="aCON"/>
+    <tag group="DamageType" tag="dtThunder"/>
+    </thing>
+  <thing id="ra5CTraDthThr" name="Death Throes" description="If the draconian is reduced to 0 hit points, its body erupts into sludge. Each creature within a 10-foot-radius sphere must succeed on a DC 14 Dexterity save or be covered in the sludge for 1 minute. While covered in the sludge, a creature&apos;s speed is halved. A creature can use its action to scrape the sludge off itself or another creature within 5 feet of itself." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="abSave" tag="aDEX"/>
+    </thing>
+  <thing id="ra5CTraFlmCrn" name="Flaming Carnage" description="The draconian wreathes itself in flame and moves up to its speed. The draconian can enter creatures&apos; spaces during this move. During this movement, when the draconian enters a creature&apos;s space, the creature must make a DC 14 Dexterity save. On a failed save, the creature takes 22 (4d10) fire damage and is knocked prone. On a successful save, the creature takes half the damage and is pushed to the nearest space out of the draconian&apos;s path. A creature can be affected by this draconian&apos;s Flaming Carnage only once during a turn." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="wDieCount" value="4"/>
+    <fieldval field="wDieSize" value="10"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aCON"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Recharge" tag="5"/>
+    <tag group="DamageType" tag="dtFire"/>
+    </thing>
+  <thing id="ra5CTraVioRet" name="Violent Retaliation" description="If a creature within 10 feet of the draconian hits it with an attack, the draconian can make a single Claw attack against that creature. If the Claw attack hits, it deals an extra 4 (1d8) slashing damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    </thing>
+  <thing id="ra5CVerDrcCom" name="Draconic Command" description="Whenever a Dragon or a creature with the Draconic Devotion trait within 30 feet of Verminaard makes an attack roll, the creature can add a d4 to the attack roll." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CVerDrQnFv" name="Dragon Queen&apos;s Favor (Bonus)" description="Verminaard uses a bonus action to cause himself or one creature he can see within 60 feet of himself to magically regain 17 (2d12 + 4) hit points." compset="RaceSpec">
+    <fieldval field="trkMax" value="5"/>
+    <fieldval field="abRange" value="60"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CVerFrvStr" name="Fervent Strike" description="Verminaard makes one attack with Nightbringer. If this attack hits, it deals an extra 7 (2d6) bludgeoning damage." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LegenAct" tag="2"/>
+    </thing>
+  <thing id="ra5CVerMaledc" name="Malediction" description="Verminaard speaks an unholy word, causing profane fire to descend on one creature Verminaard can see within 60 feet of himself. The creature must make a DC 18 Dexterity save, taking 11 (2d10) necrotic damage plus 11 (2d10) radiant damage on a failure, or half that on a success." compset="RaceSpec">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="wDieCount" value="2"/>
+    <fieldval field="wDieSize" value="10"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="DamageType" tag="dtRadiant"/>
+    </thing>
+  <thing id="ra5CVerTctMov" name="Tactical Movement" description="Verminaard moves up to his speed or commands a mount he is riding to move up to its speed, without provoking attacks of opportunity." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Legendary"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="LegenAct" tag="1"/>
+    </thing>
+  <thing id="r5CDrmEat" name="Dream Eater" compset="Race">
+    <fieldval field="rHitDice" value="14"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="77"/>
+    <fieldval field="rSTR" value="5"/>
+    <fieldval field="rDEX" value="10"/>
+    <fieldval field="rCON" value="3"/>
+    <fieldval field="rINT" value="2"/>
+    <fieldval field="rWIS" value="6"/>
+    <fieldval field="rCHA" value="11"/>
+    <fieldval field="rSpeed" value="0"/>
+    <fieldval field="rCR" value="7"/>
+    <fieldval field="rMultiatt" value="The dream eater makes two Ensnaring Shriek attacks."/>
+    <usesource source="5eMonCmp2"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamComRes" tag="dcAtkNonMa"/>
+    <tag group="DamageImm" tag="dtPsychic"/>
+    <tag group="CondImm" tag="pcnBlind"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnGrapple"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnRestr"/>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="120"/>
+      <autotag group="AbilModify" tag="BlindBeyo"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="wCategory" tag="RangeThrow"/>
+      <autotag group="wProperty" tag="Thrown"/>
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPsychic"/>
+      <assignval field="livename" value="Ensnaring Shriek"/>
+      <assignval field="sbName" value="Ensnaring Shriek"/>
+      <assignval field="wReach" value="15"/>
+      <assignval field="wAttackEff" value="If the target is a Medium or smaller creature, the target must succeed on a DC 16 Charisma save or be pulled up to 15 feet toward the dream eater."/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wRangeNorm" value="60"/>
+      <assignval field="wDamBonus" value="3"/>
+      </bootstrap>
+    <bootstrap thing="ra5CIncMov">
+      <assignval field="abText" value="dream eater"/>
+      <assignval field="abValue" value="5"/>
+      <assignval field="abValue2" value="1"/>
+      <assignval field="abValue3" value="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMagResN">
+      <assignval field="abText" value="The dream eater"/>
+      </bootstrap>
+    <bootstrap thing="tpAberr"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lDeepSpeec"></bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="50"/>
+      <autotag group="AbilModify" tag="Hover"/>
+      </bootstrap>
+    <bootstrap thing="ra5CDreEngNit"></bootstrap>
+    <bootstrap thing="ra5CDreGhsVis"></bootstrap>
+    </thing>
+  <thing id="r5CEmber" name="Ember" compset="Race">
+    <fieldval field="rHitDice" value="20"/>
+    <fieldval field="rHDSides" value="12"/>
+    <fieldval field="rHPStart" value="270"/>
+    <fieldval field="rSTR" value="18"/>
+    <fieldval field="rCON" value="15"/>
+    <fieldval field="rINT" value="7"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCHA" value="12"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rCR" value="22"/>
+    <fieldval field="rMultiatt" value="Ember makes one Bite attack and two Claw attacks."/>
+    <fieldval field="rAC" value="10"/>
+    <fieldval field="rArmText" value="special equipment"/>
+    <usesource source="5eMonCmp2"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfDouble" tag="skStealth"/>
+    <tag group="ProfSkill" tag="skReligion"/>
+    <tag group="ProfDouble" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Huge2"/>
+    <tag group="DamageImm" tag="dtFire"/>
+    <tag group="ArmProfGrp" tag="ArmorHeavy"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDamBonus" value="6"/>
+      <assignval field="livename" value="Claw"/>
+      <assignval field="sbName" value="Claw"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLegResN">
+      <assignval field="abText" value="Ember"/>
+      <assignval field="abText2" value="he"/>
+      <assignval field="trkMax" value="5"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGnrcSpcEq">
+      <assignval field="CustDesc" value="In battle, Ember dons custom, magical plate armor. While wearing the armor, Ember adds his Charisma modifier to his weapon damage rolls (included in the attacks), and his AC is, at minimum, 20."/>
+      </bootstrap>
+    <bootstrap thing="tpDragon"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="40"/>
+      </bootstrap>
+    <bootstrap thing="xFly">
+      <autotag group="Value" tag="80"/>
+      </bootstrap>
+    <bootstrap thing="ra5CEmbAltShp"></bootstrap>
+    <bootstrap thing="ra5CEmbCalAur"></bootstrap>
+    <bootstrap thing="ra5CEmbFrsBrt"></bootstrap>
+    <bootstrap thing="ra5CEmbPursui"></bootstrap>
+    <bootstrap thing="ra5CEmbSrngBt"></bootstrap>
+    <bootstrap thing="raBlindSi">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="120"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="6"/>
+      <assignval field="livename" value="Bite"/>
+      <assignval field="sbName" value="Bite"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wDamExtra" value=" plus 13 (2d6+6) fire"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="10"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CFrstMs" name="Forest Master" compset="Race">
+    <fieldval field="rHitDice" value="14"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="105"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rINT" value="3"/>
+    <fieldval field="rWIS" value="9"/>
+    <fieldval field="rCHA" value="7"/>
+    <fieldval field="rSpeed" value="50"/>
+    <fieldval field="rAC" value="4"/>
+    <fieldval field="rCR" value="8"/>
+    <fieldval field="rMultiatt" value="The Forest Master makes either two Hooves attacks, two Moon Bolt attacks, or one of each."/>
+    <usesource source="5eMonCmp2"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSkill" tag="skNature"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Good"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Hooves"/>
+      <assignval field="sbName" value="Hooves"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtRadiant"/>
+      <autotag group="RanAttOver" tag="aWIS"/>
+      <autotag group="DamageOver" tag="aWIS"/>
+      <assignval field="wRangeNorm" value="60"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="livename" value="Moon Bolt"/>
+      <assignval field="sbName" value="Moon Bolt"/>
+      </bootstrap>
+    <bootstrap thing="ra5CLegRes">
+      <assignval field="abText" value="Forest Master"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMagResN">
+      <assignval field="abText" value="The Forest Master"/>
+      </bootstrap>
+    <bootstrap thing="tpCelestia"></bootstrap>
+    <bootstrap thing="tt5CUnicorn"></bootstrap>
+    <bootstrap thing="x5CSpellCast">
+      <assignval field="abText" value="The Forest Master"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCelestial"></bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="lSylvan"></bootstrap>
+    <bootstrap thing="xTelepathy">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFrsErpBrs"></bootstrap>
+    <bootstrap thing="ra5CFrsMstBst"></bootstrap>
+    <bootstrap thing="ra5CFrsMstyEs"></bootstrap>
+    <bootstrap thing="spGoodberr">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spGreaRest">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spPassTrac">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spDruidcra">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spFogClou">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spGuidance">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spSpeaPlan">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
+    </thing>
+  <thing id="r5CFrswrn" name="Foresworn" compset="Race">
+    <fieldval field="rHitDice" value="11"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="82"/>
+    <fieldval field="rSTR" value="10"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="7"/>
+    <fieldval field="rINT" value="2"/>
+    <fieldval field="rWIS" value="8"/>
+    <fieldval field="rCR" value="6"/>
+    <fieldval field="rMultiatt" value="The foresworn makes three Spectral Polearm attacks."/>
+    <usesource source="5eMonCmp2"/>
+    <tag group="Helper" tag="UndLifLang"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Good"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <tag group="DamComRes" tag="dcAtkNonMa"/>
+    <tag group="DamageImm" tag="dtPoison"/>
+    <tag group="CondImm" tag="pcnExhaust"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnGrapple"/>
+    <tag group="CondImm" tag="pcnParaly"/>
+    <tag group="CondImm" tag="pcnPetri"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="CondImm" tag="pcnProne"/>
+    <tag group="CondImm" tag="pcnRestr"/>
+    <tag group="CondImm" tag="pcnUnconc"/>
+    <tag group="ArmProfGrp" tag="ArmorHeavy"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtForce"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Spectral Polearm"/>
+      <assignval field="sbName" value="Spectral Polearm"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="ra5CIncMov">
+      <assignval field="abText" value="foresworn"/>
+      <assignval field="abValue" value="5"/>
+      <assignval field="abValue2" value="1"/>
+      <assignval field="abValue3" value="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CUnusNat">
+      <assignval field="abText" value="The foresworn"/>
+      </bootstrap>
+    <bootstrap thing="tpUndead"></bootstrap>
+    <bootstrap thing="x5CSpellCast"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="ra5CFswDtyBnd"></bootstrap>
+    <bootstrap thing="ra5CFswPhnBat"></bootstrap>
+    <bootstrap thing="spWallForc">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCommand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spDeteEvil">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
+    </thing>
+  <thing id="r5CIrdaSkr" name="Irda Seeker" compset="Race">
+    <fieldval field="rHitDice" value="5"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="27"/>
+    <fieldval field="rDEX" value="5"/>
+    <fieldval field="rCON" value="2"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCHA" value="6"/>
+    <fieldval field="rCR" value="1"/>
+    <fieldval field="rMultiatt" value="The seeker uses Augment Physicality, if it&apos;s available, and makes two Crystal Blade attacks."/>
+    <usesource source="5eMonCmp2"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSkill" tag="skStealth"/>
+    <tag group="ProfDouble" tag="skInsight"/>
+    <tag group="ProfDouble" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="5"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtForce"/>
+      <assignval field="wDamBonus" value="2"/>
+      <assignval field="livename" value="Crystal Blade"/>
+      <assignval field="sbName" value="Crystal Blade"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDamExtra" value=" plus, if the seeker is Large, 7 (2d6) force"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="tpGiant"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lGiant"></bootstrap>
+    <bootstrap thing="lSylvan"></bootstrap>
+    <bootstrap thing="ra5CIdSAugPhy"></bootstrap>
+    <bootstrap thing="ra5CIdSChgShp"></bootstrap>
+    <bootstrap thing="ra5CIdSVeilWk"></bootstrap>
+    </thing>
+  <thing id="r5CIrdVlK" name="Irda Veil Keeper" compset="Race">
+    <fieldval field="rHitDice" value="9"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="49"/>
+    <fieldval field="rSTR" value="-1"/>
+    <fieldval field="rDEX" value="6"/>
+    <fieldval field="rCON" value="3"/>
+    <fieldval field="rINT" value="4"/>
+    <fieldval field="rWIS" value="7"/>
+    <fieldval field="rCHA" value="9"/>
+    <fieldval field="rCR" value="4"/>
+    <fieldval field="rMultiatt" value="The veil keeper uses Augment Physicality, if it&apos;s available, and makes two Mirage Flare attacks."/>
+    <usesource source="5eMonCmp2"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfDouble" tag="skInsight"/>
+    <tag group="ProfDouble" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="raTruesigh">
+      <autotag group="Value" tag="5"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="wCategory" tag="RangeThrow"/>
+      <autotag group="wProperty" tag="Thrown"/>
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="MelAttOver" tag="aCHA"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtRadiant"/>
+      <autotag group="DamageOver" tag="aCHA"/>
+      <autotag group="RanAttOver" tag="aCHA"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="The target must succeed on a DC 14 Wisdom save or be charmed by the veil keeper until the beginning of the veil keeper&apos;s next turn. While so charmed, a creature is incapacitated as the victim of hypnotic, illusory visions."/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wRangeNorm" value="60"/>
+      <assignval field="livename" value="Mirage Flare"/>
+      <assignval field="sbName" value="Mirage Flare"/>
+      </bootstrap>
+    <bootstrap thing="tpGiant"></bootstrap>
+    <bootstrap thing="tt5CSorcer"></bootstrap>
+    <bootstrap thing="x5CSpellCast"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lGiant"></bootstrap>
+    <bootstrap thing="lSylvan"></bootstrap>
+    <bootstrap thing="ra5CIdVAugPhy"></bootstrap>
+    <bootstrap thing="ra5CIdVChgShp"></bootstrap>
+    <bootstrap thing="ra5CIdVObsMst"></bootstrap>
+    <bootstrap thing="spHallTerr">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      <assignval field="sNameMod" value="as an action"/>
+      </bootstrap>
+    <bootstrap thing="spInvisibi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spMajoImag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="sp5CPhantF">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spDancLigh">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMinoIllu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
+    </thing>
+  <thing id="r5CNvGnIn" name="Nevermind Gnome Inventor" compset="Race">
+    <fieldval field="rHitDice" value="8"/>
+    <fieldval field="rHDSides" value="6"/>
+    <fieldval field="rHPStart" value="36"/>
+    <fieldval field="rSTR" value="-2"/>
+    <fieldval field="rDEX" value="7"/>
+    <fieldval field="rCON" value="3"/>
+    <fieldval field="rINT" value="8"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rCHA" value="4"/>
+    <fieldval field="rCR" value="2"/>
+    <fieldval field="rMultiatt" value="The inventor makes two Flying Fangtrap attacks. It can replace one of these attacks with Thunderscream Gadget if it&apos;s available."/>
+    <usesource source="5eMonCmp2"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skInvestig"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="wCategory" tag="RangeThrow"/>
+      <autotag group="wProperty" tag="Thrown"/>
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="RanAttOpt" tag="aDEX"/>
+      <assignval field="livename" value="Flying Fangtrap"/>
+      <assignval field="sbName" value="Flying Fangtrap"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wAttackEff" value="The creature must succeed on a DC 14 Dexterity save or have its speed reduced to 0 until the beginning of the inventor&apos;s next turn."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wRangeNorm" value="60"/>
+      <assignval field="wDamBonus" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CAlwThN">
+      <assignval field="abText" value="The inventor"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lGnomish"></bootstrap>
+    <bootstrap thing="ra5CNGIFlshPw"></bootstrap>
+    <bootstrap thing="ra5CNGIThnGgt"></bootstrap>
+    </thing>
+  <thing id="r5CNvGnMs" name="Nevermind Gnome Mastermind" compset="Race">
+    <fieldval field="rHitDice" value="15"/>
+    <fieldval field="rHDSides" value="6"/>
+    <fieldval field="rHPStart" value="82"/>
+    <fieldval field="rSTR" value="-1"/>
+    <fieldval field="rDEX" value="8"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="10"/>
+    <fieldval field="rWIS" value="1"/>
+    <fieldval field="rCHA" value="5"/>
+    <fieldval field="rCR" value="5"/>
+    <fieldval field="rMultiatt" value="The mastermind makes two Clockwork Claw attacks. The mastermind can replace one of these attacks with Generate Gadget if it&apos;s available."/>
+    <usesource source="5eMonCmp2"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skInvestig"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Small11"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="5"/>
+      <assignval field="livename" value="Clockwork Claw"/>
+      <assignval field="sbName" value="Clockwork Claw"/>
+      <assignval field="wReach" value="20"/>
+      <assignval field="wAttackEff" value="If the target is a Medium or smaller creature, the target is grappled with an escape DC of 15. Until this grapple ends, the target takes 10 (3d6) piercing damage at the beginning of each of the mastermind&apos;s turns. The mastermind has two claws, each of which can grapple only one target."/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="ra5CAlwThN">
+      <assignval field="abText" value="The mastermind"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lGnomish"></bootstrap>
+    <bootstrap thing="xClimb">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    <bootstrap thing="ra5CNGMGenGgt"></bootstrap>
+    <bootstrap thing="ra5CNGMSpiCli"></bootstrap>
+    <bootstrap thing="ra5CNGMThndsc"></bootstrap>
+    </thing>
+  <thing id="r5CThnHnt" name="Thanoi Hunter" compset="Race">
+    <fieldval field="rHitDice" value="5"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="32"/>
+    <fieldval field="rSTR" value="8"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rINT" value="2"/>
+    <fieldval field="rWIS" value="6"/>
+    <fieldval field="rCHA" value="1"/>
+    <fieldval field="rCR" value="1"/>
+    <fieldval field="rMultiatt" value="The hunter makes one Bone Harpoon attack and one Tusk attack."/>
+    <usesource source="5eMonCmp2"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageImm" tag="dtCold"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="wCategory" tag="RangeThrow"/>
+      <autotag group="wProperty" tag="Thrown"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Bone Harpoon"/>
+      <assignval field="sbName" value="Bone Harpoon"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wRangeNorm" value="20"/>
+      <assignval field="wRangeLong" value="60"/>
+      <assignval field="wAttackEff" value="{b}Hit or Miss:{/b} The harpoon returns to the hunter&apos;s hand."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Tusk"/>
+      <assignval field="sbName" value="Tusk"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="ra5CHoBrth">
+      <assignval field="abText" value="hunter"/>
+      <assignval field="abValue" value="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CPackTa">
+      <assignval field="abText" value="hunter"/>
+      </bootstrap>
+    <bootstrap thing="tpMonstros"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lAquan"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="xSwim">
+      <autotag group="Value" tag="30"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CTrgDrc" name="Traag Draconian" compset="Race">
+    <fieldval field="rHitDice" value="8"/>
+    <fieldval field="rHDSides" value="10"/>
+    <fieldval field="rHPStart" value="68"/>
+    <fieldval field="rSTR" value="11"/>
+    <fieldval field="rCON" value="7"/>
+    <fieldval field="rINT" value="-4"/>
+    <fieldval field="rWIS" value="-2"/>
+    <fieldval field="rCHA" value="-1"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rAC" value="4"/>
+    <fieldval field="rCR" value="5"/>
+    <fieldval field="rMultiatt" value="The draconian makes two Claw attacks."/>
+    <usesource source="5eMonCmp2"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Large1"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Claw"/>
+      <assignval field="sbName" value="Claw"/>
+      <assignval field="wReach" value="10"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="ra5CBloFre">
+      <assignval field="abText" value="draconian"/>
+      </bootstrap>
+    <bootstrap thing="ra5CCntFall">
+      <assignval field="abText" value="the draconian"/>
+      <assignval field="abValue" value="50"/>
+      </bootstrap>
+    <bootstrap thing="tpMonstros"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="ra5CTraDthThr"></bootstrap>
+    <bootstrap thing="ra5CTraFlmCrn"></bootstrap>
+    <bootstrap thing="ra5CTraVioRet"></bootstrap>
+    </thing>
+  <thing id="r5CVrmnard" name="Verminaard" compset="Race">
+    <fieldval field="rHitDice" value="22"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="143"/>
+    <fieldval field="rSTR" value="12"/>
+    <fieldval field="rDEX" value="3"/>
+    <fieldval field="rCON" value="5"/>
+    <fieldval field="rINT" value="6"/>
+    <fieldval field="rWIS" value="8"/>
+    <fieldval field="rCHA" value="7"/>
+    <fieldval field="rCR" value="17"/>
+    <fieldval field="rMultiatt" value="Verminaard makes two Nightbringer attacks and uses Malediction."/>
+    <usesource source="5eMonCmp2"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSkill" tag="skReligion"/>
+    <tag group="ProfDouble" tag="skPercep"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageImm" tag="dtFire"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="ArmProfGrp" tag="ArmorHeavy"/>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <bootstrap thing="ra5CLegResN">
+      <assignval field="abText" value="Verminaard"/>
+      <assignval field="abText2" value="he"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGnrcSpcEq">
+      <assignval field="CustDesc" value="Verminaard wears +2 plate armor and wields the mace Nightbringer. Nightbringer grants him darkvision as well as immunity to fire damage and to the charmed and frightened conditions."/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="tt5CCleric"></bootstrap>
+    <bootstrap thing="x5CSpellCast">
+      <assignval field="abText" value="Verminaard"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="ra5CVerDrcCom"></bootstrap>
+    <bootstrap thing="ra5CVerDrQnFv"></bootstrap>
+    <bootstrap thing="ra5CVerFrvStr"></bootstrap>
+    <bootstrap thing="ra5CVerMaledc"></bootstrap>
+    <bootstrap thing="ra5CVerTctMov"></bootstrap>
+    <bootstrap thing="spBane">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spFear">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spFreeMove">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spLight">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spThaumatu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="ttHuman"></bootstrap>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="spGreaRest">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spHoldMons">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spRevivify">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wAttBonus" value="3"/>
+      <assignval field="wDamBonus" value="3"/>
+      <assignval field="livename" value="Nightbringer"/>
+      <assignval field="sbName" value="Nightbringer"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDamExtra" value=" plus 10 (4d4) radiant"/>
+      <assignval field="wAttackEff" value="If the target is a creature, the target must succeed on a DC 20 Constitution save or be blinded until the beginning of Verminaard&apos;s next turn."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="ra5CMPLgSpl">
+      <assignval field="abText" value="Verminaard"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
+    <eval phase="First">perform hero.childfound[ra5CMPLgSpl].delete[LegenAct.?]
+
+perform hero.childfound[ra5CMPLgSpl].assign[LegenAct.3]</eval>
+    </thing>
+  <thing id="i5CNghtbrng" name="Nightbringer" description="You have a +3 bonus to attack and damage rolls made with this weapon. When you hit with an attack roll using it, the target takes an extra 4d4 radiant damage.\n\nIf are of an evil alignment, you also gain these benefits when attuned to Nightbringer:\n\n{b}Blessing of the Dragon Queen.{/b} You are immune to the charmed and frightened conditions, and you are immune to one of these damage types (chosen when you attune to the weapon): acid, cold, fire, lightning, or poison.\n\n{b}Eyes of Midnight.{/b} You have darkvision with a range of 60 feet. If you already have darkvision, its range increases by 60 feet.\n\n{b}Midnight Shroud.{/b} The weapon has 6 charges. When you hit a creature with an attack using this weapon, you can spend one charge to force the creature to make a DC 20 Constitution save. On a failed save, the creature is blinded until the beginning of your next turn. The weapon regains 1d6 expended charges daily at dawn." compset="MagicWep">
+    <fieldval field="Bonus" value="3"/>
+    <fieldval field="gWeight" value="4"/>
+    <arrayval field="usrArray" index="0" value="Acid"/>
+    <arrayval field="usrArray" index="1" value="Cold"/>
+    <arrayval field="usrArray" index="2" value="Fire"/>
+    <arrayval field="usrArray" index="3" value="Lightning"/>
+    <arrayval field="usrArray" index="4" value="Poison"/>
+    <usesource source="5eMonCmp2"/>
+    <tag group="User" tag="NoAutoName" name="NoAutoName" abbrev="NoAutoName"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Helper" tag="NeedAttune"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <bootstrap thing="raDarkVis">
+      <containerreq phase="First" priority="502"><![CDATA[fieldval:abValue2 = 1 & hero#Alignment.Evil]]></containerreq>
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <eval phase="First" priority="501" index="5"><![CDATA[
+
+doneif (field[gIsAttuned].value = 0)
+
+     field[wDamExtra].text = " +4d4 radiant"
+
+doneif (hero.tagcount[Alignment.Evil] = 0)
+
+     perform assign[Helper.ActivMenu]
+     field[trkMax].value = 6
+     field[abText].text = "regains 1d6 at dawn"
+     perform assign[Helper.ShowSpec]
+     perform assign[Usage.Charges]
+     perform assign[User.Tracker]
+
+~condition immunities
+perform hero.assign[CondImm.pcnCharmed]
+perform hero.assign[CondImm.pcnFright]
+
+~chosen damage immunity
+if (field[usrIndex].value = 0) then
+   perform hero.assign[DamageImm.dtAcid]
+elseif (field[usrIndex].value = 1) then
+   perform hero.assign[DamageImm.dtCold]
+elseif (field[usrIndex].value = 2) then
+   perform hero.assign[DamageImm.dtFire]
+elseif (field[usrIndex].value = 3) then
+   perform hero.assign[DamageImm.dtLightnin]
+elseif (field[usrIndex].value = 4) then
+   perform hero.assign[DamageImm.dtPoison]
+endif]]></eval>
+    <eval phase="First" priority="501" index="3"><![CDATA[doneif (field[gIsAttuned].value = 0)
+doneif (hero.tagcount[Alignment.Evil] = 0)
+doneif (hero.childexists[raDarkVis] <> 0)
+
+field[abValue2].value = 1]]></eval>
+    <eval phase="Final" priority="10001" index="4"><![CDATA[doneif (field[gIsAttuned].value = 0)
+doneif (hero.tagcount[Alignment.Evil] = 0)
+doneif (field[abValue2].value <> 0)
+
+hero.childfound[raDarkVis].field[abValue].value += 60]]></eval>
+    <child entity="mSpecMagic">
+      <bootstrap thing="wMace"></bootstrap>
+      </child>
+    </thing>
   </document>

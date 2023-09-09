@@ -37,7 +37,7 @@
     <tag group="FeatureTyp" tag="Special"/>
     <tag group="abAction" tag="Bonus"/>
     </thing>
-  <thing id="r5CVcnaArch" name="Vecna the Archlich" description="&lt;place-holder&gt;" compset="Race">
+  <thing id="r5CVcnaArch" name="Vecna the Archlich" compset="Race">
     <fieldval field="rHitDice" value="32"/>
     <fieldval field="rHDSides" value="8"/>
     <fieldval field="rHPStart" value="272"/>
@@ -234,5 +234,865 @@
   <thing id="ra5CGiffFire2" name="Firearms Knowledge" description="The giff’s mastery of its weapons allow it to ignore the loading property of all firearms." compset="RaceSpec">
     <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
     <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    </thing>
+  <thing id="ra5CWebSenN" name="Web Sense" description="While in contact with a web, [abText] knows the exact location of any other creature in contact with the same web." compset="RaceSpec">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <eval phase="Final" priority="50000"><![CDATA[field[CustDesc].text =  "While in contact with a web, " & field[abText].text & " knows the exact location of any other creature in contact with the same web."]]></eval>
+    </thing>
+  <thing id="ra5CDrcChgShp" name="Change Shape (Bonus)" description="Doric uses a bonus action to magically transform into a Beast with a challenge rating of 3 or less or into an owlbear (see the Monster Manual).\nDoric can stay in that form for up to 2 hours. She can choose whether her equipment falls to the ground, melds with her new form, or is worn by the new form. Doric reverts to her true form if she is incapacitated or if she dies. She can also use a bonus action to revert to her true form.\nWhile Doric is transformed, her stat block is replaced by the stat block of that form, except she keeps her current hit points, her hit point maximum, this bonus action, her alignment, and her Intelligence, Wisdom, and Charisma scores." compset="RaceSpec">
+    <fieldval field="trkMax" value="5"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CDrcFryRbk" name="Fiery Rebuke" description="When Doric is damaged by a creature that she can see within 60 feet of herself, she engulfs the creature in magical fire. The creature must make a DC 15 Dexterity save, taking 16 (3d10) fire damage on failure or half that on a success." compset="RaceSpec">
+    <fieldval field="trkMax" value="3"/>
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="wDieCount" value="3"/>
+    <fieldval field="wDieSize" value="10"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="StandardDC" tag="aWIS"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Usage" tag="Day"/>
+    <tag group="DamageType" tag="dtFire"/>
+    </thing>
+  <thing id="ra5CEdgDisWrd" name="Disorienting Words" description="Edgin magically taunts up to three creatures he can see within 60 feet of himself. Each creature must succeed on a DC 15 Wisdom save or take 10 (3d6) psychic damage and have disadvantage on the next attack roll it makes before the beginning of Edgin&apos;s next turn." compset="RaceSpec">
+    <fieldval field="abRange" value="60"/>
+    <fieldval field="wDieCount" value="3"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aCHA"/>
+    <tag group="abSave" tag="aWIS"/>
+    <tag group="DamageType" tag="dtPsychic"/>
+    </thing>
+  <thing id="ra5CEdgInsWrd" name="Inspiring Words" description="When a creature Edgin can see within 60 feet of himself fails an ability check, an attack roll, or a saving throw, Edgin magically encourages that creature. The creature can add 1d8 to the total, potentially turning the failure into a success." compset="RaceSpec">
+    <fieldval field="trkMax" value="3"/>
+    <fieldval field="abRange" value="60"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CFrgCnning" name="Cunning (Bonus)" description="Forge uses bonus action to take the Dash, Disengage, or Hide action, or to give himself advantage on the next attack roll he makes before the end of this turn." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    </thing>
+  <thing id="ra5CFrgDisChr" name="Disarming Charm" description="While Forge isn&apos;t wearing armor, his adds his Charisma modifier to his AC." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ArmorClass"/>
+    <tag group="CalcAC" tag="ChaMod"/>
+    <tag group="CalcAC" tag="DexMod"/>
+    <eval phase="PostAttr" priority="10000">~hero.childfound[ArmorClass].field[Bonus].value += #attrmod[aCHA]</eval>
+    </thing>
+  <thing id="ra5CFrgDblCrs" name="Double-Cross" description="If Forge hits a creature that is friendly to him with an attack roll, the attack automatically critically hits." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CHlgUnaDef" name="Unarmored Defense" description="While Holga isn&apos;t wearing armor, she can add her Constitution modifier to her AC." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="Helper" tag="ArmorClass"/>
+    <tag group="CalcAC" tag="ConMod"/>
+    <tag group="CalcAC" tag="DexMod"/>
+    </thing>
+  <thing id="ra5CHlgWrestl" name="Wrestle (Bonus)" description="Holga uses a bonus action to shove a creature within 5 feet of herself. That creature must succeed on a DC 15 Strength save or be moved 5 feet into an unoccupied space of Holga&apos;s choice." compset="RaceSpec">
+    <fieldval field="abRange" value="5"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="StandardDC" tag="aSTR"/>
+    <tag group="abSave" tag="aSTR"/>
+    </thing>
+  <thing id="ra5CSmnShltSh" name="Sheltering Shield" description="When Simon or another creature he can see within 10 feet of himself would take damage, he creates a shimmering, 10-foot-radius sphere of magical force centered on himself. Creatures inside the sphere are resistant to the damage that triggered this reaction." compset="RaceSpec">
+    <fieldval field="trkMax" value="3"/>
+    <fieldval field="abRange" value="10"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Reaction"/>
+    <tag group="abAction" tag="Reaction"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CSmnWldMgc" name="Wild Magic" description="When Simon takes 20 or more damage from a single source or is critically hit for damage, he must roll on the Wild Magic Surge table in the Player&apos;s Handbook." compset="RaceSpec">
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CSfnSumWrt" name="Summon Wraith (Bonus)" description="Sofina uses a bonus action to magically summon the spirit of an assassin, which appears as a wraith (see the Monster Manual). The summoned wraith appears in an open space within 60 feet of Sofina, whom it obeys. The summoned wraith takes its turn immediately after Sofina. It lasts for 1 hour, until it or Sofina dies, or until Sofina uses a bonus action to dismiss it." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="60"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CSfnSwrmMt" name="Swarm of Meteors" description="Sofina magically calls down a meteor swarm that detonates in four 40-foot-radius spheres, each one centered on a point she can see within 1 mile of herself. The spheres can overlap. Each creature in one or more of these spheres must make a DC 18 Dexterity save, taking 35 (10d6) fire damage and 35 (10d6) bludgeoning damage on a failure or half that on a success. A creature in multiple spheres takes this damage only once." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="1"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Mile"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aINT"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CXnkAurPrt" name="Aura of Protection" description="Xenk and his allies within 10 feet of him have advantage on saves." compset="RaceSpec">
+    <fieldval field="abRange" value="10"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  <thing id="ra5CXnkClnTch" name="Cleansing Touch" description="Xenk touches a creature within 5 feet of himself. The target magically regains 27 (6d8) hit points and gains the benefits of a {i}lesser restoration{/i}." compset="RaceSpec">
+    <fieldval field="trkMax" value="1"/>
+    <fieldval field="abRange" value="5"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="Usage" tag="Day"/>
+    </thing>
+  <thing id="ra5CXnkDgsFS" name="Daggersword Flourish (Shortsword and Dagger)" description="Xenk strikes with both weapons. Each creature of his choice within 10 feet of him must make a DC 16 Dexterity save. On a failed save, the creature takes 7 (2d6) piercing damage and has disadvantage on attack rolls until the beginning of Xenk&apos;s next turn. On a successful save, the creature takes half the damage and suffers no other effect." compset="RaceSpec">
+    <fieldval field="abRange" value="10"/>
+    <fieldval field="wDieCount" value="2"/>
+    <fieldval field="wDieSize" value="6"/>
+    <tag group="StandardDC" tag="aSTR"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="DamageType" tag="dtPiercing"/>
+    </thing>
+  <thing id="ra5CXnkDgsShf" name="Daggersword Shift (Bonus)" description="Xenk uses a bonus action to change the form of his daggersword, choosing either to wield a single longsword or to have a shortsword in one hand and a dagger in the other. His Daggersword attack and Daggersword Flourish action changes depending on which form the daggersword is currently taking." compset="RaceSpec">
+    <arrayval field="usrArray" index="0" value="Longsword"/>
+    <arrayval field="usrArray" index="1" value="Shortsword and Dagger"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <bootstrap thing="ra5CXnkDgsFL">
+      <containerreq phase="First" priority="100">fieldval:usrIndex = 0</containerreq>
+      </bootstrap>
+    <bootstrap thing="ra5CXnkDgsFS">
+      <containerreq phase="First" priority="100">fieldval:usrIndex = 1</containerreq>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <containerreq phase="First" priority="100">fieldval:usrIndex = 0</containerreq>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <autotag group="wProperty" tag="Versatile"/>
+      <assignval field="livename" value="Daggersword (Longsword)"/>
+      <assignval field="sbName" value="Daggersword (Longsword)"/>
+      <assignval field="wDCntVers" value="1"/>
+      <assignval field="wDSizVers" value="10"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDamExtra" value=" plus 6 (1d12) radiant"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      <assignval field="wDamBonus" value="0"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <containerreq phase="First" priority="100">fieldval:usrIndex = 1</containerreq>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <assignval field="livename" value="Daggersword (Shortsword and Dagger)"/>
+      <assignval field="sbName" value="Daggersword (Shortsword and Dagger)"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDamExtra" value=" plus 6 (1d12) radiant"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      <assignval field="wDamBonus" value="0"/>
+      </bootstrap>
+    </thing>
+  <thing id="r5CDoric" name="Doric" compset="Race">
+    <fieldval field="rHitDice" value="16"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="104"/>
+    <fieldval field="rSTR" value="2"/>
+    <fieldval field="rDEX" value="6"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="6"/>
+    <fieldval field="rWIS" value="9"/>
+    <fieldval field="rCR" value="5"/>
+    <fieldval field="rMultiatt" value="Doric makes two Shaped Claw or Sling attacks. She can replace one of these attacks with one use of her Spellcasting."/>
+    <usesource source="5eThvGal"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSkill" tag="skNature"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skPercep"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Good"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageRes" tag="dtFire"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="MelAttOpt" tag="aWIS"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="livename" value="Shaped Claw"/>
+      <assignval field="sbName" value="Shaped Claw"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Sling"/>
+      <assignval field="sbName" value="Sling"/>
+      <assignval field="wRangeNorm" value="30"/>
+      <assignval field="wRangeLong" value="120"/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="tt5CDruid"></bootstrap>
+    <bootstrap thing="x5CSplCstMat">
+      <assignval field="abText" value="Doric"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lDruidic"></bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="lInfernal"></bootstrap>
+    <bootstrap thing="lSylvan"></bootstrap>
+    <bootstrap thing="ra5CDrcChgShp"></bootstrap>
+    <bootstrap thing="ra5CDrcFryRbk"></bootstrap>
+    <bootstrap thing="spCureWoun">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spEntangle">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spFaerFire">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spAnimMess">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="sp5CBeastS">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spSpeaAnim">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="ttTiefling"></bootstrap>
+    <bootstrap thing="spThunderw">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aWIS"/>
+    </thing>
+  <thing id="r5CEdginD" name="Edgin Darvis" compset="Race">
+    <fieldval field="rHitDice" value="17"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="110"/>
+    <fieldval field="rSTR" value="4"/>
+    <fieldval field="rDEX" value="6"/>
+    <fieldval field="rCON" value="4"/>
+    <fieldval field="rINT" value="4"/>
+    <fieldval field="rWIS" value="6"/>
+    <fieldval field="rCHA" value="8"/>
+    <fieldval field="rCR" value="5"/>
+    <fieldval field="rMultiatt" value="Edgin makes two Reinforced Lute or Shortsword attacks."/>
+    <usesource source="5eThvGal"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSkill" tag="skSleight"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="ProfDouble" tag="skPerform"/>
+    <tag group="ProfDouble" tag="skPersuas"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Good"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <tag group="ArmProfGrp" tag="ArmorLight"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Reinforced Lute"/>
+      <assignval field="sbName" value="Reinforced Lute"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDamExtra" value=" plus 11 (2d10) thunder"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="8"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="1"/>
+      <assignval field="livename" value="Shortsword"/>
+      <assignval field="sbName" value="Shortsword"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDamExtra" value=" plus 11 (2d10) thunder"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="tt5CBard"></bootstrap>
+    <bootstrap thing="x5CSplCstMat">
+      <assignval field="abText" value="Edgin"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="ra5CEdgDisWrd"></bootstrap>
+    <bootstrap thing="ra5CEdgInsWrd"></bootstrap>
+    <bootstrap thing="spSuggesti">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spCharPers">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="spDisgSelf">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="3"/>
+      </bootstrap>
+    <bootstrap thing="sp5CFriend">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMessage">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
+    </thing>
+  <thing id="r5CHolgaK" name="Holga Kilgore" compset="Race">
+    <fieldval field="rHitDice" value="16"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="120"/>
+    <fieldval field="rSTR" value="9"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="1"/>
+    <fieldval field="rWIS" value="6"/>
+    <fieldval field="rCHA" value="3"/>
+    <fieldval field="rSpeed" value="40"/>
+    <fieldval field="rCR" value="5"/>
+    <fieldval field="rMultiatt" value="Holga makes three Darksteel Greataxe or Improvised Weapon attacks, in any combination."/>
+    <usesource source="5eThvGal"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="ProfSkill" tag="skNature"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="ProfSkill" tag="skIntim"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Good"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageRes" tag="dtLightnin"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtSlashing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Darksteel Greataxe"/>
+      <assignval field="sbName" value="Darksteel Greataxe"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="12"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="wCategory" tag="RangeThrow"/>
+      <autotag group="wProperty" tag="Thrown"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Improvised Weapon"/>
+      <assignval field="sbName" value="Improvised Weapon"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wRangeNorm" value="20"/>
+      <assignval field="wRangeLong" value="60"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="ra5CRcklssN">
+      <assignval field="abText" value="Holga"/>
+      <assignval field="abText2" value="her"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGnrcSpcEq">
+      <assignval field="CustDesc" value="Holga has a darksteel greataxe, a magic weapon that makes her resistant to lightning damage while she carries it (included above)."/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lHalfling"></bootstrap>
+    <bootstrap thing="ra5CHlgUnaDef"></bootstrap>
+    <bootstrap thing="ra5CHlgWrestl"></bootstrap>
+    </thing>
+  <thing id="r5CSimonA" name="Simon Aumar" compset="Race">
+    <fieldval field="rHitDice" value="18"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="99"/>
+    <fieldval field="rSTR" value="-2"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="3"/>
+    <fieldval field="rINT" value="6"/>
+    <fieldval field="rWIS" value="2"/>
+    <fieldval field="rCHA" value="7"/>
+    <fieldval field="rCR" value="5"/>
+    <fieldval field="rMultiatt" value="Simon makes three Quarterstaff or Chaos Bolt attacks. He can replace one attack with one use of his Spellcasting."/>
+    <usesource source="5eThvGal"/>
+    <tag group="ProfSave" tag="svCON"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skHistory"/>
+    <tag group="ProfSkill" tag="skReligion"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="ProfSkill" tag="skDecept"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Chaotic"/>
+    <tag group="Alignment" tag="Good"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="wProperty" tag="Versatile"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtBludgeon"/>
+      <assignval field="livename" value="Quarterstaff"/>
+      <assignval field="sbName" value="Quarterstaff"/>
+      <assignval field="wDCntVers" value="1"/>
+      <assignval field="wDSizVers" value="8"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDamExtra" value=" plus 11 (2d10) force"/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="6"/>
+      </bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="RanAttOver" tag="aINT"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamageOver" tag="aINT"/>
+      <assignval field="sbName" value="Chaos Bolt"/>
+      <assignval field="wRangeNorm" value="60"/>
+      <assignval field="wAttackEff" value="The damage type is determined by rolling a d8: 1, acid; 2, cold; 3, fire; 4, force; 5, lightning; 6, poison; 7, psychic; 8, thunder."/>
+      <assignval field="wDieCount" value="2"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="livename" value="Chaos Bolt"/>
+      </bootstrap>
+    <bootstrap thing="ra5CFeyAncN">
+      <assignval field="abText" value="Simon"/>
+      <assignval field="abText2" value="him"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGnrcSpcEq">
+      <assignval field="CustDesc" value="Simon has a bag of holding, two pairs of sending stones, and a deathly token (see his Spellcasting action)."/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="tt5CSorcer"></bootstrap>
+    <bootstrap thing="x5CSplCstMat">
+      <assignval field="CustDesc" value="Roll a d6. On a roll of 1, Simon must roll on the Wild Magic Surge table in the Player&apos;s Handbook. On a roll of 2 or higher, Simon casts one of these spells, using Charisma as his spellcasting ability (spell save DC 14):"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="lElvish"></bootstrap>
+    <bootstrap thing="ra5CSmnShltSh"></bootstrap>
+    <bootstrap thing="ra5CSmnWldMgc"></bootstrap>
+    <bootstrap thing="spArcaHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spMajoImag">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spFogClou">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spMageArmo">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spMagiMiss">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMinoIllu">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spPrestidi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spSpeaDead">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      <assignval field="sNameMod" value="he must be holding his deathly token to cast this"/>
+      </bootstrap>
+    <bootstrap thing="spSpidClim">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aCHA"/>
+    </thing>
+  <thing id="r5CSofina" name="Sofina" compset="Race">
+    <fieldval field="rHitDice" value="19"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="161"/>
+    <fieldval field="rSTR" value="2"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="8"/>
+    <fieldval field="rINT" value="10"/>
+    <fieldval field="rWIS" value="4"/>
+    <fieldval field="rCHA" value="-2"/>
+    <fieldval field="rCR" value="15"/>
+    <fieldval field="rMultiatt" value="Sofina makes three Necrotic Strike attacks."/>
+    <fieldval field="rAC" value="2"/>
+    <fieldval field="rArmText" value="robe, 17 with mage armor"/>
+    <usesource source="5eThvGal"/>
+    <tag group="ProfSkill" tag="skArcana"/>
+    <tag group="ProfSkill" tag="skHistory"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="DamageRes" tag="dtNecrotic"/>
+    <tag group="ProfSave" tag="svWIS"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="tt5CWizard"></bootstrap>
+    <bootstrap thing="x5CSplCstMat">
+      <assignval field="abText" value="Sofina"/>
+      </bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lAbyssal"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lDraconic"></bootstrap>
+    <bootstrap thing="lInfernal"></bootstrap>
+    <bootstrap thing="l5CThayan"></bootstrap>
+    <bootstrap thing="ra5CSfnSumWrt"></bootstrap>
+    <bootstrap thing="ra5CSfnSwrmMt"></bootstrap>
+    <bootstrap thing="spBlacTent">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spFingDeat">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spTimeStop">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spBestCurs">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spArcaHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spDimeDoor">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spMageHand">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spMessage">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="spPrestidi">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="AtWill"/>
+      </bootstrap>
+    <bootstrap thing="wOtherMel">
+      <autotag group="wCategory" tag="RangeThrow"/>
+      <autotag group="wProperty" tag="Thrown"/>
+      <autotag group="wProperty" tag="Spell"/>
+      <autotag group="MelAttOver" tag="aINT"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtNecrotic"/>
+      <autotag group="DamageOver" tag="aINT"/>
+      <autotag group="RanAttOver" tag="aINT"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wDieCount" value="5"/>
+      <assignval field="wDieSize" value="10"/>
+      <assignval field="wRangeNorm" value="120"/>
+      <assignval field="livename" value="Necrotic Strike"/>
+      <assignval field="sbName" value="Necrotic Strike"/>
+      </bootstrap>
+    <bootstrap thing="ra5CGnrcSpcEq">
+      <assignval field="CustDesc" value="Sofina wears a magic robe that gives her a +2 bonus to her AC and a +1 bonus to her saving throws (included above)."/>
+      </bootstrap>
+    <bootstrap thing="spMageArmo">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spResiSphe">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <bootstrap thing="spThunderw">
+      <autotag group="Helper" tag="RaceSpell"/>
+      <autotag group="Usage" tag="Day"/>
+      <assignval field="trkMax" value="2"/>
+      </bootstrap>
+    <link linkage="castattr" thing="aINT"/>
+    </thing>
+  <thing id="r5CXenkYn" name="Xenk Yendar" compset="Race">
+    <fieldval field="rHitDice" value="21"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="157"/>
+    <fieldval field="rSTR" value="9"/>
+    <fieldval field="rDEX" value="1"/>
+    <fieldval field="rCON" value="6"/>
+    <fieldval field="rINT" value="4"/>
+    <fieldval field="rWIS" value="6"/>
+    <fieldval field="rCHA" value="7"/>
+    <fieldval field="rCR" value="10"/>
+    <fieldval field="rMultiatt" value="Xenk makes three Daggersword attacks. He also uses Daggersword Flourish or, if it&apos;s available and he so chooses, Cleansing Touch."/>
+    <usesource source="5eThvGal"/>
+    <tag group="ProfSave" tag="svSTR"/>
+    <tag group="ProfSave" tag="svCHA"/>
+    <tag group="ProfSkill" tag="skAthletic"/>
+    <tag group="ProfSkill" tag="skHistory"/>
+    <tag group="ProfSkill" tag="skInsight"/>
+    <tag group="ProfSkill" tag="skSurvival"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="Lawful"/>
+    <tag group="Alignment" tag="Good"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <tag group="CondImm" tag="pcnCharmed"/>
+    <tag group="CondImm" tag="pcnFright"/>
+    <tag group="CondImm" tag="pcnPoison"/>
+    <tag group="ArmProfGrp" tag="WepMartial"/>
+    <tag group="ArmProfGrp" tag="WepSimple"/>
+    <tag group="ArmProfGrp" tag="ArmorMed"/>
+    <bootstrap thing="raDarkVis">
+      <autotag group="Value" tag="60"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="tt5CPaladin"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="l5CThayan"></bootstrap>
+    <bootstrap thing="lUndercomm"></bootstrap>
+    <bootstrap thing="ra5CXnkAurPrt"></bootstrap>
+    <bootstrap thing="ra5CXnkClnTch"></bootstrap>
+    <bootstrap thing="ra5CXnkDgsShf"></bootstrap>
+    </thing>
+  <thing id="r5CForgeF" name="Forge Fitzwilliam" compset="Race">
+    <fieldval field="rHitDice" value="20"/>
+    <fieldval field="rHDSides" value="8"/>
+    <fieldval field="rHPStart" value="110"/>
+    <fieldval field="rSTR" value="1"/>
+    <fieldval field="rDEX" value="4"/>
+    <fieldval field="rCON" value="3"/>
+    <fieldval field="rINT" value="5"/>
+    <fieldval field="rWIS" value="7"/>
+    <fieldval field="rCHA" value="10"/>
+    <fieldval field="rCR" value="8"/>
+    <fieldval field="rMultiatt" value="Forge makes two Dagger attacks, two Heavy Crossbow attacks, or one of each."/>
+    <usesource source="5eThvGal"/>
+    <tag group="ProfSave" tag="svDEX"/>
+    <tag group="ProfSave" tag="svINT"/>
+    <tag group="ProfSkill" tag="skAcrobat"/>
+    <tag group="ProfSkill" tag="skSleight"/>
+    <tag group="ProfDouble" tag="skStealth"/>
+    <tag group="ProfDouble" tag="skInvestig"/>
+    <tag group="ProfDouble" tag="skDecept"/>
+    <tag group="ProfDouble" tag="skPersuas"/>
+    <tag group="RaceType" tag="NPC"/>
+    <tag group="Alignment" tag="NeutralLC"/>
+    <tag group="Alignment" tag="Evil"/>
+    <tag group="RaceSize" tag="Medium0"/>
+    <bootstrap thing="wOtherMel">
+      <autotag group="wCategory" tag="RangeThrow"/>
+      <autotag group="wProperty" tag="Thrown"/>
+      <autotag group="MelAttOpt" tag="aDEX"/>
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="2"/>
+      <assignval field="livename" value="Dagger"/>
+      <assignval field="sbName" value="Dagger"/>
+      <assignval field="wReach" value="5"/>
+      <assignval field="wRangeNorm" value="20"/>
+      <assignval field="wRangeLong" value="60"/>
+      <assignval field="wDamExtra" value=" plus 24 (7d6) poison"/>
+      <assignval field="wAttackEff" value="The target is poisoned until the end of its next turn."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="4"/>
+      </bootstrap>
+    <bootstrap thing="wOtherRng">
+      <autotag group="AttackTarg" tag="1Target"/>
+      <autotag group="DamTypeOvr" tag="dtPiercing"/>
+      <assignval field="wDamBonus" value="0"/>
+      <assignval field="livename" value="Heavy Crossbow"/>
+      <assignval field="sbName" value="Heavy Crossbow"/>
+      <assignval field="wRangeNorm" value="100"/>
+      <assignval field="wRangeLong" value="400"/>
+      <assignval field="wDamExtra" value=" plus 24 (7d6) poison"/>
+      <assignval field="wAttackEff" value="{b}Hit or Miss:{/b} If the target is a creature, it has disadvantage on the next attack roll it makes before the beginning of Forge&apos;s next turn."/>
+      <assignval field="wDieCount" value="1"/>
+      <assignval field="wDieSize" value="10"/>
+      </bootstrap>
+    <bootstrap thing="ra5CEvaIncN">
+      <assignval field="abText" value="Forge"/>
+      </bootstrap>
+    <bootstrap thing="ra5CUncDodgN">
+      <assignval field="abText" value="Forge"/>
+      </bootstrap>
+    <bootstrap thing="tpHumanoid"></bootstrap>
+    <bootstrap thing="xMultiatt"></bootstrap>
+    <bootstrap thing="lCommon"></bootstrap>
+    <bootstrap thing="lThiefCant"></bootstrap>
+    <bootstrap thing="ra5CFrgCnning"></bootstrap>
+    <bootstrap thing="ra5CFrgDisChr"></bootstrap>
+    <bootstrap thing="ra5CFrgDblCrs"></bootstrap>
+    </thing>
+  <thing id="ra5CXnkDgsFL" name="Daggersword Flourish (Longsword)" description="Xenk magically detaches the longsword&apos;s blade from its hilt, launching the blade at a creature he can see within 30 feet of himself. The target must make a DC 16 Dexterity save. On a failure, the target is impaled by the blade, taking 14 (3d6 + 4) piercing damage, and is knocked prone. At the end of this current turn, the blade magically reattaches to its hilt." compset="RaceSpec">
+    <fieldval field="abRange" value="30"/>
+    <tag group="FeatureTyp" tag="Action"/>
+    <tag group="abAction" tag="Action"/>
+    <tag group="StandardDC" tag="aSTR"/>
+    <tag group="abSave" tag="aDEX"/>
+    <tag group="Helper" tag="ShowSpec"/>
+    <tag group="abRange" tag="Feet"/>
+    </thing>
+  <thing id="io5CTbltRwk" name="Tablet of Reawakening" description="This Tiny stone tablet counters the necromancy of red wizards. As an action, you can cast {i}true resurrection{/i} from the tablet. Once used in this way, the tablet crumbles to dust and is destroyed." compset="Wondrous">
+    <usesource source="5eHATLMI"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    <bootstrap thing="spTrueResu">
+      <autotag group="Helper" tag="ItemSpell"/>
+      <autotag group="Usage" tag="UsedUp"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    </thing>
+  <thing id="i5CRdWzBld" name="Red Wizard Blade" description="When you hit a creature with a melee attack using this magic dagger, the target takes an additional 3d12 necrotic damage.\n\nA creature reduced to 0 hit points by this weapon dies and cannot be raised from the dead except by a deity or by a creature using a tablet of reawakening to cast {i}true resurrection{/i}." compset="MagicWep" uniqueness="unique">
+    <fieldval field="miTypeDet" value="dagger"/>
+    <fieldval field="wDamExtra" value=" + 3d12 necrotic"/>
+    <usesource source="5eHATLMI"/>
+    <tag group="Helper" tag="EquipAvail" name="EquipAvail" abbrev="EquipAvail"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="ItemRarity" tag="Legendary" name="Legendary" abbrev="Legendary"/>
+    <child entity="wSpecMagic">
+      <bootstrap thing="wDagger"></bootstrap>
+      </child>
+    </thing>
+  <thing id="io5ChrnBckD" name="Horn of Beckoning Death" description="While holding this horn, you can use an action to invoke the necromancy called the Beckoning Death.\n\nThe Beckoning Death arrives at the beginning of your next turn and manifests as a crimson cloud of smoke that fills a 30-foot-radius sphere centered on the horn. The sphere doesn&apos;t move with the horn. At the beginning of each of your turns, the sphere&apos;s radius increases by 30 feet. The cloud disappears after 10 minutes or when your concentration on the effect ends. Any creature (including you) that has 9 or fewer hit points when it ends its turn inside the cloud is killed by the Beckoning Death. A Humanoid killed in this way instantly transforms into a zombie (see the Monster Manual). The zombie obeys the commands of the horn&apos;s lich creator.\n\nOnce you use the horn&apos;s property, it can&apos;t be used again for 1 year." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a sorcerer"/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eHATLMI"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Usage" tag="Year"/>
+    </thing>
+  <thing id="is5CHthrThr" name="Hither-Thither Staff" description="This staff has 4 charges and regains 1d4 spent charges each dawn.\n\nAs an action, you can spend 1 charge from the staff to create two linked teleportation portals, each one appearing on a flat surface of your choice that you can see within 1,500 feet of yourself. Alternatively, you can spend 1 charge as an action to relocate one or both portals, within the same range. The surface on which a portal appears must be large enough to accommodate it. Each portal is a two-dimensional, glowing oval ring, and together they create an open doorway up to 6 feet high and 4 feet wide. Any creature or object entering one portal exits from the other as if the two portals were a single opening connecting their locations.\n\nA portal can appear on a moving surface, but the effect ends when the two portals are mored than 1 mile apart. As a bonus action while holding the staff, you can close both portals, ending the effect, or suppress one portal, causing it to disappear until you relocate it as described above, during which time the remaining portal can&apos;t be used. The portals otherwise last for 24 hours." compset="Staff">
+    <fieldval field="trkMax" value="4"/>
+    <usesource source="5eHATLMI"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="Usage" tag="Charges" name=" charges" abbrev=" charges"/>
+    <tag group="LvNamePar" tag="AppText"/>
+    <tag group="Custom" tag="Hither"/>
+    <bootstrap thing="wQtrstaff">
+      <autotag group="Custom" tag="Hither"/>
+      <assignval field="sbName" value="Hither-Thither Staff"/>
+      <assignval field="livename" value="Hither-Thither Staff"/>
+      </bootstrap>
+    <eval phase="Final" priority="20000"><![CDATA[      field[abText].text = "regains 1d4 at dawn"
+
+      foreach pick in hero where "thingid.wQtrstaff & Custom.Hither"
+        eachpick.field[CustDesc].text = "This staff has 4 charges and regains 1d4 spent charges each dawn.\n\nAs an action, you can spend 1 charge from the staff to create two linked teleportation portals, each one appearing on a flat surface of your choice that you can see within 1,500 feet of yourself. Alternatively, you can spend 1 charge as an action to relocate one or both portals, within the same range. The surface on which a portal appears must be large enough to accommodate it. Each portal is a two-dimensional, glowing oval ring, and together they create an open doorway up to 6 feet high and 4 feet wide. Any creature or object entering one portal exits from the other as if the two portals were a single opening connecting their locations.\n\nA portal can appear on a moving surface, but the effect ends when the two portals are mored than 1 mile apart. As a bonus action while holding the staff, you can close both portals, ending the effect, or suppress one portal, causing it to disappear until you relocate it as described above, during which time the remaining portal can't be used. The portals otherwise last for 24 hours."
+        nexteach]]></eval>
+    </thing>
+  <thing id="io5CHlmDsjnt" name="Helm of Disjunction" description="You can use an action while wearing this helm it to emit an antimagic pulse in a 300-foot-radius sphere centered on yourself. The pulse has these effects:\n\n{b}Magic Item Disjunction.{/b} Potions and scrolls in the area are destroyed. The magic of all other magic items in the area is suppressed for 1 minute. Artifacts are unaffected by this property, as are magic items on your person.\n{b}Spell Disjunction.{/b} Any ongoing spell ends if the creature, object, or area affected by it is even partially in the pulse&apos;s area.\n{b}Wave of Force.{/b} The antimagic pulse is strong enough to knock down creatures close to you. Each creature within 30 feet of you must succeed on a DC 15 Strength save or be knocked prone.\n\nOnce you use the helm&apos;s property, it can&apos;t be used again until 1d4 days have passed." compset="Wondrous">
+    <fieldval field="miAttunTxt" value="requires attunement by a sorcerer"/>
+    <fieldval field="trkMax" value="1"/>
+    <usesource source="5eHATLMI"/>
+    <tag group="ItemRarity" tag="Legendary"/>
+    <tag group="GearType" tag="gtWondrous" name="Wondrous Item" abbrev="Wondrous Item"/>
+    <tag group="Helper" tag="ShowSpec" name="Show Spec" abbrev="Show Spec"/>
+    <tag group="User" tag="Tracker"/>
+    <tag group="Helper" tag="NeedAttune" name="Requires Attunement" abbrev="Requires Attunement"/>
+    <tag group="Usage" tag="Usage5Cd4D"/>
+    <tag group="Helper" tag="EquipMag"/>
+    <tag group="Helper" tag="AlwaysAvl"/>
     </thing>
   </document>

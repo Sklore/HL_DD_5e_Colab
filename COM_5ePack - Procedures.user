@@ -418,4 +418,39 @@ foreach pick in hero from BaseSpell where "Custom.OnlyIfCaster9"
   perform eachpick.delete[Hide.Spell]
   nexteach
   endif]]></procedure>
+  <procedure id="5CSetName" context="pick"><![CDATA[
+    ~Set the Custom Name and Custom Text adjustments logic into this single
+    ~procedure. We need to allow for using the Duration field or the Source
+    ~field for setting the name so that we are backwards compatable.
+    ~Timing: Render/99999999
+
+    ~ 1 = Source
+    ~ 2 = Duration
+    var S2Type as number
+
+    ~ Figure out if we are to use Duration or Source text
+    Call S2SeleText
+
+    ~ The tag AdjShadow.Name means we are totally overwriting the live name value
+    If (tagis[AdjShadow.Name] <> 0) Then
+
+      ~ Source field has text to use so use it
+      If (S2Type = 1) Then
+        field[pChosen].chosen.field[livename].text = field[pSource].text
+      ~ Duration field has text and Source does not so use it
+      ElseIf (S2Type = 2) Then
+        field[pChosen].chosen.field[livename].text = field[pDuration].text     
+      Endif
+
+    ~ The tag AdjShadow.Text means we are appending to the live name value
+    ElseIf (tagis[AdjShadow.Text] <> 0) Then
+
+      ~ Source field has text to use so use it
+      If (S2Type = 1) Then
+        field[pChosen].chosen.field[livename].text &= field[pSource].text
+      ~ Duration field has text and Source does not so use it
+      ElseIf (S2Type = 2) Then
+        field[pChosen].chosen.field[livename].text &= field[pDuration].text
+      Endif
+    Endif]]></procedure>
   </document>
