@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<docume nt signature="Hero Lab Data">
+<document signature="Hero Lab Data">
   <thing id="l5CDLAban" name="Abanasinian" description="{b}Rarity{/b}: Standard\n{b}Typical Speakers{/b}: Abanasinia\n{b}Script{/b}: Common" compset="Language" uniqueness="useronce">
     <usesource source="5eDSotDQA"/>
     <tag group="LangPreval" tag="NPC" name="NPC Race Languages" abbrev="NPC"/>
@@ -290,21 +290,21 @@ field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eva
           perform assign[StandardDC.aCHA]
       endif]]></eval>
     </thing>
-  <thing id="cfgHighSorc" name="High Sorcery" description="Helper configurable for the Initiate of High Sorcery and the Adept of the ____ Robes feats." compset="Configure" uniqueness="unique">
+  <thing id="cfg5CHighSorc" name="High Sorcery" description="Helper configurable for the Initiate of High Sorcery and the Adept of the ____ Robes feats." compset="Configure" uniqueness="unique">
     <tag group="Helper" tag="SplMayExcd"/>
     <tag group="Helper" tag="OutCfgSpl"/>
     <eval phase="Final" priority="50000"><![CDATA[      ~ Loop through all the spell picks added on this configurable
 
- foreach pick in hero from BaseSpell where "CfgSpell.cfgHighSorc"
+ foreach pick in hero from BaseSpell where "CfgSpell.cfg5CHighSorc"
         perform eachpick.pulltags[sLevel.?]
         perform eachpick.pulltags[ClsDenySp.?]
      nexteach
 
- foreach pick in hero from BaseSpell where "CfgSpell.cfgHighSorc & sLevel.0"
+ foreach pick in hero from BaseSpell where "CfgSpell.cfg5CHighSorc & sLevel.0"
         perform eachpick.assign[Helper.Cantrip]
         nexteach
 
- foreach pick in hero from BaseSpell where "CfgSpell.cfgHighSorc & !sLevel.0"
+ foreach pick in hero from BaseSpell where "CfgSpell.cfg5CHighSorc & !sLevel.0"
 
         ~   make us a racial spell so we can limit its use to 1/longrest
         perform eachpick.assign[Helper.SpellLike]
@@ -378,7 +378,7 @@ field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eva
     <usesource source="5eDSotDQA"/>
     <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="User" tag="NoAutoName"/>
-    <bootstrap thing="cfgHighSorc"></bootstrap>
+    <bootstrap thing="cfg5CHighSorc"></bootstrap>
     <eval phase="Final" priority="50000" index="2"><![CDATA[
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
@@ -393,7 +393,7 @@ field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eva
           iSpells = "thingid.spCompLang | thingid.spDeteEvil | thingid.spProtGoEv | thingid.spShield"
       endif
 
-      perform hero.childfound[cfgHighSorc].setfocus
+      perform hero.childfound[cfg5CHighSorc].setfocus
 
       ~ Set the total number of spells allowed (ie 1 for 1st level spell).
       focus.field[cfgMaxSp1].value = 3
@@ -405,7 +405,7 @@ field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eva
 
       ~ Make the Spells tab appear
       perform hero.assign[Hero.Caster]]]></eval>
-    <prereq message="Prerequisite: Fighter, Paladin, or Knight of Solamnia">
+    <prereq message="Prerequisite: Sorcerer, Wizard, or Mage of High Sorcery">
       <validate><![CDATA[@valid = 0
 
 if (hero.childlives[bck5CMgHghS] <>0) then
@@ -426,7 +426,7 @@ endif]]></validate>
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
 
-      perform hero.childfound[cfgHighSorc].setfocus
+      perform hero.childfound[cfg5CHighSorc].setfocus
 
       ~ Set the total number of spells allowed
       focus.field[cfgMaxSp2].value += 2
@@ -452,7 +452,7 @@ if (hero.childlives[f5CIniHSrc] <>0) then
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
 
-      perform hero.childfound[cfgHighSorc].setfocus
+      perform hero.childfound[cfg5CHighSorc].setfocus
 
       ~ Set the total number of spells allowed
       focus.field[cfgMaxSp2].value += 2
@@ -492,7 +492,7 @@ field[trkMax].value = hero.childfound[ProfBonus].field[tProfBonus].value]]></eva
       ~ If we're disabled, do nothing & 
       doneif (tagis[Helper.Disable] = 1)
 
-      perform hero.childfound[cfgHighSorc].setfocus
+      perform hero.childfound[cfg5CHighSorc].setfocus
 
       ~ Set the total number of spells allowed
       focus.field[cfgMaxSp2].value += 2
@@ -841,5 +841,130 @@ DEX save vs SSDC
     <tag group="LvNamePar" tag="IncAction"/>
     <tag group="LvNamePar" tag="IncRange"/>
     <eval phase="Final" priority="50000">field[abDC].value = hero.childfound[cHelpSor].field[cSplSaveDC].value</eval>
+    </thing>
+  <thing id="f5CDivFavrd" name="Divinely Favored" description="A deity has imbued you with a small aspect of their power.\n\nYou learn one cantrip of your choice from the cleric spell list and one 1st-level spell, based on your character&apos;s alignment. You also learn the {i}augury{/i} spell.\n{font Courier New}\n{b}Alignment   1st-Level Spell{/b}\nGood        1 cleric spell\nNeutral     1 druid spell\nEvil        1 warlock spell{revert}\n\nYou can cast the 1st-level spell and {i}augury{/i} without a spell slot, and you must complete a long rest before you can cast either of these spells in that manner again. You can also cast these spells using spell slots you have of the appropriate level.\n\nYour spellcasting ability for this feat&apos;s spells is Intelligence, Wisdom, or Charisma (choose when you select this feat).\n\nAdditionally, you can use a holy symbol as a spellcasting focus for any spell you cast that uses the chosen spellcasting ability." compset="Feat" uniqueness="useronce">
+    <fieldval field="usrCandid1" value="component.BaseAttr &amp; (IsAttr.aWIS | IsAttr.aCHA | IsAttr.aINT)"/>
+    <usesource source="5eDSotDQA"/>
+    <tag group="abAction" tag="None"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="Custom" tag="OnlyIfCaster2"/>
+    <bootstrap thing="cfg5CDivFvrd"></bootstrap>
+    <bootstrap thing="spAugury">
+      <autotag group="Helper" tag="SpellLike"/>
+      <autotag group="Usage" tag="LongRest"/>
+      <assignval field="trkMax" value="1"/>
+      </bootstrap>
+    <bootstrap thing="spAugury">
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="Memorized"/>
+      <autotag group="Hide" tag="Spell"/>
+      <autotag group="Custom" tag="OnlyIfCaster2"/>
+      </bootstrap>
+    <eval phase="First" index="3"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      ~ Make the Spells tab appear
+      perform hero.assign[Hero.Caster]]]></eval>
+    <eval phase="Final" priority="50000"><![CDATA[
+      ~ If we're disabled, do nothing & 
+      doneif (tagis[Helper.Disable] = 1)
+
+      var iCls as string
+
+      if (hero.tagcount[Alignment.Good] <> 0) then
+         iCls = "sClass.cHelpClr"
+      elseif (hero.tagcount[Alignment.NeutralGE] <> 0) then
+         iCls = "sClass.cHelpDrd"
+      elseif (hero.tagcount[Alignment.Evil] <> 0) then
+         iCls = "sClass.cHelpWlk"
+      endif
+
+
+      perform hero.childfound[cfg5CDivFvrd].setfocus
+
+      ~ Set the total number of spells allowed
+      focus.field[cfgMaxSp1].value += 1
+      focus.field[cfgMaxSp2].value += 1
+      focus.field[cfgAllwSp2].text &= " & " & iCls]]></eval>
+    <eval phase="Final" priority="10000" index="4">call 5CShowSpls</eval>
+    <exprreq message="Requires Level 4"><![CDATA[#totallevelcount[] >= 4]]></exprreq>
+    </thing>
+  <thing id="cfg5CDivFvrd" name="Divinely Favored" description="Helper configurable for the Divinely Favored feat." compset="Configure" uniqueness="unique">
+    <fieldval field="cfgAllwSp1" value="component.BaseSpell  &amp; sClass.cHelpClr &amp; sLevel.0 &amp; !Helper.Helper"/>
+    <fieldval field="cfgAllwSp2" value="component.BaseSpell  &amp; sLevel.1 &amp; !Helper.Helper"/>
+    <tag group="Helper" tag="SplMayExcd"/>
+    <tag group="Helper" tag="OutCfgSpl"/>
+    <eval phase="Render" priority="2147483647" index="3"><![CDATA[
+      var nLevel2 as number
+      var 2Text as string
+
+      ~ Calculate the number of spells selected
+      nLevel2 = tagcount[sLevel.1]
+      ~ Set default messages
+      2Text = "No more 1st-level spells"
+
+      ~ Set 2nd level error messages
+      If (nLevel2 = 0) then
+      2Text = "1 more 1st-level spell"
+      ElseIf (nLevel2 > 1) then
+      nLevel2 = nLevel2 - 1
+      2Text = nLevel2 & " fewer 1st-level spell(s)"
+      Endif
+
+      field[cfgAdTxSp2].text = 2Text & " needed."]]></eval>
+    <eval phase="Final" priority="50000"><![CDATA[      ~ Loop through all the spell picks added on this configurable
+
+ foreach pick in hero from BaseSpell where "CfgSpell.cfg5CDivFvrd"
+        perform eachpick.pulltags[sLevel.?]
+        perform eachpick.pulltags[ClsDenySp.?]
+     nexteach
+
+ foreach pick in hero from BaseSpell where "CfgSpell.cfg5CDivFvrd & sLevel.0"
+        perform eachpick.assign[Helper.Cantrip]
+        nexteach
+
+ foreach pick in hero from BaseSpell where "CfgSpell.cfg5CDivFvrd & !sLevel.0"
+
+        ~   make us a racial spell so we can limit its use to 1/longrest
+        perform eachpick.assign[Helper.SpellLike]
+        perform eachpick.assign[Usage.LongRest]
+        eachpick.field[sNameMod].text = "Spell slot or"
+        eachpick.field[trkMax].value += 1
+
+      nexteach
+	  
+	  
+      ~ If we have Class Deny Spells then remove those from the list. This
+      ~ prevents the same spell from being added twice. This way we act
+      ~ like the normal spell portal does.
+      if (tagcount[ClsDenySp.?] <> 0) then
+        field[cfgAllwSp1].text &= " & !(" & tagids[ClsDenySp.?,"|"] & ")"
+	field[cfgAllwSp2].text &= " & !(" & tagids[ClsDenySp.?,"|"] & ")"
+      endif]]></eval>
+    <eval phase="Render" priority="2147483647" index="2"><![CDATA[
+
+      var nLevel0 as number
+
+      var 0Text as string
+
+      ~ Calculate the number of spells selected
+      nLevel0 = tagcount[sLevel.0]
+
+      ~ Set default messages
+      0Text = "No more cantrips"
+
+      ~ Set cantrip error messages
+      If (nLevel0 < 1) then
+      0Text = "1 more cantrip"
+      ElseIf (nLevel0 > 1) then
+      nLevel0 -= 1
+      0Text = nLevel0 & " fewer cantrip(s)"
+      Endif
+
+    
+      field[cfgAdTxSp1].text = 0Text & " needed."]]></eval>
     </thing>
   </document>
