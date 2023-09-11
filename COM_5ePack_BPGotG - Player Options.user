@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="c5CBbnGiant" name="Path of the Giant" description="Walking the path of the giants means you channel the same primal forces as giants themselves." compset="CustomSpec" summary="You channel the primal power of giants." uniqueness="unique">
+    <usesource source="5eBPGotGS"/>
+    <tag group="SpecSource" tag="cHelpBbn" name="Barbarian" abbrev="Barbarian"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <tag group="abCategory" tag="BbnPriPath" name="Barbarian Primal Path" abbrev="Barbarian Primal Path"/>
+    <tag group="Helper" tag="SpecUp" name="SpecUp" abbrev="SpecUp"/>
+    <tag group="abDuration" tag="ConstRage"/>
+    <bootstrap thing="c5CBbnEleClv">
+      <autotag group="ClSpecWhen" tag="6"/>
+      </bootstrap>
+    <bootstrap thing="c5CBbnMgtImp">
+      <autotag group="ClSpecWhen" tag="10"/>
+      </bootstrap>
+    <bootstrap thing="c5CBbnDmuCls">
+      <autotag group="ClSpecWhen" tag="14"/>
+      </bootstrap>
+    <bootstrap thing="c5CBbnGntHvc">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="c5CBbnGntPwr">
+      <autotag group="ClSpecWhen" tag="3"/>
+      </bootstrap>
+    </thing>
+  <thing id="c5CBbnGntHvc" name="Giant&apos;s Havoc" description="While raging, you gain these benefits:\n\n{b}Crushing Throw.{/b} When you make a successful ranged attack with a thrown weapon using Strength, you can add your Rage Damage bonus to the damage roll of that attack.\n\n{b}Giant Stature.{/b} Your reach increases by 5 feet, and if you are not already Large, you become so. Anything you&apos;re wearing or carrying grows with you. If you don&apos;t have enough room to become Large, your size does not change." compset="ClSpecial" summary="Increase throw damage and grow your reach and size.">
+    <comment>cLangMax</comment>
+    <fieldval field="usrLabelAr" value="Size"/>
+    <arrayval field="usrArray" index="1" value="Large"/>
+    <arrayval field="usrArray" index="0" value="Normal"/>
+    <tag group="User" tag="NoAutoName" name="NoAutoName" abbrev="NoAutoName"/>
+    <tag group="Helper" tag="ActivMenu" name="ActivMenu" abbrev="ActivMenu"/>
+    <tag group="FeatureTyp" tag="Special" name="Special" abbrev="Special"/>
+    <tag group="abAction" tag="None"/>
+    <eval phase="Final" priority="11000" index="3"><![CDATA[     doneif (tagis[Helper.Disable] <> 0)
+     doneif (hero.tagis[Hero.Raging] = 0)
+
+     foreach pick in hero from BaseWep where "wProperty.Thrown"
+        eachpick.field[dmrBonus].value += hero.childfound[cBbnRage].field[abValue].value
+        nexteach
+
+     if (hero.tagcount[Classes.Barbarian] >= 14) then
+        herofield[tReach].value += 10
+     else
+        herofield[tReach].value += 5
+     endif
+
+     if (field[usrIndex].value = 1) then 
+        herofield[tReach].value -= 5
+     elseif (field[usrIndex].value = 2) then 
+        herofield[tReach].value -= 10
+     endif]]></eval>
+    <eval phase="First" priority="20000"><![CDATA[~increase our size if Large or Huge are selected
+
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (hero.tagis[Hero.Raging] = 0)
+
+     if (field[usrIndex].value = 1) then
+        if (herofield[tSize].value < 1) then
+           herofield[tSize].value = 1
+        endif
+     elseif (field[usrIndex].value = 2) then
+        if (herofield[tSize].value < 2) then
+           herofield[tSize].value = 2
+        endif       
+     endif]]></eval>
+    <eval phase="Final" index="2"><![CDATA[
+     doneif (tagis[Helper.Disable] <> 0)
+     doneif (tagis[Helper.ShowSpec] = 0)
+
+~if we're level 14 or higher, add Huge as an option
+
+     if (hero.tagcount[Classes.Barbarian] >= 14) then
+        field[usrArray].arraytext[2] = "Huge"
+        endif]]></eval>
+    </thing>
+  <thing id="c5CBbnGntPwr" name="Giant Power" description="You can speak, read, and write Giant. If you already know Giant, you can choose another language. You also learn a cantrip of your choice between {i}druidcraft{/i} and {i}thaumaturgy{/i}. Wisdom is your spellcasting ability for this spell." compset="ClSpecial" summary="Learn the Giant language plus a cantrip.">
+    <arrayval field="usrArray" index="0" value="Druidcraft"/>
+    <arrayval field="usrArray" index="1" value="Thaumaturgy"/>
+    <tag group="Custom" tag="GntPwr"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None" name="No action" abbrev="None"/>
+    <bootstrap thing="l5CGiant">
+      <containerreq phase="First" priority="500">fieldval:abValue = 1</containerreq>
+      </bootstrap>
+    <bootstrap thing="spDruidcra">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 0</containerreq>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    <bootstrap thing="spThaumatu">
+      <containerreq phase="First" priority="500">fieldval:usrIndex = 1</containerreq>
+      <autotag group="Helper" tag="Free"/>
+      <autotag group="Helper" tag="SpellLike"/>
+      </bootstrap>
+    <eval phase="First"><![CDATA[    doneif (tagis[Helper.Disable] <> 0)
+
+    if (hero.childlives[lGiant] <> 0) then
+      hero.childfound[cHelpBbn].field[cLangMax].value += 1
+      hero.childfound[cHelpBbn].field[cLaCandExp].text = "component.BaseLang"
+    else
+      field[abValue].value = 1
+    endif]]></eval>
+    </thing>
+  <thing id="l5CGiant" name="Giant" description="{b}Typical Speakers:{/b} Ogres, giants{br}{b}Script:{/b} Dwarvish" compset="Language" uniqueness="unique">
+    <comment><![CDATA[Giant Power (Barbarian feature) adds Giant if you don't have it. This dummy copy of Giant is the only way I could get the dang thing to work. Gross.]]></comment>
+    <usesource source="5eBPGotGS"/>
+    <tag group="Helper" tag="Helper"/>
+    <tag group="LangPreval" tag="Standard" name="Standard Languages" abbrev="Standard"/>
+    </thing>
+  <thing id="c5CBbnEleClv" name="Elemental Cleaver" description="When you begin raging, you can choose one weapon that you&apos;re holding and infuse it with one of these damage types: acid, cold, fire, lightning, or thunder. While you wield that weapon during your rage, the weapon&apos;s damage type changes to the chosen type, it deals an additional 1d6 damage of the chosen type when it hits, and it gains the thrown property, with a normal range of 20 feet and a long range of 60 feet. If you throw the weapon, it reappears in your hand immediately after it hits or misses a target. The infused weapon&apos;s benefits are suppressed while a creature other than you wields it.\n\nWhile raging and holding the infused weapon, you can use a bonus action to switch the infused weapon&apos;s current damage type to another one from the damage type options above." compset="ClSpecial" summary="Make your weapon deal elemental damage and return." maxlimit=" 0">
+    <comment>DamageType</comment>
+    <fieldval field="usrCandid2" value="component.BaseWep &amp; (Hero.MainHand | Hero.Offhand)"/>
+    <fieldval field="usrCandid1" value="thingid.dtAcid | thingid.dtCold | thingid.dtFire | thingid.dtLightnin | thingid.dtThunder"/>
+    <tag group="ChooseSrc2" tag="Hero"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="Helper" tag="ActivMenu"/>
+    <tag group="User" tag="NoAutoName"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="First" priority="600"><![CDATA[~ If we're not enabled, get out now
+doneif (tagis[Helper.Disable] <> 0)
+
+if (hero.tagcount[Classes.Barbarian] >= 14) then
+   field[abValue].value = 2
+ else
+   field[abValue].value = 1
+ endif
+
+doneif (hero.tagis[Hero.Raging] = 0)
+doneif (field[usrChosen1].ischosen = 0)
+doneif (field[usrChosen2].ischosen = 0)
+
+perform field[usrChosen2].chosen.setfocus
+
+focus.field[wDamExtra].text &= " +" & field[abValue].value & "d6 " & lowercase(field[usrChosen1].chosen.field[name].text)
+perform focus.assign[wProperty.Thrown]
+perform focus.assign[wCategory.RangeThrow]
+perform field[usrChosen1].chosen.pulltags[DamageType.?]
+perform focus.delete[DamageType.?]
+perform focus.pushtags[DamageType.?]
+focus.field[wRangeNorm].value = 20
+focus.field[wRangeLong].value = 60]]></eval>
+    </thing>
+  <thing id="c5CBbnMgtImp" name="Mighty Impel" description="While raging, you can use a bonus action to throw a creature aross the battlefield. Choose one Medium or smaller creature within your reach and move it to an open space you can see within 30 feet of yourself. An unwilling creature must succeed on a Strength save (DC equals 8 + your proficiency bonus + your Strength modifier) to avoid being tossed.\n\nIf, at the end of this movement, the thrown creature isn&apos;t on a surface or liquid that can support it, the creature falls, suffering fall damage as normal and landing prone." compset="ClSpecial" summary="Throw a creature, willing or unwilling, across the battlefield.">
+    <fieldval field="abRange" value="30"/>
+    <tag group="abAction" tag="Bonus"/>
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abRange" tag="Feet"/>
+    <tag group="abSave" tag="aSTR"/>
+    <tag group="StandardDC" tag="aSTR"/>
+    <tag group="LvNamePar" tag="IncRange"/>
+    <tag group="LvNamePar" tag="IncAction"/>
+    <eval phase="Final"><![CDATA[    doneif (hero.tagcount[Classes.Barbarian] < 14)
+    doneif (tagis[Helper.Disable] <> 0)
+
+field[CustDesc].text = "While raging, you can use a bonus action to throw a creature aross the battlefield. Choose one Large or smaller creature within your reach and move it to an open space you can see within 30 feet of yourself. An unwilling creature must succeed on a Strength save (DC equals 8 + your proficiency bonus + your Strength modifier) to avoid being tossed.\n\nIf, at the end of this movement, the thrown creature isn't on a surface or liquid that can support it, the creature falls, suffering fall damage as normal and landing prone."]]></eval>
+    </thing>
+  <thing id="c5CBbnDmuCls" name="Demiurgic Colossus" description="While raging, your reach increases by 10 feet, your size can increase to Large or Huge (your choice), and you can use your Mighty Impel ability on creatures that are Large or smaller.\n\nAlso, the extra damage dealt by your Elemental Cleaver feature increases to 2d6." compset="ClSpecial" summary="You can become huge, throw Large creatures, and deal more damage.">
+    <tag group="FeatureTyp" tag="Special"/>
+    <tag group="abAction" tag="None"/>
+    </thing>
+  </document>
